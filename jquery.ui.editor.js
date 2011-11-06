@@ -232,11 +232,6 @@ $(function() {
                 this._editor.initialized = true;
                 this._editor.toolbar.find('.ui-widget-editor-inner').slideDown();
             },
-                
-                //$('.sie_tool_bar button[name=save]').live('click', Editor.actions.save);
-                //$('.sie_tool_bar button[name=cancel]').live('click', Editor.actions.cancel);
-                ////$('.sie_tool_bar button[name=show_guides]').live('click', Editor.show_guides);
-                
                 ////$('.sie_tool_bar button[name=insert_image]').live('click', Editor.file_manager.image);
                 ////$('.sie_tool_bar button[name=insert_table]').live('click', Editor.insert_table);
                 //$('.sie_tool_bar button[name="insert_hr"]').live('click', Editor.buttons.insert_hr);
@@ -620,6 +615,13 @@ $(function() {
                             editor_instance._actions.select_element.call(editor_instance, this);
                         });
 
+                this._editor.toolbar.find('button[name="save"]').unbind('click.editor').
+                        bind('click.editor', $.proxy(this._actions.save, this));
+
+                this._editor.toolbar.find('button[name="cancel"]').unbind('click.editor').
+                        bind('click.editor', $.proxy(this._actions.cancel, this));
+
+
                 
                 this.element.addClass(this._classes.editing);
                 this.element.attr('contenteditable', 'true');
@@ -880,7 +882,7 @@ $(function() {
             
             update_buttons: function() {
                 this._actions.link.update_buttons.call(this);
-                this._editor.toolbar.find('button[name=save]').button('option', 'disabled', !this._content.dirty_blocks_exist());
+                this._editor.toolbar.find('button[name=save]').button('option', 'disabled', !this._content.dirty.call(this));
             },
             
             link: {
@@ -1027,8 +1029,23 @@ $(function() {
                     
                     return true;
                 }
+            },
+            
+            save: function() {
+                // If the user has provided or bound their own save function 
+                // Allow them to cancel the default
+                if (this._trigger('save')) {
+                    console.log('save', this.options.save_uri);
+                }
+            },
+            
+            cancel: function() {
+                // If the user has provided or bound their own cancel function 
+                // Allow them to cancel the default
+                if (this._trigger('cancel')) {
+                    console.log('cancel');
+                }
             }
-       
         },
 
         _history: {
