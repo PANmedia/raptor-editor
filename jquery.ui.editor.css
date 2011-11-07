@@ -23,6 +23,7 @@
 .ui-widget-editor-dialog .ui-widget-editor-inner {
     height: 25px;
     line-height: 10px;
+    margin-bottom: 5px;
 }
 
 /* Editor button */
@@ -172,7 +173,59 @@
 }
 
 /* Guides */
-
 .ui-widget-editor-guides * {
     outline: 1px dashed rgba(0, 0, 0, 0.5);
+}
+
+/* Messages */
+.ui-widget-editor-toolbar .ui-widget-editor-messages {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon {
+    display: inline-block;
+    float: left;
+    margin: 5px 0 0 5px;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul {
+    border-radius: 5px;
+    padding: 0 10px 0 25px;
+    margin: 0;
+    border: 1px solid #D4D4D4;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul li {
+    list-style: none;
+}
+
+/* Error */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-notice {
+    background-color: #FF9292;
+    background-image: -moz-linear-gradient(center top , #FF9292, #FF7575);
+    border: 1px solid #E53A3A;
+}
+
+/* Confirm */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-check {
+    background-color: #F2FFF2;
+    background-image: -moz-linear-gradient(center top , #F2FFF2, #DAF2D7);
+}
+
+/* Information */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-info {
+    background-color: #F1FAFF;
+    background-image: -moz-linear-gradient(center top , #F1FAFF, #D9EFF5);
+}
+
+/* Information */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-loading {
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon-loading {
+    background: transparent url(images/loading-small.gif) no-repeat center center;
 }

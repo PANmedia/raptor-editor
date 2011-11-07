@@ -8,11 +8,12 @@ $(function() {
             dialog_animation: 'fade',
             replace_buttons: false,
             custom_buttons: [],
+            save_uri: '/editor/save'
         },
         
         html: function(html) {
             if (typeof html == 'undefined') {
-                return this.element.html();
+                return this._content.cleaned(this.element.html());
             }
             this._history.update.call(this);
             this.element.html(html);
@@ -76,10 +77,13 @@ $(function() {
             },
             
             is_root: function(element) {
+                
+                if (!element) return false;
+                
                 var is_root = (this._util.identify(element) == this._util.identify(this.element) 
                                 || element.get(0).tagName.toLowerCase() == 'body');
                                 
-                if (!is_root) element.removeAttr('id');
+                if (!is_root) $(element).removeAttr('id');
                 
                 return is_root;
             },
@@ -118,11 +122,14 @@ $(function() {
                 button_tag: 'ui-widget-editor-tag',
                 button_css: 'ui-widget-editor-css',
                 button_custom: 'ui-widget-editor-custom'
+            },
+            
+            clear: function(name) {
+                $.removeData(this.element.get(0), name);
             }
+            
         },
-        
-        _editing: false,
-        
+
         _edit: {
             
             fade_timeout: false,
@@ -190,6 +197,7 @@ $(function() {
         
         _editor: {
             
+            editing: false,
             selected_element: false,
             toolbar: false,
             initialized: false,
@@ -234,8 +242,6 @@ $(function() {
             },
                 ////$('.sie_tool_bar button[name=insert_image]').live('click', Editor.file_manager.image);
                 ////$('.sie_tool_bar button[name=insert_table]').live('click', Editor.insert_table);
-                //$('.sie_tool_bar button[name="insert_hr"]').live('click', Editor.buttons.insert_hr);
-            //},
             
             generate_buttons: function() {
                
@@ -539,7 +545,7 @@ $(function() {
             
             show: function() {
                 
-                this._editing = true;
+                this._editor.editing = true;
                 this._edit.remove.call(this);
 
                 if (this._editor.initialized === false) {
@@ -561,10 +567,11 @@ $(function() {
                 
                 // Unbind previous instances
                 $(this._instances).each(function(){
-                    this._editing = false;
+                    this._editor.editing = false;
                     this.element.unbind('keyup.editor click.editor paste.editor');
                     this.element.attr('contenteditable', 'false');
                     this.element.removeClass(this._classes.editing).removeClass(this._classes.guides);
+                    this._message.hide.call(this);
                 });
 
                 this._editor.generate_buttons.call(this);
@@ -605,7 +612,6 @@ $(function() {
                 this._editor.toolbar.find('button[name=show_guides]').unbind('click.editor').
                         bind('click.editor', $.proxy(this._buttons.guides, this));
                 
-                //// Insert / edit links
                 this._editor.toolbar.find('button[name="insert_link"]').unbind('click.editor').
                         bind('click.editor', $.proxy(this._buttons.insert_link, this));
                 //$('.sie_tool_bar button[name="remove_link"]').live('click', Editor.actions.link.remove);
@@ -620,8 +626,6 @@ $(function() {
 
                 this._editor.toolbar.find('button[name="cancel"]').unbind('click.editor').
                         bind('click.editor', $.proxy(this._actions.cancel, this));
-
-
                 
                 this.element.addClass(this._classes.editing);
                 this.element.attr('contenteditable', 'true');
@@ -769,7 +773,7 @@ $(function() {
                     elementTagName: tag
                 }).toggleSelection();
                 
-                this._editor.selected_element = $($.selectedElement().obj);
+                this._actions.refresh_selected_element.call(this);
                 this._actions.update_tag_selection.call(this);
                 
                 this._history.update.call(this);
@@ -788,7 +792,7 @@ $(function() {
                 this._history.update.call(this);
                 this._actions.update_buttons.call(this);
                 
-                this._editor.selected_element = $($.selectedElement().obj);
+                this._actions.refresh_selected_element.call(this);
                 if (this._util.is_root.call(this, this._editor.selected_element)) {
                     this._editor.selected_element = this.element;
                 }
@@ -796,6 +800,14 @@ $(function() {
                 this._actions.update_tag_selection.call(this);
             },
        
+            refresh_selected_element: function() {
+                if (rangy.getSelection().getAllRanges().length) {
+                    this._editor.selected_element = $($.selectedElement().obj);
+                } else {
+                    this._editor.selected_element = false;
+                }
+            },
+        
             select_element: function(select_this) {
                 var current = this._editor.selected_element, i = 0;
                 while (i != $(select_this).attr('name')) {
@@ -810,6 +822,9 @@ $(function() {
             update_tag_selection: function() {
                     
                 var title = 'Nothing selected';
+
+                this._util.enforce_legal_selection.call(this);
+                this._actions.refresh_selected_element.call(this);
                 
                 if (this._editor.selected_element) {
                     
@@ -882,7 +897,7 @@ $(function() {
             
             update_buttons: function() {
                 this._actions.link.update_buttons.call(this);
-                this._editor.toolbar.find('button[name=save]').button('option', 'disabled', !this._content.dirty.call(this));
+                this._editor.toolbar.find('button[name="save"], button[name="cancel"]').button('option', 'disabled', !this._content.dirty.call(this));
             },
             
             link: {
@@ -1035,7 +1050,38 @@ $(function() {
                 // If the user has provided or bound their own save function 
                 // Allow them to cancel the default
                 if (this._trigger('save')) {
-                    console.log('save', this.options.save_uri);
+                    
+                    var editor_instance = this;
+                    
+                    this.message.loading.call(this, 'Saving changes...', false);
+
+                    var error = function(response_code) {
+                        editor_instance.message.error.call(editor_instance, [
+                            'Failed to save content',
+                            'Response code ' + response_code + ' from ' + window.location.protocol + '//' + window.location.hostname + editor_instance.options.save_uri
+                        ], 10000);
+                    };
+
+                    $.ajax(this.options.save_uri, {
+                        data: {
+                            html: this.html(),
+                            name: this.element.attr('name')
+                        },
+                        type: 'post',
+                        statusCode: {
+                            404: function() {
+                                error(404);
+                            },
+                            500: function() {
+                                error(500);
+                            }
+                        },
+                        success: function(data) {
+                            editor_instance.confirm.call(editor_instance, 'Content saved');
+                            editor_instance._data.clear.call(editor_instance._data.names.original_html);
+                        }
+                    });
+                    
                 }
             },
             
@@ -1043,9 +1089,21 @@ $(function() {
                 // If the user has provided or bound their own cancel function 
                 // Allow them to cancel the default
                 if (this._trigger('cancel')) {
-                    console.log('cancel');
+                    // confirm
+                    var editor_instance = this;
+                    this._dialog.confirmation.show.call(this, {
+                        message: 'Are you sure you want to stop editing? All changes will be lost',
+                        title: 'Confirm Cancel Editing',
+                        ok: function(){
+                            editor_instance._content.reset.call(editor_instance);
+                            editor_instance.message.information.call(editor_instance, 'Content reverted to original', function() {
+                                editor_instance.destroy();
+                            });
+                        }
+                    });
                 }
             }
+    
         },
 
         _history: {
@@ -1081,7 +1139,7 @@ $(function() {
             
             update: function() {
                 
-                var current_content = this._content.clean(this.element.html());
+                var current_content = this._content.cleaned(this.element.html());
                 var id = this._util.identify(this.element);
 
                 if (typeof this._history.undo[id] == 'undefined') this._history.undo[id] = [];
@@ -1106,7 +1164,7 @@ $(function() {
         
         _content: {
 
-            clean: function(html) {
+            cleaned: function(html) {
                 var content = $('<div></div>').html(html);
                
                 content.find('.rangySelectionBoundary').each(function(){
@@ -1116,6 +1174,12 @@ $(function() {
                 return content.html();
             },
             
+            reset: function() {
+                this.html(this.element.data(this._data.names.original_html));
+                this._data.clear.call(this, this._data.names.original_html);
+                this._actions.update_buttons.call(this);
+            },
+                        
             dirty: function() {
                 if (this._data.exists(this.element, this._data.names.original_html)) {
                     var data = this.element.data(this._data.names.original_html);
@@ -1156,8 +1220,151 @@ $(function() {
         
         },
         
+        _dialog: {
+            
+            confirmation: {
+                
+                html: false,
+                
+                show: function(options) {
+                
+                    if (typeof options.message == 'undefined') options.message = 'Are you sure?';
+                    if (typeof options.title == 'undefined') options.title = 'Confirmation';
+                    
+                    if (!this._dialog.confirmation.html) this._dialog.confirmation.html = $('<div>' + options.message + '</div>').appendTo('body');
+                    else this._dialog.confirmation.html.html(options.message);
+                    
+                    var editor_instance = this;
+                    
+                    this._dialog.confirmation.html.dialog({
+                        autoOpen: false,
+                        modal: true,
+                        resizable: false,
+                        title: options.title,
+                        dialogClass: 'ui-widget-editor-dialog ui-widget-editor-confirmation',
+                        show: this.options.dialog_animation,
+                        hide: this.options.dialog_animation,
+                        buttons: [
+                            {
+                                text: 'OK',
+                                'class': 'ok',
+                                click: function() {
+                                    if ($.isFunction(options.ok)) options.ok();
+                                    $(this).dialog('close');
+                                },
+                            },
+                            {
+                                text: 'Cancel',
+                                'class': 'cancel',
+                                click: function() {
+                                    if ($.isFunction(options.cancel)) options.cancel();
+                                    $(this).dialog('close');
+                                }
+                            }
+                        ],
+                        open: function() {
+                            editor_instance.apply_button_icon('ok', 'circle-check');
+                            editor_instance.apply_button_icon('cancel', 'circle-close');
+                        },
+                        close: function() {
+                            $(this).dialog('destroy');
+                        }
+                    }).dialog('open');
+
+                }
+            }
+            
+        },
+        
+        _message: {
+            
+            initialized: false,
+            panel: false,
+            hide_timeout: false,            
+            
+            types: {
+                error: 'notice',
+                confirm: 'check',                
+                information: 'info',
+                loading: 'loading'
+            },
+            
+            initialize: function() {
+                this._message.initialized = true;
+                this._message.panel = $('<div class="ui-widget-editor-messages" style="display:none;clear:both">\
+                                            <div>\
+                                                <span class="ui-icon"></span>\
+                                                <ul></ul>\
+                                            </div>\
+                                        </div>').appendTo(this._editor.toolbar);
+            },
+            
+            show: function(type, messages, delay, callback) {
+                                
+                if (!this._message.initialized) this._message.initialize.call(this);
+                if ($.isFunction(delay)) callback = delay;
+                if (typeof delay == 'undefined' || $.isFunction(delay)) delay = 5000;
+                if (!$.isArray(messages)) messages = [messages];
+                if (this._message.hide_timeout) window.clearTimeout(this._message.hide_timeout);
+                    
+                var editor_instance = this;
+                
+                this._message.hide.call(this, function(){
+                                        
+                    editor_instance._message.panel.find('ul').html('').removeAttr('class').addClass('ui-widget-messages-' + type);
+                    editor_instance._message.panel.find('span.ui-icon').removeAttr('class').addClass('ui-icon ui-icon-' + type);
+                    
+                    $(messages).each(function(){
+                        editor_instance._message.panel.find('ul').append($('<li>' + this + '</li>'));
+                    });
+                    
+                    editor_instance._message.panel.slideDown(function(){
+                        if (delay) {
+                            editor_instance._message.hide_timeout = window.setTimeout(function(){
+                                editor_instance._message.hide.call(editor_instance, callback);
+                            }, delay);
+                        }
+                    });
+                });
+            },
+            
+            hide: function(callback) {
+                if (this._message.initialized) {
+                    if (this._message.hide_timeout) window.clearTimeout(this._message.hide_timeout);
+                    this._message.panel.slideUp(callback);
+                }
+            }
+            
+        },
+        
+        message: {
+            
+            loading: function(messages, delay, callback) {
+                this._message.show.call(this, this._message.types.loading, messages, delay, callback);
+            },
+            
+            information: function(messages, delay, callback) {
+                this._message.show.call(this, this._message.types.information, messages, delay, callback);
+            },
+            
+            confirm: function(messages, delay, callback) {
+                this._message.show.call(this, this._message.types.confirm, messages, delay, callback);
+            },
+            
+            error: function(messages, delay, callback) {
+                this._message.show.call(this, this._message.types.error, messages, delay, callback);
+            }
+            
+        },
+        
         destroy: function() {
-            this._edit_toolbar.remove();
+            this._editor.toolbar.dialog('close');
+            this._editor.editing = false;
+            this.element.unbind('keyup.editor click.editor paste.editor');
+            this.element.attr('contenteditable', 'false');
+            this.element.removeClass(this._classes.editing).removeClass(this._classes.guides);
+            this._message.hide.call(this);
         }
+    
     });
 });
