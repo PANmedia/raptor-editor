@@ -11,25 +11,6 @@ $(function() {
             save_uri: '/editor/save'
         },
         
-        html: function(html) {
-            if (typeof html == 'undefined') {
-                return this._content.cleaned(this.element.html());
-            }
-            this._history.update.call(this);
-            this.element.html(html);
-            this._history.update.call(this);
-            return this;
-        },
-        
-        apply_button_icon: function(button_class, icon) {
-            $('.ui-dialog-buttonpane').
-                find('.' + button_class).button({
-                icons: {
-                    primary: 'ui-icon-' + icon
-                }
-            });
-        },
-        
         _init: function() {
             
             if(!$('.ui-widget-editor-edit').length) {
@@ -77,9 +58,7 @@ $(function() {
             },
             
             is_root: function(element) {
-                
-                if (!element) return false;
-                
+         
                 var is_root = (this._util.identify(element) == this._util.identify(this.element) 
                                 || element.get(0).tagName.toLowerCase() == 'body');
                                 
@@ -107,6 +86,19 @@ $(function() {
                     $(element).attr('id', id);
                 }
                 return $(element).attr('id');
+            },
+            
+            selection_exists: function() {
+                this._util.enforce_legal_selection.call(this);
+                var all_ranges = rangy.getSelection().getAllRanges();
+                if (!all_ranges.length) return false;
+                
+                if (all_ranges.length > 1) {
+                    return true;
+                } else {
+                    var range = all_ranges[0];
+                    return range.startOffset != range.endOffset;
+                }
             }
         
         },
@@ -572,6 +564,7 @@ $(function() {
                     this.element.attr('contenteditable', 'false');
                     this.element.removeClass(this._classes.editing).removeClass(this._classes.guides);
                     this._message.hide.call(this);
+                    this._editor.toolbar.find('button').unbind('click.editor_hide_messages');
                 });
 
                 this._editor.generate_buttons.call(this);
@@ -765,18 +758,34 @@ $(function() {
             change_tag: function(select) {
                 tag = $(select).find(':selected').val();
                 
-                this._history.update.call(this);
-                
-                this._util.enforce_legal_selection.call(this);
-                var applier = rangy.createCssClassApplier(this.options.css_prefix + tag, {
-                    normalize: true,
-                    elementTagName: tag
-                }).toggleSelection();
-                
-                this._actions.refresh_selected_element.call(this);
-                this._actions.update_tag_selection.call(this);
-                
-                this._history.update.call(this);
+                if (tag != 'na') {
+                    this._history.update.call(this);
+                    
+                    if (this._util.selection_exists.call(this)) {
+                        
+                        var applier = rangy.createCssClassApplier(this.options.css_prefix + tag, {
+                            normalize: true,
+                            elementTagName: tag
+                        }).toggleSelection();    
+                                            
+                    } else {
+                        
+                        var new_element = $('<' + tag + '>' + this._editor.selected_element.html() + '</' + tag + '>');
+                        
+                        if (typeof this._editor.selected_element.attr('class') != 'undefined') {
+                            new_element.addClass(this._editor.selected_element.attr('class'));
+                        }
+                        if (typeof this._editor.selected_element.attr('style') != 'undefined') {
+                            new_element.css(this._editor.selected_element.attr('style'));
+                        }
+                        $(this._editor.selected_element).replaceWith(new_element);
+                    }
+                    
+                    this._actions.refresh_selected_element.call(this);
+                    this._actions.update_tag_selection.call(this);
+                    
+                    this._history.update.call(this);
+                }
             },
       
             guides: function() {
@@ -789,22 +798,23 @@ $(function() {
             
             state_change: function() {
                 
+                if (!this._data.exists(this.element, this._data.names.original_html)) {
+                    this.element.data(this._data.names.original_html, this.element.html());
+                }
+                
+                this._message.hide.call(this);
                 this._history.update.call(this);
                 this._actions.update_buttons.call(this);
                 
                 this._actions.refresh_selected_element.call(this);
-                if (this._util.is_root.call(this, this._editor.selected_element)) {
-                    this._editor.selected_element = this.element;
-                }
-                
                 this._actions.update_tag_selection.call(this);
             },
        
             refresh_selected_element: function() {
-                if (rangy.getSelection().getAllRanges().length) {
+                try {
                     this._editor.selected_element = $($.selectedElement().obj);
-                } else {
-                    this._editor.selected_element = false;
+                } catch(e) {
+                    this._editor.selected_element = this.element;
                 }
             },
         
@@ -836,29 +846,10 @@ $(function() {
                     
                         var tag_name = current[0].tagName.toLowerCase();
 
-                        // Show the attribute/CSS tabs
-                        $('.sie_element').show();
-                        $('.sie_element > ul > li').hide();
-                        $('.sie_element > div').hide();
-
-                        $('.sie_element > ul > li, .sie_element > div').each(function() {
-                            var data = $(this).meta().sie_tags;
-                            if (typeof data != 'undefined') {
-                                if (in_array('__ROOT__', data)) {
-                                    $(this).show();
-                                    $(this).show();
-                                } else if (in_array(tag_name, data)) {
-                                    $(this).show();
-                                } else if (!in_array('__ALL__', data)){
-                                    $(this).hide();
-                                }
-                            }
-                        });
-
                         // Update tag drop down
                         if (this._util.is_root.call(this, current)) {
                             this._editor.toolbar.find('select.ui-editor-tag-select').val('na');
-                        } else if (this._editor.toolbar.find('select.ui-editor-tag-select option[value='+tag_name+']').length) {
+                        } else if (this._editor.toolbar.find('select.ui-editor-tag-select option[value=' + tag_name + ']').length) {
                             this._editor.toolbar.find('select.ui-editor-tag-select').val(tag_name);
                         } else {
                             this._editor.toolbar.find('select.ui-editor-tag-select').val('other');
@@ -874,6 +865,7 @@ $(function() {
                                 title = '(root) ' + title;
                                 break;
                             }
+                            
                             tag_name = current[0].tagName.toLowerCase();
                             title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
                                     class="ui-widget-editor-element-path">' + tag_name + '</a>' + title;
@@ -897,6 +889,7 @@ $(function() {
             
             update_buttons: function() {
                 this._actions.link.update_buttons.call(this);
+                this._history.toggle_buttons.call(this);
                 this._editor.toolbar.find('button[name="save"], button[name="cancel"]').button('option', 'disabled', !this._content.dirty.call(this));
             },
             
@@ -1092,14 +1085,17 @@ $(function() {
                     // confirm
                     var editor_instance = this;
                     this._dialog.confirmation.show.call(this, {
-                        message: 'Are you sure you want to stop editing? All changes will be lost',
+                        message: 'Are you sure you want to stop editing? <br/><br/>All changes will be lost!',
                         title: 'Confirm Cancel Editing',
                         ok: function(){
                             editor_instance._content.reset.call(editor_instance);
-                            editor_instance.message.information.call(editor_instance, 'Content reverted to original', function() {
-                                editor_instance.destroy();
-                            });
+                            editor_instance.message.information.call(editor_instance, 'Content reverted to its original state. <a href="#close" class="ui-widget-editor-close">Click to close editor</a>', false);
                         }
+                    });
+                    
+                    $('a.ui-widget-editor-close').die('click.editor').live('click.editor', function(event){
+                        event.preventDefault();
+                        editor_instance.destroy();
                     });
                 }
             }
@@ -1110,6 +1106,13 @@ $(function() {
             
             undo: {},
             redo: {},
+            
+            clear: function() {
+                var id = this._util.identify(this.element);
+
+                this._history.undo[id] = [];
+                this._history.redo[id] = [];
+            },
             
             toggle_buttons: function() {
                 var id = this._util.identify(this.element);
@@ -1159,6 +1162,7 @@ $(function() {
                 
                 this._history.redo[id] = [];
                 this._history.toggle_buttons.call(this);
+                this._actions.state_change.call(this);
             }
         },
         
@@ -1177,6 +1181,7 @@ $(function() {
             reset: function() {
                 this.html(this.element.data(this._data.names.original_html));
                 this._data.clear.call(this, this._data.names.original_html);
+                this._history.clear.call(this);
                 this._actions.update_buttons.call(this);
             },
                         
@@ -1335,6 +1340,25 @@ $(function() {
                 }
             }
             
+        },
+    
+        html: function(html) {
+            if (typeof html == 'undefined') {
+                return this._content.cleaned(this.element.html());
+            }
+            this._history.update.call(this);
+            this.element.html(html);
+            this._history.update.call(this);
+            return this;
+        },
+
+        apply_button_icon: function(button_class, icon) {
+            $('.ui-dialog-buttonpane').
+                find('.' + button_class).button({
+                icons: {
+                    primary: 'ui-icon-' + icon
+                }
+            });
         },
         
         message: {
