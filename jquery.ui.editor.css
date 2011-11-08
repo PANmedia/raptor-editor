@@ -52,7 +52,7 @@
     border-radius: 0 5px 5px 0;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-button-view_source {
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-button-view-source {
     width: 52px;
 }
 
@@ -158,6 +158,8 @@
     width: 100%;
 }
 
+
+/* Dialog - paste */
 .ui-widget-editor-paste .ui-tabs {
     width: 96%;
     height: 94%;
@@ -170,6 +172,41 @@
 .ui-widget-editor-paste .ui-tabs .ui-tabs-panel textarea {
     width: 94%;
     height: 85%;
+}
+
+/* Dialog - links */
+.ui-widget-editor-link-panel .ui-widget-editor-link-menu {
+    height: 95%;
+    width: 200px;
+    float: left;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset,
+.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset {
+    border: none;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset {
+    font-size: 12px;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label {
+    display: block;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label input {
+    float: left;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label span {
+    display: inline-block;
+    width: 150px;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-wrap {
+    margin-left: 200px;
+    padding-left: 20px;
+    border-left: 1px dashed;
 }
 
 /* Guides */
@@ -220,7 +257,13 @@
     background-image: -moz-linear-gradient(center top , #F1FAFF, #D9EFF5);
 }
 
-/* Information */
+/* Warning */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-alert {
+    background-color: #FFFFF2;
+    background-image: -moz-linear-gradient(center top , #FFFFF2, #EDECBD);
+}
+
+/* Loading */
 .ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-loading {
     background-color: transparent;
     border: 1px solid transparent;
