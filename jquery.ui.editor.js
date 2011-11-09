@@ -932,7 +932,7 @@ $(function() {
                     this.element.data(this._data.names.original_html, this.html.call(this));
                 }
                 
-                this._content.toggle_unsaved_edit_warning.call(this);
+                this._content.unsaved_edit_warning.toggle.call(this);
                 this._actions.refresh_selected_element.call(this);
                 this._actions.update_title_tag_list.call(this);
                 this._history.update.call(this);
@@ -1438,7 +1438,7 @@ $(function() {
                 var id = this._util.identify(this.element);
                 this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', this._history.undo[id].length == 0);
                 this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', this._history.redo[id].length == 0);
-                this._content.toggle_unsaved_edit_warning.call(this);
+                this._content.unsaved_edit_warning.toggle.call(this);
             },
             
             clear: function(all) {
@@ -1510,7 +1510,7 @@ $(function() {
                 this.html(this.element.data(this._data.names.original_html));
                 this._data.clear.call(this, this._data.names.original_html);
                 this._history.clear.call(this, true);
-                this._content.toggle_unsaved_edit_warning.call(this);
+                this._content.unsaved_edit_warning.hide.call(this);
             },
                         
             dirty: function() {
@@ -1532,34 +1532,42 @@ $(function() {
                 return unsaved;
             },
             
-            toggle_unsaved_edit_warning: function() {
-                if (this.options.unsaved_edit_warning) {
-                    if (this._data.exists(this.element, this._data.names.original_html) 
-                        && this.element.data(this._data.names.original_html) != this.html.call(this)) {
-                        
-                        var warning = false;
-                        if (!this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
-                            var warning = $('<div class="ui-widget-editor-warning" style="display:none">\
-                                                <span class="ui-icon ui-icon-alert"></span>\
-                                                <ul class="ui-widget-messages-alert">\
-                                                    <li>Unsaved edits exist</li>\
-                                                </ul>\
-                                            </div>').css({
-                                position: 'absolute',
-                                top: this.element.height(),
-                                left: this.element.offset().left
-                                }).appendTo('body');
-                            this.element.data(this._data.names.unsaved_edits_warning, warning);
+            unsaved_edit_warning: {
+                toggle: function() {
+                    if (this.options.unsaved_edit_warning) {
+                        if (this._data.exists(this.element, this._data.names.original_html) 
+                            && this.element.data(this._data.names.original_html) != this.html.call(this)) {
+                            
+                            this._content.unsaved_edit_warning.show.call(this);
                         } else {
-                            var warning = this.element.data(this._data.names.unsaved_edits_warning);
+                            this._content.unsaved_edit_warning.hide.call(this);
                         }
-                        if (!warning.is(':visible')) warning.show(this.options.unsaved_edit_warning_animation);
-                    } else {
-                         if (this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
-                            var warning = $(this.element.data(this._data.names.unsaved_edits_warning));
-                            if (warning.is(':visible')) warning.hide(this.options.unsaved_edit_warning_animation);
-                         }
                     }
+                },
+                show: function() {
+                    var warning = false;
+                    if (!this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
+                        var warning = $('<div class="ui-widget-editor-warning" style="display:none">\
+                                            <span class="ui-icon ui-icon-alert"></span>\
+                                            <ul class="ui-widget-messages-alert">\
+                                                <li>Unsaved edits exist</li>\
+                                            </ul>\
+                                        </div>').css({
+                            position: 'absolute',
+                            top: this.element.height(),
+                            left: this.element.offset().left
+                            }).appendTo('body');
+                        this.element.data(this._data.names.unsaved_edits_warning, warning);
+                    } else {
+                        var warning = this.element.data(this._data.names.unsaved_edits_warning);
+                    }
+                    if (!warning.is(':visible') && !warning.is(':animated')) warning.show(this.options.unsaved_edit_warning_animation);
+                },
+                hide: function() {
+                     if (this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
+                        var warning = $(this.element.data(this._data.names.unsaved_edits_warning));
+                        if (warning.is(':visible') && !warning.is(':animated')) warning.hide(this.options.unsaved_edit_warning_animation);
+                     }
                 }
             }
         },
@@ -1733,7 +1741,7 @@ $(function() {
             this.element.removeClass(this._classes.editing);
             this._message.hide.call(this);
     
-            $(this.instances).each(function() {
+            $(this._instances).each(function() {
                 this._content.reset.call(this);
             });
 
