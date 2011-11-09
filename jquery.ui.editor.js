@@ -8,10 +8,13 @@ $(function() {
             dialog_animation: 'fade',
             replace_buttons: false,
             custom_buttons: {},
+            unsaved_edit_warning: true,
+            unsaved_edit_warning_animation: 'fade',
             button_order: false,
             save_uri: '/editor/save',
-            replace_link_types: false,
-            custom_link_types: []
+            link_panel_animation: 'fade',
+            link_replace_types: false,
+            link_custom_types: []
         },
         
         _init: function() {
@@ -95,7 +98,8 @@ $(function() {
             names: {
                 original_html: 'ui-widget-editor-original-html',
                 button: 'ui-widget-button',
-                link_type: 'ui-widget-editor-link-type'
+                link_type: 'ui-widget-editor-link-type',
+                unsaved_edits_warning: 'ui-widget-editor-unsaved-edits'
             },
             
             clear: function(name) {
@@ -925,9 +929,10 @@ $(function() {
             state_change: function() {
                 
                 if (!this._data.exists(this.element, this._data.names.original_html)) {
-                    this.element.data(this._data.names.original_html, this.element.html());
+                    this.element.data(this._data.names.original_html, this.html.call(this));
                 }
-                  
+                
+                this._content.toggle_unsaved_edit_warning.call(this);
                 this._actions.refresh_selected_element.call(this);
                 this._actions.update_title_tag_list.call(this);
                 this._history.update.call(this);
@@ -1006,7 +1011,7 @@ $(function() {
             },
                 
             unload_warning: function() {
-                if (this._content.dirty_blocks_exist()) {
+                if (this._content.dirty_blocks_exist.call(this)) {
                     return 'There are unsaved changes on this page. \n\
                             If you navigate away from this page you will loose your unsaved changes';
                 }
@@ -1120,10 +1125,10 @@ $(function() {
                         }
                     ];
                 
-                    if (this.options.replace_link_types) {
-                        link_types = this.options.custom_link_types;
+                    if (this.options.link_replace_types) {
+                        link_types = this.options.link_custom_types;
                     } else {
-                        $.merge(link_types, this.options.custom_link_types);
+                        $.merge(link_types, this.options.link_custom_types);
                     }
                     
                     $(link_types).each(function() {
@@ -1199,6 +1204,9 @@ $(function() {
                                 }
                             }
                         ],
+                        beforeopen: function() {
+                            editor_instance._actions.link.dialog.find('.ui-widget-editor-link-content').hide();
+                        },
                         open: function() {
                             editor_instance._dialog.apply_button_icon('insert', 'circle-check');
                             editor_instance._dialog.apply_button_icon('cancel', 'circle-close');
@@ -1211,7 +1219,8 @@ $(function() {
                                         var radio = $(this);
                                         $(editor_instance._editor.selected_element.attr('class').split(' ')).each(function() {
                                             if (link_types_classes[this] && radio.hasClass(this)) {
-                                                radio.trigger('click');
+                                                radio.prop('checked', true);
+                                                editor_instance._actions.link.type_change.call(editor_instance, edit, true);
                                                 return;
                                             }
                                         });
@@ -1220,16 +1229,47 @@ $(function() {
                             }
                         },
                         close: function() {
+                            editor_instance._actions.link.dialog.find('.ui-widget-editor-link-content').hide();
                             $(this).dialog('destroy');
                         }
                     }).dialog('open');
                 },
                 
-                type_change: function(edit) {
-                    var data = this._actions.link.dialog.find('input[type="radio"]:checked').data(this._data.names.link_type),
-                        panel = this._actions.link.dialog.find('.ui-widget-editor-link-content');
-                    panel.html(data.content);
-                    if ($.isFunction(data.show)) data.show.call(this, panel, edit);
+                type_change: function(edit, initial) {
+                    
+                    var link_type_data = this._actions.link.dialog.find('input[type="radio"]:checked').data(this._data.names.link_type),
+                        panel = this._actions.link.dialog.find('.ui-widget-editor-link-content'),
+                        wrap = panel.closest('.ui-widget-editor-link-wrap'),
+                        ajax = (typeof link_type_data.ajax != 'undefined'),
+                        editor_instance = this,
+                        initial = (typeof initial != 'undefined') ? initial : false;
+                
+                    if (ajax) wrap.addClass('ui-widget-editor-loading');
+                    
+                    if (initial) {
+                        panel.html(link_type_data.content).show();
+                        if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
+                    } else {                  
+                        panel.hide(this.options.link_panel_animation, function(){
+                            if (!ajax) {
+                                panel.html(link_type_data.content);
+                                if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
+                                panel.html(link_type_data.content).show(editor_instance.options.link_panel_animation);
+                            } else {
+                                $.ajax({
+                                    url: link_type_data.ajax.uri,
+                                    type: ((typeof link_type_data.ajax.type != 'undefined') ? 'get' : link_type_data.ajax.type),
+                                    success: function(data) {
+                                        panel.html(data);
+                                        if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
+                                        panel.show(editor_instance.options.link_panel_animation, function(){
+                                            wrap.removeClass('ui-widget-editor-loading');
+                                        });
+                                    }   
+                                });
+                            }
+                        });
+                    }
                 },
                 
                 remove: function() {
@@ -1398,6 +1438,7 @@ $(function() {
                 var id = this._util.identify(this.element);
                 this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', this._history.undo[id].length == 0);
                 this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', this._history.redo[id].length == 0);
+                this._content.toggle_unsaved_edit_warning.call(this);
             },
             
             clear: function(all) {
@@ -1469,6 +1510,7 @@ $(function() {
                 this.html(this.element.data(this._data.names.original_html));
                 this._data.clear.call(this, this._data.names.original_html);
                 this._history.clear.call(this, true);
+                this._content.toggle_unsaved_edit_warning.call(this);
             },
                         
             dirty: function() {
@@ -1482,11 +1524,44 @@ $(function() {
             dirty_blocks_exist: function() {
                 var unsaved = false;
                 $(this._instances).each(function(){
-                    if (this._content.dirty()) unsaved = true;
+                    if (this._content.dirty.call(this)) {
+                        unsaved = true;
+                        return;
+                    }
                 });
                 return unsaved;
             },
             
+            toggle_unsaved_edit_warning: function() {
+                if (this.options.unsaved_edit_warning) {
+                    if (this._data.exists(this.element, this._data.names.original_html) 
+                        && this.element.data(this._data.names.original_html) != this.html.call(this)) {
+                        
+                        var warning = false;
+                        if (!this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
+                            var warning = $('<div class="ui-widget-editor-warning" style="display:none">\
+                                                <span class="ui-icon ui-icon-alert"></span>\
+                                                <ul class="ui-widget-messages-alert">\
+                                                    <li>Unsaved edits exist</li>\
+                                                </ul>\
+                                            </div>').css({
+                                position: 'absolute',
+                                top: this.element.height(),
+                                left: this.element.offset().left
+                                }).appendTo('body');
+                            this.element.data(this._data.names.unsaved_edits_warning, warning);
+                        } else {
+                            var warning = this.element.data(this._data.names.unsaved_edits_warning);
+                        }
+                        if (!warning.is(':visible')) warning.show(this.options.unsaved_edit_warning_animation);
+                    } else {
+                         if (this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
+                            var warning = $(this.element.data(this._data.names.unsaved_edits_warning));
+                            if (warning.is(':visible')) warning.hide(this.options.unsaved_edit_warning_animation);
+                         }
+                    }
+                }
+            }
         },
         
         _dialog: {
@@ -1657,7 +1732,11 @@ $(function() {
             this.element.attr('contenteditable', 'false');
             this.element.removeClass(this._classes.editing);
             this._message.hide.call(this);
-            
+    
+            $(this.instances).each(function() {
+                this._content.reset.call(this);
+            });
+
             // Trigger buttons' destroy handlers
             var editor_instance = this;
             editor_instance._editor.toolbar.find('button').each(function() {

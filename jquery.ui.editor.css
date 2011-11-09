@@ -192,6 +192,7 @@
 
 .ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label {
     display: block;
+    margin-bottom: 10px;
 }
 
 .ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label input {
@@ -271,4 +272,30 @@
 
 .ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon-loading {
     background: transparent url(images/loading-small.gif) no-repeat center center;
+}
+
+/* Warning banner */
+.ui-widget-editor-warning span.ui-icon {
+    display: inline-block;
+    float: left;
+    margin: 9px 0 0 5px;
+}
+
+.ui-widget-editor-warning ul {
+    border-radius: 0px 5px 0px 5px;
+    padding: 0 10px 0 25px;
+    margin: 0;
+    border-top: 1px solid #D4D4D4;
+    border-right: 1px solid #D4D4D4;
+    height: 30px;
+    line-height: 30px;
+}
+
+.ui-widget-editor-warning ul li {
+    list-style: none;
+}
+
+.ui-widget-editor-warning {
+    background-color: #FFFFF2;
+    background-image: -moz-linear-gradient(center top , #FFFFF2, #EDECBD);
 }
