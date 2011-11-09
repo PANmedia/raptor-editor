@@ -5,40 +5,70 @@ $(function() {
         
         options: {
             css_prefix: 'ui-editor-',
-            dialog_animation: 'fade',
+            
+            begin_editing_class: '',
+            begin_editing_content: 'Click to begin editing',
+            begin_editing_position_at: 'center center',
+            begin_editing_position_my: 'center center',
+            begin_editing_position_using: function(position) {
+                $(this).css({
+                    position: 'absolute',
+                    top: position.top,
+                    left: position.left
+                });
+            },
+            
+            target_animation_outline_colour: 'rgb(134, 213, 124)',
+            target_animation_outline_width: 1,
+            target_animation_background_colour: 'rgb(241, 250, 239)',
+            target_animation: function() {
+                var original_outline_colour = this.element.css('outline-color'),
+                    original_outline_width = this.element.css('outline-width'),
+                    original_background_colour = this.element.css('background-color'),
+                    editor_instance = this;
+                
+                this.element.stop().animate({
+                    outlineColor: this.options.target_animation_outline_colour,
+                    outlineWidth: this.options.target_animation_outline_width,
+                    backgroundColor: this.options.target_animation_background_colour
+                }, function() {
+                    editor_instance.element.animate({
+                        outlineColor: original_outline_colour,
+                        outlineWidth: original_outline_width,
+                        backgroundColor: original_background_colour
+                    });
+                });
+            },
+            
+            dialog_show_animation: 'fade',
+            dialog_hide_animation: 'fade',
+            
             replace_buttons: false,
             custom_buttons: {},
-            unsaved_edit_warning: true,
-            unsaved_edit_warning_animation: 'fade',
             button_order: false,
+            
+            unsaved_edit_warning: true,
+            unsaved_edit_warning_class: '',
+            unsaved_edit_warning_animation: 'fade',
+            unsaved_edit_warning_position_at: 'left bottom',
+            unsaved_edit_warning_position_my: 'left bottom',
+            unsaved_edit_warning_position_using: function(position) {
+                $(this).css({
+                    position: 'absolute',
+                    top: position.top,
+                    left: position.left
+                });
+            },
+            
             save_uri: '/editor/save',
+            
             link_panel_animation: 'fade',
             link_replace_types: false,
             link_custom_types: []
         },
         
         _init: function() {
-            
-            if(!$('.ui-widget-editor-edit').length) {
-                $('body').append($('<span class="ui-widget-editor-edit ui-widget-header ui-corner-all" style="display: none;">\
-                    <span class="ui-widget-editor-buttonset">\
-                        <button type="button" name="edit" data-button_icon=\'{"icons\":{\"primary\":\"ui-icon-pencil\"}}\'>Edit</button>\
-                        <button type="button" name="cancel"             data-button_icon=\'{\"icons\":{\"primary\":\"ui-icon-circle-close\"},\"text\":false}\'></button>\
-                    </span>\
-                </span>'));
-            }
-            
-            this._edit.toolbar = $('.ui-widget-editor-edit');
-
-            this._edit.toolbar.find('button').each(function(){
-                $(this).button($(this).data('button_icon'));
-            });
-
-            this.element.bind('click mouseenter', $.proxy(this._edit.show, this));
-            this.element.bind('mouseleave', $.proxy(this._edit.fade, this));
-            this._edit.toolbar.bind('mouseenter', $.proxy(this._edit.fade_stop, this));
-            this._edit.toolbar.bind('mouseleave', $.proxy(this._edit.fade, this));
-
+            this._click_to_edit.initialize.call(this);
         },
         
         _create: function() {
@@ -108,69 +138,50 @@ $(function() {
             
         },
 
-        _edit: {
+        _click_to_edit: {
             
-            fade_timeout: false,
-            toolbar: null,
+            message: false,
+            
+            initialize: function() {
+                this.element.bind('mouseenter.target', $.proxy(this._click_to_edit.show, this));
+                this.element.bind('mouseleave.target', $.proxy(this._click_to_edit.hide, this));
+                this.element.bind('click.target', $.proxy(this._editor.show, this));
+            },
             
             show: function() {
-                
-                this._edit.toolbar.find('button[name="cancel"]').unbind().bind('click', $.proxy(this._edit.remove, this))
-                this._edit.toolbar.find('button[name="edit"]').unbind().bind('click', $.proxy(this._editor.show, this))
-                
                 if (!this.element.hasClass(this._classes.editing)) {
                     
+                    $(this._instances).each(function() {
+                        this.element.removeClass(this._classes.highlight);
+                        this.element.removeClass(this._classes.hover);
+                        this._click_to_edit.hide.call(this);
+                    });
+                    
+                    if (!this._click_to_edit.message) {
+                        this._click_to_edit.message = $('<div class="ui-widget-editor-edit ' 
+                                                        + this.options.begin_editing_class 
+                                                        + '" style="opacity: 0;">\
+                                                            ' + this.options.begin_editing_content + '\
+                                                        </div>').appendTo('body');
+                    }
+
                     this.element.addClass(this._classes.highlight);
                     this.element.addClass(this._classes.hover);
                     
-                    var position = this.element.offset();
-                    
-                    if (position.top < 100) {
-                        position.top += $(this.element).height() + this._edit.toolbar.height();
-                    }
-                    
-                    if (position.left < 50) {
-                        position.left += (50 - position.left);
-                    }
-                    
-                    $(this._edit.toolbar).show().css({
-                        position: 'absolute',
-                        top: Math.floor(position.top),
-                        left: Math.floor(position.left) + $(this.element).width() / 2 - this._edit.toolbar.width() / 2,
-                        margin: - this._edit.toolbar.outerHeight() + 'px 0 0 0'
-                    });
-                    
+                    this._click_to_edit.message.position({
+                        at: this.options.begin_editing_position_at,
+                        my: this.options.begin_editing_position_my,
+                        of: this.element,
+                        using: this.options.begin_editing_position_using
+                    }).stop().animate({ opacity: 1 });
                 }
             },
             
-            fade: function() {
-                this._edit.fade_stop.call(this);
-                this.element.removeClass(this._classes.hover);
-                $('.' + this._classes.highlight).removeClass(this._classes.highlight);
-                this._edit.fade_timeout = window.setTimeout($.proxy(function() {
-                    if (!this.element.hasClass(this._classes.hover)) {
-                        this._edit.toolbar.fadeOut(350);
-                    } else {
-                        this._edit.fade.call(this);
-                    }
-                }, this), 500);
-            },
-            
-            fade_stop: function() {
-                $(this._instances).each(function() {
-                    if (this._edit.fade_timeout != false) {
-                        window.clearTimeout(this._edit.fade_timeout);
-                        this._edit.fade_timeout = false;
-                    }
-                });
-            },
-            
-            remove: function() {
+            hide: function() {
                 this.element.removeClass(this._classes.highlight);
-                this._edit.toolbar.hide();
-                this._edit.fade_stop.call(this);
+                this.element.removeClass(this._classes.hover);
+                if (this._click_to_edit.message) this._click_to_edit.message.stop().animate({ opacity: 0 });
             }
-            
         },
         
         _editor: {
@@ -197,8 +208,8 @@ $(function() {
                     resize: 'auto',
                     zIndex: 32000,
                     title: 'Editor loading...',
-                    show: this.options.dialog_animation,
-                    hide: this.options.dialog_animation,
+                    show: this.options.dialog_show_animation,
+                    hide: this.options.dialog_hide_animation,
                     open: function(event, ui) {
                         var parent = $(this).parent();
                         parent.attr('unselectable', 'on');
@@ -279,15 +290,22 @@ $(function() {
                             // Allow them to cancel the default
                             if (this._trigger('cancel')) {
                                 // confirm
-                                var editor_instance = this;
-                                this._dialog.confirmation.show.call(this, {
-                                    message: 'Are you sure you want to stop editing? <br/><br/>All changes will be lost!',
-                                    title: 'Confirm Cancel Editing',
-                                    ok: function(){
+                                var editor_instance = this,
+                                    destroy = function() {
                                         editor_instance._content.reset.call(editor_instance);
                                         editor_instance.destroy();
-                                    }
-                                });
+                                    };
+                                if (!this._content.dirty_blocks_exist.call(this)) {
+                                    destroy();
+                                } else {
+                                    this._dialog.confirmation.show.call(this, {
+                                        message: 'Are you sure you want to stop editing? <br/><br/>All changes will be lost!',
+                                        title: 'Confirm Cancel Editing',
+                                        ok: function(){
+                                            destroy();
+                                        }
+                                    });
+                                }
                             }
                         }
                     },
@@ -326,8 +344,8 @@ $(function() {
                                 resizable: true,
                                 title: 'View Source',
                                 dialogClass: 'ui-widget-editor-dialog ui-widget-editor-view-source',
-                                show: this.options.dialog_animation,
-                                hide: this.options.dialog_animation,
+                                show: this.options.dialog_show_animation,
+                                hide: this.options.dialog_hide_animation,
                                 buttons: [
                                     {
                                         text: 'Reload Source',
@@ -486,16 +504,88 @@ $(function() {
                             this._selection.wrap_with_tag.call(this, 'ol');
                         }
                     },
-                    //increasefontsize: {
-                        //title: 'Increase Font Size',
-                        //icon: 'font-up',
-                        //classes: 'ui-editor-icon'
-                    //},
-                    //decreasefontsize: {
-                        //title: 'Decrease Font Size',
-                        //icon: 'font-down',
-                        //classes: 'ui-editor-icon'
-                    //}
+                    increase_font_size: {
+                        title: 'Increase Font Size',
+                        icons: {
+                            primary: 'ui-icon-font-up'
+                        },
+                        classes: 'ui-editor-icon',
+                        click: function() {
+                            this._history.update.call(this);
+                            this._selection.enforce_legality.call(this);
+                            
+                            if (!this._selection.exists.call(this)) {
+                                var style = { 'font-size': '110%' };
+                                if (!this._util.is_root.call(this, this._editor.selected_element)) this._editor.selected_element.css(style);
+                                else this.element.children().css(style);
+                            } else {
+                                
+                                var editor_instance = this;
+                                $(rangy.getSelection().getAllRanges()).each(function(){
+                                    var content = this.createContextualFragment();
+                                    if ((this.commonAncestorContainer == this.startContainer && this.commonAncestorContainer == this.endContainer)
+                                        && (this.startOffset == 0 && this.endOffset == 1)) {
+                                        
+                                        var increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 1.1);
+                                        $(this.commonAncestorContainer).css('font-size', increased_size);
+                                    } else {
+                                        
+                                        var replacement = $('<span style="font-size:110%"></span>');
+                                        
+                                        this.splitBoundaries();
+                                        $.each(this.getNodes(), function() {
+                                            replacement.append(this);
+                                        });
+
+                                        editor_instance._selection.replace.call(editor_instance, replacement, this);
+                                    }
+                                });
+                            }
+                            
+                            this._actions.state_change.call(this);
+                        }
+                    },
+                    decrease_font_size: {
+                        title: 'Decrease Font Size',
+                        icons: {
+                            primary: 'ui-icon-font-down'
+                        },
+                        classes: 'ui-editor-icon',
+                        click: function() {
+                            this._history.update.call(this);
+                            this._selection.enforce_legality.call(this);
+                            
+                            if (!this._selection.exists.call(this)) {
+                                var style = { 'font-size': '90%' };
+                                if (!this._util.is_root.call(this, this._editor.selected_element)) this._editor.selected_element.css(style);
+                                else this.element.children().css(style);
+                            } else {
+                                
+                                var editor_instance = this;
+                                $(rangy.getSelection().getAllRanges()).each(function(){
+                                    var content = this.createContextualFragment();
+                                    if ((this.commonAncestorContainer == this.startContainer && this.commonAncestorContainer == this.endContainer)
+                                        && (this.startOffset == 0 && this.endOffset == 1)) {
+                                        
+                                        var increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 0.9);
+                                        $(this.commonAncestorContainer).css('font-size', increased_size);
+                                    } else {
+                                        
+                                        var replacement = $('<span style="font-size:90%"></span>');
+                                        
+                                        this.splitBoundaries();
+                                        $.each(this.getNodes(), function() {
+                                            replacement.append(this);
+                                        });
+
+                                        editor_instance._selection.replace.call(editor_instance, replacement, this);
+                                    }
+                                });
+                            }
+                            
+                            this._actions.state_change.call(this);
+                        }
+                    },
                     add_edit_link: {
                         title: 'Insert Link',
                         icons: {
@@ -614,6 +704,7 @@ $(function() {
                     ['bold', 'italic', 'underline', 'strikethrough'],
                     ['unordered_list', 'ordered_list'],
                     ['hr', 'blockquote'],
+                    ['increase_font_size', 'decrease_font_size'],
                     ['add_edit_link', 'remove_link'],
                     ['float_left', 'float_none', 'float_right'],
                     ['tag_menu']
@@ -666,15 +757,16 @@ $(function() {
             show: function() {
                 
                 this._editor.editing = true;
-                this._edit.remove.call(this);
+                this._click_to_edit.hide.call(this);
 
                 if (this._editor.initialized === false) {
                     this._editor.initialize.call(this);
                 } else {
                     this._editor.toolbar.dialog('show');
                 }
-                
-                this._editor.target.call(this);
+                if(!this.element.hasClass(this._classes.editing)) {
+                    this._editor.target.call(this);
+                }
             },
             
             target: function() {
@@ -684,6 +776,7 @@ $(function() {
                 }
                 
                 var editor_instance = this;
+                
                 // Unbind previous instances
                 $(this._instances).each(function(){
                     var iterating_editor_instance = this;
@@ -710,12 +803,7 @@ $(function() {
                         });
                     }
                 });
-                
-                //this._editor.toolbar.find('button[name="increasefontsize"], button[name="decreasefontsize"]').unbind('click.editor').
-                        //bind('click.editor', function(){
-                            //editor_instance._buttons.exec.call(editor_instance, this);
-                        //});
- 
+
                 $('.ui-widget-editor-dialog .ui-widget-editor-element-path').die('click.editor').
                         live('click.editor', function(){
                             var current = editor_instance._editor.selected_element, i = 0;
@@ -732,9 +820,16 @@ $(function() {
                 this.element.attr('contenteditable', 'true');
                 
                 this.element.bind('paste.editor', $.proxy(this._actions.paste.capture, this));
-                this.element.bind('keyup.editor click.editor', $.proxy(this._actions.state_change, this));
+                this.element.bind('keyup.editor click.editor', function(event) {
+                    if (!event.ctrlKey) {
+                        editor_instance._actions.state_change.call(editor_instance);
+                    }
+                    return true;
+                });
                 
                 this._actions.state_change.call(this);
+                if (this.options.target_animation && $.isFunction(this.options.target_animation)) this.options.target_animation.call(this);
+                this.element.focus();
             }
         },
         
@@ -840,14 +935,14 @@ $(function() {
                 
                 range.deleteContents();
                 if (typeof replacement.length === "undefined" || replacement.length == 1) {
-                    range.insertNode($(replacement).get(0));
+                    range.insertNode(replacement[0].cloneNode(true));
                 } else {
                     for (i = replacement.length - 1; i >= 0; i--) {
                         range.insertNode(replacement[i].cloneNode(true));
                     }
                 }
                 
-                this._history.update.call(this);
+                this._actions.state_change.call(this);
             },
             
             insert: function(insert) {
@@ -998,7 +1093,7 @@ $(function() {
                             
                             tag_name = current[0].tagName.toLowerCase();
                             title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                    class="ui-widget-editor-element-path">' + tag_name + '</a>' + title;
+                                    class="ui-widget-editor-element-path" title="Click to select the named element">' + tag_name + '</a>' + title;
                             current = current.parent();
                             i++;
                         }
@@ -1155,8 +1250,8 @@ $(function() {
                         height: 450,
                         title: title,
                         dialogClass: 'ui-widget-editor-dialog ui-widget-editor-link',
-                        show: this.options.dialog_animation,
-                        hide: this.options.dialog_animation,
+                        show: this.options.dialog_show_animation,
+                        hide: this.options.dialog_hide_animation,
                         buttons: [
                             {
                                 text: title,
@@ -1314,8 +1409,8 @@ $(function() {
                     if (this._actions.paste.in_progress) return false;
                     this._actions.paste.in_progress = true;
                     
-                    var selection = rangy.saveSelection();
-                    var editor_instance = this;
+                    var selection = rangy.saveSelection(),
+                        editor_instance = this;
                     
                     if($.contains(this.element.get(0), event.target)) {
                         var paste_bin = $('#paste-bin');
@@ -1328,14 +1423,19 @@ $(function() {
                                 left: -9999
                             }).appendTo('body');
                         }
-                        paste_bin.focus();
+                        paste_bin.select().focus();
                         
                         window.setTimeout(function(){
                             paste_bin.paste;
-                            var pasted_value = $(paste_bin).val();
+                            var pasted_value = $(paste_bin).val(),
+                                update_values = function(value) {
+                                    editor_instance._actions.paste.dialog.find('textarea.ui-editor-paste-plain').val(value);
+                                    editor_instance._actions.paste.dialog.find('textarea.ui-editor-paste-source').val(value);
+                                    editor_instance._actions.paste.dialog.find('.ui-editor-paste-rich').html(value);
+                                };
+
                             if (!editor_instance._actions.paste.dialog) {
-                                
-                                editor_instance._actions.paste.dialog = dialog = $('<div class="ui-editor-paste-panel">\
+                                editor_instance._actions.paste.dialog = $('<div class="ui-editor-paste-panel">\
                                         <div class="ui-editor-paste-panel-tabs">\
                                             <ul>\
                                                 <li><a href="#ui-editor-paste-plain">Plain Text</a></li>\
@@ -1353,10 +1453,12 @@ $(function() {
                                             </div>\
                                         </div>\
                                     </div>');
+                                editor_instance._actions.paste.dialog.find('textarea').bind('keypress.editor', function() {
+                                    update_values($(this).val());
+                                });
                                     
                             } else {
-                                editor_instance._actions.paste.dialog.find('textarea').val(pasted_value);
-                                editor_instance._actions.paste.dialog.find('.ui-editor-paste-rich').html(pasted_value);
+                                update_values(pasted_value);
                             }
                             
                             $(editor_instance._actions.paste.dialog).dialog({
@@ -1367,8 +1469,8 @@ $(function() {
                                 dialogClass: '',
                                 title: 'Paste',
                                 position: 'center',
-                                show: editor_instance.options.dialog_animation,
-                                hide: editor_instance.options.dialog_animation,
+                                show: editor_instance.options.dialog_show_animation,
+                                hide: editor_instance.options.dialog_hide_animation,
                                 dialogClass: 'ui-widget-editor-dialog ui-widget-editor-paste',
                                 buttons: 
                                     [
@@ -1379,7 +1481,8 @@ $(function() {
                                                 
                                                 rangy.restoreSelection(selection);
                                                 
-                                                paste = null, element = $(dialog).find('textarea:visible, .ui-editor-paste-rich:visible');
+                                                var html = null, 
+                                                    element = $(this).find('textarea:visible, .ui-editor-paste-rich:visible');
                                                 
                                                 if (element.hasClass('ui-editor-paste-plain') || element.hasClass('ui-editor-paste-source')) {
                                                     html = element.val();
@@ -1431,13 +1534,13 @@ $(function() {
 
         _history: {
             
-            undo: {},
-            redo: {},
+            undo_stack: {},
+            redo_stack: {},
             
             toggle_buttons: function() {
                 var id = this._util.identify(this.element);
-                this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', this._history.undo[id].length == 0);
-                this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', this._history.redo[id].length == 0);
+                this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', this._history.undo_stack[id].length == 0);
+                this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', this._history.redo_stack[id].length == 0);
                 this._content.unsaved_edit_warning.toggle.call(this);
             },
             
@@ -1445,19 +1548,19 @@ $(function() {
                 var id = this._util.identify(this.element);
 
                 if (typeof all != 'undefined' && all) {
-                    this._history.undo = {};
-                    this._history.redo = {};
+                    this._history.undo_stack = {};
+                    this._history.redo_stack = {};
                 } else {
-                    this._history.undo[id] = [];
-                    this._history.redo[id] = [];
+                    this._history.undo_stack[id] = [];
+                    this._history.redo_stack[id] = [];
                 }
             },
                        
             undo: function() {
                 var id = this._util.identify(this.element);
-                var data = this._history.undo[id].pop();
+                var data = this._history.undo_stack[id].pop();
 
-                this._history.redo[id].push(data);
+                this._history.redo_stack[id].push(data);
                 
                 this.element.html(data.content);
                 
@@ -1466,9 +1569,9 @@ $(function() {
             
             redo: function() {
                 var id = this._util.identify(this.element);                
-                var data = this._history.redo[id].pop();
+                var data = this._history.redo_stack[id].pop();
                     
-                this._history.undo[id].push(data);
+                this._history.undo_stack[id].push(data);
                 this.element.html(data.content);
                 
                 this._history.toggle_buttons.call(this);
@@ -1479,16 +1582,16 @@ $(function() {
                 var current_content = this._content.cleaned(this.element.html());
                 var id = this._util.identify(this.element);
 
-                if (typeof this._history.undo[id] == 'undefined') this._history.undo[id] = [];
-                this._history.redo[id] = [];
+                if (typeof this._history.undo_stack[id] == 'undefined') this._history.undo_stack[id] = [];
+                this._history.redo_stack[id] = [];
                 
                 // Don't add identical content to stack
-                if (this._history.undo[id].length
-                        && this._history.undo[id][this._history.undo[id].length-1].content == current_content) {
+                if (this._history.undo_stack[id].length
+                        && this._history.undo_stack[id][this._history.undo_stack[id].length-1].content == current_content) {
                     return;
                 }
                 
-                this._history.undo[id].push({
+                this._history.undo_stack[id].push({
                     content: current_content
                 });
             }
@@ -1533,34 +1636,40 @@ $(function() {
             },
             
             unsaved_edit_warning: {
+          
                 toggle: function() {
                     if (this.options.unsaved_edit_warning) {
-                        if (this._data.exists(this.element, this._data.names.original_html) 
-                            && this.element.data(this._data.names.original_html) != this.html.call(this)) {
-                            
+                        if (this._content.dirty.call(this)) {
                             this._content.unsaved_edit_warning.show.call(this);
                         } else {
                             this._content.unsaved_edit_warning.hide.call(this);
                         }
                     }
                 },
+                
                 show: function() {
                     var warning = false;
                     if (!this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
-                        var warning = $('<div class="ui-widget-editor-warning" style="display:none">\
+                        var warning = $('<div class="ui-widget-editor-warning ' + this.options.unsaved_edit_warning_class + '" style="display:none">\
                                             <span class="ui-icon ui-icon-alert"></span>\
                                             <ul class="ui-widget-messages-alert">\
                                                 <li>Unsaved edits exist</li>\
                                             </ul>\
-                                        </div>').css({
-                            position: 'absolute',
-                            top: this.element.height(),
-                            left: this.element.offset().left
-                            }).appendTo('body');
+                                        </div>').hover(function() {
+                            $(this).stop().animate({ opacity: 0.1 });
+                        }, function() {
+                            $(this).stop().animate({ opacity: 1 });
+                        }).appendTo('body');
                         this.element.data(this._data.names.unsaved_edits_warning, warning);
                     } else {
                         var warning = this.element.data(this._data.names.unsaved_edits_warning);
                     }
+                    warning.position({
+                        at: this.options.unsaved_edit_warning_position_at,
+                        of: this.element,
+                        my: this.options.unsaved_edit_warning_position_my,
+                        using: this.options.unsaved_edit_warning_position_using
+                    })
                     if (!warning.is(':visible') && !warning.is(':animated')) warning.show(this.options.unsaved_edit_warning_animation);
                 },
                 hide: function() {
@@ -1569,6 +1678,7 @@ $(function() {
                         if (warning.is(':visible') && !warning.is(':animated')) warning.hide(this.options.unsaved_edit_warning_animation);
                      }
                 }
+          
             }
         },
         
@@ -1594,8 +1704,8 @@ $(function() {
                         resizable: false,
                         title: options.title,
                         dialogClass: 'ui-widget-editor-dialog ui-widget-editor-confirmation',
-                        show: this.options.dialog_animation,
-                        hide: this.options.dialog_animation,
+                        show: this.options.dialog_show_animation,
+                        hide: this.options.dialog_hide_animation,
                         buttons: [
                             {
                                 text: 'OK',

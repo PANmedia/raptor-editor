@@ -1,23 +1,33 @@
-/* Edit buttonset */
-.ui-widget-editor-edit .ui-button {
-
+/* Click to edit */
+.ui-widget-editor-edit {
+    pointer-events:none;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #F2FFF2;
+    background-image: -moz-linear-gradient(center top , #F2FFF2, #DAF2D7);
+    border: 1px solid #D4D4D4;
+    -moz-box-shadow: 0px 2px 10px #CCC;
+    -webkit-box-shadow: 0px 2px 10px #CCC;
+    box-shadow: 0px 2px 10px #CCC;
 }
 
-.ui-widget-editor-edit .ui-button.ui-button-icon-only {
-    height: 35px;
-}
-
-.ui-widget-editor-edit .ui-button.ui-button-icon-only .ui-icon {
-    margin-top: -18px;
-}
-
-/* Editor toolbar */
 .ui-widget-editor-highlight {
-    outline: 1px solid blue;
+    -moz-transition:all 0.5s  0s;
+    -o-transition:all 0.5s  0s;
+    -webkit-transition:all 0.5s  0s;
+    -ms-transition:all 0.5s  0s;
+    -moz-box-shadow: 0px 2px 10px #CCC;
+    -webkit-box-shadow: 0px 2px 10px #CCC;
+    box-shadow: 0px 2px 10px #CCC;
 }
 
 .ui-widget-editor-editing {
-    outline: 1px solid #eaeaea !important;
+    outline: 1px solid #CCC;
+}
+
+/* Editor toolbar */
+.ui-widget-editor-dialog .ui-dialog-titlebar {
+    font-size: 10px;
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner {
@@ -282,11 +292,8 @@
 }
 
 .ui-widget-editor-warning ul {
-    border-radius: 0px 5px 0px 5px;
     padding: 0 10px 0 25px;
     margin: 0;
-    border-top: 1px solid #D4D4D4;
-    border-right: 1px solid #D4D4D4;
     height: 30px;
     line-height: 30px;
 }
@@ -296,6 +303,8 @@
 }
 
 .ui-widget-editor-warning {
+    border-radius: 0px 5px 0px 0px;
+    border: 1px solid #D4D4D4;
     background-color: #FFFFF2;
     background-image: -moz-linear-gradient(center top , #FFFFF2, #EDECBD);
 }
