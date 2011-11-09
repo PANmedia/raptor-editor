@@ -1308,7 +1308,8 @@ $(function() {
                             
                             if (!link_dialog.find('input[type="radio"]:checked').length) {
                                 if (!edit) {
-                                   link_dialog.find('input[type="radio"]:first').trigger('click');
+                                    link_dialog.find('input[type="radio"]:first').prop('checked', true);
+                                    editor_instance._actions.link.type_change.call(editor_instance, edit, true);
                                 } else {
                                     link_dialog.find('input[type="radio"]').each(function(){
                                         var radio = $(this);
@@ -1337,12 +1338,13 @@ $(function() {
                         wrap = panel.closest('.ui-widget-editor-link-wrap'),
                         ajax = (typeof link_type_data.ajax != 'undefined'),
                         editor_instance = this,
-                        initial = (typeof initial != 'undefined') ? initial : false;
+                        initial = (typeof initial == 'undefined') ? false : initial;
                 
                     if (ajax) wrap.addClass('ui-widget-editor-loading');
                     
                     if (initial) {
-                        panel.html(link_type_data.content).show();
+                        panel.html(link_type_data.content);
+                        panel.show();
                         if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
                     } else {                  
                         panel.hide(this.options.link_panel_animation, function(){
