@@ -817,7 +817,7 @@ $(function() {
                 this._click_to_edit.hide.call(this);
 
                 if (this._editor.initialized === false) {
-                    if (!this._editor.initialize.call(this)) return;
+                    if (this._editor.initialize.call(this) === false) return;
                 } else {
                     this._editor.toolbar.dialog('show');
                 }
@@ -843,7 +843,8 @@ $(function() {
                     } else {
                         position = ($.isFunction(this.options.toolbar_position) ? this.options.toolbar_position.call(this) : this.options.toolbar_position);
                     }
-                    this._editor.toolbar.dialog('option', 'position', position).dialog('option', 'dragStop', function() {
+                    this._editor.toolbar.dialog().dialog('option', 'position', position);
+                    this._editor.toolbar.dialog().dialog('option', 'dragStop', function() {
                         editor_instance.element.data(editor_instance._data.names.toolbar_position, $(this).dialog().dialog('option', 'position'));
                     });
                 }
@@ -1999,7 +2000,7 @@ $(function() {
             this.element.attr('contenteditable', 'false');
             this.element.removeClass(this._classes.editing);
             this._message.hide.call(this);
-    
+            this._editor.initialized = false;
             $(this._instances).each(function() {
                 this._content.reset.call(this);
             });
