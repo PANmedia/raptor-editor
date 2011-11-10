@@ -5,6 +5,7 @@ $(function() {
         
         options: {
             css_prefix: 'ui-editor-',
+            custom_tooltips: true,
             
             begin_editing_class: '',
             begin_editing_content: 'Click to begin editing',
@@ -48,10 +49,14 @@ $(function() {
             button_order: false,
             
             unsaved_edit_warning: true,
+            unsaved_edit_warning_content: 'This block contains unsaved changes',
+            unsaved_edit_warning_tooltip_position: 'bottom',
+            unsaved_edit_warning_tooltip_max_width: 'auto',
             unsaved_edit_warning_class: '',
             unsaved_edit_warning_animation: 'fade',
-            unsaved_edit_warning_position_at: 'left bottom',
-            unsaved_edit_warning_position_my: 'left bottom',
+            unsaved_edit_warning_position_at: 'right bottom',
+            unsaved_edit_warning_position_my: 'right bottom',
+            unsaved_edit_warning_idle_opacity: 0.5,
             unsaved_edit_warning_position_using: function(position) {
                 $(this).css({
                     position: 'absolute',
@@ -68,6 +73,10 @@ $(function() {
         },
         
         _init: function() {
+            if (this.options.custom_tooltips && !$.isFunction($.fn.tipTip)) {
+                this.options.custom_tooltips = false;
+                this._util.exception('Custom tooltips was requested but tipTip (http://code.drewwilson.com/entry/tiptip-jquery-plugin) wasn\'t found.\nCustom tooltips disabled');
+            }
             this._click_to_edit.initialize.call(this);
         },
         
@@ -116,6 +125,10 @@ $(function() {
             
             valid_url: function(url) {
                 return /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(url);
+            },
+        
+            exception: function(message) {
+                if (window.console && window.console.error) window.console.error(message);
             }
         },
         
@@ -680,6 +693,13 @@ $(function() {
                                 }).selectmenu({
                                 width: 150
                             });
+                            
+                            if (this.options.custom_tooltips) {
+                                button_group.find('.ui-selectmenu').tipTip({
+                                    content: 'Change HTML tag of selected element',
+                                    maxWidth: 'auto'
+                                });
+                            }
                         },
                         state_change: function() {
                             var menu = $('.ui-editor-tag-select');
@@ -731,19 +751,25 @@ $(function() {
                             } else {
                                 var button = $('<button>' + object.title + '</button>')
                                     .addClass('ui-widget-editor-button-' + name)
-                                    .attr('title', object.title)
                                     .attr('name', value)
+                                    .attr('title', name)
                                     .val(name)
                                     .data(editor_instance._data.names.button, object)
                                     .appendTo(button_group);
                             
                                 if (typeof object.classes != 'undefined') button.addClass(object.classes);
                             
-                                $(button).button({
+                                button.button({
                                     icons: object.icons, 
                                     disabled: (typeof object.disabled == 'undefined' ? false : object.disabled),
                                     text: false 
                                 });
+                                
+                                if (editor_instance.options.custom_tooltips) {
+                                    button.tipTip({
+                                        content: object.title
+                                    }).removeAttr('title');
+                                }
 
                                 $(button).appendTo(button_group);
                             }
@@ -806,14 +832,17 @@ $(function() {
 
                 $('.ui-widget-editor-dialog .ui-widget-editor-element-path').die('click.editor').
                         live('click.editor', function(){
-                            var current = editor_instance._editor.selected_element, i = 0;
-                            while (i != $(this).attr('name')) {
-                                current = current.parent();
-                                i++;
-                            }
-                            editor_instance._editor.selected_element = current;
-                            rangy.getSelection().selectAllChildren(current.get(0));
-                            editor_instance._actions.update_title_tag_list.call(editor_instance);
+                            var current = editor_instance._editor.selected_element, 
+                                i = 0;
+                            if ($(this).attr('name') != 'root') {
+                                while (i != $(this).attr('name')) {
+                                    current = current.parent();
+                                    i++;
+                                }
+                                editor_instance._selection.select_element.call(editor_instance, current);
+                            } else {
+                                editor_instance._selection.select_all.call(editor_instance);
+                            }                            
                         });
                 
                 this.element.addClass(this._classes.editing);
@@ -1013,8 +1042,20 @@ $(function() {
             select_element: function(select_this) {
                 this._editor.selected_element = $(select_this);
                 rangy.getSelection().selectAllChildren($(select_this).get(0));
-                this._actions.update_title_tag_list.call(this);
                 this.element.focus();
+                this._actions.update_title_tag_list.call(this);
+            },
+            
+            select_all: function() {
+                var selection = rangy.getSelection();
+                selection.removeAllRanges();
+                $.each(this.element.contents(), function() {
+                    var range = rangy.createRange();
+                    range.selectNodeContents(this);
+                    selection.addRange(range);
+                });
+                this.element.focus();
+                this._actions.update_title_tag_list.call(this);
             }
             
         },
@@ -1069,8 +1110,7 @@ $(function() {
 
                         // Update tag drop down
                         var tag_menu = this._editor.toolbar.find('select.ui-editor-tag-select');
-                        if (this._editor.toolbar.find('tag_menu.ui-editor-tag-select').length) {
-                            
+                        if (tag_menu.length) {                   
                             if (this._util.is_root.call(this, current)) {
                                 tag_menu.val('na');
                             } else if (tag_menu.find('option[value=' + tag_name + ']').length) {
@@ -1082,18 +1122,19 @@ $(function() {
                         }
                         
                         // Update dialog title
-                        var title = '';
-                        var i = 0;
+                        var title = '',
+                            i = 0;
                         while (true) {
                             
                             if (this._util.is_root.call(this, current)) {
-                                title = '(root) ' + title;
+                                title = '<a href="javascript: // Select all" name="root" \
+                                    class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
                                 break;
                             }
                             
                             tag_name = current[0].tagName.toLowerCase();
                             title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                    class="ui-widget-editor-element-path" title="Click to select the named element">' + tag_name + '</a>' + title;
+                                    class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tag_name.toUpperCase() + '&quot; element">' + tag_name + '</a>' + title;
                             current = current.parent();
                             i++;
                         }
@@ -1103,6 +1144,8 @@ $(function() {
                 this._editor.toolbar.dialog({
                     title: title
                 });
+                
+                if (this.options.custom_tooltips) this._editor.toolbar.parent().find('.ui-widget-editor-element-path').tipTip();
             },
                 
             unload_warning: function() {
@@ -1650,18 +1693,26 @@ $(function() {
                 },
                 
                 show: function() {
-                    var warning = false;
+                    var warning = false,
+                        editor_instance = this;
                     if (!this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
-                        var warning = $('<div class="ui-widget-editor-warning ' + this.options.unsaved_edit_warning_class + '" style="display:none">\
+                        var warning = $('<div title="' + this.options.unsaved_edit_warning_content + '" class="ui-widget-editor-warning ' 
+                                        + this.options.unsaved_edit_warning_class 
+                                        + '" style="display:none;">\
                                             <span class="ui-icon ui-icon-alert"></span>\
-                                            <ul class="ui-widget-messages-alert">\
-                                                <li>Unsaved edits exist</li>\
-                                            </ul>\
                                         </div>').hover(function() {
-                            $(this).stop().animate({ opacity: 0.1 });
-                        }, function() {
                             $(this).stop().animate({ opacity: 1 });
+                        }, function() {
+                            $(this).stop().animate({ opacity: editor_instance.options.unsaved_edit_warning_idle_opacity });
                         }).appendTo('body');
+                        
+                        if (editor_instance.options.custom_tooltips) {
+                            warning.tipTip({ 
+                                delay: 100,
+                                defaultPosition: this.options.unsaved_edit_warning_tooltip_position,
+                                maxWidth: this.options.unsaved_edit_warning_tooltip_max_width
+                            });
+                        }
                         this.element.data(this._data.names.unsaved_edits_warning, warning);
                     } else {
                         var warning = this.element.data(this._data.names.unsaved_edits_warning);
@@ -1672,7 +1723,11 @@ $(function() {
                         my: this.options.unsaved_edit_warning_position_my,
                         using: this.options.unsaved_edit_warning_position_using
                     })
-                    if (!warning.is(':visible') && !warning.is(':animated')) warning.show(this.options.unsaved_edit_warning_animation);
+                    if (!warning.is(':visible') && !warning.is(':animated')) {
+                        warning.show(this.options.unsaved_edit_warning_animation, function(){
+                            $(this).animate({ opacity: editor_instance.options.unsaved_edit_warning_idle_opacity });
+                        });
+                    }
                 },
                 hide: function() {
                      if (this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
