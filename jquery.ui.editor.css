@@ -34,15 +34,19 @@
     margin-left: 5px;
 }
 
+.ui-widget-editor-dialog .ui-widget-editor-toolbar {
+    padding: 5px;
+}
+
 .ui-widget-editor-dialog .ui-dialog-titlebar .ui-widget-editor-element-path {
     min-width: 10px;
+    min-height: 15px;
     display: inline-block;
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner {
     height: 25px;
     line-height: 10px;
-    margin-bottom: 5px;
 }
 
 /* Editor button */
@@ -241,6 +245,10 @@
     width: 100%;
 }
 
+.ui-widget-editor-toolbar .ui-widget-editor-messages > div {
+    margin-top: 10px;
+}
+
 .ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon {
     display: inline-block;
     float: left;
@@ -293,7 +301,7 @@
     background: transparent url(images/loading-small.gif) no-repeat center center;
 }
 
-/* Warning banner */
+/* Warning corner */
 .ui-widget-editor-warning {
     height: 30px;
     line-height: 30px;

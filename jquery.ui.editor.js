@@ -7,6 +7,15 @@ $(function() {
             css_prefix: 'ui-editor-',
             custom_tooltips: true,
             
+            toolbar_position: [5, 47], 
+            //function() {
+                //return [
+                    //this.element.offset().top,
+                    //this.element.offset().left
+                //];
+            //},
+            toolbar_save_individual_positions: false,
+            
             begin_editing_class: '',
             begin_editing_content: 'Click to begin editing',
             begin_editing_position_at: 'center center',
@@ -65,6 +74,10 @@ $(function() {
                 });
             },
             
+            title_visible: true,
+            title_default: 'jQuery UI Editor Controls',
+            title_tags: true,
+            
             save_uri: '/editor/save',
             
             link_panel_animation: 'fade',
@@ -73,6 +86,9 @@ $(function() {
         },
         
         _init: function() {
+            if (typeof rangy == 'undefined') {
+                this._util.exception('The rangy library is required but could not be found');
+            }
             if (this.options.custom_tooltips && !$.isFunction($.fn.tipTip)) {
                 this.options.custom_tooltips = false;
                 this._util.exception('Custom tooltips was requested but tipTip (http://code.drewwilson.com/entry/tiptip-jquery-plugin) wasn\'t found.\nCustom tooltips disabled');
@@ -142,7 +158,8 @@ $(function() {
                 original_html: 'ui-widget-editor-original-html',
                 button: 'ui-widget-button',
                 link_type: 'ui-widget-editor-link-type',
-                unsaved_edits_warning: 'ui-widget-editor-unsaved-edits'
+                unsaved_edits_warning: 'ui-widget-editor-unsaved-edits',
+                toolbar_position: 'ui-widget-editor-toolbar-position'
             },
             
             clear: function(name) {
@@ -211,8 +228,10 @@ $(function() {
                 
                 this._editor.generate_buttons.call(this);
                 
+                var editor_instance = this;
+                
                 this._editor.toolbar.dialog({
-                    position: [5, 47],
+                    position: ($.isFunction(this.options.toolbar_position) ? this.options.toolbar_position.call(this) : this.options.toolbar_position),
                     resizable: false,
                     closeOnEscape: false,
                     width: 'auto',
@@ -221,24 +240,36 @@ $(function() {
                     resize: 'auto',
                     zIndex: 32000,
                     title: 'Editor loading...',
+                    autoOpen: false,
                     show: this.options.dialog_show_animation,
                     hide: this.options.dialog_hide_animation,
                     open: function(event, ui) {
-                        var parent = $(this).parent();
-                        parent.attr('unselectable', 'on');
-                        parent.css('position', 'fixed');
-                        parent.css('top', '47px');
-                        parent.addClass('ui-widget-editor-dialog');
-                        parent.find('.ui-dialog-titlebar-close', ui).remove();
-                        parent.find('.ui-dialog-titlebar', ui).css('padding', 0);
                         $(this).css('overflow', 'hidden');
+                        var parent = $(this).parent();
+                        parent.css('position', 'fixed')
+                            .addClass('ui-widget-editor-dialog')
+                            .attr('unselectable', 'on')
+                            .find('.ui-dialog-titlebar-close', ui)
+                            .remove();
                     }
                 });
                 
                 $(window).bind('beforeunload', $.proxy(this._actions.unload_warning, this));
                 
-                rangy.init();   // FIXME check for rangy here and let the user know if not found
-                
+                if (typeof rangy == 'undefined') {
+                    this._dialog.alert.show.call(this, {
+                        title: 'Required Library Not Found', 
+                        message: '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:2px 7px 0px 0px;"></span>The rangy library is required but could not be found. </p>\
+                                    <p>Rangy should have been included in the jQuery UI Editor package you downloaded.<br/>\
+                                    If not it may be acquired here: <a href="http://code.google.com/p/rangy/" title="A cross-browser JavaScript range and selection library">Rangy</a></p>\
+                                    <p>jQuery UI Editor will not be loaded.</p>'
+                    });
+                    return false;
+                } else {
+                    rangy.init();
+                    this._editor.toolbar.dialog().dialog('open');
+                }
+             
                 this._editor.initialized = true;
                 this._editor.toolbar.find('.ui-widget-editor-inner').slideDown();
             },
@@ -786,7 +817,7 @@ $(function() {
                 this._click_to_edit.hide.call(this);
 
                 if (this._editor.initialized === false) {
-                    this._editor.initialize.call(this);
+                    if (!this._editor.initialize.call(this)) return;
                 } else {
                     this._editor.toolbar.dialog('show');
                 }
@@ -801,7 +832,24 @@ $(function() {
                     this.element.data(this._data.names.original_html, this.element.html());
                 }
                 
-                var editor_instance = this;
+                var editor_instance = this,
+                    position = false;
+                
+                // If the instance should remember its toolbar position and reset it when the element is retargeted
+                if (this.options.toolbar_save_individual_positions) {                
+                    // Make sure the toolbar isn't repositioned if the user has manually moved it
+                    if (this._data.exists(this.element, this._data.names.toolbar_position)) {
+                        position = this.element.data(this._data.names.toolbar_position);
+                    } else {
+                        position = ($.isFunction(this.options.toolbar_position) ? this.options.toolbar_position.call(this) : this.options.toolbar_position);
+                    }
+                    this._editor.toolbar.dialog('option', 'position', position).dialog('option', 'dragStop', function() {
+                        editor_instance.element.data(editor_instance._data.names.toolbar_position, $(this).dialog().dialog('option', 'position'));
+                    });
+                }
+            
+                if (!this.options.title_visible) this._editor.toolbar.dialog().parent().find('.ui-dialog-titlebar').hide();
+                else this._editor.toolbar.dialog().parent().find('.ui-dialog-titlebar').show()
                 
                 // Unbind previous instances
                 $(this._instances).each(function(){
@@ -1092,51 +1140,54 @@ $(function() {
             },
         
             update_title_tag_list: function() {
-                    
-                var title = 'Nothing selected';
-
-                this._selection.enforce_legality.call(this);
-                this._actions.refresh_selected_element.call(this);
                 
-                if (this._editor.selected_element) {
-                    
-                    title = '';
-                    
-                    var current = this._editor.selected_element;
-                    
-                    if (typeof current[0] != 'undefined') {
-                    
-                        var tag_name = current[0].tagName.toLowerCase();
+                var title = this.options.title_default;
+                
+                if (this.options.title_tags) {
 
-                        // Update tag drop down
-                        var tag_menu = this._editor.toolbar.find('select.ui-editor-tag-select');
-                        if (tag_menu.length) {                   
-                            if (this._util.is_root.call(this, current)) {
-                                tag_menu.val('na');
-                            } else if (tag_menu.find('option[value=' + tag_name + ']').length) {
-                                tag_menu.val(tag_name);
-                            } else {
-                                tag_menu.val('other');
-                            }
-                            tag_menu.selectmenu();
-                        }
+                    this._selection.enforce_legality.call(this);
+                    this._actions.refresh_selected_element.call(this);
+                    
+                    if (this._editor.selected_element) {
                         
-                        // Update dialog title
-                        var title = '',
-                            i = 0;
-                        while (true) {
-                            
-                            if (this._util.is_root.call(this, current)) {
-                                title = '<a href="javascript: // Select all" name="root" \
-                                    class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
-                                break;
+                        title = '';
+                        
+                        var current = this._editor.selected_element;
+                        
+                        if (typeof current[0] != 'undefined') {
+                        
+                            var tag_name = current[0].tagName.toLowerCase();
+
+                            // Update tag drop down
+                            var tag_menu = this._editor.toolbar.find('select.ui-editor-tag-select');
+                            if (tag_menu.length) {                   
+                                if (this._util.is_root.call(this, current)) {
+                                    tag_menu.val('na');
+                                } else if (tag_menu.find('option[value=' + tag_name + ']').length) {
+                                    tag_menu.val(tag_name);
+                                } else {
+                                    tag_menu.val('other');
+                                }
+                                tag_menu.selectmenu();
                             }
                             
-                            tag_name = current[0].tagName.toLowerCase();
-                            title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                    class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tag_name.toUpperCase() + '&quot; element">' + tag_name + '</a>' + title;
-                            current = current.parent();
-                            i++;
+                            // Update dialog title
+                            var title = '',
+                                i = 0;
+                            while (true) {
+                                
+                                if (this._util.is_root.call(this, current)) {
+                                    title = '<a href="javascript: // Select all" name="root" \
+                                        class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
+                                    break;
+                                }
+                                
+                                tag_name = current[0].tagName.toLowerCase();
+                                title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
+                                        class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tag_name.toUpperCase() + '&quot; element">' + tag_name + '</a>' + title;
+                                current = current.parent();
+                                i++;
+                            }
                         }
                     }
                 }
@@ -1791,6 +1842,47 @@ $(function() {
                     }).dialog('open');
 
                 }
+            
+            },
+            
+            alert: {
+                
+                html: false,
+                
+                show: function(options) {
+                    
+                    var editor_instance = this;
+                    
+                    if (!this._dialog.alert.html) this._dialog.alert.html = $('<div>' + options.message + '</div>').appendTo('body');
+                    else this._dialog.alert.html.html(options.message);
+                      
+                    this._dialog.alert.html.dialog({
+                        autoOpen: false,
+                        modal: true,
+                        resizable: false,
+                        title: options.title,
+                        width: 'auto',
+                        dialogClass: 'ui-widget-editor-dialog ui-widget-editor-alert',
+                        show: this.options.dialog_show_animation,
+                        hide: this.options.dialog_hide_animation,
+                        buttons: [
+                            {
+                                text: 'OK',
+                                'class': 'ok',
+                                click: function() {
+                                    $(this).dialog('close');
+                                },
+                            }
+                        ],
+                        open: function() {
+                            editor_instance._dialog.apply_button_icon('ok', 'circle-check');
+                        },
+                        close: function() {
+                            $(this).dialog('destroy');
+                        }
+                    }).dialog('open');
+                }  
+                
             },
             
             apply_button_icon: function(button_class, icon) {
