@@ -786,10 +786,10 @@
                                 object.initialize.call(editor_instance, object, button_group);
                             } else {
                                 button = $('<button>' + object.title + '</button>')
-                                    .addClass('ui-widget-editor-button-' + name)
+                                    .addClass('ui-widget-editor-button-' + value)
                                     .attr('name', value)
-                                    .attr('title', name)
-                                    .val(name)
+                                    .attr('title', value)
+                                    .val(value)
                                     .data(editor_instance._data.names.button, object)
                                     .appendTo(button_group);
                             
