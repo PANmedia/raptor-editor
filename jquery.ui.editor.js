@@ -1214,8 +1214,7 @@ $(function() {
                 
             unload_warning: function() {
                 if (this._content.dirty_blocks_exist.call(this)) {
-                    return 'There are unsaved changes on this page. \n\
-                            If you navigate away from this page you will loose your unsaved changes';
+                    return '\nThere are unsaved changes on this page. \nIf you navigate away from this page you will loose your unsaved changes';
                 }
             },
 
