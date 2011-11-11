@@ -1,4 +1,4 @@
-$(function() {
+(function($) {
     $.widget('ui.editor', {
                
         _instances: [],
@@ -2025,4 +2025,4 @@ $(function() {
         }
     
     });
-});
+})(jQuery);
