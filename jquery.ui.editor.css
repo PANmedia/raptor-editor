@@ -175,12 +175,23 @@
     line-height: 10px;
 }
 
-/* Dialogs */
-.ui-widget-editor-dialog textarea {
-    height: 94%;
-    width: 100%;
+/* Inputs */
+.ui-widget-editor-paste .ui-tabs .ui-tabs-panel .ui-editor-paste-rich,
+.ui-widget-editor-dialog textarea,
+.ui-widget-editor-dialog input {
+    border: 1px solid #D4D4D4;
+    padding: 5px;
 }
 
+/* Dialogs */
+.ui-widget-editor-dialog .ui-dialog-content {
+    font-size: 12px;
+}
+
+.ui-widget-editor-dialog textarea {
+    height: 94%;
+    width: 99%;
+}
 
 /* Dialog - paste */
 .ui-widget-editor-paste .ui-tabs {
@@ -193,8 +204,13 @@
 }
 
 .ui-widget-editor-paste .ui-tabs .ui-tabs-panel textarea {
-    width: 94%;
-    height: 85%;
+    height: 96%;
+    width: 99%;
+}
+
+.ui-widget-editor-paste .ui-tabs .ui-tabs-panel .ui-editor-paste-rich {
+    height: 97%;
+    outline: none;
 }
 
 /* Dialog - links */
@@ -212,7 +228,6 @@
 .ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset {
     font-size: 12px;
 }
-
 .ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label {
     display: block;
     margin-bottom: 10px;
@@ -231,6 +246,23 @@
     margin-left: 200px;
     padding-left: 20px;
     border-left: 1px dashed;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset .ui-widget-editor-external-href {
+    width: 365px;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset #ui-widget-editor-link-external-target {
+    vertical-align: sub;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset.ui-widget-editor-link-email label {
+    display: inline-block;
+    width: 115px;
+}
+
+.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset.ui-widget-editor-link-email input {
+    width: 340px;
 }
 
 /* Guides */

@@ -52,6 +52,7 @@ $(function() {
             
             dialog_show_animation: 'fade',
             dialog_hide_animation: 'fade',
+            dialog_class: 'ui-widget-editor-dialog',
             
             replace_buttons: false,
             custom_buttons: {},
@@ -109,10 +110,10 @@ $(function() {
         _util: {
            
             count_objects: function(obj) {
-                var i = 0;
-                for (var x in obj) {
-                if (obj.hasOwnProperty(x))
-                    i++;
+                var i = 0,
+                    x = null;
+                for (x in obj) {
+                    if (obj.hasOwnProperty(x)) i++;
                 }
                 return i;
             },
@@ -128,11 +129,12 @@ $(function() {
             },
             
             identify: function(element) {
-                var i = 0;
+                var i = 0,
+                    uid = null;
                 if(typeof $(element).attr('id') == 'undefined') {
                     do { 
                         i++;
-                        var id = 'uid_' + i;
+                        id = 'uid_' + i;
                     } while($('#' + id).length > 0);            
                     $(element).attr('id', id);
                 }
@@ -241,13 +243,13 @@ $(function() {
                     zIndex: 32000,
                     title: 'Editor loading...',
                     autoOpen: false,
+                    dialogClass: this.options.dialog_class,
                     show: this.options.dialog_show_animation,
                     hide: this.options.dialog_hide_animation,
                     open: function(event, ui) {
                         $(this).css('overflow', 'hidden');
                         var parent = $(this).parent();
                         parent.css('position', 'fixed')
-                            .addClass('ui-widget-editor-dialog')
                             .attr('unselectable', 'on')
                             .find('.ui-dialog-titlebar-close', ui)
                             .remove();
@@ -275,8 +277,11 @@ $(function() {
             },
 
             generate_buttons: function() {
-               
-                var buttons = {
+                
+                var editor_instance = this,
+                    buttons = button_order = button = object = null;
+                
+                buttons = {
                     save: {
                         title: 'Save',
                         icons: {
@@ -295,9 +300,8 @@ $(function() {
                                         'Failed to save content',
                                         'Response code ' + response_code + ' from ' + window.location.protocol + '//' + window.location.hostname + editor.options.save_uri
                                     ], 10000);
-                                };
+                                }, editor = this;
                                 
-                                var editor = this;
                                 $.ajax(this.options.save_uri, {
                                     data: {
                                         html: this.html(),
@@ -387,7 +391,7 @@ $(function() {
                                 height: 400,
                                 resizable: true,
                                 title: 'View Source',
-                                dialogClass: 'ui-widget-editor-dialog ui-widget-editor-view-source',
+                                dialogClass: this.options.dialog_class + ' ui-widget-editor-view-source',
                                 show: this.options.dialog_show_animation,
                                 hide: this.options.dialog_hide_animation,
                                 buttons: [
@@ -396,7 +400,7 @@ $(function() {
                                         'class': 'reload-source',
                                         click: function() {
                                             $(this).find('textarea').val(editor_instance.html());
-                                        },
+                                        }
                                     },
                                     {
                                         text: 'Apply Source',
@@ -558,23 +562,25 @@ $(function() {
                             this._history.update.call(this);
                             this._selection.enforce_legality.call(this);
                             
+                            var editor_instance = this,
+                                    content = increased_size = replacement = style = null;
+                            
                             if (!this._selection.exists.call(this)) {
-                                var style = { 'font-size': '110%' };
+                                style = { 'font-size': '110%' };
                                 if (!this._util.is_root.call(this, this._editor.selected_element)) this._editor.selected_element.css(style);
                                 else this.element.children().css(style);
                             } else {
-                                
-                                var editor_instance = this;
+                                    
                                 $(rangy.getSelection().getAllRanges()).each(function(){
-                                    var content = this.createContextualFragment();
+                                    content = this.createContextualFragment();
                                     if ((this.commonAncestorContainer == this.startContainer && this.commonAncestorContainer == this.endContainer)
                                         && (this.startOffset == 0 && this.endOffset == 1)) {
                                         
-                                        var increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 1.1);
+                                        increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 1.1);
                                         $(this.commonAncestorContainer).css('font-size', increased_size);
                                     } else {
                                         
-                                        var replacement = $('<span style="font-size:110%"></span>');
+                                        replacement = $('<span style="font-size:110%"></span>');
                                         
                                         this.splitBoundaries();
                                         $.each(this.getNodes(), function() {
@@ -599,23 +605,24 @@ $(function() {
                             this._history.update.call(this);
                             this._selection.enforce_legality.call(this);
                             
+                            var editor_instance = this,
+                                style = increased_size = replacement = null;
+                            
                             if (!this._selection.exists.call(this)) {
-                                var style = { 'font-size': '90%' };
+                                style = { 'font-size': '90%' };
                                 if (!this._util.is_root.call(this, this._editor.selected_element)) this._editor.selected_element.css(style);
                                 else this.element.children().css(style);
                             } else {
-                                
-                                var editor_instance = this;
                                 $(rangy.getSelection().getAllRanges()).each(function(){
                                     var content = this.createContextualFragment();
                                     if ((this.commonAncestorContainer == this.startContainer && this.commonAncestorContainer == this.endContainer)
                                         && (this.startOffset == 0 && this.endOffset == 1)) {
                                         
-                                        var increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 0.9);
+                                        increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 0.9);
                                         $(this.commonAncestorContainer).css('font-size', increased_size);
                                     } else {
                                         
-                                        var replacement = $('<span style="font-size:90%"></span>');
+                                        replacement = $('<span style="font-size:90%"></span>');
                                         
                                         this.splitBoundaries();
                                         $.each(this.getNodes(), function() {
@@ -747,7 +754,7 @@ $(function() {
                 
                 this._editor.toolbar.find('.ui-widget-editor-inner').html('');
 
-                var button_order = [
+                button_order = [
                     ['save', 'cancel', 'show_guides'],
                     ['view_source'],
                     ['undo', 'redo'],
@@ -764,23 +771,21 @@ $(function() {
                 if (this.options.button_order) button_order = this.options.button_order;
                 
                 // Buttons
-                var links = source = files = false, 
-                    editor_instance = this;
-                
                 $.each(button_order, function() {
                     
-                    var button_group = $('<div></div>');
+                    button_group = $('<div></div>');
+                        
                     if (editor_instance._util.count_objects(this) > 1) $(button_group).addClass('ui-widget-editor-buttonset');
                     
                     $.each(this, function(index, value) {
                         if (typeof buttons[value] == 'undefined') {
                             if (window.console && window.console.error) window.console.error('Button identified by ' + value + ' does not exist');
                         } else {
-                            var object = buttons[value];
+                            object = buttons[value];
                             if ($.isFunction(object.initialize)) {
                                 object.initialize.call(editor_instance, object, button_group);
                             } else {
-                                var button = $('<button>' + object.title + '</button>')
+                                button = $('<button>' + object.title + '</button>')
                                     .addClass('ui-widget-editor-button-' + name)
                                     .attr('name', value)
                                     .attr('title', name)
@@ -1035,10 +1040,12 @@ $(function() {
                 if (typeof options == 'undefined') options = {};
                 
                 this._history.update.call(this);
-                    
+                
+                var applier = new_element = null;
+                
                 if (this._selection.exists.call(this)) {
                     
-                    var applier = rangy.createCssClassApplier(this.options.css_prefix + tag, {
+                    applier = rangy.createCssClassApplier(this.options.css_prefix + tag, {
                         normalize: true,
                         elementTagName: tag
                     }).toggleSelection();    
@@ -1047,7 +1054,7 @@ $(function() {
                     if (this._util.is_root.call(this, this._editor.selected_element)) {
                         this._editor.selected_element = this.element.find(':first');
                     }
-                    var new_element = $('<' + tag + '>' + this._editor.selected_element.html() + '</' + tag + '>');
+                    new_element = $('<' + tag + '>' + this._editor.selected_element.html() + '</' + tag + '>');
                     
                     if (typeof this._editor.selected_element.attr('class') != 'undefined') {
                         new_element.addClass(this._editor.selected_element.attr('class'));
@@ -1065,10 +1072,12 @@ $(function() {
             },
             
             enforce_legality: function() {
-                var element = this.element;
-                var selection = rangy.getSelection();
+                
+                var element = this.element,
+                    selection = rangy.getSelection(),
+                    common_ancestor;
+                    
                 $(selection.getAllRanges()).each(function(){
-                    var common_ancestor = null;
                     if (this.commonAncestorContainer.nodeType == 3) common_ancestor = $(this.commonAncestorContainer).parent().get(0) 
                     else common_ancestor = this.commonAncestorContainer;
                     if (!$.contains(element.get(0), common_ancestor)) selection.removeRange(this);
@@ -1077,13 +1086,14 @@ $(function() {
             
             exists: function() {
                 this._selection.enforce_legality.call(this);
-                var all_ranges = rangy.getSelection().getAllRanges();
+                var all_ranges = rangy.getSelection().getAllRanges(),
+                    range;
                 if (!all_ranges.length) return false;
                 
                 if (all_ranges.length > 1) {
                     return true;
                 } else {
-                    var range = all_ranges[0];
+                    range = all_ranges[0];
                     return range.startOffset != range.endOffset;
                 }
             },
@@ -1096,10 +1106,11 @@ $(function() {
             },
             
             select_all: function() {
-                var selection = rangy.getSelection();
+                var selection = rangy.getSelection(),
+                    range = null;
                 selection.removeAllRanges();
                 $.each(this.element.contents(), function() {
-                    var range = rangy.createRange();
+                    range = rangy.createRange();
                     range.selectNodeContents(this);
                     selection.addRange(range);
                 });
@@ -1123,9 +1134,10 @@ $(function() {
                 this._history.update.call(this);
 
                 // Trigger buttons' state change handlers
-                var editor_instance = this;
+                var editor_instance = this,
+                    data = null;
                 this._editor.toolbar.find('button, select').each(function() {
-                    var data = $(this).data(editor_instance._data.names.button);
+                    data = $(this).data(editor_instance._data.names.button);
                     if ($.isFunction(data.state_change)) {
                         data.state_change.call(editor_instance, this);
                     }
@@ -1142,7 +1154,9 @@ $(function() {
         
             update_title_tag_list: function() {
                 
-                var title = this.options.title_default;
+                var title = this.options.title_default,
+                    current = tag_name = tag_menu = null,
+                    i = 0;
                 
                 if (this.options.title_tags) {
 
@@ -1150,17 +1164,15 @@ $(function() {
                     this._actions.refresh_selected_element.call(this);
                     
                     if (this._editor.selected_element) {
-                        
-                        title = '';
-                        
-                        var current = this._editor.selected_element;
+                       
+                        current = this._editor.selected_element;
                         
                         if (typeof current[0] != 'undefined') {
                         
-                            var tag_name = current[0].tagName.toLowerCase();
+                            tag_name = current[0].tagName.toLowerCase();
 
                             // Update tag drop down
-                            var tag_menu = this._editor.toolbar.find('select.ui-editor-tag-select');
+                            tag_menu = this._editor.toolbar.find('select.ui-editor-tag-select');
                             if (tag_menu.length) {                   
                                 if (this._util.is_root.call(this, current)) {
                                     tag_menu.val('na');
@@ -1172,9 +1184,9 @@ $(function() {
                                 tag_menu.selectmenu();
                             }
                             
+                            title = '';
+                            
                             // Update dialog title
-                            var title = '',
-                                i = 0;
                             while (true) {
                                 
                                 if (this._util.is_root.call(this, current)) {
@@ -1226,15 +1238,12 @@ $(function() {
                     
                     this._history.update.call(this);                    
                     
-                    var selection = rangy.saveSelection(),
-                        link_dialog = this._actions.link.dialog;
-                    
-                    // Remove & add custom radios
-                    link_dialog.find('.ui-widget-editor-link-menu fieldset').html('');
-                    
                     var editor_instance = this, 
+                        selection = rangy.saveSelection(),
+                        link_dialog = this._actions.link.dialog,
                         link_types_fieldset = link_dialog.find('.ui-widget-editor-link-menu fieldset'),
                         edit = this._editor.selected_element.is('a'),
+                        label,
                         link_types_classes = {},
                         link_types = [
                         // Page
@@ -1243,13 +1252,14 @@ $(function() {
                             title: 'Page on this or another website',
                             content: '<h2>Link to a page on this or another website</h2>\
                                         <fieldset>\
-                                            <label>Location</label>\
-                                            <input value="http://" name="location" type="text">\
+                                            <label for="ui-widget-editor-link-external-href">Location</label>\
+                                            <input id="ui-widget-editor-link-external-href" value="http://" name="location" class="ui-widget-editor-external-href" type="text">\
                                         </fieldset>\
                                         <h2>New window</h2>\
                                         <fieldset>\
-                                            <input name="blank" type="checkbox">\
-                                            <label>Check this box to have the link open in a new browser window</label>\
+                                            <label for="ui-widget-editor-link-external-target">\
+                                                <input id="ui-widget-editor-link-external-target" name="blank" type="checkbox">\
+                                                Check this box to have the link open in a new browser window</label>\
                                         </fieldset>\
                                         <h2>Not sure what to put in the box above?</h2>\
                                         <ol>\
@@ -1266,7 +1276,7 @@ $(function() {
                             },
                             attributes: function(panel) {
                                 var attributes = {
-                                    href: panel.find('input[name="location"]').val(),
+                                    href: panel.find('input[name="location"]').val()
                                 };
                                 
                                 if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
@@ -1283,13 +1293,13 @@ $(function() {
                             type: 'email',
                             title: 'Email address',
                             content: '<h2>Link to an email address</h2>\
-                                        <fieldset>\
-                                            <label>Email</label>\
-                                            <input name="email" type="text"/>\
+                                        <fieldset class="ui-widget-editor-link-email">\
+                                            <label for="ui-widget-editor-link-email">Email</label>\
+                                            <input id=ui-widget-editor-link-email" name="email" type="text"/>\
                                         </fieldset>\
-                                        <fieldset>\
-                                            <label>Subject (optional)</label>\
-                                            <input name="subject" type="text"/>\
+                                        <fieldset class="ui-widget-editor-link-email">\
+                                            <label for="ui-widget-editor-link-email-subject">Subject (optional)</label>\
+                                            <input id="ui-widget-editor-link-email-subject" name="subject" type="text"/>\
                                         </fieldset>',
                             class_name: 'ui-widget-editor-link-email',
                             show: function(panel, edit) {
@@ -1304,9 +1314,7 @@ $(function() {
                             attributes: function(panel) {
                                 var attributes = {
                                     href: 'mailto:' + panel.find('input[name="email"]').val()
-                                };
-                                
-                                var subject = panel.find('input[name="subject"]').val();
+                                }, subject = panel.find('input[name="subject"]').val();
 
                                 if (subject) attributes.href = attributes.href + '?Subject=' + encodeURIComponent(subject);
                                 
@@ -1315,6 +1323,9 @@ $(function() {
                         }
                     ];
                 
+                    // Remove & add custom radios
+                    link_dialog.find('.ui-widget-editor-link-menu fieldset').html('');
+                    
                     if (this.options.link_replace_types) {
                         link_types = this.options.link_custom_types;
                     } else {
@@ -1322,7 +1333,7 @@ $(function() {
                     }
                     
                     $(link_types).each(function() {
-                        var label = $('<label>\
+                        label = $('<label>\
                                         <input class="' + this.class_name + '" type="radio" value="' + this.type + '" name="link_type" autocomplete="off"/>\
                                         <span>' + this.title + '</span>\
                                     </label>').appendTo(link_types_fieldset);
@@ -1344,7 +1355,7 @@ $(function() {
                         width: 750,
                         height: 450,
                         title: title,
-                        dialogClass: 'ui-widget-editor-dialog ui-widget-editor-link',
+                        dialogClass: this.options.dialog_class + ' ui-widget-editor-link',
                         show: this.options.dialog_show_animation,
                         hide: this.options.dialog_hide_animation,
                         buttons: [
@@ -1355,14 +1366,14 @@ $(function() {
                                     
                                     rangy.restoreSelection(selection);
                                     
-                                    var data = link_dialog.find('input[type="radio"]:checked').data(editor_instance._data.names.link_type);
-
-                                    var attributes = data.attributes.call(editor_instance, link_dialog.find('.ui-widget-editor-link-content'), edit);
+                                    var data = link_dialog.find('input[type="radio"]:checked').data(editor_instance._data.names.link_type),
+                                        attributes = data.attributes.call(editor_instance, link_dialog.find('.ui-widget-editor-link-content'), edit),
+                                        a = null;
                                     
                                     if (!attributes) return;
                                     
                                     if (edit) {
-                                        var a = editor_instance._editor.selected_element;
+                                        a = editor_instance._editor.selected_element;
                                         $(link_types).each(function() {
                                             a.removeClass(this.class_name);
                                         });
@@ -1383,7 +1394,7 @@ $(function() {
                                     
                                     editor_instance._actions.state_change.call(editor_instance);
                                     $(this).dialog('close');
-                                },
+                                }
                             },
                             {
                                 text: 'Cancel',
@@ -1491,7 +1502,7 @@ $(function() {
                     }
                     
                     this._history.update.call(this);
-                },
+                }
 
             },
             
@@ -1523,7 +1534,7 @@ $(function() {
                         paste_bin.select().focus();
                         
                         window.setTimeout(function(){
-                            paste_bin.paste;
+                            //paste_bin.paste;
                             var pasted_value = $(paste_bin).val(),
                                 update_values = function(value) {
                                     editor_instance._actions.paste.dialog.find('textarea.ui-editor-paste-plain').val(value);
@@ -1563,12 +1574,11 @@ $(function() {
                                 width: 450,
                                 height: 500,
                                 resizable: true,
-                                dialogClass: '',
                                 title: 'Paste',
                                 position: 'center',
                                 show: editor_instance.options.dialog_show_animation,
                                 hide: editor_instance.options.dialog_hide_animation,
-                                dialogClass: 'ui-widget-editor-dialog ui-widget-editor-paste',
+                                dialogClass: editor_instance.options.dialog_class + ' ui-widget-editor-paste',
                                 buttons: 
                                     [
                                         {
@@ -1625,7 +1635,7 @@ $(function() {
                     
                     return true;
                 }
-            },
+            }
 
         },
 
@@ -1812,7 +1822,7 @@ $(function() {
                         modal: true,
                         resizable: false,
                         title: options.title,
-                        dialogClass: 'ui-widget-editor-dialog ui-widget-editor-confirmation',
+                        dialogClass: this.options.dialog_class + ' ui-widget-editor-confirmation',
                         show: this.options.dialog_show_animation,
                         hide: this.options.dialog_hide_animation,
                         buttons: [
@@ -1822,7 +1832,7 @@ $(function() {
                                 click: function() {
                                     if ($.isFunction(options.ok)) options.ok();
                                     $(this).dialog('close');
-                                },
+                                }
                             },
                             {
                                 text: 'Cancel',
@@ -1863,7 +1873,7 @@ $(function() {
                         resizable: false,
                         title: options.title,
                         width: 'auto',
-                        dialogClass: 'ui-widget-editor-dialog ui-widget-editor-alert',
+                        dialogClass: this.options.dialog_class + ' ui-widget-editor-alert',
                         show: this.options.dialog_show_animation,
                         hide: this.options.dialog_hide_animation,
                         buttons: [
@@ -1872,7 +1882,7 @@ $(function() {
                                 'class': 'ok',
                                 click: function() {
                                     $(this).dialog('close');
-                                },
+                                }
                             }
                         ],
                         open: function() {
@@ -1893,7 +1903,7 @@ $(function() {
                         primary: 'ui-icon-' + icon
                     }
                 });
-            },
+            }
             
         },
         
