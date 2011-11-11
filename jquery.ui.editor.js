@@ -1,4 +1,4 @@
-(function($) {
+(function($, window, rangy, undefined) {
     $.widget('ui.editor', {
                
         _instances: [],
@@ -2029,4 +2029,4 @@
         }
     
     });
-})(jQuery);
+})(jQuery, window, rangy);
