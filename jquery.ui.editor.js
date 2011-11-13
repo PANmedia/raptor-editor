@@ -1924,13 +1924,16 @@
             },
             
             initialize: function() {
+                this._message.panel = $('.ui-widget-editor-messages');
+                if (!this._message.panel.length) {
+                    this._message.panel = $('<div class="ui-widget-editor-messages" style="display:none;clear:both">\
+                                                <div>\
+                                                    <span class="ui-icon"></span>\
+                                                    <ul></ul>\
+                                                </div>\
+                                            </div>').appendTo(this._editor.toolbar);
+                }
                 this._message.initialized = true;
-                this._message.panel = $('<div class="ui-widget-editor-messages" style="display:none;clear:both">\
-                                            <div>\
-                                                <span class="ui-icon"></span>\
-                                                <ul></ul>\
-                                            </div>\
-                                        </div>').appendTo(this._editor.toolbar);
             },
             
             show: function(type, messages, delay, callback) {
@@ -1963,14 +1966,18 @@
             },
             
             hide: function(callback) {
-                if (this._message.initialized) {
+                if (this._message.initialized && this._message.panel) {
                     if (this._message.hide_timeout) window.clearTimeout(this._message.hide_timeout);
                     this._message.panel.slideUp(callback);
                 }
-            }
+            },
             
+            destroy: function() {
+                this._message.initialized = false;
+                if (this._message.panel) this._message.panel.remove();
+            }
         },
-    
+
         html: function(html) {
             if (typeof html == 'undefined') {
                 return this._content.cleaned(this.element.html());
@@ -2011,7 +2018,7 @@
             this.element.unbind('keyup.editor click.editor paste.editor');
             this.element.attr('contenteditable', 'false');
             this.element.removeClass(this._classes.editing);
-            this._message.hide.call(this);
+            this._message.destroy.call(this);
             this._editor.initialized = false;
             $(this._instances).each(function() {
                 this._content.reset.call(this);
@@ -2026,6 +2033,11 @@
                 }
             });
         }
-    
+
     });
+    $.ui.editor.addButton = function(name, button) {
+        $.ui.editor.prototype._buttons[name] = button
+    };
 })(jQuery, window, rangy);
+
+

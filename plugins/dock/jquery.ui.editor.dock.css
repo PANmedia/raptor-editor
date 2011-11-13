@@ -8,6 +8,10 @@
     margin: 0 !important;
 }
 
+.ui-widget-editor-docked .ui-widget-editor-inner {
+    padding: 5px;
+}
+
 .ui-widget-editor-docked .ui-widget-editor-toolbar {
     position: fixed;
     top: 0;
@@ -17,6 +21,7 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    padding: 0;
 }
 
 .ui-widget-editor-docked .ui-dialog-titlebar {
@@ -35,4 +40,13 @@
 
 .ui-widget-editor-dock-spacer {
     display: none;
+}
+
+/* Messages */
+.ui-widget-editor-docked .ui-widget-editor-toolbar .ui-widget-editor-messages {
+    padding: 0;
+    margin: 0 auto 10px;
+    width: 50%;
+    min-width: 500px;
+    text-align: left;
 }
