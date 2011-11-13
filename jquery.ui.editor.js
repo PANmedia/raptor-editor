@@ -216,46 +216,6 @@
                     this._selection.wrapWithTag.call(this, 'del');
                 }
             },
-            alignLeft: {
-                title: 'Left-align',
-                icons: {
-                    primary: 'ui-icon-left-align'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'text-align': 'left' });
-                }
-            },
-            justify: {
-                title: 'Justify',
-                icons: {
-                    primary: 'ui-icon-justify'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'text-align': 'justify' });
-                }                            
-            },
-            center: {
-                title: 'Center-align',
-                icons: {
-                    primary: 'ui-icon-center-align'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'text-align': 'center' });
-                }
-            },
-            alignRight: {
-                title: 'Right-align',
-                icons: {
-                    primary: 'ui-icon-right-align'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'text-align': 'right' });
-                }
-            },
             unorderedList: {
                 title: 'Unordered List',
                 icons: {
