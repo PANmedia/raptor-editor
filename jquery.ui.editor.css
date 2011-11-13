@@ -123,7 +123,6 @@
 }
 
 /* Inputs */
-.ui-widget-editor-paste .ui-tabs .ui-tabs-panel .ui-editor-paste-rich,
 .ui-widget-editor-dialog textarea,
 .ui-widget-editor-dialog input {
     border: 1px solid #D4D4D4;
@@ -138,26 +137,6 @@
 .ui-widget-editor-dialog textarea {
     height: 94%;
     width: 99%;
-}
-
-/* Dialog - paste */
-.ui-widget-editor-paste .ui-tabs {
-    width: 96%;
-    height: 94%;
-}
-
-.ui-widget-editor-paste .ui-tabs .ui-tabs-panel {
-    height: 85%;
-}
-
-.ui-widget-editor-paste .ui-tabs .ui-tabs-panel textarea {
-    height: 96%;
-    width: 99%;
-}
-
-.ui-widget-editor-paste .ui-tabs .ui-tabs-panel .ui-editor-paste-rich {
-    height: 97%;
-    outline: none;
 }
 
 /* Dialog - links */
