@@ -18,7 +18,7 @@
             if (!$(button).hasClass('ui-icon-pin-w')) {  // Dock
                 $(button).find('span.ui-button-icon-primary')
                         .removeClass('ui-icon-pin-s').addClass('ui-icon-pin-w');
-                if (this.options.custom_tooltips) {
+                if (this.options.customTooltips) {
                     $(button).tipTip({
                         content: 'Click to detach the toolbar'
                     });
@@ -26,7 +26,7 @@
             } else {    // Detach
                 $(button).find('span.ui-button-icon-primary')
                     .removeClass('ui-icon-pin-w').addClass('ui-icon-pin-s');
-                if (this.options.custom_tooltips) {
+                if (this.options.customTooltips) {
                     $(button).tipTip({
                         content: 'Click to dock the toolbar'
                     });

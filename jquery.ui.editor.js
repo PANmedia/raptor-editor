@@ -21,11 +21,11 @@
                         var error = function(response_code) {
                             editor.message.error.call(editor, [
                                 'Failed to save content',
-                                'Response code ' + response_code + ' from ' + window.location.protocol + '//' + window.location.hostname + editor.options.save_uri
+                                'Response code ' + response_code + ' from ' + window.location.protocol + '//' + window.location.hostname + editor.options.saveUri
                             ], 10000);
                         }, editor = this;
 
-                        $.ajax(this.options.save_uri, {
+                        $.ajax(this.options.saveUri, {
                             data: {
                                 html: this.html(),
                                 name: this.element.attr('name')
@@ -41,13 +41,13 @@
                             },
                             success: function(data) {
                                 editor.confirm.call(editor, 'Content saved');
-                                editor._data.clear.call(editor._data.names.original_html);
+                                editor._data.clear.call(editor._data.names.originalHtml);
                             }
                         });
 
                     }
                 },
-                state_change: function(button) {
+                stateChange: function(button) {
                     $(button).button('option', 'disabled', !this._content.dirty.call(this));
                 }
             },
@@ -61,12 +61,12 @@
                     // Allow them to cancel the default
                     if (this._trigger('cancel')) {
                         // confirm
-                        var editor_instance = this,
+                        var editorInstance = this,
                             destroy = function() {
-                                editor_instance._content.reset.call(editor_instance);
-                                editor_instance.destroy();
+                                editorInstance._content.reset.call(editorInstance);
+                                editorInstance.destroy();
                             };
-                        if (!this._content.dirty_blocks_exist.call(this)) {
+                        if (!this._content.dirtyBlocksExist.call(this)) {
                             destroy();
                         } else {
                             this._dialog.confirmation.show.call(this, {
@@ -80,7 +80,7 @@
                     }
                 }
             },
-            show_guides: {
+            showGuides: {
                 title: 'Show Guides',
                 icons: {
                     primary: 'ui-icon-pencil'
@@ -99,7 +99,7 @@
                 },
                 classes: 'ui-editor-icon ui-widget-editor-button-view-source',
                 click: function() {
-                    var editor_instance = this,
+                    var editorInstance = this,
                         dialog = $('.ui-widget-editor-dialog-view-source');
 
                     if (!dialog.length) {
@@ -114,30 +114,30 @@
                         height: 400,
                         resizable: true,
                         title: 'View Source',
-                        dialogClass: this.options.dialog_class + ' ui-widget-editor-view-source',
-                        show: this.options.dialog_show_animation,
-                        hide: this.options.dialog_hide_animation,
+                        dialogClass: this.options.dialogClass + ' ui-widget-editor-view-source',
+                        show: this.options.dialogShowAnimation,
+                        hide: this.options.dialogHideAnimation,
                         buttons: [
                             {
                                 text: 'Reload Source',
                                 'class': 'reload-source',
                                 click: function() {
-                                    $(this).find('textarea').val(editor_instance.html());
+                                    $(this).find('textarea').val(editorInstance.html());
                                 }
                             },
                             {
                                 text: 'Apply Source',
                                 'class': 'apply-source',
                                 click: function() {
-                                    editor_instance.html($(this).find('textarea').val());
+                                    editorInstance.html($(this).find('textarea').val());
                                 }
                             }
                         ],
                         open: function() {
-                            editor_instance._dialog.apply_button_icon('reload-source', 'refresh');
-                            editor_instance._dialog.apply_button_icon('apply-source', 'circle-check');
+                            editorInstance._dialog.applyButtonIcon('reload-source', 'refresh');
+                            editorInstance._dialog.applyButtonIcon('apply-source', 'circle-check');
 
-                            $(this).find('textarea').val(editor_instance.html());
+                            $(this).find('textarea').val(editorInstance.html());
                         },
                         close: function() {
                             $(this).dialog('destroy');
@@ -158,7 +158,7 @@
                 click: function() {
                     this._history.undo.call(this);
                 },
-                state_change: function(button) {
+                stateChange: function(button) {
                     this._history.toggle_buttons.call(this);
                 }
             },
@@ -171,7 +171,7 @@
                 click: function() {
                     this._history.redo.call(this);
                 },
-                state_change: function(button) {
+                stateChange: function(button) {
                     this._history.toggle_buttons.call(this);
                 }
             },
@@ -182,7 +182,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'strong');
+                    this._selection.wrapWithTag.call(this, 'strong');
                 }
             },
             italic: {
@@ -192,7 +192,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'em');
+                    this._selection.wrapWithTag.call(this, 'em');
                 }
             },
             underline: {
@@ -202,7 +202,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'span', { classes: 'underline' });
+                    this._selection.wrapWithTag.call(this, 'span', { classes: 'underline' });
                 }
             },
             strikethrough: {
@@ -212,17 +212,17 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'del');
+                    this._selection.wrapWithTag.call(this, 'del');
                 }
             },
-            align_left: {
+            alignLeft: {
                 title: 'Left-align',
                 icons: {
                     primary: 'ui-icon-left-align'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'text-align': 'left' });
+                    this._selection.applyStyle.call(this, { 'text-align': 'left' });
                 }
             },
             justify: {
@@ -232,7 +232,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'text-align': 'justify' });
+                    this._selection.applyStyle.call(this, { 'text-align': 'justify' });
                 }                            
             },
             center: {
@@ -242,40 +242,40 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'text-align': 'center' });
+                    this._selection.applyStyle.call(this, { 'text-align': 'center' });
                 }
             },
-            align_right: {
+            alignRight: {
                 title: 'Right-align',
                 icons: {
                     primary: 'ui-icon-right-align'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'text-align': 'right' });
+                    this._selection.applyStyle.call(this, { 'text-align': 'right' });
                 }
             },
-            unordered_list: {
+            unorderedList: {
                 title: 'Unordered List',
                 icons: {
                     primary: 'ui-icon-unordered-list'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'ul');
+                    this._selection.wrapWithTag.call(this, 'ul');
                 }
             },
-            ordered_list: {
+            orderedList: {
                 title: 'Ordered List',
                 icons: {
                     primary: 'ui-icon-ordered-list'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'ol');
+                    this._selection.wrapWithTag.call(this, 'ol');
                 }
             },
-            increase_font_size: {
+            increaseFontSize: {
                 title: 'Increase Font Size',
                 icons: {
                     primary: 'ui-icon-font-up'
@@ -283,14 +283,14 @@
                 classes: 'ui-editor-icon',
                 click: function() {
                     this._history.update.call(this);
-                    this._selection.enforce_legality.call(this);
+                    this._selection.enforceLegality.call(this);
 
-                    var editor_instance = this,
-                            content = increased_size = replacement = style = null;
+                    var editorInstance = this,
+                            content = null, increasedSize = null, replacement = null, style = null;
 
                     if (!this._selection.exists.call(this)) {
                         style = { 'font-size': '110%' };
-                        if (!this._util.is_root.call(this, this._editor.selected_element)) this._editor.selected_element.css(style);
+                        if (!this._util.isRoot.call(this, this._editor.selectedElement)) this._editor.selectedElement.css(style);
                         else this.element.children().css(style);
                     } else {
 
@@ -299,8 +299,8 @@
                             if ((this.commonAncestorContainer == this.startContainer && this.commonAncestorContainer == this.endContainer)
                                 && (this.startOffset == 0 && this.endOffset == 1)) {
 
-                                increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 1.1);
-                                $(this.commonAncestorContainer).css('font-size', increased_size);
+                                increasedSize = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 1.1);
+                                $(this.commonAncestorContainer).css('font-size', increasedSize);
                             } else {
 
                                 replacement = $('<span style="font-size:110%"></span>');
@@ -310,15 +310,15 @@
                                     replacement.append(this);
                                 });
 
-                                editor_instance._selection.replace.call(editor_instance, replacement, this);
+                                editorInstance._selection.replace.call(editorInstance, replacement, this);
                             }
                         });
                     }
 
-                    this._actions.state_change.call(this);
+                    this._actions.stateChange.call(this);
                 }
             },
-            decrease_font_size: {
+            decreaseFontSize: {
                 title: 'Decrease Font Size',
                 icons: {
                     primary: 'ui-icon-font-down'
@@ -326,14 +326,14 @@
                 classes: 'ui-editor-icon',
                 click: function() {
                     this._history.update.call(this);
-                    this._selection.enforce_legality.call(this);
+                    this._selection.enforceLegality.call(this);
 
-                    var editor_instance = this,
-                        style = increased_size = replacement = null;
+                    var editorInstance = this,
+                        style = null, increasedSize = null, replacement = null;
 
                     if (!this._selection.exists.call(this)) {
                         style = { 'font-size': '90%' };
-                        if (!this._util.is_root.call(this, this._editor.selected_element)) this._editor.selected_element.css(style);
+                        if (!this._util.isRoot.call(this, this._editor.selectedElement)) this._editor.selectedElement.css(style);
                         else this.element.children().css(style);
                     } else {
                         $(rangy.getSelection().getAllRanges()).each(function(){
@@ -341,8 +341,8 @@
                             if ((this.commonAncestorContainer == this.startContainer && this.commonAncestorContainer == this.endContainer)
                                 && (this.startOffset == 0 && this.endOffset == 1)) {
 
-                                increased_size = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 0.9);
-                                $(this.commonAncestorContainer).css('font-size', increased_size);
+                                increasedSize = ($(this.commonAncestorContainer).css('font-size').replace('px', '') * 0.9);
+                                $(this.commonAncestorContainer).css('font-size', increasedSize);
                             } else {
 
                                 replacement = $('<span style="font-size:90%"></span>');
@@ -352,15 +352,15 @@
                                     replacement.append(this);
                                 });
 
-                                editor_instance._selection.replace.call(editor_instance, replacement, this);
+                                editorInstance._selection.replace.call(editorInstance, replacement, this);
                             }
                         });
                     }
 
-                    this._actions.state_change.call(this);
+                    this._actions.stateChange.call(this);
                 }
             },
-            add_edit_link: {
+            addEditLink: {
                 title: 'Insert Link',
                 icons: {
                     primary: 'ui-icon-insert-link'
@@ -369,11 +369,11 @@
                 click: function() {
                     this._actions.link.show.call(this);
                 },
-                state_change: function(button) {
-                    $(button).button('option', 'disabled', !(this._selection.exists.call(this) || this._editor.selected_element.is('a')));
+                stateChange: function(button) {
+                    $(button).button('option', 'disabled', !(this._selection.exists.call(this) || this._editor.selectedElement.is('a')));
                 }
             },
-            remove_link: {
+            removeLink: {
                 title: 'Remove Link',
                 icons: {
                     primary: 'ui-icon-remove-link'
@@ -382,8 +382,8 @@
                 click: function() {
                     this._actions.link.remove.call(this);
                 },
-                state_change: function(button) {
-                    $(button).button('option', 'disabled', !this._editor.selected_element.is('a'));
+                stateChange: function(button) {
+                    $(button).button('option', 'disabled', !this._editor.selectedElement.is('a'));
                 }
             },
             hr: {
@@ -393,7 +393,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.insert_tag.call(this, 'hr');
+                    this._selection.insertTag.call(this, 'hr');
                 }
             },
             blockquote: {
@@ -403,43 +403,43 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.wrap_with_tag.call(this, 'blockquote');
+                    this._selection.wrapWithTag.call(this, 'blockquote');
                 }
             },
-            float_left: {
+            floatLeft: {
                 title: 'Float Left',
                 icons: {
                     primary: 'ui-icon-float-left'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'float': 'left' });
+                    this._selection.applyStyle.call(this, { 'float': 'left' });
                 }
             },
-            float_none: {
+            floatNone: {
                 title: 'Float None',
                 icons: {
                     primary: 'ui-icon-float-none'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'float': 'none' });
+                    this._selection.applyStyle.call(this, { 'float': 'none' });
                 }
             },
-            float_right: {
+            floatRight: {
                 title: 'Float Right',
                 icons: {
                     primary: 'ui-icon-float-right'
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._selection.apply_styles.call(this, { 'float': 'right' });
+                    this._selection.applyStyle.call(this, { 'float': 'right' });
                 }
             },
-            tag_menu: {
+            tagMenu: {
                 title: 'Tag Menu',
                 initialize: function(object, button_group) {
-                    var editor_instance = this;
+                    var editorInstance = this;
                     $('<select autocomplete="off" name="tag" class="ui-editor-tag-select">\
                         <option value="na">N/A</option>\
                         <option value="p">Paragraph</option>\
@@ -447,24 +447,24 @@
                         <option value="h2">Heading&nbsp;2</option>\
                         <option value="h3">Heading&nbsp;3</option>\
                         <option value="div">Divider</option>\
-                    </select>').appendTo(button_group).data(editor_instance._data.names.button, object).bind('change.editor', function(){
+                    </select>').appendTo(button_group).data(editorInstance._data.names.button, object).bind('change.editor', function(){
                             var tag = $(this).find(':selected').val();
                             if (tag == 'na') return false
-                            else editor_instance._selection.change_tag.call(editor_instance, tag);
+                            else editorInstance._selection.changeTag.call(editorInstance, tag);
                         }).selectmenu({
                         width: 150
                     });
 
-                    if (this.options.custom_tooltips) {
+                    if (this.options.customTooltips) {
                         button_group.find('.ui-selectmenu').tipTip({
                             content: 'Change HTML tag of selected element',
                             maxWidth: 'auto'
                         });
                     }
                 },
-                state_change: function() {
+                stateChange: function() {
                     var menu = $('.ui-editor-tag-select');
-                    if (this._util.is_root.call(this, this._editor.selected_element)) menu.selectmenu('disable');
+                    if (this._util.isRoot.call(this, this._editor.selectedElement)) menu.selectmenu('disable');
                     else menu.selectmenu('enable');
                 },
                 destroy: function() {
@@ -475,23 +475,23 @@
 
         // Options start here
         options: {
-            css_prefix: 'ui-editor-',
-            custom_tooltips: true,
+            cssPrefix: 'ui-editor-',
+            customTooltips: true,
             
-            toolbar_position: [5, 47], 
+            toolbarPosition: [5, 47], 
             //function() {
                 //return [
                     //this.element.offset().top,
                     //this.element.offset().left
                 //];
             //},
-            toolbar_save_individual_positions: false,
+            toolbarSaveIndividualPositions: false,
             
-            begin_editing_class: '',
-            begin_editing_content: 'Click to begin editing',
-            begin_editing_position_at: 'center center',
-            begin_editing_position_my: 'center center',
-            begin_editing_position_using: function(position) {
+            beginEditingClass: '',
+            beginEditingContent: 'Click to begin editing',
+            beginEditingPositionAt: 'center center',
+            beginEditingPositionMy: 'center center',
+            beginEditingPositionUsing: function(position) {
                 $(this).css({
                     position: 'absolute',
                     top: position.top,
@@ -499,46 +499,45 @@
                 });
             },
             
-            target_animation_outline_colour: 'rgb(134, 213, 124)',
-            target_animation_outline_width: 1,
-            target_animation_background_colour: 'rgb(241, 250, 239)',
-            target_animation: function() {
-                var original_outline_colour = this.element.css('outline-color'),
-                    original_outline_width = this.element.css('outline-width'),
-                    original_background_colour = this.element.css('background-color'),
-                    editor_instance = this;
+            targetAnimationOutlineColour: 'rgb(134, 213, 124)',
+            targetAnimationOutlineWidth: 1,
+            targetAnimationBackgroundColour: 'rgb(241, 250, 239)',
+            targetAnimation: function() {
+                var originalOutlineColour = this.element.css('outline-color'),
+                    originalOutlineWidth = this.element.css('outline-width'),
+                    originalBackgroundColour = this.element.css('background-color'),
+                    editorInstance = this;
                 
                 this.element.stop().animate({
-                    outlineColor: this.options.target_animation_outline_colour,
-                    outlineWidth: this.options.target_animation_outline_width,
-                    backgroundColor: this.options.target_animation_background_colour
+                    outlineColor: this.options.targetAnimationOutlineColour,
+                    outlineWidth: this.options.targetAnimationOutlineWidth,
+                    backgroundColor: this.options.targetAnimationBackgroundColour
                 }, function() {
-                    editor_instance.element.animate({
-                        outlineColor: original_outline_colour,
-                        outlineWidth: original_outline_width,
-                        backgroundColor: original_background_colour
+                    editorInstance.element.animate({
+                        outlineColor: originalOutlineColour,
+                        outlineWidth: originalOutlineWidth,
+                        backgroundColor: originalBackgroundColour
                     });
                 });
             },
             
-            dialog_show_animation: 'fade',
-            dialog_hide_animation: 'fade',
-            dialog_class: 'ui-widget-editor-dialog',
+            dialogShowAnimation: 'fade',
+            dialogHideAnimation: 'fade',
+            dialogClass: 'ui-widget-editor-dialog',
             
-            replace_buttons: false,
-            custom_buttons: {},
-            button_order: false,
+            customButtons: {},
+            buttonOrder: false,
             
-            unsaved_edit_warning: true,
-            unsaved_edit_warning_content: 'This block contains unsaved changes',
-            unsaved_edit_warning_tooltip_position: 'bottom',
-            unsaved_edit_warning_tooltip_max_width: 'auto',
-            unsaved_edit_warning_class: '',
-            unsaved_edit_warning_animation: 'fade',
-            unsaved_edit_warning_position_at: 'right bottom',
-            unsaved_edit_warning_position_my: 'right bottom',
-            unsaved_edit_warning_idle_opacity: 0.5,
-            unsaved_edit_warning_position_using: function(position) {
+            unsavedEditWarning: true,
+            unsavedEditWarningContent: 'This block contains unsaved changes',
+            unsavedEditWarningContentTooltipPosition: 'bottom',
+            unsavedEditWarningContentTooltipMaxWidth: 'auto',
+            unsavedEditWarningContentClass: '',
+            unsavedEditWarningAnimation: 'fade',
+            unsavedEditWarningPositionAt: 'right bottom',
+            unsavedEditWarningPositionMy: 'right bottom',
+            unsavedEditWarningContentIdleOpacity: 0.5,
+            unsavedEditWarningContentPositionUsing: function(position) {
                 $(this).css({
                     position: 'absolute',
                     top: position.top,
@@ -546,26 +545,26 @@
                 });
             },
             
-            title_visible: true,
-            title_default: 'jQuery UI Editor Controls',
-            title_tags: true,
+            titleVisible: true,
+            titleDefault: 'jQuery UI Editor Controls',
+            titleTags: true,
             
-            save_uri: '/editor/save',
+            saveUri: '/editor/save',
             
-            link_panel_animation: 'fade',
-            link_replace_types: false,
-            link_custom_types: []
+            linkPanelAnimation: 'fade',
+            linkReplaceTypes: false,
+            linkCustomTypes: []
         },
         
         _init: function() {
             if (typeof rangy == 'undefined') {
                 this._util.exception('The rangy library is required but could not be found');
             }
-            if (this.options.custom_tooltips && !$.isFunction($.fn.tipTip)) {
-                this.options.custom_tooltips = false;
+            if (this.options.customTooltips && !$.isFunction($.fn.tipTip)) {
+                this.options.customTooltips = false;
                 this._util.exception('Custom tooltips was requested but tipTip (http://code.drewwilson.com/entry/tiptip-jquery-plugin) wasn\'t found.\nCustom tooltips disabled');
             }
-            this._click_to_edit.initialize.call(this);
+            this._clickToEdit.initialize.call(this);
         },
         
         _create: function() {
@@ -589,14 +588,14 @@
                 return i;
             },
             
-            is_root: function(element) {
+            isRoot: function(element) {
          
-                var is_root = (this._util.identify(element) == this._util.identify(this.element) 
+                var isRoot = (this._util.identify(element) == this._util.identify(this.element) 
                                 || element.get(0).tagName.toLowerCase() == 'body');
                                 
-                if (!is_root) $(element).removeAttr('id');
+                if (!isRoot) $(element).removeAttr('id');
                 
-                return is_root;
+                return isRoot;
             },
             
             identify: function(element) {
@@ -628,11 +627,11 @@
             },
             
             names: {
-                original_html: 'ui-widget-editor-original-html',
+                originalHtml: 'ui-widget-editor-original-html',
                 button: 'ui-widget-button',
-                link_type: 'ui-widget-editor-link-type',
-                unsaved_edits_warning: 'ui-widget-editor-unsaved-edits',
-                toolbar_position: 'ui-widget-editor-toolbar-position'
+                linkType: 'ui-widget-editor-link-type',
+                unsavedEditsWarning: 'ui-widget-editor-unsaved-edits',
+                toolbarPosition: 'ui-widget-editor-toolbar-position'
             },
             
             clear: function(name) {
@@ -641,13 +640,13 @@
             
         },
 
-        _click_to_edit: {
+        _clickToEdit: {
             
             message: false,
             
             initialize: function() {
-                this.element.bind('mouseenter.target', $.proxy(this._click_to_edit.show, this));
-                this.element.bind('mouseleave.target', $.proxy(this._click_to_edit.hide, this));
+                this.element.bind('mouseenter.target', $.proxy(this._clickToEdit.show, this));
+                this.element.bind('mouseleave.target', $.proxy(this._clickToEdit.hide, this));
                 this.element.bind('click.target', $.proxy(this._editor.show, this));
             },
             
@@ -657,25 +656,25 @@
                     $(this._instances).each(function() {
                         this.element.removeClass(this._classes.highlight);
                         this.element.removeClass(this._classes.hover);
-                        this._click_to_edit.hide.call(this);
+                        this._clickToEdit.hide.call(this);
                     });
                     
-                    if (!this._click_to_edit.message) {
-                        this._click_to_edit.message = $('<div class="ui-widget-editor-edit ' 
-                                                        + this.options.begin_editing_class 
+                    if (!this._clickToEdit.message) {
+                        this._clickToEdit.message = $('<div class="ui-widget-editor-edit ' 
+                                                        + this.options.beginEditingClass 
                                                         + '" style="opacity: 0;">\
-                                                            ' + this.options.begin_editing_content + '\
+                                                            ' + this.options.beginEditingContent + '\
                                                         </div>').appendTo('body');
                     }
 
                     this.element.addClass(this._classes.highlight);
                     this.element.addClass(this._classes.hover);
                     
-                    this._click_to_edit.message.position({
-                        at: this.options.begin_editing_position_at,
-                        my: this.options.begin_editing_position_my,
+                    this._clickToEdit.message.position({
+                        at: this.options.beginEditingPositionAt,
+                        my: this.options.beginEditingPositionMy,
                         of: this.element,
-                        using: this.options.begin_editing_position_using
+                        using: this.options.beginEditingPositionUsing
                     }).stop().animate({ opacity: 1 });
                 }
             },
@@ -683,14 +682,14 @@
             hide: function() {
                 this.element.removeClass(this._classes.highlight);
                 this.element.removeClass(this._classes.hover);
-                if (this._click_to_edit.message) this._click_to_edit.message.stop().animate({ opacity: 0 });
+                if (this._clickToEdit.message) this._clickToEdit.message.stop().animate({ opacity: 0 });
             }
         },
         
         _editor: {
             
             editing: false,
-            selected_element: false,
+            selectedElement: false,
             toolbar: false,
             initialized: false,
             
@@ -699,12 +698,12 @@
                                             <div class="ui-widget-editor-inner" style="display:none"></div>\
                                         </div>');
                 
-                this._editor.generate_buttons.call(this);
+                this._editor.generateButtons.call(this);
                 
-                var editor_instance = this;
+                var editorInstance = this;
                 
                 this._editor.toolbar.dialog({
-                    position: ($.isFunction(this.options.toolbar_position) ? this.options.toolbar_position.call(this) : this.options.toolbar_position),
+                    position: ($.isFunction(this.options.toolbarPosition) ? this.options.toolbarPosition.call(this) : this.options.toolbarPosition),
                     resizable: false,
                     closeOnEscape: false,
                     width: 'auto',
@@ -714,9 +713,9 @@
                     zIndex: 32000,
                     title: 'Editor loading...',
                     autoOpen: false,
-                    dialogClass: this.options.dialog_class,
-                    show: this.options.dialog_show_animation,
-                    hide: this.options.dialog_hide_animation,
+                    dialogClass: this.options.dialogClass,
+                    show: this.options.dialogShowAnimation,
+                    hide: this.options.dialogHideAnimation,
                     open: function(event, ui) {
                         $(this).css('overflow', 'hidden');
                         var parent = $(this).parent();
@@ -727,7 +726,7 @@
                     }
                 });
                 
-                $(window).bind('beforeunload', $.proxy(this._actions.unload_warning, this));
+                $(window).bind('beforeunload', $.proxy(this._actions.unloadWarning, this));
                 
                 if (typeof rangy == 'undefined') {
                     this._dialog.alert.show.call(this, {
@@ -747,38 +746,37 @@
                 this._editor.toolbar.find('.ui-widget-editor-inner').slideDown();
             },
 
-            generate_buttons: function() {
+            generateButtons: function() {
                 
-                var editor_instance = this,
+                var editorInstance = this,
                     buttons = this._buttons,
-                    button_order = button = object = null;
+                    buttonOrder = null, button = null, object = null;
 
-                $.extend(buttons, this.options.custom_buttons);
+                $.extend(buttons, this.options.customButtons);
                 
                 this._editor.toolbar.find('.ui-widget-editor-inner').html('');
 
-                button_order = [
-                    ['save', 'cancel', 'show_guides'],
+                buttonOrder = [
+                    ['save', 'cancel', 'showGuides'],
                     ['view_source'],
                     ['undo', 'redo'],
-                    ['align_left', 'center', 'justify', 'align_right'],
+                    ['alignLeft', 'center', 'justify', 'alignRight'],
                     ['bold', 'italic', 'underline', 'strikethrough'],
-                    ['unordered_list', 'ordered_list'],
+                    ['unorderedList', 'orderedList'],
                     ['hr', 'blockquote'],
-                    ['increase_font_size', 'decrease_font_size'],
-                    ['add_edit_link', 'remove_link'],
-                    ['float_left', 'float_none', 'float_right'],
-                    ['tag_menu']
+                    ['increaseFontSize', 'decreaseFontSize'],
+                    ['addEditLink', 'removeLink'],
+                    ['floatLeft', 'floatNone', 'floatRight'],
+                    ['tagMenu']
                 ];
                 
-                if (this.options.button_order) button_order = this.options.button_order;
-                
-                // Buttons
-                $.each(button_order, function() {
+                if (this.options.buttonOrder) buttonOrder = this.options.buttonOrder;
+
+                $.each(buttonOrder, function() {
                     
                     button_group = $('<div></div>');
                         
-                    if (editor_instance._util.count_objects(this) > 1) $(button_group).addClass('ui-widget-editor-buttonset');
+                    if (editorInstance._util.count_objects(this) > 1) $(button_group).addClass('ui-widget-editor-buttonset');
                     
                     $.each(this, function(index, value) {
                         if (typeof buttons[value] == 'undefined') {
@@ -786,14 +784,14 @@
                         } else {
                             object = buttons[value];
                             if ($.isFunction(object.initialize)) {
-                                object.initialize.call(editor_instance, object, button_group);
+                                object.initialize.call(editorInstance, object, button_group);
                             } else {
                                 button = $('<button>' + object.title + '</button>')
                                     .addClass('ui-widget-editor-button-' + value)
                                     .attr('name', value)
                                     .attr('title', value)
                                     .val(value)
-                                    .data(editor_instance._data.names.button, object)
+                                    .data(editorInstance._data.names.button, object)
                                     .appendTo(button_group);
                             
                                 if (typeof object.classes != 'undefined') button.addClass(object.classes);
@@ -804,7 +802,7 @@
                                     text: false 
                                 });
                                 
-                                if (editor_instance.options.custom_tooltips) {
+                                if (editorInstance.options.customTooltips) {
                                     button.tipTip({
                                         content: object.title
                                     }).removeAttr('title');
@@ -814,7 +812,7 @@
                             }
                         }
                     });
-                    button_group.appendTo(editor_instance._editor.toolbar.find('.ui-widget-editor-inner'));
+                    button_group.appendTo(editorInstance._editor.toolbar.find('.ui-widget-editor-inner'));
                 });
 
             },
@@ -822,7 +820,7 @@
             show: function() {
                 
                 this._editor.editing = true;
-                this._click_to_edit.hide.call(this);
+                this._clickToEdit.hide.call(this);
 
                 if (this._editor.initialized === false) {
                     if (this._editor.initialize.call(this) === false) return;
@@ -836,69 +834,69 @@
             
             target: function() {
                 
-                if (!this._data.exists(this.element, this._data.names.original_html)) {
-                    this.element.data(this._data.names.original_html, this.element.html());
+                if (!this._data.exists(this.element, this._data.names.originalHtml)) {
+                    this.element.data(this._data.names.originalHtml, this.element.html());
                 }
                 
-                var editor_instance = this,
+                var editorInstance = this,
                     position = false;
                 
                 // If the instance should remember its toolbar position and reset it when the element is retargeted
-                if (this.options.toolbar_save_individual_positions) {                
+                if (this.options.toolbarSaveIndividualPositions) {                
                     // Make sure the toolbar isn't repositioned if the user has manually moved it
-                    if (this._data.exists(this.element, this._data.names.toolbar_position)) {
-                        position = this.element.data(this._data.names.toolbar_position);
+                    if (this._data.exists(this.element, this._data.names.toolbarPosition)) {
+                        position = this.element.data(this._data.names.toolbarPosition);
                     } else {
-                        position = ($.isFunction(this.options.toolbar_position) ? this.options.toolbar_position.call(this) : this.options.toolbar_position);
+                        position = ($.isFunction(this.options.toolbarPosition) ? this.options.toolbarPosition.call(this) : this.options.toolbarPosition);
                     }
                     this._editor.toolbar.dialog().dialog('option', 'position', position);
                     this._editor.toolbar.dialog().dialog('option', 'dragStop', function() {
-                        editor_instance.element.data(editor_instance._data.names.toolbar_position, $(this).dialog().dialog('option', 'position'));
+                        editorInstance.element.data(editorInstance._data.names.toolbarPosition, $(this).dialog().dialog('option', 'position'));
                     });
                 }
             
-                if (!this.options.title_visible) this._editor.toolbar.dialog().parent().find('.ui-dialog-titlebar').hide();
+                if (!this.options.titleVisible) this._editor.toolbar.dialog().parent().find('.ui-dialog-titlebar').hide();
                 else this._editor.toolbar.dialog().parent().find('.ui-dialog-titlebar').show()
                 
                 // Unbind previous instances
                 $(this._instances).each(function(){
-                    var iterating_editor_instance = this;
+                    var iteratingEditorInstance = this;
                     this._editor.toolbar.find('button').each(function() {
-                        var data = $(this).data(editor_instance._data.names.button);
+                        var data = $(this).data(editorInstance._data.names.button);
                         if ($.isFunction(data.destroy)) {
-                            data.destroy.call(iterating_editor_instance, this);
+                            data.destroy.call(iteratingEditorInstance, this);
                         }
                     });
-                    iterating_editor_instance._editor.editing = false;
-                    iterating_editor_instance.element.unbind('keyup.editor click.editor paste.editor');
-                    iterating_editor_instance.element.attr('contenteditable', 'false');
-                    iterating_editor_instance.element.removeClass(iterating_editor_instance._classes.editing);
-                    iterating_editor_instance._message.hide.call(iterating_editor_instance);
+                    iteratingEditorInstance._editor.editing = false;
+                    iteratingEditorInstance.element.unbind('keyup.editor click.editor paste.editor');
+                    iteratingEditorInstance.element.attr('contenteditable', 'false');
+                    iteratingEditorInstance.element.removeClass(iteratingEditorInstance._classes.editing);
+                    iteratingEditorInstance._message.hide.call(iteratingEditorInstance);
                 });
 
-                this._editor.generate_buttons.call(this);
+                this._editor.generateButtons.call(this);
                 
                 this._editor.toolbar.find('button').each(function() {
-                    var data = $(this).data(editor_instance._data.names.button);
+                    var data = $(this).data(editorInstance._data.names.button);
                     if ($.isFunction(data.click)) {
                         $(this).unbind('click.editor').bind('click.editor', function(event) {
-                            data.click.call(editor_instance, event, this);
+                            data.click.call(editorInstance, event, this);
                         });
                     }
                 });
 
                 $('.ui-widget-editor-dialog .ui-widget-editor-element-path').die('click.editor').
                         live('click.editor', function(){
-                            var current = editor_instance._editor.selected_element, 
+                            var current = editorInstance._editor.selectedElement, 
                                 i = 0;
                             if ($(this).attr('name') != 'root') {
                                 while (i != $(this).attr('name')) {
                                     current = current.parent();
                                     i++;
                                 }
-                                editor_instance._selection.select_element.call(editor_instance, current);
+                                editorInstance._selection.selectElement.call(editorInstance, current);
                             } else {
-                                editor_instance._selection.select_all.call(editor_instance);
+                                editorInstance._selection.selectAll.call(editorInstance);
                             }                            
                         });
                 
@@ -908,115 +906,121 @@
                 this.element.bind('paste.editor', $.proxy(this._actions.paste.capture, this));
                 this.element.bind('keyup.editor click.editor', function(event) {
                     if (!event.ctrlKey) {
-                        editor_instance._actions.state_change.call(editor_instance);
+                        editorInstance._actions.stateChange.call(editorInstance);
                     }
                     return true;
                 });
                 
-                this._actions.state_change.call(this);
-                if (this.options.target_animation && $.isFunction(this.options.target_animation)) this.options.target_animation.call(this);
+                this._actions.stateChange.call(this);
+                if (this.options.targetAnimation && $.isFunction(this.options.targetAnimation)) this.options.targetAnimation.call(this);
                 this.element.focus();
+            },
+            
+            destroy: function() {
+                this._editor.toolbar.dialog('close');
+                this._editor.editing = false;
+                this._editor.initialized = false;
             }
         },
         
         _selection: {
         
-            wrap_with_tag: function(tag, options) {
+            wrapWithTag: function(tag, options) {
                 this._history.update.call(this);
                 
                 if (typeof options == 'undefined') options = {};
                 
                 if(tag == 'ul' || tag == 'ol') {
-                    this._selection.wrap_with_list.call(this, tag, options);
+                    this._selection.wrapWithList.call(this, tag, options);
                     return;
                 }
                 
                 var classes = typeof options.classes != 'undefined' ? options.classes : tag;
 
-                this._selection.enforce_legality.call(this);
-                rangy.createCssClassApplier(this.options.css_prefix + classes, {
+                this._selection.enforceLegality.call(this);
+                rangy.createCssClassApplier(this.options.cssPrefix + classes, {
                     normalize: true,
                     elementTagName: tag
                 }).toggleSelection();
                 
-                this._actions.state_change.call(this);
+                this._actions.stateChange.call(this);
             },
             
-            wrap_with_list: function(tag, options) {
+            wrapWithList: function(tag, options) {
                 this._history.update.call(this);
                 if (typeof options == 'undefined') options = {};
                 
-                var editor_instance = this,
+                var editorInstance = this,
                     create_applier = function(tag) {
-                        return rangy.createCssClassApplier(editor_instance.options.css_prefix + tag, {
+                        return rangy.createCssClassApplier(editorInstance.options.cssPrefix + tag, {
                             normalize: true,
                             elementTagName: tag
                         });
                     };
                 
-                this._selection.enforce_legality.call(this);
+                this._selection.enforceLegality.call(this);
                 $(rangy.getSelection().getAllRanges()).each(function(){
                     if (this.startOffset == this.endOffset) {
-                        var list = $('<' + tag + ' class="' + editor_instance.options.css_prefix + tag + '">'
-                                + '<li class="' + editor_instance.options.css_prefix + 'li">First list item</li></' + tag + '>');
-                        editor_instance._content.replace_range.call(editor_instance, list, this);
-                        editor_instance._selection.select_element.call(editor_instance, list.find('li:first'));
+                        var list = $('<' + tag + ' class="' + editorInstance.options.cssPrefix + tag + '">'
+                                + '<li class="' + editorInstance.options.cssPrefix + 'li">First list item</li></' + tag + '>');
+                        editorInstance._content.replaceRange.call(editorInstance, list, this);
+                        editorInstance._selection.selectElement.call(editorInstance, list.find('li:first'));
                     } else {
                         create_applier(tag).applyToRange(this);
                         create_applier('li').applyToRange(this);
                     }
                 });
-                this._actions.state_change.call(this);
+                this._actions.stateChange.call(this);
             },
             
-            replace_with_tag: function(tag, options) {
+            replaceWithTag: function(tag, options) {
                 if (typeof options == 'undefined') options = {};
-                this._selection.enforce_legality.call(this);
+                this._selection.enforceLegality.call(this);
                 
-                var classes = this.options.css_prefix + ' ' + tag;
+                var classes = this.options.cssPrefix + ' ' + tag;
                 classes += (typeof options.classes != 'undefined') ? ' ' + options.classes : '';
                 
                 this._selection.replace.call(this, $('<' + tag + ' class="' + classes + '"/>'));
             },
             
-            insert_tag: function(tag, options) {
+            insertTag: function(tag, options) {
                 if (typeof options == 'undefined') options = {};
 
-                this._selection.enforce_legality.call(this);
+                this._selection.enforceLegality.call(this);
                 
-                var classes = this.options.css_prefix + ' ' + tag;
+                var classes = this.options.cssPrefix + ' ' + tag;
                 classes += (typeof options.classes != 'undefined') ? ' ' + options.classes : '';
                 
                 this._selection.insert.call(this, $('<' + tag + ' class="' + classes + '"/>'));
             },
             
-            apply_styles: function(styles) {
+            applyStyle: function(styles) {
                 this._history.update.call(this);
                 
-                if (!this._editor.selected_element || this._util.is_root.call(this, this._editor.selected_element)) {
+                if (!this._editor.selectedElement || this._util.isRoot.call(this, this._editor.selectedElement)) {
                     this.html($('<div></div>').css(styles).html(this.html()));
                 } else {
-                    var editor_instance = this;
+                    var editorInstance = this;
                     $.each(styles, function(property, value) {
-                        if (editor_instance._editor.selected_element.css(property) == value) {
-                            editor_instance._editor.selected_element.css(property, '');
+                        if (editorInstance._editor.selectedElement.css(property) == value) {
+                            editorInstance._editor.selectedElement.css(property, '');
                         } else {
-                            editor_instance._editor.selected_element.css(property, value);
+                            editorInstance._editor.selectedElement.css(property, value);
                         }
                     });
                 }
                 
-                this._actions.state_change.call(this);
+                this._actions.stateChange.call(this);
             },
             
             replace: function(replacement) {
-                var editor_instance = this;
+                var editorInstance = this;
                 $(rangy.getSelection().getAllRanges()).each(function(){
-                    editor_instance._selection.replace_range.call(editor_instance, replacement, this);    
+                    editorInstance._selection.replaceRange.call(editorInstance, replacement, this);    
                 });
             },
             
-            replace_range: function(replacement, range) {
+            replaceRange: function(replacement, range) {
                 this._history.update.call(this);
                 
                 range.deleteContents();
@@ -1028,7 +1032,7 @@
                     }
                 }
                 
-                this._actions.state_change.call(this);
+                this._actions.stateChange.call(this);
             },
             
             insert: function(insert) {
@@ -1036,10 +1040,10 @@
                 $(rangy.getSelection().getAllRanges()).each(function(){
                     this.insertNode($(insert).get(0));
                 });
-                this._actions.state_change.call(this);
+                this._actions.stateChange.call(this);
             },
             
-            change_tag: function(tag, options) {
+            changeTag: function(tag, options) {
                 if (typeof options == 'undefined') options = {};
                 
                 this._history.update.call(this);
@@ -1048,47 +1052,47 @@
                 
                 if (this._selection.exists.call(this)) {
                     
-                    applier = rangy.createCssClassApplier(this.options.css_prefix + tag, {
+                    applier = rangy.createCssClassApplier(this.options.cssPrefix + tag, {
                         normalize: true,
                         elementTagName: tag
                     }).toggleSelection();    
                                             
                 } else {
-                    if (this._util.is_root.call(this, this._editor.selected_element)) {
-                        this._editor.selected_element = this.element.find(':first');
+                    if (this._util.isRoot.call(this, this._editor.selectedElement)) {
+                        this._editor.selectedElement = this.element.find(':first');
                     }
-                    new_element = $('<' + tag + '>' + this._editor.selected_element.html() + '</' + tag + '>');
+                    new_element = $('<' + tag + '>' + this._editor.selectedElement.html() + '</' + tag + '>');
                     
-                    if (typeof this._editor.selected_element.attr('class') != 'undefined') {
-                        new_element.addClass(this._editor.selected_element.attr('class'));
+                    if (typeof this._editor.selectedElement.attr('class') != 'undefined') {
+                        new_element.addClass(this._editor.selectedElement.attr('class'));
                     }
-                    if (typeof this._editor.selected_element.attr('style') != 'undefined') {
-                        new_element.css(this._editor.selected_element.attr('style'));
+                    if (typeof this._editor.selectedElement.attr('style') != 'undefined') {
+                        new_element.css(this._editor.selectedElement.attr('style'));
                     }
-                    $(this._editor.selected_element).replaceWith(new_element);
+                    $(this._editor.selectedElement).replaceWith(new_element);
                 }
                 
-                this._actions.refresh_selected_element.call(this);
-                this._actions.update_title_tag_list.call(this);
+                this._actions.refreshSelectedElement.call(this);
+                this._actions.updateTitleTagList.call(this);
                 
-                this._actions.state_change.call(this);
+                this._actions.stateChange.call(this);
             },
             
-            enforce_legality: function() {
+            enforceLegality: function() {
                 
                 var element = this.element,
                     selection = rangy.getSelection(),
-                    common_ancestor;
+                    commonAncestor;
                     
                 $(selection.getAllRanges()).each(function(){
-                    if (this.commonAncestorContainer.nodeType == 3) common_ancestor = $(this.commonAncestorContainer).parent().get(0) 
-                    else common_ancestor = this.commonAncestorContainer;
-                    if (!$.contains(element.get(0), common_ancestor)) selection.removeRange(this);
+                    if (this.commonAncestorContainer.nodeType == 3) commonAncestor = $(this.commonAncestorContainer).parent().get(0) 
+                    else commonAncestor = this.commonAncestorContainer;
+                    if (!$.contains(element.get(0), commonAncestor)) selection.removeRange(this);
                 });
             },
             
             exists: function() {
-                this._selection.enforce_legality.call(this);
+                this._selection.enforceLegality.call(this);
                 var all_ranges = rangy.getSelection().getAllRanges(),
                     range;
                 if (!all_ranges.length) return false;
@@ -1101,14 +1105,14 @@
                 }
             },
 
-            select_element: function(select_this) {
-                this._editor.selected_element = $(select_this);
+            selectElement: function(select_this) {
+                this._editor.selectedElement = $(select_this);
                 rangy.getSelection().selectAllChildren($(select_this).get(0));
                 this.element.focus();
-                this._actions.update_title_tag_list.call(this);
+                this._actions.updateTitleTagList.call(this);
             },
             
-            select_all: function() {
+            selectAll: function() {
                 var selection = rangy.getSelection(),
                     range = null;
                 selection.removeAllRanges();
@@ -1118,73 +1122,73 @@
                     selection.addRange(range);
                 });
                 this.element.focus();
-                this._actions.update_title_tag_list.call(this);
+                this._actions.updateTitleTagList.call(this);
             }
             
         },
         
         _actions: {
             
-            state_change: function() {
+            stateChange: function() {
                 
-                if (!this._data.exists(this.element, this._data.names.original_html)) {
-                    this.element.data(this._data.names.original_html, this.html.call(this));
+                if (!this._data.exists(this.element, this._data.names.originalHtml)) {
+                    this.element.data(this._data.names.originalHtml, this.html.call(this));
                 }
                 
-                this._content.unsaved_edit_warning.toggle.call(this);
-                this._actions.refresh_selected_element.call(this);
-                this._actions.update_title_tag_list.call(this);
+                this._content.unsavedEditWarning.toggle.call(this);
+                this._actions.refreshSelectedElement.call(this);
+                this._actions.updateTitleTagList.call(this);
                 this._history.update.call(this);
 
                 // Trigger buttons' state change handlers
-                var editor_instance = this,
+                var editorInstance = this,
                     data = null;
                 this._editor.toolbar.find('button, select').each(function() {
-                    data = $(this).data(editor_instance._data.names.button);
-                    if ($.isFunction(data.state_change)) {
-                        data.state_change.call(editor_instance, this);
+                    data = $(this).data(editorInstance._data.names.button);
+                    if ($.isFunction(data.stateChange)) {
+                        data.stateChange.call(editorInstance, this);
                     }
                 });
             },
        
-            refresh_selected_element: function() {
+            refreshSelectedElement: function() {
                 try {
-                    this._editor.selected_element = $($.selectedElement().obj);
+                    this._editor.selectedElement = $($.selectedElement().obj);
                 } catch(e) {
-                    this._editor.selected_element = this.element;
+                    this._editor.selectedElement = this.element;
                 }
             },
         
-            update_title_tag_list: function() {
+            updateTitleTagList: function() {
                 
-                var title = this.options.title_default,
-                    current = tag_name = tag_menu = null,
+                var title = this.options.titleDefault,
+                    current = null, tagName = null, tagMenu = null,
                     i = 0;
                 
-                if (this.options.title_tags) {
+                if (this.options.titleTags) {
 
-                    this._selection.enforce_legality.call(this);
-                    this._actions.refresh_selected_element.call(this);
+                    this._selection.enforceLegality.call(this);
+                    this._actions.refreshSelectedElement.call(this);
                     
-                    if (this._editor.selected_element) {
+                    if (this._editor.selectedElement) {
                        
-                        current = this._editor.selected_element;
+                        current = this._editor.selectedElement;
                         
                         if (typeof current[0] != 'undefined') {
                         
-                            tag_name = current[0].tagName.toLowerCase();
+                            tagName = current[0].tagName.toLowerCase();
 
                             // Update tag drop down
-                            tag_menu = this._editor.toolbar.find('select.ui-editor-tag-select');
-                            if (tag_menu.length) {                   
-                                if (this._util.is_root.call(this, current)) {
-                                    tag_menu.val('na');
-                                } else if (tag_menu.find('option[value=' + tag_name + ']').length) {
-                                    tag_menu.val(tag_name);
+                            tagMenu = this._editor.toolbar.find('select.ui-editor-tag-select');
+                            if (tagMenu.length) {                   
+                                if (this._util.isRoot.call(this, current)) {
+                                    tagMenu.val('na');
+                                } else if (tagMenu.find('option[value=' + tagName + ']').length) {
+                                    tagMenu.val(tagName);
                                 } else {
-                                    tag_menu.val('other');
+                                    tagMenu.val('other');
                                 }
-                                tag_menu.selectmenu();
+                                tagMenu.selectmenu();
                             }
                             
                             title = '';
@@ -1192,15 +1196,15 @@
                             // Update dialog title
                             while (true) {
                                 
-                                if (this._util.is_root.call(this, current)) {
+                                if (this._util.isRoot.call(this, current)) {
                                     title = '<a href="javascript: // Select all" name="root" \
                                         class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
                                     break;
                                 }
                                 
-                                tag_name = current[0].tagName.toLowerCase();
+                                tagName = current[0].tagName.toLowerCase();
                                 title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                        class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tag_name.toUpperCase() + '&quot; element">' + tag_name + '</a>' + title;
+                                        class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tagName.toUpperCase() + '&quot; element">' + tagName + '</a>' + title;
                                 current = current.parent();
                                 i++;
                             }
@@ -1212,11 +1216,11 @@
                     title: title
                 });
                 
-                if (this.options.custom_tooltips) this._editor.toolbar.parent().find('.ui-widget-editor-element-path').tipTip();
+                if (this.options.customTooltips) this._editor.toolbar.parent().find('.ui-widget-editor-element-path').tipTip();
             },
                 
-            unload_warning: function() {
-                if (this._content.dirty_blocks_exist.call(this)) {
+            unloadWarning: function() {
+                if (this._content.dirtyBlocksExist.call(this)) {
                     return '\nThere are unsaved changes on this page. \nIf you navigate away from this page you will loose your unsaved changes';
                 }
             },
@@ -1240,11 +1244,11 @@
                     
                     this._history.update.call(this);                    
                     
-                    var editor_instance = this, 
+                    var editorInstance = this, 
                         selection = rangy.saveSelection(),
-                        link_dialog = this._actions.link.dialog,
-                        link_types_fieldset = link_dialog.find('.ui-widget-editor-link-menu fieldset'),
-                        edit = this._editor.selected_element.is('a'),
+                        linkDialog = this._actions.link.dialog,
+                        link_types_fieldset = linkDialog.find('.ui-widget-editor-link-menu fieldset'),
+                        edit = this._editor.selectedElement.is('a'),
                         label,
                         link_types_classes = {},
                         link_types = [
@@ -1271,7 +1275,7 @@
                             class_name: 'ui-widget-editor-link-external',
                             show: function(panel, edit) {
                                 if (edit) {
-                                    var a = this._editor.selected_element;
+                                    var a = this._editor.selectedElement;
                                     panel.find('input[name="location"]').val(a.attr('href'));
                                     if (a.attr('target') == '_blank') panel.find('input[name="target"]').prop('checked', true);
                                 }
@@ -1306,7 +1310,7 @@
                             class_name: 'ui-widget-editor-link-email',
                             show: function(panel, edit) {
                                 if (edit) {
-                                    var a = this._editor.selected_element;
+                                    var a = this._editor.selectedElement;
                                     panel.find('input[name="email"]').val(a.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
                                     if (/\?Subject\=/i.test(a.attr('href'))) {
                                         panel.find('input[name="subject"]').val(decodeURIComponent(a.attr('href').replace(/(.*\?Subject=)/i, '')));
@@ -1326,12 +1330,12 @@
                     ];
                 
                     // Remove & add custom radios
-                    link_dialog.find('.ui-widget-editor-link-menu fieldset').html('');
+                    linkDialog.find('.ui-widget-editor-link-menu fieldset').html('');
                     
-                    if (this.options.link_replace_types) {
-                        link_types = this.options.link_custom_types;
+                    if (this.options.linkReplaceTypes) {
+                        link_types = this.options.linkCustomTypes;
                     } else {
-                        $.merge(link_types, this.options.link_custom_types);
+                        $.merge(link_types, this.options.linkCustomTypes);
                     }
                     
                     $(link_types).each(function() {
@@ -1339,13 +1343,13 @@
                                         <input class="' + this.class_name + '" type="radio" value="' + this.type + '" name="link_type" autocomplete="off"/>\
                                         <span>' + this.title + '</span>\
                                     </label>').appendTo(link_types_fieldset);
-                        label.find('input[type="radio"]').data(editor_instance._data.names.link_type, this);
+                        label.find('input[type="radio"]').data(editorInstance._data.linkType, this);
                         link_types_classes[this.class_name] = this.class_name;
                     });
                     
                     link_types_fieldset.find('input[type="radio"]').unbind('change.editor').
                             bind('change.editor', function(){
-                                editor_instance._actions.link.type_change.call(editor_instance, edit);
+                                editorInstance._actions.link.typeChange.call(editorInstance, edit);
                             });
                     
                     var title = (edit ? 'Edit' : 'Insert') + ' Link';
@@ -1357,9 +1361,9 @@
                         width: 750,
                         height: 450,
                         title: title,
-                        dialogClass: this.options.dialog_class + ' ui-widget-editor-link',
-                        show: this.options.dialog_show_animation,
-                        hide: this.options.dialog_hide_animation,
+                        dialogClass: this.options.dialogClass + ' ui-widget-editor-link',
+                        show: this.options.dialogShowAnimation,
+                        hide: this.options.dialogHideAnimation,
                         buttons: [
                             {
                                 text: title,
@@ -1368,14 +1372,14 @@
                                     
                                     rangy.restoreSelection(selection);
                                     
-                                    var data = link_dialog.find('input[type="radio"]:checked').data(editor_instance._data.names.link_type),
-                                        attributes = data.attributes.call(editor_instance, link_dialog.find('.ui-widget-editor-link-content'), edit),
+                                    var data = linkDialog.find('input[type="radio"]:checked').data(editorInstance._data.linkType),
+                                        attributes = data.attributes.call(editorInstance, linkDialog.find('.ui-widget-editor-link-content'), edit),
                                         a = null;
                                     
                                     if (!attributes) return;
                                     
                                     if (edit) {
-                                        a = editor_instance._editor.selected_element;
+                                        a = editorInstance._editor.selectedElement;
                                         $(link_types).each(function() {
                                             a.removeClass(this.class_name);
                                         });
@@ -1383,8 +1387,8 @@
                                         a.attr(attributes);
                                     } else {
                                     
-                                        if (editor_instance._editor.selected_element.is('img')) {
-                                            editor_instance._editor.selected_element.wrap($('a').attr(attributes).addClass('ui-widget-editor-link'));
+                                        if (editorInstance._editor.selectedElement.is('img')) {
+                                            editorInstance._editor.selectedElement.wrap($('a').attr(attributes).addClass('ui-widget-editor-link'));
                                         } else {
                                             rangy.createCssClassApplier('ui-widget-editor-link ' + data.class_name, {
                                                 normalize: true,
@@ -1394,7 +1398,7 @@
                                         }
                                     }
                                     
-                                    editor_instance._actions.state_change.call(editor_instance);
+                                    editorInstance._actions.stateChange.call(editorInstance);
                                     $(this).dialog('close');
                                 }
                             },
@@ -1408,23 +1412,23 @@
                             }
                         ],
                         beforeopen: function() {
-                            editor_instance._actions.link.dialog.find('.ui-widget-editor-link-content').hide();
+                            editorInstance._actions.link.dialog.find('.ui-widget-editor-link-content').hide();
                         },
                         open: function() {
-                            editor_instance._dialog.apply_button_icon('insert', 'circle-check');
-                            editor_instance._dialog.apply_button_icon('cancel', 'circle-close');
+                            editorInstance._dialog.applyButtonIcon('insert', 'circle-check');
+                            editorInstance._dialog.applyButtonIcon('cancel', 'circle-close');
                             
-                            if (!link_dialog.find('input[type="radio"]:checked').length) {
+                            if (!linkDialog.find('input[type="radio"]:checked').length) {
                                 if (!edit) {
-                                    link_dialog.find('input[type="radio"]:first').prop('checked', true);
-                                    editor_instance._actions.link.type_change.call(editor_instance, edit, true);
+                                    linkDialog.find('input[type="radio"]:first').prop('checked', true);
+                                    editorInstance._actions.link.typeChange.call(editorInstance, edit, true);
                                 } else {
-                                    link_dialog.find('input[type="radio"]').each(function(){
+                                    linkDialog.find('input[type="radio"]').each(function(){
                                         var radio = $(this);
-                                        $(editor_instance._editor.selected_element.attr('class').split(' ')).each(function() {
+                                        $(editorInstance._editor.selectedElement.attr('class').split(' ')).each(function() {
                                             if (link_types_classes[this] && radio.hasClass(this)) {
                                                 radio.prop('checked', true);
-                                                editor_instance._actions.link.type_change.call(editor_instance, edit, true);
+                                                editorInstance._actions.link.typeChange.call(editorInstance, edit, true);
                                                 return;
                                             }
                                         });
@@ -1433,41 +1437,41 @@
                             }
                         },
                         close: function() {
-                            editor_instance._actions.link.dialog.find('.ui-widget-editor-link-content').hide();
+                            editorInstance._actions.link.dialog.find('.ui-widget-editor-link-content').hide();
                             $(this).dialog('destroy');
                         }
                     }).dialog('open');
                 },
                 
-                type_change: function(edit, initial) {
+                typeChange: function(edit, initial) {
                     
-                    var link_type_data = this._actions.link.dialog.find('input[type="radio"]:checked').data(this._data.names.link_type),
+                    var linkTypeData = this._actions.link.dialog.find('input[type="radio"]:checked').data(this._data.linkType),
                         panel = this._actions.link.dialog.find('.ui-widget-editor-link-content'),
                         wrap = panel.closest('.ui-widget-editor-link-wrap'),
-                        ajax = (typeof link_type_data.ajax != 'undefined'),
-                        editor_instance = this,
+                        ajax = (typeof linkTypeData.ajax != 'undefined'),
+                        editorInstance = this,
                         initial = (typeof initial == 'undefined') ? false : initial;
                 
                     if (ajax) wrap.addClass('ui-widget-editor-loading');
                     
                     if (initial) {
-                        panel.html(link_type_data.content);
+                        panel.html(linkTypeData.content);
                         panel.show();
-                        if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
+                        if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
                     } else {                  
-                        panel.hide(this.options.link_panel_animation, function(){
+                        panel.hide(this.options.linkPanelAnimation, function(){
                             if (!ajax) {
-                                panel.html(link_type_data.content);
-                                if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
-                                panel.html(link_type_data.content).show(editor_instance.options.link_panel_animation);
+                                panel.html(linkTypeData.content);
+                                if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
+                                panel.html(linkTypeData.content).show(editorInstance.options.linkPanelAnimation);
                             } else {
                                 $.ajax({
-                                    url: link_type_data.ajax.uri,
-                                    type: ((typeof link_type_data.ajax.type != 'undefined') ? 'get' : link_type_data.ajax.type),
+                                    url: linkTypeData.ajax.uri,
+                                    type: ((typeof linkTypeData.ajax.type != 'undefined') ? 'get' : linkTypeData.ajax.type),
                                     success: function(data) {
                                         panel.html(data);
-                                        if ($.isFunction(link_type_data.show)) link_type_data.show.call(editor_instance, panel, edit);
-                                        panel.show(editor_instance.options.link_panel_animation, function(){
+                                        if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
+                                        panel.show(editorInstance.options.linkPanelAnimation, function(){
                                             wrap.removeClass('ui-widget-editor-loading');
                                         });
                                     }   
@@ -1510,22 +1514,22 @@
             
             paste: {
                 
-                in_progress: false,
+                inProgress: false,
                 
                 dialog: false,
                 
                 capture: function(event) {
                     
-                    if (this._actions.paste.in_progress) return false;
-                    this._actions.paste.in_progress = true;
+                    if (this._actions.paste.inProgress) return false;
+                    this._actions.paste.inProgress = true;
                     
                     var selection = rangy.saveSelection(),
-                        editor_instance = this;
+                        editorInstance = this;
                     
                     if($.contains(this.element.get(0), event.target)) {
-                        var paste_bin = $('#paste-bin');
-                        if (!paste_bin.length) {
-                            paste_bin = $('<textarea id="paste-bin"></textarea>').css({
+                        var pasteBin = $('#paste-bin');
+                        if (!pasteBin.length) {
+                            pasteBin = $('<textarea id="paste-bin"></textarea>').css({
                                 width: 1,
                                 height: 1,
                                 opacity: 0,
@@ -1533,19 +1537,18 @@
                                 left: -9999
                             }).appendTo('body');
                         }
-                        paste_bin.select().focus();
+                        pasteBin.select().focus();
                         
                         window.setTimeout(function(){
-                            //paste_bin.paste;
-                            var pasted_value = $(paste_bin).val(),
+                            var pasted_value = $(pasteBin).val(),
                                 update_values = function(value) {
-                                    editor_instance._actions.paste.dialog.find('textarea.ui-editor-paste-plain').val(value);
-                                    editor_instance._actions.paste.dialog.find('textarea.ui-editor-paste-source').val(value);
-                                    editor_instance._actions.paste.dialog.find('.ui-editor-paste-rich').html(value);
+                                    editorInstance._actions.paste.dialog.find('textarea.ui-editor-paste-plain').val(value);
+                                    editorInstance._actions.paste.dialog.find('textarea.ui-editor-paste-source').val(value);
+                                    editorInstance._actions.paste.dialog.find('.ui-editor-paste-rich').html(value);
                                 };
 
-                            if (!editor_instance._actions.paste.dialog) {
-                                editor_instance._actions.paste.dialog = $('<div class="ui-editor-paste-panel">\
+                            if (!editorInstance._actions.paste.dialog) {
+                                editorInstance._actions.paste.dialog = $('<div class="ui-editor-paste-panel">\
                                         <div class="ui-editor-paste-panel-tabs">\
                                             <ul>\
                                                 <li><a href="#ui-editor-paste-plain">Plain Text</a></li>\
@@ -1563,7 +1566,7 @@
                                             </div>\
                                         </div>\
                                     </div>');
-                                editor_instance._actions.paste.dialog.find('textarea').bind('keypress.editor', function() {
+                                editorInstance._actions.paste.dialog.find('textarea').bind('keypress.editor', function() {
                                     update_values($(this).val());
                                 });
                                     
@@ -1571,16 +1574,16 @@
                                 update_values(pasted_value);
                             }
                             
-                            $(editor_instance._actions.paste.dialog).dialog({
+                            $(editorInstance._actions.paste.dialog).dialog({
                                 modal: true,
                                 width: 450,
                                 height: 500,
                                 resizable: true,
                                 title: 'Paste',
                                 position: 'center',
-                                show: editor_instance.options.dialog_show_animation,
-                                hide: editor_instance.options.dialog_hide_animation,
-                                dialogClass: editor_instance.options.dialog_class + ' ui-widget-editor-paste',
+                                show: editorInstance.options.dialogShowAnimation,
+                                hide: editorInstance.options.dialogHideAnimation,
+                                dialogClass: editorInstance.options.dialogClass + ' ui-widget-editor-paste',
                                 buttons: 
                                     [
                                         {
@@ -1602,11 +1605,11 @@
                                                 var pasted_content = $('<div id="ui-editor-paste-bin" style="display: none;">' + html + '</div>').appendTo('body');
                                                 
                                                 rangy.restoreSelection(selection);
-                                                editor_instance._selection.replace.call(editor_instance, pasted_content.get(0).childNodes);
+                                                editorInstance._selection.replace.call(editorInstance, pasted_content.get(0).childNodes);
                                                 
                                                 pasted_content.remove();
                                                 
-                                                editor_instance._actions.paste.in_progress = false;
+                                                editorInstance._actions.paste.inProgress = false;
                                                 $(this).dialog('close').dialog('destroy');
                                             }
                                         },
@@ -1615,22 +1618,22 @@
                                             'class': 'cancel',
                                             click: function() {
                                                 rangy.restoreSelection(selection);
-                                                editor_instance._actions.paste.in_progress = false;
+                                                editorInstance._actions.paste.inProgress = false;
                                                 $(this).dialog('close').dialog('destroy');
                                             }
                                         }
                                 ],
                                 open: function() {
                                     $(this).find('.ui-editor-paste-panel-tabs').tabs();
-                                    editor_instance._dialog.apply_button_icon('cancel', 'circle-close');
-                                    editor_instance._dialog.apply_button_icon('ok', 'circle-check');
+                                    editorInstance._dialog.applyButtonIcon('cancel', 'circle-close');
+                                    editorInstance._dialog.applyButtonIcon('ok', 'circle-check');
                                 },
                                 close: function() {
-                                    editor_instance._actions.paste.in_progress = false;
+                                    editorInstance._actions.paste.inProgress = false;
                                 }
                             });
                             
-                            paste_bin.remove();
+                            pasteBin.remove();
                             
                         }, 0);
                     }
@@ -1650,7 +1653,7 @@
                 var id = this._util.identify(this.element);
                 this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', this._history.undo_stack[id].length == 0);
                 this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', this._history.redo_stack[id].length == 0);
-                this._content.unsaved_edit_warning.toggle.call(this);
+                this._content.unsavedEditWarning.toggle.call(this);
             },
             
             clear: function(all) {
@@ -1688,7 +1691,7 @@
             
             update: function() {
                 
-                var current_content = this._content.cleaned(this.element.html());
+                var currentContent = this._content.cleaned(this.element.html());
                 var id = this._util.identify(this.element);
 
                 if (typeof this._history.undo_stack[id] == 'undefined') this._history.undo_stack[id] = [];
@@ -1696,12 +1699,12 @@
                 
                 // Don't add identical content to stack
                 if (this._history.undo_stack[id].length
-                        && this._history.undo_stack[id][this._history.undo_stack[id].length-1].content == current_content) {
+                        && this._history.undo_stack[id][this._history.undo_stack[id].length-1].content == currentContent) {
                     return;
                 }
                 
                 this._history.undo_stack[id].push({
-                    content: current_content
+                    content: currentContent
                 });
             }
         },
@@ -1719,21 +1722,21 @@
             },
             
             reset: function() {
-                this.html(this.element.data(this._data.names.original_html));
-                this._data.clear.call(this, this._data.names.original_html);
+                this.html(this.element.data(this._data.names.originalHtml));
+                this._data.clear.call(this, this._data.names.originalHtml);
                 this._history.clear.call(this, true);
-                this._content.unsaved_edit_warning.hide.call(this);
+                this._content.unsavedEditWarning.hide.call(this);
             },
                         
             dirty: function() {
-                if (this._data.exists(this.element, this._data.names.original_html)) {
-                    var data = this.element.data(this._data.names.original_html);
+                if (this._data.exists(this.element, this._data.names.originalHtml)) {
+                    var data = this.element.data(this._data.names.originalHtml);
                     if (data != this.element.html()) return true;
                 }
                 return false;
             },
             
-            dirty_blocks_exist: function() {
+            dirtyBlocksExist: function() {
                 var unsaved = false;
                 $(this._instances).each(function(){
                     if (this._content.dirty.call(this)) {
@@ -1744,62 +1747,70 @@
                 return unsaved;
             },
             
-            unsaved_edit_warning: {
+            unsavedEditWarning: {
           
                 toggle: function() {
-                    if (this.options.unsaved_edit_warning) {
+                    if (this.options.unsavedEditWarning) {
                         if (this._content.dirty.call(this)) {
-                            this._content.unsaved_edit_warning.show.call(this);
+                            this._content.unsavedEditWarning.show.call(this);
                         } else {
-                            this._content.unsaved_edit_warning.hide.call(this);
+                            this._content.unsavedEditWarning.hide.call(this);
                         }
                     }
                 },
                 
                 show: function() {
                     var warning = false,
-                        editor_instance = this;
-                    if (!this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
-                        var warning = $('<div title="' + this.options.unsaved_edit_warning_content + '" class="ui-widget-editor-warning ' 
-                                        + this.options.unsaved_edit_warning_class 
+                        editorInstance = this;
+                    if (!this._data.exists(this.element, this._data.names.unsavedEditsWarning)) {
+                        var warning = $('<div title="' + this.options.unsavedEditWarningContent + '" class="ui-widget-editor-warning ' 
+                                        + this.options.unsavedEditWarningContentClass 
                                         + '" style="display:none;">\
                                             <span class="ui-icon ui-icon-alert"></span>\
                                         </div>').hover(function() {
                             $(this).stop().animate({ opacity: 1 });
                         }, function() {
-                            $(this).stop().animate({ opacity: editor_instance.options.unsaved_edit_warning_idle_opacity });
+                            $(this).stop().animate({ opacity: editorInstance.options.unsavedEditWarningContentIdleOpacity });
                         }).appendTo('body');
                         
-                        if (editor_instance.options.custom_tooltips) {
+                        if (editorInstance.options.customTooltips) {
                             warning.tipTip({ 
                                 delay: 100,
-                                defaultPosition: this.options.unsaved_edit_warning_tooltip_position,
-                                maxWidth: this.options.unsaved_edit_warning_tooltip_max_width
+                                defaultPosition: this.options.unsavedEditWarningContentTooltipPosition,
+                                maxWidth: this.options.unsavedEditWarningContentTooltipMaxWidth
                             });
                         }
-                        this.element.data(this._data.names.unsaved_edits_warning, warning);
+                        this.element.data(this._data.names.unsavedEditsWarning, warning);
                     } else {
-                        var warning = this.element.data(this._data.names.unsaved_edits_warning);
+                        var warning = this.element.data(this._data.names.unsavedEditsWarning);
                     }
                     warning.position({
-                        at: this.options.unsaved_edit_warning_position_at,
+                        at: this.options.unsavedEditWarningPositionAt,
                         of: this.element,
-                        my: this.options.unsaved_edit_warning_position_my,
-                        using: this.options.unsaved_edit_warning_position_using
+                        my: this.options.unsavedEditWarningPositionMy,
+                        using: this.options.unsavedEditWarningContentPositionUsing
                     })
                     if (!warning.is(':visible') && !warning.is(':animated')) {
-                        warning.show(this.options.unsaved_edit_warning_animation, function(){
-                            $(this).animate({ opacity: editor_instance.options.unsaved_edit_warning_idle_opacity });
+                        warning.show(this.options.unsavedEditWarningAnimation, function(){
+                            $(this).animate({ opacity: editorInstance.options.unsavedEditWarningContentIdleOpacity });
                         });
                     }
                 },
                 hide: function() {
-                     if (this._data.exists(this.element, this._data.names.unsaved_edits_warning)) {
-                        var warning = $(this.element.data(this._data.names.unsaved_edits_warning));
-                        if (warning.is(':visible') && !warning.is(':animated')) warning.hide(this.options.unsaved_edit_warning_animation);
+                     if (this._data.exists(this.element, this._data.names.unsavedEditsWarning)) {
+                        var warning = $(this.element.data(this._data.names.unsavedEditsWarning));
+                        if (warning.is(':visible') && !warning.is(':animated')) warning.hide(this.options.unsavedEditWarningAnimation);
                      }
                 }
-          
+            },
+            
+            destroy: function() {
+                $(this._instances).each(function() {
+                    this._content.reset.call(this);
+                    this.element.unbind('keyup.editor click.editor paste.editor');
+                    this.element.attr('contenteditable', 'false');
+                    this.element.removeClass(this._classes.editing);
+                });
             }
         },
         
@@ -1817,16 +1828,16 @@
                     if (!this._dialog.confirmation.html) this._dialog.confirmation.html = $('<div>' + options.message + '</div>').appendTo('body');
                     else this._dialog.confirmation.html.html(options.message);
                     
-                    var editor_instance = this;
+                    var editorInstance = this;
                     
                     this._dialog.confirmation.html.dialog({
                         autoOpen: false,
                         modal: true,
                         resizable: false,
                         title: options.title,
-                        dialogClass: this.options.dialog_class + ' ui-widget-editor-confirmation',
-                        show: this.options.dialog_show_animation,
-                        hide: this.options.dialog_hide_animation,
+                        dialogClass: this.options.dialogClass + ' ui-widget-editor-confirmation',
+                        show: this.options.dialogShowAnimation,
+                        hide: this.options.dialogHideAnimation,
                         buttons: [
                             {
                                 text: 'OK',
@@ -1846,8 +1857,8 @@
                             }
                         ],
                         open: function() {
-                            editor_instance._dialog.apply_button_icon('ok', 'circle-check');
-                            editor_instance._dialog.apply_button_icon('cancel', 'circle-close');
+                            editorInstance._dialog.applyButtonIcon('ok', 'circle-check');
+                            editorInstance._dialog.applyButtonIcon('cancel', 'circle-close');
                         },
                         close: function() {
                             $(this).dialog('destroy');
@@ -1864,7 +1875,7 @@
                 
                 show: function(options) {
                     
-                    var editor_instance = this;
+                    var editorInstance = this;
                     
                     if (!this._dialog.alert.html) this._dialog.alert.html = $('<div>' + options.message + '</div>').appendTo('body');
                     else this._dialog.alert.html.html(options.message);
@@ -1875,9 +1886,9 @@
                         resizable: false,
                         title: options.title,
                         width: 'auto',
-                        dialogClass: this.options.dialog_class + ' ui-widget-editor-alert',
-                        show: this.options.dialog_show_animation,
-                        hide: this.options.dialog_hide_animation,
+                        dialogClass: this.options.dialogClass + ' ui-widget-editor-alert',
+                        show: this.options.dialogShowAnimation,
+                        hide: this.options.dialogHideAnimation,
                         buttons: [
                             {
                                 text: 'OK',
@@ -1888,7 +1899,7 @@
                             }
                         ],
                         open: function() {
-                            editor_instance._dialog.apply_button_icon('ok', 'circle-check');
+                            editorInstance._dialog.applyButtonIcon('ok', 'circle-check');
                         },
                         close: function() {
                             $(this).dialog('destroy');
@@ -1898,9 +1909,9 @@
                 
             },
             
-            apply_button_icon: function(button_class, icon) {
+            applyButtonIcon: function(buttonClass, icon) {
                 $('.ui-dialog-buttonpane').
-                    find('.' + button_class).button({
+                    find('.' + buttonClass).button({
                     icons: {
                         primary: 'ui-icon-' + icon
                     }
@@ -1913,7 +1924,7 @@
             
             initialized: false,
             panel: false,
-            hide_timeout: false,            
+            hideTimeout: false,            
             
             types: {
                 error: 'notice',
@@ -1942,23 +1953,23 @@
                 if ($.isFunction(delay)) callback = delay;
                 if (typeof delay == 'undefined' || $.isFunction(delay)) delay = 5000;
                 if (!$.isArray(messages)) messages = [messages];
-                if (this._message.hide_timeout) window.clearTimeout(this._message.hide_timeout);
+                if (this._message.hideTimeout) window.clearTimeout(this._message.hideTimeout);
                     
-                var editor_instance = this;
+                var editorInstance = this;
                 
                 this._message.hide.call(this, function(){
                                         
-                    editor_instance._message.panel.find('ul').html('').removeAttr('class').addClass('ui-widget-messages-' + type);
-                    editor_instance._message.panel.find('span.ui-icon').removeAttr('class').addClass('ui-icon ui-icon-' + type);
+                    editorInstance._message.panel.find('ul').html('').removeAttr('class').addClass('ui-widget-messages-' + type);
+                    editorInstance._message.panel.find('span.ui-icon').removeAttr('class').addClass('ui-icon ui-icon-' + type);
                     
                     $(messages).each(function(){
-                        editor_instance._message.panel.find('ul').append($('<li>' + this + '</li>'));
+                        editorInstance._message.panel.find('ul').append($('<li>' + this + '</li>'));
                     });
                     
-                    editor_instance._message.panel.slideDown(function(){
+                    editorInstance._message.panel.slideDown(function(){
                         if (delay) {
-                            editor_instance._message.hide_timeout = window.setTimeout(function(){
-                                editor_instance._message.hide.call(editor_instance, callback);
+                            editorInstance._message.hideTimeout = window.setTimeout(function(){
+                                editorInstance._message.hide.call(editorInstance, callback);
                             }, delay);
                         }
                     });
@@ -1967,7 +1978,7 @@
             
             hide: function(callback) {
                 if (this._message.initialized && this._message.panel) {
-                    if (this._message.hide_timeout) window.clearTimeout(this._message.hide_timeout);
+                    if (this._message.hideTimeout) window.clearTimeout(this._message.hideTimeout);
                     this._message.panel.slideUp(callback);
                 }
             },
@@ -2013,31 +2024,26 @@
         },
         
         destroy: function() {
-            this._editor.toolbar.dialog('close');
-            this._editor.editing = false;
-            this.element.unbind('keyup.editor click.editor paste.editor');
-            this.element.attr('contenteditable', 'false');
-            this.element.removeClass(this._classes.editing);
-            this._message.destroy.call(this);
-            this._editor.initialized = false;
-            $(this._instances).each(function() {
-                this._content.reset.call(this);
-            });
-
             // Trigger buttons' destroy handlers
-            var editor_instance = this;
-            editor_instance._editor.toolbar.find('button').each(function() {
-                var data = $(this).data(editor_instance._data.names.button);
+            var editorInstance = this;
+            editorInstance._editor.toolbar.find('button').each(function() {
+                var data = $(this).data(editorInstance._data.names.button);
                 if ($.isFunction(data.destroy)) {
-                    data.destroy.call(editor_instance, this);
+                    data.destroy.call(editorInstance, this);
                 }
             });
+            
+            this._editor.destroy.call(this);
+            this._message.destroy.call(this);
+            this._content.destroy.call(this);
         }
 
     });
+    
     $.ui.editor.addButton = function(name, button) {
-        $.ui.editor.prototype._buttons[name] = button
+        $.ui.editor.prototype._buttons[name] = button;
     };
+    
 })(jQuery, window, rangy);
 
 
