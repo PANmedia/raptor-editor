@@ -35,10 +35,7 @@
         },
         destroy: function() {
             var spacer = $('.ui-widget-editor-dock-spacer');
-            if (spacer.length) {
-                spacer.hide('fast');
-            }
-            
+            if (spacer.length) spacer.hide('fast');
         }
     });
 })(jQuery);
