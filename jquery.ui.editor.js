@@ -176,46 +176,6 @@
                     this._history.toggle_buttons.call(this);
                 }
             },
-            bold: {
-                title: 'Bold',
-                icons: {
-                    primary: 'ui-icon-bold'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'strong');
-                }
-            },
-            italic: {
-                title: 'Italic',
-                icons: {
-                    primary: 'ui-icon-italic'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'em');
-                }
-            },
-            underline: {
-                title: 'Underline',
-                icons: {
-                    primary: 'ui-icon-underline'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'span', { classes: 'underline' });
-                }
-            },
-            strikethrough: {
-                title: 'Strikethrough',
-                icons: {
-                    primary: 'ui-icon-strikethrough'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'del');
-                }
-            },
             unorderedList: {
                 title: 'Unordered List',
                 icons: {
@@ -711,7 +671,7 @@
                     
                     $.each(this, function(index, value) {
                         if (typeof buttons[value] == 'undefined') {
-                            if (window.console && window.console.error) window.console.error('Button identified by ' + value + ' does not exist');
+                            if (window.console && window.console.error) window.console.error('Button identified by key "' + value + '" does not exist');
                         } else {
                             object = buttons[value];
                             if ($.isFunction(object.initialize)) {

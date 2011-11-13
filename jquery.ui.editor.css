@@ -90,22 +90,6 @@
     width: 48px;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-bold {
-    background-position: 0 0;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-italic {
-    background-position: -64px 0;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-underline {
-    background-position: -80px 0;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-strikethrough {
-    background-position: -96px 0;
-}
-
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-unordered-list {
     background-position: -16px -32px;
 }
