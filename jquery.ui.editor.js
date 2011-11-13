@@ -6,52 +6,6 @@
 
         // Allow buttons to be extended using $.ui.editor.prototype
         _buttons: {
-            save: {
-                title: 'Save',
-                icons: {
-                    primary: 'ui-icon-disk'
-                },
-                disabled: true,
-                click: function(event, button) {
-                    // If the user has provided or bound their own save function 
-                    // Allow them to cancel the default
-                    if (this._trigger('save')) {
-
-                        this.message.loading.call(this, 'Saving changes...', false);
-
-                        var error = function(response_code) {
-                            editor.message.error.call(editor, [
-                                'Failed to save content',
-                                'Response code ' + response_code + ' from ' + window.location.protocol + '//' + window.location.hostname + editor.options.saveUri
-                            ], 10000);
-                        }, editor = this;
-
-                        $.ajax(this.options.saveUri, {
-                            data: {
-                                html: this.html(),
-                                name: this.element.attr('name')
-                            },
-                            type: 'post',
-                            statusCode: {
-                                404: function() {
-                                    error(404);
-                                },
-                                500: function() {
-                                    error(500);
-                                }
-                            },
-                            success: function(data) {
-                                editor.confirm.call(editor, 'Content saved');
-                                editor._data.clear.call(editor._data.names.originalHtml);
-                            }
-                        });
-
-                    }
-                },
-                stateChange: function(button) {
-                    $(button).button('option', 'disabled', !this._content.dirty.call(this));
-                }
-            },
             cancel: {
                 title: 'Cancel',
                 icons: {
@@ -345,9 +299,7 @@
             titleVisible: true,
             titleDefault: 'jQuery UI Editor Controls',
             titleTags: true,
-            
-            saveUri: '/editor/save',
-            
+                        
             linkPanelAnimation: 'fade',
             linkReplaceTypes: false,
             linkCustomTypes: []
@@ -1784,6 +1736,10 @@
     
     $.ui.editor.addButton = function(name, button) {
         $.ui.editor.prototype._buttons[name] = button;
+    };
+    
+    $.ui.editor.addOptions = function(options) {
+        $.extend($.ui.editor.prototype.options, options);
     };
     
 })(jQuery, window, rangy);
