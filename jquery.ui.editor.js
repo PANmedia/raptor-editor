@@ -4,6 +4,8 @@
                
         _instances: [],
 
+        _plugins: { },
+
         // Allow buttons to be extended using $.ui.editor.prototype
         _buttons: {
             cancel: {
@@ -62,7 +64,8 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._updateHistory.call(this);
+                    
+                    this._actions.beforeStateChange.call(this);
                     this._selection.enforceLegality.call(this);
 
                     var editorInstance = this,
@@ -105,7 +108,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._updateHistory.call(this);
+                    this._actions.beforeStateChange.call(this);
                     this._selection.enforceLegality.call(this);
 
                     var editorInstance = this,
@@ -675,7 +678,7 @@
         _selection: {
         
             wrapWithTag: function(tag, options) {
-                this._updateHistory.call(this);
+                this._actions.beforeStateChange.call(this);
                 
                 if (typeof options == 'undefined') options = {};
                 
@@ -696,7 +699,7 @@
             },
             
             wrapWithList: function(tag, options) {
-                this._updateHistory.call(this);
+                this._actions.beforeStateChange.call(this);
                 if (typeof options == 'undefined') options = {};
                 
                 var editorInstance = this,
@@ -744,7 +747,7 @@
             },
             
             applyStyle: function(styles) {
-                this._updateHistory.call(this);
+                this._actions.beforeStateChange.call(this);
                 
                 if (!this._editor.selectedElement || this._util.isRoot.call(this, this._editor.selectedElement)) {
                     this.html($('<div></div>').css(styles).html(this.html()));
@@ -770,7 +773,7 @@
             },
             
             replaceRange: function(replacement, range) {
-                this._updateHistory.call(this);
+                this._actions.beforeStateChange.call(this);
                 
                 range.deleteContents();
                 if (typeof replacement.length === "undefined" || replacement.length == 1) {
@@ -785,7 +788,7 @@
             },
             
             insert: function(insert) {
-                this._updateHistory.call(this);
+                this._actions.beforeStateChange.call(this);
                 $(rangy.getSelection().getAllRanges()).each(function(){
                     this.insertNode($(insert).get(0));
                 });
@@ -795,7 +798,7 @@
             changeTag: function(tag, options) {
                 if (typeof options == 'undefined') options = {};
                 
-                this._updateHistory.call(this);
+                this._actions.beforeStateChange.call(this);
                 
                 var applier = new_element = null;
                 
@@ -878,6 +881,14 @@
         
         _actions: {
             
+            beforeStateChange: function() {
+                $.each(this._plugins, function() {
+                    if ($.isFunction(this.beforeStateChange)) {
+                        this.beforeStateChange.call(this);
+                    }
+                });
+            },
+            
             stateChange: function() {
                 
                 if (!this._data.exists(this.element, this._data.names.originalHtml)) {
@@ -887,7 +898,6 @@
                 this._content.unsavedEditWarning.toggle.call(this);
                 this._actions.refreshSelectedElement.call(this);
                 this._actions.updateTitleTagList.call(this);
-                this._updateHistory.call(this);
 
                 // Trigger buttons' state change handlers
                 var editorInstance = this,
@@ -897,6 +907,12 @@
                     if ($.isFunction(data.stateChange)) {
                         data.stateChange.call(editorInstance, this);
                     }
+                });
+                
+                $.each(this._plugins, function() {
+                    if ($.isFunction(this.stateChange)) {
+                        this.stateChange.call(editorInstance);
+                    };
                 });
             },
        
@@ -991,7 +1007,7 @@
                                                         </div>').appendTo('body');
                     }
                     
-                    this._updateHistory.call(this);                    
+                    this._actions.beforeStateChange.call(this);
                     
                     var editorInstance = this, 
                         selection = rangy.saveSelection(),
@@ -1231,7 +1247,7 @@
                 },
                 
                 remove: function() {
-                    this._updateHistory.call(this);
+                    this._actions.beforeStateChange.call(this);
 
                     if (rangy.getSelection().getAllRanges().length == 1) {
                         
@@ -1256,7 +1272,7 @@
                         }
                     }
                     
-                    this._updateHistory.call(this);
+                    this._actions.stateChange.call(this);
                 }
 
             },
@@ -1392,12 +1408,8 @@
             }
 
         },
-        
-        _updateHistory: function() {
-            if (this._history && this._history.update) this._history.update.call(this);
-        },
-        
-        _content: {
+     
+      _content: {
 
             cleaned: function(html) {
                 var content = $('<div></div>').html(html);
@@ -1681,9 +1693,9 @@
             if (typeof html == 'undefined') {
                 return this._content.cleaned(this.element.html());
             }
-            this._updateHistory.call(this);
+            this._actions.beforeStateChange.call(this);
             this.element.html(html);
-            this._updateHistory.call(this);
+            this._actions.stateChange.call(this);
             return this;
         },
 
@@ -1725,17 +1737,21 @@
             this._message.destroy.call(this);
             this._content.destroy.call(this);
             
-            $.each(this._onDestroy, function() {
-                this.call(editorInstance);
+            $.each(this._plugins, function() {
+                if ($.isFunction(this.destroy)) {
+                    this.destroy.call(editorInstance, this);
+                };
             });
-        },
+        }
         
-        _onDestroy: []
-
     });
     
     $.ui.editor.addButton = function(name, button) {
         $.ui.editor.prototype._buttons[name] = button;
+    };
+    
+    $.ui.editor.addPlugin = function(name, plugin) {
+        $.ui.editor.prototype._plugins[name] = plugin;
     };
     
     $.ui.editor.addOptions = function(options) {
