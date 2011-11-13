@@ -150,32 +150,6 @@
                     if (dialog.length) dialog.dialog('close');
                 }
             },
-            undo: {
-                title: 'Step Back',
-                icons: {
-                    primary: 'ui-icon-arrowreturnthick-1-w'
-                },
-                disabled: true,
-                click: function() {
-                    this._history.undo.call(this);
-                },
-                stateChange: function(button) {
-                    this._history.toggle_buttons.call(this);
-                }
-            },
-            redo: {
-                title: 'Step Forward',
-                icons: {
-                    primary: 'ui-icon-arrowreturnthick-1-e'
-                },
-                disabled: true,
-                click: function() {
-                    this._history.redo.call(this);
-                },
-                stateChange: function(button) {
-                    this._history.toggle_buttons.call(this);
-                }
-            },
             unorderedList: {
                 title: 'Unordered List',
                 icons: {
@@ -203,7 +177,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._history.update.call(this);
+                    this._updateHistory.call(this);
                     this._selection.enforceLegality.call(this);
 
                     var editorInstance = this,
@@ -246,7 +220,7 @@
                 },
                 classes: 'ui-editor-icon',
                 click: function() {
-                    this._history.update.call(this);
+                    this._updateHistory.call(this);
                     this._selection.enforceLegality.call(this);
 
                     var editorInstance = this,
@@ -366,6 +340,7 @@
 
         // Options start here
         options: {
+                     
             cssPrefix: 'ui-editor-',
             customTooltips: true,
             
@@ -817,7 +792,7 @@
         _selection: {
         
             wrapWithTag: function(tag, options) {
-                this._history.update.call(this);
+                this._updateHistory.call(this);
                 
                 if (typeof options == 'undefined') options = {};
                 
@@ -838,7 +813,7 @@
             },
             
             wrapWithList: function(tag, options) {
-                this._history.update.call(this);
+                this._updateHistory.call(this);
                 if (typeof options == 'undefined') options = {};
                 
                 var editorInstance = this,
@@ -886,7 +861,7 @@
             },
             
             applyStyle: function(styles) {
-                this._history.update.call(this);
+                this._updateHistory.call(this);
                 
                 if (!this._editor.selectedElement || this._util.isRoot.call(this, this._editor.selectedElement)) {
                     this.html($('<div></div>').css(styles).html(this.html()));
@@ -912,7 +887,7 @@
             },
             
             replaceRange: function(replacement, range) {
-                this._history.update.call(this);
+                this._updateHistory.call(this);
                 
                 range.deleteContents();
                 if (typeof replacement.length === "undefined" || replacement.length == 1) {
@@ -927,7 +902,7 @@
             },
             
             insert: function(insert) {
-                this._history.update.call(this);
+                this._updateHistory.call(this);
                 $(rangy.getSelection().getAllRanges()).each(function(){
                     this.insertNode($(insert).get(0));
                 });
@@ -937,7 +912,7 @@
             changeTag: function(tag, options) {
                 if (typeof options == 'undefined') options = {};
                 
-                this._history.update.call(this);
+                this._updateHistory.call(this);
                 
                 var applier = new_element = null;
                 
@@ -1029,7 +1004,7 @@
                 this._content.unsavedEditWarning.toggle.call(this);
                 this._actions.refreshSelectedElement.call(this);
                 this._actions.updateTitleTagList.call(this);
-                this._history.update.call(this);
+                this._updateHistory.call(this);
 
                 // Trigger buttons' state change handlers
                 var editorInstance = this,
@@ -1133,7 +1108,7 @@
                                                         </div>').appendTo('body');
                     }
                     
-                    this._history.update.call(this);                    
+                    this._updateHistory.call(this);                    
                     
                     var editorInstance = this, 
                         selection = rangy.saveSelection(),
@@ -1373,7 +1348,7 @@
                 },
                 
                 remove: function() {
-                    this._history.update.call(this);
+                    this._updateHistory.call(this);
 
                     if (rangy.getSelection().getAllRanges().length == 1) {
                         
@@ -1398,7 +1373,7 @@
                         }
                     }
                     
-                    this._history.update.call(this);
+                    this._updateHistory.call(this);
                 }
 
             },
@@ -1534,70 +1509,9 @@
             }
 
         },
-
-        _history: {
-            
-            undo_stack: {},
-            redo_stack: {},
-            
-            toggle_buttons: function() {
-                var id = this._util.identify(this.element);
-                this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', this._history.undo_stack[id].length == 0);
-                this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', this._history.redo_stack[id].length == 0);
-                this._content.unsavedEditWarning.toggle.call(this);
-            },
-            
-            clear: function(all) {
-                var id = this._util.identify(this.element);
-
-                if (typeof all != 'undefined' && all) {
-                    this._history.undo_stack = {};
-                    this._history.redo_stack = {};
-                } else {
-                    this._history.undo_stack[id] = [];
-                    this._history.redo_stack[id] = [];
-                }
-            },
-                       
-            undo: function() {
-                var id = this._util.identify(this.element);
-                var data = this._history.undo_stack[id].pop();
-
-                this._history.redo_stack[id].push(data);
-                
-                this.element.html(data.content);
-                
-                this._history.toggle_buttons.call(this);
-            },
-            
-            redo: function() {
-                var id = this._util.identify(this.element);                
-                var data = this._history.redo_stack[id].pop();
-                    
-                this._history.undo_stack[id].push(data);
-                this.element.html(data.content);
-                
-                this._history.toggle_buttons.call(this);
-            },
-            
-            update: function() {
-                
-                var currentContent = this._content.cleaned(this.element.html());
-                var id = this._util.identify(this.element);
-
-                if (typeof this._history.undo_stack[id] == 'undefined') this._history.undo_stack[id] = [];
-                this._history.redo_stack[id] = [];
-                
-                // Don't add identical content to stack
-                if (this._history.undo_stack[id].length
-                        && this._history.undo_stack[id][this._history.undo_stack[id].length-1].content == currentContent) {
-                    return;
-                }
-                
-                this._history.undo_stack[id].push({
-                    content: currentContent
-                });
-            }
+        
+        _updateHistory: function() {
+            if (this._history && this._history.update) this._history.update.call(this);
         },
         
         _content: {
@@ -1884,9 +1798,9 @@
             if (typeof html == 'undefined') {
                 return this._content.cleaned(this.element.html());
             }
-            this._history.update.call(this);
+            this._updateHistory.call(this);
             this.element.html(html);
-            this._history.update.call(this);
+            this._updateHistory.call(this);
             return this;
         },
 
@@ -1927,7 +1841,13 @@
             this._editor.destroy.call(this);
             this._message.destroy.call(this);
             this._content.destroy.call(this);
-        }
+            
+            $.each(this._onDestroy, function() {
+                this.call(editorInstance);
+            });
+        },
+        
+        _onDestroy: []
 
     });
     
