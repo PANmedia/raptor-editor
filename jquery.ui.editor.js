@@ -1,4 +1,5 @@
 (function($, window, rangy, undefined) {
+ 
     $.widget('ui.editor', {
                
         _instances: [],
@@ -404,36 +405,6 @@
                 classes: 'ui-editor-icon',
                 click: function() {
                     this._selection.wrapWithTag.call(this, 'blockquote');
-                }
-            },
-            floatLeft: {
-                title: 'Float Left',
-                icons: {
-                    primary: 'ui-icon-float-left'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'float': 'left' });
-                }
-            },
-            floatNone: {
-                title: 'Float None',
-                icons: {
-                    primary: 'ui-icon-float-none'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'float': 'none' });
-                }
-            },
-            floatRight: {
-                title: 'Float Right',
-                icons: {
-                    primary: 'ui-icon-float-right'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.applyStyle.call(this, { 'float': 'right' });
                 }
             },
             tagMenu: {
@@ -2045,5 +2016,3 @@
     };
     
 })(jQuery, window, rangy);
-
-

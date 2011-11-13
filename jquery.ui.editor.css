@@ -138,18 +138,6 @@
     background-position: -80px -16px;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-float-left {
-    background-position: -48px -32px;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-float-none {
-    background-position: -80px -32px;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-float-right {
-    background-position: -64px -32px;
-}
-
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-hr {
     background-position: -96px -32px;
 }
