@@ -724,7 +724,6 @@
                             .attr('unselectable', 'on')
                             .find('.ui-dialog-titlebar-close', ui)
                             .remove();
-                            console.log('test');
                     }
                 });
                 
