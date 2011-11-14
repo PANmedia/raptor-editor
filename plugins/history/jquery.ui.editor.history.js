@@ -78,7 +78,7 @@
     
     // Add history undo / redo buttons
     $.ui.editor.addButton('undo', {
-        title: 'Step Back',
+        title: _('Step Back'),
         icons: {
             primary: 'ui-editor-icon-undo'
         },
@@ -93,7 +93,7 @@
     });
     
     $.ui.editor.addButton('redo', {
-        title: 'Step Forward',
+        title: _('Step Forward'),
         icons: {
             primary: 'ui-editor-icon-redo'
         },

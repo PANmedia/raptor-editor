@@ -1,6 +1,6 @@
 (function($) {
     $.ui.editor.addButton('blockquote', {
-        title: 'Blockquote',
+        title: _('Blockquote'),
         icons: {
             primary: 'ui-icon-blockquote'
         },

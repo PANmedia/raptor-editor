@@ -21,12 +21,12 @@
         initialize: function(object, button_group) {
             var editorInstance = this,
                 menu = $('<select autocomplete="off" name="tag" class="ui-editor-tag-select">\
-                            <option value="na">N/A</option>\
-                            <option value="p">Paragraph</option>\
-                            <option value="h1">Heading&nbsp;1</option>\
-                            <option value="h2">Heading&nbsp;2</option>\
-                            <option value="h3">Heading&nbsp;3</option>\
-                            <option value="div">Divider</option>\
+                            <option value="na">' + _('N/A') + '</option>\
+                            <option value="p">' + _('Paragraph') + '</option>\
+                            <option value="h1">'+ _('Heading&nbsp;1') + '</option>\
+                            <option value="h2">' + _('Heading&nbsp;2') + '</option>\
+                            <option value="h3">' + _('Heading&nbsp;3') + '</option>\
+                            <option value="div">' + _('Divider') + '</option>\
                         </select>').appendTo(button_group).data(editorInstance._data.names.button, object).bind('change.editor', function(){
                             var tag = $(this).find(':selected').val();
                             if (tag == 'na') return false
@@ -41,13 +41,13 @@
             
             // <strict> 
             else {
-                console.error('jQuery UI selectmenu not found. This library should have been included in the file you downloaded. If not, acquire it here: https://github.com/fnagel/jquery-ui');
+                console.error(_('jQuery UI selectmenu not found. This library should have been included in the file you downloaded. If not, acquire it here: https://github.com/fnagel/jquery-ui'));
             }
             // </strict>
 
             if (this.options.customTooltips) {
                 button_group.find('.ui-selectmenu').tipTip({
-                    content: 'Change HTML tag of selected element',
+                    content: _('Change HTML tag of selected element'),
                     maxWidth: 'auto'
                 });
             }

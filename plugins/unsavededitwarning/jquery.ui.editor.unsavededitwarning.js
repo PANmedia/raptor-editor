@@ -1,6 +1,6 @@
 (function($) {
     $.ui.editor.addOptions('unsavedEditWarning', {
-        content: 'This block contains unsaved changes',
+        content: _('This block contains unsaved changes'),
         contentTooltipPosition: 'bottom',
         contentTooltipMaxWidth: 'auto',
         contentClass: '',

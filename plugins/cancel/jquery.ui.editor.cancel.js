@@ -1,6 +1,6 @@
 (function($) {
     $.ui.editor.addButton('cancel', {
-        title: 'Cancel',
+        title: _('Cancel'),
         icons: {
             primary: 'ui-icon-cancel'
         },
@@ -18,8 +18,8 @@
                     destroy();
                 } else {
                     this._dialog.confirmation.show.call(this, {
-                        message: 'Are you sure you want to stop editing? <br/><br/>All changes will be lost!',
-                        title: 'Confirm Cancel Editing',
+                        message: _('Are you sure you want to stop editing? <br/><br/>All changes will be lost!'),
+                        title: _('Confirm Cancel Editing'),
                         ok: function(){
                             destroy();
                         }

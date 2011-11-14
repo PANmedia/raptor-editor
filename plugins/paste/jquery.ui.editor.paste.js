@@ -47,9 +47,9 @@
                         editorInstance._plugins.paste.dialog = $('<div class="ui-editor-paste-panel">\
                                 <div class="ui-editor-paste-panel-tabs">\
                                     <ul>\
-                                        <li><a href="#ui-editor-paste-plain">Plain Text</a></li>\
-                                        <li><a href="#ui-editor-paste-rich">Rich Text</a></li>\
-                                        <li><a href="#ui-editor-paste-source">Source Code</a></li>\
+                                        <li><a href="#ui-editor-paste-plain">' + _('Plain Text') + '</a></li>\
+                                        <li><a href="#ui-editor-paste-rich">' + _('Rich Text') + '</a></li>\
+                                        <li><a href="#ui-editor-paste-source">'+ _('Source Code') + '</a></li>\
                                     </ul>\
                                     <div id="ui-editor-paste-plain">\
                                         <textarea class="ui-editor-paste-plain">' + pasted_value + '</textarea>\
@@ -83,7 +83,7 @@
                         buttons: 
                             [
                                 {
-                                    text: 'OK',
+                                    text: _('OK'),
                                     'class': 'ok',
                                     click: function() {
                                         
@@ -110,7 +110,7 @@
                                     }
                                 },
                                 {
-                                    text: 'Cancel',
+                                    text: _('Cancel'),
                                     'class': 'cancel',
                                     click: function() {
                                         rangy.restoreSelection(selection);

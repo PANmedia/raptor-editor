@@ -1,7 +1,7 @@
 (function($) {
    
     $.ui.editor.addButton('floatLeft', {
-        title: 'Float Left',
+        title: _('Float Left'),
         icons: {
             primary: 'ui-icon-float-left'
         },
@@ -12,7 +12,7 @@
     });
     
     $.ui.editor.addButton('floatRight', {
-        title: 'Float Right',
+        title: _('Float Right'),
         icons: {
             primary: 'ui-icon-float-right'
         },
@@ -23,7 +23,7 @@
     });
     
     $.ui.editor.addButton('floatNone', {
-        title: 'Float None',
+        title: _('Float None'),
         icons: {
             primary: 'ui-icon-float-none'
         },

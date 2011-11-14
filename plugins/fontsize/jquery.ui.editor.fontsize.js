@@ -1,7 +1,7 @@
 (function($) {
    
     $.ui.editor.addButton('increaseFontSize', {
-        title: 'Increase Font Size',
+        title: _('Increase Font Size'),
         icons: {
             primary: 'ui-icon-font-increase'
         },
@@ -17,7 +17,7 @@
     });
     
     $.ui.editor.addButton('decreaseFontSize', {
-        title: 'Decrease Font Size',
+        title: _('Decrease Font Size'),
         icons: {
             primary: 'ui-icon-font-decrease'
         },

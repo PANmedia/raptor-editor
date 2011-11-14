@@ -1,7 +1,7 @@
 (function($) {
    
     $.ui.editor.addButton('showGuides', {
-        title: 'Show Guides',
+        title: _('Show Guides'),
         icons: {
             primary: 'ui-icon-pencil'
         },

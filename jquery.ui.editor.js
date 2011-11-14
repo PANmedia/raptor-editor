@@ -344,7 +344,7 @@
                         }
                         // <strict>
                         else {
-                            console.error(_('Button identified by key "' + value + '" does not exist'));
+                            console.error(_('Button identified by key "<*button*>" does not exist', { button: value }));
                         }
                         // </strict>
                     });
@@ -755,7 +755,7 @@
                                 
                                 tagName = current[0].tagName.toLowerCase();
                                 title = ' &gt; <a href="javascript: // ' + _('Select element') + '" name="' + i +'" \
-                                        class="ui-widget-editor-element-path" title="' + _('Click to select the contents of this &quot; <tagName> &quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
+                                        class="ui-widget-editor-element-path" title="' + _('Click to select the contents of this &quot; <*tagName*> &quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
                                 current = current.parent();
                                 i++;
                             }

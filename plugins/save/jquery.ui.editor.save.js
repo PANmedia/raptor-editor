@@ -5,7 +5,7 @@
     });
 
     $.ui.editor.addButton('save', {
-        title: 'Save',
+        title: _('Save'),
         icons: {
             primary: 'ui-icon-disk'
         },
@@ -14,12 +14,12 @@
             // If the user has provided or bound their own save function, allow them to cancel the default
             if (this._trigger('save')) {
 
-                this.message.loading.call(this, 'Saving changes...', false);
+                this.message.loading.call(this, _('Saving changes...'), false);
 
                 var error = function(response_code) {
                     editor.message.error.call(editor, [
-                        'Failed to save content',
-                        'Response code ' + response_code + ' from ' + window.location.protocol + '//' + window.location.hostname + editor.options.saveUri
+                        _('Failed to save content'),
+                        _('Response code <*responseCode*> from <*location*>', { responseCode: response_code, location: window.location.protocol + '//' + window.location.hostname + editor.options.saveUri })
                     ], 10000);
                 }, editor = this;
 
@@ -38,7 +38,7 @@
                         }
                     },
                     success: function(data) {
-                        editor.confirm.call(editor, 'Content saved');
+                        editor.confirm.call(editor, _('Content saved'));
                         editor._data.clear.call(editor._data.names.originalHtml);
                     }
                 });
