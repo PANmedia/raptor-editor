@@ -11,8 +11,7 @@
         },
         disabled: true,
         click: function(event, button) {
-            // If the user has provided or bound their own save function 
-            // Allow them to cancel the default
+            // If the user has provided or bound their own save function, allow them to cancel the default
             if (this._trigger('save')) {
 
                 this.message.loading.call(this, 'Saving changes...', false);

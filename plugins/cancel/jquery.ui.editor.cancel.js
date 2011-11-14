@@ -8,7 +8,7 @@
             // If the user has provided or bound their own cancel function 
             // Allow them to cancel the default
             if (this._trigger('cancel')) {
-                // confirm
+                // Confirm
                 var editorInstance = this,
                     destroy = function() {
                         editorInstance._content.reset.call(editorInstance);
