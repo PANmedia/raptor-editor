@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="jquery-ui-editor" basedir="." default="build">
     
+    <adhoc-task name="datauri">
+        <![CDATA[
+            class DataURI extends Task {
+
+                private $filesets = array();
+
+                public function main() {
+                
+                    // append any files in filesets
+                    foreach($this->filesets as $fs) {
+                        try {
+                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
+                            foreach ($files as $file) {
+                                $content = file_get_contents($file);
+                                $content = preg_replace_callback('/url\((.*?)\.(png|jpe?g|gif)\)/i', function($matches) use($file) {
+                                    $image = file_get_contents(dirname($file).'/'.$matches[1].'.'.$matches[2]);
+                                    $image = base64_encode($image);
+                                    return "url(data:image/$matches[2];base64,$image)";
+                                }, $content);
+                                file_put_contents($file, $content);
+                            }
+                        } catch (BuildException $be) {
+                            $this->log($be->getMessage(), Project::MSG_WARN);
+                        }
+                    }
+                }
+                
+                public function createFileSet() {
+                    $num = array_push($this->filesets, new FileSet());
+                    return $this->filesets[$num-1];
+                }
+                
+            }
+        ]]>
+    </adhoc-task>
+    
     <!-- =================================================================== -->
     <!-- Run a complete build                                                -->
     <!-- =================================================================== -->
@@ -63,23 +99,6 @@
     <!-- =================================================================== -->
     <!-- Process files                                                       -->
     <!-- =================================================================== -->
-    <target name="combine" depends="prepare,clone">
-        <append destFile="${buildpath}/concat.js">
-            <fileset dir=".">
-                <exclude name="${buildpath}/concat.js" />
-                <include name="${buildpath}/*.js" />
-                <include name="${buildpath}/**/*.js" />
-            </fileset>
-        </append>
-        <append destFile="${buildpath}/concat.css">
-            <fileset dir=".">
-                <exclude name="${buildpath}/concat.css" />
-                <include name="${buildpath}/*.css" />
-                <include name="${buildpath}/**/*.css" />
-            </fileset>
-        </append>
-    </target>
-    
     <target name="stripblocks" depends="prepare,clone">
         <reflexive>
             <fileset dir="${buildpath}">
@@ -95,6 +114,45 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
+    </target>
+    
+    <target name="pngout">
+        <foreach param="fname" absparam="abs-fname" target="pngoutexec">
+            <fileset dir=".">
+                <include name="*.png" />
+                <include name="**/*.png" />
+            </fileset>
+        </foreach>
+    </target>
+    
+    <target name="pngoutexec">
+        <exec command="pngout ${abs-fname}" logoutput="true" />
+    </target>
+    
+    <target name="datauri" depends="prepare,clone">
+        <datauri>
+            <fileset dir=".">
+                <include name="${buildpath}/*.css" />
+                <include name="${buildpath}/**/*.css" />
+            </fileset>
+        </datauri>
+    </target>
+    
+    <target name="combine" depends="datauri">
+        <append destFile="${buildpath}/concat.js">
+            <fileset dir=".">
+                <exclude name="${buildpath}/concat.js" />
+                <include name="${buildpath}/*.js" />
+                <include name="${buildpath}/**/*.js" />
+            </fileset>
+        </append>
+        <append destFile="${buildpath}/concat.css">
+            <fileset dir=".">
+                <exclude name="${buildpath}/concat.css" />
+                <include name="${buildpath}/*.css" />
+                <include name="${buildpath}/**/*.css" />
+            </fileset>
+        </append>
     </target>
     
     <target name="compile" depends="combine">
