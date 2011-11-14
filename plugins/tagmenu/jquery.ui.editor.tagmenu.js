@@ -39,11 +39,11 @@
                 });
             }
             
-            // <debug> 
+            // <strict> 
             else {
                 console.error('jQuery UI selectmenu not found. This library should have been included in the file you downloaded. If not, acquire it here: https://github.com/fnagel/jquery-ui');
             }
-            // </debug>
+            // </strict>
 
             if (this.options.customTooltips) {
                 button_group.find('.ui-selectmenu').tipTip({
