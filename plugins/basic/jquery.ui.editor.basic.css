@@ -1,15 +1,31 @@
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-bold {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUTDEMjw6IAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAuklEQVQ4y%2B2TMQ5BQRCGv1084QQKUUucgGIKZ3AXOtQKnURDp3KKOYGQd4lHQ6EdzSs2m%2BXpmWSK%2BXfy%2FbOZDPzDhYWIDIBlstG5q5nNVbUIdR8WqpoDG6BW5kJVJ8DRzDrAOAbXE2Y3oBEZ%2BFLz3wBcAFiJSPiWx83%2BDSArcw1MgQOQOedmItKuAvgAUKjqCbgAmZn1gH7VF7pAMzIItUdyjSLSAkbA7sPa98AWeKrqPTXBGRj%2B2C28AB7GK3Z4Z5OmAAAAAElFTkSuQmCC);
+    background-image: url(images/bold.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-bold {
+    background-image: url(images/bold-hover.png);
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-italic {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUTLHhN42oAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAlElEQVQ4y%2B2TOwrCUBBFz0SDrfvQysomswV34QLEXsSVCG7C8t0qlQhimT3YCsKzSSEhP9PqLedeDvNh4C9rMtx9Buwr5Z2key9ACZkDBzMrQgjbukzS0WECpDHGY1ugTUvgJek2FLACzl0tNs2%2FAKZAPghgZhtgAoy%2BOqO7Z8CpUl4DV%2BAh6flpjGugl3J59iO%2F8Abofh1Wp7KbogAAAABJRU5ErkJggg%3D%3D);
+    background-image: url(images/italic.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-italic {
+    background-image: url(images/italic-hover.png);
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-underline {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUUCuUB8FAAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAsUlEQVQ4y9WTIQ7CQBBFX6HVHGENEgMGV8EhegHCOQiHQBEu8yWa4lcX0aSaBLNNJpttAUECYybzMv%2FvZGcX%2Fj4yW5RlWQGVQfuQD5ZJqvtiag2897Vz7g6sgaOki%2Fe%2Bcc7dgE3PrGaSmKoB8pABkHSN2ZhBFibLIp5igwZForn4xCBPNOfvGnThtLnZzjKwbnSNRrADthE%2BSzp9%2FSHNgPqFZiGptRcTx2qAAzx%2B7zM9ARf5K5C6oZcNAAAAAElFTkSuQmCC);
+    background-image: url(images/underline.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-underline {
+    background-image: url(images/underline-hover.png);
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-strikethrough {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUUItC0WKoAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAA00lEQVQ4y%2BWRPU4CYRCGnxctgAugDRcAaxoyX2PnPTSxtIKEUFlqZ7834ARUcwAa4gVozDYWJsbGZGw%2BEkJ2N0tJnGSK%2Bc07z8DZm6qSZjaV9BARPQBJ7xExAp7cfXfY26ncKj0CJXCfvQNcHA8DXNYoK%2FPAZ1b0BoxPOWEgaQH8RMSru5etGJjZug04d79tVHCw8ErSHOhHxNLdP1q9xszuzOx6H6eUipRSUdVbB%2FFZ0sbMZjnuRsSwDYNepr0CtsBNLn0DLzn%2F5e6%2FTQp2wIT%2FY3%2BoXkBQa%2BzZsAAAAABJRU5ErkJggg%3D%3D);
+    background-image: url(images/strikethrough.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-strikethrough {
+    background-image: url(images/strikethrough-hover.png);
 }

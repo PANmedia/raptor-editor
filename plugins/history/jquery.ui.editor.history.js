@@ -12,7 +12,6 @@
                     this._plugins.history.undoStack[id] && this._plugins.history.undoStack[id].length == 0));
             this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', (
                     this._plugins.history.redoStack[id] && this._plugins.history.redoStack[id].length == 0));
-            this._content.unsavedEditWarning.toggle.call(this);
         },
         
         clear: function(all) {
