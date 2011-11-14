@@ -1,7 +1,7 @@
 (function($) {
     $.ui.editor.addPlugin('paste', {
         
-        // events
+        // Events
         detach: function() {
             this.element.unbind('paste.editor');
         },

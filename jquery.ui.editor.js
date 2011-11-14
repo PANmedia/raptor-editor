@@ -8,26 +8,6 @@
 
         // Allow buttons to be extended using $.ui.editor.prototype
         _buttons: {
-            unorderedList: {
-                title: 'Unordered List',
-                icons: {
-                    primary: 'ui-icon-unordered-list'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'ul');
-                }
-            },
-            orderedList: {
-                title: 'Ordered List',
-                icons: {
-                    primary: 'ui-icon-ordered-list'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'ol');
-                }
-            },
             increaseFontSize: {
                 title: 'Increase Font Size',
                 icons: {

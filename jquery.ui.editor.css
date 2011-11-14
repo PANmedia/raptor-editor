@@ -80,14 +80,6 @@
     background-image: url(images/jquery-ui-editor-icons.png);
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-unordered-list {
-    background-position: -16px -32px;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-ordered-list {
-    background-position: 0px -32px;
-}
-
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-font-up {
     background-position: -96px -16px;
 }
