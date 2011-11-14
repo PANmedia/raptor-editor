@@ -80,14 +80,6 @@
     background-image: url(images/jquery-ui-editor-icons.png);
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-insert-link {
-    background-position: 0px -48px;
-}
-
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-remove-link {
-    background-position: -16px -48px;
-}
-
 /* Inputs */
 .ui-widget-editor-dialog textarea,
 .ui-widget-editor-dialog input {
@@ -103,63 +95,6 @@
 .ui-widget-editor-dialog textarea {
     height: 94%;
     width: 99%;
-}
-
-/* Dialog - links */
-.ui-widget-editor-link-panel .ui-widget-editor-link-menu {
-    height: 95%;
-    width: 200px;
-    float: left;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset,
-.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset {
-    border: none;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset {
-    font-size: 12px;
-}
-.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label input {
-    float: left;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-menu fieldset label span {
-    display: inline-block;
-    width: 150px;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-wrap {
-    margin-left: 200px;
-    padding-left: 20px;
-    border-left: 1px dashed;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset .ui-widget-editor-external-href {
-    width: 365px;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset #ui-widget-editor-link-external-target {
-    vertical-align: sub;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset.ui-widget-editor-link-email label {
-    display: inline-block;
-    width: 115px;
-}
-
-.ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset.ui-widget-editor-link-email input {
-    width: 340px;
-}
-
-/* Guides */
-.ui-widget-editor-guides * {
-    outline: 1px dashed rgba(0, 0, 0, 0.5);
 }
 
 /* Messages */
