@@ -1,11 +1,23 @@
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-float-left {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUALvesw9QAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAA7ElEQVQ4y9WTvUrEQBSFv7tZ3aRJqvR2voCdcJftbOx8FYuAfSqfRhBBBLmP4L5EmgSSwHQZbWZkDf5skcYLB2bgzDnfMAz8%2B5G4qKrqFdjODXVdi6o%2BBO8qaG9mtwDraPTeb9M0BSBJEkSEaZoAMLPrnwg%2BA5qmoSxL8jynKAqyLKPrOgBU9WlGsDKz3ZcAEaHve5xzeO8REYZhiARXfxJEfO89bdsyjiPOuUjwctgeCC6XfQVVfZzf8xclZnaxOMHzEc2nwAZIzexsOQJVLYB74Pyb1hMgDdqE%2FRtwY2bd%2BiDsLhw4Zt4X%2B0wfJ15JXWsHH%2BsAAAAASUVORK5CYII%3D);
+    background-image: url(images/left.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-float-left {
+    background-image: url(images/left-hover.png);
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-float-none {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUDCuCCdMYAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAy0lEQVQ4y9WSMWrDQBBF32SdeDuVatO5yxFWPoTvkDMI0gsXOVGaeE4Qcgo1MkhC22mSRgvGGEuFCGTgwx8G%2Fv%2FMDPz7kkTKsvwEiqv5qaqq%2FT2BTSJmVnjvAXDOISKM41jMJXhIpK5rhmHAOUeWZeR5ThJclEBEaNuWGCNmhojQdd1ygeRmZjRNQ9%2F3xBj%2F8AohhCPwMu1lDl%2Bq%2Brp6go8Fzk%2FAFvCq%2BrxeghBCBrwDuxuuj4CfsJ36b%2BCgqufNhdjb5WPN1M9qZ%2FwF37Y5cLfQXewAAAAASUVORK5CYII%3D);
+    background-image: url(images/none.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-float-none {
+    background-image: url(images/none-hover.png);
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-float-right {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDRUCEXP8jGsAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAA6UlEQVQ4y9WRvUrEUBBGz2yimzRJld5OsLa%2B2lpYiL5MQBCrVD7KFjY2Vn6P4FOkSSBZuF3u2iQQNMgWsXBgYH6Y%2Bc4w8O%2FNpsA59wxcjDUDNpLuyrI8LMx9VFV1DRBPFUlPSwohBJIkASCKIsyMYRiupn48I9hNyjOC27quKYqCLMvI85w0TWnblh8LJN0v3mhG13V47wkhYGb0fc8SweuMYAOYpJsJP4RA0zTs93u893%2FzhbdvBL95JOlydYL3I5RPgS2QSDpbj8A5lwMvwPmC6gmQjL4d80%2FgQVIbz5Y9jgPH2GG1N34B%2BTJJmpEx4TAAAAAASUVORK5CYII%3D);
+    background-image: url(images/right.png);
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-float-right {
+    background-image: url(images/right-hover.png);
 }

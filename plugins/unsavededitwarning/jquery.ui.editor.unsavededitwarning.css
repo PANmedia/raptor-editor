@@ -1,0 +1,15 @@
+.ui-widget-editor-warning {
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px 0 0 0;
+    border: 1px solid #D4D4D4;
+    background-color: rgba(255, 255, 242, 0.1);
+    background-image: -moz-linear-gradient(center top , rgba(255, 255, 242, 0.5), rgba(237, 236, 189, 1));
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(255, 255, 242, 0.5)),color-stop(100%,rgba(237, 236, 189, 1)));
+}
+
+.ui-widget-editor-warning span.ui-icon {
+    display: inline-block;
+    float: left;
+    margin: 8px 5px 0 5px;
+}
