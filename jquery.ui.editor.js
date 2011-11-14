@@ -34,16 +34,6 @@
                     $(button).button('option', 'disabled', !this._editor.selectedElement.is('a'));
                 }
             },
-            hr: {
-                title: 'Insert Horizontal Rule',
-                icons: {
-                    primary: 'ui-icon-hr'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.insertTag.call(this, 'hr');
-                }
-            },
             blockquote: {
                 title: 'Blockquote',
                 icons: {
