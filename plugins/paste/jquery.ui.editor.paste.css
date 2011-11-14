@@ -1,0 +1,23 @@
+/* Dialog - paste */
+.ui-widget-editor-paste .ui-tabs {
+    width: 96%;
+    height: 94%;
+}
+
+.ui-widget-editor-paste .ui-tabs a {
+    outline: none;
+}
+
+.ui-widget-editor-paste .ui-tabs .ui-tabs-panel {
+    height: 85%;
+}
+
+.ui-widget-editor-paste .ui-tabs .ui-tabs-panel textarea {
+    height: 96%;
+    width: 99%;
+}
+
+.ui-widget-editor-paste .ui-tabs .ui-tabs-panel .ui-editor-paste-rich {
+    height: 97%;
+    outline: none;
+}

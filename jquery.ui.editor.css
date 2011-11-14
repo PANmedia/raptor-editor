@@ -1,0 +1,182 @@
+/* Click to edit */
+.ui-widget-editor-edit {
+    pointer-events:none;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #F2FFF2;
+    background-image: -moz-linear-gradient(center top , #F2FFF2, #DAF2D7);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f2fff2),color-stop(100%,#daf2d7));
+    border: 1px solid #D4D4D4;
+    -moz-box-shadow: 0px 2px 10px #CCC;
+    -webkit-box-shadow: 0px 2px 10px #CCC;
+    box-shadow: 0px 2px 10px #CCC;
+}
+
+.ui-widget-editor-highlight {
+    -moz-transition:all 0.5s  0s;
+    -o-transition:all 0.5s  0s;
+    -webkit-transition:all 0.5s  0s;
+    -ms-transition:all 0.5s  0s;
+    -moz-box-shadow: 0px 2px 10px #CCC;
+    -webkit-box-shadow: 0px 2px 10px #CCC;
+    box-shadow: 0px 2px 10px #CCC;
+}
+
+.ui-widget-editor-editing {
+    outline: 1px solid #CCC;
+}
+
+/* Editor toolbar */
+.ui-widget-editor-dialog .ui-dialog-titlebar {
+    font-size: 10px;
+}
+
+.ui-widget-editor-dialog .ui-dialog-titlebar .ui-widget-editor-element-path:first-child {
+    margin-left: 5px;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-toolbar {
+    padding: 5px;
+}
+
+.ui-widget-editor-dialog .ui-dialog-titlebar .ui-widget-editor-element-path {
+    min-width: 10px;
+    min-height: 15px;
+    display: inline-block;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner {
+    height: 25px;
+    line-height: 10px;
+}
+
+/* Editor button */
+.ui-widget-editor-dialog .ui-widget-editor-inner button {
+    float: left;
+    margin: 0;
+    height: 25px;
+    width: 25px;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset,
+.ui-widget-editor-dialog .ui-widget-editor-inner div {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button {
+   border-radius: 0px;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button:first-child{
+    border-radius: 5px 0 0 5px;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon  {
+    background-image: url(images/jquery-ui-editor-icons.png);
+}
+
+/* Inputs */
+.ui-widget-editor-dialog textarea,
+.ui-widget-editor-dialog input {
+    border: 1px solid #D4D4D4;
+    padding: 5px;
+}
+
+/* Dialogs */
+.ui-widget-editor-dialog .ui-dialog-content {
+    font-size: 12px;
+}
+
+.ui-widget-editor-dialog textarea {
+    height: 94%;
+    width: 99%;
+}
+
+/* Messages */
+.ui-widget-editor-toolbar .ui-widget-editor-messages {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages > div {
+    margin-top: 10px;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon {
+    display: inline-block;
+    float: left;
+    margin: 3px 0 0 5px;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul {
+    border-radius: 5px;
+    padding: 0 10px 0 25px;
+    margin: 0;
+    border: 1px solid #D4D4D4;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul li {
+    list-style: none;
+}
+
+/* Error */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-notice {
+    background-color: #FF9292;
+    background-image: -moz-linear-gradient(center top , #FF9292, #FF7575);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#ffd0c9),color-stop(100%,#ffa8a0));
+    border: 1px solid #E53A3A;
+}
+
+/* Confirm */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-check {
+    background-color: #F2FFF2;
+    background-image: -moz-linear-gradient(center top , #F2FFF2, #DAF2D7);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f2fff2),color-stop(100%,#daf2d7));
+}
+
+/* Information */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-info {
+    background-color: #F1FAFF;
+    background-image: -moz-linear-gradient(center top , #F1FAFF, #D9EFF5);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f1faff),color-stop(100%,#d9eff5));
+}
+
+/* Warning */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-alert {
+    background-color: #FFFFF2;
+    background-image: -moz-linear-gradient(center top , #FFFFF2, #EDECBD);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fffff2),color-stop(100%,#edecbd));
+}
+
+/* Loading */
+.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-loading {
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon-loading {
+    background: transparent url(data:image/gif;base64,R0lGODlhEAAQAPIAAP%2F%2F%2FwAAAMLCwkJCQgAAAGJiYoKCgpKSkiH%2FC05FVFNDQVBFMi4wAwEAAAAh%2FhpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh%2BQQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa%2BdIAAAh%2BQQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo%2FIpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo%2FIpFKSAAAh%2BQQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh%2BQQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc%2FjDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA%3D%3D) no-repeat center center;
+}
+
+/* Warning corner */
+.ui-widget-editor-warning {
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px 0 0 0;
+    border: 1px solid #D4D4D4;
+    background-color: rgba(255, 255, 242, 0.1);
+    background-image: -moz-linear-gradient(center top , rgba(255, 255, 242, 0.5), rgba(237, 236, 189, 1));
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(255, 255, 242, 0.5)),color-stop(100%,rgba(237, 236, 189, 1)));
+}
+
+.ui-widget-editor-warning span.ui-icon {
+    display: inline-block;
+    float: left;
+    margin: 8px 5px 0 5px;
+}
