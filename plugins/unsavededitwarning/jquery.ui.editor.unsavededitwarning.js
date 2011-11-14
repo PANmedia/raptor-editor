@@ -44,7 +44,7 @@
                     $(this).stop().animate({ opacity: options.contentIdleOpacity });
                 }).appendTo('body');
                 
-                if (options.customTooltips) {
+                if (editorInstance.options.customTooltips) {
                     warning.tipTip({ 
                         delay: 100,
                         defaultPosition: options.contentTooltipPosition,
