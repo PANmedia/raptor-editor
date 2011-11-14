@@ -1,26 +1,5 @@
 (function($, window, rangy, undefined) {
  
-    // <strict>
-    // Ensure jQuery has been included
-    if (!$) {
-        console.error('jQuery is required');
-    }
-    // Ensure rangy has been included
-    if (!rangy) {
-        console.error('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"');
-    }
-    // Ensure dialog has been included
-    if (!$.ui.dialog) {
-        console.error('jQuery UI Dialog is required.');
-    }
-    // </strict>
- 
-    // <debug>
-    if (!jQuery.cookie) {
-        console.error('jQuery cookie has not been loaded - persistence functions will not be available');
-    }
-    // </debug>
- 
     $.widget('ui.editor', {
                
         _instances: [],
@@ -93,16 +72,44 @@
         },
         
         _init: function() {
+            // <strict>
+            // Ensure jQuery has been included
+            if (!$) console.error(_('jQuery is required'));
+            // Ensure rangy has been included
+            if (!rangy) console.error(_('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
+            // Ensure dialog has been included
+            if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
+            // Warn that no internationalizations have been loaded
+            if (!$.ui.editor.prototype._plugins.i18n) console.log(_('No internationalizations have been loaded, defaulting to English'));
+            // </strict>
+            
+            // <debug>
+            if (!jQuery.cookie) console.error(_('jQuery cookie has not been loaded - persistence functions will not be available'));
+            // </debug>
+            
             if (this.options.customTooltips && !$.isFunction($.fn.tipTip)) {
                 this.options.customTooltips = false;
                 // <strict>
-                console.error('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin');
+                console.error(_('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin'));
                 // </strict>
             }
             if (!jQuery.cookie) this.options.persistence = false;
             this._clickToEdit.initialize.call(this);
         },
-        
+
+        _: function(string, variables) {
+            if ($.ui.editor.prototype._plugins.i18n && $.ui.editor.prototype._plugins.i18n[string]) {
+                return $.ui.editor.prototype._plugins.i18n.translate(string, variables);
+            } else if (!variables) {
+                return string;
+            } else {
+                $.each(variables, function(key, value) {
+                    string = string.replace('<*' + key + '*>', value);
+                });
+                return string;
+            }
+        },
+       
         _create: function() {
             this._instances.push(this);
         },
@@ -194,7 +201,7 @@
                         this._clickToEdit.message = $('<div class="ui-widget-editor-edit ' 
                                                         + this.options.beginEditingClass 
                                                         + '" style="opacity: 0;">\
-                                                            ' + this.options.beginEditingContent + '\
+                                                            ' + _(this.options.beginEditingContent) + '\
                                                         </div>').appendTo('body');
                     }
 
@@ -242,7 +249,7 @@
                     minHeight: 'auto',
                     resize: 'auto',
                     zIndex: 32000,
-                    title: 'Editor loading...',
+                    title: _('Editor loading...'),
                     autoOpen: false,
                     dialogClass: this.options.dialogClass,
                     show: this.options.dialogShowAnimation,
@@ -309,7 +316,8 @@
                             if ($.isFunction(object.initialize)) {
                                 object.initialize.call(editorInstance, object, button_group);
                             } else {
-                                button = $('<button>' + object.title + '</button>')
+                                var title = _(object.title);
+                                button = $('<button>' + title + '</button>')
                                     .addClass('ui-widget-editor-button-' + value)
                                     .attr('name', value)
                                     .attr('title', value)
@@ -327,7 +335,7 @@
                                 
                                 if (editorInstance.options.customTooltips) {
                                     button.tipTip({
-                                        content: object.title
+                                        content: title
                                     }).removeAttr('title');
                                 }
 
@@ -335,9 +343,8 @@
                             }
                         }
                         // <strict>
-                        // Unless we're in debug mode - fail silently
                         else {
-                            console.error('Button identified by key "' + value + '" does not exist');
+                            console.error(_('Button identified by key "' + value + '" does not exist'));
                         }
                         // </strict>
                     });
@@ -503,7 +510,7 @@
                 $(rangy.getSelection().getAllRanges()).each(function(){
                     if (this.startOffset == this.endOffset) {
                         var list = $('<' + tag + ' class="' + editorInstance.options.cssPrefix + tag + '">'
-                                + '<li class="' + editorInstance.options.cssPrefix + 'li">First list item</li></' + tag + '>');
+                                + '<li class="' + editorInstance.options.cssPrefix + 'li">' + _('First list item') + '</li></' + tag + '>');
                         editorInstance._content.replaceRange.call(editorInstance, list, this);
                         editorInstance._selection.selectElement.call(editorInstance, list.find('li:first'));
                     } else {
@@ -741,14 +748,14 @@
                             while (true) {  // Update dialog title
                                 
                                 if (this._util.isRoot.call(this, current)) {
-                                    title = '<a href="javascript: // Select all" name="root" \
-                                        class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
+                                    title = '<a href="javascript: // ' + _('Select all') + '" name="root" \
+                                        class="ui-widget-editor-element-path" title="' + _('Click to select all editable content') + '">root</a>' + title;
                                     break;
                                 }
                                 
                                 tagName = current[0].tagName.toLowerCase();
-                                title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                        class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tagName.toUpperCase() + '&quot; element">' + tagName + '</a>' + title;
+                                title = ' &gt; <a href="javascript: // ' + _('Select element') + '" name="' + i +'" \
+                                        class="ui-widget-editor-element-path" title="' + _('Click to select the contents of this &quot; <tagName> &quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
                                 current = current.parent();
                                 i++;
                             }
@@ -765,7 +772,7 @@
                 
             unloadWarning: function() {
                 if (this._content.dirtyBlocksExist.call(this)) {
-                    return '\nThere are unsaved changes on this page. \nIf you navigate away from this page you will loose your unsaved changes';
+                    return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will loose your unsaved changes');
                 }
             }
 
@@ -826,8 +833,8 @@
                 
                 show: function(options) {
                 
-                    if (typeof options.message == 'undefined') options.message = 'Are you sure?';
-                    if (typeof options.title == 'undefined') options.title = 'Confirmation';
+                    if (typeof options.message == 'undefined') options.message = _('Are you sure?');
+                    if (typeof options.title == 'undefined') options.title = _('Confirmation');
                     
                     if (!this._dialog.confirmation.html) this._dialog.confirmation.html = $('<div>' + options.message + '</div>').appendTo('body');
                     else this._dialog.confirmation.html.html(options.message);
@@ -844,7 +851,7 @@
                         hide: this.options.dialogHideAnimation,
                         buttons: [
                             {
-                                text: 'OK',
+                                text: _('OK'),
                                 'class': 'ok',
                                 click: function() {
                                     if ($.isFunction(options.ok)) options.ok();
@@ -852,7 +859,7 @@
                                 }
                             },
                             {
-                                text: 'Cancel',
+                                text: _('Cancel'),
                                 'class': 'cancel',
                                 click: function() {
                                     if ($.isFunction(options.cancel)) options.cancel();
@@ -1049,40 +1056,44 @@
         
     });
     
+    _ = function(string, variables) {
+        return $.ui.editor.prototype._(string, variables);
+    };
+    
     $.ui.editor.addButton = function(name, button) {
         // <strict>
         if ($.ui.editor.prototype._buttons[name]) {
-            console.error('Button "' + name + '" has already been registered, and will be overwritten');
+            console.error(_('Button "<*buttonName*>" has already been registered, and will be overwritten', { buttonName: name }));
         }
         // </strict>
         
         $.ui.editor.prototype._buttons[name] = button;
         
         // <debug> 
-        console.log('Button ' + name + ' added', button);
+        console.log(_('Button <*buttonName*> added', { buttonName: name }), button);
         // </debug>
     };
     
     $.ui.editor.addPlugin = function(name, plugin) {
         // <strict>
-        if ($.ui.editor.prototype._plugins[name]) console.error('Plugin "' + name + '" has already been registered, and will be overwritten');
+        if ($.ui.editor.prototype._plugins[name]) console.error(_('Plugin "<*pluginName*>" has already been registered, and will be overwritten', { pluginName: name}));
         // </strict>
         
         $.ui.editor.prototype._plugins[name] = plugin;
         
         // <debug> 
-        console.log('Plugin ' + name + ' added', plugin);
+        console.log(_('Plugin <*pluginName*> added', { pluginName: name }), plugin);
         // </debug>
     };
     
     $.ui.editor.addOptions = function(name, options) {
         // <strict>
-        if ($.ui.editor.prototype.options.name) console.error('"' + name + '" option key already exists, and will be overwritten');
+        if ($.ui.editor.prototype.options.name) console.error(_('"<*optionKey*>" option key already exists, and will be overwritten', { optionKey: name }));
         // </strict>
         if (!$.ui.editor.prototype.options['plugins']) $.ui.editor.prototype.options['plugins'] = {};
         $.ui.editor.prototype.options['plugins'][name] = options;
         // <debug> 
-        console.log('Options ' + name + ' added', options);
+        console.log(_('Options <*optionKey*> added', { optionKey: name }), options);
         // </debug>
     };
     
