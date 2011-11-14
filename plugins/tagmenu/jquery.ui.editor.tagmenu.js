@@ -12,28 +12,38 @@
             } else {
                 tagMenu.val('other');
             }
-            tagMenu.selectmenu();
+            if ($.ui.selectmenu) tagMenu.selectmenu();
         }
     });
     
     $.ui.editor.addButton('tagMenu', {
         title: 'Tag Menu',
         initialize: function(object, button_group) {
-            var editorInstance = this;
-            $('<select autocomplete="off" name="tag" class="ui-editor-tag-select">\
-                <option value="na">N/A</option>\
-                <option value="p">Paragraph</option>\
-                <option value="h1">Heading&nbsp;1</option>\
-                <option value="h2">Heading&nbsp;2</option>\
-                <option value="h3">Heading&nbsp;3</option>\
-                <option value="div">Divider</option>\
-            </select>').appendTo(button_group).data(editorInstance._data.names.button, object).bind('change.editor', function(){
-                    var tag = $(this).find(':selected').val();
-                    if (tag == 'na') return false
-                    else editorInstance._selection.changeTag.call(editorInstance, tag);
-                }).selectmenu({
-                width: 150
-            });
+            var editorInstance = this,
+                menu = $('<select autocomplete="off" name="tag" class="ui-editor-tag-select">\
+                            <option value="na">N/A</option>\
+                            <option value="p">Paragraph</option>\
+                            <option value="h1">Heading&nbsp;1</option>\
+                            <option value="h2">Heading&nbsp;2</option>\
+                            <option value="h3">Heading&nbsp;3</option>\
+                            <option value="div">Divider</option>\
+                        </select>').appendTo(button_group).data(editorInstance._data.names.button, object).bind('change.editor', function(){
+                            var tag = $(this).find(':selected').val();
+                            if (tag == 'na') return false
+                            else editorInstance._selection.changeTag.call(editorInstance, tag);
+                        });
+                
+            if ($.ui.selectmenu) {
+                menu.selectmenu({
+                    width: 150
+                });
+            }
+            
+            // <debug> 
+            else {
+                console.error('jQuery UI selectmenu not found. This library should have been included in the file you downloaded. If not, acquire it here: https://github.com/fnagel/jquery-ui');
+            }
+            // </debug>
 
             if (this.options.customTooltips) {
                 button_group.find('.ui-selectmenu').tipTip({
@@ -43,12 +53,14 @@
             }
         },
         stateChange: function() {
-            var menu = $('.ui-editor-tag-select');
-            if (this._util.isRoot.call(this, this._editor.selectedElement)) menu.selectmenu('disable');
-            else menu.selectmenu('enable');
+            if ($.ui.selectmenu) {
+                var menu = $('.ui-editor-tag-select');
+                if (this._util.isRoot.call(this, this._editor.selectedElement)) menu.selectmenu('disable');
+                else menu.selectmenu('enable');
+            }
         },
         destroy: function() {
-            $('.ui-editor-tag-select').selectmenu('destroy');
+            if ($.ui.selectmenu) $('.ui-editor-tag-select').selectmenu('destroy');
         }
     });
     

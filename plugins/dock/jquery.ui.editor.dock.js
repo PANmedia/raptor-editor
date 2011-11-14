@@ -6,7 +6,8 @@
             primary: 'ui-icon-pin-s'
         },
         click: function(event, button) {
-            this._editor.toolbar.parent().toggleClass('ui-widget-editor-docked');
+            var dialog = this._editor.toolbar.parent();
+            dialog.toggleClass('ui-widget-editor-docked');
             this._editor.toolbar.toggleClass('ui-dialog-content').find('.ui-widget-editor-inner').toggleClass('ui-widget-header');
             
             var spacer = $('.ui-widget-editor-dock-spacer');
@@ -16,6 +17,7 @@
             spacer.height(this._editor.toolbar.outerHeight()).toggle('fast');
             
             if (!$(button).hasClass('ui-icon-pin-w')) {  // Dock
+                
                 $(button).find('span.ui-button-icon-primary')
                         .removeClass('ui-icon-pin-s').addClass('ui-icon-pin-w');
                 if (this.options.customTooltips) {

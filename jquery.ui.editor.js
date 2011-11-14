@@ -1,5 +1,12 @@
 (function($, window, rangy, undefined) {
  
+    // <debug>
+    // Ensure rangy has been included
+    if (!rangy) {
+        console.error('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"');
+    }
+    // </debug>
+ 
     $.widget('ui.editor', {
                
         _instances: [],
@@ -71,12 +78,11 @@
         },
         
         _init: function() {
-            if (typeof rangy == 'undefined') {
-                this._util.exception('The rangy library is required but could not be found');
-            }
             if (this.options.customTooltips && !$.isFunction($.fn.tipTip)) {
                 this.options.customTooltips = false;
-                this._util.exception('Custom tooltips was requested but tipTip (http://code.drewwilson.com/entry/tiptip-jquery-plugin) wasn\'t found.\nCustom tooltips disabled');
+                // <debug>
+                console.error('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin');
+                // </debug>
             }
             this._clickToEdit.initialize.call(this);
         },
@@ -127,11 +133,8 @@
             
             valid_url: function(url) {
                 return /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(url);
-            },
-        
-            exception: function(message) {
-                if (window.console && window.console.error) window.console.error(message);
             }
+
         },
         
         _data: {
@@ -143,7 +146,6 @@
             names: {
                 originalHtml: 'ui-widget-editor-original-html',
                 button: 'ui-widget-button',
-                unsavedEditsWarning: 'ui-widget-editor-unsaved-edits',
                 toolbarPosition: 'ui-widget-editor-toolbar-position'
             },
             
@@ -240,20 +242,9 @@
                 });
                 
                 $(window).bind('beforeunload', $.proxy(this._actions.unloadWarning, this));
-                
-                if (typeof rangy == 'undefined') {
-                    this._dialog.alert.show.call(this, {
-                        title: 'Required Library Not Found', 
-                        message: '<p><span class="ui-icon ui-icon-alert" style="float:left; margin:2px 7px 0px 0px;"></span>The rangy library is required but could not be found. </p>\
-                                    <p>Rangy should have been included in the jQuery UI Editor package you downloaded.<br/>\
-                                    If not it may be acquired here: <a href="http://code.google.com/p/rangy/" title="A cross-browser JavaScript range and selection library">Rangy</a></p>\
-                                    <p>jQuery UI Editor will not be loaded.</p>'
-                    });
-                    return false;
-                } else {
-                    rangy.init();
-                    this._editor.toolbar.dialog().dialog('open');
-                }
+
+                rangy.init();
+                this._editor.toolbar.dialog().dialog('open');
              
                 this._editor.initialized = true;
                 this._editor.toolbar.find('.ui-widget-editor-inner').slideDown();
@@ -292,9 +283,7 @@
                     if (editorInstance._util.count_objects(this) > 1) $(button_group).addClass('ui-widget-editor-buttonset');
                     
                     $.each(this, function(index, value) {
-                        if (typeof buttons[value] == 'undefined') {
-                            if (window.console && window.console.error) window.console.error('Button identified by key "' + value + '" does not exist');
-                        } else {
+                        if (typeof buttons[value] != 'undefined') {
                             object = buttons[value];
                             if ($.isFunction(object.initialize)) {
                                 object.initialize.call(editorInstance, object, button_group);
@@ -323,7 +312,13 @@
 
                                 $(button).appendTo(button_group);
                             }
+                        } 
+                        // <debug>
+                        // Unless we're in debug mode - fail silently
+                        else {
+                            console.error('Button identified by key "' + value + '" does not exist');
                         }
+                        // </debug>
                     });
                     button_group.appendTo(editorInstance._editor.toolbar.find('.ui-widget-editor-inner'));
                 });
@@ -1035,15 +1030,25 @@
     });
     
     $.ui.editor.addButton = function(name, button) {
+        // <debug>
+        if ($.ui.editor.prototype._buttons[name]) console.error('Button "' + name + '" has already been registered, and will be overwritten');
+        // </debug>
         $.ui.editor.prototype._buttons[name] = button;
     };
     
     $.ui.editor.addPlugin = function(name, plugin) {
+        // <debug>
+        if ($.ui.editor.prototype._plugins[name]) console.error('Plugin "' + name + '" has already been registered, and will be overwritten');
+        // </debug>
         $.ui.editor.prototype._plugins[name] = plugin;
     };
     
-    $.ui.editor.addOptions = function(options) {
-        $.extend($.ui.editor.prototype.options, options);
+    $.ui.editor.addOptions = function(name, options) {
+        // <debug>
+        if ($.ui.editor.prototype.options.name) console.error('"' + name + '" option key already exists, and will be overwritten');
+        // </debug>
+        if (!$.ui.editor.prototype.options['plugins']) $.ui.editor.prototype.options['plugins'] = {};
+        $.ui.editor.prototype.options['plugins'][name] = options;
     };
     
 })(jQuery, window, rangy);

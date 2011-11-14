@@ -3,25 +3,26 @@
     top: 0 !important;
     left: 0 !important;
     width: 0 !important;
-    height: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
+    border-top: none;
+    height: auto;
 }
 
 .ui-widget-editor-docked .ui-widget-editor-inner {
     padding: 5px;
+    border-top: none;
 }
 
 .ui-widget-editor-docked .ui-widget-editor-toolbar {
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100% !important;
+    position: fixed;
     text-align: center;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     padding: 0;
+    border-top: none;
 }
 
 .ui-widget-editor-docked .ui-dialog-titlebar {

@@ -86,4 +86,4 @@
             this._actions.stateChange.call(this);
         }
     });
-})(jQuery)
+})(jQuery);

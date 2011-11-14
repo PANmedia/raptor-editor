@@ -1,7 +1,7 @@
 (function($) {
     
-    $.ui.editor.addOptions({
-        saveUri: '/editor/save'
+    $.ui.editor.addOptions('save', {
+        uri: '/editor/save'
     });
 
     $.ui.editor.addButton('save', {
@@ -23,7 +23,7 @@
                     ], 10000);
                 }, editor = this;
 
-                $.ajax(this.options.saveUri, {
+                $.ajax(this.options.plugins.save.uri, {
                     data: {
                         html: this.html(),
                         name: this.element.attr('name')

@@ -1,10 +1,10 @@
 (function($) {
     
-    $.ui.editor.addOptions({
-        linkPanelAnimation: 'fade',
-        linkReplaceTypes: false,
-        linkCustomTypes: [],
-        linkTypeDataName: 'ui-widget-editor-link-type'
+    $.ui.editor.addOptions('link', {
+        panelAnimation: 'fade',
+        replaceTypes: false,
+        customTypes: [],
+        typeDataName: 'ui-widget-editor-link-type'
     });
     
     $.ui.editor.addPlugin('link', {
@@ -30,7 +30,8 @@
                 selection = rangy.saveSelection(),
                 linkDialog = this._plugins.link.dialog,
                 edit = this._editor.selectedElement.is('a'),
-                label, link_types_classes = {};
+                label, link_types_classes = {},
+                options = this.options.plugins.link;
             
             var link_types_fieldset = linkDialog.find('.ui-widget-editor-link-menu fieldset');
             
@@ -115,10 +116,10 @@
             // Remove & add custom radios
             linkDialog.find('.ui-widget-editor-link-menu fieldset').html('');
             
-            if (this.options.linkReplaceTypes) {
-                link_types = this.options.linkCustomTypes;
+            if (options.replaceTypes) {
+                link_types = options.customTypes;
             } else {
-                $.merge(link_types, this.options.linkCustomTypes);
+                $.merge(link_types, options.customTypes);
             }
             
             $(link_types).each(function() {
@@ -126,7 +127,7 @@
                                 <input class="' + this.class_name + '" type="radio" value="' + this.type + '" name="link_type" autocomplete="off"/>\
                                 <span>' + this.title + '</span>\
                             </label>').appendTo(link_types_fieldset);
-                label.find('input[type="radio"]').data(editorInstance.options.linkTypeDataName, this);
+                label.find('input[type="radio"]').data(options.typeDataName, this);
                 link_types_classes[this.class_name] = this.class_name;
             });
             
@@ -155,7 +156,7 @@
                             
                             rangy.restoreSelection(selection);
                             
-                            var data = linkDialog.find('input[type="radio"]:checked').data(editorInstance.options.linkTypeDataName),
+                            var data = linkDialog.find('input[type="radio"]:checked').data(options.typeDataName),
                                 attributes = data.attributes.call(editorInstance, linkDialog.find('.ui-widget-editor-link-content'), edit),
                                 a = null;
                             
@@ -228,7 +229,8 @@
         
         typeChange: function(edit, initial) {
             
-            var linkTypeData = this._plugins.link.dialog.find('input[type="radio"]:checked').data(this.options.linkTypeDataName),
+            var options = this.options.plugins.link,
+                linkTypeData = this._plugins.link.dialog.find('input[type="radio"]:checked').data(options.typeDataName),
                 panel = this._plugins.link.dialog.find('.ui-widget-editor-link-content'),
                 wrap = panel.closest('.ui-widget-editor-link-wrap'),
                 ajax = (typeof linkTypeData.ajax != 'undefined'),
@@ -242,11 +244,11 @@
                 panel.show();
                 if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
             } else {                  
-                panel.hide(this.options.linkPanelAnimation, function(){
+                panel.hide(options.panelAnimation, function(){
                     if (!ajax) {
                         panel.html(linkTypeData.content);
                         if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
-                        panel.html(linkTypeData.content).show(editorInstance.options.linkPanelAnimation);
+                        panel.html(linkTypeData.content).show(options.panelAnimation);
                     } else {
                         $.ajax({
                             url: linkTypeData.ajax.uri,
@@ -254,7 +256,7 @@
                             success: function(data) {
                                 panel.html(data);
                                 if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
-                                panel.show(editorInstance.options.linkPanelAnimation, function(){
+                                panel.show(options.panelAnimation, function(){
                                     wrap.removeClass('ui-widget-editor-loading');
                                 });
                             }   
