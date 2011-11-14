@@ -34,16 +34,6 @@
                     $(button).button('option', 'disabled', !this._editor.selectedElement.is('a'));
                 }
             },
-            blockquote: {
-                title: 'Blockquote',
-                icons: {
-                    primary: 'ui-icon-blockquote'
-                },
-                classes: 'ui-editor-icon',
-                click: function() {
-                    this._selection.wrapWithTag.call(this, 'blockquote');
-                }
-            },
             tagMenu: {
                 title: 'Tag Menu',
                 initialize: function(object, button_group) {

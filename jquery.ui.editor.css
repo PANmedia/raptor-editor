@@ -80,10 +80,6 @@
     background-image: url(images/jquery-ui-editor-icons.png);
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-blockquote {
-    background-position: -112px -16px;
-}
-
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-insert-link {
     background-position: 0px -48px;
 }
