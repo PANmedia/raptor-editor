@@ -1,7 +1,7 @@
 (function($) {
     
     $.ui.editor.addButton('bold', {
-        title: 'Bold',
+        title: _('Bold'),
         icons: {
             primary: 'ui-icon-bold'
         },
@@ -12,7 +12,7 @@
     });
     
     $.ui.editor.addButton('italic', {
-        title: 'Italic',
+        title: _('Italic'),
         icons: {
             primary: 'ui-icon-italic'
         },
@@ -23,7 +23,7 @@
     });
     
     $.ui.editor.addButton('underline', {
-        title: 'Underline',
+        title: _('Underline'),
         icons: {
             primary: 'ui-icon-underline'
         },
@@ -34,7 +34,7 @@
     });
     
     $.ui.editor.addButton('strikethrough', {
-        title: 'Strikethrough',
+        title: _('Strikethrough'),
         icons: {
             primary: 'ui-icon-strikethrough'
         },

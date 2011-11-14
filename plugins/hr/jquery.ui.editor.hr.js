@@ -1,6 +1,6 @@
 (function($) {
     $.ui.editor.addButton('hr', {
-        title: 'Insert Horizontal Rule',
+        title: _('Insert Horizontal Rule'),
         icons: {
             primary: 'ui-icon-hr'
         },

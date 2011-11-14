@@ -1,7 +1,7 @@
 (function($) {
     
     $.ui.editor.addButton('unorderedList', {
-        title: 'Unordered List',
+        title: _('Unordered List'),
         icons: {
             primary: 'ui-icon-unordered-list'
         },
@@ -12,7 +12,7 @@
     });
     
     $.ui.editor.addButton('orderedList', {
-        title: 'Ordered List',
+        title: _('Ordered List'),
         icons: {
             primary: 'ui-icon-ordered-list'
         },

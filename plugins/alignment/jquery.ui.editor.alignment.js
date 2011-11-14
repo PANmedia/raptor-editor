@@ -1,7 +1,7 @@
 (function($) {
    
     $.ui.editor.addButton('alignLeft', {
-        title: 'Left-align',
+        title: _('Left-align'),
         icons: {
             primary: 'ui-icon-left-align'
         },
@@ -12,7 +12,7 @@
     });
     
     $.ui.editor.addButton('justify', {
-        title: 'Justify',
+        title: _('Justify'),
         icons: {
             primary: 'ui-icon-justify'
         },
@@ -23,7 +23,7 @@
     });
     
     $.ui.editor.addButton('center', {
-        title: 'Center-align',
+        title: _('Center-align'),
         icons: {
             primary: 'ui-icon-center-align'
         },
@@ -34,7 +34,7 @@
     });
     
     $.ui.editor.addButton('alignRight', {
-        title: 'Right-align',
+        title: _('Right-align'),
         icons: {
             primary: 'ui-icon-right-align'
         },

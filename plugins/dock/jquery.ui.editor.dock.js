@@ -13,7 +13,7 @@
     
     $.ui.editor.addButton('dock', {
         name: 'dock',
-        title: 'Click to dock the toolbar',
+        title: _('Click to dock the toolbar'),
         icons: {
             primary: 'ui-icon-pin-s'
         },
@@ -29,7 +29,7 @@
                         .removeClass('ui-icon-pin-s').addClass('ui-icon-pin-w');
                 if (this.options.customTooltips) {
                     $(button).tipTip({
-                        content: 'Click to detach the toolbar'
+                        content: _('Click to detach the toolbar')
                     });
                 }
             } else {    // Detach
@@ -38,7 +38,7 @@
                     .removeClass('ui-icon-pin-w').addClass('ui-icon-pin-s');
                 if (this.options.customTooltips) {
                     $(button).tipTip({
-                        content: 'Click to dock the toolbar'
+                        content: _('Click to dock the toolbar')
                     });
                 }
             }

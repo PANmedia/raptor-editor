@@ -15,7 +15,7 @@
             if (!this._plugins.link.dialog) {
                 this._plugins.link.dialog = $('<div style="display:none" class="ui-widget-editor-link-panel">\
                                                     <div class="ui-widget-editor-link-menu">\
-                                                        <p>Choose a link type:</p>\
+                                                        <p>' + _('Choose a link type:') + '</p>\
                                                         <fieldset></fieldset>\
                                                     </div>\
                                                     <div class="ui-widget-editor-link-wrap">\
@@ -39,22 +39,22 @@
                 // Page
                 {
                     type: 'external',
-                    title: 'Page on this or another website',
-                    content: '<h2>Link to a page on this or another website</h2>\
+                    title: _('Page on this or another website'),
+                    content: '<h2>' + _('Link to a page on this or another website') + '</h2>\
                                 <fieldset>\
                                     <label for="ui-widget-editor-link-external-href">Location</label>\
-                                    <input id="ui-widget-editor-link-external-href" value="http://" name="location" class="ui-widget-editor-external-href" type="text">\
+                                    <input id="ui-widget-editor-link-external-href" value="http://" name="location" class="ui-widget-editor-external-href" type="text" placeholder="' + _('Enter your URL') + '>\
                                 </fieldset>\
                                 <h2>New window</h2>\
                                 <fieldset>\
                                     <label for="ui-widget-editor-link-external-target">\
                                         <input id="ui-widget-editor-link-external-target" name="blank" type="checkbox">\
-                                        Check this box to have the link open in a new browser window</label>\
+                                        ' + _('Check this box to have the link open in a new browser window') + '</label>\
                                 </fieldset>\
-                                <h2>Not sure what to put in the box above?</h2>\
+                                <h2>' + _('Not sure what to put in the box above?') + '</h2>\
                                 <ol>\
-                                    <li>Find the page on the web you want to link to</li>\
-                                    <li>Copy the web address from your browser\'s address bar and paste it into the box above</li>\
+                                    <li>' + _('Find the page on the web you want to link to') + '</li>\
+                                    <li>' + _('Copy the web address from your browser\'s address bar and paste it into the box above') + '</li>\
                                 </ol>',
                     class_name: 'ui-widget-editor-link-external',
                     show: function(panel, edit) {
@@ -72,7 +72,7 @@
                         if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
                         
                         if (!this._util.valid_url(attributes.href)) {
-                            this.message.warning.call(this, 'The url for the link you inserted doesn\'t look well formed', 7000);
+                            this.message.warning.call(this, _('The url for the link you inserted doesn\'t look well formed'), 7000);
                         }
                         
                         return attributes;
@@ -81,15 +81,15 @@
                 // Email
                 {
                     type: 'email',
-                    title: 'Email address',
-                    content: '<h2>Link to an email address</h2>\
+                    title: _('Email address'),
+                    content: '<h2>' + _('Link to an email address') +'</h2>\
                                 <fieldset class="ui-widget-editor-link-email">\
                                     <label for="ui-widget-editor-link-email">Email</label>\
-                                    <input id=ui-widget-editor-link-email" name="email" type="text"/>\
+                                    <input id=ui-widget-editor-link-email" name="email" type="text" placeholder="' + _('Enter email address') + '"/>\
                                 </fieldset>\
                                 <fieldset class="ui-widget-editor-link-email">\
-                                    <label for="ui-widget-editor-link-email-subject">Subject (optional)</label>\
-                                    <input id="ui-widget-editor-link-email-subject" name="subject" type="text"/>\
+                                    <label for="ui-widget-editor-link-email-subject">' + _('Subject (optional)') + '</label>\
+                                    <input id="ui-widget-editor-link-email-subject" name="subject" type="text" placeholder="' + _('Enter subject') + '"/>\
                                 </fieldset>',
                     class_name: 'ui-widget-editor-link-email',
                     show: function(panel, edit) {
@@ -187,7 +187,7 @@
                         }
                     },
                     {
-                        text: 'Cancel',
+                        text: _('Cancel'),
                         'class': 'cancel',
                         click: function() {
                             rangy.restoreSelection(selection);
@@ -298,7 +298,7 @@
     });
     
     $.ui.editor.addButton('addEditLink', {
-        title: 'Insert Link',
+        title: _('Insert Link'),
         icons: {
             primary: 'ui-icon-insert-link'
         },
@@ -312,7 +312,7 @@
     });
     
     $.ui.editor.addButton('removeLink', {
-        title: 'Remove Link',
+        title: _('Remove Link'),
         icons: {
             primary: 'ui-icon-remove-link'
         },
