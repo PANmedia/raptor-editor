@@ -1,7 +1,7 @@
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-blockquote {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDgEECT9QF%2FkAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAl0lEQVQ4y%2B2SIQ4CMRBF37AEggCNm54CgmkPwCGQ3Ai3JDgsGtUjEOyaSu5AKGbVpF0Edp%2BZvJ%2FJpDMpjPxNYwPv%2FVpVb845SSk9rNv%2BqQ1E5AC8YoyXklsmhWwP3Af854AZcAwhnCo%2BvAIw7%2Buu4uUjeu8bVV2JyBLYAldV7URkAWx6f6rqO6X0qb4g59wCZ%2BPt%2BGHrfAF%2FViy%2Bf8nMDwAAAABJRU5ErkJggg%3D%3D);
+    background-image: url(images/blockquote.png);
 }
 
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-blockquote {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDgEEESw8j68AAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAfUlEQVQ4y%2B3QsQkCQRRF0bOOIIoaW4mLNWwnNmBHYmpsA0aCmNqFwSYiJpMM%2FFkD073J477gwf%2BM%2FE0Kug3OaHAP%2FCcHHAe8YBJ0HS4DXtAE3TXnDfvAC6bBwCznruLVJyassUKLE56YY5v9gTc%2B0QkJSywqp0GPVx4ZyXwBoU0UmDhm7ogAAAAASUVORK5CYII%3D);
+    background-image: url(images/blockquote-hover.png);
 }

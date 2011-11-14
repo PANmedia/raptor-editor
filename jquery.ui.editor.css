@@ -76,10 +76,6 @@
     border-radius: 0 5px 5px 0;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon  {
-    background-image: url(images/jquery-ui-editor-icons.png);
-}
-
 /* Inputs */
 .ui-widget-editor-dialog textarea,
 .ui-widget-editor-dialog input {
@@ -161,22 +157,5 @@
 }
 
 .ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon-loading {
-    background: transparent url(data:image/gif;base64,R0lGODlhEAAQAPIAAP%2F%2F%2FwAAAMLCwkJCQgAAAGJiYoKCgpKSkiH%2FC05FVFNDQVBFMi4wAwEAAAAh%2FhpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh%2BQQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa%2BdIAAAh%2BQQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo%2FIpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo%2FIpFKSAAAh%2BQQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh%2BQQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc%2FjDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA%3D%3D) no-repeat center center;
-}
-
-/* Warning corner */
-.ui-widget-editor-warning {
-    height: 30px;
-    line-height: 30px;
-    border-radius: 5px 0 0 0;
-    border: 1px solid #D4D4D4;
-    background-color: rgba(255, 255, 242, 0.1);
-    background-image: -moz-linear-gradient(center top , rgba(255, 255, 242, 0.5), rgba(237, 236, 189, 1));
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(255, 255, 242, 0.5)),color-stop(100%,rgba(237, 236, 189, 1)));
-}
-
-.ui-widget-editor-warning span.ui-icon {
-    display: inline-block;
-    float: left;
-    margin: 8px 5px 0 5px;
+    background: transparent url(images/loading-small.gif) no-repeat center center;
 }

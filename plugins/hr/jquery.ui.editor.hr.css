@@ -1,6 +1,6 @@
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon .ui-icon-hr {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDgEABCWNrkAAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAxElEQVQ4y8WSuw3CUAxFz4teBMoQESUjUL3QUDIEK6RgDNpMgcQECCyWoEmRLRJHMk0SRRFNJD6WbmEX9x7Zhn%2BXmw5CCOdu3isCnIjsf0Zw6VNHBH0ficju8wRFUdxUNVNVmqahrmtUlbZtMTOcc3jvieN4kPf%2Bnuf51ndGWZqms5LLsswAeoN7VVWzCb52heto84NEZPOzP3i8IYiBBbAUkdXnCUIIEZAAiXPuZGbrcSrwBA6AAnWnRkTMTx3N7DiH4AWqelRTkYgjyQAAAABJRU5ErkJggg%3D%3D);
+    background-image: url(images/hr.png);
 }
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-editor-icon.ui-state-hover .ui-icon-hr {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A%2FwD%2FoL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sLDgA7N6ctSlkAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAgElEQVQ4y8WSPQqAMAxGX4qOToJ4IS%2FgXT2SuGmLgpt1KVJqHAR%2FPnhQkrb50gb%2BliixPspJtKf%2BzMEQxUWhfN6G937yiYATiaajhXDgfv8iYsLaKskTiexrvzBevH7x2Rw4pbqJyF9xkIUJK4EOqJKqDmiAFZgDC7BlyqXtHQc7M1k6BXexK%2BwAAAAASUVORK5CYII%3D);
+    background-image: url(images/hr-hover.png);
 }
