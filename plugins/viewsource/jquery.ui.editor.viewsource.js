@@ -1,21 +1,29 @@
 (function($) {
+    
+    $.ui.editor.addPlugin('viewSource', {
+        dialog: false,
+        stateChange: function() {
+            if (this._plugins.viewSource.dialog) this._plugins.viewSource.dialog.find('textarea').val(this.html.call(this));
+        }
+    });
+    
     $.ui.editor.addButton('viewSource', {
+       
         title: 'View / Edit Source',
         icons: {
             primary: 'ui-icon-view-source'
         },
         classes: 'ui-editor-icon ui-widget-editor-button-view-source',
         click: function() {
-            var editorInstance = this,
-                dialog = $('.ui-widget-editor-dialog-view-source');
+            var editorInstance = this;
 
-            if (!dialog.length) {
-                dialog = $('<div style="display:none" class="ui-widget-editor-dialog-view-source">\
+            if (!this._plugins.viewSource.dialog) {
+                this._plugins.viewSource.dialog = $('<div style="display:none" class="ui-widget-editor-dialog-view-source">\
                                 <textarea></textarea>\
                             </div>').appendTo(this._editor.toolbar);
             }
 
-            dialog.dialog({
+            this._plugins.viewSource.dialog.dialog({
                 modal: false,
                 width: 600,
                 height: 400,
@@ -52,8 +60,7 @@
             }).dialog('open');
         },
         destroy: function() {
-            var dialog = $('.ui-widget-editor-dialog-view-source');
-            if (dialog.length) dialog.dialog('close');
+            if (this._plugins.viewSource.dialog) dialog.dialog('close');
         }
     });
 })(jQuery);

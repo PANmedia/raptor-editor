@@ -29,10 +29,26 @@
         },
         
         show: function() {
-            var warning = false,
+            var warning = this._plugins.unsavedEditWarning.instance.call(this),
                 editorInstance = this,
                 options = this.options.plugins.unsavedEditWarning;
-                
+            
+            this._plugins.unsavedEditWarning.reposition.call(this);
+            
+            if (!warning.is(':visible') && !warning.is(':animated')) {
+                warning.show(options.animation, function(){
+                    $(this).animate({ opacity: options.contentIdleOpacity });
+                });
+            }
+        },
+        
+        hide: function() {
+            warning = this._plugins.unsavedEditWarning.instance.call(this);
+            if (warning.is(':visible') && !warning.is(':animated')) warning.hide(options.animation);
+        },
+        
+        instance: function() {
+            var options = this.options.plugins.unsavedEditWarning;
             if (!this._data.exists(this.element, options.dataName)) {
                 var warning = $('<div title="' + options.content + '" class="ui-widget-editor-warning ' 
                                 + options.contentClass 
@@ -44,7 +60,7 @@
                     $(this).stop().animate({ opacity: options.contentIdleOpacity });
                 }).appendTo('body');
                 
-                if (editorInstance.options.customTooltips) {
+                if (this.options.customTooltips) {
                     warning.tipTip({ 
                         delay: 100,
                         defaultPosition: options.contentTooltipPosition,
@@ -52,28 +68,18 @@
                     });
                 }
                 this.element.data(options.dataName, warning);
-            } else {
-                var warning = this.element.data(options.dataName);
-            }
-            warning.position({
+            } 
+            return this.element.data(options.dataName);
+        },
+        
+        reposition: function() {
+            var options = this.options.plugins.unsavedEditWarning;
+            this._plugins.unsavedEditWarning.instance.call(this).position({
                 at: options.positionAt,
                 of: this.element,
                 my: options.positionMy,
                 using: options.contentPositionUsing
-            })
-            if (!warning.is(':visible') && !warning.is(':animated')) {
-                warning.show(options.animation, function(){
-                    $(this).animate({ opacity: options.contentIdleOpacity });
-                });
-            }
-        },
-        
-        hide: function() {
-            var options = this.options.plugins.unsavedEditWarning;
-             if (this._data.exists(this.element, options.dataName)) {
-                var warning = $(this.element.data(options.dataName));
-                if (warning.is(':visible') && !warning.is(':animated')) warning.hide(options.animation);
-             }
+            });
         }
     });
     

@@ -1,26 +1,42 @@
 (function($, window, rangy, undefined) {
  
     // <strict>
+    // Ensure jQuery has been included
+    if (!$) {
+        console.error('jQuery is required');
+    }
     // Ensure rangy has been included
     if (!rangy) {
         console.error('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"');
     }
+    // Ensure dialog has been included
+    if (!$.ui.dialog) {
+        console.error('jQuery UI Dialog is required.');
+    }
     // </strict>
+ 
+    // <debug>
+    if (!jQuery.cookie) {
+        console.error('jQuery cookie has not been loaded - persistence functions will not be available');
+    }
+    // </debug>
  
     $.widget('ui.editor', {
                
         _instances: [],
-
+        
+        // Plugins added via $.ui.editor.addPlugin
         _plugins: { },
 
-        // Buttons added via $ui.editor.addButton
+        // Buttons added via $.ui.editor.addButton
         _buttons: { },
 
-        // Options start here
+        // Options start here. Plugins may add options via $.ui.editor.addOption
         options: {
                      
             cssPrefix: 'ui-editor-',
             customTooltips: true,
+            persistence: true,
             
             toolbarPosition: [5, 47], 
             //function() {
@@ -69,7 +85,6 @@
             dialogHideAnimation: 'fade',
             dialogClass: 'ui-widget-editor-dialog',
             
-            customButtons: {},
             buttonOrder: false,
             
             titleVisible: true,
@@ -84,6 +99,7 @@
                 console.error('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin');
                 // </strict>
             }
+            if (!jQuery.cookie) this.options.persistence = false;
             this._clickToEdit.initialize.call(this);
         },
         
@@ -242,6 +258,14 @@
                 });
                 
                 $(window).bind('beforeunload', $.proxy(this._actions.unloadWarning, this));
+                
+                // Fire plugin initialize events
+                $.each(this._plugins, function() {
+                    if ($.isFunction(this.initialize)) {
+                        this.initialize.call(editorInstance);
+                        
+                    }
+                });
 
                 rangy.init();
                 this._editor.toolbar.dialog().dialog('open');
@@ -253,10 +277,7 @@
             generateButtons: function() {
                 
                 var editorInstance = this,
-                    buttons = this._buttons,
                     buttonOrder = null, button = null, object = null;
-
-                $.extend(buttons, this.options.customButtons);
                 
                 this._editor.toolbar.find('.ui-widget-editor-inner').html('');
 
@@ -283,8 +304,8 @@
                     if (editorInstance._util.count_objects(this) > 1) $(button_group).addClass('ui-widget-editor-buttonset');
                     
                     $.each(this, function(index, value) {
-                        if (typeof buttons[value] != 'undefined') {
-                            object = buttons[value];
+                        if (typeof editorInstance._buttons[value] != 'undefined') {
+                            object = editorInstance._buttons[value];
                             if ($.isFunction(object.initialize)) {
                                 object.initialize.call(editorInstance, object, button_group);
                             } else {
@@ -312,7 +333,7 @@
 
                                 $(button).appendTo(button_group);
                             }
-                        } 
+                        }
                         // <strict>
                         // Unless we're in debug mode - fail silently
                         else {
@@ -411,7 +432,7 @@
                                 editorInstance._selection.selectElement.call(editorInstance, current);
                             } else {
                                 editorInstance._selection.selectAll.call(editorInstance);
-                            }                            
+                            }                         
                         });
                 
                 this.element.addClass(this._classes.editing);
@@ -457,6 +478,7 @@
                 var classes = typeof options.classes != 'undefined' ? options.classes : tag;
 
                 this._selection.enforceLegality.call(this);
+                
                 rangy.createCssClassApplier(this.options.cssPrefix + classes, {
                     normalize: true,
                     elementTagName: tag
@@ -641,9 +663,8 @@
                     selection.addRange(range);
                 });
                 this.element.focus();
-                this._actions.updateTitleTagList.call(this);
+                this._actions.stateChange.call(this);
             }
-            
         },
         
         _actions: {
@@ -665,9 +686,10 @@
                 this._actions.refreshSelectedElement.call(this);
                 this._actions.updateTitleTagList.call(this);
 
-                // Trigger buttons' state change handlers
                 var editorInstance = this,
                     data = null;
+                    
+                // Trigger button & plugin state change handlers
                 this._editor.toolbar.find('button, select').each(function() {
                     data = $(this).data(editorInstance._data.names.button);
                     if ($.isFunction(data.stateChange)) {
@@ -698,42 +720,41 @@
                 
                 if (this.options.titleTags) {
 
-                this._selection.enforceLegality.call(this);
-                this._actions.refreshSelectedElement.call(this);
-                
-                if (this._editor.selectedElement) {
-                   
-                    var current = this._editor.selectedElement,
-                        editorInstance = this;
+                    this._selection.enforceLegality.call(this);
+                    this._actions.refreshSelectedElement.call(this);
                     
-                    if (typeof current[0] != 'undefined') {
-                    
-                        $.each(this._plugins, function() {
-                            if ($.isFunction(this.titleTagList)) {
-                                this.titleTagList.call(editorInstance, current);
-                            };
-                        });         
+                    if (this._editor.selectedElement) {
+                       
+                        var current = this._editor.selectedElement,
+                            editorInstance = this;
                         
-                        title = '';
-                    
-                        // Update dialog title
-                        while (true) {
+                        if (typeof current[0] != 'undefined') {
+                        
+                            $.each(this._plugins, function() {
+                                if ($.isFunction(this.titleTagList)) {
+                                    this.titleTagList.call(editorInstance, current);
+                                };
+                            });         
                             
-                            if (this._util.isRoot.call(this, current)) {
-                                title = '<a href="javascript: // Select all" name="root" \
-                                    class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
-                                break;
+                            title = '';
+                        
+                            while (true) {  // Update dialog title
+                                
+                                if (this._util.isRoot.call(this, current)) {
+                                    title = '<a href="javascript: // Select all" name="root" \
+                                        class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
+                                    break;
+                                }
+                                
+                                tagName = current[0].tagName.toLowerCase();
+                                title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
+                                        class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tagName.toUpperCase() + '&quot; element">' + tagName + '</a>' + title;
+                                current = current.parent();
+                                i++;
                             }
-                            
-                            tagName = current[0].tagName.toLowerCase();
-                            title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                    class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tagName.toUpperCase() + '&quot; element">' + tagName + '</a>' + title;
-                            current = current.parent();
-                            i++;
                         }
                     }
                 }
-            }
                 
                 this._editor.toolbar.dialog({
                     title: title
@@ -750,7 +771,7 @@
 
         },
      
-      _content: {
+        _content: {
 
             cleaned: function(html) {
                 var content = $('<div></div>').html(html);
@@ -889,7 +910,6 @@
                         }
                     }).dialog('open');
                 }  
-                
             },
             
             applyButtonIcon: function(buttonClass, icon) {
@@ -1031,16 +1051,28 @@
     
     $.ui.editor.addButton = function(name, button) {
         // <strict>
-        if ($.ui.editor.prototype._buttons[name]) console.error('Button "' + name + '" has already been registered, and will be overwritten');
+        if ($.ui.editor.prototype._buttons[name]) {
+            console.error('Button "' + name + '" has already been registered, and will be overwritten');
+        }
         // </strict>
+        
         $.ui.editor.prototype._buttons[name] = button;
+        
+        // <debug> 
+        console.log('Button ' + name + ' added', button);
+        // </debug>
     };
     
     $.ui.editor.addPlugin = function(name, plugin) {
         // <strict>
         if ($.ui.editor.prototype._plugins[name]) console.error('Plugin "' + name + '" has already been registered, and will be overwritten');
         // </strict>
+        
         $.ui.editor.prototype._plugins[name] = plugin;
+        
+        // <debug> 
+        console.log('Plugin ' + name + ' added', plugin);
+        // </debug>
     };
     
     $.ui.editor.addOptions = function(name, options) {
@@ -1049,6 +1081,9 @@
         // </strict>
         if (!$.ui.editor.prototype.options['plugins']) $.ui.editor.prototype.options['plugins'] = {};
         $.ui.editor.prototype.options['plugins'][name] = options;
+        // <debug> 
+        console.log('Options ' + name + ' added', options);
+        // </debug>
     };
     
 })(jQuery, window, rangy);
