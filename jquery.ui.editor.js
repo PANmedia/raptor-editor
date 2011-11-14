@@ -33,41 +33,6 @@
                 stateChange: function(button) {
                     $(button).button('option', 'disabled', !this._editor.selectedElement.is('a'));
                 }
-            },
-            tagMenu: {
-                title: 'Tag Menu',
-                initialize: function(object, button_group) {
-                    var editorInstance = this;
-                    $('<select autocomplete="off" name="tag" class="ui-editor-tag-select">\
-                        <option value="na">N/A</option>\
-                        <option value="p">Paragraph</option>\
-                        <option value="h1">Heading&nbsp;1</option>\
-                        <option value="h2">Heading&nbsp;2</option>\
-                        <option value="h3">Heading&nbsp;3</option>\
-                        <option value="div">Divider</option>\
-                    </select>').appendTo(button_group).data(editorInstance._data.names.button, object).bind('change.editor', function(){
-                            var tag = $(this).find(':selected').val();
-                            if (tag == 'na') return false
-                            else editorInstance._selection.changeTag.call(editorInstance, tag);
-                        }).selectmenu({
-                        width: 150
-                    });
-
-                    if (this.options.customTooltips) {
-                        button_group.find('.ui-selectmenu').tipTip({
-                            content: 'Change HTML tag of selected element',
-                            maxWidth: 'auto'
-                        });
-                    }
-                },
-                stateChange: function() {
-                    var menu = $('.ui-editor-tag-select');
-                    if (this._util.isRoot.call(this, this._editor.selectedElement)) menu.selectmenu('disable');
-                    else menu.selectmenu('enable');
-                },
-                destroy: function() {
-                    $('.ui-editor-tag-select').selectmenu('destroy');
-                }
             }
         },
 
@@ -788,50 +753,42 @@
                 
                 if (this.options.titleTags) {
 
-                    this._selection.enforceLegality.call(this);
-                    this._actions.refreshSelectedElement.call(this);
+                this._selection.enforceLegality.call(this);
+                this._actions.refreshSelectedElement.call(this);
+                
+                if (this._editor.selectedElement) {
+                   
+                    var current = this._editor.selectedElement,
+                        editorInstance = this;
                     
-                    if (this._editor.selectedElement) {
-                       
-                        current = this._editor.selectedElement;
+                    if (typeof current[0] != 'undefined') {
+                    
+                        $.each(this._plugins, function() {
+                            if ($.isFunction(this.titleTagList)) {
+                                this.titleTagList.call(editorInstance, current);
+                            };
+                        });         
                         
-                        if (typeof current[0] != 'undefined') {
-                        
+                        title = '';
+                    
+                        // Update dialog title
+                        while (true) {
+                            
+                            if (this._util.isRoot.call(this, current)) {
+                                title = '<a href="javascript: // Select all" name="root" \
+                                    class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
+                                break;
+                            }
+                            
                             tagName = current[0].tagName.toLowerCase();
-
-                            // Update tag drop down
-                            tagMenu = this._editor.toolbar.find('select.ui-editor-tag-select');
-                            if (tagMenu.length) {                   
-                                if (this._util.isRoot.call(this, current)) {
-                                    tagMenu.val('na');
-                                } else if (tagMenu.find('option[value=' + tagName + ']').length) {
-                                    tagMenu.val(tagName);
-                                } else {
-                                    tagMenu.val('other');
-                                }
-                                tagMenu.selectmenu();
-                            }
-                            
-                            title = '';
-                            
-                            // Update dialog title
-                            while (true) {
-                                
-                                if (this._util.isRoot.call(this, current)) {
-                                    title = '<a href="javascript: // Select all" name="root" \
-                                        class="ui-widget-editor-element-path" title="Click to select all editable content">root</a>' + title;
-                                    break;
-                                }
-                                
-                                tagName = current[0].tagName.toLowerCase();
-                                title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
-                                        class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tagName.toUpperCase() + '&quot; element">' + tagName + '</a>' + title;
-                                current = current.parent();
-                                i++;
-                            }
+                            title = ' &gt; <a href="javascript: // Select element" name="' + i +'" \
+                                    class="ui-widget-editor-element-path" title="Click to select the contents of this &quot;' + tagName.toUpperCase() + '&quot; element">' + tagName + '</a>' + title;
+                            current = current.parent();
+                            i++;
                         }
                     }
                 }
+            }
                 
                 this._editor.toolbar.dialog({
                     title: title
