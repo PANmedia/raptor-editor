@@ -1,11 +1,11 @@
 (function($, window, rangy, undefined) {
  
-    // <debug>
+    // <strict>
     // Ensure rangy has been included
     if (!rangy) {
         console.error('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"');
     }
-    // </debug>
+    // </strict>
  
     $.widget('ui.editor', {
                
@@ -80,9 +80,9 @@
         _init: function() {
             if (this.options.customTooltips && !$.isFunction($.fn.tipTip)) {
                 this.options.customTooltips = false;
-                // <debug>
+                // <strict>
                 console.error('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin');
-                // </debug>
+                // </strict>
             }
             this._clickToEdit.initialize.call(this);
         },
@@ -313,12 +313,12 @@
                                 $(button).appendTo(button_group);
                             }
                         } 
-                        // <debug>
+                        // <strict>
                         // Unless we're in debug mode - fail silently
                         else {
                             console.error('Button identified by key "' + value + '" does not exist');
                         }
-                        // </debug>
+                        // </strict>
                     });
                     button_group.appendTo(editorInstance._editor.toolbar.find('.ui-widget-editor-inner'));
                 });
@@ -1030,23 +1030,23 @@
     });
     
     $.ui.editor.addButton = function(name, button) {
-        // <debug>
+        // <strict>
         if ($.ui.editor.prototype._buttons[name]) console.error('Button "' + name + '" has already been registered, and will be overwritten');
-        // </debug>
+        // </strict>
         $.ui.editor.prototype._buttons[name] = button;
     };
     
     $.ui.editor.addPlugin = function(name, plugin) {
-        // <debug>
+        // <strict>
         if ($.ui.editor.prototype._plugins[name]) console.error('Plugin "' + name + '" has already been registered, and will be overwritten');
-        // </debug>
+        // </strict>
         $.ui.editor.prototype._plugins[name] = plugin;
     };
     
     $.ui.editor.addOptions = function(name, options) {
-        // <debug>
+        // <strict>
         if ($.ui.editor.prototype.options.name) console.error('"' + name + '" option key already exists, and will be overwritten');
-        // </debug>
+        // </strict>
         if (!$.ui.editor.prototype.options['plugins']) $.ui.editor.prototype.options['plugins'] = {};
         $.ui.editor.prototype.options['plugins'][name] = options;
     };
