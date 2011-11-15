@@ -14,7 +14,7 @@
         $.ui.editor.prototype._plugins.i18n.translations[name] = strings;
         if (!$.ui.editor.prototype._plugins.i18n.currentLocale) $.ui.editor.prototype._plugins.i18n.currentLocale = name;
         // <debug> 
-        console.log(_('Locale <*localeName*> added', { localeName: name }), strings);
+        console.debug(_('Locale <*localeName*> added', { localeName: name }), strings);
         // </debug>
     };
 
@@ -42,7 +42,7 @@
             if (!variables) {
             
                 // <debug>
-                //console.log('i18n: ' + string + ' | '  + original_string);
+                console.info('i18n: ' + string + ' | '  + original_string);
                 // </debug>
             
                 return string;
@@ -53,7 +53,7 @@
                 });
             
                 // <debug>
-                //console.log('i18n: ' + string + ' | '  + original_string);
+                console.info('i18n: ' + string + ' | '  + original_string);
                 // </debug>
             
                 return string;
