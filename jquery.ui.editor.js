@@ -99,7 +99,7 @@ function _(string, variables) {
             // Ensure dialog has been included
             if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
             // Warn that no internationalizations have been loaded
-            if (!$.ui.editor.prototype._plugins.i18n) console.log(_('No internationalizations have been loaded, defaulting to English'));
+            if (!$.ui.editor.prototype._plugins.i18n) console.debug(_('No internationalizations have been loaded, defaulting to English'));
             // </strict>
 
             // <debug>
