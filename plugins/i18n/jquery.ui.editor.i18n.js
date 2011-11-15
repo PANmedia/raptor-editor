@@ -28,10 +28,6 @@
         
         translate: function(string, variables) {
             
-            // <debug>
-            var original_string = string;
-            // </debug>
-            
             var currentLocale = $.ui.editor.prototype._plugins.i18n.currentLocale;
             
             if (currentLocale && $.ui.editor.prototype._plugins.i18n.translations[currentLocale]
@@ -40,21 +36,13 @@
             }
             
             if (!variables) {
-            
-                // <debug>
-                console.info('i18n: ' + string + ' | '  + original_string);
-                // </debug>
-            
+        
                 return string;
             } else {
                 
                 $.each(variables, function(key, value) {
                     string = string.replace('<*' + key + '*>', value);
                 });
-            
-                // <debug>
-                console.info('i18n: ' + string + ' | '  + original_string);
-                // </debug>
             
                 return string;
             }
@@ -69,26 +57,26 @@
                 icons = [],
                 option = null;
                 
-                $.each(this._plugins.i18n.translations, function(key){
-                    option = '<option value="' + key + '" class="' + key + '">';
-                    option += editorInstance._plugins.i18n.localeNames[key];
-                    option += '</option>';
-                    
-                    if (editorInstance._plugins.i18n.currentLocale == key) option = $(option).prop('selected', true);
-                    
-                    menu.append(option);
-                    icons.push({
-                        find: '.' + key,
-                        icon: 'ui-widget-editor-i18n-' + key
-                    });
-                });
+            $.each(this._plugins.i18n.translations, function(key){
+                option = '<option value="' + key + '" class="' + key + '">';
+                option += editorInstance._plugins.i18n.localeNames[key];
+                option += '</option>';
                 
-                menu.appendTo(button_group).data(editorInstance._data.names.button, object);
+                if (editorInstance._plugins.i18n.currentLocale == key) option = $(option).prop('selected', true);
                 
-                menu.bind('change.i18n', function() {
-                    editorInstance._plugins.i18n.currentLocale = $(this).find(':selected').val();
-                    editorInstance._editor.attach.call(editorInstance, editorInstance.element);
+                menu.append(option);
+                icons.push({
+                    find: '.' + key,
+                    icon: 'ui-widget-editor-i18n-' + key
                 });
+            });
+            
+            menu.appendTo(button_group).data(editorInstance._data.names.button, object);
+            
+            menu.bind('change.i18n', function() {
+                editorInstance._plugins.i18n.currentLocale = $(this).find(':selected').val();
+                editorInstance._editor.attach.call(editorInstance, editorInstance.element);
+            });
 
             if ($.ui.selectmenu) {
                 menu.selectmenu({
