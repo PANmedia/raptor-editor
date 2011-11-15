@@ -66,7 +66,8 @@ $write = function($locale_file, $strings) use ($locale) {
     $tab = '    ';
     $head = "(function($){ \n$tab$.ui.editor.addLocale('$locale', {\n";
     $tail = "\n$tab});\n})(jQuery);\n";
-
+    ksort($strings);
+    
     $locale_handle = fopen($locale_file, 'w');
     
     fwrite($locale_handle, $head);
@@ -89,7 +90,7 @@ if ($replace || (!$replace && !$merge)) {
         if(preg_match('/^\s*"(.+)":\s?"(.+)",$/iU', $line, $result)) {
             $key = $result[1];
             $value = $result[2];
-            if ($strings[$key] != $value) {
+            if (isset($strings[$key]) && $strings[$key] != $value) {
                 $strings[$key] = $value;
             }
         }

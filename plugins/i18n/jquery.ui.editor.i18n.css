@@ -21,3 +21,8 @@
 .ui-widget-editor-dialog .ui-widget-editor-inner .ui-icon.ui-widget-editor-i18n-en  {
     background-image: url(images/flags/gb.png);
 }
+
+.ui-selectmenu-menu .ui-icon.ui-widget-editor-i18n-zh_CN,
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-icon.ui-widget-editor-i18n-zh_CN  {
+    background-image: url(images/flags/cn.png);
+}

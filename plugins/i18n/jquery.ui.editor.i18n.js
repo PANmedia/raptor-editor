@@ -12,7 +12,7 @@
         // </strict>
         
         $.ui.editor.prototype._plugins.i18n.translations[name] = strings;
-        
+        if (!$.ui.editor.prototype._plugins.i18n.currentLocale) $.ui.editor.prototype._plugins.i18n.currentLocale = name;
         // <debug> 
         console.log(_('Locale <*localeName*> added', { localeName: name }), strings);
         // </debug>
@@ -20,10 +20,10 @@
 
     $.ui.editor.addPlugin('i18n', {
         translations: {},
-        
+        currentLocale: null,
         localeNames: {
-            zh_CN: _('Simplified Chinese'),
-            en: _('English')
+            zh_CN: '简体中文',
+            en: 'English'
         },
         
         translate: function(string, variables) {
@@ -31,6 +31,13 @@
             // <debug>
             var original_string = string;
             // </debug>
+            
+            var currentLocale = $.ui.editor.prototype._plugins.i18n.currentLocale;
+            
+            if (currentLocale && $.ui.editor.prototype._plugins.i18n.translations[currentLocale]
+                && $.ui.editor.prototype._plugins.i18n.translations[currentLocale][string]) {
+                string = $.ui.editor.prototype._plugins.i18n.translations[currentLocale][string];
+            }
             
             if (!variables) {
             
@@ -59,10 +66,17 @@
         initialize: function(object, button_group) {
             var editorInstance = this,
                 menu = $('<select autocomplete="off" name="i18n" class="ui-editor-i18n-select"></select>'),
-                icons = [];
+                icons = [],
+                option = null;
                 
                 $.each(this._plugins.i18n.translations, function(key){
-                    menu.append($('<option value="' + key + '" class="' + key + '">' + editorInstance._plugins.i18n.translate(key) + '</option>'));
+                    option = '<option value="' + key + '" class="' + key + '">';
+                    option += editorInstance._plugins.i18n.localeNames[key];
+                    option += '</option>';
+                    
+                    if (editorInstance._plugins.i18n.currentLocale == key) option = $(option).prop('selected', true);
+                    
+                    menu.append(option);
                     icons.push({
                         find: '.' + key,
                         icon: 'ui-widget-editor-i18n-' + key
@@ -70,10 +84,15 @@
                 });
                 
                 menu.appendTo(button_group).data(editorInstance._data.names.button, object);
+                
+                menu.bind('change.i18n', function() {
+                    editorInstance._plugins.i18n.currentLocale = $(this).find(':selected').val();
+                    editorInstance._editor.attach.call(editorInstance, editorInstance.element);
+                });
 
             if ($.ui.selectmenu) {
                 menu.selectmenu({
-                    width: 150,
+                    width: 'auto',
                     icons: icons
                 });
             }
