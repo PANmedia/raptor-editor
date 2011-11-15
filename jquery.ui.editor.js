@@ -97,19 +97,6 @@
             this._clickToEdit.initialize.call(this);
         },
 
-        _: function(string, variables) {
-            if ($.ui.editor.prototype._plugins.i18n && $.ui.editor.prototype._plugins.i18n[string]) {
-                return $.ui.editor.prototype._plugins.i18n.translate(string, variables);
-            } else if (!variables) {
-                return string;
-            } else {
-                $.each(variables, function(key, value) {
-                    string = string.replace('<*' + key + '*>', value);
-                });
-                return string;
-            }
-        },
-       
         _create: function() {
             this._instances.push(this);
         },
@@ -755,7 +742,7 @@
                                 
                                 tagName = current[0].tagName.toLowerCase();
                                 title = ' &gt; <a href="javascript: // ' + _('Select element') + '" name="' + i +'" \
-                                        class="ui-widget-editor-element-path" title="' + _('Click to select the contents of this &quot; <*tagName*> &quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
+                                        class="ui-widget-editor-element-path" title="' + _('Click to select the contents of this &quot;<*tagName*>&quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
                                 current = current.parent();
                                 i++;
                             }
@@ -779,7 +766,6 @@
         },
      
         _content: {
-
             cleaned: function(html) {
                 var content = $('<div></div>').html(html);
                
@@ -1030,7 +1016,6 @@
             warning: function(messages, delay, callback) {
                 this._message.show.call(this, this._message.types.warning, messages, delay, callback);
             }
-            
         },
         
         destroy: function() {
@@ -1057,7 +1042,16 @@
     });
     
     _ = function(string, variables) {
-        return $.ui.editor.prototype._(string, variables);
+        if ($.ui.editor.prototype._plugins.i18n) {
+            return $.ui.editor.prototype._plugins.i18n.translate(string, variables);
+        } else if (!variables) {
+            return string;
+        } else {
+            $.each(variables, function(key, value) {
+                string = string.replace('<*' + key + '*>', value);
+            });
+            return string;
+        }
     };
     
     $.ui.editor.addButton = function(name, button) {

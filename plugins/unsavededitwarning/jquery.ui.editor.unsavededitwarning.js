@@ -43,7 +43,8 @@
         },
         
         hide: function() {
-            warning = this._plugins.unsavedEditWarning.instance.call(this);
+            var warning = this._plugins.unsavedEditWarning.instance.call(this),
+                options = this.options.plugins.unsavedEditWarning;
             if (warning.is(':visible') && !warning.is(':animated')) warning.hide(options.animation);
         },
         

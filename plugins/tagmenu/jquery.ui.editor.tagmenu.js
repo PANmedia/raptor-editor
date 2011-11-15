@@ -17,7 +17,7 @@
     });
     
     $.ui.editor.addButton('tagMenu', {
-        title: 'Tag Menu',
+        title: _('Tag Menu'),
         initialize: function(object, button_group) {
             var editorInstance = this,
                 menu = $('<select autocomplete="off" name="tag" class="ui-editor-tag-select">\
