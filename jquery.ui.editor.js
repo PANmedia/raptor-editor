@@ -255,10 +255,9 @@
                 $(window).bind('beforeunload', $.proxy(this._actions.unloadWarning, this));
                 
                 // Fire plugin initialize events
-                $.each(this._plugins, function() {
+                $.each(this._plugins, function(name) {
                     if ($.isFunction(this.initialize)) {
-                        this.initialize.call(editorInstance);
-                        
+                        this.initialize.apply(this, [editorInstance, editorInstance.options.plugins[name] || {}]);
                     }
                 });
 
