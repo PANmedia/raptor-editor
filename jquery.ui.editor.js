@@ -1,4 +1,17 @@
-(function($, window, rangy, undefined) {
+function _(string, variables) {
+    if ($.ui.editor.prototype._plugins.i18n) {
+        return $.ui.editor.prototype._plugins.i18n.translate(string, variables);
+    } else if (!variables) {
+        return string;
+    } else {
+        $.each(variables, function(key, value) {
+            string = string.replace('<*' + key + '*>', value);
+        });
+        return string;
+    }
+};
+
+(function() {
  
     $.widget('ui.editor', {
                
@@ -1046,19 +1059,6 @@
         
     });
     
-    _ = function(string, variables) {
-        if ($.ui.editor.prototype._plugins.i18n) {
-            return $.ui.editor.prototype._plugins.i18n.translate(string, variables);
-        } else if (!variables) {
-            return string;
-        } else {
-            $.each(variables, function(key, value) {
-                string = string.replace('<*' + key + '*>', value);
-            });
-            return string;
-        }
-    };
-    
     $.ui.editor.addButton = function(name, button) {
         // <strict>
         if ($.ui.editor.prototype._buttons[name]) {
@@ -1096,4 +1096,4 @@
         // </debug>
     };
     
-})(jQuery, window, rangy);
+})();
