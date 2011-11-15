@@ -80,7 +80,7 @@
             // Ensure dialog has been included
             if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
             // Warn that no internationalizations have been loaded
-            if (!$.ui.editor.prototype._plugins.i18n) console.log(_('No internationalizations have been loaded, defaulting to English'));
+            if (!$.ui.editor.prototype._plugins.i18n) console.debug(_('No internationalizations have been loaded, defaulting to English'));
             // </strict>
             
             // <debug>
@@ -1070,7 +1070,7 @@
         $.ui.editor.prototype._buttons[name] = button;
         
         // <debug> 
-        console.log(_('Button <*buttonName*> added', { buttonName: name }), button);
+        console.debug(_('Button <*buttonName*> added', { buttonName: name }), button);
         // </debug>
     };
     
@@ -1082,7 +1082,7 @@
         $.ui.editor.prototype._plugins[name] = plugin;
         
         // <debug> 
-        console.log(_('Plugin <*pluginName*> added', { pluginName: name }), plugin);
+        console.debug(_('Plugin <*pluginName*> added', { pluginName: name }), plugin);
         // </debug>
     };
     
@@ -1093,7 +1093,7 @@
         if (!$.ui.editor.prototype.options['plugins']) $.ui.editor.prototype.options['plugins'] = {};
         $.ui.editor.prototype.options['plugins'][name] = options;
         // <debug> 
-        console.log(_('Options <*optionKey*> added', { optionKey: name }), options);
+        console.debug(_('Options <*optionKey*> added', { optionKey: name }), options);
         // </debug>
     };
     
