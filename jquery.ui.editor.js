@@ -94,6 +94,7 @@
                 // </strict>
             }
             if (!jQuery.cookie) this.options.persistence = false;
+            
             this._clickToEdit.initialize.call(this);
         },
 
@@ -276,6 +277,7 @@
                 this._editor.toolbar.find('.ui-widget-editor-inner').html('');
 
                 buttonOrder = [
+                    ['dock'],
                     ['save', 'cancel', 'showGuides'],
                     ['viewSource'],
                     ['undo', 'redo'],
@@ -286,7 +288,8 @@
                     ['increaseFontSize', 'decreaseFontSize'],
                     ['addEditLink', 'removeLink'],
                     ['floatLeft', 'floatNone', 'floatRight'],
-                    ['tagMenu']
+                    ['tagMenu'],
+                    ['i18n']
                 ];
                 
                 if (this.options.buttonOrder) buttonOrder = this.options.buttonOrder;
@@ -431,6 +434,9 @@
                 
                 this.element.addClass(this._classes.editing);
                 this.element.attr('contenteditable', 'true');
+                document.execCommand('enableInlineTableEditing', false, false);
+                document.execCommand('enableObjectResizing', false, false);
+                document.execCommand('styleWithCSS', true, true);
                 
                 // Fire attachment events
                 $.each(this._plugins, function() {
