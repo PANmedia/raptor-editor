@@ -52,7 +52,7 @@
             }).dialog('open');
         },
         destroy: function() {
-            if (this._plugins.viewSource.dialog) dialog.dialog('close');
+            if (this._plugins.viewSource.dialog) this._plugins.viewSource.dialog.dialog('close');
         }
     });
 })(jQuery);
