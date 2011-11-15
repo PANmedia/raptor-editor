@@ -17,6 +17,8 @@
 .ui-widget-editor-docked .ui-widget-editor-toolbar {
     width: 100% !important;
     position: fixed;
+    top: 0;
+    left: 0;
     text-align: center;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
