@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <project name="jquery-ui-editor" basedir="." default="build">
     
     <adhoc-task name="datauri">
@@ -55,6 +55,9 @@
     <target name="build" depends="package,targz,cleanup">
     </target>
     
+    <target name="0deps" depends="copydeps,combine,compile,targz">
+    </target>
+    
     <target name="testbuild">
         <!-- Load properties -->
         <property file="build.properties" />
@@ -63,6 +66,7 @@
         <echo>${packagepath}</echo>
         <echo>${buildpath}</echo>
         <echo>${stripblocks}</echo>
+        <echo>${theme}</echo>
     </target>
     
     <!-- =================================================================== -->
@@ -73,6 +77,7 @@
         <property file="build.properties" />
         <!-- Clean up previous build -->
         <delete file="${packagepath}/${phing.project.name}.tar.gz" />
+        <delete file="${packagepath}/jquery-ui-editor.build.js" />
         <delete dir="${buildpath}" 
                 includeemptydirs="true" 
                 failonerror="true" />
@@ -87,6 +92,7 @@
                 <exclude name=".git" />
                 <exclude name=".git/**" />
                 <exclude name="vendor/**" />
+                <exclude name="dependencies/**" />
                 <exclude name="${buildpath}" />
                 <exclude name="${buildpath}/**" />
                 <exclude name="${packagepath}" />
@@ -97,7 +103,69 @@
     </target>
     
     <!-- =================================================================== -->
-    <!-- Process files                                                       -->
+    <!-- Compress PNG iamges                                                 -->
+    <!-- =================================================================== -->
+    <target name="pngout">
+        <foreach param="fname" absparam="abs-fname" target="pngoutexec">
+            <fileset dir=".">
+                <include name="*.png" />
+                <include name="**/*.png" />
+            </fileset>
+        </foreach>
+    </target>
+    
+    <target name="pngoutexec">
+        <exec command="pngout ${abs-fname}" logoutput="true" />
+    </target>
+    
+    <!-- =================================================================== -->
+    <!-- Copy dependencies                                                   -->
+    <!-- =================================================================== -->
+    <target name="copydeps" depends="prepare">
+        <!-- Copy all dependancies and prefix a number to enforce load order -->
+        
+        <!-- jQuery -->
+        <copy file="dependencies/jquery-1.7.js" 
+              tofile="${buildpath}/01-jquery-1.7.js" />
+        
+        <!-- jQuery plugins -->
+        <copy file="dependencies/jquery-cookie/jquery.cookie.js" 
+              tofile="${buildpath}/04-jquery-cookie.js" />
+        <copy file="dependencies/tiptip/jquery.tipTip.js" 
+              tofile="${buildpath}/05-jquery-tipTip.js" />
+              
+        <!-- jQuery UI -->
+        <copy file="dependencies/jquery-ui.1.8.16.js" 
+              tofile="${buildpath}/02-jquery-ui.1.8.16.js" />
+              
+        <!-- jQuery UI plugins -->
+        <copy file="dependencies/jquery-ui-selectmenu/jquery.ui.selectmenu.js" 
+              tofile="${buildpath}/04-jquery.ui.selectmenu.js" />
+              
+        <!-- Rangy -->
+        <copy file="dependencies/rangy/rangy-core.js" 
+              tofile="${buildpath}/06-rangy-core.js" />
+        <copy file="dependencies/rangy/rangy-cssclassapplier.js" 
+              tofile="${buildpath}/07-rangy-cssclassapplier.js" />
+        <copy file="dependencies/rangy/rangy-selectionsaverestore.js" 
+              tofile="${buildpath}/08-rangy-selectionsaverestore.js" />
+        <copy file="dependencies/rangy/rangy-serializer.js" 
+              tofile="${buildpath}/09-rangy-serializer.js" />
+        
+        <!-- CSS -->
+        <copy file="dependencies/tiptip/tipTip.css" 
+              tofile="${buildpath}/theme/tipTip.css" />
+        <copy file="dependencies/jquery-ui-selectmenu/jquery.ui.selectmenu.css" 
+              tofile="${buildpath}/theme/jquery.ui.selectmenu.css" />
+        <copy todir="${buildpath}/theme">
+            <fileset dir=".">
+                <include name="dependencies/themes/${theme}/**/*" />
+            </fileset>  
+        </copy>
+    </target>
+    
+    <!-- =================================================================== -->
+    <!-- Strip debug/strict blocks                                           -->
     <!-- =================================================================== -->
     <target name="stripblocks" depends="prepare,clone">
         <reflexive>
@@ -116,19 +184,9 @@
         </reflexive>
     </target>
     
-    <target name="pngout">
-        <foreach param="fname" absparam="abs-fname" target="pngoutexec">
-            <fileset dir=".">
-                <include name="*.png" />
-                <include name="**/*.png" />
-            </fileset>
-        </foreach>
-    </target>
-    
-    <target name="pngoutexec">
-        <exec command="pngout ${abs-fname}" logoutput="true" />
-    </target>
-    
+    <!-- =================================================================== -->
+    <!-- Convert images to data URIs                                         -->
+    <!-- =================================================================== -->
     <target name="datauri" depends="prepare,clone">
         <datauri>
             <fileset dir=".">
@@ -138,6 +196,9 @@
         </datauri>
     </target>
     
+    <!-- =================================================================== -->
+    <!-- Combine and minify all files                                        -->
+    <!-- =================================================================== -->
     <target name="combine" depends="datauri">
         <append destFile="${buildpath}/concat.js">
             <fileset dir=".">
@@ -163,20 +224,39 @@
     </target>
     
     <target name="merge" depends="compile">
+        <!-- Append VERSION file in a comment -->
         <echo file="${buildpath}/merge.js" append="true">/*! VERSION: </echo>
         <append destFile="${buildpath}/merge.js">
             <fileset dir=".">
                 <include name="${buildpath}/VERSION" />
             </fileset>
         </append>
+        <!-- Append a new line -->
         <echo file="${buildpath}/merge.js" append="true">
         </echo>
+        <!-- Append LICENCE file in the same comment -->
         <append destFile="${buildpath}/merge.js">
             <fileset dir=".">
                 <include name="${buildpath}/LICENCE" />
             </fileset>
         </append>
         <echo file="${buildpath}/merge.js" append="true">*/</echo>
+        <!-- Close the comment -->
+        
+        <!-- Append global wrapper open -->
+        <!-- 
+        <echo file="${buildpath}/merge.js" append="true">(function($, window, rangy, undefined) {</echo>
+        <echo file="${buildpath}/merge.js" append="true">})(jQuery, window, rangy);</echo>
+        -->
+        
+        <!-- Append the merged JS -->
+        <append destFile="${buildpath}/merge.js">
+            <fileset dir=".">
+                <include name="${buildpath}/concat.min.js" />
+            </fileset>
+        </append>
+        
+        <!-- Append the style inserter -->
         <echo file="${buildpath}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
         <append destFile="${buildpath}/merge.js">
             <fileset dir=".">
@@ -184,11 +264,6 @@
             </fileset>
         </append>
         <echo file="${buildpath}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
-        <append destFile="${buildpath}/merge.js">
-            <fileset dir=".">
-                <include name="${buildpath}/concat.min.js" />
-            </fileset>
-        </append>
     </target>
     
     <!-- =================================================================== -->
