@@ -80,12 +80,8 @@
                                         html = element.html();
                                     }
 
-                                    var pasted_content = $('<div id="ui-editor-paste-bin" style="display: none;">' + html + '</div>').appendTo('body');
-
                                     rangy.restoreSelection(selection);
-                                    editor._selection.replace.call(editor, pasted_content.get(0).childNodes);
-
-                                    pasted_content.remove();
+                                    editor.replaceSelection(html);
 
                                     inProgress = false;
                                     $(this).dialog('close').dialog('destroy');
@@ -103,6 +99,7 @@
                     ],
                     open: function() {
                         $(this).find('.ui-editor-paste-panel-tabs').tabs();
+                        console.log('FIXME: button icons');
                         editor._dialog.applyButtonIcon('cancel', 'circle-close');
                         editor._dialog.applyButtonIcon('ok', 'circle-check');
                     },

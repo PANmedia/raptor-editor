@@ -121,7 +121,7 @@ var _;
                 ['unorderedList', 'orderedList'],
                 ['hr', 'blockquote'],
                 ['increaseFontSize', 'decreaseFontSize'],
-                ['addEditLink', 'removeLink'],
+                ['link', 'unlink'],
                 ['floatLeft', 'floatNone', 'floatRight'],
                 ['tagMenu'],
                 ['i18n']
@@ -143,6 +143,7 @@ var _;
             this.enableEditing();
             
             this.loadToolbar();
+            this.updateTagTree();
             this.attach();
             
             this.loadPlugins();
@@ -1064,6 +1065,30 @@ var _;
 //            return this;
 //        },
 
+
+        /**********************************************************************\
+         * Other Functions
+        \**********************************************************************/
+        persist: function(key, value) {
+            if (localStorage) {
+                var storage;
+                if (localStorage.uiWidgetEditor) {
+                    storage = JSON.parse(localStorage.uiWidgetEditor);
+                } else {
+                    storage = {};
+                }
+                console.log(storage);
+                if (value === undefined) return storage[key];
+                storage[key] = value;
+                console.log(storage);
+                console.log(key);
+                console.log(value);
+                localStorage.uiWidgetEditor = JSON.stringify(storage);
+            } else {
+                console.info('FIXME: use cookies');
+            }
+        },
+        
         /**********************************************************************\
          * Other Functions
         \**********************************************************************/
@@ -1083,60 +1108,55 @@ var _;
                 editor.trigger('change');
             });
             editor.bind('change', this.updateTagTree);
+            console.log(this.selDialog('.ui-dialog-titlebar a'));
+            this.selDialog('.ui-dialog-titlebar a')
+                    .die('click.' + this.widgetName)
+                    .live('click.' + this.widgetName, function() {
+                        console.log($(this));
+                    });
         },
         
-//
-//                var title = this.options.titleDefault,
-//                    current = null, tagName = null, tagMenu = null,
-//                    i = 0;
-//
-//                if (this.options.titleTags) {
-//
-//                    this._selection.enforceLegality.call(this);
-//                    this._actions.refreshSelectedElement.call(this);
-//
-//                    if (this._editor.selectedElement) {
-//
-//                        var current = this._editor.selectedElement,
-//                            editorInstance = this;
-//
-//                        if (typeof current[0] != 'undefined') {
-//
-//                            console.info('FIXME: updateTitleTagList');
-////                            $.each(this._plugins, function() {
-////                                if ($.isFunction(this.titleTagList)) {
-////                                    this.titleTagList.call(editorInstance, current);
-////                                };
-////                            });
-//
-//                            title = '';
-//
-//                            while (true) {  // Update dialog title
-//
-//                                if (this._util.isRoot.call(this, current)) {
-//                                    title = '<a href="javascript: // ' + _('Select all') + '" name="root" \
-//                                        class="ui-widget-editor-element-path" title="//' + _('Click to select all editable content') + '">root</a>' + title;
-//                                    break;
-//                                }
-//
-//                                tagName = current[0].tagName.toLowerCase();
-//                                title = ' &gt; <a href="javascript: // ' + _('Select element') + '" name="' + i +'" \
-//                                        class="ui-widget-editor-element-path" title="//' + _('Click to select the contents of this &quot;<*tagName*>&quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
-//                                current = current.parent();
-//                                i++;
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                this._editor.toolbar.dialog({
-//                    title: title
-//                });
-//
-//                if (this.options.customTooltips) this._editor.toolbar.parent().find('.ui-widget-editor-element-path').tipTip();
         updateTagTree: function() {
-            console.log(rangy.getSelection().getAllRanges()[0].getNodes());
-            this.selDialog('.ui-dialog-title');
+            console.info('FIXME: updateTagTree should filter out duplicates');
+            var title = '', 
+                editor = this;
+                
+            // Loop all selected ranges
+            $.each(rangy.getSelection().getAllRanges(), function(i, range) {
+                var element;
+                var list = [];
+                
+                // Get the selected nodes common parent
+                var node = range.commonAncestorContainer;
+                
+                if (node.nodeType === 3) {
+                    // If nodes common parent is a text node, then use its parent
+                    element = $(node).parent();
+                } else {
+                    // Or else use the node
+                    element = $(node);
+                }
+                
+                // Loop untill we get to the root element, or the body tag
+                while (!editor.isRoot(element) && element[0].tagName.toLowerCase() != 'body') {
+                    // Add the node to the list
+                    list.push(element);
+                    element = element.parent();
+                }
+                list.reverse();
+                if (title) title += ' | ';
+                title += '<a href="javascript: // ">root</a> '
+                $.each(list, function(i, element) {
+                    title += '&gt; <a href="javascript: // ">' + element[0].tagName.toLowerCase() + '</a> '
+                });
+//                console.log(title);
+            });
+            if (!title) title = '<a href="javascript: // ">root</a>';
+            this.selDialog('.ui-dialog-title').html(title);
+        },
+        
+        isRoot: function(element) {
+            return this.element[0] == element[0];
         },
 
         /**********************************************************************\
@@ -1214,70 +1234,37 @@ var _;
 
         },
 
-//            initialize: function() {
-//                this._editor.toolbar = $('<div class="ui-widget-editor-toolbar">\
-//                                            <div class="ui-widget-editor-inner" style="display:none"></div>\
-//                                        </div>//');
-//
-////                this._editor.generateButtons.call(this);
-//
-//                var editorInstance = this;
-//
-//                this._editor.toolbar.dialog({
-//                    position: ($.isFunction(this.options.toolbarPosition) ? this.options.toolbarPosition.call(this) : this.options.toolbarPosition),
-//                    resizable: false,
-//                    closeOnEscape: false,
-//                    width: 'auto',
-//                    height: 'auto',
-//                    minHeight: 'auto',
-//                    resize: 'auto',
-//                    zIndex: 32000,
-//                    title: _('Editor loading...'),
-//                    autoOpen: false,
-//                    dialogClass: this.options.dialogClass,
-//                    show: this.options.dialogShowAnimation,
-//                    hide: this.options.dialogHideAnimation,
-//                    open: function(event, ui) {
-//                        $(this).css('overflow', 'hidden');
-//                        var parent = $(this).parent();
-//                        parent.css('position', 'fixed')
-//                            .attr('unselectable', 'on')
-//                            .find('.ui-dialog-titlebar-close', ui)
-//                            .remove();
-//                    }
-//                });
-//
-//                $(window).bind('beforeunload', $.proxy(this._actions.unloadWarning, this));
-//
-//                // Fire plugin initialize events
-//                console.info('FIXME: Fire plugin initialize events');
-////                $.each(this._plugins, function(name) {
-////                    if ($.isFunction(this.initialize)) {
-////                        this.initialize.apply(this, [editorInstance, editorInstance.options.plugins[name] || {}]);
-////                    }
-////                });
-//
-//                rangy.init();
-//                this._editor.toolbar.dialog().dialog('open');
-//
-//                this._editor.initialized = true;
-//                this._editor.toolbar.find('.ui-widget-editor-inner').slideDown();
-//            },
-
-
         /**********************************************************************\
          * Range functions
         \**********************************************************************/
         constrainSelection: function() {
-            var element = this.element,
-                selection = rangy.getSelection(),
-                commonAncestor;
+            var element = this.element;
+            var commonAncestor;
 
-            $(selection.getAllRanges()).each(function(){
-                if (this.commonAncestorContainer.nodeType == 3) commonAncestor = $(this.commonAncestorContainer).parent().get(0)
-                else commonAncestor = this.commonAncestorContainer;
+            $(rangy.getSelection().getAllRanges()).each(function(){
+                if (this.commonAncestorContainer.nodeType == 3) {
+                    commonAncestor = $(this.commonAncestorContainer).parent().get(0)
+                } else {
+                    commonAncestor = this.commonAncestorContainer;
+                }
                 if (!$.contains(element.get(0), commonAncestor)) selection.removeRange(this);
             });
+        },
+        
+        getSelectedElements: function() {
+            var result = new jQuery();
+            this.constrainSelection();
+            $(rangy.getSelection().getAllRanges()).each(function() {
+                var commonAncestor;
+                if (this.commonAncestorContainer.nodeType == 3) {
+                    commonAncestor = $(this.commonAncestorContainer).parent().get(0)
+                } else {
+                    commonAncestor = this.commonAncestorContainer;
+                }
+                console.info('Check for duplicate elements');
+                result.push(commonAncestor);
+            });
+            return result;
         },
         
         toggleWrapper: function(tag, options) {
@@ -1295,6 +1282,52 @@ var _;
             this.trigger('change');
         },
         
+        execCommand: function(command, arg1, arg2) {
+            this.constrainSelection();
+            document.execCommand(command, arg1, arg2);
+            this.trigger('change');
+        },
+        
+        insertElement: function(element) {
+            element = $('<' + element + '/>')[0];
+            this.constrainSelection();
+            $(rangy.getSelection().getAllRanges()).each(function(i, range) {
+                range.insertNode(element);
+            });
+            this.trigger('change');
+        },
+        
+        applyStyle: function(styles) {
+            var editor = this;
+            this.constrainSelection();
+            $.each(editor.getSelectedElements(), function(i, element) {
+                $.each(styles, function(property, value) {
+                    if ($(element).css(property) == value) {
+                        $(element).css(property, '');
+                    } else {
+                        $(element).css(property, value);
+                    }
+                });
+            });
+
+            this.trigger('change');
+        },
+        
+        replaceSelection: function(html) {
+            var nodes = $('<div/>').append(html)[0].childNodes;
+            $(rangy.getSelection().getAllRanges()).each(function(i, range) {
+                range.deleteContents();
+                if (nodes.length === undefined || nodes.length == 1) {
+                    range.insertNode(nodes[0].cloneNode(true));
+                } else {
+                    for (var j = nodes.length - 1; i >= 0; i--) {
+                        range.insertNode(nodes[i].cloneNode(true));
+                    }
+                }
+            });
+            
+            this.trigger('change');
+        },
         
         /**********************************************************************\
          * Selectors
