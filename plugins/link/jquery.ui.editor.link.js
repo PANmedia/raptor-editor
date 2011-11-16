@@ -1,19 +1,21 @@
 (function($) {
     
-    $.ui.editor.addOptions('link', {
+    var defaultOptions = {
         panelAnimation: 'fade',
         replaceTypes: false,
         customTypes: [],
-        typeDataName: 'ui-widget-editor-link-type'
-    });
+        typeDataName: 'uiWidgetEditorLinkType'
+    };
     
-    $.ui.editor.addPlugin('link', {
-                
-        dialog: false,
+    var link = function(editor, options) {
+        var dialog = false;
+        var plugin = this;
         
-        show: function() {
-            if (!this._plugins.link.dialog) {
-                this._plugins.link.dialog = $('<div style="display:none" class="ui-widget-editor-link-panel">\
+        options = $.extend({}, defaultOptions, options);
+        
+        this.show = function() {
+            if (!dialog) {
+                dialog = $('<div style="display:none" class="ui-widget-editor-link-panel">\
                                                     <div class="ui-widget-editor-link-menu">\
                                                         <p>' + _('Choose a link type:') + '</p>\
                                                         <fieldset></fieldset>\
@@ -24,14 +26,12 @@
                                                 </div>').appendTo('body');
             }
             
-            this._actions.beforeStateChange.call(this);
+            editor._actions.beforeStateChange.call(this);
             
-            var editorInstance = this, 
-                selection = rangy.saveSelection(),
-                linkDialog = this._plugins.link.dialog,
-                edit = this._editor.selectedElement.is('a'),
-                label, link_types_classes = {},
-                options = this.options.plugins.link;
+            var selection = rangy.saveSelection(),
+                linkDialog = dialog,
+                edit = editor._editor.selectedElement.is('a'),
+                label, link_types_classes = {};
             
             var link_types_fieldset = linkDialog.find('.ui-widget-editor-link-menu fieldset');
             
@@ -59,7 +59,7 @@
                     class_name: 'ui-widget-editor-link-external',
                     show: function(panel, edit) {
                         if (edit) {
-                            var a = this._editor.selectedElement;
+                            var a = editor._editor.selectedElement;
                             panel.find('input[name="location"]').val(a.attr('href'));
                             if (a.attr('target') == '_blank') panel.find('input[name="blank"]').prop('checked', true);
                         }
@@ -71,8 +71,8 @@
                         
                         if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
                         
-                        if (!this._util.valid_url(attributes.href)) {
-                            this.message.warning.call(this, _('The url for the link you inserted doesn\'t look well formed'), 7000);
+                        if (!editor._util.valid_url(attributes.href)) {
+                            editor.showWarning(_('The url for the link you inserted doesn\'t look well formed'));
                         }
                         
                         return attributes;
@@ -94,7 +94,7 @@
                     class_name: 'ui-widget-editor-link-email',
                     show: function(panel, edit) {
                         if (edit) {
-                            var a = this._editor.selectedElement;
+                            var a = editor._editor.selectedElement;
                             panel.find('input[name="email"]').val(a.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
                             if (/\?Subject\=/i.test(a.attr('href'))) {
                                 panel.find('input[name="subject"]').val(decodeURIComponent(a.attr('href').replace(/(.*\?Subject=)/i, '')));
@@ -133,37 +133,36 @@
             
             link_types_fieldset.find('input[type="radio"]').unbind('change.editor').
                     bind('change.editor', function(){
-                        editorInstance._plugins.link.typeChange.call(editorInstance, edit);
+                        plugin.typeChange(edit);
                     });
             
             var title = (edit ? 'Edit' : 'Insert') + ' Link';
             
-            this._plugins.link.dialog.dialog({
+            dialog.dialog({
                 autoOpen: false,
                 modal: true,
                 resizable: true,
                 width: 750,
                 height: 450,
                 title: title,
-                dialogClass: this.options.dialogClass + ' ui-widget-editor-link',
-                show: this.options.dialogShowAnimation,
-                hide: this.options.dialogHideAnimation,
+                dialogClass: editor.options.dialogClass + ' ui-widget-editor-link',
+                show: editor.options.dialogShowAnimation,
+                hide: editor.options.dialogHideAnimation,
                 buttons: [
                     {
                         text: title,
                         'class': 'insert',
                         click: function() {
-                            
                             rangy.restoreSelection(selection);
                             
                             var data = linkDialog.find('input[type="radio"]:checked').data(options.typeDataName),
-                                attributes = data.attributes.call(editorInstance, linkDialog.find('.ui-widget-editor-link-content'), edit),
+                                attributes = data.attributes(linkDialog.find('.ui-widget-editor-link-content'), edit),
                                 a = null;
-                            
+                                
                             if (!attributes) return;
                             
                             if (edit) {
-                                a = editorInstance._editor.selectedElement;
+                                a = editor._editor.selectedElement;
                                 $(link_types).each(function() {
                                     a.removeClass(this.class_name);
                                 });
@@ -171,8 +170,8 @@
                                 a.attr(attributes);
                             } else {
                             
-                                if (editorInstance._editor.selectedElement.is('img')) {
-                                    editorInstance._editor.selectedElement.wrap($('a').attr(attributes).addClass('ui-widget-editor-link'));
+                                if (editor._editor.selectedElement.is('img')) {
+                                    editor._editor.selectedElement.wrap($('a').attr(attributes).addClass('ui-widget-editor-link'));
                                 } else {
                                     rangy.createCssClassApplier('ui-widget-editor-link ' + data.class_name, {
                                         normalize: true,
@@ -182,7 +181,7 @@
                                 }
                             }
                             
-                            editorInstance._actions.stateChange.call(editorInstance);
+                            editor.trigger('stateChange');
                             $(this).dialog('close');
                         }
                     },
@@ -196,23 +195,23 @@
                     }
                 ],
                 beforeopen: function() {
-                    editorInstance._plugins.link.dialog.find('.ui-widget-editor-link-content').hide();
+                    plugin.dialog.find('.ui-widget-editor-link-content').hide();
                 },
                 open: function() {
-                    editorInstance._dialog.applyButtonIcon('insert', 'circle-check');
-                    editorInstance._dialog.applyButtonIcon('cancel', 'circle-close');
+                    editor._dialog.applyButtonIcon('insert', 'circle-check');
+                    editor._dialog.applyButtonIcon('cancel', 'circle-close');
                     
                     if (!linkDialog.find('input[type="radio"]:checked').length) {
                         if (!edit) {
                             linkDialog.find('input[type="radio"]:first').prop('checked', true);
-                            editorInstance._plugins.link.typeChange.call(editorInstance, edit, true);
+                            plugin.typeChange(edit, true);
                         } else {
                             linkDialog.find('input[type="radio"]').each(function(){
                                 var radio = $(this);
-                                $(editorInstance._editor.selectedElement.attr('class').split(' ')).each(function() {
+                                $(editor._editor.selectedElement.attr('class').split(' ')).each(function() {
                                     if (link_types_classes[this] && radio.hasClass(this)) {
                                         radio.prop('checked', true);
-                                        editorInstance._plugins.link.typeChange.call(editorInstance, edit, true);
+                                        plugin.typeChange(edit, true);
                                         return;
                                     }
                                 });
@@ -221,20 +220,17 @@
                     }
                 },
                 close: function() {
-                    editorInstance._plugins.link.dialog.find('.ui-widget-editor-link-content').hide();
+                    dialog.find('.ui-widget-editor-link-content').hide();
                     $(this).dialog('destroy');
                 }
             }).dialog('open');
-        },
+        }
         
-        typeChange: function(edit, initial) {
-            
-            var options = this.options.plugins.link,
-                linkTypeData = this._plugins.link.dialog.find('input[type="radio"]:checked').data(options.typeDataName),
-                panel = this._plugins.link.dialog.find('.ui-widget-editor-link-content'),
+        this.typeChange = function(edit, initial) {
+            var linkTypeData = dialog.find('input[type="radio"]:checked').data(options.typeDataName),
+                panel = dialog.find('.ui-widget-editor-link-content'),
                 wrap = panel.closest('.ui-widget-editor-link-wrap'),
                 ajax = (typeof linkTypeData.ajax != 'undefined'),
-                editorInstance = this,
                 initial = (typeof initial == 'undefined') ? false : initial;
         
             if (ajax) wrap.addClass('ui-widget-editor-loading');
@@ -242,12 +238,12 @@
             if (initial) {
                 panel.html(linkTypeData.content);
                 panel.show();
-                if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
+                if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
             } else {                  
                 panel.hide(options.panelAnimation, function(){
                     if (!ajax) {
                         panel.html(linkTypeData.content);
-                        if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
+                        if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
                         panel.html(linkTypeData.content).show(options.panelAnimation);
                     } else {
                         $.ajax({
@@ -255,7 +251,7 @@
                             type: ((typeof linkTypeData.ajax.type != 'undefined') ? 'get' : linkTypeData.ajax.type),
                             success: function(data) {
                                 panel.html(data);
-                                if ($.isFunction(linkTypeData.show)) linkTypeData.show.call(editorInstance, panel, edit);
+                                if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
                                 panel.show(options.panelAnimation, function(){
                                     wrap.removeClass('ui-widget-editor-loading');
                                 });
@@ -264,10 +260,10 @@
                     }
                 });
             }
-        },
+        }
         
-        remove: function() {
-            this._actions.beforeStateChange.call(this);
+        this.remove = function() {
+            editor._actions.beforeStateChange.call(this);
 
             if (rangy.getSelection().getAllRanges().length == 1) {
                 
@@ -292,35 +288,36 @@
                 }
             }
             
-            this._actions.stateChange.call(this);
+            editor._actions.stateChange.call(this);
         }
-
-    });
+    }
     
-    $.ui.editor.addButton('addEditLink', {
-        title: _('Insert Link'),
-        icons: {
+    $.ui.editor.addPlugin('link', link);
+    
+    $.ui.editor.addButton('addEditLink', function(editor) {
+        this.title = _('Insert Link');
+        this.icons = {
             primary: 'ui-icon-insert-link'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._plugins.link.show.call(this);
-        },
-        stateChange: function(button) {
+        };
+        this.classes = 'ui-editor-icon';
+        this.click = function() {
+            editor.getPlugin('link').show();
+        }
+        this.stateChange = function(button) {
             $(button).button('option', 'disabled', !(this._selection.exists.call(this) || this._editor.selectedElement.is('a')));
         }
     });
     
-    $.ui.editor.addButton('removeLink', {
-        title: _('Remove Link'),
-        icons: {
+    $.ui.editor.addButton('removeLink', function(editor) {
+        this.title = _('Remove Link');
+        this.icons = {
             primary: 'ui-icon-remove-link'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._plugins.link.remove.call(this);
-        },
-        stateChange: function(button) {
+        };
+        this.classes = 'ui-editor-icon';
+        this.click = function() {
+            editor.getPlugin('link').remove();
+        }
+        this.stateChange = function(button) {
             $(button).button('option', 'disabled', !this._editor.selectedElement.is('a'));
         }
     });

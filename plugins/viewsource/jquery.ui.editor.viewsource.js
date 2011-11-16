@@ -1,20 +1,22 @@
 (function($) {
     
-    $.ui.editor.addPlugin('viewSource', {
-        dialog: false,
-        stateChange: function() {
-            if (this._plugins.viewSource.dialog) this._plugins.viewSource.dialog.find('textarea').val(this.html.call(this));
-        }
-    });
+    console.info('FIXME: viewSource');
+    var viewSource = function() {
+//        var dialog = false;
+//        stateChange: function() {
+//            if (this._plugins.viewSource.dialog) this._plugins.viewSource.dialog.find('textarea').val(this.html.call(this));
+//        }
+    }
     
-    $.ui.editor.addButton('viewSource', {
-       
-        title: _('View / Edit Source'),
-        icons: {
+    $.ui.editor.addPlugin('viewSource', viewSource);
+    
+    $.ui.editor.addButton('viewSource', function() {
+        this.title = _('View / Edit Source');
+        this.icons = {
             primary: 'ui-icon-view-source'
-        },
-        classes: 'ui-editor-icon ui-widget-editor-button-view-source',
-        click: function() {
+        };
+        this.classes = 'ui-editor-icon ui-widget-editor-button-view-source';
+        this.click = function() {
             var editorInstance = this;
 
             if (!this._plugins.viewSource.dialog) {
@@ -50,8 +52,8 @@
                     $(this).dialog('destroy');
                 }
             }).dialog('open');
-        },
-        destroy: function() {
+        }
+        this.destroy = function() {
             if (this._plugins.viewSource.dialog) dialog.dialog('close');
         }
     });
