@@ -72,7 +72,10 @@
     
     $.ui.editor.bind('resize', function() {
         $.each(this.getInstances(), function() {
-            this.getPlugin('unsavedEditWarning').reposition();
+            var plugin = this.getPlugin('unsavedEditWarning');
+            if (plugin) {
+                plugin.reposition();
+            }
         });
     });
         

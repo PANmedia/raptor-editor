@@ -1,36 +1,43 @@
-(function($) {
-   
-    $.ui.editor.addButton('floatLeft', function(editor) {
-        this.title = _('Float Left');
-        this.icons = {
-            primary: 'ui-icon-float-left'
-        };
-        this.classes = 'ui-editor-icon';
-        this.click = function() {
-            editor.applyStyle({ 'float': 'left' });
-        }
-    });
+$.ui.editor.registerUi({
+    floatLeft: function(editor) {
+        this.ui = editor.uiButton({
+            name: 'floatLeft',
+            title: _('Float Left'),
+            icons: {
+                primary: 'ui-icon-float-left'
+            },
+            classes: 'ui-editor-icon',
+            click: function() {
+                editor.applyStyle({ 'float': 'left' });
+            }
+        });
+    },
     
-    $.ui.editor.addButton('floatRight', function(editor) {
-        this.title = _('Float Right');
-        this.icons = {
-            primary: 'ui-icon-float-right'
-        };
-        this.classes = 'ui-editor-icon';
-        this.click = function() {
-            editor.applyStyle({ 'float': 'right' });
-        }
-    });
+    floatRight: function(editor) {
+        this.ui = editor.uiButton({
+            name: 'floatRight',
+            title: _('Float Right'),
+            icons: {
+                primary: 'ui-icon-float-right'
+            },
+            classes: 'ui-editor-icon',
+            click: function() {
+                editor.applyStyle({ 'float': 'right' });
+            }
+        });
+    },
     
-    $.ui.editor.addButton('floatNone', function(editor) {
-        this.title = _('Float None');
-        this.icons = {
-            primary: 'ui-icon-float-none'
-        };
-        this.classes = 'ui-editor-icon';
-        this.click = function() {
-            editor.applyStyle({ 'float': 'none' });
-        }
-    });
-    
-})(jQuery);
+    floatNone: function(editor) {
+        this.ui = editor.uiButton({
+            name: 'floatNone',
+            title: _('Float None'),
+            icons: {
+                primary: 'ui-icon-float-none'
+            },
+            classes: 'ui-editor-icon',
+            click: function() {
+                editor.applyStyle({ 'float': 'none' });
+            }
+        });
+    }
+});

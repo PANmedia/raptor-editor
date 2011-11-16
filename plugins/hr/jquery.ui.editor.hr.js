@@ -1,10 +1,15 @@
-$.ui.editor.addButton('hr', function(editor) {
-    this.title = _('Insert Horizontal Rule');
-    this.icons = {
-        primary: 'ui-icon-hr'
-    };
-    this.classes = 'ui-editor-icon';
-    this.click = function() {
-        editor.insertTag('hr');
+$.ui.editor.registerUi({
+    hr: function(editor) {
+        this.ui = editor.uiButton({
+            name: 'hr',
+            title: _('Insert Horizontal Rule'),
+            icons: {
+                primary: 'ui-icon-hr'
+            },
+            classes: 'ui-editor-icon',
+            click: function() {
+                editor.insertElement('hr');
+            }
+        });
     }
 });

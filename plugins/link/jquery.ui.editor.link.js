@@ -26,8 +26,6 @@
                                                 </div>').appendTo('body');
             }
             
-            editor._actions.beforeStateChange.call(this);
-            
             var selection = rangy.saveSelection(),
                 linkDialog = dialog,
                 edit = editor._editor.selectedElement.is('a'),
@@ -263,8 +261,6 @@
         }
         
         this.remove = function() {
-            editor._actions.beforeStateChange.call(this);
-
             if (rangy.getSelection().getAllRanges().length == 1) {
                 
                 range = rangy.getSelection().getAllRanges()[0];
@@ -272,7 +268,7 @@
                 node = range.commonAncestorContainer;
                 node = node.nodeType == 3 ? $(node).parent().get(0) : $(node).get(0);
                 
-                if (node.nodeName == 'A') {
+                if (node.nodeName.toLowerCase() == 'a') {
                     range.selectNode(node);
                     var children = [];
                     
@@ -288,37 +284,42 @@
                 }
             }
             
-            editor._actions.stateChange.call(this);
+            editor.trigger('change');
         }
     }
     
     $.ui.editor.addPlugin('link', link);
     
-    $.ui.editor.addButton('addEditLink', function(editor) {
-        this.title = _('Insert Link');
-        this.icons = {
-            primary: 'ui-icon-insert-link'
-        };
-        this.classes = 'ui-editor-icon';
-        this.click = function() {
-            editor.getPlugin('link').show();
-        }
-        this.stateChange = function(button) {
-            $(button).button('option', 'disabled', !(this._selection.exists.call(this) || this._editor.selectedElement.is('a')));
-        }
-    });
+    $.ui.editor.registerUi({
+        link: function(editor) {
+            this.ui = editor.uiButton({
+                name: 'link',
+                title: _('Insert Link'),
+                icons: {
+                    primary: 'ui-icon-insert-link'
+                },
+                classes: 'ui-editor-icon',
+                click: function() {
+                    editor.getPlugin('link').show();
+                }
+            });
+        },
     
-    $.ui.editor.addButton('removeLink', function(editor) {
-        this.title = _('Remove Link');
-        this.icons = {
-            primary: 'ui-icon-remove-link'
-        };
-        this.classes = 'ui-editor-icon';
-        this.click = function() {
-            editor.getPlugin('link').remove();
-        }
-        this.stateChange = function(button) {
-            $(button).button('option', 'disabled', !this._editor.selectedElement.is('a'));
+        unlink: function(editor) {
+            this.ui = editor.uiButton({
+                name: 'unlink',
+                title: _('Remove Link'),
+                icons: {
+                    primary: 'ui-icon-remove-link'
+                },
+                classes: 'ui-editor-icon',
+                click: function() {
+                    editor.getPlugin('link').remove();
+                }
+            });
+            editor.bind('change', $.proxy(function() {
+                this.ui.button('option', 'disabled', !editor.getSelectedElements().is('a'));
+            }, this));
         }
     });
     
