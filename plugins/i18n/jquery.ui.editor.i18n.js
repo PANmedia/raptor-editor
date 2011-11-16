@@ -1,68 +1,58 @@
 (function($) {
+    
+    var translations = {};
+    var currentLocale = null;
+    var localeNames = {
+        zh_CN: '简体中文',
+        en: 'English'
+    };
+    
+    function translate(string, variables) {
+        if (currentLocale && translations[currentLocale]
+                && translations[currentLocale][string]) {
+            string = translations[currentLocale][string];
+        }
+
+        if (!variables) {
+            return string;
+        } else {
+            $.each(variables, function(key, value) {
+                string = string.replace('<*' + key + '*>', value);
+            });
+
+            return string;
+        }
+    }
 
     $.ui.editor.addLocale = function(name, strings) {
         // <strict>
-        if (!$.ui.editor.prototype._plugins.i18n) {
-            console.error(_('i18n plugin not loaded'));
-            return false;
-        }
-        if ($.ui.editor.prototype._plugins.i18n.translations[name]) {
+        if (translations[name]) {
             console.error(_('Locale "<*localeName*>" has already been registered, and will be overwritten', { localeName: name }));
         }
         // </strict>
         
-        $.ui.editor.prototype._plugins.i18n.translations[name] = strings;
-        if (!$.ui.editor.prototype._plugins.i18n.currentLocale) $.ui.editor.prototype._plugins.i18n.currentLocale = name;
+        translations[name] = strings;
+        if (!currentLocale) currentLocale = name;
         // <debug> 
         console.debug(_('Locale <*localeName*> added', { localeName: name }), strings);
         // </debug>
     };
-
-    $.ui.editor.addPlugin('i18n', {
-        translations: {},
-        currentLocale: null,
-        localeNames: {
-            zh_CN: '简体中文',
-            en: 'English'
-        },
-        
-        translate: function(string, variables) {
-            
-            var currentLocale = $.ui.editor.prototype._plugins.i18n.currentLocale;
-            
-            if (currentLocale && $.ui.editor.prototype._plugins.i18n.translations[currentLocale]
-                && $.ui.editor.prototype._plugins.i18n.translations[currentLocale][string]) {
-                string = $.ui.editor.prototype._plugins.i18n.translations[currentLocale][string];
-            }
-            
-            if (!variables) {
-        
-                return string;
-            } else {
-                
-                $.each(variables, function(key, value) {
-                    string = string.replace('<*' + key + '*>', value);
-                });
-            
-                return string;
-            }
-        }
-    });
     
-    $.ui.editor.addButton('i18n', {
-        title: _('Change Language'),
-        initialize: function(object, button_group) {
-            var editorInstance = this,
-                menu = $('<select autocomplete="off" name="i18n" class="ui-editor-i18n-select"></select>'),
+    $.ui.editor.addButton('i18n', function(editor) {
+        this.title = _('Change Language');
+        console.info('FIXME: i18n button')
+        this.initialize = function(object, button_group) {
+            var menu = $('<select autocomplete="off" name="i18n" class="ui-editor-i18n-select"></select>'),
                 icons = [],
-                option = null;
+                option = null,
+                editor = this;
                 
-            $.each(this._plugins.i18n.translations, function(key){
+            $.each(translations, function(key){
                 option = '<option value="' + key + '" class="' + key + '">';
-                option += editorInstance._plugins.i18n.localeNames[key];
+                option += localeNames[key];
                 option += '</option>';
                 
-                if (editorInstance._plugins.i18n.currentLocale == key) option = $(option).prop('selected', true);
+                if (currentLocale == key) option = $(option).prop('selected', true);
                 
                 menu.append(option);
                 icons.push({
@@ -71,11 +61,11 @@
                 });
             });
             
-            menu.appendTo(button_group).data(editorInstance._data.names.button, object);
+            menu.appendTo(button_group).data(editor._data.names.button, object);
             
             menu.bind('change.i18n', function() {
-                editorInstance._plugins.i18n.currentLocale = $(this).find(':selected').val();
-                editorInstance._editor.attach.call(editorInstance, editorInstance.element);
+                currentLocale = $(this).find(':selected').val();
+                editor._editor.attach.call(editor, editor.element);
             });
 
             if ($.ui.selectmenu) {
@@ -97,8 +87,8 @@
                     maxWidth: 'auto'
                 });
             }
-        },
-        destroy: function() {
+        }
+        this.destroy = function() {
             if ($.ui.selectmenu) $('.ui-editor-i18n-select').selectmenu('destroy');
         }
     });

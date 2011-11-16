@@ -1,12 +1,10 @@
-(function($) {
-    $.ui.editor.addButton('hr', {
-        title: _('Insert Horizontal Rule'),
-        icons: {
-            primary: 'ui-icon-hr'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.insertTag.call(this, 'hr');
-        }
-    });
-})(jQuery);
+$.ui.editor.addButton('hr', function(editor) {
+    this.title = _('Insert Horizontal Rule');
+    this.icons = {
+        primary: 'ui-icon-hr'
+    };
+    this.classes = 'ui-editor-icon';
+    this.click = function() {
+        editor.insertTag('hr');
+    }
+});

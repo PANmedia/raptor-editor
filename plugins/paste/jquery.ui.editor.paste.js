@@ -1,140 +1,129 @@
 (function($) {
-    $.ui.editor.addPlugin('paste', {
+    var paste = function(editor, options) {
+        var inProgress = false
+        var dialog = false
+        var selector = '.uiWidgetEditorPasteBin';
         
-        // Events
-        detach: function() {
-            this.element.unbind('paste.editor');
-        },
-        
-        attach: function() {
-            this.element.bind('paste.editor', $.proxy(this._plugins.paste.capture, this));
-        },
-        
-        inProgress: false,
-        
-        dialog: false,
-        
-        capture: function(event) {
+        editor.element.bind('paste.editor', $.proxy(function(event) {
+            if (inProgress) return false;
+            inProgress = true;
             
-            if (this._plugins.paste.inProgress) return false;
-            this._plugins.paste.inProgress = true;
+            // Save the selection
+            var selection = rangy.saveSelection();
             
-            var selection = rangy.saveSelection(),
-                editorInstance = this;
-            
-            if($.contains(this.element.get(0), event.target)) {
-                var pasteBin = $('#paste-bin');
-                if (!pasteBin.length) {
-                    pasteBin = $('<textarea id="paste-bin"></textarea>').css({
-                        width: 1,
-                        height: 1,
-                        opacity: 0,
-                        position: 'absolute',
-                        left: -9999
-                    }).appendTo('body');
-                }
-                pasteBin.select().focus();
-                
-                window.setTimeout(function(){
-                    var pasted_value = $(pasteBin).val(),
-                        update_values = function(value) {
-                            editorInstance._plugins.paste.dialog.find('textarea.ui-editor-paste-plain').val(value);
-                            editorInstance._plugins.paste.dialog.find('textarea.ui-editor-paste-source').val(value);
-                            editorInstance._plugins.paste.dialog.find('.ui-editor-paste-rich').html(value);
-                        };
+            // Makes a text area to capture pasted text
+            if ($(selector).length) $(selector).remove();
+            $('<div class="uiWidgetEditorPasteBin" contenteditable="true" style="width: 1px; height: 1px; overflow: hidden; position: fixed; top: -1px;" />').appendTo('body');
+            $(selector).focus();
 
-                    if (!editorInstance._plugins.paste.dialog) {
-                        editorInstance._plugins.paste.dialog = $('<div class="ui-editor-paste-panel">\
-                                <div class="ui-editor-paste-panel-tabs">\
-                                    <ul>\
-                                        <li><a href="#ui-editor-paste-plain">' + _('Plain Text') + '</a></li>\
-                                        <li><a href="#ui-editor-paste-rich">' + _('Rich Text') + '</a></li>\
-                                        <li><a href="#ui-editor-paste-source">'+ _('Source Code') + '</a></li>\
-                                    </ul>\
-                                    <div id="ui-editor-paste-plain">\
-                                        <textarea class="ui-editor-paste-plain">' + pasted_value + '</textarea>\
-                                    </div>\
-                                    <div id="ui-editor-paste-rich">\
-                                        <div class="ui-editor-paste-rich" contenteditable="true">' + pasted_value + '</div>\
-                                    </div>\
-                                    <div id="ui-editor-paste-source">\
-                                        <textarea class="ui-editor-paste-source">' + pasted_value + '</textarea>\
-                                    </div>\
+            window.setTimeout(function(){
+                var pastedHtml = $(selector).html(),
+                    pastedText = $(selector).text(),
+                    updateValues = function(value) {
+                        dialog.find('textarea.ui-editor-paste-plain').val(pastedText);
+                        dialog.find('textarea.ui-editor-paste-source').val(pastedHtml);
+                        dialog.find('.ui-editor-paste-rich').html(pastedHtml);
+                    };
+
+                if (!dialog) {
+                    dialog = $('<div class="ui-editor-paste-panel">\
+                            <div class="ui-editor-paste-panel-tabs">\
+                                <ul>\
+                                    <li><a href="#ui-editor-paste-plain">' + _('Plain Text') + '</a></li>\
+                                    <li><a href="#ui-editor-paste-rich">' + _('Rich Text') + '</a></li>\
+                                    <li><a href="#ui-editor-paste-source">'+ _('Source Code') + '</a></li>\
+                                </ul>\
+                                <div id="ui-editor-paste-plain">\
+                                    <textarea class="ui-editor-paste-plain">' + pastedText + '</textarea>\
                                 </div>\
-                            </div>');
-                        editorInstance._plugins.paste.dialog.find('textarea').bind('keypress.editor', function() {
-                            update_values($(this).val());
-                        });
-                            
-                    } else {
-                        update_values(pasted_value);
-                    }
-                    
-                    $(editorInstance._plugins.paste.dialog).dialog({
-                        modal: true,
-                        width: 450,
-                        height: 500,
-                        resizable: true,
-                        title: 'Paste',
-                        position: 'center',
-                        show: editorInstance.options.dialogShowAnimation,
-                        hide: editorInstance.options.dialogHideAnimation,
-                        dialogClass: editorInstance.options.dialogClass + ' ui-widget-editor-paste',
-                        buttons: 
-                            [
-                                {
-                                    text: _('OK'),
-                                    'class': 'ok',
-                                    click: function() {
-                                        
-                                        rangy.restoreSelection(selection);
-                                        
-                                        var html = null, 
-                                            element = $(this).find('textarea:visible, .ui-editor-paste-rich:visible');
-                                        
-                                        if (element.hasClass('ui-editor-paste-plain') || element.hasClass('ui-editor-paste-source')) {
-                                            html = element.val();
-                                        } else if (element.hasClass('ui-editor-paste-rich')) {
-                                            html = element.html();
-                                        }
-                                        
-                                        var pasted_content = $('<div id="ui-editor-paste-bin" style="display: none;">' + html + '</div>').appendTo('body');
-                                        
-                                        rangy.restoreSelection(selection);
-                                        editorInstance._selection.replace.call(editorInstance, pasted_content.get(0).childNodes);
-                                        
-                                        pasted_content.remove();
-                                        
-                                        editorInstance._plugins.paste.inProgress = false;
-                                        $(this).dialog('close').dialog('destroy');
-                                    }
-                                },
-                                {
-                                    text: _('Cancel'),
-                                    'class': 'cancel',
-                                    click: function() {
-                                        rangy.restoreSelection(selection);
-                                        editorInstance._plugins.paste.inProgress = false;
-                                        $(this).dialog('close').dialog('destroy');
-                                    }
-                                }
-                        ],
-                        open: function() {
-                            $(this).find('.ui-editor-paste-panel-tabs').tabs();
-                            editorInstance._dialog.applyButtonIcon('cancel', 'circle-close');
-                            editorInstance._dialog.applyButtonIcon('ok', 'circle-check');
-                        },
-                        close: function() {
-                            editorInstance._plugins.paste.inProgress = false;
-                        }
+                                <div id="ui-editor-paste-rich">\
+                                    <div class="ui-editor-paste-rich" contenteditable="true">' + pastedHtml + '</div>\
+                                </div>\
+                                <div id="ui-editor-paste-source">\
+                                    <textarea class="ui-editor-paste-source">' + pastedHtml + '</textarea>\
+                                </div>\
+                            </div>\
+                        </div>');
+                    dialog.find('textarea').bind('keypress.editor', function() {
+                        updateValues($(this).val());
                     });
-                    
-                    pasteBin.remove();
-                    
-                }, 0);
-            }
+
+                } else {
+                    updateValues();
+                }
+
+                $(dialog).dialog({
+                    modal: true,
+                    width: 450,
+                    height: 500,
+                    resizable: true,
+                    title: 'Paste',
+                    position: 'center',
+                    show: editor.options.dialogShowAnimation,
+                    hide: editor.options.dialogHideAnimation,
+                    dialogClass: editor.options.dialogClass + ' ui-widget-editor-paste',
+                    buttons: 
+                        [
+                            {
+                                text: _('OK'),
+                                'class': 'ok',
+                                click: function() {
+
+                                    rangy.restoreSelection(selection);
+
+                                    var html = null, 
+                                        element = $(this).find('textarea:visible, .ui-editor-paste-rich:visible');
+
+                                    if (element.hasClass('ui-editor-paste-plain') || element.hasClass('ui-editor-paste-source')) {
+                                        html = element.val();
+                                    } else if (element.hasClass('ui-editor-paste-rich')) {
+                                        html = element.html();
+                                    }
+
+                                    var pasted_content = $('<div id="ui-editor-paste-bin" style="display: none;">' + html + '</div>').appendTo('body');
+
+                                    rangy.restoreSelection(selection);
+                                    editor._selection.replace.call(editor, pasted_content.get(0).childNodes);
+
+                                    pasted_content.remove();
+
+                                    inProgress = false;
+                                    $(this).dialog('close').dialog('destroy');
+                                }
+                            },
+                            {
+                                text: _('Cancel'),
+                                'class': 'cancel',
+                                click: function() {
+                                    rangy.restoreSelection(selection);
+                                    inProgress = false;
+                                    $(this).dialog('close').dialog('destroy');
+                                }
+                            }
+                    ],
+                    open: function() {
+                        $(this).find('.ui-editor-paste-panel-tabs').tabs();
+                        editor._dialog.applyButtonIcon('cancel', 'circle-close');
+                        editor._dialog.applyButtonIcon('ok', 'circle-check');
+                    },
+                    close: function() {
+                        inProgress = false;
+                    }
+                });
+
+                $(selector).remove();
+
+            }, 0);
             
             return true;
-        }
-    });
+        }, this));
+        
+        // Events
+        console.info('FIXME: paste plugin detach');
+//        this.detach = function() {
+//            editor.element.unbind('paste.editor');
+//        }
+    }
+    
+    $.ui.editor.addPlugin('paste', paste);
 })(jQuery);

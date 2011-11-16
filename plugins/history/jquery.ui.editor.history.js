@@ -1,109 +1,107 @@
 (function($) {
     
-    // Add history functions
-    $.ui.editor.addPlugin('history', {
-            
-        undoStack: {},
-        redoStack: {},
+    var history = function(editor, options) {
+        var undoStack = {};
+        var redoStack = {};
         
-        toggleButtons: function() {
-            var id = this._util.identify(this.element);
-            this._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', (
-                    this._plugins.history.undoStack[id] && this._plugins.history.undoStack[id].length == 0));
-            this._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', (
-                    this._plugins.history.redoStack[id] && this._plugins.history.redoStack[id].length == 0));
-        },
+        this.toggleButtons = function() {
+            var id = editor._util.identify(editor.element);
+            editor._editor.toolbar.find('button[name="undo"]').button('option', 'disabled', (
+                    undoStack[id] && undoStack[id].length == 0));
+            editor._editor.toolbar.find('button[name="redo"]').button('option', 'disabled', (
+                    redoStack[id] && redoStack[id].length == 0));
+        }
         
-        clear: function(all) {
-            var id = this._util.identify(this.element);
+        this.clear = function(all) {
+            var id = editor._util.identify(editor.element);
 
             if (typeof all != 'undefined' && all) {
-                this._plugins.history.undoStack = {};
-                this._plugins.history.redoStack = {};
+                undoStack = {};
+                redoStack = {};
             } else {
-                this._plugins.history.undoStack[id] = [];
-                this._plugins.history.redoStack[id] = [];
+                undoStack[id] = [];
+                redoStack[id] = [];
             }
-        },
+        }
                    
-        undo: function() {
-            var id = this._util.identify(this.element);
-            var data = this._plugins.history.undoStack[id].pop();
+        this.undo = function() {
+            var id = editor._util.identify(editor.element);
+            var data = undoStack[id].pop();
 
-            this._plugins.history.redoStack[id].push(data);
+            redoStack[id].push(data);
             
-            this.element.html(data.content);
+            editor.element.html(data.content);
             
-            this._plugins.history.toggleButtons.call(this);
-        },
+            editor._plugins.history.toggleButtons.call(this);
+        }
         
-        redo: function() {
-            var id = this._util.identify(this.element);                
-            var data = this._plugins.history.redoStack[id].pop();
+        this.redo = function() {
+            var id = editor._util.identify(editor.element);                
+            var data = redoStack[id].pop();
                 
-            this._plugins.history.undoStack[id].push(data);
-            this.element.html(data.content);
+            undoStack[id].push(data);
+            editor.element.html(data.content);
             
-            this._plugins.history.toggleButtons.call(this);
-        },
+            editor._plugins.history.toggleButtons.call(this);
+        }
         
-        update: function() {
-            
-            var currentContent = this._content.cleaned(this.element.html());
-            var id = this._util.identify(this.element);
+        editor.bind('change', $.proxy(function() {
+            var currentContent = editor.getHtml();
+            var id = $.ui.editor.getUniqueId();
 
-            if (typeof this._plugins.history.undoStack[id] == 'undefined') this._plugins.history.undoStack[id] = [];
-            this._plugins.history.redoStack[id] = [];
+            if (typeof undoStack[id] == 'undefined') undoStack[id] = [];
+            redoStack[id] = [];
             
             // Don't add identical content to stack
-            if (this._plugins.history.undoStack[id].length
-                    && this._plugins.history.undoStack[id][this._plugins.history.undoStack[id].length-1].content == currentContent) {
+            if (undoStack[id].length
+                    && undoStack[id][undoStack[id].length-1].content == currentContent) {
                 return;
             }
             
-            this._plugins.history.undoStack[id].push({
+            undoStack[id].push({
                 content: currentContent
             });
-        },
+        }, this));
         
-        stateChange: function(history) {
-            this._plugins.history.update.call(this);
-        },
         
-        destroy: function(history) {
-            this._plugins.history.undoStack = {};
-            this._plugins.history.redoStack = {};
-        }
-    }); 
+        console.info('FIXME: history detach');
+//        this.destroy = function(history) {
+//            undoStack = {};
+//            redoStack = {};
+//        }
+    }
+    
+    // Add history functions
+    $.ui.editor.addPlugin('history', history); 
     
     // Add history undo / redo buttons
-    $.ui.editor.addButton('undo', {
-        title: _('Step Back'),
-        icons: {
+    $.ui.editor.addButton('undo', function(editor) {
+        this.title = _('Step Back');
+        this.icons = {
             primary: 'ui-editor-icon-undo'
-        },
-        classes: 'ui-editor-icon',
-        disabled: true,
-        click: function() {
-            this._plugins.history.undo.call(this);
-        },
-        stateChange: function(button) {
-            this._plugins.history.toggleButtons.call(this);
+        };
+        this.classes = 'ui-editor-icon';
+        this.disabled = true;
+        this.click = function() {
+            editor.getPlugin('history').undo();
+        }
+        this.change = function(button) {
+            editor.getPlugin('history').toggleButtons();
         }
     });
     
-    $.ui.editor.addButton('redo', {
-        title: _('Step Forward'),
-        icons: {
+    $.ui.editor.addButton('redo', function(editor) {
+        this.title = _('Step Forward');
+        this.icons = {
             primary: 'ui-editor-icon-redo'
-        },
-        classes: 'ui-editor-icon',
-        disabled: true,
-        click: function() {
-            this._plugins.history.redo.call(this);
-        },
-        stateChange: function(button) {
-            this._plugins.history.toggleButtons.call(this);
+        };
+        this.classes = 'ui-editor-icon';
+        this.disabled = true;
+        this.click = function() {
+            editor.getPlugin('history').redo();
+        }
+        this.change = function(button) {
+            editor.getPlugin('history').toggleButtons();
         }
     });
 

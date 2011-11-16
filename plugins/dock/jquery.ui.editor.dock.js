@@ -1,74 +1,83 @@
 (function($) {
     
-    var dock = {
-        editor: null,
-        docked: false,
-        initialize: function(editor, options) {
-            this.editor = editor;
-            if (options.docked) {
-                this.dock();
-            }
-        },
-        dock: function() {
-            this.docked = true;
+    var dock = function(editor, options) {
+        var docked = false;
+        
+        if (options.docked) {
+            this.dock();
+        }
+        
+        this.dock = function() {
+            docked = true;
             this.dialog().addClass('ui-widget-editor-docked');
             this.toolbar().addClass('ui-widget-header');
             this.button().button({ icons: { primary: 'ui-icon-pin-w' } });
-            if (this.editor.options.customTooltips) {
+            if (editor.options.customTooltips) {
                 this.button().tipTip({
                     content: _('Click to detach the toolbar')
                 });
             }
             this.spacer().height(this.toolbar().outerHeight()).show();
-            this.editor.trigger('resize');
-        },
-        undock: function() {
-            this.docked = false;
+            editor.trigger('resize');
+        }
+        
+        this.undock = function() {
+            docked = false;
             this.dialog().removeClass('ui-widget-editor-docked');
             this.dialog().find('.ui-widget-editor-inner:first').removeClass('ui-widget-header');
             this.button().button({ icons: { primary: 'ui-icon-pin-s' } });
-            if (this.editor.options.customTooltips) {
+            if (editor.options.customTooltips) {
                 this.button().tipTip({
                     content: _('Click to dock the toolbar')
                 });
             }
             this.spacer().hide();
-            this.editor.trigger('resize');
-        },
-        dialog: function() {
-            return this.editor._editor.toolbar.parent();
-        },
-        toolbar: function() {
+            editor.trigger('resize');
+        }
+        
+        this.isDocked = function() {
+            return docked;
+        }
+        
+        this.dialog = function() {
+            return editor._editor.toolbar.parent();
+        }
+        
+        this.toolbar = function() {
             return this.dialog().find('.ui-widget-editor-inner:first');
-        },
-        button: function() {
+        }
+        
+        this.button = function() {
             return this.dialog().find('.ui-widget-editor-button-dock');
-        },
-        spacer: function() {
+        }
+        
+        this.spacer = function() {
             var spacer = $('.ui-widget-editor-dock-spacer');
             if (!spacer.length) {
                 $('<div class="ui-widget-editor-dock-spacer"></div>').prependTo('body');
             }
             return $('.ui-widget-editor-dock-spacer');
-        },
-        destroy: function() {
+        }
+        
+        this.destroy = function() {
             var spacer = $('.ui-widget-editor-dock-spacer');
             if (spacer.length) spacer.hide('fast');
-            delete this.editor;
+            delete editor;
         }
     };
     
     $.ui.editor.addPlugin('dock', dock);
     
-    $.ui.editor.addButton('dock', {
-        name: 'dock',
-        title: _('Click to dock the toolbar'),
-        icons: {
+    $.ui.editor.addButton('dock', function(editor) {
+        this.name = 'dock';
+        this.title = _('Click to dock the toolbar');
+        this.icons = {
             primary: 'ui-icon-pin-s'
-        },
-        click: function(event, button) {
-            if (!dock.docked) dock.dock();
-            else dock.undock();
+        }
+        this.click = function() {
+            var plugin = editor.getPlugin('dock');
+            if (plugin.isDocked()) plugin.undock();
+            else plugin.dock();
 //            return;
 //            var dialog = this._editor.toolbar.parent();
 //            dialog.toggleClass('ui-widget-editor-docked');

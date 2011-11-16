@@ -1,35 +1,35 @@
 (function($) {
    
-    $.ui.editor.addButton('floatLeft', {
-        title: _('Float Left'),
-        icons: {
+    $.ui.editor.addButton('floatLeft', function(editor) {
+        this.title = _('Float Left');
+        this.icons = {
             primary: 'ui-icon-float-left'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.applyStyle.call(this, { 'float': 'left' });
+        };
+        this.classes = 'ui-editor-icon';
+        this.click = function() {
+            editor.applyStyle({ 'float': 'left' });
         }
     });
     
-    $.ui.editor.addButton('floatRight', {
-        title: _('Float Right'),
-        icons: {
+    $.ui.editor.addButton('floatRight', function(editor) {
+        this.title = _('Float Right');
+        this.icons = {
             primary: 'ui-icon-float-right'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.applyStyle.call(this, { 'float': 'right' });
+        };
+        this.classes = 'ui-editor-icon';
+        this.click = function() {
+            editor.applyStyle({ 'float': 'right' });
         }
     });
     
-    $.ui.editor.addButton('floatNone', {
-        title: _('Float None'),
-        icons: {
+    $.ui.editor.addButton('floatNone', function(editor) {
+        this.title = _('Float None');
+        this.icons = {
             primary: 'ui-icon-float-none'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.applyStyle.call(this, { 'float': 'none' });
+        };
+        this.classes = 'ui-editor-icon';
+        this.click = function() {
+            editor.applyStyle({ 'float': 'none' });
         }
     });
     

@@ -1,25 +1,22 @@
-(function($) {
-    
-    $.ui.editor.addButton('unorderedList', {
-        title: _('Unordered List'),
-        icons: {
-            primary: 'ui-icon-unordered-list'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.wrapWithTag.call(this, 'ul');
-        }
-    });
-    
-    $.ui.editor.addButton('orderedList', {
-        title: _('Ordered List'),
-        icons: {
-            primary: 'ui-icon-ordered-list'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.wrapWithTag.call(this, 'ol');
-        }
-    });
-    
-})(jQuery);
+console.info('FIXME: list plugin');
+$.ui.editor.addButton('unorderedList', function(editor) {
+    this.title = _('Unordered List');
+    this.icons = {
+        primary: 'ui-icon-unordered-list'
+    };
+    this.classes = 'ui-editor-icon';
+    this.click = function() {
+        editor.toggleWrapper('ul');
+    }
+});
+
+$.ui.editor.addButton('orderedList', function(editor) {
+    this.title = _('Ordered List');
+    this.icons = {
+        primary: 'ui-icon-ordered-list'
+    };
+    this.classes = 'ui-editor-icon';
+    this.click = function() {
+        editor.toggleWrapper('ol');
+    }
+});
