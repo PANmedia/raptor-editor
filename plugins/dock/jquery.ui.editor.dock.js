@@ -1,6 +1,13 @@
 (function($) {
     
+    var spacer = $('<div class="ui-widget-editor-dock-spacer"/>').hide();
+    
+    $(function() {
+        spacer.prependTo('body');
+    })
+    
     $.ui.editor.addPlugin('dock', function(editor, options) {
+        var plugin = this;
         var persist = editor.persist('dock') || { docked: false };
         
         this.dock = function() {
@@ -14,7 +21,7 @@
                     content: _('Click to detach the toolbar')
                 });
             }
-            this.spacer().height(this.toolbar().outerHeight()).show();
+            spacer.height(this.toolbar().outerHeight()).show();
             editor.trigger('resize');
         }
         
@@ -29,7 +36,7 @@
                     content: _('Click to dock the toolbar')
                 });
             }
-            this.spacer().hide();
+            spacer.hide();
             editor.trigger('resize');
         }
         
@@ -49,23 +56,21 @@
             return this.dialog().find('.ui-widget-editor-button-dock');
         }
         
-        this.spacer = function() {
-            var spacer = $('.ui-widget-editor-dock-spacer');
-            if (!spacer.length) {
-                $('<div class="ui-widget-editor-dock-spacer"></div>').prependTo('body');
-            }
-            return $('.ui-widget-editor-dock-spacer');
-        }
-        
         this.destroy = function() {
             var spacer = $('.ui-widget-editor-dock-spacer');
             if (spacer.length) spacer.hide('fast');
             delete editor;
         }
         
-        if (persist.docked || options.docked) {
-            this.dock();
-        }
+        editor.bind('enabled', function() {
+            if (persist.docked || options.docked) {
+                plugin.dock();
+            } 
+        });
+        
+        editor.bind('disabled', function() {
+            spacer.hide();
+        });
     });
     
     $.ui.editor.registerUi({

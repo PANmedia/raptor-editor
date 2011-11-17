@@ -1,35 +1,40 @@
 (function() {
-    var defaultOptions = {
-        content: _('This block contains unsaved changes'),
-        contentTooltipPosition: 'bottom',
-        contentTooltipMaxWidth: 'auto',
-        contentClass: '',
-        animation: 'fade',
-        positionAt: 'right bottom',
-        positionMy: 'right bottom',
-        contentIdleOpacity: 0.5,
-        contentPositionUsing: function(position) {
-            $(this).css({
-                position: 'absolute',
-                top: position.top,
-                left: position.left
-            });
-        },
-        dataName: 'uiWidgetEditorUnsavedEdits'
-    };
-    
-    var unsavedEditWarning = function(editor, options) {
-        var element = null;
-        options = $.extend(defaultOptions, options);
-        this.test = editor.element;
         
-        editor.bind('change', $.proxy(function() {
-            if (editor.isDirty()) this.show();
-            else this.hide();
-        }, this));
+    $.ui.editor.addPlugin('unsavedEditWarning', function(editor, options) {
+        var plugin = this;
+        var warning = $(editor.getTemplate('unsavededitwarning.warning'))
+                .hide()
+                .appendTo('body')
+                .hover(function() {
+                    $(this).stop().animate({opacity: 1});
+                }, function() {
+                    $(this).stop().animate({opacity: options.contentIdleOpacity});
+                });
+        
+        // Default options
+        options = $.extend({}, {
+            contentTooltipPosition: 'bottom',
+            contentTooltipMaxWidth: 'auto',
+            contentClass: '',
+            animation: 'fade',
+            position: {
+                collision: 'right bottom',
+                at: 'right bottom',
+                of: editor.element,
+                my: 'right bottom',
+                using: function(position) {
+                    $(this).css({
+                        position: 'absolute',
+                        top: position.top,
+                        left: position.left
+                    });
+                }
+            },
+            contentIdleOpacity: 0.5,
+            dataName: 'uiWidgetEditorUnsavedEdits'
+        }, options);
 
         this.show = function() {
-            var warning = this.warning();
             this.reposition();
             if (!warning.is(':visible') && !warning.is(':animated')) {
                 warning.show(options.animation, function() {
@@ -39,37 +44,21 @@
         }
 
         this.hide = function() {
-            var warning = this.warning();
             if (warning.is(':visible') && !warning.is(':animated')) {
                 warning.hide(options.animation);
             }
         }
 
-        this.warning = function() {
-            if (!element) {
-                element = $('<div title="' + options.content + '" class="ui-widget-editor-warning ' + options.contentClass + '" style="display:none;">' +
-                                 '<span class="ui-icon ui-icon-alert"></span>' +
-                             '</div>');
-                element.appendTo('body')
-                element.hover(function() {
-                    $(this).stop().animate({opacity: 1});
-                }, function() {
-                    $(this).stop().animate({opacity: options.contentIdleOpacity});
-                });
-            }
-            return element;
-        }
-
         this.reposition = function() {
-            this.warning().position({
-                at: options.positionAt,
-                of: editor.element,
-                my: options.positionMy,
-                using: options.contentPositionUsing
-            });
+            warning.position(options.position);
         }
-    };
-    
+        
+        editor.bind('change', function() {
+            if (editor.isDirty()) plugin.show();
+            else plugin.hide();
+        });
+    });
+
     $.ui.editor.bind('resize', function() {
         $.each(this.getInstances(), function() {
             var plugin = this.getPlugin('unsavedEditWarning');
@@ -78,7 +67,5 @@
             }
         });
     });
-        
-    $.ui.editor.addPlugin('unsavedEditWarning', unsavedEditWarning);
     
 })();
