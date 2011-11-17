@@ -27,11 +27,13 @@
 }
 
 /* Editor toolbar */
+/*
+This breaks custom dialogs
 .ui-widget-editor-dialog {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-}
+}*/
 
 .ui-widget-editor-dialog .ui-dialog-titlebar {
     font-size: 10px;
