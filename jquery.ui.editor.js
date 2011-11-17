@@ -570,7 +570,8 @@ var _;
          * Other Functions
         \**********************************************************************/
         enableEditing: function() {
-            this.element.attr('contenteditable', true);
+            this.element.attr('contenteditable', true)
+                        .addClass('ui-widget-editor-editing');
             document.execCommand('enableInlineTableEditing', false, false);
             document.execCommand('enableObjectResizing', false, false);
             document.execCommand('styleWithCSS', true, true);
@@ -578,7 +579,8 @@ var _;
         },
         
         disableEditing: function() {
-            this.element.attr('contenteditable', false);
+            this.element.attr('contenteditable', false)
+                        .removeClass('ui-widget-editor-editing');
             this.trigger('disabled');
         },
         
