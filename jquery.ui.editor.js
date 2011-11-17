@@ -1045,6 +1045,7 @@ var _;
         
         setHtml: function(html) {
             return this.element.html(html);
+            this.trigger('change');
         },
         
         resetHtml: function() {
