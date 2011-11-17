@@ -103,67 +103,108 @@ This breaks custom dialogs
 
 /* Messages */
 .ui-widget-editor-toolbar .ui-widget-editor-messages {
-    padding: 0;
-    margin: 0;
-    width: 100%;
+    margin: 5px;
 }
 
-.ui-widget-editor-toolbar .ui-widget-editor-messages > div {
-    margin-top: 10px;
-}
-
-.ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon {
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-icon,
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message {
     display: inline-block;
-    float: left;
-    margin: 3px 0 0 5px;
+    vertical-align: top;
 }
 
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul {
-    border-radius: 5px;
-    padding: 0 10px 0 25px;
-    margin: 0;
-    border: 1px solid #D4D4D4;
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-icon {
+    margin: 0 0 3px 3px;
 }
 
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul li {
-    list-style: none;
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-wrapper {
+    padding: 3px 3px 3px 1px;
+    box-shadow: 
+        inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/ 
+        inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/ 
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages :first-child {
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.ui-widget-editor-toolbar .ui-widget-editor-messages :last-child {
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 /* Error */
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-notice {
-    background-color: #FF9292;
-    background-image: -moz-linear-gradient(center top , #FF9292, #FF7575);
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#ffd0c9),color-stop(100%,#ffa8a0));
-    border: 1px solid #E53A3A;
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-circle-close {
+    /* Red */
+    background: #ff5d4b; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ff5d4b 0%, #fa1c1c 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff5d4b), color-stop(100%,#fa1c1c)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ff5d4b 0%,#fa1c1c 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ff5d4b 0%,#fa1c1c 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ff5d4b 0%,#fa1c1c 100%); /* IE10+ */
+    background: linear-gradient(top,  #ff5d4b 0%,#fa1c1c 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff5d4b', endColorstr='#fa1c1c',GradientType=0 ); /* IE6-9 */
 }
 
 /* Confirm */
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-check {
-    background-color: #F2FFF2;
-    background-image: -moz-linear-gradient(center top , #F2FFF2, #DAF2D7);
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f2fff2),color-stop(100%,#daf2d7));
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-circle-check {
+    /* Green */
+    background: #cdeb8e; /* Old browsers */
+    background: -moz-linear-gradient(top,  #cdeb8e 0%, #a5c956 100%); /* FF3.6+ */
+    background: -webkit-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* IE10+ */
+    background: linear-gradient(top,  #cdeb8e 0%,#a5c956 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cdeb8e', endColorstr='#a5c956',GradientType=0 ); /* IE6-9 */
 }
 
 /* Information */
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-info {
-    background-color: #F1FAFF;
-    background-image: -moz-linear-gradient(center top , #F1FAFF, #D9EFF5);
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#f1faff),color-stop(100%,#d9eff5));
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-info {
+    /* Blue */
+    background: #a9e4f7; /* Old browsers */
+    background: -moz-linear-gradient(top,  #a9e4f7 0%, #0fb4e7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a9e4f7), color-stop(100%,#0fb4e7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%); /* IE10+ */
+    background: linear-gradient(top,  #a9e4f7 0%,#0fb4e7 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a9e4f7', endColorstr='#0fb4e7',GradientType=0 ); /* IE6-9 */
 }
 
 /* Warning */
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-alert {
-    background-color: #FFFFF2;
-    background-image: -moz-linear-gradient(center top , #FFFFF2, #EDECBD);
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,#fffff2),color-stop(100%,#edecbd));
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-alert {
+    /* Yellow */
+    background: #ffd65e; /* Old browsers */
+    background: -moz-linear-gradient(top,  #ffd65e 0%, #febf04 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd65e), color-stop(100%,#febf04)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* IE10+ */
+    background: linear-gradient(top,  #ffd65e 0%,#febf04 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd65e', endColorstr='#febf04',GradientType=0 ); /* IE6-9 */
 }
 
 /* Loading */
-.ui-widget-editor-toolbar .ui-widget-editor-messages ul.ui-widget-messages-loading {
-    background-color: transparent;
-    border: 1px solid transparent;
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-clock {
+    /* Purple */
+    background: #fb83fa; /* Old browsers */
+    background: -moz-linear-gradient(top,  #fb83fa 0%, #e93cec 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fb83fa), color-stop(100%,#e93cec)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #fb83fa 0%,#e93cec 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #fb83fa 0%,#e93cec 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #fb83fa 0%,#e93cec 100%); /* IE10+ */
+    background: linear-gradient(top,  #fb83fa 0%,#e93cec 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fb83fa', endColorstr='#e93cec',GradientType=0 ); /* IE6-9 */
 }
 
-.ui-widget-editor-toolbar .ui-widget-editor-messages span.ui-icon-loading {
-    background: transparent url(images/loading-small.gif) no-repeat center center;
+.ui-widget-editor-toolbar .ui-widget-editor-messages .ui-widget-editor-message-clock .ui-icon {
+    background: transparent url(images/loading-small.png) no-repeat center center;
 }
