@@ -20,6 +20,15 @@ var _;
         // </strict>
         
         rangy.init();
+        if (!$.isFunction(rangy.rangePrototype.insertNodeAtEnd)) {
+            rangy.rangePrototype.insertNodeAtEnd = function(node) {
+                var range = this.cloneRange();
+                range.collapse(false);
+                range.insertNode(node);
+                range.detach();
+                this.setEndAfter(node);
+            };
+        }
         
         $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
     }
@@ -28,6 +37,7 @@ var _;
     
     // Private variables
     var instances = [];
+    var templates = {};
     
     // Events added via $.ui.editor.bind
     var events = {};
@@ -38,14 +48,16 @@ var _;
     // UI added via $.ui.editor.registerUi
     var registeredUi = {};
     
+    // Internationalisation function
     _ = function(string, variables) {
+//        return 'XXXXXXXX';
         if (plugins.i18n) {
             return plugins.i18n.translate(string, variables);
         } else if (!variables) {
             return string;
         } else {
             $.each(variables, function(key, value) {
-                string = string.replace('<*' + key + '*>', value);
+                string = string.replace('{{' + key + '}}', value);
             });
             return string;
         }
@@ -129,7 +141,9 @@ var _;
 
             titleVisible: true,
             titleDefault: 'jQuery UI Editor Controls',
-            titleTags: true
+            titleTags: true,
+            
+            urlPrefix: '/jquery.ui.editor/'
         },
 
         _init: function() {
@@ -138,17 +152,20 @@ var _;
             this.toolbar = null; 
             this.plugins = {}; 
             this.ui = {}; 
+            this.templates = {}; 
             
             this.setOriginalHtml(this.getHtml());
             this.enableEditing();
             
             this.loadToolbar();
+            this.loadMessages();
             this.updateTagTree();
             this.attach();
             
             this.loadPlugins();
             this.loadUi();
-
+            
+            this.trigger('change');
 
             console.info('FIXME: custom tooltips');
             console.info('FIXME: persistance');
@@ -401,7 +418,7 @@ var _;
 ////                        }
 ////                        // <strict>
 ////                        else {
-////                            console.error(_('Button identified by key "<*button*>" does not exist', { button: value }));
+////                            console.error(_('Button identified by key "{{button}}" does not exist', { button: value }));
 ////                        }
 ////                        // </strict>
 ////                    });
@@ -812,7 +829,7 @@ var _;
 //
 //                                tagName = current[0].tagName.toLowerCase();
 //                                title = ' &gt; <a href="javascript: // ' + _('Select element') + '" name="' + i +'" \
-//                                        class="ui-widget-editor-element-path" title="//' + _('Click to select the contents of this &quot;<*tagName*>&quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
+//                                        class="ui-widget-editor-element-path" title="//' + _('Click to select the contents of this &quot;{{tagName}}&quot; element', { tagName: tagName.toUpperCase()}) + '">' + tagName + '</a>' + title;
 //                                current = current.parent();
 //                                i++;
 //                            }
@@ -1070,6 +1087,7 @@ var _;
          * Other Functions
         \**********************************************************************/
         persist: function(key, value) {
+            console.info('FIXME: check persistance is enabled');
             if (localStorage) {
                 var storage;
                 if (localStorage.uiWidgetEditor) {
@@ -1077,12 +1095,8 @@ var _;
                 } else {
                     storage = {};
                 }
-                console.log(storage);
                 if (value === undefined) return storage[key];
                 storage[key] = value;
-                console.log(storage);
-                console.log(key);
-                console.log(value);
                 localStorage.uiWidgetEditor = JSON.stringify(storage);
             } else {
                 console.info('FIXME: use cookies');
@@ -1145,7 +1159,7 @@ var _;
                 }
                 list.reverse();
                 if (title) title += ' | ';
-                title += '<a href="javascript: // ">root</a> '
+                title += '<a href="javascript: // ">' + _('root') + '</a> '
                 $.each(list, function(i, element) {
                     title += '&gt; <a href="javascript: // ">' + element[0].tagName.toLowerCase() + '</a> '
                 });
@@ -1162,24 +1176,44 @@ var _;
         /**********************************************************************\
          * Messages
         \**********************************************************************/
-        showLoading: function(messages, callback) {
-            this._message.show.call(this, this._message.types.loading, messages, callback);
+        loadMessages: function() {
+            $(this.getTemplate('messages')).appendTo(this.selToolbar());
         },
         
-        showInfo: function(messages, callback) {
-            this._message.show.call(this, this._message.types.information, messages, callback);
+        showMessage: function(type, messages) {
+            if (!$.isArray(messages)) messages = [messages];
+
+            var editor = this;
+
+            $.each(messages, function(i, message) {
+                message = $(editor.getTemplate('message', {
+                    type: type,
+                    message: message
+                }));
+                message.hide();
+                message.appendTo(editor.selMessages());
+                message.slideDown().delay(5000).slideUp(function() { message.remove(); });
+            });
         },
         
-        showError: function(messages, callback) {
-            this._message.show.call(this, this._message.types.error, messages, callback);
+        showLoading: function(messages) {
+            this.showMessage('clock', messages);
         },
         
-        showConfirm: function(messages, callback) {
-            this._message.show.call(this, this._message.types.confirm, messages, callback);
+        showInfo: function(messages) {
+            this.showMessage('info', messages);
         },
         
-        showWarning: function(messages, callback) {
-            this._message.show.call(this, this._message.types.warning, messages, callback);
+        showError: function(messages) {
+            this.showMessage('circle-close', messages);
+        },
+        
+        showConfirm: function(messages) {
+            this.showMessage('circle-check', messages);
+        },
+        
+        showWarning: function(messages) {
+            this.showMessage('alert', messages);
         },
         
 
@@ -1217,21 +1251,60 @@ var _;
                 this.toolbar.dialog().dialog('open');
                 this.toolbar.find('.ui-widget-editor-inner').slideDown();
             }
-                $('.ui-widget-editor-dialog .ui-widget-editor-element-path').die('click.editor').
-                        live('click.editor', function(){
-                            var current = editorInstance._editor.selectedElement,
-                                i = 0;
-                            if ($(this).attr('name') != 'root') {
-                                while (i != $(this).attr('name')) {
-                                    current = current.parent();
-                                    i++;
-                                }
-                                editorInstance._selection.selectElement.call(editorInstance, current);
-                            } else {
-                                editorInstance._selection.selectAll.call(editorInstance);
-                            }
-                        });
+        },
 
+        /**********************************************************************\
+         * Template functions
+        \**********************************************************************/
+        getTemplate: function(name, variables) {
+            var template;
+            if (!templates[name]) {
+                // Parse the URL
+                var url = this.options.urlPrefix;
+                name = name.split('.');
+                if (name.length == 1) {
+                    // URL is for and editor core template
+                    url += 'templates/' + name[0] + '.html';
+                } else {
+                    // URL is for a plugin template
+                    url += 'plugins/' + name[0] + '/templates/' + name.splice(1).join('/') + '.html';
+                }
+                // Request the template
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    async: false,
+                    // 15 seconds
+                    timeout: 15000, 
+                    error: function() {
+                        template = null;
+                    },
+                    success: function(data) { 
+                        template = data;
+                    }
+                });
+                // Cache the template
+                templates[name] = template;
+            } else {
+                template = templates[name];
+            }
+            // Translate template
+            template = template.replace(/_\('(.*?)'\)/g, function(match, string) {
+                string = string.replace(/\\(.?)/g, function (s, slash) {
+                    switch (slash) {
+                        case '\\':return '\\';
+                        case '0':return '\u0000';
+                        case '':return '';
+                        default:return slash;
+                    }
+                });
+                return _(string);
+            });
+            // Replace variables
+            template = template.replace(/{{(.*?)}}/g, function(match, variable) {
+                return variables[variable];
+            });
+            return template;
         },
 
         /**********************************************************************\
@@ -1240,14 +1313,17 @@ var _;
         constrainSelection: function() {
             var element = this.element;
             var commonAncestor;
+            var selection = rangy.getSelection();
 
-            $(rangy.getSelection().getAllRanges()).each(function(){
+            $(selection.getAllRanges()).each(function(){
                 if (this.commonAncestorContainer.nodeType == 3) {
                     commonAncestor = $(this.commonAncestorContainer).parent().get(0)
                 } else {
                     commonAncestor = this.commonAncestorContainer;
                 }
-                if (!$.contains(element.get(0), commonAncestor)) selection.removeRange(this);
+                if (!$.contains(element.get(0), commonAncestor)) {
+                    selection.removeRange(this);
+                }
             });
         },
         
@@ -1320,9 +1396,9 @@ var _;
                 if (nodes.length === undefined || nodes.length == 1) {
                     range.insertNode(nodes[0].cloneNode(true));
                 } else {
-                    for (var j = nodes.length - 1; i >= 0; i--) {
-                        range.insertNode(nodes[i].cloneNode(true));
-                    }
+                    $.each(nodes, function(i, node) {
+                        range.insertNodeAtEnd(node.cloneNode(true));
+                    });
                 }
             });
             
@@ -1347,6 +1423,14 @@ var _;
             return dialog;
         },
         
+        selMessages: function(find) {
+            var messages = this.selToolbar().find('.ui-widget-editor-messages');
+            if (find) {
+                return messages.find(find);
+            }
+            return messages;
+        },
+        
 
         /**********************************************************************\
          * Buttons
@@ -1369,7 +1453,7 @@ var _;
                     }
                     // <strict>
                     else {
-                        //console.error(_('UI identified by key "<*ui*>" does not exist', { ui: ui }));
+                        //console.error(_('UI identified by key "{{ui}}" does not exist', { ui: ui }));
                     }
                     // </strict>
                 });
@@ -1428,6 +1512,10 @@ var _;
         
         getHtml: function() {
             return this.element.html();
+        },
+        
+        setHtml: function(html) {
+            return this.element.html(html);
         },
         
         getOriginalHtml: function() {
@@ -1512,7 +1600,7 @@ var _;
         isDirty: function() {
             var editors = this.getInstances();
             for (var i in editors) {
-                if (editors[i]) return true;
+                if (editors[i].isDirty()) return true;
             }
             return false;
         },
@@ -1524,39 +1612,20 @@ var _;
             $.each(uiSet, function(name, ui) {
                 // <strict>
                 if (registeredUi[name]) {
-                    console.error(_('UI "<*name*>" has already been registered, and will be overwritten', {name: name}));
+                    console.error(_('UI "{{name}}" has already been registered, and will be overwritten', {name: name}));
                 }
                 // </strict>
 
                 registeredUi[name] = ui;
-
-                // <debug>
-                console.log(_('UI <*name*> added', {name: name}), ui);
-                // </debug>
             });
         },
 
         addPlugin: function(name, plugin) {
             // <strict>
-            if (plugins[name]) console.error(_('Plugin "<*pluginName*>" has already been registered, and will be overwritten', {pluginName: name}));
+            if (plugins[name]) console.error(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: name}));
             // </strict>
 
             plugins[name] = plugin;
-
-            // <debug>
-            console.log(_('Plugin <*pluginName*> added', {pluginName: name}), plugin);
-            // </debug>
-        },
-
-        addOptions: function(name, options) {
-            // <strict>
-            if ($.ui.editor.prototype.options.name) console.error(_('"<*optionKey*>" option key already exists, and will be overwritten', {optionKey: name}));
-            // </strict>
-            if (!$.ui.editor.prototype.options['plugins']) $.ui.editor.prototype.options['plugins'] = {};
-            $.ui.editor.prototype.options['plugins'][name] = options;
-            // <debug>
-            console.log(_('Options <*optionKey*> added', {optionKey: name}), options);
-            // </debug>
         },
 
         bind: function(name, callback) {
@@ -1594,5 +1663,14 @@ var _;
 
     $(function() {
         initialize();
+        // <debug>
+        var result = [];
+        for (var key in registeredUi) result.push(key);
+        console.log(_('UI loaded: {{ui}} ', {ui: result.join(', ')}));
+        
+        result = [];
+        for (key in plugins) result.push(key);
+        console.log(_('Plugins loaded: {{plugins}} ', {plugins: result.join(', ')}));
+        // </debug>
     });
 })();
