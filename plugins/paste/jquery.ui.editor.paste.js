@@ -4,7 +4,66 @@
         var dialog = false
         var selector = '.uiWidgetEditorPasteBin';
         
-        editor.element.bind('paste.editor', $.proxy(function(event) {
+        function filterWord(content) {
+            // The filters is an array of regular expressions to try and strip out a lot
+            // of style data MS Word likes to insert when pasting into a contentEditable.
+            // Prettymuch all of it is junk and not good html.  The hander is a place to put a function
+            // for match handling.  In most cases, it just handles it as empty string.  But the option is
+            // there for more complex handling.
+            var filters = [
+                // Meta tags, link tags, and prefixed tags
+                {regexp: /(<meta\s*[^>]*\s*>)|(<\s*link\s* href="file:[^>]*\s*>)|(<\/?\s*\w+:[^>]*\s*>)/gi, handler: ""},
+                // Style tags
+                {regexp: /(?:<style([^>]*)>([\s\S]*?)<\/style>|<link\s+(?=[^>]*rel=['"]?stylesheet)([^>]*?href=(['"])([^>]*?)\4[^>\/]*)\/?>)/gi, handler: ""},
+                // MS class tags and comment tags.
+                {regexp: /(class="Mso[^"]*")|(<!--(.|\s){1,}?-->)/gi, handler: ""},
+                // blank p tags
+                {regexp: /(<p[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/p[^>]*>)|(<p[^>]*>\s*<font[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/\s*font\s*>\s<\/p[^>]*>)/ig, handler: ""},
+                // Strip out styles containing mso defs and margins, as likely added in IE and are not good to have as it mangles presentation.
+                {regexp: /(style="[^"]*mso-[^;][^"]*")|(style="margin:\s*[^;"]*;")/gi, handler: ""},
+                // Scripts (if any)
+                {regexp: /(<\s*script[^>]*>((.|\s)*?)<\\?\/\s*script\s*>)|(<\s*script\b([^<>]|\s)*>?)|(<[^>]*=(\s|)*[("|')]javascript:[^$1][(\s|.)]*[$1][^>]*>)/ig, handler: ""}
+            ];
+
+            $.each(filters, function(i, filter) {
+                content = content.replace(filter.regexp, filter.handler);
+            });
+
+            return content;
+        }
+
+        // Replaces commonly-used Windows 1252 encoded chars that do not exist in ASCII or ISO-8859-1 with ISO-8859-1 cognates.
+        function filterChars(content) {
+            var s = content;
+
+            // smart single quotes and apostrophe
+            s = s.replace(/[\u2018|\u2019|\u201A]/g, "\'");
+
+            // smart double quotes
+            s = s.replace(/[\u201C|\u201D|\u201E]/g, "\"");
+
+            // ellipsis
+            s = s.replace(/\u2026/g, "...");
+
+            // dashes
+            s = s.replace(/[\u2013|\u2014]/g, "-");
+
+            // circumflex
+            s = s.replace(/\u02C6/g, "^");
+
+            // open angle bracket
+            s = s.replace(/\u2039/g, "<");
+
+            // close angle bracket
+            s = s.replace(/\u203A/g, ">");
+
+            // spaces
+            s = s.replace(/[\u02DC|\u00A0]/g, " ");
+
+            return s;
+        }
+        
+        editor.element.bind('paste.' + editor.widgetName, $.proxy(function(event) {
             if (inProgress) return false;
             inProgress = true;
             
@@ -16,41 +75,26 @@
             $('<div class="uiWidgetEditorPasteBin" contenteditable="true" style="width: 1px; height: 1px; overflow: hidden; position: fixed; top: -1px;" />').appendTo('body');
             $(selector).focus();
 
-            window.setTimeout(function(){
-                var pastedHtml = $(selector).html(),
-                    pastedText = $(selector).text(),
-                    updateValues = function(value) {
-                        dialog.find('textarea.ui-editor-paste-plain').val(pastedText);
-                        dialog.find('textarea.ui-editor-paste-source').val(pastedHtml);
-                        dialog.find('.ui-editor-paste-rich').html(pastedHtml);
-                    };
-
-                if (!dialog) {
-                    dialog = $('<div class="ui-editor-paste-panel">\
-                            <div class="ui-editor-paste-panel-tabs">\
-                                <ul>\
-                                    <li><a href="#ui-editor-paste-plain">' + _('Plain Text') + '</a></li>\
-                                    <li><a href="#ui-editor-paste-rich">' + _('Rich Text') + '</a></li>\
-                                    <li><a href="#ui-editor-paste-source">'+ _('Source Code') + '</a></li>\
-                                </ul>\
-                                <div id="ui-editor-paste-plain">\
-                                    <textarea class="ui-editor-paste-plain">' + pastedText + '</textarea>\
-                                </div>\
-                                <div id="ui-editor-paste-rich">\
-                                    <div class="ui-editor-paste-rich" contenteditable="true">' + pastedHtml + '</div>\
-                                </div>\
-                                <div id="ui-editor-paste-source">\
-                                    <textarea class="ui-editor-paste-source">' + pastedHtml + '</textarea>\
-                                </div>\
-                            </div>\
-                        </div>');
-                    dialog.find('textarea').bind('keypress.editor', function() {
-                        updateValues($(this).val());
-                    });
-
-                } else {
-                    updateValues();
-                }
+            window.setTimeout(function() {
+                var content = $(selector).html();
+                content = filterWord(content);
+                content = filterChars(content);
+                dialog = $(editor.getTemplate('paste.dialog', {
+                    pastedHtml: content
+                }));
+                
+                dialog.find('.ui-editor-paste-plain').bind('keypress.' + editor.widgetName, function() {
+                    dialog.find('.ui-editor-paste-rich').html($(this).val());
+                    dialog.find('.ui-editor-paste-source').val($(this).val());
+                });
+                dialog.find('.ui-editor-paste-rich').bind('keypress.' + editor.widgetName, function() {
+                    dialog.find('.ui-editor-paste-plain').val($(this).html());
+                    dialog.find('.ui-editor-paste-source').val($(this).html());
+                }).trigger('keypress');
+                dialog.find('.ui-editor-paste-source').bind('keypress.' + editor.widgetName, function() {
+                    dialog.find('.ui-editor-paste-plain').val($(this).val());
+                    dialog.find('.ui-editor-paste-rich').html($(this).val());
+                });
 
                 $(dialog).dialog({
                     modal: true,
@@ -66,45 +110,51 @@
                         [
                             {
                                 text: _('OK'),
-                                'class': 'ok',
                                 click: function() {
-
-                                    rangy.restoreSelection(selection);
-
-                                    var html = null, 
-                                        element = $(this).find('textarea:visible, .ui-editor-paste-rich:visible');
+                                    var html = null;
+                                    var element = $(this).find('textarea:visible, .ui-editor-paste-rich:visible');
 
                                     if (element.hasClass('ui-editor-paste-plain') || element.hasClass('ui-editor-paste-source')) {
                                         html = element.val();
                                     } else if (element.hasClass('ui-editor-paste-rich')) {
                                         html = element.html();
                                     }
+                                    html = filterWord(html);
+                                    html = filterChars(html);
 
                                     rangy.restoreSelection(selection);
                                     editor.replaceSelection(html);
 
                                     inProgress = false;
-                                    $(this).dialog('close').dialog('destroy');
+                                    $(this).dialog('close');
                                 }
                             },
                             {
                                 text: _('Cancel'),
-                                'class': 'cancel',
                                 click: function() {
                                     rangy.restoreSelection(selection);
                                     inProgress = false;
-                                    $(this).dialog('close').dialog('destroy');
+                                    $(this).dialog('close');
                                 }
                             }
                     ],
                     open: function() {
-                        $(this).find('.ui-editor-paste-panel-tabs').tabs();
-                        console.log('FIXME: button icons');
-                        editor._dialog.applyButtonIcon('cancel', 'circle-close');
-                        editor._dialog.applyButtonIcon('ok', 'circle-check');
+                        // Create fake jQuery UI tabs (to prevent hash changes)
+                        var tabs = $(this).find('.ui-editor-paste-panel-tabs');
+                        tabs.find('ul li').click(function() {
+                            tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                            $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
+                            tabs.children('div').hide().eq($(this).index()).show();
+                        });
+
+                        // Set custom buttons
+                        var buttons = dialog.parent().find('.ui-dialog-buttonpane');
+                        buttons.find('button:eq(0)').button({icons: {primary: 'ui-icon-circle-check'}});
+                        buttons.find('button:eq(1)').button({icons: {primary: 'ui-icon-circle-close'}});
                     },
                     close: function() {
                         inProgress = false;
+                        $(this).dialog('destroy').remove();
                     }
                 });
 
@@ -116,7 +166,7 @@
         }, this));
         
         // Events
-        console.info('FIXME: paste plugin detach');
+        console.info('FIXME: paste plugin detach, remove dialog');
 //        this.detach = function() {
 //            editor.element.unbind('paste.editor');
 //        }

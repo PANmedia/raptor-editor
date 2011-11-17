@@ -1,0 +1,18 @@
+<div class="ui-editor-paste-panel ui-dialog-content ui-widget-content">
+    <div class="ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-state-default ui-corner-top"><a>_('Plain Text')</a></li>
+            <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a>_('Rich Text')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('Source Code')</a></li>
+        </ul>
+        <div class="ui-editor-paste-plain-tab" style="display: none">
+            <textarea class="ui-editor-paste-plain"></textarea>
+        </div>
+        <div class="ui-editor-paste-rich-tab">
+            <div contenteditable="true" class="ui-editor-paste-rich">{{pastedHtml}}</div>
+        </div>
+        <div class="ui-editor-paste-source-tab" style="display: none">
+            <textarea class="ui-editor-paste-source"></textarea>
+        </div>
+    </div>
+</div>

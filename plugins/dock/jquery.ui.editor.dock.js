@@ -1,6 +1,6 @@
 (function($) {
     
-    var dock = function(editor, options) {
+    $.ui.editor.addPlugin('dock', function(editor, options) {
         var persist = editor.persist('dock') || { docked: false };
         
         this.dock = function() {
@@ -66,9 +66,7 @@
         if (persist.docked || options.docked) {
             this.dock();
         }
-    };
-    
-    $.ui.editor.addPlugin('dock', dock);
+    });
     
     $.ui.editor.registerUi({
         dock: function(editor) {
@@ -76,7 +74,7 @@
                 name: 'dock',
                 title: _('Click to dock the toolbar'),
                 icons: {
-                    primary: 'ui-icon-pin-s'
+                    primary: editor.getPlugin('dock').isDocked() ? 'ui-icon-pin-w' : 'ui-icon-pin-s'
                 },
                 click: function() {
                     var plugin = editor.getPlugin('dock');
@@ -86,4 +84,5 @@
             });
         }
     });
+    
 })(jQuery);

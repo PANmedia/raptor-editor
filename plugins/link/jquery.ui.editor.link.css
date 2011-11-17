@@ -54,7 +54,7 @@
 }
 
 .ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset #ui-widget-editor-link-external-target {
-    vertical-align: sub;
+    vertical-align: middle;
 }
 
 .ui-widget-editor-link-panel .ui-widget-editor-link-wrap fieldset.ui-widget-editor-link-email label {

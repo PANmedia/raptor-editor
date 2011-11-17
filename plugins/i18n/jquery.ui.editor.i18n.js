@@ -33,9 +33,6 @@
         
         translations[name] = strings;
         if (!currentLocale) currentLocale = name;
-        // <debug> 
-        console.debug(_('Locale <*localeName*> added', { localeName: name }), strings);
-        // </debug>
     };
     
     $.ui.editor.addButton('i18n', function(editor) {
@@ -92,5 +89,13 @@
             if ($.ui.selectmenu) $('.ui-editor-i18n-select').selectmenu('destroy');
         }
     });
+    
+    // <debug>
+    $(function() {
+        var result = [];
+        for (var key in translations) result.push(key);
+        console.log(_('Locales loaded: {{translations}} ', {translations: result.join(', ')}));
+    })
+    // </debug>
     
 })(jQuery);
