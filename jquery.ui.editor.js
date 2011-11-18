@@ -496,25 +496,21 @@ var _;
 //                this.trigger('change');
 //            },
 //
-//            exists: function() {
-//                this._selection.enforceLegality.call(this);
-//                var all_ranges = rangy.getSelection().getAllRanges(),
-//                    range;
-//                if (!all_ranges.length) return false;
-//
-//                if (all_ranges.length > 1) {
-//                    return true;
-//                } else {
-//                    range = all_ranges[0];
-//                    return range.startOffset != range.endOffset;
-//                }
-//            },
-//
-        selectElement: function(select_this) {
-            this._editor.selectedElement = $(select_this);
-            rangy.getSelection().selectAllChildren($(select_this).get(0));
+        selectionExists: function() {
+            this.constrainSelection();
+            var ranges = rangy.getSelection().getAllRanges();
+            if (!ranges.length) return false;
+
+            if (ranges.length > 1) {
+                return true;
+            } else {
+                return ranges[0].startOffset != ranges[0].endOffset;
+            }
+        },
+        
+        selectElement: function(element) {
+            rangy.getSelection().selectAllChildren($(element)[0]);
             this.element.focus();
-            this._actions.updateTitleTagList.call(this);
         },
         
 //        selectElement: function(element) {
@@ -715,7 +711,7 @@ var _;
                     show: this.options.dialogShowAnimation,
                     hide: this.options.dialogHideAnimation,
                     open: function(event, ui) {
-                        $(this).css('overflow', 'hidden');
+                        $(this).css('overflow', 'visible');
                         $(this).parent()
                             .css('position', 'fixed')
                             .prop('unselectable', true)
@@ -929,6 +925,37 @@ var _;
             this.trigger('change');
         },
         
+        changeTag: function(tag) {
+            console.info('TODO: Review editor.changeTag function')
+
+//            var new_element = null;
+
+            $.each(rangy.getSelection().getAllRanges(), function() {
+                console.log(this);
+            });
+//            if (this.selectionExists()) {
+//                rangy.createCssClassApplier(this.options.cssPrefix + tag, {
+//                    normalize: true,
+//                    elementTagName: tag
+//                }).toggleSelection();
+//            } else {
+////                if (this._util.isRoot.call(this, this._editor.selectedElement)) {
+//                    this._editor.selectedElement = this.element.find(':first');
+//                }
+//                new_element = $('<' + tag + '>' + this._editor.selectedElement.html() + '</' + tag + '>');
+//
+//                if (typeof this._editor.selectedElement.attr('class') != 'undefined') {
+//                    new_element.addClass(this._editor.selectedElement.attr('class'));
+//                }
+//                if (typeof this._editor.selectedElement.attr('style') != 'undefined') {
+//                    new_element.css(this._editor.selectedElement.attr('style'));
+//                }
+//                $(this._editor.selectedElement).replaceWith(new_element);
+//            }
+
+            this.trigger('change');
+        },
+        
         /**********************************************************************\
          * Selectors
         \**********************************************************************/
@@ -1006,7 +1033,71 @@ var _;
             if (options.click) button.bind('click.' + this.widgetName, options.click);
             
             return button;
-        },        
+        },
+        
+        uiSelectMenu: function(options) {
+            var editor = this;
+            var selectMenu, button, menu;
+            
+            selectMenu = $('<div class="ui-selectmenu"/>')
+            
+            selectMenu.update = function() {
+                var selected = options.select.find('option[value=' + options.select.val() + ']').html();
+                button.find('.ui-button-text').html(selected);
+            }
+            
+            selectMenu.append(options.select.hide());
+            menu = $('<div class="ui-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(selectMenu);
+            options.select.find('option').each(function() {
+                var option = $('<div class="ui-selectmenu-menu-item ui-corner-all"/>')
+                    .html($(this).html())
+                    .appendTo(menu)
+                    .bind('mouseenter.' + editor.widgetName, function() { $(this).addClass('ui-state-focus') })
+                    .bind('mouseleave.' + editor.widgetName, function() { $(this).removeClass('ui-state-focus') })
+                    .bind('click.' + editor.widgetName, function() {
+                        var option = options.select.find('option').eq($(this).index());
+                        options.select.val(option.val());
+                        selectMenu.update();
+                        menu.stop().hide();
+                        button.addClass('ui-corner-all')
+                              .removeClass('ui-corner-top');
+                        options.change(options.select.val());
+                    });
+            });
+            
+            button = $('<div class="ui-selectmenu-button"/>')
+                .button({
+                    icons: { secondary: 'ui-icon-triangle-1-s' }
+                })
+                .prependTo(selectMenu);
+                
+            button.bind('click.' + editor.widgetName, function() {
+                    if (!menu.is(':animated')) {
+                        if (menu.is(':visible')) {
+                            menu.stop().slideUp(function() {
+                                button.addClass('ui-corner-all')
+                                      .removeClass('ui-corner-top');
+                            });
+                        } else {
+                            menu.css('min-width', button.width() + 10);
+                            menu.stop().slideDown();
+                            button.removeClass('ui-corner-all')
+                                  .addClass('ui-corner-top');
+                        }
+                    }
+                });
+                
+            var selected = options.select.find('option[value=' + options.select.val() + ']').html();
+            button.find('.ui-button-text').html(selected);
+            
+            selectMenu.val = function() {
+                var result = options.select.val.apply(options.select, arguments);
+                selectMenu.update();
+                return result;
+            }
+                
+            return selectMenu;
+        },
 
         /**********************************************************************\
          * Plugins

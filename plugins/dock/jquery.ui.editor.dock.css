@@ -12,6 +12,18 @@
 .ui-widget-editor-docked .ui-widget-editor-inner {
     padding: 5px;
     border-top: none;
+    
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+    
+    width: 100%;
 }
 
 .ui-widget-editor-docked .ui-widget-editor-toolbar {
@@ -19,7 +31,6 @@
     position: fixed;
     top: 0;
     left: 0;
-    text-align: center;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -32,7 +43,6 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    text-align: center;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

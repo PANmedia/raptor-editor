@@ -3,13 +3,11 @@
 }
 
 /* Editor toolbar */
-/*
-This breaks custom dialogs
 .ui-widget-editor-dialog {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-}*/
+}
 
 .ui-widget-editor-dialog .ui-dialog-titlebar {
     font-size: 10px;
@@ -35,26 +33,66 @@ This breaks custom dialogs
 }
 
 /* Editor button */
-.ui-widget-editor-dialog .ui-widget-editor-inner button {
-    float: left;
-    margin: 0;
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-button {
     height: 25px;
-    width: 25px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset,
-.ui-widget-editor-dialog .ui-widget-editor-inner div {
+.ui-selectmenu-button {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+}
+
+.ui-selectmenu-button .ui-button-text {
+    padding: 0 25px 0 5px;
+}
+
+.ui-selectmenu {
+    position: relative;
+}
+
+.ui-selectmenu-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: -1px !important;
+}
+
+.ui-selectmenu-menu-item {
+    padding: 5px;
+    margin: 2px;
+    font-weight: normal;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner > div {
     display: inline-block;
     margin: 0 5px;
+    vertical-align: top;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button {
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset .ui-button {
+    margin: 0 -1px 0 0;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
 }
 
-.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button:first-child{
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button:hover {
+    z-index: 1;
+}
+
+.ui-widget-editor-dialog .ui-widget-editor-inner .ui-widget-editor-buttonset button:first-child {
     -webkit-border-radius: 5px 0 0 5px;
     -moz-border-radius: 5px 0 0 5px;
     border-radius: 5px 0 0 5px;
