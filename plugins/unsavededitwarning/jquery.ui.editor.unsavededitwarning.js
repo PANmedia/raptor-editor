@@ -1,6 +1,6 @@
 (function() {
         
-    $.ui.editor.addPlugin('unsavedEditWarning', function(editor, options) {
+    $.ui.editor.registerPlugin('unsaved-edit-warning', function(editor, options) {
         var plugin = this;
         var warning = $(editor.getTemplate('unsavededitwarning.warning'))
                 .hide()
@@ -57,6 +57,10 @@
             if (editor.isDirty()) plugin.show();
             else plugin.hide();
         });
+        
+        editor.bind('destroy', function() {
+            warning.remove();
+        })
     });
 
     $.ui.editor.bind('resize', function() {

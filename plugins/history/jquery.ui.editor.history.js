@@ -3,39 +3,31 @@
     // Add history undo / redo buttons
     console.info('FIXME: unbind events on destroy');
     $.ui.editor.registerUi({
-        undo: function(editor) {
-            this.ui = editor.uiButton({
-                name: 'undo',
+        'undo': function(editor) {
+            var ui = this.ui = editor.uiButton({
                 title: _('Step Back'),
-                icons: {
-                    primary: 'ui-editor-icon-undo'
-                },
-                classes: 'ui-editor-icon',
                 disabled: true,
                 click: function() {
                     editor.historyBack();
                 }
             });
-            editor.bind('change', $.proxy(function() {
-                this.ui.button('option', 'disabled', editor.present === 0);
-            }, this));
+            editor.bind('change', function() {
+                if (editor.present === 0) ui.disable();
+                else ui.enable();
+            });
         },
-        redo: function(editor) {
-            this.ui = editor.uiButton({
-                name: 'redo',
+        'redo': function(editor) {
+            var ui = this.ui = editor.uiButton({
                 title: _('Step Forward'),
-                icons: {
-                    primary: 'ui-editor-icon-redo'
-                },
-                classes: 'ui-editor-icon',
                 disabled: true,
                 click: function() {
                     editor.historyForward();
                 }
             });
-            editor.bind('change', $.proxy(function() {
-                this.ui.button('option', 'disabled', editor.present === editor.history.length - 1);
-            }, this));
+            editor.bind('change', function() {
+                if (editor.present === editor.history.length - 1) ui.disable();
+                else ui.enable();
+            });
         }
     });
 

@@ -1,5 +1,5 @@
 (function($){ 
-    $.ui.editor.addLocale('zh_CN', {
+    $.ui.editor.registerLocale('zh_CN', {
         "Apply Source": "应用源代码",
         "Are you sure you want to stop editing? <br/><br/>All changes will be lost!": "Are you sure you want to stop editing? <br/><br/>All changes will be lost!",
         "Are you sure?": "您确定了吗？",

@@ -4,7 +4,7 @@ console.info('FIXME: cancel button confimation dialog get removed on unbind');
 console.info('TODO: make cancel function avalible as a plugin');
 
 $.ui.editor.registerUi({
-    cancel: function(editor) {
+    cancel: function(editor, options) {
         function cancel() {
             editor.resetHtml();
             editor.hideToolbar();
@@ -23,7 +23,7 @@ $.ui.editor.registerUi({
                         modal: true,
                         resizable: false,
                         title: _('Confirm Cancel Editing'),
-                        dialogClass: editor.options.dialogClass + ' ui-widget-editor-cancel-dialog',
+                        dialogClass: options.dialogClass + ' ' + options.baseClass,
                         show: editor.options.dialogShowAnimation,
                         hide: editor.options.dialogHideAnimation,
                         buttons: [
