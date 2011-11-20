@@ -1,7 +1,7 @@
 (function($) {
     
     $.ui.editor.registerUi({
-        viewSource: function(editor) {
+        'view-source': function(editor, options) {
             console.info('FIXME: remove dialog on destroy');
             var dialog = $(editor.getTemplate('viewsource.dialog'));
             dialog.dialog({
@@ -9,11 +9,11 @@
                 width: 600,
                 height: 400,
                 resizable: true,
-                title: 'View Source',
+                title: _('View Source'),
                 autoOpen: false,
-                dialogClass: editor.options.dialogClass + ' ui-widget-editor-view-source',
-                show: editor.options.dialogShowAnimation,
-                hide: editor.options.dialogHideAnimation,
+                dialogClass: options.baseClass + ' ' + options.dialogClass,
+                show: options.dialogShowAnimation,
+                hide: options.dialogHideAnimation,
                 buttons: [
                     {
                         text: _('Apply Source'),
@@ -38,16 +38,14 @@
             });
                     
             this.ui = editor.uiButton({
-                name: 'viewSource',
                 title: _('View / Edit Source'),
-                icons: { primary: 'ui-icon-view-source' },
-                classes: 'ui-editor-icon ui-widget-editor-button-view-source',
                 click: function() {
                     dialog.dialog('open');
-                },
-                destroy: function() {
-                    if (dialog) dialog.dialog('close').remove();
                 }
+            });
+            
+            editor.bind('destroy', function() {
+                dialog.dialog('destroy').remove();
             });
         }
     });

@@ -1,4 +1,4 @@
-.ui-widget-editor-docked {
+.ui-editor-dock-docked {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
@@ -9,9 +9,10 @@
     height: auto;
 }
 
-.ui-widget-editor-docked .ui-widget-editor-inner {
+.ui-editor-dock-docked .ui-editor-inner {
     padding: 5px;
     border-top: none;
+    width: 100%;    
     
     display: -webkit-box;
     display: -moz-box;
@@ -22,11 +23,13 @@
     -webkit-box-align: center;
     -moz-box-align: center;
     box-align: center;
-    
-    width: 100%;
+     
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
-.ui-widget-editor-docked .ui-widget-editor-toolbar {
+.ui-editor-dock-docked .ui-editor-toolbar {
     width: 100% !important;
     position: fixed;
     top: 0;
@@ -38,7 +41,7 @@
     border-top: none;
 }
 
-.ui-widget-editor-docked .ui-dialog-titlebar {
+.ui-editor-dock-docked .ui-dialog-titlebar {
     position: fixed !important;
     bottom: 0;
     left: 0;
@@ -51,12 +54,12 @@
     border-radius: 0;
 }
 
-.ui-widget-editor-dock-spacer {
+.ui-editor-dock-spacer {
     display: none;
 }
 
 /* Messages */
-.ui-widget-editor-docked .ui-widget-editor-toolbar .ui-widget-editor-messages {
+.ui-editor-dock-docked .ui-editor-toolbar .ui-editor-messages {
     padding: 0;
     margin: 0 auto 10px;
     width: 50%;

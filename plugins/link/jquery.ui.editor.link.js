@@ -16,7 +16,7 @@
         
         this.show = function() {
             if (!dialog) {
-                dialog = $(editor.getTemplate('link.dialog')).appendTo('body');
+                dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
             }
             
             var selection = rangy.saveSelection(),
@@ -26,15 +26,15 @@
             var selectedElement = editor.getSelectedElements().first();
             var edit = selectedElement.is('a');
             
-            var linkTypesFieldset = linkDialog.find('.ui-widget-editor-link-menu fieldset');
+            var linkTypesFieldset = linkDialog.find('.' + options.baseClass + '-menu fieldset');
             
             var linkTypes = [
                 // Page
                 {
                     type: 'external',
                     title: _('Page on this or another website'),
-                    content: editor.getTemplate('link.external'),
-                    className: 'ui-widget-editor-link-external',
+                    content: editor.getTemplate('link.external', options),
+                    className: options.baseClass + '-external',
                     show: function(panel, edit) {
                         if (edit) {
                             panel.find('input[name="location"]').val(selectedElement.attr('href'));
@@ -61,8 +61,8 @@
                 {
                     type: 'email',
                     title: _('Email address'),
-                    content: editor.getTemplate('link.email'),
-                    className: 'ui-widget-editor-link-email',
+                    content: editor.getTemplate('link.email', options),
+                    className: options.baseClass + '-email',
                     show: function(panel, edit) {
                         if (edit) {
                             panel.find('input[name="email"]').val(selectedElement.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
@@ -84,7 +84,7 @@
             ];
         
             // Remove & add custom radios
-            linkDialog.find('.ui-widget-editor-link-menu fieldset').html('');
+            linkDialog.find('.' + options.baseClass + '-menu fieldset').html('');
             
             if (options.replaceTypes) {
                 linkTypes = options.customTypes;
@@ -112,7 +112,7 @@
                 width: 750,
                 height: 450,
                 title: title,
-                dialogClass: editor.options.dialogClass + ' ui-widget-editor-link',
+                dialogClass: options.baseClass + ' ' + options.dialogClass,
                 show: editor.options.dialogShowAnimation,
                 hide: editor.options.dialogHideAnimation,
                 buttons: [
@@ -122,7 +122,7 @@
                             rangy.restoreSelection(selection);
                             
                             var data = linkDialog.find('input[type="radio"]:checked').data(options.typeDataName),
-                                attributes = data.attributes(linkDialog.find('.ui-widget-editor-link-content'), edit);
+                                attributes = data.attributes(linkDialog.find('.' + options.baseClass + '-content'), edit);
                                 
                             if (!attributes) return;
                             
@@ -135,9 +135,9 @@
                             } else {
                             
                                 if (selectedElement.is('img')) {
-                                    selectedElement.wrap($('a').attr(attributes).addClass('ui-widget-editor-link'));
+                                    selectedElement.wrap($('a').attr(attributes).addClass(options.baseClass));
                                 } else {
-                                    rangy.createCssClassApplier('ui-widget-editor-link ' + data.className, {
+                                    rangy.createCssClassApplier(options.baseClass + ' ' + data.className, {
                                         normalize: true,
                                         elementTagName: 'a',
                                         elementProperties: attributes
@@ -158,7 +158,7 @@
                     }
                 ],
                 beforeopen: function() {
-                    plugin.dialog.find('.ui-widget-editor-link-content').hide();
+                    plugin.dialog.find('.' + options.baseClass + '-content').hide();
                 },
                 open: function() {
                     // Apply custom icons to the dialog buttons
@@ -185,7 +185,7 @@
                     }
                 },
                 close: function() {
-                    dialog.find('.ui-widget-editor-link-content').hide();
+                    dialog.find('.' + options.baseClass + '-content').hide();
                     $(this).dialog('destroy');
                 }
             }).dialog('open');
@@ -193,13 +193,13 @@
         
         this.typeChange = function(edit, initial) {
             var linkTypeData = dialog.find('input[type="radio"]:checked').data(options.typeDataName),
-                panel = dialog.find('.ui-widget-editor-link-content'),
-                wrap = panel.closest('.ui-widget-editor-link-wrap'),
+                panel = dialog.find('.' + options.baseClass + '-content'),
+                wrap = panel.closest('.' + options.baseClass + '-wrap'),
                 ajax = (typeof linkTypeData.ajax != 'undefined');
                 
             initial = initial || false;
         
-            if (ajax) wrap.addClass('ui-widget-editor-loading');
+            if (ajax) wrap.addClass(options.baseClass + '-loading');
             
             if (initial) {
                 panel.html(linkTypeData.content);
@@ -219,7 +219,7 @@
                                 panel.html(data);
                                 if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
                                 panel.show(options.panelAnimation, function(){
-                                    wrap.removeClass('ui-widget-editor-loading');
+                                    wrap.removeClass(options.baseClass + '-loading');
                                 });
                             }   
                         });
@@ -256,41 +256,33 @@
         }
     }
     
-    $.ui.editor.addPlugin('link', link);
+    $.ui.editor.registerPlugin('link', link);
     
     $.ui.editor.registerUi({
-        link: function(editor) {
-            this.ui = editor.uiButton({
-                name: 'link',
+        'link': function(editor) {
+            var ui = this.ui = editor.uiButton({
                 title: _('Insert Link'),
-                icons: {
-                    primary: 'ui-icon-insert-link'
-                },
-                classes: 'ui-editor-icon',
                 click: function() {
                     editor.getPlugin('link').show();
                 }
             });
-            editor.bind('change', $.proxy(function() {
-                this.ui.button('option', 'disabled', editor.getSelectedElements().length !== 1);
-            }, this));
+            editor.bind('change', function() {
+                if (editor.getSelectedElements().length !== 1) ui.disable();
+                else ui.enable();
+            });
         },
     
-        unlink: function(editor) {
-            this.ui = editor.uiButton({
-                name: 'unlink',
+        'unlink': function(editor) {
+            var ui = this.ui = editor.uiButton({
                 title: _('Remove Link'),
-                icons: {
-                    primary: 'ui-icon-remove-link'
-                },
-                classes: 'ui-editor-icon',
                 click: function() {
                     editor.getPlugin('link').remove();
                 }
             });
-            editor.bind('change', $.proxy(function() {
-                this.ui.button('option', 'disabled', !editor.getSelectedElements().is('a'));
-            }, this));
+            editor.bind('change', function() {
+                if (!editor.getSelectedElements().is('a')) ui.disable();
+                else ui.enable();
+            });
         }
     });
     

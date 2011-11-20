@@ -103,9 +103,9 @@
                     resizable: true,
                     title: 'Paste',
                     position: 'center',
-                    show: editor.options.dialogShowAnimation,
-                    hide: editor.options.dialogHideAnimation,
-                    dialogClass: editor.options.dialogClass + ' ui-widget-editor-paste',
+                    show: options.dialogShowAnimation,
+                    hide: options.dialogHideAnimation,
+                    dialogClass: options.baseClass + ' ' + options.dialogClass,
                     buttons: 
                         [
                             {
@@ -172,5 +172,5 @@
 //        }
     }
     
-    $.ui.editor.addPlugin('paste', paste);
+    $.ui.editor.registerPlugin('paste', paste);
 })(jQuery);
