@@ -129,7 +129,7 @@
               tofile="${buildpath}/01-jquery.js" />
         
         <!-- jQuery plugins -->
-        <copy file="dependencies/jquery-cookie/jquery.cookie.js" 
+        <copy file="dependencies/jquery.cookie.js" 
               tofile="${buildpath}/04-jquery-cookie.js" />
         <copy file="dependencies/tiptip/jquery.tiptip.js" 
               tofile="${buildpath}/05-jquery-tiptip.js" />
