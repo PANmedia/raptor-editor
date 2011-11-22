@@ -1,6 +1,7 @@
 <?php
 $opts  = 'b:';  // Required value
 $opts .= 'l:';
+$opts .= 'n:';
 $opts .= 'r::';
 $opts .= 'm::';
 
@@ -14,8 +15,13 @@ if (!isset($options['l'])) {
     echo 'Locale name (-l zh_CN) is required'.PHP_EOL; 
     die();
 }
+if (!isset($options['n'])) {
+    echo 'Locale native name (-n 简体中文) is required'.PHP_EOL; 
+    die();
+}
 $base_directory = rtrim($options['b'], '/').'/';
 $locale = $options['l'];
+$locale_name = $options['n'];
 $replace = isset($options['r']) ? true : false;
 $merge = isset($options['m']) ? true : false;
 
@@ -61,10 +67,10 @@ if ((!$replace && !$merge) && file_exists($locale_file)) {
     die();
 }
 
-$write = function($locale_file, $strings) use ($locale) {
+$write = function($locale_file, $strings) use ($locale, $locale_name) {
     $output = array();
     $tab = '    ';
-    $head = "(function($){ \n$tab$.ui.editor.addLocale('$locale', {\n";
+    $head = "(function($){ \n$tab$.ui.editor.registerLocale('$locale', '$locale_name', {\n";
     $tail = "\n$tab});\n})(jQuery);\n";
     ksort($strings);
     
