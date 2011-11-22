@@ -75,7 +75,6 @@ var _;
     
     // Private variables
     var instances = [];
-    var templates = {};
     
     // Events added via $.ui.editor.bind
     var events = {};
@@ -146,7 +145,7 @@ var _;
             this.events = {}; 
             this.ui = {}; 
             this.plugins = {}; 
-            this.templates = {}; 
+            this.templates = $.extend({}, $.ui.editor.templates);
             
             // Undo stack, redo pointer
             this.history = []; 
@@ -653,7 +652,7 @@ var _;
         \**********************************************************************/
         getTemplate: function(name, variables) {
             var template;
-            if (!templates[name]) {
+            if (!this.templates[name]) {
                 // Parse the URL
                 var url = this.options.urlPrefix;
                 name = name.split('.');
@@ -682,9 +681,9 @@ var _;
                     }
                 });
                 // Cache the template
-                templates[name] = template;
+                this.templates[name] = template;
             } else {
-                template = templates[name];
+                template = this.templates[name];
             }
             // Translate template
             template = template.replace(/_\('(.*?)'\)/g, function(match, string) {
@@ -1273,6 +1272,7 @@ var _;
      * Global static class definition
     \**************************************************************************/
     $.extend($.ui.editor, {
+        templates: { /* <templates/> */ },
         
         getInstances: function() {
             return instances;
