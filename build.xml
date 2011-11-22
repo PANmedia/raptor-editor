@@ -311,18 +311,6 @@
     </target>
     
     <!-- =================================================================== -->
-    <!-- Convert images to data URIs                                         -->
-    <!-- =================================================================== -->
-    <target name="datauri" depends="prepare,clone">
-        <datauri>
-            <fileset dir=".">
-                <include name="${buildpath}/*.css" />
-                <include name="${buildpath}/**/*.css" />
-            </fileset>
-        </datauri>
-    </target>
-    
-    <!-- =================================================================== -->
     <!-- Convert LESS to CSS                                                 -->
     <!-- =================================================================== -->
     <target name="less" depends="prepare,clone">
@@ -332,6 +320,18 @@
                 <include name="${buildpath}/**/*.less" />
             </fileset>
         </less>
+    </target>
+    
+    <!-- =================================================================== -->
+    <!-- Convert images to data URIs                                         -->
+    <!-- =================================================================== -->
+    <target name="datauri" depends="prepare,clone">
+        <datauri>
+            <fileset dir=".">
+                <include name="${buildpath}/*.css" />
+                <include name="${buildpath}/**/*.css" />
+            </fileset>
+        </datauri>
     </target>
     
     <!-- =================================================================== -->
@@ -361,7 +361,7 @@
     <!-- =================================================================== -->
     <!-- Combine and minify all files                                        -->
     <!-- =================================================================== -->
-    <target name="combine" depends="datauri,less,template">
+    <target name="combine" depends="less,datauri,template">
         <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
