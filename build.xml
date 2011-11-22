@@ -235,10 +235,26 @@
     </target>
     
     <target name="compile" depends="combine">
-        <echo>java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
-        <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js" dir="." />
-        <echo>java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
-        <exec command="java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" dir="." />
+        <if>
+            <istrue value="${compile-js}"/>
+            <then>
+                <echo>java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
+                <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js" dir="." />
+            </then>
+            <else>
+                <move file="${buildpath}/concat.js" tofile="${buildpath}/concat.min.js"/>
+            </else>
+        </if>
+        <if>
+            <istrue value="${compile-css}"/>
+            <then>
+                <echo>java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
+                <exec command="java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" dir="." />
+            </then>
+            <else>
+                <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css"/>
+            </else>
+        </if>
     </target>
     
     <target name="merge" depends="compile">
