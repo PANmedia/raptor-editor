@@ -1,3 +1,3 @@
 (function($){ 
-    $.ui.editor.registerLocale('en', {});
+    $.ui.editor.registerLocale('en', 'English', {});
 })(jQuery);
