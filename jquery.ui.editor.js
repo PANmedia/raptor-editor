@@ -1188,12 +1188,15 @@ var _;
         /**********************************************************************\
          * Event handling
         \**********************************************************************/
-        bind: function(name, callback) {
+        bind: function(name, callback, context) {
             // <strict>
             if (!$.isFunction(callback)) console.error('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
             // </strict>
             if (!this.events[name]) this.events[name] = [];
-            this.events[name].push(callback);
+            this.events[name].push({
+                context: context,
+                callback: callback
+            });
         },
 
         unbind: function(callback) {
@@ -1210,7 +1213,8 @@ var _;
         trigger: function(name, global) {
             if (!this.events[name]) return;
             for (var i in this.events[name]) {
-                this.events[name][i].call(this);
+                var event = this.events[name][i];
+                event.callback.call(event.context || this);
             }
             // Also trigger the global editor event, unless specified not to
             if (global !== false) {
