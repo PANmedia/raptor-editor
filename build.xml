@@ -8,8 +8,6 @@
                 private $filesets = array();
 
                 public function main() {
-                
-                    // append any files in filesets
                     foreach($this->filesets as $fs) {
                         try {
                             $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
@@ -33,6 +31,41 @@
                     return $this->filesets[$num-1];
                 }
                 
+            }
+        ]]>
+    </adhoc-task>
+    
+    <adhoc-task name="sortedfileset">
+        <![CDATA[
+            class SortedFileSet extends Task {
+
+                private $filesets = array();
+                private $name = null;
+
+                public function main() {
+                    foreach($this->filesets as $fs) {
+                        try {
+                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
+                            sort($files);
+                            $this->project->setProperty($this->name, implode(',', $files));
+                        } catch (BuildException $be) {
+                            $this->log($be->getMessage(), Project::MSG_WARN);
+                        }
+                    }
+                }
+                
+                public function createFileSet() {
+                    $num = array_push($this->filesets, new FileSet());
+                    return $this->filesets[$num-1];
+                }
+                
+                public function setName($name) {
+                    $this->name = (string) $name;
+                }
+
+                public function getName() {
+                    return $this->name;
+                }
             }
         ]]>
     </adhoc-task>
@@ -218,19 +251,37 @@
     <!-- Combine and minify all files                                        -->
     <!-- =================================================================== -->
     <target name="combine" depends="datauri">
-        <append destFile="${buildpath}/concat.js">
+        <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
                 <include name="${buildpath}/*.js" />
                 <include name="${buildpath}/**/*.js" />
             </fileset>
+        </sortedfileset>
+        <append destFile="${buildpath}/concat.js">
+            <filelist dir="." files="${jsfiles}"/>
         </append>
-        <append destFile="${buildpath}/concat.css">
+        <sortedfileset name="cssfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.css" />
                 <include name="${buildpath}/*.css" />
                 <include name="${buildpath}/**/*.css" />
             </fileset>
+        </sortedfileset>
+        <echo>${cssfiles}</echo>
+        <append destFile="${buildpath}/concat.css">
+            <filelist dir="." files="${cssfiles}"/>
+        </append>
+        <sortedfileset name="lessfiles">
+            <fileset dir=".">
+                <exclude name="${buildpath}/concat.less" />
+                <include name="${buildpath}/*.less" />
+                <include name="${buildpath}/**/*.less" />
+            </fileset>
+        </sortedfileset>
+        <echo>${lessfiles}</echo>
+        <append destFile="${buildpath}/concat.less">
+            <filelist dir="." files="${lessfiles}"/>
         </append>
     </target>
     
