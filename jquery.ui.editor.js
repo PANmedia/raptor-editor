@@ -1,4 +1,17 @@
 console.info('TODO: use cookies when localstorage is not avalible, or chosen by option');
+console.info('TODO: make a way to disable all buttons then selectivly enable ones');
+
+/**
+ *
+ * Events:
+ *   resize
+ *     Triggers when the page, or an element is resized to allow plugins to adjust their position
+ *   change
+ *     Triggers when ever the element content is change, or the selection is changed
+ *   ready
+ *     Trigger after the editor has been initialised, (but possibly before the editor is showen and enabled)
+ *
+ */
 
 var _;
 
@@ -96,7 +109,6 @@ var _;
             dialogShowAnimation: 'fade',
             dialogHideAnimation: 'fade',
             
-
             toolbarPosition: [5, 47],
             toolbarSaveIndividualPositions: false,
 
@@ -475,6 +487,7 @@ var _;
         },
         
         updateTagTree: function() {
+            console.info('FIXME: updateTagTree click bindings');
             console.info('FIXME: updateTagTree should filter out duplicates');
             var title = '', 
                 editor = this;
@@ -1271,8 +1284,8 @@ var _;
             editor: null,
             options: null,
             init: function(editor, options) {},
-            persist: function(name, value) {
-                value = this.editor.persist(name, value);
+            persist: function(key, value) {
+                value = this.editor.persist(key, value);
                 return value;
             }
         },
@@ -1297,8 +1310,8 @@ var _;
                 this.bind('destory', this.destory);
                 this.init();
             },
-            persist: function(name, value) {
-                value = this.editor.persist(name, value);
+            persist: function(key, value) {
+                value = this.editor.persist(key, value);
                 return value;
             },
             bind: function(name, callback) {
