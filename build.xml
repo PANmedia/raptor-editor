@@ -398,8 +398,8 @@
         <if>
             <istrue value="${compile-css}"/>
             <then>
-                <echo>java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
-                <exec command="java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" dir="." />
+                <echo>java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
+                <exec command="java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" dir="." />
             </then>
             <else>
                 <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css"/>
