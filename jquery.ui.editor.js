@@ -655,13 +655,13 @@ var _;
             if (!this.templates[name]) {
                 // Parse the URL
                 var url = this.options.urlPrefix;
-                name = name.split('.');
-                if (name.length == 1) {
+                var split = name.split('.');
+                if (split.length == 1) {
                     // URL is for and editor core template
-                    url += 'templates/' + name[0] + '.html';
+                    url += 'templates/' + split[0] + '.html';
                 } else {
                     // URL is for a plugin template
-                    url += 'plugins/' + name[0] + '/templates/' + name.splice(1).join('/') + '.html';
+                    url += 'plugins/' + split[0] + '/templates/' + split.splice(1).join('/') + '.html';
                 }
                 // Request the template
                 $.ajax({
