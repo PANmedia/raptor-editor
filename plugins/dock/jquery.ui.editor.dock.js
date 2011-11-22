@@ -1,6 +1,6 @@
 (function($) {
     
-    $.ui.editor.registerPlugin('dock',  {
+    $.ui.editor.registerPlugin('dock', {
         spacer: null,
         
         init: function() {
@@ -8,7 +8,6 @@
                 .prependTo('body')
                 .hide();
                 
-        
             this.bind('enabled', this.enable);
             this.bind('disabled', this.disable);
         },
