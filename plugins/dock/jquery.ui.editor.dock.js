@@ -1,23 +1,38 @@
 (function($) {
     
+    var spacer;
+    
     $.ui.editor.registerPlugin('dock', {
-        spacer: null,
-        
         init: function() {
-            this.spacer = $('<div class="' + this.options.baseClass + '-spacer"/>')
-                .prependTo('body')
-                .hide();
+            if (!spacer) {
+                spacer = $('<div class="' + this.options.baseClass + '-spacer"/>')
+                    .prependTo('body')
+                    .hide();
+            }
+            
+            this.docked = this.persist('docked');
                 
             this.bind('enabled', this.enable);
             this.bind('disabled', this.disable);
+            this.bind('show', spacer.show, spacer);
+            this.bind('hide', spacer.hide, spacer);
         },
         
         dock: function() {
             // Save the state of the dock
-            this.persist('docked', true);
+            this.docked = this.persist('docked', true);
+            
+            if (this.options.dockToElement) {
+                this.editor.selDialog()
+                    .insertBefore(this.editor.element)
+                    .addClass(this.options.baseClass + '-docked-to-element');
+                this.editor.element.appendTo(this.editor.selDialog());
+            } else {
+                this.editor.selDialog().addClass(this.options.baseClass + '-docked')
+            }
             
             // Change the dock button icon
-            this.editor.selDialog().addClass(this.options.baseClass + '-docked')
+            this.editor.selDialog()
                 .find('.' + this.options.baseClass + '-button')
                 .button({ icons: { primary: 'ui-icon-pin-w' } });
                 
@@ -28,7 +43,10 @@
             // Reinitialise spacer when the toolbar is visible and stoped animating
             window.setTimeout(function(dock) {
                 // Show the spacer 
-                dock.spacer.height(dock.editor.selToolbar().outerHeight()).show();
+                var toolbar = dock.editor.selToolbar();
+                if (toolbar.is(':visible')) {
+                    spacer.height(toolbar.outerHeight()).show();
+                }
                 
                 // Trigger the editor resize event to adjust other plugin element positions
                 dock.editor.trigger('resize');
@@ -37,7 +55,7 @@
         
         undock: function() {
             // Save the state of the dock
-            this.persist('docked', false);
+            this.docked = this.persist('docked', false);
             
             // Remove the header class from the editor toolbar
             this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
@@ -49,14 +67,14 @@
                 .button({ icons: { primary: 'ui-icon-pin-s' } });
                 
             // Hide the spacer 
-            this.spacer.hide();
+            spacer.hide();
             
             // Trigger the editor resize event to adjust other plugin element positions
             this.editor.trigger('resize');
         },
         
         isDocked: function() {
-            return this.persist('docked');
+            return this.docked;
         },
         
         enable: function() {
@@ -66,65 +84,13 @@
         },
         
         disable: function() {
-            this.spacer.hide();
+            spacer.hide();
         },
         
         destory: function() {
-            this.spacer.remove();
+            spacer.remove();
         }
     });
-    
-//    $.ui.editor.registerPlugin('dock', function(editor, options) {
-//        var plugin = this;
-//        var persist = editor.persist('dock') || { docked: false };
-//        var spacer = $('<div class="' + options.baseClass + '-spacer"/>').prependTo('body').hide();
-//
-//        this.dock = function() {
-//            persist.docked = true;
-//            editor.persist('dock', persist);
-//            editor.selDialog().addClass(options.baseClass + '-docked')
-//                  .find('.' + options.baseClass + '-button').button({ icons: { primary: 'ui-icon-pin-w' } });
-//            editor.selToolbar('.' + editor.options.baseClass + '-inner').addClass('ui-widget-header');
-//            window.setTimeout(function() {
-//                spacer.height(editor.selToolbar().outerHeight()).show();
-//                editor.trigger('resize');
-//            }, 100);
-//        }
-//        
-//        this.undock = function() {
-//            persist.docked = false;
-//            editor.persist('dock', persist);
-//            editor.selToolbar('.' + editor.options.baseClass + '-inner').removeClass('ui-widget-header');
-//            editor.selDialog().removeClass(options.baseClass + '-docked')
-//                  .find('.' + options.baseClass + '-button').button({ icons: { primary: 'ui-icon-pin-s' } });
-//            spacer.hide();
-//            editor.trigger('resize');
-//        }
-//        
-//        this.isDocked = function() {
-//            return persist.docked;
-//        }
-//        
-//        this.destroy = function() {
-//            var spacer = $('.' + options.baseClass + '-spacer');
-//            if (spacer.length) spacer.hide('fast');
-//            delete editor;
-//        }
-//        
-//        editor.bind('enabled', function() {
-//            if (persist.docked || options.docked) {
-//                plugin.dock();
-//            } 
-//        });
-//        
-//        editor.bind('disabled', function() {
-//            spacer.hide();
-//        });
-//        
-//        editor.bind('destroy', function() {
-//            spacer.remove();
-//        });
-//    });
     
     $.ui.editor.registerUi({
         dock: function(editor) {
@@ -132,9 +98,11 @@
                 title: _('Click to dock the toolbar'),
                 icon: editor.getPlugin('dock').isDocked() ? 'ui-icon-pin-w' : 'ui-icon-pin-s',
                 click: function() {
-                    var plugin = editor.getPlugin('dock');
-                    if (plugin.isDocked()) plugin.undock();
-                    else plugin.dock();
+                    editor.unify(function(editor) {
+                        var plugin = editor.getPlugin('dock');
+                        if (plugin.isDocked()) plugin.undock();
+                        else plugin.dock();
+                    });
                 }
             });
         }

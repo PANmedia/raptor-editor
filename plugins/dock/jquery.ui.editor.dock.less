@@ -1,3 +1,6 @@
+/******************************************************************************\
+ * Dialog docked to body
+\******************************************************************************/
 .ui-editor-dock-docked {
     position: fixed !important;
     top: 0 !important;
@@ -7,62 +10,130 @@
     margin: 0 !important;
     border-top: none;
     height: auto;
+
+    .ui-editor-inner {
+        padding: 5px;
+        border-top: none;
+        width: 100%;    
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+        -webkit-box-pack: center;
+        -moz-box-pack: center;
+        box-pack: center;
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        box-align: center;
+
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .ui-editor-toolbar {
+        width: 100% !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 0;
+        border-top: none;
+    }
+
+    .ui-dialog-titlebar {
+        position: fixed !important;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        border-radius: 0;
+    }
 }
 
-.ui-editor-dock-docked .ui-editor-inner {
-    padding: 5px;
-    border-top: none;
-    width: 100%;    
-    
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    box-pack: center;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    box-align: center;
-     
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.ui-editor-dock-docked .ui-editor-toolbar {
-    width: 100% !important;
-    position: fixed;
-    top: 0;
-    left: 0;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+/******************************************************************************\
+ * Dialog docked to element
+\******************************************************************************/
+.ui-editor-dock-docked-to-element {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    border: 0 none;
     padding: 0;
-    border-top: none;
+    margin: 0;
+    
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: box !important;
+    
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+    
+    .ui-editor-toolbar {
+        -webkit-box-ordinal-group: 1;
+        -moz-box-ordinal-group: 1;
+        box-ordinal-group: 1;
+        border: 0 none;
+        padding: 0;
+        margin: 0;
+    }
+    .ui-dialog-titlebar {
+        -webkit-box-ordinal-group: 3;
+        -moz-box-ordinal-group: 3;
+        box-ordinal-group: 3;
+        border: 0 none;
+        margin: 0;
+    }
+    [contenteditable=true] {
+        -webkit-box-ordinal-group: 2;
+        -moz-box-ordinal-group: 2;
+        box-ordinal-group: 2;
+        border: 0 none;
+        padding: 0;
+        margin: 0;
+    }
 }
 
-.ui-editor-dock-docked .ui-dialog-titlebar {
-    position: fixed !important;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    border-radius: 0;
+.ui-editor-dock-dock-wrapper {
+    position: relative;
 }
 
+/******************************************************************************\
+ * Spacer
+\******************************************************************************/
 .ui-editor-dock-spacer {
     display: none;
 }
 
-/* Messages */
-.ui-editor-dock-docked .ui-editor-toolbar .ui-editor-messages {
+
+/******************************************************************************\
+ * Messages
+\******************************************************************************/
+.ui-editor-dock-docked .ui-editor-messages {
+    position: absolute;
     padding: 0;
     margin: 0 auto 10px;
-    width: 50%;
-    min-width: 500px;
+    width: 100%;
     text-align: left;
+    
+    .ui-editor-message-wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+    
+    .ui-editor-message-wrapper:first-child {
+        -webkit-border-top-left-radius: 0px;
+        -webkit-border-top-right-radius: 0px;
+        -moz-border-radius-topleft: 0px;
+        -moz-border-radius-topright: 0px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
 }

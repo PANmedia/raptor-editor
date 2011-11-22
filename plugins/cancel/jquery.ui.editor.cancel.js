@@ -6,9 +6,11 @@ console.info('TODO: make cancel function avalible as a plugin');
 $.ui.editor.registerUi({
     cancel: function(editor, options) {
         function cancel() {
-            editor.resetHtml();
-            editor.hideToolbar();
-            editor.disableEditing();
+            editor.unify(function(editor) {
+                editor.resetHtml();
+                editor.hideToolbar();
+                editor.disableEditing();
+            });
         }
         
         this.ui = editor.uiButton({
@@ -52,16 +54,6 @@ $.ui.editor.registerUi({
                         }
                     });
                 }
-//                editor.resetHtml();
-//                editor.hideToolbar();
-//                editor.disableEditing();
-//                this._dialog.confirmation.show.call(this, {
-//                    message: _('Are you sure you want to stop editing? <br/><br/>All changes will be lost!'),
-//                    title: _('Confirm Cancel Editing'),
-//                    ok: function(){
-//                        destroy();
-//                    }
-//                });
             }
         });
     }
