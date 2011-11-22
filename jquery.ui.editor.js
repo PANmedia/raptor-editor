@@ -595,10 +595,7 @@ var _;
                 show: editor.options.dialogShowAnimation,
                 hide: editor.options.dialogHideAnimation,
                 open: function(event, ui) {
-                    $(editor).css('overflow', 'visible');
-                    $(editor).parent()
-                        .css('position', 'fixed')
-                        .prop('unselectable', true)
+                    $(editor.toolbar).parent()
                         .find('.ui-dialog-titlebar-close', ui)
                         .remove();
                 }
