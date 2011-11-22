@@ -1,26 +1,12 @@
 (function() {
         
-    $.ui.editor.registerPlugin('unsaved-edit-warning', function(editor, options) {
-        var plugin = this;
-        var warning = $(editor.getTemplate('unsavededitwarning.warning'))
-                .hide()
-                .appendTo('body')
-                .hover(function() {
-                    $(this).stop().animate({opacity: 1});
-                }, function() {
-                    $(this).stop().animate({opacity: options.contentIdleOpacity});
-                });
-        
+    $.ui.editor.registerPlugin('unsaved-edit-warning', {
         // Default options
-        options = $.extend({}, {
-            contentTooltipPosition: 'bottom',
-            contentTooltipMaxWidth: 'auto',
+        options: {
             contentClass: '',
-            animation: 'fade',
             position: {
                 collision: 'right bottom',
                 at: 'right bottom',
-                of: editor.element,
                 my: 'right bottom',
                 using: function(position) {
                     $(this).css({
@@ -29,47 +15,46 @@
                         left: position.left
                     });
                 }
-            },
-            contentIdleOpacity: 0.5,
-            dataName: 'uiWidgetEditorUnsavedEdits'
-        }, options);
+            }
+        },
+        
+        init: function(editor, options) {
+            this.warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))
+                .appendTo('body');
 
-        this.show = function() {
+            editor.bind('change', function() {
+                if (editor.isDirty()) this.show();
+                else this.hide();
+            }, this);
+
+            editor.bind('destroy', function() {
+                this.warning.remove();
+            }, this);
+        },
+        
+        show: function() {
             this.reposition();
-            if (!warning.is(':visible') && !warning.is(':animated')) {
-                warning.show(options.animation, function() {
-                    $(this).animate({opacity: options.contentIdleOpacity});
-                });
-            }
-        }
+            this.warning.addClass(this.options.baseClass + '-visible');
+        },
 
-        this.hide = function() {
-            if (warning.is(':visible') && !warning.is(':animated')) {
-                warning.hide(options.animation);
-            }
-        }
+        hide: function() {
+            this.warning.removeClass(this.options.baseClass + '-visible');
+        },
 
-        this.reposition = function() {
-            warning.position(options.position);
+        reposition: function() {
+            this.options.position.of = this.editor.element;
+            this.warning.position(this.options.position);
         }
-        
-        editor.bind('change', function() {
-            if (editor.isDirty()) plugin.show();
-            else plugin.hide();
-        });
-        
-        editor.bind('destroy', function() {
-            warning.remove();
-        })
     });
 
     $.ui.editor.bind('resize', function() {
-        $.each(this.getInstances(), function() {
-            var plugin = this.getPlugin('unsavedEditWarning');
+        var instances = this.getInstances();
+        for (var i in instances) {
+            var plugin = instances[i].getPlugin('unsavedEditWarning');
             if (plugin) {
                 plugin.reposition();
             }
-        });
+        };
     });
     
 })();

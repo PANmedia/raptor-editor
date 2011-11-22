@@ -9,7 +9,9 @@ console.info('TODO: make a way to disable all buttons then selectivly enable one
  *   change
  *     Triggers when ever the element content is change, or the selection is changed
  *   ready
- *     Trigger after the editor has been initialised, (but possibly before the editor is showen and enabled)
+ *     Triggers after the editor has been initialised, (but possibly before the editor is showen and enabled)
+ *   show
+ *   hide
  *
  */
 
@@ -98,9 +100,11 @@ var _;
             ui: {},
             
             locale: '',
+            unify: true,
             customTooltips: true,
             persistence: true,
             persistenceName: 'uiEditor',
+            urlPrefix: '/jquery.ui.editor/',
             
             cssPrefix: 'cms-',
             baseClass: 'ui-editor',
@@ -108,33 +112,20 @@ var _;
             dialogClass: 'ui-editor-dialog',
             dialogShowAnimation: 'fade',
             dialogHideAnimation: 'fade',
+            dialogPosition: [5, 47],
+
+            uiOrder: null
+        },
+
+
+        /**********************************************************************\
+         * Constructor
+        \**********************************************************************/
+        _init: function() {
+            instances.push(this);
             
-            toolbarPosition: [5, 47],
-            toolbarSaveIndividualPositions: false,
-
-            targetAnimationOutlineColour: 'rgb(134, 213, 124)',
-            targetAnimationOutlineWidth: 1,
-            targetAnimationBackgroundColour: 'rgb(241, 250, 239)',
-            targetAnimation: function() {
-                var originalOutlineColour = this.element.css('outline-color'),
-                    originalOutlineWidth = this.element.css('outline-width'),
-                    originalBackgroundColour = this.element.css('background-color'),
-                    editorInstance = this;
-
-                this.element.stop().animate({
-                    outlineColor: this.options.targetAnimationOutlineColour,
-                    outlineWidth: this.options.targetAnimationOutlineWidth,
-                    backgroundColor: this.options.targetAnimationBackgroundColour
-                }, function() {
-                    editorInstance.element.animate({
-                        outlineColor: originalOutlineColour,
-                        outlineWidth: originalOutlineWidth,
-                        backgroundColor: originalBackgroundColour
-                    });
-                });
-            },
-
-            uiOrder: [
+            // Set the options after the widget initialisation, because jQuer UI widget trys to extend the array (and breaks it)
+            this.options.uiOrder = this.options.uiOrder || [
                 ['dock'],
                 ['save', 'cancel', 'show-guides'],
                 ['view-source'],
@@ -148,21 +139,7 @@ var _;
                 ['float-left', 'float-none', 'float-right'],
                 ['tag-menu'],
                 ['i18n']
-            ],
-
-            titleVisible: true,
-            titleDefault: 'jQuery UI Editor Controls',
-            titleTags: true,
-            
-            urlPrefix: '/jquery.ui.editor/'
-        },
-
-
-        /**********************************************************************\
-         * Constructor
-        \**********************************************************************/
-        _init: function() {
-            instances.push(this);
+            ];
 
             this.ready = false;
             this.toolbar = null; 
@@ -529,6 +506,17 @@ var _;
         isRoot: function(element) {
             return this.element[0] == element[0];
         },
+        
+        unify: function(callback) {
+            callback(this);
+            if (this.options.unify) {
+                for (var i in instances) {
+                    if (instances[i] != this) {
+                        callback(instances[i]);
+                    }
+                }
+            }
+        },
 
         /**********************************************************************\
          * Messages
@@ -542,13 +530,24 @@ var _;
 
             var editor = this;
             $.each(messages, function(i, message) {
-                message = $(editor.getTemplate('message', {
+                var message = $(editor.getTemplate('message', {
                     type: type,
                     message: message
-                }));
-                message.hide();
-                message.appendTo(editor.selMessages());
-                message.slideDown().delay(5000).slideUp(function() { message.remove(); });
+                }))
+                message
+                    .hide()
+                    .appendTo(editor.selMessages())
+                    .slideDown()
+                    .delay(5000)
+                    .slideUp(function() { 
+                        message.remove(); 
+                    })
+                    .find('.ui-editor-message-close')
+                    .click(function() { 
+                        message.stop().slideUp(function() { 
+                            message.remove(); 
+                        }) 
+                    });
             });
         },
         
@@ -581,7 +580,7 @@ var _;
             editor.toolbar = $('<div class="' + editor.options.baseClass + '-toolbar"/>');
             editor.toolbar.append('<div class="' + editor.options.baseClass + '-inner"/>');
             editor.toolbar.dialog({
-                position: $.isFunction(editor.options.toolbarPosition) ? editor.options.toolbarPosition() : editor.options.toolbarPosition,
+                position: $.isFunction(editor.options.dialogPosition) ? editor.options.dialogPosition() : editor.options.dialogPosition,
                 resizable: false,
                 closeOnEscape: false,
                 width: 'auto',
@@ -594,6 +593,14 @@ var _;
                 dialogClass: editor.options.dialogClass,
                 show: editor.options.dialogShowAnimation,
                 hide: editor.options.dialogHideAnimation,
+                dragStop: function() {
+                    if (editor.options.unify) {
+                        var pos = editor.selDialog().position()
+                        for (var i in instances) {
+                            instances[i].toolbar.dialog('option', 'position', [pos.left, pos.top]);
+                        }
+                    }
+                },
                 open: function(event, ui) {
                     $(editor.toolbar).parent()
                         .find('.ui-dialog-titlebar-close', ui)
@@ -606,14 +613,39 @@ var _;
             });
         },
         
-        showToolbar: function() {
+        showToolbar: function(instant) {
+            // If unify option is set, hide all other toolbars first
+            if (this.options.unify) {
+                for (var i in instances) {
+                    instant = instant || (instances[i].options.show && instances[i].options.unify);
+                }
+                this.hideOtherToolbars(instant);
+            }
             this.options.show = true;
-            this.toolbar.dialog().dialog('open');
+            if (instant) {
+                this.selDialog().show();
+            } 
+            this.selToolbar().dialog('open');
+            this.trigger('show');
+            this.trigger('resize');
         },
         
-        hideToolbar: function() {
+        hideToolbar: function(instant) {
             this.options.show = false;
-            this.toolbar.dialog().dialog('close');
+            if (instant) {
+                this.selDialog().hide();
+            }
+            this.selToolbar().dialog('close');
+            this.trigger('hide');
+            this.trigger('resize');
+        },
+        
+        hideOtherToolbars: function(instant) {
+            for (var i in instances) {
+                if (instances[i] != this) {
+                    instances[i].hideToolbar(instant);
+                }
+            }
         },
 
         /**********************************************************************\
@@ -1125,23 +1157,17 @@ var _;
             for (var name in plugins) {
                 var plugin = plugins[name];
                 
+                // Create a new instance of the UI
+                // UI is an object (extended for defaultUi)
+                var pluginObject = $.extend({}, plugin);
+                
                 var options = $.extend({}, editor.options, {
                     baseClass: editor.options.baseClass + '-' + name
-                }, editor.options.plugins[name]);
+                }, pluginObject.options, editor.options.plugins[name]);
                 
-                // Create a new instance of the UI
-                var pluginObject;
-
-                if ($.isFunction(plugin)) {
-                    // UI is a constructor
-                    pluginObject = new plugin(editor, options);
-                } else {
-                    // UI is an object (extended for defaultUi)
-                    pluginObject = $.extend({}, plugin);
-                    pluginObject.editor = editor;
-                    pluginObject.options = options;
-                    pluginObject.init(editor, options);
-                }
+                pluginObject.editor = editor;
+                pluginObject.options = options;
+                pluginObject.init(editor, options);
                 
                 editor.plugins[name] = pluginObject;
             };
@@ -1166,7 +1192,7 @@ var _;
         },
         
         setHtml: function(html) {
-            return this.element.html(html);
+            this.element.html(html);
             this.trigger('change');
         },
         
@@ -1315,14 +1341,14 @@ var _;
                 value = this.editor.persist(key, value);
                 return value;
             },
-            bind: function(name, callback) {
+            bind: function(name, callback, context) {
                 if (!this.bindings[name]) this.bindings[name] = [];
                 this.bindings[name].push(callback);
-                this.editor.bind(name, callback, this);
+                this.editor.bind(name, callback, context || this);
             },
-            unbind: function(name, callback) {
+            unbind: function(name, callback, context) {
                 unbind(this.events[name], callback);
-                this.editor.unbind(name, callback, this);
+                this.editor.unbind(name, callback, context || this);
             },
             trigger: function(name) {
                 this.editor.trigger(name);
