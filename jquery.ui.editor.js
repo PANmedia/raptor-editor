@@ -7,6 +7,7 @@ console.info('FIXME: custom tooltips');
 console.info('FIXME: Check for localStorage or use jquery cookie');
 console.info('FIXME: updateTagTree click bindings');
 console.info('FIXME: updateTagTree should filter out duplicates');
+console.info('FIXME: Check for duplicate elements in getSelectedElements');
 
 /**
  *
@@ -18,7 +19,13 @@ console.info('FIXME: updateTagTree should filter out duplicates');
  *   ready
  *     Triggers after the editor has been initialised, (but possibly before the editor is showen and enabled)
  *   show
+ *     Triggers when the toolbar/dialog is showen
  *   hide
+ *     Triggers when the toolbar/dialog is hidden
+ *   enabled
+ *     Triggers when the editing is enabled on the element
+ *   disabled
+ *     Triggers when the editing is disabled on the element
  *
  */
 
@@ -27,11 +34,21 @@ var _;
 (function() {
     
     // <strict>
+    
     // Ensure jQuery has been included
     if (!$) console.error(_('jQuery is required'));
+    
     // Ensure jQuery UI has been included
     if (!$.ui) console.error(_('jQuery UI is required'));
+    
     // </strict>
+    
+    // <debug>
+    var MIN = 100;
+    var MID = 500;
+    var MAX = 1000;
+    var debugLevel = MIN;
+    // </debug>
 
     function initialise() {
         // <strict>
@@ -40,7 +57,7 @@ var _;
             // Ensure dialog has been included
             if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
             // Warn that no internationalizations have been loaded
-            if (!plugins.i18n) console.info(_('No internationalizations have been loaded, defaulting to English'));
+            //if (!plugins.i18n) console.info(_('No internationalizations have been loaded, defaulting to English'));
         // </strict>
         
 //            // <debug>
@@ -106,7 +123,10 @@ var _;
             customTooltips: true,
             persistence: true,
             persistenceName: 'uiEditor',
+            
             autoEnable: false,
+            enableUi: true,
+            enablePlugins: true,
             
             replace: false,
             replaceStyle: [
@@ -153,6 +173,7 @@ var _;
                 this.element.attr('id', $.ui.editor.getUniqueId());
             }
             
+            this.reiniting = this.reiniting || false;
             this.ready = false;
             this.toolbar = null; 
             this.events = {}; 
@@ -195,6 +216,7 @@ var _;
             
             if (this.options.autoEnable) {
                 this.enableEditing();
+                this.showToolbar();
             }
         },
 
@@ -225,6 +247,9 @@ var _;
         },
         
         reinit: function() {
+            // <debug>
+            console.info('Reinitialising editor');
+            // </debug>
             if (!this.ready) {
                 // If the edit is still initialising, wait until its ready
                 var reinit;
@@ -237,8 +262,10 @@ var _;
                 return;
             }
             // We are ready, so we can run reinit now
+            this.reiniting = true;
             this.destroy(this);
             this._init();
+            this.reiniting = false;
         },
         
         getElement: function() {
@@ -273,7 +300,11 @@ var _;
         \**********************************************************************/
         destroy: function(reinit) {
             // Disable editing unless we are re initialising
-            if (!reinit) this.disableEditing();
+            if (!this.reiniting) {
+                this.hideToolbar();
+                this.disableEditing();
+            }
+            
             
             // Destroy all UI objects
             for (var i in this.ui) {
@@ -489,7 +520,7 @@ var _;
          * Other Functions
         \**********************************************************************/
         enableEditing: function() {
-            if (!this.options.enabled) {
+            if (!this.options.enabled || this.reiniting) {
                 this.options.enabled = true;
                 this.getElement().attr('contenteditable', true)
                             .addClass(this.options.baseClass + '-editing');
@@ -670,14 +701,14 @@ var _;
                         .remove();
                 }
             });
-
+            
             editor.bind('destroy', function() {
                 editor.toolbar.dialog('destory').remove();
             });
         },
         
         showToolbar: function(instant) {
-            if (!this.options.show) {
+            if (!this.options.show || this.reiniting) {
                 // If unify option is set, hide all other toolbars first
                 if (this.options.unify) {
                     var otherEnabled = false;
@@ -722,6 +753,10 @@ var _;
         
         isToolbarVisible: function() {
             return this.options.show;
+        },
+        
+        dialog: function() {
+            return this.toolbar.dialog.apply(this.toolbar, arguments);
         },
 
         /**********************************************************************\
@@ -846,7 +881,6 @@ var _;
                 } else {
                     commonAncestor = this.commonAncestorContainer;
                 }
-                console.info('Check for duplicate elements');
                 result.push(commonAncestor);
             });
             return result;
@@ -983,29 +1017,32 @@ var _;
                 
                 // Loop each UI in the array
                 for (var j in uiSet) {
-                    var ui = uiSet[j];
+                    // Check if we are not automaticly enabling UI, and if not, check if the UI was manually enabled
+                    if (!this.options.enableUi &&
+                            !this.options.ui[uiSet[j]]) continue;
+                    
                     // Check the UI has been registered
-                    if (registeredUi[ui]) {
+                    if (registeredUi[uiSet[j]]) {
                         var options = $.extend({}, editor.options, {
-                            baseClass: editor.options.baseClass + '-ui-' + ui
-                        }, options, editor.options.ui[ui])
+                            baseClass: editor.options.baseClass + '-ui-' + uiSet[j]
+                        }, options, editor.options.ui[uiSet[j]])
                         
                         // Create a new instance of the UI
                         var uiObject;
                         
-                        if ($.isFunction(registeredUi[ui])) {
+                        if ($.isFunction(registeredUi[uiSet[j]])) {
                             // UI is a constructor
-                            uiObject =  new registeredUi[ui](editor, options);
+                            uiObject =  new registeredUi[uiSet[j]](editor, options);
                         } else {
                             // UI is an object (extended for defaultUi)
-                            uiObject = $.extend({}, registeredUi[ui]);
+                            uiObject = $.extend({}, registeredUi[uiSet[j]]);
                             uiObject.editor = editor;
                             uiObject.options = options;
                             uiObject.ui = uiObject.init(editor, options);
                         }
                         
                         // Append the UI object to the group
-                        uiObject.ui.init(ui, editor).appendTo(uiGroup);
+                        uiObject.ui.init(uiSet[j], editor).appendTo(uiGroup);
                     }
                     // <strict>
                     else {
@@ -1018,7 +1055,9 @@ var _;
                 }
                 
                 // Append the UI group to the editor toolbar
-                uiGroup.appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
+                if (uiGroup.children().length > 0) {
+                    uiGroup.appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
+                }
             };
         },
         
@@ -1202,11 +1241,12 @@ var _;
             var editor = this;
             if (!this.options.plugins) this.options.plugins = {};
             for (var name in plugins) {
-                var plugin = plugins[name];
-                
-                // Create a new instance of the UI
-                // UI is an object (extended for defaultUi)
-                var pluginObject = $.extend({}, plugin);
+                // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
+                if (!this.options.enablePlugins &&
+                        !this.options.plugins[name]) continue;
+                    
+                // Clone the plugin object (which should be extended from the defaultPlugin object)
+                var pluginObject = $.extend({}, plugins[name]);
                 
                 var options = $.extend({}, editor.options, {
                     baseClass: editor.options.baseClass + '-' + name
@@ -1301,7 +1341,7 @@ var _;
         },
         
         setLocale: function(key) {
-            if ($.ui.editor.currentLocale != key) {
+            if ($.ui.editor.currentLocale !== key) {
                 $.ui.editor.currentLocale = key;
                 this.reinit();
             }
@@ -1446,7 +1486,7 @@ var _;
             trigger: function(name) {
                 this.editor.trigger(name);
             }, 
-            destory: function() {
+            destroy: function() {
             }
         },
         
@@ -1478,7 +1518,7 @@ var _;
 
         trigger: function(name) {
             // <debug>
-            console.info('Calling jquery-ui-editor global/static event: ' + name);
+            if (debugLevel === MAX) console.info('Calling jquery-ui-editor global/static event: ' + name);
             // </debug>
             if (!events[name]) return;
             for (var i in events[name]) {
@@ -1555,16 +1595,16 @@ var _;
         // <debug>
         var result = [];
         for (var key in registeredUi) result.push(key);
-        console.info(_('UI loaded: {{ui}} ', {ui: result.join(', ')}));
+        if (debugLevel >= MID) console.info(_('UI loaded: {{ui}} ', {ui: result.join(', ')}));
         
         result = [];
         for (key in plugins) result.push(key);
-        console.info(_('Plugins loaded: {{plugins}} ', {plugins: result.join(', ')}));
+        if (debugLevel >= MID) console.info(_('Plugins loaded: {{plugins}} ', {plugins: result.join(', ')}));
 
         // <debug>
         result = [];
         for (var key in $.ui.editor.translations) result.push(key);
-        console.info(_('Locales loaded: {{translations}} ', {translations: result.join(', ')}));
+        if (debugLevel >= MID) console.info(_('Locales loaded: {{translations}} ', {translations: result.join(', ')}));
         // </debug>
     });
     
