@@ -159,6 +159,7 @@ var _;
                         var k = $.inArray(this.options.uiDisable[i], this.options.uiOrder[j]);
                         if (k != -1) {
                             this.options.uiOrder[j].splice(k, 1);
+                            if (!this.options.uiOrder[j].length) this.options.uiOrder.splice(j, 1);
                         }
                     }
                 }
