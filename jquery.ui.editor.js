@@ -1440,16 +1440,19 @@ var _;
         },
         
         isDirty: function() {
-            var editors = this.getInstances();
-            for (var i in editors) {
-                if (editors[i].isDirty()) return true;
+            var instances = this.getInstances();
+            for (var i in instances) {
+                if (instances[i].isDirty()) return true;
             }
             return false;
         },
         
         unloadWarning: function() {
-            if (this.isDirty() && this.options.unloadWarning) {
-                return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
+            var instances = this.getInstances();
+            for (var i in instances) {
+                if (instances[i].isDirty() && instances[i].options.unloadWarning) {
+                    return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
+                }
             }
         },
         
