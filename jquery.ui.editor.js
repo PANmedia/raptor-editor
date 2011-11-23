@@ -1083,10 +1083,12 @@ var _;
                 if (!this.title) this.title = _('Unnamed Button');
                 
                 // Create the HTML button
-                ui.button = $('<button/>').html(ui.title)
+                ui.button = $('<button/>')
+                    .html(ui.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
                     .attr('title', ui.title)
+                    .attr('type', 'button')
                     .val(name);
 
                 if (options.classes) ui.button.addClass(options.classes);
