@@ -1428,12 +1428,9 @@ var _;
         \**********************************************************************/
         currentLocale: null,
         locales: {},
-        localeNames: {
-            zh_CN: '简体中文',
-            en: 'English'
-        },
+        localeNames: {},
         
-        registerLocale: function(name, strings) {
+        registerLocale: function(name, nativeName, strings) {
             // <strict>
             if (this.locales[name]) {
                 console.error(_('Locale "{{localeName}}" has already been registered, and will be overwritten', { localeName: name }));
@@ -1441,6 +1438,7 @@ var _;
             // </strict>
 
             this.locales[name] = strings;
+            this.localeNames[name] = nativeName;
             if (!this.currentLocale) this.currentLocale = name;
         },
         
