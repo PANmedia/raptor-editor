@@ -29,12 +29,13 @@
                     .hide();
             }
             
-            this.docked = this.persist('docked');
+            this.docked = false;
                 
             this.bind('enabled', this.enable);
             this.bind('disabled', this.disable);
             this.bind('show', spacer.show, spacer);
             this.bind('hide', spacer.hide, spacer);
+            this.bind('destroy', this.undock, this);
         },
         
         dockToElement: function() {
@@ -66,7 +67,7 @@
                 parseInt(this.editor.getElement().css('padding-right'))/* +
                 parseInt(this.editor.getElement().css('border-right-width')) +
                 parseInt(this.editor.getElement().css('border-left-width'))*/);
-
+            
             this.editor.getElement()
                 .appendTo(this.editor.selDialog())
                 .addClass(this.options.baseClass + '-docked-element');
@@ -83,11 +84,13 @@
                 }
 
                 // Trigger the editor resize event to adjust other plugin element positions
-                dock.editor.trigger('resize');
+                dock.editor.fire('resize');
             }, 1, this);
         },
         
         dock: function() {
+            if (this.docked) return;
+            
             // Save the state of the dock
             this.docked = this.persist('docked', true);
             
@@ -109,6 +112,7 @@
         
         undockFromElement: function() {
             var wrapper = this.editor.selDialog().parent();
+            
             this.editor.getElement()
                 .insertAfter(wrapper)
                 .removeClass(this.options.baseClass + '-docked-element');
@@ -133,6 +137,8 @@
         },
         
         undock: function() {
+            if (!this.docked) return;
+            
             // Save the state of the dock
             this.docked = this.persist('docked', false);
             
@@ -152,7 +158,7 @@
             }
             
             // Trigger the editor resize event to adjust other plugin element positions
-            this.editor.trigger('resize');
+            this.editor.fire('resize');
         },
         
         isDocked: function() {
@@ -167,10 +173,6 @@
         
         disable: function() {
             spacer.hide();
-        },
-        
-        destory: function() {
-            spacer.remove();
         }
     });
     

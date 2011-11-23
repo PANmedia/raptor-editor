@@ -19,7 +19,9 @@
         },
         
         init: function(editor, options) {
+            console.debug('unsaved-edit-warning init');
             this.warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))
+                .attr('id', editor.getUniqueId())
                 .appendTo('body');
 
             editor.bind('change', function() {
@@ -28,7 +30,9 @@
             }, this);
 
             editor.bind('destroy', function() {
+            console.debug('unsaved-edit-warning dest');
                 this.warning.remove();
+                this.warning = null;
             }, this);
         },
         
@@ -44,6 +48,11 @@
         reposition: function() {
             // Have to use the ID because if given the element, the browser will memory leak and crash
             this.options.position.of = '#' + this.editor.getElement().attr('id');
+            // <strict>
+            if (!$(this.options.position.of).length) {
+                throw 'Editor element has been removed, unsaved edit warning plugin cannot reposition'; 
+            }
+            // </strict>
             this.warning.position(this.options.position);
         }
     });
