@@ -30,12 +30,19 @@
             this.docked = this.persist('docked', true);
             
             if (this.options.dockToElement) {
+                console.debug(this.editor.getElement().width());
+                console.debug(this.editor.getElement().outerWidth());
+                
                 this.editor.selDialog()
-                    .insertBefore(this.editor.element)
+                    .insertBefore(this.editor.getElement())
                     .addClass(this.options.baseClass + '-docked-to-element');
-                this.editor.element.appendTo(this.editor.selDialog());
-                var style = this.editor.getComputedStyle(this.editor.element);
-                swapStyle(this.editor.selDialog().wrapAll('<div/>').parent().addClass('ui-widget-content'), this.editor.element, {
+                
+                var wrapper = this.editor.selDialog()
+                    .wrapAll('<div/>')
+                    .parent()
+                    .addClass(this.options.baseClass + '-docked-to-element-wrapper ui-widget-content');
+
+                swapStyle(wrapper, this.editor.getElement(), {
                     'diaplay': 'block',
                     'float': 'none',
                     'clear': 'none',
@@ -44,12 +51,14 @@
                     'margin-right': 0,
                     'margin-top': 0,
                     'margin-bottom': 0,
-                    'outline': 0
+                    'outline': 0,
+                    'width': 'auto'
                 });
-                //this.editor.element.addClass(this.options.baseClass + '-docked-element');
+                    
+                this.editor.getElement().appendTo(this.editor.selDialog());
+                //this.editor.getElement().addClass(this.options.baseClass + '-docked-element');
             } else {
                 this.editor.selDialog().addClass(this.options.baseClass + '-docked')
-            
                 // Reinitialise spacer when the toolbar is visible and stoped animating
                 window.setTimeout(function(dock) {
                     // Show the spacer 
@@ -60,7 +69,7 @@
 
                     // Trigger the editor resize event to adjust other plugin element positions
                     dock.editor.trigger('resize');
-                }, 100, this);
+                }, 1, this);
             }
             
             // Change the dock button icon
