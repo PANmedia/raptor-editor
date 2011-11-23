@@ -1279,7 +1279,7 @@ var _;
                         !this.options.plugins[name]) continue;
                     
                 // Check if we have explicitly disabled the plugin
-                if ($.inArray(plugins[name], this.options.disabledUi) !== -1) continue;
+                if ($.inArray(name, this.options.disabledPlugins) !== -1) continue;
                     
                 // Clone the plugin object (which should be extended from the defaultPlugin object)
                 var pluginObject = $.extend({}, plugins[name]);
