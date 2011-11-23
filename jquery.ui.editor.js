@@ -131,9 +131,12 @@ var _;
             enableUi: true,
             enablePlugins: true,
             
+            uiOrder: null,
+            disabledUi: null,
+            
             replace: false,
             replaceStyle: [
-                'display', 'position', 'float', 'width', 'height',
+                'display', 'position', 'float', 'width',
                 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
                 'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
             ],
@@ -142,10 +145,8 @@ var _;
             baseClass: 'ui-editor',
             
             dialogClass: 'ui-editor-dialog',
-            dialogPosition: [5, 47],
+            dialogPosition: [5, 47]
 
-            uiOrder: null,
-            uiDisable: null
         },
 
 
@@ -171,19 +172,6 @@ var _;
                 ['tag-menu'],
                 ['i18n']
             ];
-            
-            // Remove individual ui elements 
-            if ($.isArray(this.options.uiDisable)) {
-                for (i in this.options.uiDisable) {
-                    for (var j = 0; j < this.options.uiOrder.length; j++) {
-                        var k = $.inArray(this.options.uiDisable[i], this.options.uiOrder[j]);
-                        if (k != -1) {
-                            this.options.uiOrder[j].splice(k, 1);
-                            if (!this.options.uiOrder[j].length) this.options.uiOrder.splice(j, 1);
-                        }
-                    }
-                }
-            }
             
             // Give the element a unique ID
             if (!this.element.attr('id')) {
@@ -1037,6 +1025,9 @@ var _;
                     // Check if we are not automaticly enabling UI, and if not, check if the UI was manually enabled
                     if (!this.options.enableUi &&
                             !this.options.ui[uiSet[j]]) continue;
+                        
+                    // Check if we have explicitly disabled UI 
+                    if ($.inArray(uiSet[j], this.options.disabledUi)) continue;
                     
                     // Check the UI has been registered
                     if (registeredUi[uiSet[j]]) {
