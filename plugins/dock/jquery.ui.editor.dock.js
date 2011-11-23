@@ -52,7 +52,7 @@
                 'display': 'block',
                 'float': 'none',
                 'clear': 'none',
-                'position': 'relative',
+                'position': 'static',
                 'margin-left': 0,
                 'margin-right': 0,
                 'margin-top': 0,
