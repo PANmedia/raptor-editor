@@ -5,10 +5,10 @@ $.ui.editor.registerUi({
             title: _('Show Guides'),
             icon: 'ui-icon-pencil',
             click: function() {
-                editor.element.toggleClass(options.baseClass + '-guides');
+                editor.getElement().toggleClass(options.baseClass + '-guides');
             },
             destroy: function() {
-                editor.element.removeClass(options.baseClass + ' -guides');
+                editor.getElement().removeClass(options.baseClass + ' -guides');
             }
         });
     }
