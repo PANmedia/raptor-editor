@@ -17,7 +17,7 @@ console.info('FIXME: Check for duplicate elements in getSelectedElements');
  *   change
  *     Triggers when ever the element content is change, or the selection is changed
  *   ready
- *     Triggers after the editor has been initialised, (but possibly before the editor is showen and enabled)
+ *     Triggers after the editor has been initialised, (but possibly before the editor is shown and enabled)
  *   show
  *     Triggers when the toolbar/dialog is showen
  *   hide
@@ -56,6 +56,8 @@ var _;
             if (!rangy) console.error(_('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
             // Ensure dialog has been included
             if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
+            // Ensure dialog has been included
+            if (!$.ui.position) console.error(_('jQuery UI Position is required.'));
             // Warn that no internationalizations have been loaded
             //if (!plugins.i18n) console.info(_('No internationalizations have been loaded, defaulting to English'));
         // </strict>
@@ -123,6 +125,7 @@ var _;
             customTooltips: true,
             persistence: true,
             persistenceName: 'uiEditor',
+            unloadWarning: true,
             
             autoEnable: false,
             enableUi: true,
@@ -130,7 +133,7 @@ var _;
             
             replace: false,
             replaceStyle: [
-                'display', 'position', 'float', 'width', 
+                'display', 'position', 'float', 'width', 'height',
                 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
                 'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
             ],
@@ -141,7 +144,8 @@ var _;
             dialogClass: 'ui-editor-dialog',
             dialogPosition: [5, 47],
 
-            uiOrder: null
+            uiOrder: null,
+            uiDisable: null
         },
 
 
@@ -151,7 +155,7 @@ var _;
         _init: function() {
             $.ui.editor.instances.push(this);
             
-            // Set the options after the widget initialisation, because jQuer UI widget trys to extend the array (and breaks it)
+            // Set the options after the widget initialisation, because jQuery UI widget trys to extend the array (and breaks it)
             this.options.uiOrder = this.options.uiOrder || [
                 ['dock'],
                 ['save', 'cancel', 'show-guides'],
@@ -167,6 +171,19 @@ var _;
                 ['tag-menu'],
                 ['i18n']
             ];
+            
+            // Remove individual ui elements 
+            if ($.isArray(this.options.uiDisable)) {
+                for (i in this.options.uiDisable) {
+                    for (var j = 0; j < this.options.uiOrder.length; j++) {
+                        var k = $.inArray(this.options.uiDisable[i], this.options.uiOrder[j]);
+                        if (k != -1) {
+                            this.options.uiOrder[j].splice(k, 1);
+                            if (!this.options.uiOrder[j].length) this.options.uiOrder.splice(j, 1);
+                        }
+                    }
+                }
+            }
             
             // Give the element a unique ID
             if (!this.element.attr('id')) {
@@ -1431,7 +1448,7 @@ var _;
         },
         
         unloadWarning: function() {
-            if (this.isDirty()) {
+            if (this.isDirty() && this.options.unloadWarning) {
                 return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
             }
         },
