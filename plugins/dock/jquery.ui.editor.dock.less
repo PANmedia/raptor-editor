@@ -36,11 +36,12 @@
         position: fixed;
         top: 0;
         left: 0;
+        padding: 0;
+        border-top: none;
+        
         -moz-box-sizing: border-box;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        padding: 0;
-        border-top: none;
     }
 
     .ui-dialog-titlebar {
@@ -89,6 +90,7 @@
     .ui-editor-toolbar {
         padding: 0;
         margin: 0;
+        z-index: 2;
         
         -webkit-box-ordinal-group: 1;
         -moz-box-ordinal-group: 1;
@@ -120,11 +122,13 @@
 }
 
 .ui-editor-dock-docked-element {
+    margin: 0 !important;
+    display: block !important;
+    z-index: 1 !important;
+    
     -webkit-box-ordinal-group: 2 !important;
     -moz-box-ordinal-group: 2 !important;
     box-ordinal-group: 2 !important;
-    margin: 0 !important;
-    display: block !important;
 }
 
 /******************************************************************************\
