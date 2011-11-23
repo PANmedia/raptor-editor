@@ -16,7 +16,7 @@ console.info('FIXME: updateTagTree should filter out duplicates');
  *   change
  *     Triggers when ever the element content is change, or the selection is changed
  *   ready
- *     Triggers after the editor has been initialised, (but possibly before the editor is showen and enabled)
+ *     Triggers after the editor has been initialised, (but possibly before the editor is shown and enabled)
  *   show
  *   hide
  *
@@ -107,6 +107,7 @@ var _;
             persistence: true,
             persistenceName: 'uiEditor',
             autoEnable: false,
+            unloadWarning: true,
             
             replace: false,
             replaceStyle: [
@@ -1402,7 +1403,7 @@ var _;
         },
         
         unloadWarning: function() {
-            if (this.isDirty()) {
+            if (this.isDirty() && this.options.unloadWarning) {
                 return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
             }
         },
