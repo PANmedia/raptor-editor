@@ -442,6 +442,7 @@
         
         <!-- Append the style inserter -->
         <echo file="${buildpath}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+        
         <reflexive>
             <fileset dir="${buildpath}">
                 <include pattern="concat.min.css" />
@@ -450,6 +451,7 @@
                 <!-- Escape quotes -->
                 <replaceregexp>
                     <regexp pattern="'" replace="\'"/>
+                    <regexp pattern="\n" replace="\n\${line.separator}"/>
                 </replaceregexp>
             </filterchain>
         </reflexive>
