@@ -22,7 +22,6 @@
                     menu.append(option);
                 };
 
-                console.debug('test');
                 return editor.uiSelectMenu({
                     title: _('Change Language'),
                     select: menu,
