@@ -39,6 +39,8 @@ var _;
             if (!rangy) console.error(_('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
             // Ensure dialog has been included
             if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
+            // Ensure dialog has been included
+            if (!$.ui.position) console.error(_('jQuery UI Position is required.'));
             // Warn that no internationalizations have been loaded
             if (!plugins.i18n) console.info(_('No internationalizations have been loaded, defaulting to English'));
         // </strict>
@@ -155,7 +157,9 @@ var _;
                 for (i in this.options.uiDisable) {
                     for (var j = 0; j < this.options.uiOrder.length; j++) {
                         var k = $.inArray(this.options.uiDisable[i], this.options.uiOrder[j]);
-                        if (k != -1) this.options.uiOrder[j].splice(k, 1);
+                        if (k != -1) {
+                            this.options.uiOrder[j].splice(k, 1);
+                        }
                     }
                 }
             }
