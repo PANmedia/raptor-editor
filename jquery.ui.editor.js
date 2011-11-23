@@ -127,12 +127,23 @@ var _;
             persistenceName: 'uiEditor',
             unloadWarning: true,
             
+            // Switch to automaticly enabled editing on the element
             autoEnable: false,
-            enableUi: true,
+            
+            // Switch to specify if the editor should automaticly enable all plugins, if set to false, only the plugins specificed in the 'plugins' option object will be enabled
             enablePlugins: true,
             
+            // An array of explictaly disabled plugins
+            disabledPlugins: [],
+            
+            // And array of arrays denoting the order and grouping of UI elements in the toolbar
             uiOrder: null,
-            disabledUi: null,
+            
+            // Switch to specify if the editor should automaticly enable all UI, if set to false, only the UI specificed in the 'ui' option object will be enabled
+            enableUi: true,
+            
+            // An array of explictaly disabled UI elements
+            disabledUi: [],
             
             replace: false,
             replaceStyle: [
@@ -1027,7 +1038,7 @@ var _;
                             !this.options.ui[uiSet[j]]) continue;
                         
                     // Check if we have explicitly disabled UI 
-                    if ($.inArray(uiSet[j], this.options.disabledUi)) continue;
+                    if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
                     
                     // Check the UI has been registered
                     if (registeredUi[uiSet[j]]) {
@@ -1083,7 +1094,8 @@ var _;
                 if (!this.title) this.title = _('Unnamed Button');
                 
                 // Create the HTML button
-                ui.button = $('<button/>').html(ui.title)
+                ui.button = $('<button/>')
+                    .html(ui.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
                     .attr('title', ui.title)
@@ -1252,6 +1264,9 @@ var _;
                 // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
                 if (!this.options.enablePlugins &&
                         !this.options.plugins[name]) continue;
+                    
+                // Check if we have explicitly disabled the plugin
+                if ($.inArray(plugins[name], this.options.disabledUi) !== -1) continue;
                     
                 // Clone the plugin object (which should be extended from the defaultPlugin object)
                 var pluginObject = $.extend({}, plugins[name]);
