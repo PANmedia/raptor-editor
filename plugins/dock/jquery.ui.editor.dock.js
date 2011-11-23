@@ -2,10 +2,22 @@
     
     var spacer;
     
-    function swapStyle(element1, element2, style) {
+    function swapStyle(to, from, style) {
+        var result = {};
         for (var name in style) {
-            element1.css(name, element2.css(name));
-            element2.css(name, style[name]);
+            // Apply the style from the 'form' element to the 'to' element
+            to.css(name, from.css(name));
+            // Save the orignal style to revert the swap
+            result[name] = from.css(name);
+            // Apply the reset to the 'from' element'
+            from.css(name, style[name]);
+        }
+        return result;
+    }
+    
+    function revertStyle(to, style) {
+        for (var name in style) {
+            to.css(name, style[name]);
         }
     }
     
@@ -25,61 +37,97 @@
             this.bind('hide', spacer.hide, spacer);
         },
         
+        dockToElement: function() {
+            this.editor.selDialog()
+                .insertBefore(this.editor.getElement())
+                .addClass(this.options.baseClass + '-docked-to-element');
+
+            var wrapper = this.editor.selDialog()
+                .wrapAll('<div/>')
+                .parent()
+                .addClass(this.options.baseClass + '-docked-to-element-wrapper')
+                .addClass('ui-widget-content');
+
+            this.revertStyle = swapStyle(wrapper, this.editor.getElement(), {
+                'diaplay': 'block',
+                'float': 'none',
+                'clear': 'none',
+                'position': 'relative',
+                'margin-left': 0,
+                'margin-right': 0,
+                'margin-top': 0,
+                'margin-bottom': 0,
+                'outline': 0,
+                'width': 'auto'
+            });
+
+            wrapper.css('width', wrapper.width() + 
+                parseInt(this.editor.getElement().css('padding-left')) +
+                parseInt(this.editor.getElement().css('padding-right'))/* +
+                parseInt(this.editor.getElement().css('border-right-width')) +
+                parseInt(this.editor.getElement().css('border-left-width'))*/);
+
+            this.editor.getElement().appendTo(this.editor.selDialog());
+            //this.editor.getElement().addClass(this.options.baseClass + '-docked-element');
+        },
+        
+        dockToBody: function() {
+            this.editor.selDialog().addClass(this.options.baseClass + '-docked')
+            // Reinitialise spacer when the toolbar is visible and stoped animating
+            window.setTimeout(function(dock) {
+                // Show the spacer 
+                var toolbar = dock.editor.selToolbar();
+                if (toolbar.is(':visible')) {
+                    spacer.height(toolbar.outerHeight()).show();
+                }
+
+                // Trigger the editor resize event to adjust other plugin element positions
+                dock.editor.trigger('resize');
+            }, 1, this);
+        },
+        
         dock: function() {
             // Save the state of the dock
             this.docked = this.persist('docked', true);
             
             if (this.options.dockToElement) {
-                console.debug(this.editor.getElement().width());
-                console.debug(this.editor.getElement().outerWidth());
-                
-                this.editor.selDialog()
-                    .insertBefore(this.editor.getElement())
-                    .addClass(this.options.baseClass + '-docked-to-element');
-                
-                var wrapper = this.editor.selDialog()
-                    .wrapAll('<div/>')
-                    .parent()
-                    .addClass(this.options.baseClass + '-docked-to-element-wrapper ui-widget-content');
-
-                swapStyle(wrapper, this.editor.getElement(), {
-                    'diaplay': 'block',
-                    'float': 'none',
-                    'clear': 'none',
-                    'position': 'relative',
-                    'margin-left': 0,
-                    'margin-right': 0,
-                    'margin-top': 0,
-                    'margin-bottom': 0,
-                    'outline': 0,
-                    'width': 'auto'
-                });
-                    
-                this.editor.getElement().appendTo(this.editor.selDialog());
-                //this.editor.getElement().addClass(this.options.baseClass + '-docked-element');
+                this.dockToElement();
             } else {
-                this.editor.selDialog().addClass(this.options.baseClass + '-docked')
-                // Reinitialise spacer when the toolbar is visible and stoped animating
-                window.setTimeout(function(dock) {
-                    // Show the spacer 
-                    var toolbar = dock.editor.selToolbar();
-                    if (toolbar.is(':visible')) {
-                        spacer.height(toolbar.outerHeight()).show();
-                    }
-
-                    // Trigger the editor resize event to adjust other plugin element positions
-                    dock.editor.trigger('resize');
-                }, 1, this);
+                this.dockToBody();
             }
             
             // Change the dock button icon
             this.editor.selDialog()
                 .find('.' + this.options.baseClass + '-button')
-                .button({ icons: { primary: 'ui-icon-pin-w' } });
+                .button({icons: {primary: 'ui-icon-pin-w'}});
                 
             // Add the header class to the editor toolbar
             this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
                 .addClass('ui-widget-header');
+        },
+        
+        undockFromElement: function() {
+            var wrapper = this.editor.selDialog().parent();
+            this.editor.getElement()
+                .insertAfter(wrapper);
+            this.editor.selDialog()
+                .appendTo('body')
+                .removeClass(this.options.baseClass + '-docked-to-element');
+                
+            revertStyle(this.editor.getElement(), this.revertStyle);
+            
+            this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
+            
+            wrapper.remove();
+        },
+        
+        undockFromBody: function() {
+            // Remove the docked class
+            this.editor.selDialog()
+                .removeClass(this.options.baseClass + '-docked')
+            
+            // Hide the spacer 
+            spacer.hide();
         },
         
         undock: function() {
@@ -91,12 +139,15 @@
                 .removeClass('ui-widget-header');
                 
             // Change the dock button icon
-            this.editor.selDialog().removeClass(this.options.baseClass + '-docked')
+            this.editor.selDialog()
                 .find('.' + this.options.baseClass + '-button')
-                .button({ icons: { primary: 'ui-icon-pin-s' } });
+                .button({icons: {primary: 'ui-icon-pin-s'}});
                 
-            // Hide the spacer 
-            spacer.hide();
+            if (this.options.dockToElement) {
+                this.undockFromElement();
+            } else {
+                this.undockFromBody();
+            }
             
             // Trigger the editor resize event to adjust other plugin element positions
             this.editor.trigger('resize');
