@@ -4,7 +4,7 @@ $.ui.editor.registerUi({
             return this.editor.uiButton({
                 title: _('Bold'),
                 click: function() {
-                    this.editor.toggleWrapper('strong');
+                    editor.toggleWrapper('strong');
                 }
             });
         }
