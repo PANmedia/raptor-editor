@@ -110,7 +110,7 @@ var _;
             
             replace: false,
             replaceStyle: [
-                'display', 'position', 'float', 'width', 
+                'display', 'position', 'float', 'width', 'height',
                 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
                 'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
             ],
@@ -131,7 +131,7 @@ var _;
         _init: function() {
             $.ui.editor.instances.push(this);
             
-            // Set the options after the widget initialisation, because jQuer UI widget trys to extend the array (and breaks it)
+            // Set the options after the widget initialisation, because jQuery UI widget trys to extend the array (and breaks it)
             this.options.uiOrder = this.options.uiOrder || [
                 ['dock'],
                 ['save', 'cancel', 'show-guides'],
