@@ -1,5 +1,7 @@
 console.info('TODO: use cookies when localstorage is not avalible, or chosen by option');
 console.info('TODO: make a way to disable all buttons then selectivly enable ones');
+console.info('TODO: allow buttons to flow to multiple lines if toolbar is constrained in width');
+console.info('TODO: locale switches should affect all instances');
 
 /**
  *
