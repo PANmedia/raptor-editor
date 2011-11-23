@@ -4,7 +4,7 @@ $.ui.editor.registerUi({
             return this.editor.uiButton({
                 title: _('Bold'),
                 click: function() {
-                    this.editor.toggleWrapper('strong');
+                    editor.toggleWrapper('strong', { classes: 'bold' });
                 }
             });
         }
@@ -14,7 +14,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Italic'),
                 click: function() {
-                    editor.toggleWrapper('em');
+                    editor.toggleWrapper('em', { classes: 'italic' });
                 }
             });
         }
@@ -24,7 +24,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Underline'),
                 click: function() {
-                    editor.toggleWrapper('span', { classes: 'underline' });
+                    editor.toggleWrapper('u', { classes: 'underline' });
                 }
             });
         }
@@ -34,7 +34,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Strikethrough'),
                 click: function() {
-                    editor.toggleWrapper('del');
+                    editor.toggleWrapper('del', { classes: 'strike' });
                 }
             });
         }
