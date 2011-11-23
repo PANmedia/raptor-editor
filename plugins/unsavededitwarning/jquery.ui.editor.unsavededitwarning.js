@@ -23,7 +23,7 @@
                 .appendTo('body');
 
             editor.bind('change', function() {
-                if (editor.isDirty()) this.show();
+                if (editor.isDirty() && editor.isEditing()) this.show();
                 else this.hide();
             }, this);
 
@@ -34,7 +34,7 @@
         
         show: function() {
             this.reposition();
-            this.warning.addClass(this.options.baseClass + '-visible');
+            this.warning.addClass(this.options.baseClass + '-visible').show();
         },
 
         hide: function() {
@@ -42,17 +42,16 @@
         },
 
         reposition: function() {
-            this.options.position.of = this.editor.element;
+            // Have to use the ID because if given the element, the browser will memory leak and crash
+            this.options.position.of = '#' + this.editor.getElement().attr('id');
             this.warning.position(this.options.position);
         }
     });
 
     $.ui.editor.bind('resize', function() {
-        var instances = this.getInstances();
-        for (var i in instances) {
-            var plugin = instances[i].getPlugin('unsavedEditWarning');
-            if (plugin) {
-                plugin.reposition();
+        for (var i in this.getInstances()) {
+            if (this.getInstances()[i].getPlugin('unsaved-edit-warning')) {
+                this.getInstances()[i].getPlugin('unsaved-edit-warning').reposition();
             }
         };
     });
