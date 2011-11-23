@@ -1,3 +1,4 @@
+console.info('FIXME: remove link dialog on destroy');
 (function($) {
     
     var defaultOptions = {
@@ -9,7 +10,6 @@
     
     var link = { 
         init: function(editor, options) {
-            console.info('FIXME: remove dialog on destroy');
             var dialog = false;
             var plugin = this;
 

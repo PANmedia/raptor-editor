@@ -1,8 +1,8 @@
+console.info('FIXME: remove dialog on destroy');
 (function($) {
     
     $.ui.editor.registerUi({
         'view-source': function(editor, options) {
-            console.info('FIXME: remove dialog on destroy');
             var dialog = $(editor.getTemplate('viewsource.dialog'));
             dialog.dialog({
                 modal: false,

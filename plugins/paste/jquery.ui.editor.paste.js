@@ -1,3 +1,4 @@
+console.info('FIXME: paste plugin detach, remove dialog');
 (function($) {
     var paste = {
         init: function(editor, options) {
@@ -64,7 +65,7 @@
                 return s;
             }
 
-            editor.element.bind('paste.' + editor.widgetName, $.proxy(function(event) {
+            editor.getElement().bind('paste.' + editor.widgetName, $.proxy(function(event) {
                 if (inProgress) return false;
                 inProgress = true;
 
@@ -167,9 +168,8 @@
             }, this));
 
             // Events
-            console.info('FIXME: paste plugin detach, remove dialog');
     //        this.detach = function() {
-    //            editor.element.unbind('paste.editor');
+    //            editor.getElement().unbind('paste.editor');
     //        }
         }
     }
