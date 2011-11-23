@@ -442,24 +442,28 @@ var _;
          * Other Functions
         \**********************************************************************/
         enableEditing: function() {
-            this.options.enabled = true;
-            this.element.attr('contenteditable', true)
-                        .addClass(this.options.baseClass + '-editing');
-            document.execCommand('enableInlineTableEditing', false, false);
-            document.execCommand('enableObjectResizing', false, false);
-            document.execCommand('styleWithCSS', true, true);
-            this.trigger('enabled');
+            if (!this.options.enabled) {
+                this.options.enabled = true;
+                this.element.attr('contenteditable', true)
+                            .addClass(this.options.baseClass + '-editing');
+                document.execCommand('enableInlineTableEditing', false, false);
+                document.execCommand('enableObjectResizing', false, false);
+                document.execCommand('styleWithCSS', true, true);
+                this.trigger('enabled');
+            }
         },
         
         disableEditing: function() {
-            this.options.enabled = false;
-            this.element.attr('contenteditable', false)
-                        .removeClass(this.options.baseClass + '-editing');
-            this.trigger('disabled');
+            if (this.options.enabled) {
+                this.options.enabled = false;
+                this.element.attr('contenteditable', false)
+                            .removeClass(this.options.baseClass + '-editing');
+                this.trigger('disabled');
+            }
         },
         
         isEditing: function() {
-            return this.element[0].isContentEditable;
+            return this.options.enabled;
         },
         
         updateTagTree: function() {
@@ -622,30 +626,34 @@ var _;
         },
         
         showToolbar: function(instant) {
-            // If unify option is set, hide all other toolbars first
-            if (this.options.unify) {
-                for (var i in instances) {
-                    instant = instant || (instances[i].options.show && instances[i].options.unify);
+            if (!this.options.show) {
+                // If unify option is set, hide all other toolbars first
+                if (this.options.unify) {
+                    for (var i in instances) {
+                        instant = instant || (instances[i].options.show && instances[i].options.unify);
+                    }
+                    this.hideOtherToolbars(instant);
                 }
-                this.hideOtherToolbars(instant);
+                this.options.show = true;
+                if (instant) {
+                    this.selDialog().show();
+                } 
+                this.selToolbar().dialog('open');
+                this.trigger('show');
+                this.trigger('resize');
             }
-            this.options.show = true;
-            if (instant) {
-                this.selDialog().show();
-            } 
-            this.selToolbar().dialog('open');
-            this.trigger('show');
-            this.trigger('resize');
         },
         
         hideToolbar: function(instant) {
-            this.options.show = false;
-            if (instant) {
-                this.selDialog().hide();
+            if (this.options.show) {
+                this.options.show = false;
+                if (instant) {
+                    this.selDialog().hide();
+                }
+                this.selToolbar().dialog('close');
+                this.trigger('hide');
+                this.trigger('resize');
             }
-            this.selToolbar().dialog('close');
-            this.trigger('hide');
-            this.trigger('resize');
         },
         
         hideOtherToolbars: function(instant) {
@@ -654,6 +662,10 @@ var _;
                     instances[i].hideToolbar(instant);
                 }
             }
+        },
+        
+        isToolbarVisible: function() {
+            return this.options.show;
         },
 
         /**********************************************************************\
