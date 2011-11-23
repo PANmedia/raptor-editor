@@ -37,8 +37,8 @@
 
             this.edit = function() {
                 plugin.hide();
-                editor.enableEditing();
-                editor.showToolbar();
+                if (!editor.isEditing()) editor.enableEditing();
+                if (!editor.isToolbarVisible()) editor.showToolbar();
             }
 
             message.position(options.position);
