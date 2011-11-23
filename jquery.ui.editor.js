@@ -186,7 +186,7 @@ var _;
             
             // Give the element a unique ID
             if (!this.element.attr('id')) {
-                this.element.attr('id', $.ui.editor.getUniqueId());
+                this.element.attr('id', this.getUniqueId());
             }
             
             this.reiniting = this.reiniting || false;
@@ -227,8 +227,8 @@ var _;
             }
             
             this.ready = true;
-            this.trigger('ready');
-            this.trigger('change');
+            this.fire('ready');
+            this.fire('change');
             
             if (this.options.autoEnable) {
                 this.enableEditing();
@@ -245,7 +245,7 @@ var _;
             editor.bind('change', editor.updateTagTree);
             
             var change = function() {
-                editor.trigger('change');
+                editor.fire('change');
             };
             
             editor.getElement().bind('click.' + editor.widgetName, change);
@@ -263,9 +263,6 @@ var _;
         },
         
         reinit: function() {
-            // <debug>
-            console.info('Reinitialising editor');
-            // </debug>
             if (!this.ready) {
                 // If the edit is still initialising, wait until its ready
                 var reinit;
@@ -277,9 +274,12 @@ var _;
                 this.bind('ready', reinit);
                 return;
             }
+            // <debug>
+            console.info('Reinitialising editor');
+            // </debug>
             // We are ready, so we can run reinit now
             this.reiniting = true;
-            this.destroy(this);
+            this.destruct(true);
             this._init();
             this.reiniting = false;
         },
@@ -294,7 +294,7 @@ var _;
             var target = $('<div/>')
                 .html(this.element.is(':input') ? this.element.val() : this.element.html())
                 .insertBefore(this.element)
-                .attr('id', $.ui.editor.getUniqueId());
+                .attr('id', this.getUniqueId());
                 
             var style = this.getStyles(this.element);
             for (var i in this.options.replaceStyle) {
@@ -314,21 +314,18 @@ var _;
         /**********************************************************************\
          * Destructor
         \**********************************************************************/
-        destroy: function(reinit) {
+        destruct: function(reinit) {
             // Disable editing unless we are re initialising
             if (!this.reiniting) {
                 this.hideToolbar();
                 this.disableEditing();
             }
             
-            
-            // Destroy all UI objects
-            for (var i in this.ui) {
-                this.ui[i].destroy();
-            }
-            
             // Trigger destory event, for plugins to remove them selves
-            this.trigger('destroy', false);
+            this.fire('destroy', false);
+            
+            // Remove all event bindings
+            this.events = {};
         },
 
 //        _selection: {
@@ -505,7 +502,7 @@ var _;
                 selection.addRange(range);
             });
             this.getElement().focus();
-            this.trigger('change');
+            this.fire('change');
         },
 
 
@@ -543,9 +540,9 @@ var _;
                 document.execCommand('enableInlineTableEditing', false, false);
                 document.execCommand('enableObjectResizing', false, false);
                 document.execCommand('styleWithCSS', true, true);
-                this.trigger('enabled');
-                this.trigger('resize');
-                this.trigger('change');
+                this.fire('enabled');
+                this.fire('resize');
+                this.fire('change');
             }
         },
         
@@ -554,7 +551,7 @@ var _;
                 this.options.enabled = false;
                 this.getElement().attr('contenteditable', false)
                             .removeClass(this.options.baseClass + '-editing');
-                this.trigger('disabled');
+                this.fire('disabled');
             }
         },
         
@@ -630,6 +627,10 @@ var _;
                 element1.css(name, element2.css(name));
                 element2.css(name, style[name]);
             }
+        },
+        
+        getUniqueId: function() {
+            return $.ui.editor.getUniqueId();
         },
 
         /**********************************************************************\
@@ -719,7 +720,10 @@ var _;
             });
             
             editor.bind('destroy', function() {
-                editor.toolbar.dialog('destory').remove();
+                editor.toolbar.dialog('destory')
+                if (!editor.reiniting) {
+                    editor.toolbar.remove();
+                }
             });
         },
         
@@ -742,8 +746,8 @@ var _;
                     this.selDialog().show();
                 } 
                 this.selToolbar().dialog('open');
-                this.trigger('show');
-                this.trigger('resize');
+                this.fire('show');
+                this.fire('resize');
             }
         },
         
@@ -754,8 +758,8 @@ var _;
                     this.selDialog().hide();
                 }
                 this.selToolbar().dialog('close');
-                this.trigger('hide');
-                this.trigger('resize');
+                this.fire('hide');
+                this.fire('resize');
             }
         },
         
@@ -852,7 +856,7 @@ var _;
                 this.present--;
                 this.setHtml(this.history[this.present]);
                 this.historyEnabled = false;
-                this.trigger('change');
+                this.fire('change');
                 this.historyEnabled = true;
             }
         },
@@ -862,7 +866,7 @@ var _;
                 this.present++;
                 this.setHtml(this.history[this.present]);
                 this.historyEnabled = false;
-                this.trigger('change');
+                this.fire('change');
                 this.historyEnabled = true;
             }
         },
@@ -913,13 +917,13 @@ var _;
                 elementTagName: tag
             }).toggleSelection();
 
-            this.trigger('change');
+            this.fire('change');
         },
         
         execCommand: function(command, arg1, arg2) {
             this.constrainSelection();
             document.execCommand(command, arg1, arg2);
-            this.trigger('change');
+            this.fire('change');
         },
         
         insertElement: function(element) {
@@ -928,7 +932,7 @@ var _;
             $(rangy.getSelection().getAllRanges()).each(function(i, range) {
                 range.insertNode(element);
             });
-            this.trigger('change');
+            this.fire('change');
         },
         
         applyStyle: function(styles) {
@@ -943,7 +947,7 @@ var _;
                 });
             });
 
-            this.trigger('change');
+            this.fire('change');
         },
         
         replaceSelection: function(html) {
@@ -959,7 +963,7 @@ var _;
                 }
             });
             
-            this.trigger('change');
+            this.fire('change');
         },
         
         changeTag: function(tag) {
@@ -990,7 +994,7 @@ var _;
 //                $(this._editor.selectedElement).replaceWith(new_element);
 //            }
 
-            this.trigger('change');
+            this.fire('change');
         },
         
         /**********************************************************************\
@@ -1279,7 +1283,7 @@ var _;
                         !this.options.plugins[name]) continue;
                     
                 // Check if we have explicitly disabled the plugin
-                if ($.inArray(plugins[name], this.options.disabledUi) !== -1) continue;
+                if ($.inArray(plugins[name], this.options.disabledPlugins) !== -1) continue;
                     
                 // Clone the plugin object (which should be extended from the defaultPlugin object)
                 var pluginObject = $.extend({}, plugins[name]);
@@ -1316,7 +1320,7 @@ var _;
         
         setHtml: function(html) {
             this.getElement().html(html);
-            this.trigger('change');
+            this.fire('change');
         },
         
         resetHtml: function() {
@@ -1356,7 +1360,7 @@ var _;
             }
         },
 
-        trigger: function(name, global) {
+        fire: function(name, global) {
             if (this.events[name]) {
                 for (var i in this.events[name]) {
                     var event = this.events[name][i];
@@ -1365,7 +1369,7 @@ var _;
             }
             // Also trigger the global editor event, unless specified not to
             if (global !== false) {
-                $.ui.editor.trigger(name);
+                $.ui.editor.fire(name);
             }
         },
 
@@ -1484,8 +1488,7 @@ var _;
             options: null,
             init: function(editor, options) {},
             persist: function(key, value) {
-                value = this.editor.persist(key, value);
-                return value;
+                return this.editor.persist(key, value);
             }
         },
         
@@ -1505,27 +1508,14 @@ var _;
             options: null,
             bindings: {},
             init: function(editor, options) {},
-            construct: function(editor, options) {
-                this.bind('destory', this.destory);
-                this.init();
-            },
             persist: function(key, value) {
-                value = this.editor.persist(key, value);
-                return value;
+                return this.editor.persist(key, value);
             },
             bind: function(name, callback, context) {
-                if (!this.bindings[name]) this.bindings[name] = [];
-                this.bindings[name].push(callback);
                 this.editor.bind(name, callback, context || this);
             },
             unbind: function(name, callback, context) {
-                unbind(this.events[name], callback);
                 this.editor.unbind(name, callback, context || this);
-            },
-            trigger: function(name) {
-                this.editor.trigger(name);
-            }, 
-            destroy: function() {
             }
         },
         
@@ -1555,7 +1545,7 @@ var _;
             });
         },
 
-        trigger: function(name) {
+        fire: function(name) {
             // <debug>
             if (debugLevel === MAX) console.info('Calling jquery-ui-editor global/static event: ' + name);
             // </debug>

@@ -146,7 +146,7 @@ console.info('FIXME: remove link dialog on destroy');
                                     }
                                 }
 
-                                editor.trigger('stateChange');
+                                editor.fire('change');
                                 $(this).dialog('close');
                             }
                         },
@@ -253,7 +253,7 @@ console.info('FIXME: remove link dialog on destroy');
                     }
                 }
 
-                editor.trigger('change');
+                editor.fire('change');
             }
         } 
     }
