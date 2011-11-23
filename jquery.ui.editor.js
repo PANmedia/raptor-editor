@@ -1099,6 +1099,7 @@ var _;
                     .addClass(options.baseClass)
                     .attr('name', name)
                     .attr('title', ui.title)
+                    .attr('type', 'button')
                     .val(name);
 
                 if (options.classes) ui.button.addClass(options.classes);
