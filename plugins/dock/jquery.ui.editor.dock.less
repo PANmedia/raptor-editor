@@ -77,32 +77,43 @@
     box-orient: vertical;
     
     .ui-editor-toolbar {
+        padding: 0;
+        margin: 0;
+        
         -webkit-box-ordinal-group: 1;
         -moz-box-ordinal-group: 1;
         box-ordinal-group: 1;
-        border: 0 none;
-        padding: 0;
-        margin: 0;
     }
+    
+    .ui-editor-toolbar .ui-widget-header {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+    
     .ui-dialog-titlebar {
+        border: 0 none;
+        margin: 0;
+        
         -webkit-box-ordinal-group: 3;
         -moz-box-ordinal-group: 3;
         box-ordinal-group: 3;
-        border: 0 none;
-        margin: 0;
+        
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
     }
-    [contenteditable=true] {
-        -webkit-box-ordinal-group: 2;
-        -moz-box-ordinal-group: 2;
-        box-ordinal-group: 2;
-        border: 0 none;
-        padding: 0;
+    
+    .ui-editor-messages {
         margin: 0;
     }
 }
 
-.ui-editor-dock-dock-wrapper {
-    position: relative;
+.ui-editor-dock-docked-element {
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    box-ordinal-group: 2;
+    margin: 0;
 }
 
 /******************************************************************************\

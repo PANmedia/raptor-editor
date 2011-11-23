@@ -2,6 +2,13 @@
     
     var spacer;
     
+    function swapStyle(element1, element2, style) {
+        for (var name in style) {
+            element1.css(name, element2.css(name));
+            element2.css(name, style[name]);
+        }
+    }
+    
     $.ui.editor.registerPlugin('dock', {
         init: function() {
             if (!spacer) {
@@ -27,8 +34,33 @@
                     .insertBefore(this.editor.element)
                     .addClass(this.options.baseClass + '-docked-to-element');
                 this.editor.element.appendTo(this.editor.selDialog());
+                var style = this.editor.getComputedStyle(this.editor.element);
+                swapStyle(this.editor.selDialog().wrapAll('<div/>').parent().addClass('ui-widget-content'), this.editor.element, {
+                    'diaplay': 'block',
+                    'float': 'none',
+                    'clear': 'none',
+                    'position': 'relative',
+                    'margin-left': 0,
+                    'margin-right': 0,
+                    'margin-top': 0,
+                    'margin-bottom': 0,
+                    'outline': 0
+                });
+                //this.editor.element.addClass(this.options.baseClass + '-docked-element');
             } else {
                 this.editor.selDialog().addClass(this.options.baseClass + '-docked')
+            
+                // Reinitialise spacer when the toolbar is visible and stoped animating
+                window.setTimeout(function(dock) {
+                    // Show the spacer 
+                    var toolbar = dock.editor.selToolbar();
+                    if (toolbar.is(':visible')) {
+                        spacer.height(toolbar.outerHeight()).show();
+                    }
+
+                    // Trigger the editor resize event to adjust other plugin element positions
+                    dock.editor.trigger('resize');
+                }, 100, this);
             }
             
             // Change the dock button icon
@@ -39,18 +71,6 @@
             // Add the header class to the editor toolbar
             this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
                 .addClass('ui-widget-header');
-            
-            // Reinitialise spacer when the toolbar is visible and stoped animating
-            window.setTimeout(function(dock) {
-                // Show the spacer 
-                var toolbar = dock.editor.selToolbar();
-                if (toolbar.is(':visible')) {
-                    spacer.height(toolbar.outerHeight()).show();
-                }
-                
-                // Trigger the editor resize event to adjust other plugin element positions
-                dock.editor.trigger('resize');
-            }, 100, this);
         },
         
         undock: function() {
