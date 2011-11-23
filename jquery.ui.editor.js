@@ -1073,10 +1073,13 @@ var _;
                     }
                     // <strict>
                     else {
-//                        console.error(_('UI identified by key "{{ui}}" does not exist', { ui: ui }));
+                        console.error(_('UI identified by key "{{ui}}" does not exist', { ui: ui }));
                     }
                     // </strict>
                 }
+                
+                uiGroup.addClass(editor.options.baseClass + '-group');
+                
                 if (uiGroup.children().length > 1) {
                     uiGroup.addClass(editor.options.baseClass + '-buttonset');
                 }
@@ -1086,6 +1089,7 @@ var _;
                     uiGroup.appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
                 }
             };
+            $('<div/>').addClass('ui-helper-clearfix').appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
         },
         
         uiButton2: {
