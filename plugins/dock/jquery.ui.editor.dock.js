@@ -49,7 +49,7 @@
                 .addClass('ui-widget-content');
 
             this.revertStyle = swapStyle(wrapper, this.editor.getElement(), {
-                'diaplay': 'block',
+                'display': 'block',
                 'float': 'none',
                 'clear': 'none',
                 'position': 'relative',
@@ -67,8 +67,9 @@
                 parseInt(this.editor.getElement().css('border-right-width')) +
                 parseInt(this.editor.getElement().css('border-left-width'))*/);
 
-            this.editor.getElement().appendTo(this.editor.selDialog());
-            //this.editor.getElement().addClass(this.options.baseClass + '-docked-element');
+            this.editor.getElement()
+                .appendTo(this.editor.selDialog())
+                .addClass(this.options.baseClass + '-docked-element');
         },
         
         dockToBody: function() {
@@ -109,7 +110,8 @@
         undockFromElement: function() {
             var wrapper = this.editor.selDialog().parent();
             this.editor.getElement()
-                .insertAfter(wrapper);
+                .insertAfter(wrapper)
+                .removeClass(this.options.baseClass + '-docked-element');
             this.editor.selDialog()
                 .appendTo('body')
                 .removeClass(this.options.baseClass + '-docked-to-element');
