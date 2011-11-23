@@ -121,7 +121,8 @@ var _;
             dialogClass: 'ui-editor-dialog',
             dialogPosition: [5, 47],
 
-            uiOrder: null
+            uiOrder: null,
+            uiDisable: null
         },
 
 
@@ -147,6 +148,16 @@ var _;
                 ['tag-menu'],
                 ['i18n']
             ];
+            
+            // Remove individual ui elements 
+            if ($.isArray(this.options.uiDisable)) {
+                for (i in this.options.uiDisable) {
+                    for (var j = 0; j < this.options.uiOrder.length; j++) {
+                        var k = $.inArray(this.options.uiDisable[i], this.options.uiOrder[j]);
+                        if (k != -1) this.options.uiOrder[j].splice(k, 1);
+                    }
+                }
+            }
             
             // Give the element a unique ID
             if (!this.element.attr('id')) {
