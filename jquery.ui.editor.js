@@ -516,6 +516,15 @@ var _;
                 }
             }
         },
+    
+        getComputedStyle: function(element) {
+            var result = {};
+            var style = window.getComputedStyle(element[0], null);
+            for (var i = 0; i < style.length; i++){
+                result[style[i]] = style.getPropertyValue(style[i]);
+            };
+            return result;
+        },
 
         /**********************************************************************\
          * Messages
