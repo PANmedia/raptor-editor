@@ -1003,6 +1003,14 @@ var _;
             return this.toolbar;
         },
         
+        selTitle: function(find) {
+            var titlebar = this.selDialog('.ui-dialog-titlebar');
+            if (find) {
+                return titlebar.find(find);
+            }
+            return titlebar;
+        },
+        
         selDialog: function(find) {
             var dialog = this.selToolbar().parent();
             if (find) {
