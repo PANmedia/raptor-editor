@@ -5,7 +5,8 @@
         options: {
             delay: 400,
             fadeIn: 200,
-            fadeOut: 200
+            fadeOut: 200,
+            defaultPosition: 'top'
         },
         
         currentLocale: null,
@@ -26,9 +27,10 @@
                     $.merge(editor.selToolbar('[title]'), editor.selTitle('[title]')).each(function() {
                         $(this).tipTip({
                             maxWidth: 'auto',
-                            'delay': options.delay,
-                            'fadeIn': options.fadeIn,
-                            'fadeOut': options.fadeOut
+                            delay: options.delay,
+                            fadeIn: options.fadeIn,
+                            fadeOut: options.fadeOut,
+                            defaultPosition: options.defaultPosition
                         });
                     });
                     this.currentLocale = options.locale;
