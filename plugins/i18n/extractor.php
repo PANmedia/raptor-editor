@@ -32,25 +32,28 @@ if ($replace && $merge) {
 
 $strings = array();
 
-$xgettext_extract = function($directory, $strings) use (&$xgettext_extract) {
+$xgettext_extract = function($directory, $strings, $process_all = false) use (&$xgettext_extract) {
     $directory_handle = opendir($directory);
     while (false !== ($file = readdir($directory_handle))) {
         if ($file != "." && $file != "..") {
-            if (is_file($directory.$file) && strpos($file, 'jquery.ui.editor') !== false && substr(strrchr($file, '.'), 1) == 'js') { 
-                echo "Extracting from $file\n";
-                $skipping = false;
-                foreach(file($directory.$file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-                    $result = null;
-                    if (strpos($line, '<strict>') !== false || strpos($line, '<debug>') !== false) $skipping = true;
-                    if (strpos($line, '</strict>') !== false || strpos($line, '</debug>') !== false) $skipping = false;
-                    if(!$skipping && preg_match_all("/_\('(.*)'[,)]/iU", $line, $result)) {
-                        foreach($result[1] as $string) {
-                            $strings[$string] = $string;
+            if (is_file($directory.$file)) {
+                if ($process_all || (strpos($file, 'jquery.ui.editor') !== false) && in_array(pathinfo($file, PATHINFO_EXTENSION), array('js', 'html'))) {
+                    echo "Extracting from $directory$file\n";
+                    $skipping = false;
+                    foreach(file($directory.$file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+                        $result = null;
+                        if (strpos($line, '<strict>') !== false || strpos($line, '<debug>') !== false) $skipping = true;
+                        if (strpos($line, '</strict>') !== false || strpos($line, '</debug>') !== false) $skipping = false;
+                        if(!$skipping && preg_match_all("/_\('(.*)'[,)]/iU", $line, $result)) {
+                            foreach($result[1] as $string) {
+                                $strings[$string] = $string;
+                            }
                         }
                     }
                 }
-            } else if(is_dir($directory.$file) && $file != '.git') {
-                $strings = $xgettext_extract($directory.$file.'/', $strings);
+            }
+            else if(is_dir($directory.$file) && $file != '.git') {
+                $strings = $xgettext_extract($directory.$file.'/', $strings, $file == 'templates');
             }
         }
     }
