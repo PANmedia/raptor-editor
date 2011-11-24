@@ -560,17 +560,19 @@ var _;
         },
         
         updateTagTree: function() {
-            var title = '', 
-                editor = this;
+            var editor = this;
+            var title = '';
+            
+            // An array of ranges (by index), each with a list of elements in the range
+            var lists = []; 
                 
             // Loop all selected ranges
-            $.each(rangy.getSelection().getAllRanges(), function(i, range) {
-                var element;
-                var list = [];
-                
+            var ranges = rangy.getSelection().getAllRanges();
+            for (var i in ranges) {
                 // Get the selected nodes common parent
-                var node = range.commonAncestorContainer;
+                var node = ranges[i].commonAncestorContainer;
                 
+                var element;
                 if (node.nodeType === 3) {
                     // If nodes common parent is a text node, then use its parent
                     element = $(node).parent();
@@ -579,6 +581,8 @@ var _;
                     element = $(node);
                 }
                 
+                var list = [];
+                lists.push(list);
                 // Loop untill we get to the root element, or the body tag
                 while (element[0] && !editor.isRoot(element) && element[0].tagName.toLowerCase() != 'body') {
                     // Add the node to the list
@@ -587,14 +591,30 @@ var _;
                 }
                 list.reverse();
                 if (title) title += ' | ';
-                title += '<a href="javascript: // ">' + _('root') + '</a> '
-                $.each(list, function(i, element) {
-                    title += '&gt; <a href="javascript: // ">' + element[0].tagName.toLowerCase() + '</a> '
+                title += this.getTemplate('root');
+                for (var j in list) {
+                    title += this.getTemplate('tag', {
+                        element: list[j][0].tagName.toLowerCase(),
+                        // Create a data attribute with the index to the range, and element (so [0,0] will be the first range/first element)
+                        data: '[' + i + ',' + j + ']'
+                    });
+                }
+            }
+            if (!title) title = this.getTemplate('root');
+            this.selDialog('.ui-dialog-title')
+                .html(title)
+                .find('a')
+                .click(function() {
+                    // Get the range/element data attribute
+                    var i = $(this).data('ui-editor-selection');
+                    if (i) {
+                        // Get the element from the list array
+                        editor.selectElement(lists[i[0]][i[1]]);
+                        editor.updateTagTree();
+                    } else {
+                        editor.selectElement(editor.getElement());
+                    }
                 });
-//                console.log(title);
-            });
-            if (!title) title = '<a href="javascript: // ">root</a>';
-            this.selDialog('.ui-dialog-title').html(title);
         },
         
         isRoot: function(element) {
