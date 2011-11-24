@@ -261,30 +261,38 @@ console.info('FIXME: remove link dialog on destroy');
     $.ui.editor.registerPlugin('link', link);
     
     $.ui.editor.registerUi({
-        'link': function(editor) {
-            var ui = this.ui = editor.uiButton({
-                title: _('Insert Link'),
-                click: function() {
-                    editor.getPlugin('link').show();
-                }
-            });
-            editor.bind('change', function() {
-                if (editor.getSelectedElements().length !== 1) ui.disable();
-                else ui.enable();
-            });
+        'link': {
+            init: function(editor) {
+                editor.bind('change', this.change, this);
+                
+                return editor.uiButton({
+                    title: _('Insert Link'),
+                    click: function() {
+                        editor.getPlugin('link').show();
+                    }
+                });
+            },
+            change: function() {
+                if (this.editor.getSelectedElements().length !== 1) this.ui.disable();
+                else this.ui.enable();
+            }
         },
     
-        'unlink': function(editor) {
-            var ui = this.ui = editor.uiButton({
-                title: _('Remove Link'),
-                click: function() {
-                    editor.getPlugin('link').remove();
-                }
-            });
-            editor.bind('change', function() {
-                if (!editor.getSelectedElements().is('a')) ui.disable();
-                else ui.enable();
-            });
+        'unlink': {
+            init: function(editor) {
+                editor.bind('change', this.change, this);
+                
+                return editor.uiButton({
+                    title: _('Remove Link'),
+                    click: function() {
+                        editor.getPlugin('link').remove();
+                    }
+                });
+            },
+            change: function() {
+                if (!this.editor.getSelectedElements().is('a')) this.ui.disable();
+                else this.ui.enable();
+            }
         }
     });
     

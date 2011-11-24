@@ -183,8 +183,8 @@ var _;
             
             // Set the options after the widget initialisation, because jQuery UI widget tries to extend the array (and breaks it)
             this.options.uiOrder = this.options.uiOrder || [
-                ['dock'],
-                ['save', 'cancel', 'show-guides'],
+                ['save', 'cancel'], 
+                ['dock', 'show-guides', 'clean'],
                 ['view-source'],
                 ['undo', 'redo'],
                 ['align-left', 'align-center', 'align-justify', 'align-right'],
@@ -1086,22 +1086,15 @@ var _;
                             baseClass: editor.options.baseClass + '-ui-' + uiSet[j]
                         }, options, editor.options.ui[uiSet[j]])
                         
-                        // Create a new instance of the UI
-                        var uiObject;
                         
-                        if ($.isFunction(registeredUi[uiSet[j]])) {
-                            // UI is a constructor
-                            uiObject =  new registeredUi[uiSet[j]](editor, options);
-                        } else {
-                            // UI is an object (extended for defaultUi)
-                            uiObject = $.extend({}, registeredUi[uiSet[j]]);
-                            uiObject.editor = editor;
-                            uiObject.options = options;
-                            uiObject.ui = uiObject.init(editor, options);
-                        }
+                        // Clone the UI object (which should be extended from the defaultUi object)
+                        var uiObject = $.extend({}, registeredUi[uiSet[j]]);
+                        uiObject.editor = editor;
+                        uiObject.options = options;
+                        uiObject.ui = uiObject.init(editor, options);
                         
                         // Append the UI object to the group
-                        uiObject.ui.init(uiSet[j], editor).appendTo(uiGroup);
+                        uiObject.ui.init(uiSet[j], editor, options, uiObject).appendTo(uiGroup);
                     }
                     // <strict>
                     else {
@@ -1124,175 +1117,147 @@ var _;
             $('<div/>').addClass('ui-helper-clearfix').appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
         },
         
-        uiButton2: {
-            button: null,
-            options: {},
-            init: function(name, editor) {
-                var ui = this;
-                // Extend options overriding editor < base class < supplied options < user options
-                var options = $.extend({}, editor.options, {
-                    baseClass: editor.options.baseClass + '-' + name + '-button'
-                }, ui.options, editor.options.ui[name])
-                
-                // Default title if not set in plugin
-                if (!this.title) this.title = _('Unnamed Button');
-                
-                // Create the HTML button
-                ui.button = $('<button/>')
-                    .html(ui.title)
-                    .addClass(options.baseClass)
-                    .attr('name', name)
-                    .attr('title', ui.title)
-                    .attr('type', 'button')
-                    .val(name);
-
-                if (options.classes) ui.button.addClass(options.classes);
-
-                // Create the jQuery UI button
-                ui.button.button({
-                    icons: { primary: ui.icon || 'ui-icon-' + name },
-                    disabled: options.disabled ? true : false,
-                    text: false
-                });
-                
-                // Bind the click event
-                ui.button.bind('click.' + editor.widgetName, ui.click);
-                
-                editor.bind('destroy', function() {
-                    ui.button.button('destory').remove();
-                });
-                
-                return ui.button;
-            },
-            disable: function() {
-                this.button.button('option', 'disabled', true);
-            },
-            enable: function() {
-                this.button.button('option', 'disabled', false);
-            },
-            click: function() {
-            }
-        },
-        
         uiButton: function(options) {
-            return $.extend({}, this.uiButton2, options);
-//            var editor = this;
-//            return function(name) {
-//                options = $.extend({}, editor.options, {
-//                    baseClass: editor.options.baseClass + '-button-' + name
-//                }, options, editor.options.ui[name])
-//                var button = $('<button/>').html(options.title)
-//                    .addClass(options.baseClass)
-//                    .attr('name', name)
-//                    .attr('title', options.title)
-//                    .val(name);
-//
-//                if (options.classes) button.addClass(options.classes);
-//
-//                button.button({
-//                    icons: { primary: 'ui-icon-' + name },
-//                    disabled: options.disabled ? true : false,
-//                    text: false
-//                });
-//
-//                if (options.click) button.bind('click.' + editor.widgetName, options.click);
-//
-//                return button;
-//            }
-        },
-        
-        uiSelectMenu2: {
-            // HTML select
-            select: null,
-            
-            // HTML replacements
-            selectMenu: null,
-            button: null,
-            menu: null,
-            
-            // Options passed but the plugin
-            options: {},
-            
-            init: function(name, editor) {
-                var ui = this;
-                
-                // Extend options overriding editor < base class < supplied options < user options
-                var options = $.extend({}, editor.options, {
-                    baseClass: editor.options.baseClass + '-button-' + name
-                }, ui.options, editor.options.ui[name])
-                
-                // Default title if not set in plugin
-                if (!this.title) this.title = _('Unnamed Select Menu');
-                
-                ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
-                    .attr('title', this.title);
+            return $.extend({
+                button: null,
+                options: {},
+                init: function(name, editor, options, object) {
+                    // Extend options overriding editor < base class < supplied options < user options
+                    var options = $.extend({}, editor.options, {
+                        baseClass: editor.options.baseClass + '-' + name + '-button'
+                    }, this.options, editor.options.ui[name])
 
-                ui.selectMenu.append(this.select.hide());
-                ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
-                ui.select.find('option').each(function() {
-                    var option = $('<div class="ui-editor-selectmenu-menu-item ui-corner-all"/>')
-                        .html($(this).html())
-                        .appendTo(ui.menu)
-                        .bind('mouseenter.' + editor.widgetName, function() { $(this).addClass('ui-state-focus') })
-                        .bind('mouseleave.' + editor.widgetName, function() { $(this).removeClass('ui-state-focus') })
-                        .bind('click.' + editor.widgetName, function() {
-                            var option = ui.select.find('option').eq($(this).index());
-                            ui.select.val(option.val());
-                            ui.update();
-                            ui.menu.stop().hide();
-                            ui.button.addClass('ui-corner-all')
-                                  .removeClass('ui-corner-top');
-                            ui.change(ui.select.val());
-                        });
-                });
-                
-                ui.button = $('<div class="ui-editor-selectmenu-button"/>')
-                  .button({ icons: { secondary: 'ui-icon-triangle-1-s' } })
-                  .prependTo(this.selectMenu);
+                    // Default title if not set in plugin
+                    if (!this.title) this.title = _('Unnamed Button');
 
-                var click = function() {
-                    if (!ui.menu.is(':animated')) {
-                        if (ui.menu.is(':visible')) {
-                            ui.menu.stop().slideUp(function() {
-                                ui.button.addClass('ui-corner-all')
-                                         .removeClass('ui-corner-top');
-                            });
-                        } else {
-                            ui.menu.css('min-width', ui.button.width() + 10);
-                            ui.menu.stop().slideDown();
-                            ui.button.removeClass('ui-corner-all')
-                                     .addClass('ui-corner-top');
-                        }
-                    }
-                };
+                    // Create the HTML button
+                    this.button = $('<button/>')
+                        .html(this.title)
+                        .addClass(options.baseClass)
+                        .attr('name', name)
+                        .attr('title', this.title)
+                        .attr('type', 'button')
+                        .val(name);
+                        
+                    if (options.classes) this.button.addClass(options.classes);
+                    
+                    // Bind the click event
+                    this.button.bind('click.' + object.editor.widgetName, $.proxy(this.click, object));
 
-                ui.button.bind('click.' + editor.widgetName, click);
+                    editor.bind('destroy', $.proxy(function() {
+                        this.button.button('destory').remove();
+                    }, this));
 
-                var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
-                ui.button.find('.ui-button-text').html(selected);
+                    // Create the jQuery UI button
+                    this.button.button({
+                        icons: { primary: this.icon || 'ui-icon-' + name },
+                        disabled: options.disabled ? true : false,
+                        text: false
+                    });
 
-                editor.bind('destroy', function() {
-                    ui.selectMenu.remove();
-                });
-                
-                return this.selectMenu;
-            },
-            update: function() {
-                var selected = this.select.find('option[value=' + this.select.val() + ']').html();
-                this.button.find('.ui-button-text').html(selected);
-            },
-            val: function() {
-                var result = this.select.val.apply(this.select, arguments);
-                this.update();
-                return result;
-            },
-            change: function(value) {
-                
-            }
+                    return this.button;
+                },
+                disable: function() {
+                    this.button.button('option', 'disabled', true);
+                },
+                enable: function() {
+                    this.button.button('option', 'disabled', false);
+                },
+                click: function() {
+                }
+            }, options);
         },
         
         uiSelectMenu: function(options) {
-            return $.extend({}, this.uiSelectMenu2, options);
+            return $.extend({
+                // HTML select
+                select: null,
+
+                // HTML replacements
+                selectMenu: null,
+                button: null,
+                menu: null,
+
+                // Options passed but the plugin
+                options: {},
+
+                init: function(name, editor) {
+                    var ui = this;
+
+                    // Extend options overriding editor < base class < supplied options < user options
+                    var options = $.extend({}, editor.options, {
+                        baseClass: editor.options.baseClass + '-button-' + name
+                    }, ui.options, editor.options.ui[name])
+
+                    // Default title if not set in plugin
+                    if (!this.title) this.title = _('Unnamed Select Menu');
+
+                    ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
+                        .attr('title', this.title);
+
+                    ui.selectMenu.append(this.select.hide());
+                    ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
+                    ui.select.find('option').each(function() {
+                        var option = $('<div class="ui-editor-selectmenu-menu-item ui-corner-all"/>')
+                            .html($(this).html())
+                            .appendTo(ui.menu)
+                            .bind('mouseenter.' + editor.widgetName, function() { $(this).addClass('ui-state-focus') })
+                            .bind('mouseleave.' + editor.widgetName, function() { $(this).removeClass('ui-state-focus') })
+                            .bind('click.' + editor.widgetName, function() {
+                                var option = ui.select.find('option').eq($(this).index());
+                                ui.select.val(option.val());
+                                ui.update();
+                                ui.menu.stop().hide();
+                                ui.button.addClass('ui-corner-all')
+                                      .removeClass('ui-corner-top');
+                                ui.change(ui.select.val());
+                            });
+                    });
+
+                    ui.button = $('<div class="ui-editor-selectmenu-button"/>')
+                      .button({ icons: { secondary: 'ui-icon-triangle-1-s' } })
+                      .prependTo(this.selectMenu);
+
+                    var click = function() {
+                        if (!ui.menu.is(':animated')) {
+                            if (ui.menu.is(':visible')) {
+                                ui.menu.stop().slideUp(function() {
+                                    ui.button.addClass('ui-corner-all')
+                                             .removeClass('ui-corner-top');
+                                });
+                            } else {
+                                ui.menu.css('min-width', ui.button.width() + 10);
+                                ui.menu.stop().slideDown();
+                                ui.button.removeClass('ui-corner-all')
+                                         .addClass('ui-corner-top');
+                            }
+                        }
+                    };
+
+                    ui.button.bind('click.' + editor.widgetName, click);
+
+                    var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
+                    ui.button.find('.ui-button-text').html(selected);
+
+                    editor.bind('destroy', function() {
+                        ui.selectMenu.remove();
+                    });
+
+                    return this.selectMenu;
+                },
+                update: function() {
+                    var selected = this.select.find('option[value=' + this.select.val() + ']').html();
+                    this.button.find('.ui-button-text').html(selected);
+                },
+                val: function() {
+                    var result = this.select.val.apply(this.select, arguments);
+                    this.update();
+                    return result;
+                },
+                change: function(value) {
+
+                }
+            }, options);
         },
 
         /**********************************************************************\
