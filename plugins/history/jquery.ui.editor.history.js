@@ -1,34 +1,38 @@
-(function($) {
-    
-    // Add history undo / redo buttons
-    console.info('FIXME: unbind events on destroy');
-    $.ui.editor.registerUi({
-        'undo': function(editor) {
-            var ui = this.ui = editor.uiButton({
+// Add history undo / redo buttons
+console.info('FIXME: unbind events on destroy');
+$.ui.editor.registerUi({
+    'undo': {
+        init: function(editor) {
+            editor.bind('change', this.change, this);
+            
+            return editor.uiButton({
                 title: _('Step Back'),
                 disabled: true,
                 click: function() {
                     editor.historyBack();
                 }
             });
-            editor.bind('change', function() {
-                if (editor.present === 0) ui.disable();
-                else ui.enable();
-            });
         },
-        'redo': function(editor) {
-            var ui = this.ui = editor.uiButton({
+        change: function() {
+            if (this.editor.present === 0) this.ui.disable();
+            else this.ui.enable();
+        }
+    },
+    'redo': {
+        init: function(editor) {
+            editor.bind('change', this.change, this);
+            
+            return this.ui = editor.uiButton({
                 title: _('Step Forward'),
                 disabled: true,
                 click: function() {
                     editor.historyForward();
                 }
             });
-            editor.bind('change', function() {
-                if (editor.present === editor.history.length - 1) ui.disable();
-                else ui.enable();
-            });
+        },
+        change: function() {
+            if (this.editor.present === this.editor.history.length - 1) this.ui.disable();
+            else this.ui.enable();
         }
-    });
-
-})(jQuery);
+    }
+});
