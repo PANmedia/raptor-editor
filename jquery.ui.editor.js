@@ -562,6 +562,8 @@ var _;
         updateTagTree: function() {
             var editor = this;
             var title = '';
+            
+            // An array of ranges (by index), each with a list of elements in the range
             var lists = []; 
                 
             // Loop all selected ranges
@@ -593,6 +595,7 @@ var _;
                 for (var j in list) {
                     title += this.getTemplate('tag', {
                         element: list[j][0].tagName.toLowerCase(),
+                        // Create a data attribute with the index to the range, and element (so [0,0] will be the first range/first element)
                         data: '[' + i + ',' + j + ']'
                     });
                 }
@@ -602,8 +605,10 @@ var _;
                 .html(title)
                 .find('a')
                 .click(function() {
+                    // Get the range/element data attribute
                     var i = $(this).data('ui-editor-selection');
                     if (i) {
+                        // Get the element from the list array
                         editor.selectElement(lists[i[0]][i[1]]);
                         editor.updateTagTree();
                     } else {
