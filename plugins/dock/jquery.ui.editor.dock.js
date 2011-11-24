@@ -42,6 +42,10 @@
             this.bind('show', spacer.show, spacer);
             this.bind('hide', spacer.hide, spacer);
             this.bind('destroy', this.destroy, this);
+            
+            if (!this.options.dockToElement) {
+                this.bind('change', this.change, this);
+            }
         },
         
         dockToElement: function() {
@@ -91,19 +95,7 @@
             this.editor.selDialog()
                 .addClass(this.options.baseClass + '-docked');
                 
-            console.debug(this.editor.selDialog());
-                
-            // Reinitialise spacer when the toolbar is visible and stoped animating
-            window.setTimeout(function(dock) {
-                // Show the spacer 
-                var toolbar = dock.editor.selToolbar();
-                if (toolbar.is(':visible')) {
-                    spacer.height(toolbar.outerHeight() + parseInt(toolbar.css('top'))).show();
-                }
-
-                // Trigger the editor resize event to adjust other plugin element positions
-                dock.editor.fire('resize');
-            }, 1, this);
+            this.editor.fire('change');
         },
         
         dock: function() {
@@ -191,6 +183,22 @@
         
         disable: function() {
             spacer.hide();
+        },
+        
+        change: function() {
+            if (this.isDocked() && this.editor.isEditing()) {
+                // Reinitialise spacer when the toolbar is visible and stoped animating
+                window.setTimeout(function(dock) {
+                    // Show the spacer 
+                    var toolbar = dock.editor.selToolbar();
+                    if (toolbar.is(':visible')) {
+                        spacer.height(toolbar.outerHeight() + parseInt(toolbar.css('top'))).show();
+                    }
+
+                    // Trigger the editor resize event to adjust other plugin element positions
+                    dock.editor.fire('resize');
+                }, 1, this);
+            }
         },
         
         destroy: function() {
