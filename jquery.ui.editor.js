@@ -742,11 +742,8 @@ var _;
                 }
             });
             
-            editor.bind('destroy', function() {
-                editor.toolbar.dialog('destory')
-                if (!editor.reiniting) {
-                    editor.toolbar.remove();
-                }
+            editor.bind('after:destroy', function() {
+                editor.toolbar.dialog('destory').remove();
             });
         },
         
@@ -1192,8 +1189,7 @@ var _;
                     // Default title if not set in plugin
                     if (!this.title) this.title = _('Unnamed Select Menu');
 
-                    ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
-                        .attr('title', this.title);
+                    ui.selectMenu = $('<div class="ui-editor-selectmenu"/>');
 
                     ui.selectMenu.append(this.select.hide());
                     ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
@@ -1215,8 +1211,9 @@ var _;
                     });
 
                     ui.button = $('<div class="ui-editor-selectmenu-button"/>')
-                      .button({ icons: { secondary: 'ui-icon-triangle-1-s' } })
-                      .prependTo(this.selectMenu);
+                        .attr('title', this.title)
+                        .button({ icons: { secondary: 'ui-icon-triangle-1-s' } })
+                        .prependTo(this.selectMenu);
 
                     var click = function() {
                         if (!ui.menu.is(':animated')) {
@@ -1353,7 +1350,10 @@ var _;
             }
         },
 
-        fire: function(name, global) {
+        fire: function(name, global, sub) {
+            // Fire before sub-event
+            if (!sub) this.fire('before:' + name, global, true);
+            
             if (this.events[name]) {
                 for (var i in this.events[name]) {
                     var event = this.events[name][i];
@@ -1364,6 +1364,9 @@ var _;
             if (global !== false) {
                 $.ui.editor.fire(name);
             }
+            
+            // Fire after sub-event
+            if (!sub) this.fire('after:' + name, global, true);
         },
 
         /**********************************************************************\
