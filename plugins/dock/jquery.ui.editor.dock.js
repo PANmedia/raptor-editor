@@ -22,7 +22,7 @@
     }
     
     $.ui.editor.registerPlugin('dock', {
-        init: function() {
+        init: function(editor) {
             if (!spacer) {
                 spacer = $('<div class="' + this.options.baseClass + '-spacer"/>')
                     .prependTo('body')
@@ -35,7 +35,7 @@
             this.bind('disabled', this.disable);
             this.bind('show', spacer.show, spacer);
             this.bind('hide', spacer.hide, spacer);
-            this.bind('destroy', this.undock, this);
+            this.bind('destroy', this.destroy, this);
         },
         
         dockToElement: function() {
@@ -140,7 +140,7 @@
             if (!this.docked) return;
             
             // Save the state of the dock
-            this.docked = this.persist('docked', false);
+            this.docked = this.destroying ? false : this.persist('docked', false);
             
             // Remove the header class from the editor toolbar
             this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
@@ -173,6 +173,11 @@
         
         disable: function() {
             spacer.hide();
+        },
+        
+        destroy: function() {
+            this.destroying = true;
+            this.undock();
         }
     });
     
