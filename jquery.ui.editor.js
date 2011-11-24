@@ -1481,7 +1481,9 @@ var _;
         unloadWarning: function() {
             var instances = this.getInstances();
             for (var i in instances) {
-                if (instances[i].isDirty() && instances[i].options.unloadWarning) {
+                if (instances[i].isDirty() && 
+                        instances[i].isEditing() && 
+                        instances[i].options.unloadWarning) {
                     return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
                 }
             }
