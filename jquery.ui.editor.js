@@ -991,6 +991,55 @@ var _;
             this.fire('change');
         },
         
+        splitRange: function() {
+            
+        },
+        
+        insertDomFragmentBefore: function(domFragment, wrapperTag, parent) {
+            // Get all nodes in the extracted content
+            for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+                var node = domFragment.childNodes.item(j);
+                // Prepend the node before the current node
+                var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
+                if (content) {
+                    $('<' + wrapperTag + '/>')
+                        .html($.trim(content))
+                        .insertBefore(parent);
+                }
+            }
+        },
+        
+        //rangeIsEmpty
+        
+        changeTag2: function(tag) {
+            for (var i in rangy.getSelection().getAllRanges()) {
+                // Create a new range set every time to update range offsets
+                var ranges = rangy.getSelection().getAllRanges();
+                
+                if (this.rangeIsEmpty(ranges[i])) {
+                    // Apply to the whoel element 
+                }
+                console.debug(ranges[i]);
+                break;
+                
+                // Create a range from the start of the current range, to the beginning of the start element
+                var range = rangy.createRange();
+                range.setStart(ranges[i].startContainer, 0);
+                range.setEnd(ranges[i].startContainer, ranges[i].startOffset);
+                
+                // Extract the contents, and prepend it as a new node before the current node
+                var precontent = range.extractContents();
+                var parent = $(range.startContainer).parent();
+                this.insertDomFragmentBefore(precontent, parent[0].nodeName, parent);
+                
+                // Extract the content in the selected range
+                var contents = ranges[i].extractContents();
+                this.insertDomFragmentBefore(contents, tag, parent);
+            }
+            
+            this.fire('change');
+        },
+        
         changeTag: function(tag) {
             console.info('TODO: Review editor.changeTag function')
 
@@ -1095,7 +1144,7 @@ var _;
                     }
                     // <strict>
                     else {
-                        console.error(_('UI identified by key "{{ui}}" does not exist', { ui: uiSet[j] }));
+                        console.error(_('UI identified by key "{{ui}}" does not exist', {ui: uiSet[j]}));
                     }
                     // </strict>
                 }
@@ -1147,7 +1196,7 @@ var _;
 
                     // Create the jQuery UI button
                     this.button.button({
-                        icons: { primary: this.icon || 'ui-icon-' + name },
+                        icons: {primary: this.icon || 'ui-icon-' + name},
                         disabled: options.disabled ? true : false,
                         text: false
                     });
@@ -1197,8 +1246,8 @@ var _;
                         var option = $('<div class="ui-editor-selectmenu-menu-item ui-corner-all"/>')
                             .html($(this).html())
                             .appendTo(ui.menu)
-                            .bind('mouseenter.' + editor.widgetName, function() { $(this).addClass('ui-state-focus') })
-                            .bind('mouseleave.' + editor.widgetName, function() { $(this).removeClass('ui-state-focus') })
+                            .bind('mouseenter.' + editor.widgetName, function() {$(this).addClass('ui-state-focus')})
+                            .bind('mouseleave.' + editor.widgetName, function() {$(this).removeClass('ui-state-focus')})
                             .bind('click.' + editor.widgetName, function() {
                                 var option = ui.select.find('option').eq($(this).index());
                                 ui.select.val(option.val());
@@ -1212,7 +1261,7 @@ var _;
 
                     ui.button = $('<div class="ui-editor-selectmenu-button"/>')
                         .attr('title', this.title)
-                        .button({ icons: { secondary: 'ui-icon-triangle-1-s' } })
+                        .button({icons: {secondary: 'ui-icon-triangle-1-s'}})
                         .prependTo(this.selectMenu);
 
                     var click = function() {
@@ -1585,7 +1634,7 @@ var _;
         registerLocale: function(name, nativeName, strings) {
             // <strict>
             if (this.locales[name]) {
-                console.error(_('Locale "{{localeName}}" has already been registered, and will be overwritten', { localeName: name }));
+                console.error(_('Locale "{{localeName}}" has already been registered, and will be overwritten', {localeName: name}));
             }
             // </strict>
 
