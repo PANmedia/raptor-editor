@@ -1,10 +1,10 @@
-console.info('TODO: use cookies when localstorage is not avalible, or chosen by option');
-console.info('TODO: make a way to disable all buttons then selectivly enable ones');
-console.info('TODO: allow buttons to flow to multiple lines if toolbar is constrained in width');
+console.info('TODO: use cookies when local storage is not available, or chosen by option');
+console.info('TODO: make a way to disable all buttons then selectivity enable ones');
+console.info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
 console.info('TODO: locale switches should affect all instances');
-console.info('FIXME: remove edior instance from instances array on destory');
-console.info('FIXME: custom tooltips');
-console.info('FIXME: Check for localStorage or use jquery cookie');
+console.info('FIXME: remove editor instance from instances array on destroy');
+console.info('FIXME: custom tool tips');
+console.info('FIXME: Check for localStorage or use jQuery cookie');
 console.info('FIXME: updateTagTree click bindings');
 console.info('FIXME: updateTagTree should filter out duplicates');
 console.info('FIXME: Check for duplicate elements in getSelectedElements');
@@ -19,7 +19,7 @@ console.info('FIXME: Check for duplicate elements in getSelectedElements');
  *   ready
  *     Triggers after the editor has been initialised, (but possibly before the editor is shown and enabled)
  *   show
- *     Triggers when the toolbar/dialog is showen
+ *     Triggers when the toolbar/dialog is shown
  *   hide
  *     Triggers when the toolbar/dialog is hidden
  *   enabled
@@ -53,7 +53,7 @@ var _;
     function initialise() {
         // <strict>
             // Ensure rangy has been included
-            if (!rangy) console.error(_('Rangy is required. This library should have been included with the file you downoaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
+            if (!rangy) console.error(_('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
             // Ensure dialog has been included
             if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
             // Ensure dialog has been included
@@ -116,37 +116,50 @@ var _;
          * Default options
         \**********************************************************************/
         options: {
-            // Pluing and UI option overrides
+            // Plugin and UI option overrides
             plugins: {},
             ui: {},
             
+            // Namespace used to persistence to prevent conflicting stored values
             namespace: null,
+            
+            // The current locale of the editor
             locale: '',
+            
+            // Switch to indicated that some events should be automatically applied to all editors that are 'unified'
             unify: true,
-            customTooltips: true,
+
+            // Switch to indicate weather or not to stored persistent values, if set to false the persist function will always return null
             persistence: true,
+            
+            // The name to store persistent values under
             persistenceName: 'uiEditor',
+            
+            // Switch to indicate weather or not to a warning should pop up when the user navigates aways from the page and there are unsaved changes
             unloadWarning: true,
             
-            // Switch to automaticly enabled editing on the element
+            // Switch to automatically enabled editing on the element
             autoEnable: false,
             
-            // Switch to specify if the editor should automaticly enable all plugins, if set to false, only the plugins specificed in the 'plugins' option object will be enabled
+            // Switch to specify if the editor should automatically enable all plugins, if set to false, only the plugins specified in the 'plugins' option object will be enabled
             enablePlugins: true,
             
-            // An array of explictaly disabled plugins
+            // An array of explicitly disabled plugins
             disabledPlugins: [],
             
             // And array of arrays denoting the order and grouping of UI elements in the toolbar
             uiOrder: null,
             
-            // Switch to specify if the editor should automaticly enable all UI, if set to false, only the UI specificed in the 'ui' option object will be enabled
+            // Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the 'ui' option object will be enabled
             enableUi: true,
             
-            // An array of explictaly disabled UI elements
+            // An array of explicitly disabled UI elements
             disabledUi: [],
             
+            // Switch to indicate that the element the editor is being applied to should be replaced with a div (useful for textareas), the value/html of the replaced element will be automatically updated when the editor element is changed
             replace: false,
+            
+            // A list of styles that will be copied from the replaced element and applied to the editor replacement element
             replaceStyle: [
                 'display', 'position', 'float', 'width',
                 'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
@@ -168,7 +181,7 @@ var _;
         _init: function() {
             $.ui.editor.instances.push(this);
             
-            // Set the options after the widget initialisation, because jQuery UI widget trys to extend the array (and breaks it)
+            // Set the options after the widget initialisation, because jQuery UI widget tries to extend the array (and breaks it)
             this.options.uiOrder = this.options.uiOrder || [
                 ['dock'],
                 ['save', 'cancel', 'show-guides'],
