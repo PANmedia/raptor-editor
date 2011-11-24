@@ -22,6 +22,12 @@
     }
     
     $.ui.editor.registerPlugin('dock', {
+        options: {
+            docked: false,
+            dockToElement: false,
+            dockUnder: false
+        },
+        
         init: function(editor) {
             if (!spacer) {
                 spacer = $('<div class="' + this.options.baseClass + '-spacer"/>')
@@ -74,13 +80,25 @@
         },
         
         dockToBody: function() {
-            this.editor.selDialog().addClass(this.options.baseClass + '-docked')
+            var top = 0;
+            if ($(this.options.dockUnder).length) {
+                top = $(this.options.dockUnder).outerHeight();
+            }
+            
+            this.editor.selToolbar()
+                .css('top', top);
+            
+            this.editor.selDialog()
+                .addClass(this.options.baseClass + '-docked');
+                
+            console.debug(this.editor.selDialog());
+                
             // Reinitialise spacer when the toolbar is visible and stoped animating
             window.setTimeout(function(dock) {
                 // Show the spacer 
                 var toolbar = dock.editor.selToolbar();
                 if (toolbar.is(':visible')) {
-                    spacer.height(toolbar.outerHeight()).show();
+                    spacer.height(toolbar.outerHeight() + parseInt(toolbar.css('top'))).show();
                 }
 
                 // Trigger the editor resize event to adjust other plugin element positions
