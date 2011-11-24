@@ -995,7 +995,7 @@ var _;
             
         },
         
-        insertDomFragmentBefore: function(domFragment, wrapperTag, parent) {
+        insertDomFragmentBefore: function(domFragment, wrapperTag, beforeElement) {
             // Get all nodes in the extracted content
             for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
                 var node = domFragment.childNodes.item(j);
@@ -1004,12 +1004,25 @@ var _;
                 if (content) {
                     $('<' + wrapperTag + '/>')
                         .html($.trim(content))
-                        .insertBefore(parent);
+                        .insertBefore(beforeElement);
                 }
             }
         },
         
-        //rangeIsEmpty
+        rangeIsEmpty: function(range) {
+            return range.startOffset === range.endOffset && range.startContainer === range.endContainer;
+        },
+        
+        expandRangeToParent: function(range) {
+            range.setStartBefore(range.startContainer);
+            range.setEndAfter(range.endContainer);
+        },
+        
+        changeRangeTag: function(range, tag) {
+            var contents = range.extractContents();
+            this.insertDomFragmentBefore(contents, tag, range.startContainer);
+            $(range.startContainer).remove();
+        },
         
         changeTag2: function(tag) {
             for (var i in rangy.getSelection().getAllRanges()) {
@@ -1017,26 +1030,26 @@ var _;
                 var ranges = rangy.getSelection().getAllRanges();
                 
                 if (this.rangeIsEmpty(ranges[i])) {
-                    // Apply to the whoel element 
+                    // Apply to the whole element 
+                    this.expandRangeToParent(ranges[i]);
+                    this.changeRangeTag(ranges[i], tag);
+                } else {
+                    // Create a range from the start of the current range, to the beginning of the start element
+                    var range = rangy.createRange();
+                    range.setStart(ranges[i].startContainer, 0);
+                    range.setEnd(ranges[i].startContainer, ranges[i].startOffset);
+
+                    // Extract the contents, and prepend it as a new node before the current node
+                    var precontent = range.extractContents();
+                    var parent = $(range.startContainer).parent();
+                    this.insertDomFragmentBefore(precontent, parent[0].nodeName, parent);
+
+                    // Extract the content in the selected range
+                    var contents = ranges[i].extractContents();
+                    this.insertDomFragmentBefore(contents, tag, parent);
                 }
-                console.debug(ranges[i]);
-                break;
-                
-                // Create a range from the start of the current range, to the beginning of the start element
-                var range = rangy.createRange();
-                range.setStart(ranges[i].startContainer, 0);
-                range.setEnd(ranges[i].startContainer, ranges[i].startOffset);
-                
-                // Extract the contents, and prepend it as a new node before the current node
-                var precontent = range.extractContents();
-                var parent = $(range.startContainer).parent();
-                this.insertDomFragmentBefore(precontent, parent[0].nodeName, parent);
-                
-                // Extract the content in the selected range
-                var contents = ranges[i].extractContents();
-                this.insertDomFragmentBefore(contents, tag, parent);
             }
-            
+                
             this.fire('change');
         },
         
