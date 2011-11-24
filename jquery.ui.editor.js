@@ -1095,7 +1095,7 @@ var _;
                     }
                     // <strict>
                     else {
-                        console.error(_('UI identified by key "{{ui}}" does not exist', { ui: ui }));
+                        console.error(_('UI identified by key "{{ui}}" does not exist', { ui: uiSet[j] }));
                     }
                     // </strict>
                 }
