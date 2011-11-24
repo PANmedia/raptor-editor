@@ -96,7 +96,7 @@ if ($replace || (!$replace && !$merge)) {
     $lines = file($locale_file);
     foreach($lines as $line) {
         $result= null; 
-        if(preg_match('/^\s*"(.+)":\s?"(.+)",$/iU', $line, $result)) {
+        if(preg_match('/^\s*"(.+)":\s?"(.+)",?$/iU', $line, $result)) {
             $key = $result[1];
             $value = $result[2];
             if (isset($strings[$key]) && $strings[$key] != $value) {
