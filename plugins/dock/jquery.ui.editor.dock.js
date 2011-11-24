@@ -177,23 +177,25 @@
     });
     
     $.ui.editor.registerUi({
-        dock: function(editor) {
-            this.ui = editor.uiButton({
-                title: _('Click to dock the toolbar'),
-                icon: editor.getPlugin('dock').isDocked() ? 'ui-icon-pin-w' : 'ui-icon-pin-s',
-                click: function() {
-                    // Toggle dock on current editor
-                    var plugin = editor.getPlugin('dock');
-                    if (plugin.isDocked()) plugin.undock();
-                    else plugin.dock();
-                    
-                    // Set (un)docked on all unified editors
-                    editor.unify(function(editor) {
-                        if (plugin.isDocked()) editor.getPlugin('dock').dock();
-                        else editor.getPlugin('dock').undock();
-                    });
-                }
-            });
+        dock:  {
+            init: function(editor, element) {
+                return editor.uiButton({
+                    title: _('Click to dock the toolbar'),
+                    icon: editor.getPlugin('dock').isDocked() ? 'ui-icon-pin-w' : 'ui-icon-pin-s',
+                    click: function() {
+                        // Toggle dock on current editor
+                        var plugin = editor.getPlugin('dock');
+                        if (plugin.isDocked()) plugin.undock();
+                        else plugin.dock();
+
+                        // Set (un)docked on all unified editors
+                        editor.unify(function(editor) {
+                            if (plugin.isDocked()) editor.getPlugin('dock').dock();
+                            else editor.getPlugin('dock').undock();
+                        });
+                    }
+                });
+            }
         }
     });
     
