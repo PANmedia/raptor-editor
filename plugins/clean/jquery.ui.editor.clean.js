@@ -2,7 +2,7 @@ $.ui.editor.registerUi({
     clean: {
         init: function(editor) {
             return editor.uiButton({
-                title: _('Clean'),
+                title: _('Remove unnecessary markup from editor content'),
                 click: function() {
                     console.log(this);
                     this.clean();

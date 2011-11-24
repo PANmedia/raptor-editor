@@ -255,6 +255,7 @@
                   tofile="${buildpath}/04-jquery-cookie.js" />
         </else></if>
         
+        <!-- TipTip -->
         <if><istrue value="${no-jquery-tiptip}"/><then></then><else>
             <copy file="dependencies/tiptip/jquery.tiptip.js" 
                   tofile="${buildpath}/05-jquery-tiptip.js" />
