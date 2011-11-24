@@ -5,8 +5,7 @@
         options: {
             delay: 400,
             fadeIn: 200,
-            fadeOut: 200,
-            defaultPosition: 'top'
+            fadeOut: 200
         },
         
         currentLocale: null,
@@ -15,7 +14,13 @@
             var tiptip = this;
             
             editor.bind('change', function() {
-                // Only apply tiptip if it hasn't yet been applied, or the locale has been changed
+                var tipTipOptions = {
+                    maxWidth: 'auto',
+                    delay: options.delay,
+                    fadeIn: options.fadeIn,
+                    fadeOut: options.fadeOut
+                };
+                // Only apply tiptip to the core elements if it hasn't yet been applied, or the locale has been changed
                 if (tiptip.currentLocale != options.locale) {
                     // <strict>
                     // Ensure jQuery has been included
@@ -25,16 +30,12 @@
                     }
                     // </strict>
                     $.merge(editor.selToolbar('[title]'), editor.selTitle('[title]')).each(function() {
-                        $(this).tipTip({
-                            maxWidth: 'auto',
-                            delay: options.delay,
-                            fadeIn: options.fadeIn,
-                            fadeOut: options.fadeOut,
-                            defaultPosition: options.defaultPosition
-                        });
+                        $(this).tipTip($.extend(tipTipOptions, { defaultPosition: 'top' }));
                     });
                     this.currentLocale = options.locale;
                 }
+                // Unsaved edit warnings could be added / removed on change, so we should check for them each time
+                $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(tipTipOptions, { defaultPosition: 'right' }));
             });
         }
     });
