@@ -19,7 +19,6 @@
         },
         
         init: function(editor, options) {
-            console.debug('unsaved-edit-warning init');
             this.warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))
                 .attr('id', editor.getUniqueId())
                 .appendTo('body');
@@ -30,7 +29,6 @@
             }, this);
 
             editor.bind('destroy', function() {
-            console.debug('unsaved-edit-warning dest');
                 this.warning.remove();
                 this.warning = null;
             }, this);

@@ -120,6 +120,7 @@ var _;
             plugins: {},
             ui: {},
             
+            namespace: null,
             locale: '',
             unify: true,
             customTooltips: true,
@@ -512,21 +513,7 @@ var _;
         \**********************************************************************/
         persist: function(key, value) {
             if (!this.options.persistence) return null;
-            
-            if (localStorage) {
-                var storage;
-                if (localStorage[this.options.persistanceName]) {
-                    storage = JSON.parse(localStorage[this.options.persistanceName]);
-                } else {
-                    storage = {};
-                }
-                if (value === undefined) return storage[key];
-                storage[key] = value;
-                localStorage[this.options.persistanceName] = JSON.stringify(storage);
-            } else {
-                console.info('FIXME: use cookies');
-            }
-            return value;
+            return $.ui.editor.persist(key, value, this.options.namespace);
         },
         
         /**********************************************************************\
@@ -601,8 +588,8 @@ var _;
             return this.getElement()[0] == element[0];
         },
         
-        unify: function(callback) {
-            callback(this);
+        unify: function(callback, callSelf) {
+            if (callSelf !== false) callback(this);
             if (this.options.unify) {
                 for (var i in $.ui.editor.getInstances()) {
                     if ($.ui.editor.getInstances()[i] != this &&
@@ -692,10 +679,13 @@ var _;
         \**********************************************************************/
         loadToolbar: function() {
             var editor = this;
+            var pos = this.persist('position') || editor.options.dialogPosition;
+            
             editor.toolbar = $('<div class="' + editor.options.baseClass + '-toolbar"/>');
             editor.toolbar.append('<div class="' + editor.options.baseClass + '-inner"/>');
+            
             editor.toolbar.dialog({
-                position: $.isFunction(editor.options.dialogPosition) ? editor.options.dialogPosition() : editor.options.dialogPosition,
+                position: pos,
                 resizable: false,
                 closeOnEscape: false,
                 width: 'auto',
@@ -709,7 +699,7 @@ var _;
                 dragStop: function() {
                     var pos = editor.selDialog().position()
                     editor.unify(function(editor) {
-                        editor.selToolbar().dialog('option', 'position', [pos.left, pos.top]);
+                        editor.reposition(pos.top, pos.left)
                     });
                 },
                 open: function(event, ui) {
@@ -777,6 +767,11 @@ var _;
         
         dialog: function() {
             return this.toolbar.dialog.apply(this.toolbar, arguments);
+        },
+        
+        reposition: function(top, left) {
+            this.selToolbar().dialog('option', 'position', [left, top]);
+            this.persist('position', [left, top]);
         },
 
         /**********************************************************************\
@@ -1558,9 +1553,8 @@ var _;
         /**********************************************************************\
          * Persistance
         \**********************************************************************/
-        persist: function(key, value) {
-            if (!this.options.persistence) return null;
-            
+        persist: function(key, value, namespace) {
+            key = namespace ? namespace + '.' + key : key;
             if (localStorage) {
                 var storage;
                 if (localStorage.uiWidgetEditor) {
@@ -1574,6 +1568,8 @@ var _;
             } else {
                 console.info('FIXME: use cookies');
             }
+            
+            return value;
         },
         
         /**********************************************************************\
@@ -1635,6 +1631,18 @@ var _;
         for (var key in $.ui.editor.translations) result.push(key);
         if (debugLevel >= MID) console.info(_('Locales loaded: {{translations}} ', {translations: result.join(', ')}));
         // </debug>
+    });
+    
+    // Select menu close event (triggered when clicked off)
+    $('html').click(function(event) {
+        var parent = $(event.target).parents('.ui-editor-selectmenu');
+        $('.ui-editor-selectmenu-menu').each(function() {
+            if ($(this).parent()[0] != parent[0]) {
+                $(this).hide();
+                $(this).parent().find('.ui-editor-selectmenu-button')
+                    .removeClass('ui-corner-top');
+            }
+        });
     });
     
 })();
