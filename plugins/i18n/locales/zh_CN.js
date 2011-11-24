@@ -30,6 +30,7 @@
         "Ordered List": "Ordered List",
         "Page on this or another website": "Page on this or another website",
         "Remove Link": "Remove Link",
+        "Remove unnecessary markup from editor content": "Remove unnecessary markup from editor content",
         "Response code {{responseCode}} from {{location}}": "Response code {{responseCode}} from {{location}}",
         "Right Align": "右对齐文本",
         "Save": "存储",
@@ -45,7 +46,7 @@
         "Unordered List": "Unordered List",
         "View / Edit Source": "View / Edit Source",
         "View Source": "View Source",
-        "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes",
+        "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes"
         "root": "本"
     });
 })(jQuery);
