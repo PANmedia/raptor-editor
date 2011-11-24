@@ -1643,7 +1643,8 @@ var _;
             if ($(this).parent()[0] != parent[0]) {
                 $(this).hide();
                 $(this).parent().find('.ui-editor-selectmenu-button')
-                    .removeClass('ui-corner-top');
+                    .removeClass('ui-corner-top')
+                    .addClass('ui-corner-all');
             }
         });
     });
