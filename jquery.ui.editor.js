@@ -1492,7 +1492,7 @@ $.widget('ui.editor',
         if (!sub) this.fire('before:' + name, global, true);
 
         if (this.events[name]) {
-            for (var i in this.events[name]) {
+            for (var i = 0, l = this.events.length; i < l; i++) {
                 var event = this.events[name][i];
                 event.callback.call(event.context || this);
             }
@@ -1757,7 +1757,7 @@ $.extend($.ui.editor, {
         if (debugLevel === MAX) console.info('Calling jquery-ui-editor global/static event: ' + name);
         // </debug>
         if (!this.events[name]) return;
-        for (var i in this.events[name]) {
+        for (var i = 0, l = this.events.length; i < l; i++) {
             this.events[name][i].call(this);
         }
     },
