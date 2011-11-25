@@ -388,7 +388,7 @@ $.widget('ui.editor',
             .attr('id', this.getUniqueId());
 
         var style = this.getStyles(this.element);
-        for (var i in this.options.replaceStyle) {
+        for (var i = 0; i < this.options.replaceStyle.length; i++) {
             target.css(this.options.replaceStyle[i], style[this.options.replaceStyle[i]]);
         }
         this.element.hide();
@@ -647,7 +647,7 @@ $.widget('ui.editor',
 
         // Loop all selected ranges
         var ranges = rangy.getSelection().getAllRanges();
-        for (var i in ranges) {
+        for (var i = 0; i < ranges.length; i++) {
             // Get the selected nodes common parent
             var node = ranges[i].commonAncestorContainer;
 
@@ -671,7 +671,7 @@ $.widget('ui.editor',
             list.reverse();
             if (title) title += ' | ';
             title += this.getTemplate('root');
-            for (var j in list) {
+            for (var j = 0; j < list.length; j++) {
                 title += this.getTemplate('tag', {
                     element: list[j][0].tagName.toLowerCase(),
                     // Create a data attribute with the index to the range, and element (so [0,0] will be the first range/first element)
@@ -703,10 +703,11 @@ $.widget('ui.editor',
     unify: function(callback, callSelf) {
         if (callSelf !== false) callback(this);
         if (this.options.unify) {
-            for (var i in $.ui.editor.getInstances()) {
-                if ($.ui.editor.getInstances()[i] != this &&
-                        $.ui.editor.getInstances()[i].options.unify) {
-                    callback($.ui.editor.getInstances()[i]);
+            var instances = $.ui.editor.getInstances();
+            for (var i = 0; i < instances.length; i++) {
+                if (instances[i] != this &&
+                        instances[i].options.unify) {
+                    callback(instances[i]);
                 }
             }
         }
@@ -715,8 +716,8 @@ $.widget('ui.editor',
     getStyles: function(element) {
         var result = {};
         var style = window.getComputedStyle(element[0], null);
-        for (var i in style){
-            result[style[i]] = style.getPropertyValue(style[i]);
+        for (var i = 0; i < style.length; i++) {
+            result[style.item(i)] = style.getPropertyValue(style.item(i));
         };
         return result;
     },
@@ -863,11 +864,9 @@ $.widget('ui.editor',
     },
 
     hideOtherToolbars: function(instant) {
-        for (var i in $.ui.editor.getInstances()) {
-            if ($.ui.editor.getInstances()[i] != this) {
-                $.ui.editor.getInstances()[i].hideToolbar(instant);
-            }
-        }
+        this.unify(function(editor) {
+            editor.hideToolbar(instant);
+        }, false);
     },
 
     isToolbarVisible: function() {
@@ -1100,9 +1099,10 @@ $.widget('ui.editor',
     },
 
     changeTag2: function(tag) {
-        for (var i in rangy.getSelection().getAllRanges()) {
+        var ranges = rangy.getSelection().getAllRanges();
+        for (var i = 0; i < ranges.length; i++) {
             // Create a new range set every time to update range offsets
-            var ranges = rangy.getSelection().getAllRanges();
+            ranges = rangy.getSelection().getAllRanges();
 
             if (this.rangeIsEmpty(ranges[i])) {
                 // Apply to the whole element 
@@ -1200,13 +1200,13 @@ $.widget('ui.editor',
     loadUi: function() {
         var editor = this;
         // Loop the UI order option
-        for (var i in this.options.uiOrder) {
+        for (var i = 0; i < this.options.uiOrder.length; i++) {
             var uiSet = this.options.uiOrder[i];
             // Each element of the UI order should be an array of UI which will be grouped
             var uiGroup = $('<div/>');
 
             // Loop each UI in the array
-            for (var j in uiSet) {
+            for (var j = 0; j < uiSet.length; j++) {
                 // Check if we are not automaticly enabling UI, and if not, check if the UI was manually enabled
                 if (!this.options.enableUi &&
                         !this.options.ui[uiSet[j]]) continue;
@@ -1490,7 +1490,7 @@ $.widget('ui.editor',
     fire: function(name, global, sub) {
         // Fire before sub-event
         if (!sub) this.fire('before:' + name, global, true);
-
+            console.debug(name);
         if (this.events[name]) {
             for (var i = 0, l = this.events.length; i < l; i++) {
                 var event = this.events[name][i];
@@ -1669,7 +1669,7 @@ $.extend($.ui.editor, {
 
     isDirty: function() {
         var instances = this.getInstances();
-        for (var i in instances) {
+        for (var i = 0; i < instances.length; i++) {
             if (instances[i].isDirty()) return true;
         }
         return false;
@@ -1677,7 +1677,7 @@ $.extend($.ui.editor, {
 
     unloadWarning: function() {
         var instances = this.getInstances();
-        for (var i in instances) {
+        for (var i = 0; i < instances.length; i++) {
             if (instances[i].isDirty() && 
                     instances[i].isEditing() && 
                     instances[i].options.unloadWarning) {
