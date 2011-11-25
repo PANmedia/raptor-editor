@@ -163,7 +163,7 @@
     <target name="build" depends="package,targz,cleanup">
     </target>
     
-    <target name="0deps" depends="copydeps,combine,compile,targz,cleanup">
+    <target name="0deps" depends="copydeps,combine,compile,targz">
     </target>
     
     <target name="pdefdeps">
@@ -260,7 +260,7 @@
             <copy file="dependencies/tiptip/jquery.tiptip.js" 
                   tofile="${buildpath}/05-jquery-tiptip.js" />
             <copy file="dependencies/tiptip/tiptip.css" 
-                  tofile="${buildpath}/theme/tiptip.css" />
+                  tofile="${buildpath}/02-theme/tiptip.css" />
         </else></if>
               
         <!-- jQuery UI -->
@@ -280,12 +280,21 @@
             <copy file="dependencies/rangy/rangy-serializer.js" 
                   tofile="${buildpath}/09-rangy-serializer.js" />
         </else></if>
+              
+        <!-- Append global wrapper open -->
+        <if>
+            <istrue value="${wrapper}"/>
+            <then>
+                <echo file="${buildpath}/99-wrapper-open.js" append="true">(function($, window, rangy, undefined) {</echo>
+            </then>
+        </if>
         
         <!-- CSS -->
         <if><istrue value="${no-jquery-ui-theme}"/><then></then><else>
-            <copy todir="${buildpath}/theme">
+            <copy todir="${buildpath}/01-theme">
                 <fileset dir=".">
-                    <include name="dependencies/themes/${theme}/**/*" />
+                    <include name="dependencies/themes/${theme}/jquery-ui.css" />
+                    <include name="dependencies/themes/${theme}/images/**/*" />
                 </fileset>  
             </copy>
         </else></if>
@@ -373,6 +382,15 @@
         <append destFile="${buildpath}/concat.js">
             <filelist dir="." files="${jsfiles}"/>
         </append>
+        
+        <!-- Append global wrapper close -->
+        <if>
+            <istrue value="${wrapper}"/>
+            <then>
+                <echo file="${buildpath}/concat.js" append="true">})(jQuery, window, rangy);</echo>
+            </then>
+        </if>
+        
         <sortedfileset name="cssfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.css" />
@@ -380,6 +398,7 @@
                 <include name="${buildpath}/**/*.css" />
             </fileset>
         </sortedfileset>
+        <echo>${cssfiles}</echo>
         <append destFile="${buildpath}/concat.css">
             <filelist dir="." files="${cssfiles}"/>
         </append>
@@ -390,7 +409,9 @@
             <istrue value="${compile-js}"/>
             <then>
                 <echo>java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
-                <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js" dir="." />
+                <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js" 
+                      dir="." level="info" outputProperty="output"/>
+                <echo>${output}</echo>
             </then>
             <else>
                 <move file="${buildpath}/concat.js" tofile="${buildpath}/concat.min.js"/>
@@ -400,7 +421,9 @@
             <istrue value="${compile-css}"/>
             <then>
                 <echo>java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
-                <exec command="java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" dir="." />
+                <exec command="java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" 
+                      dir="." level="info" outputProperty="output"/>
+                <echo>${output}</echo>
             </then>
             <else>
                 <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css"/>
@@ -427,12 +450,6 @@
         </append>
         <echo file="${buildpath}/merge.js" append="true">*/</echo>
         <!-- Close the comment -->
-        
-        <!-- Append global wrapper open -->
-        <!-- 
-        <echo file="${buildpath}/merge.js" append="true">(function($, window, rangy, undefined) {</echo>
-        <echo file="${buildpath}/merge.js" append="true">})(jQuery, window, rangy);</echo>
-        -->
         
         <!-- Append the merged JS -->
         <append destFile="${buildpath}/merge.js">
