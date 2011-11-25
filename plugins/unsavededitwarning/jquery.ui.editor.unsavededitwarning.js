@@ -56,9 +56,10 @@
     });
 
     $.ui.editor.bind('resize', function() {
-        for (var i in this.getInstances()) {
-            if (this.getInstances()[i].getPlugin('unsaved-edit-warning')) {
-                this.getInstances()[i].getPlugin('unsaved-edit-warning').reposition();
+        var instances = this.getInstances();
+        for (var i = 0; i < instances.length; i++) {
+            if (instances[i].getPlugin('unsaved-edit-warning')) {
+                instances[i].getPlugin('unsaved-edit-warning').reposition();
             }
         };
     });
