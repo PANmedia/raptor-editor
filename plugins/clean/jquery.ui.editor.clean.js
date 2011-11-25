@@ -16,17 +16,17 @@ $.ui.editor.registerPlugin('clean', {
         
     clean: function() {
         var i;
-        for (i in this.options.stripAttrs) {
+        for (i = 0; i < this.options.stripAttrs.length; i++) {
             this.editor.getElement()
                 .find('[' + this.options.stripAttrs[i] + ']')
                 .removeAttr(this.options.stripAttrs[i]);
         }
-        for (i in this.options.stripAttrContent) {
+        for (i = 0; i < this.options.stripAttrContent.length; i++) {
             this.editor.getElement()
                 .find('[' + i + '="' + this.options.stripAttrs[i] + '"]')
                 .removeAttr(this.options.stripAttrs[i]);
         }
-        for (i in this.options.stripEmptyTags) {
+        for (i = 0; i < this.options.stripEmptyTags.length; i++) {
             this.editor.getElement()
                 .find(this.options.stripEmptyTags[i] + ':empty')
                 .remove();
