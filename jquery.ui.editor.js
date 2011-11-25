@@ -1490,9 +1490,10 @@ $.widget('ui.editor',
     fire: function(name, global, sub) {
         // Fire before sub-event
         if (!sub) this.fire('before:' + name, global, true);
-            console.debug(name);
+
+
         if (this.events[name]) {
-            for (var i = 0, l = this.events.length; i < l; i++) {
+            for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
                 event.callback.call(event.context || this);
             }
@@ -1713,7 +1714,6 @@ $.extend($.ui.editor, {
     defaultPlugin: {
         editor: null,
         options: null,
-        bindings: {},
         init: function(editor, options) {},
         persist: function(key, value) {
             return this.editor.persist(key, value);
