@@ -1,3 +1,14 @@
+/**
+ * @fileOverview 
+ * 
+ * @author David Neilsen - david@panmedia.co.nz
+ * @author Michael Robinson - michael@panmedia.co.nz
+ * @version 0.1
+ * @requires jQuery
+ * @requires jQuery UI
+ * @requires Rangy
+ */
+
 console.info('TODO: use cookies when local storage is not available, or chosen by option');
 console.info('TODO: make a way to disable all buttons then selectivity enable ones');
 console.info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
@@ -9,8 +20,7 @@ console.info('FIXME: updateTagTree click bindings');
 console.info('FIXME: updateTagTree should filter out duplicates');
 console.info('FIXME: Check for duplicate elements in getSelectedElements');
 
-/**
- *
+/*
  * Events:
  *   resize
  *     Triggers when the page, or an element is resized to allow plugins to adjust their position
@@ -29,46 +39,104 @@ console.info('FIXME: Check for duplicate elements in getSelectedElements');
  *
  */
 
-var _;
+// <debug>
+/** 
+ * Minimum debugging level (only available in dev and debug build)
+ * @type int
+ * @constant 
+ */ 
+var MIN = 100;
+/** 
+ * Medium debugging level (only available in dev and debug build)
+ * @type int
+ * @constant 
+ */ 
+var MID = 500;
+/** 
+ * Maximum debugging level (only available in development and debug build)
+ * @type int
+ * @constant 
+ */ 
+var MAX = 1000;
+/** 
+ * Current debugging level
+ * @type int
+ */ 
+var debugLevel = MIN;
+// </debug>
+
+
+// <strict>
+
+/**
+ * Handles an error message by either displaying it in the JS console, or throwing
+ *      and exception.
+ * @static
+ * @param {String} errorMessage The error message to display or throw
+ */
+function handleError(errorMessage) {
+    if (console && console.error) {
+        console.error(errorMessage);
+    } else {
+        throw errorMessage;
+    }
+}
+
+    
+// Ensure jQuery has been included
+if (!$) handleError(_('jQuery is required'));
+
+// Ensure jQuery UI has been included
+if (!$.ui) handleError(_('jQuery UI is required'));
+
+// </strict>
+
+/**
+ * Internationalisation function. Translates a string with tagged variable 
+ * references to the current locale.
+ * 
+ * <p>
+ * Variable references should be surrounded with double curly braces {{ }} 
+ *      e.g. "This string has a variable: {{my.variable}} which will not be translated"
+ * </p>
+ * 
+ * @static
+ * @param {String} string
+ * @param {Object} variables
+ */
+function _(string, variables) {
+    string = $.ui.editor.translate(string);
+    if (!variables) {
+        return string;
+    } else {
+        $.each(variables, function(key, value) {
+            string = string.replace('{{' + key + '}}', value);
+        });
+        return string;
+    }
+};
 
 (function() {
-    
-    // <strict>
-    
-    // Ensure jQuery has been included
-    if (!$) console.error(_('jQuery is required'));
-    
-    // Ensure jQuery UI has been included
-    if (!$.ui) console.error(_('jQuery UI is required'));
-    
-    // </strict>
-    
-    // <debug>
-    var MIN = 100;
-    var MID = 500;
-    var MAX = 1000;
-    var debugLevel = MIN;
-    // </debug>
 
     function initialise() {
         // <strict>
             // Ensure rangy has been included
-            if (!rangy) console.error(_('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
+            if (!rangy) handleError(_('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
             // Ensure dialog has been included
-            if (!$.ui.dialog) console.error(_('jQuery UI Dialog is required.'));
+            if (!$.ui.dialog) handleError(_('jQuery UI Dialog is required.'));
             // Ensure dialog has been included
-            if (!$.ui.position) console.error(_('jQuery UI Position is required.'));
+            if (!$.ui.position) handleError(_('jQuery UI Position is required.'));
             // Warn that no internationalizations have been loaded
             //if (!plugins.i18n) console.info(_('No internationalizations have been loaded, defaulting to English'));
         // </strict>
         
 //            // <debug>
-//            if (!jQuery.cookie) console.error(_('jQuery cookie has not been loaded - persistence functions will not be available'));
+//            if (!jQuery.cookie) handleError(_('jQuery cookie has not been loaded - persistence functions will not be available'));
 //            // </debug>
 //            if (this.options.customTooltips && !$.isFunction($.fn.tipTip)) {
 //                this.options.customTooltips = false;
 //                // <strict>
-//                console.error(_('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin'));
+//                handleError(_('Custom tooltips was requested but tipTip has not been loaded. This library should have been in the file you downloaded. If not, acquire it here: http://code.drewwilson.com/entry/tiptip-jquery-plugin'));
 //                // </strict>
 //            }
         
@@ -107,17 +175,40 @@ var _;
     // UI added via $.ui.editor.registerUi
     var registeredUi = {};
     
-    /**************************************************************************\
+    /*====================================================================*****\
      * Editor class instance definition
-    \**************************************************************************/
-    $.widget('ui.editor', {
+    \*====================================================================*****/
+    
+    
+    /**
+     * @name $.ui.editor
+     * @namespace jQuery UI Editor
+     */
+    $.ui.editor = function(){};
+    
+    $.widget('ui.editor', 
+        /** @lends $.ui.editor.prototype */
+        {
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Default options
-        \**********************************************************************/
+        \*====================================================================*/
+        
+        /**
+         * Default settings for the jQuery UI Editor widget
+         * @fieldOf $.ui.editor
+         */ 
         options: {
-            // Plugin and UI option overrides
+            /**
+             * Plugins option overrides
+             * @type Object
+             */
             plugins: {},
+            
+            /**
+             * UI option overrides
+             * @type Object
+             */
             ui: {},
             
             // Namespace used to persistence to prevent conflicting stored values
@@ -175,9 +266,10 @@ var _;
         },
 
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Constructor
-        \**********************************************************************/
+        \*====================================================================*/
+        /** @constructs */
         _init: function() {
             $.ui.editor.instances.push(this);
             
@@ -250,9 +342,9 @@ var _;
             }
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Core functions
-        \**********************************************************************/
+        \*====================================================================*/
         attach: function() {
             var editor = this;
             editor.bind('change', editor.historyPush);
@@ -325,9 +417,9 @@ var _;
             this.target = target;
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Destructor
-        \**********************************************************************/
+        \*====================================================================*/
         destruct: function(reinit) {
             // Disable editing unless we are re initialising
             if (!this.reiniting) {
@@ -521,17 +613,17 @@ var _;
 
 
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Persistance Functions
-        \**********************************************************************/
+        \*====================================================================*/
         persist: function(key, value) {
             if (!this.options.persistence) return null;
             return $.ui.editor.persist(key, value, this.options.namespace);
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Other Functions
-        \**********************************************************************/
+        \*====================================================================*/
         enableEditing: function() {
             if (!this.options.enabled || this.reiniting) {
                 this.options.enabled = true;
@@ -653,9 +745,9 @@ var _;
             return $.ui.editor.getUniqueId();
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Messages
-        \**********************************************************************/
+        \*====================================================================*/
         loadMessages: function() {
             $(this.getTemplate('messages')).appendTo(this.selToolbar());
         },
@@ -707,9 +799,9 @@ var _;
         },
         
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Toolbar
-        \**********************************************************************/
+        \*====================================================================*/
         loadToolbar: function() {
             var editor = this;
             var pos = this.persist('position') || editor.options.dialogPosition;
@@ -804,9 +896,9 @@ var _;
             this.persist('position', [left, top]);
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Template functions
-        \**********************************************************************/
+        \*====================================================================*/
         getTemplate: function(name, variables) {
             var template;
             if (!this.templates[name]) {
@@ -851,9 +943,9 @@ var _;
             return result;
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * History functions
-        \**********************************************************************/
+        \*====================================================================*/
         historyPush: function() {
             if (!this.historyEnabled) return;
             var html = this.getHtml();
@@ -896,9 +988,9 @@ var _;
             }
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Range functions
-        \**********************************************************************/
+        \*====================================================================*/
         constrainSelection: function() {
             var element = this.getElement()[0];
             var commonAncestor;
@@ -991,10 +1083,6 @@ var _;
             this.fire('change');
         },
         
-        splitRange: function() {
-            
-        },
-        
         insertDomFragmentBefore: function(domFragment, wrapperTag, beforeElement) {
             // Get all nodes in the extracted content
             for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
@@ -1084,9 +1172,9 @@ var _;
             this.fire('change');
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Selectors
-        \**********************************************************************/
+        \*====================================================================*/
         selToolbar: function(find) {
             if (find) {
                 return this.toolbar.find(find);
@@ -1119,9 +1207,9 @@ var _;
         },
         
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Buttons
-        \**********************************************************************/
+        \*====================================================================*/
         loadUi: function() {
             var editor = this;
             // Loop the UI order option
@@ -1157,7 +1245,7 @@ var _;
                     }
                     // <strict>
                     else {
-                        console.error(_('UI identified by key "{{ui}}" does not exist', {ui: uiSet[j]}));
+                        handleError(_('UI identified by key "{{ui}}" does not exist', {ui: uiSet[j]}));
                     }
                     // </strict>
                 }
@@ -1319,9 +1407,9 @@ var _;
             }, options);
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Plugins
-        \**********************************************************************/
+        \*====================================================================*/
         getPlugin: function(name) {
             return this.plugins[name];
         },
@@ -1353,9 +1441,9 @@ var _;
         },
         
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Content accessors
-        \**********************************************************************/
+        \*====================================================================*/
         isDirty: function() {
             return this.getOriginalHtml() != this.getHtml();
         },
@@ -1387,12 +1475,12 @@ var _;
             return this.getElement().data('uiWidgetEditorOriginalHtml', html);
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Event handling
-        \**********************************************************************/
+        \*====================================================================*/
         bind: function(name, callback, context) {
             // <strict>
-            if (!$.isFunction(callback)) console.error('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
+            if (!$.isFunction(callback)) handleError('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
             // </strict>
             if (!this.events[name]) this.events[name] = [];
             this.events[name].push({
@@ -1431,9 +1519,9 @@ var _;
             if (!sub) this.fire('after:' + name, global, true);
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Internationalisation
-        \**********************************************************************/
+        \*====================================================================*/
         getLocale: function() {
             return $.ui.editor.currentLocale;
         },
@@ -1454,10 +1542,73 @@ var _;
         }
 
     });
+//    
+//    /** 
+//     * Default settings for the jQuery UI Editor widget
+//     * @namespace Default settings for the jQuery UI Editor widget
+//     */	
+//    $.ui.editor.defaults = {
+//        // Plugin and UI option overrides
+//        plugins: {},
+//        ui: {},
+//
+//        // Namespace used to persistence to prevent conflicting stored values
+//        namespace: null,
+//
+//        // The current locale of the editor
+//        locale: '',
+//
+//        // Switch to indicated that some events should be automatically applied to all editors that are 'unified'
+//        unify: true,
+//
+//        // Switch to indicate weather or not to stored persistent values, if set to false the persist function will always return null
+//        persistence: true,
+//
+//        // The name to store persistent values under
+//        persistenceName: 'uiEditor',
+//
+//        // Switch to indicate weather or not to a warning should pop up when the user navigates aways from the page and there are unsaved changes
+//        unloadWarning: true,
+//
+//        // Switch to automatically enabled editing on the element
+//        autoEnable: false,
+//
+//        // Switch to specify if the editor should automatically enable all plugins, if set to false, only the plugins specified in the 'plugins' option object will be enabled
+//        enablePlugins: true,
+//
+//        // An array of explicitly disabled plugins
+//        disabledPlugins: [],
+//
+//        // And array of arrays denoting the order and grouping of UI elements in the toolbar
+//        uiOrder: null,
+//
+//        // Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the 'ui' option object will be enabled
+//        enableUi: true,
+//
+//        // An array of explicitly disabled UI elements
+//        disabledUi: [],
+//
+//        // Switch to indicate that the element the editor is being applied to should be replaced with a div (useful for textareas), the value/html of the replaced element will be automatically updated when the editor element is changed
+//        replace: false,
+//
+//        // A list of styles that will be copied from the replaced element and applied to the editor replacement element
+//        replaceStyle: [
+//            'display', 'position', 'float', 'width',
+//            'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
+//            'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
+//        ],
+//
+//        cssPrefix: 'cms-',
+//        baseClass: 'ui-editor',
+//
+//        dialogClass: 'ui-editor-dialog',
+//        dialogPosition: [5, 47]
+//
+//    }
 
-    /**************************************************************************\
+    /*====================================================================*****\
      * Global static class definition
-    \**************************************************************************/
+    \*====================================================================*****/
     $.extend($.ui.editor, {
         instances: [],
         
@@ -1465,9 +1616,9 @@ var _;
             return this.instances;
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Templates
-        \**********************************************************************/
+        \*====================================================================*/
         urlPrefix: '/jquery.ui.editor/',
         templates: { /* <templates/> */ },
         
@@ -1509,9 +1660,9 @@ var _;
             return template;
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Helpers
-        \**********************************************************************/
+        \*====================================================================*/
         getUniqueId: function() {
             var id = $.ui.editor.prototype.options.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
             while ($('#' + id).length) {
@@ -1539,9 +1690,9 @@ var _;
             }
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Plugins as UI
-        \**********************************************************************/
+        \*====================================================================*/
         defaultUi: {
             ui: null,
             editor: null,
@@ -1556,7 +1707,7 @@ var _;
             for (var name in uiSet) {
                 // <strict>
                 if (registeredUi[name]) {
-                    console.error(_('UI "{{name}}" has already been registered, and will be overwritten', {name: name}));
+                    handleError(_('UI "{{name}}" has already been registered, and will be overwritten', {name: name}));
                 }
                 // </strict>
                 registeredUi[name] = $.isFunction(uiSet[name]) ? uiSet[name] : $.extend({}, this.defaultUi, uiSet[name]);
@@ -1581,15 +1732,15 @@ var _;
         
         registerPlugin: function(name, plugin) {
             // <strict>
-            if (plugins[name]) console.error(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: name}));
+            if (plugins[name]) handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: name}));
             // </strict>
 
             plugins[name] = $.isFunction(plugin) ? plugin : $.extend({}, this.defaultPlugin, plugin);
         },
 
-        /**********************************************************************\
+        /*====================================================================*\
          * Events
-        \**********************************************************************/
+        \*====================================================================*/
         bind: function(name, callback) {
             if (!events[name]) events[name] = [];
             events[name].push(callback);
@@ -1615,9 +1766,9 @@ var _;
             }
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Persistance
-        \**********************************************************************/
+        \*====================================================================*/
         persist: function(key, value, namespace) {
             key = namespace ? namespace + '.' + key : key;
             if (localStorage) {
@@ -1637,9 +1788,9 @@ var _;
             return value;
         },
         
-        /**********************************************************************\
+        /*====================================================================*\
          * Internationalisation
-        \**********************************************************************/
+        \*====================================================================*/
         currentLocale: null,
         locales: {},
         localeNames: {},
@@ -1647,7 +1798,7 @@ var _;
         registerLocale: function(name, nativeName, strings) {
             // <strict>
             if (this.locales[name]) {
-                console.error(_('Locale "{{localeName}}" has already been registered, and will be overwritten', {localeName: name}));
+                handleError(_('Locale "{{localeName}}" has already been registered, and will be overwritten', {localeName: name}));
             }
             // </strict>
 
@@ -1665,19 +1816,6 @@ var _;
         }
         
     });
-    
-    // Internationalisation function
-    _ = function(string, variables) {
-        string = $.ui.editor.translate(string);
-        if (!variables) {
-            return string;
-        } else {
-            $.each(variables, function(key, value) {
-                string = string.replace('{{' + key + '}}', value);
-            });
-            return string;
-        }
-    };
     
     // jQuery ready event
     $(function() {

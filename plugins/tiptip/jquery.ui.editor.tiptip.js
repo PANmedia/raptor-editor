@@ -25,7 +25,7 @@
                     // <strict>
                     // Ensure jQuery has been included
                     if (!$.isFunction($.fn.tipTip)) {
-                        console.error(_('jquery.ui.editor.tiptip requires TipTip. '));
+                        handleError(_('jquery.ui.editor.tiptip requires TipTip. '));
                         return;
                     }
                     // </strict>
