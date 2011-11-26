@@ -71,16 +71,18 @@ if (debugLevel >= MID) {
     });
 }
 
-console.info('TODO: use cookies when local storage is not available, or chosen by option');
-console.info('TODO: make a way to disable all buttons then selectivity enable ones');
-console.info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
-console.info('TODO: locale switches should affect all instances');
-console.info('FIXME: remove editor instance from instances array on destroy');
-console.info('FIXME: custom tool tips');
-console.info('FIXME: Check for localStorage or use jQuery cookie');
-console.info('FIXME: updateTagTree click bindings');
-console.info('FIXME: updateTagTree should filter out duplicates');
-console.info('FIXME: Check for duplicate elements in getSelectedElements');
+if (debugLevel >= MAX) {
+    console.info('TODO: use cookies when local storage is not available, or chosen by option');
+    console.info('TODO: make a way to disable all buttons then selectivity enable ones');
+    console.info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
+    console.info('TODO: locale switches should affect all instances');
+    console.info('FIXME: remove editor instance from instances array on destroy');
+    console.info('FIXME: custom tool tips');
+    console.info('FIXME: Check for localStorage or use jQuery cookie');
+    console.info('FIXME: updateTagTree click bindings');
+    console.info('FIXME: updateTagTree should filter out duplicates');
+    console.info('FIXME: Check for duplicate elements in getSelectedElements');
+}
 // </debug>
 
 
@@ -330,20 +332,24 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Core functions
     \*========================================================================*/
+    
+    /**
+     * Attaches the editors internal events.
+     * @private
+     */
     attach: function() {
-        var editor = this;
-        editor.bind('change', editor.historyPush);
-        editor.bind('change', editor.updateTagTree);
+        this.bind('change', this.historyPush);
+        this.bind('change', this.updateTagTree);
 
-        var change = function() {
-            editor.fire('change');
-        };
+        var change = $.proxy(function() { 
+            this.fire('change'); 
+        }, this);
 
-        editor.getElement().bind('click.' + editor.widgetName, change);
-        editor.getElement().bind('keyup.' + editor.widgetName, change);
-        editor.bind('destroy', function() {
-            editor.getElement().unbind('click.' + editor.widgetName, change)
-            editor.getElement().unbind('keyup.' + editor.widgetName, change)
+        this.getElement().bind('click.' + this.widgetName, change);
+        this.getElement().bind('keyup.' + this.widgetName, change);
+        this.bind('destroy', function() {
+            this.getElement().unbind('click.' + this.widgetName, change)
+            this.getElement().unbind('keyup.' + this.widgetName, change)
         })
 //            console.log(this.selDialog('.ui-dialog-titlebar a'));
 //            this.selDialog('.ui-dialog-titlebar a')
@@ -353,6 +359,11 @@ $.widget('ui.editor',
 //                    });
     },
 
+    /**
+     * Reinitialises the editor, unbinding all events, destroys all UI and plugins
+     * then recreates them.
+     * @public
+     */
     reinit: function() {
         if (!this.ready) {
             // If the edit is still initialising, wait until its ready
@@ -375,22 +386,40 @@ $.widget('ui.editor',
         this.reiniting = false;
     },
 
+    /**
+     * Returns the current content editable element, which will be either the 
+     * orignal element, or the div the orignal element was replaced with.
+     * @public
+     * @returns {jQuery} The current content editable element
+     */
     getElement: function() {
         return this.target ? this.target : this.element;
     },
 
+    /**
+     * Replaces the original element with a content editable div. Typically used 
+     * to replace a textarea.
+     * @private
+     */
     replaceOrignal: function() {
         if (this.target) return;
 
+        // Create the replacement div
         var target = $('<div/>')
+            // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
             .html(this.element.is(':input') ? this.element.val() : this.element.html())
+            // Insert the div before the origianl element
             .insertBefore(this.element)
-            .attr('id', this.getUniqueId());
+            // Give the div a unique ID
+            .attr('id', this.getUniqueId())
+            // Copy the origianl elements class(es) to the replacement div
+            .attr('class', this.element.attr('class'));
 
         var style = this.getStyles(this.element);
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
             target.css(this.options.replaceStyle[i], style[this.options.replaceStyle[i]]);
         }
+        
         this.element.hide();
         this.bind('change', function() {
             if (this.element.is(':input')) {
@@ -405,6 +434,13 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Destructor
     \*========================================================================*/
+    
+    /**
+     * Hides the toolbar, disables editing, and fires the destroy event.
+     * @public
+     * @param {boolean} Indicates the the editor is just reinitialising and 
+     * should not hide the toolbar, or disable editing.
+     */
     destruct: function(reinit) {
         // Disable editing unless we are re initialising
         if (!this.reiniting) {
@@ -583,18 +619,7 @@ $.widget('ui.editor',
 //            $(element).focus();
 //            this.trigger('change');
 //        },
-
-    selectAll: function() {
-        var selection = rangy.getSelection();
-        selection.removeAllRanges();
-        $.each(this.getElement().contents(), function() {
-            var range = rangy.createRange();
-            range.selectNodeContents(this);
-            selection.addRange(range);
-        });
-        this.getElement().focus();
-        this.fire('change');
-    },
+ 
 
 
 
@@ -977,187 +1002,187 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Range functions
     \*========================================================================*/
-    constrainSelection: function() {
-        var element = this.getElement()[0];
-        var commonAncestor;
-        var selection = rangy.getSelection();
-
-        $(selection.getAllRanges()).each(function(i, range){
-            if (this.commonAncestorContainer.nodeType == 3) {
-                commonAncestor = $(range.commonAncestorContainer).parent().get(0)
-            } else {
-                commonAncestor = range.commonAncestorContainer;
-            }
-            if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
-                selection.removeRange(range);
-            }
-        });
-    },
-
-    getSelectedElements: function() {
-        var result = new jQuery();
-        this.constrainSelection();
-        $(rangy.getSelection().getAllRanges()).each(function() {
-            var commonAncestor;
-            if (this.commonAncestorContainer.nodeType == 3) {
-                commonAncestor = $(this.commonAncestorContainer).parent().get(0)
-            } else {
-                commonAncestor = this.commonAncestorContainer;
-            }
-            result.push(commonAncestor);
-        });
-        return result;
-    },
-
-    toggleWrapper: function(tag, options) {
-        this.constrainSelection();
-
-        if (!options) options = {};
-        var classes = options.classes ? options.classes : tag;
-
-        rangy.createCssClassApplier(this.options.cssPrefix + classes, {
-            normalize: true,
-            elementTagName: tag
-        }).toggleSelection();
-
-        this.fire('change');
-    },
-
-    execCommand: function(command, arg1, arg2) {
-        this.constrainSelection();
-        document.execCommand(command, arg1, arg2);
-        this.fire('change');
-    },
-
-    insertElement: function(element) {
-        element = $('<' + element + '/>')[0];
-        this.constrainSelection();
-        $(rangy.getSelection().getAllRanges()).each(function(i, range) {
-            range.insertNode(element);
-        });
-        this.fire('change');
-    },
-
-    applyStyle: function(styles) {
-        this.constrainSelection();
-        $.each(this.getSelectedElements(), function(i, element) {
-            $.each(styles, function(property, value) {
-                if ($(element).css(property) == value) {
-                    $(element).css(property, '');
-                } else {
-                    $(element).css(property, value);
-                }
-            });
-        });
-
-        this.fire('change');
-    },
-
-    replaceSelection: function(html) {
-        var nodes = $('<div/>').append(html)[0].childNodes;
-        $(rangy.getSelection().getAllRanges()).each(function(i, range) {
-            range.deleteContents();
-            if (nodes.length === undefined || nodes.length == 1) {
-                range.insertNode(nodes[0].cloneNode(true));
-            } else {
-                $.each(nodes, function(i, node) {
-                    range.insertNodeAtEnd(node.cloneNode(true));
-                });
-            }
-        });
-
-        this.fire('change');
-    },
-
-    insertDomFragmentBefore: function(domFragment, wrapperTag, beforeElement) {
-        // Get all nodes in the extracted content
-        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
-            var node = domFragment.childNodes.item(j);
-            // Prepend the node before the current node
-            var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
-            if (content) {
-                $('<' + wrapperTag + '/>')
-                    .html($.trim(content))
-                    .insertBefore(beforeElement);
-            }
-        }
-    },
-
-    rangeIsEmpty: function(range) {
-        return range.startOffset === range.endOffset && range.startContainer === range.endContainer;
-    },
-
-    expandRangeToParent: function(range) {
-        range.setStartBefore(range.startContainer);
-        range.setEndAfter(range.endContainer);
-    },
-
-    changeRangeTag: function(range, tag) {
-        var contents = range.extractContents();
-        this.insertDomFragmentBefore(contents, tag, range.startContainer);
-        $(range.startContainer).remove();
-    },
-
-    changeTag2: function(tag) {
-        var ranges = rangy.getSelection().getAllRanges();
-        for (var i = 0; i < ranges.length; i++) {
-            // Create a new range set every time to update range offsets
-            ranges = rangy.getSelection().getAllRanges();
-
-            if (this.rangeIsEmpty(ranges[i])) {
-                // Apply to the whole element 
-                this.expandRangeToParent(ranges[i]);
-                this.changeRangeTag(ranges[i], tag);
-            } else {
-                // Create a range from the start of the current range, to the beginning of the start element
-                var range = rangy.createRange();
-                range.setStart(ranges[i].startContainer, 0);
-                range.setEnd(ranges[i].startContainer, ranges[i].startOffset);
-
-                // Extract the contents, and prepend it as a new node before the current node
-                var precontent = range.extractContents();
-                var parent = $(range.startContainer).parent();
-                this.insertDomFragmentBefore(precontent, parent[0].nodeName, parent);
-
-                // Extract the content in the selected range
-                var contents = ranges[i].extractContents();
-                this.insertDomFragmentBefore(contents, tag, parent);
-            }
-        }
-
-        this.fire('change');
-    },
-
-    changeTag: function(tag) {
-        console.info('TODO: Review editor.changeTag function')
-
-//            var new_element = null;
-
-        $.each(rangy.getSelection().getAllRanges(), function() {
-            console.log(this);
-        });
-//            if (this.selectionExists()) {
-//                rangy.createCssClassApplier(this.options.cssPrefix + tag, {
-//                    normalize: true,
-//                    elementTagName: tag
-//                }).toggleSelection();
-//            } else {
-////                if (this._util.isRoot.call(this, this._editor.selectedElement)) {
-//                    this._editor.selectedElement = this.getElement().find(':first');
-//                }
-//                new_element = $('<' + tag + '>' + this._editor.selectedElement.html() + '</' + tag + '>');
+//    constrainSelection: function() {
+//        var element = this.getElement()[0];
+//        var commonAncestor;
+//        var selection = rangy.getSelection();
 //
-//                if (typeof this._editor.selectedElement.attr('class') != 'undefined') {
-//                    new_element.addClass(this._editor.selectedElement.attr('class'));
-//                }
-//                if (typeof this._editor.selectedElement.attr('style') != 'undefined') {
-//                    new_element.css(this._editor.selectedElement.attr('style'));
-//                }
-//                $(this._editor.selectedElement).replaceWith(new_element);
+//        $(selection.getAllRanges()).each(function(i, range){
+//            if (this.commonAncestorContainer.nodeType == 3) {
+//                commonAncestor = $(range.commonAncestorContainer).parent().get(0)
+//            } else {
+//                commonAncestor = range.commonAncestorContainer;
 //            }
-
-        this.fire('change');
-    },
+//            if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
+//                selection.removeRange(range);
+//            }
+//        });
+//    },
+//
+//    getSelectedElements: function() {
+//        var result = new jQuery();
+//        this.constrainSelection();
+//        $(rangy.getSelection().getAllRanges()).each(function() {
+//            var commonAncestor;
+//            if (this.commonAncestorContainer.nodeType == 3) {
+//                commonAncestor = $(this.commonAncestorContainer).parent().get(0)
+//            } else {
+//                commonAncestor = this.commonAncestorContainer;
+//            }
+//            result.push(commonAncestor);
+//        });
+//        return result;
+//    },
+//
+//    toggleWrapper: function(tag, options) {
+//        this.constrainSelection();
+//
+//        if (!options) options = {};
+//        var classes = options.classes ? options.classes : tag;
+//
+//        rangy.createCssClassApplier(this.options.cssPrefix + classes, {
+//            normalize: true,
+//            elementTagName: tag
+//        }).toggleSelection();
+//
+//        this.fire('change');
+//    },
+//
+//    execCommand: function(command, arg1, arg2) {
+//        this.constrainSelection();
+//        document.execCommand(command, arg1, arg2);
+//        this.fire('change');
+//    },
+//
+//    insertElement: function(element) {
+//        element = $('<' + element + '/>')[0];
+//        this.constrainSelection();
+//        $(rangy.getSelection().getAllRanges()).each(function(i, range) {
+//            range.insertNode(element);
+//        });
+//        this.fire('change');
+//    },
+//
+//    applyStyle: function(styles) {
+//        this.constrainSelection();
+//        $.each(this.getSelectedElements(), function(i, element) {
+//            $.each(styles, function(property, value) {
+//                if ($(element).css(property) == value) {
+//                    $(element).css(property, '');
+//                } else {
+//                    $(element).css(property, value);
+//                }
+//            });
+//        });
+//
+//        this.fire('change');
+//    },
+//
+//    replaceSelection: function(html) {
+//        var nodes = $('<div/>').append(html)[0].childNodes;
+//        $(rangy.getSelection().getAllRanges()).each(function(i, range) {
+//            range.deleteContents();
+//            if (nodes.length === undefined || nodes.length == 1) {
+//                range.insertNode(nodes[0].cloneNode(true));
+//            } else {
+//                $.each(nodes, function(i, node) {
+//                    range.insertNodeAtEnd(node.cloneNode(true));
+//                });
+//            }
+//        });
+//
+//        this.fire('change');
+//    },
+//
+//    insertDomFragmentBefore: function(domFragment, wrapperTag, beforeElement) {
+//        // Get all nodes in the extracted content
+//        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+//            var node = domFragment.childNodes.item(j);
+//            // Prepend the node before the current node
+//            var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
+//            if (content) {
+//                $('<' + wrapperTag + '/>')
+//                    .html($.trim(content))
+//                    .insertBefore(beforeElement);
+//            }
+//        }
+//    },
+//
+//    rangeIsEmpty: function(range) {
+//        return range.startOffset === range.endOffset && range.startContainer === range.endContainer;
+//    },
+//
+//    expandRangeToParent: function(range) {
+//        range.setStartBefore(range.startContainer);
+//        range.setEndAfter(range.endContainer);
+//    },
+//
+//    changeRangeTag: function(range, tag) {
+//        var contents = range.extractContents();
+//        this.insertDomFragmentBefore(contents, tag, range.startContainer);
+//        $(range.startContainer).remove();
+//    },
+//
+//    changeTag2: function(tag) {
+//        var ranges = rangy.getSelection().getAllRanges();
+//        for (var i = 0; i < ranges.length; i++) {
+//            // Create a new range set every time to update range offsets
+//            ranges = rangy.getSelection().getAllRanges();
+//
+//            if (this.rangeIsEmpty(ranges[i])) {
+//                // Apply to the whole element 
+//                this.expandRangeToParent(ranges[i]);
+//                this.changeRangeTag(ranges[i], tag);
+//            } else {
+//                // Create a range from the start of the current range, to the beginning of the start element
+//                var range = rangy.createRange();
+//                range.setStart(ranges[i].startContainer, 0);
+//                range.setEnd(ranges[i].startContainer, ranges[i].startOffset);
+//
+//                // Extract the contents, and prepend it as a new node before the current node
+//                var precontent = range.extractContents();
+//                var parent = $(range.startContainer).parent();
+//                this.insertDomFragmentBefore(precontent, parent[0].nodeName, parent);
+//
+//                // Extract the content in the selected range
+//                var contents = ranges[i].extractContents();
+//                this.insertDomFragmentBefore(contents, tag, parent);
+//            }
+//        }
+//
+//        this.fire('change');
+//    },
+//
+//    changeTag: function(tag) {
+//        console.info('TODO: Review editor.changeTag function')
+//
+////            var new_element = null;
+//
+//        $.each(rangy.getSelection().getAllRanges(), function() {
+//            console.log(this);
+//        });
+////            if (this.selectionExists()) {
+////                rangy.createCssClassApplier(this.options.cssPrefix + tag, {
+////                    normalize: true,
+////                    elementTagName: tag
+////                }).toggleSelection();
+////            } else {
+//////                if (this._util.isRoot.call(this, this._editor.selectedElement)) {
+////                    this._editor.selectedElement = this.getElement().find(':first');
+////                }
+////                new_element = $('<' + tag + '>' + this._editor.selectedElement.html() + '</' + tag + '>');
+////
+////                if (typeof this._editor.selectedElement.attr('class') != 'undefined') {
+////                    new_element.addClass(this._editor.selectedElement.attr('class'));
+////                }
+////                if (typeof this._editor.selectedElement.attr('style') != 'undefined') {
+////                    new_element.css(this._editor.selectedElement.attr('style'));
+////                }
+////                $(this._editor.selectedElement).replaceWith(new_element);
+////            }
+//
+//        this.fire('change');
+//    },
 
     /*========================================================================*\
      * Selectors
