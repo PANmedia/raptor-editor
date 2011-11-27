@@ -148,33 +148,10 @@
     <!-- =================================================================== -->
     <!-- Run a complete build                                                -->
     <!-- =================================================================== -->
-    <target name="major" depends="build">
-        <version releasetype="major" file="VERSION" property="version"/>
+    <target name="build" depends="stripblocks,combine,compile,package,targz">
     </target>
     
-    <target name="minor" depends="build">
-        <version releasetype="minor" file="VERSION" property="version"/>
-    </target>
-    
-    <target name="bugfix" depends="build">
-        <version releasetype="bugfix" file="VERSION" property="version"/>
-    </target>
-    
-    <target name="build" depends="package,targz,cleanup">
-    </target>
-    
-    <target name="0deps" depends="copydeps,combine,compile,targz">
-    </target>
-    
-    <target name="pdefdeps">
-        <property name="no-jquery" value="true"/>
-        <property name="no-jquery-ui" value="true"/>
-        <property name="no-jquery-ui-theme" value="true"/>
-        <property name="no-jquery-cookie" value="true"/>
-        <property name="no-tiptip" value="true"/>
-    </target>
-    
-    <target name="pdeps" depends="pdefdeps,copydeps,combine,compile,targz,cleanup">
+    <target name="0deps" depends="stripblocks,copydeps,combine,compile,targz,cleanup">
     </target>
     
     <target name="testbuild">
@@ -195,8 +172,8 @@
         <!-- Load properties -->
         <property file="build.properties" />
         <!-- Clean up previous build -->
-        <delete file="${packagepath}/${phing.project.name}.tar.gz" />
-        <delete file="${packagepath}/jquery-ui-editor.build.js" />
+        <delete file="${packagepath}/${filename}.tar.gz" />
+        <delete file="${packagepath}/${filename}" />
         <delete dir="${buildpath}" 
                 includeemptydirs="true" 
                 failonerror="true" />
@@ -210,6 +187,7 @@
             <fileset dir=".">
                 <exclude name=".git" />
                 <exclude name=".git/**" />
+                <exclude name="docs/**" />
                 <exclude name="vendor/**" />
                 <exclude name="dependencies/**" />
                 <exclude name="${buildpath}" />
@@ -240,6 +218,16 @@
     <!-- =================================================================== -->
     <!-- Copy dependencies                                                   -->
     <!-- =================================================================== -->
+    <target name="openwrapper" depends="prepare">
+        <!-- Append global wrapper open -->
+        <if>
+            <istrue value="${wrapper}"/>
+            <then>
+                <echo file="${buildpath}/99-wrapper-open.js" append="true">(function($, window, rangy, undefined) {</echo>
+            </then>
+        </if>    
+    </target>
+    
     <target name="copydeps" depends="prepare">
         <!-- Copy all dependancies and prefix a number to enforce load order -->
         
@@ -280,14 +268,6 @@
             <copy file="dependencies/rangy/rangy-serializer.js" 
                   tofile="${buildpath}/09-rangy-serializer.js" />
         </else></if>
-              
-        <!-- Append global wrapper open -->
-        <if>
-            <istrue value="${wrapper}"/>
-            <then>
-                <echo file="${buildpath}/99-wrapper-open.js" append="true">(function($, window, rangy, undefined) {</echo>
-            </then>
-        </if>
         
         <!-- CSS -->
         <if><istrue value="${no-jquery-ui-theme}"/><then></then><else>
@@ -371,7 +351,7 @@
     <!-- =================================================================== -->
     <!-- Combine and minify all files                                        -->
     <!-- =================================================================== -->
-    <target name="combine" depends="less,datauri,template">
+    <target name="combine" depends="less,datauri,template,openwrapper">
         <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
@@ -486,13 +466,14 @@
     <!-- =================================================================== -->
     <target name="package" depends="merge">
         <mkdir dir="${packagepath}" />
-        <copy file="${buildpath}/merge.js" tofile="${packagepath}/jquery-ui-editor.build.js" />
+        <copy file="${buildpath}/merge.js" tofile="${packagepath}/${filename}" />
+        <echo>${packagepath}/${filename}</echo>
     </target>
     
     <target name="targz" depends="package">
-        <tar destfile="${packagepath}/${phing.project.name}.tar.gz" compression="gzip">
+        <tar destfile="${packagepath}/${filename}.tar.gz" compression="gzip">
             <fileset dir="${packagepath}">
-                <include name="jquery-ui-editor.build.js" />
+                <include name="${filename}" />
             </fileset>
         </tar>
     </target>
