@@ -1,34 +1,23 @@
-(function($) {
-   
-    $.ui.editor.addButton('increaseFontSize', {
-        title: _('Increase Font Size'),
-        icons: {
-            primary: 'ui-icon-font-increase'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._actions.beforeStateChange.call(this);
-            this._selection.enforceLegality.call(this);
-
-            document.execCommand('increasefontsize', false, null);
-
-            this._actions.stateChange.call(this);
+$.ui.editor.registerUi({
+    'font-size-inc': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Increase Font Size'),
+                click: function() {
+                    editor.execCommand('increasefontsize', false, null);
+                }
+            });
         }
-    });
-    
-    $.ui.editor.addButton('decreaseFontSize', {
-        title: _('Decrease Font Size'),
-        icons: {
-            primary: 'ui-icon-font-decrease'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._actions.beforeStateChange.call(this);
-            this._selection.enforceLegality.call(this);
-
-            document.execCommand('decreasefontsize', false, null);
-
-            this._actions.stateChange.call(this);
+    },
+    'font-size-dec': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Decrease Font Size'),
+                click: function() {
+                    editor.execCommand('decreasefontsize', false, null);
+                }
+            });
         }
-    });
-})(jQuery);
+    }
+});
+

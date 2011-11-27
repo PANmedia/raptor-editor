@@ -1,47 +1,42 @@
-(function($) {
-    
-    $.ui.editor.addButton('bold', {
-        title: _('Bold'),
-        icons: {
-            primary: 'ui-icon-bold'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.wrapWithTag.call(this, 'strong');
+$.ui.editor.registerUi({
+    'text-bold': {
+        init: function(editor) {
+            return this.editor.uiButton({
+                title: _('Bold'),
+                click: function() {
+                    editor.toggleWrapper('strong', { classes: 'bold' });
+                }
+            });
         }
-    });
-    
-    $.ui.editor.addButton('italic', {
-        title: _('Italic'),
-        icons: {
-            primary: 'ui-icon-italic'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.wrapWithTag.call(this, 'em');
+    },
+    'text-italic': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Italic'),
+                click: function() {
+                    editor.toggleWrapper('em', { classes: 'italic' });
+                }
+            });
         }
-    });
-    
-    $.ui.editor.addButton('underline', {
-        title: _('Underline'),
-        icons: {
-            primary: 'ui-icon-underline'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.wrapWithTag.call(this, 'span', { classes: 'underline' });
+    },
+    'text-underline': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Underline'),
+                click: function() {
+                    editor.toggleWrapper('u', { classes: 'underline' });
+                }
+            });
         }
-    });
-    
-    $.ui.editor.addButton('strikethrough', {
-        title: _('Strikethrough'),
-        icons: {
-            primary: 'ui-icon-strikethrough'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.wrapWithTag.call(this, 'del');
+    },
+    'text-strike': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Strikethrough'),
+                click: function() {
+                    editor.toggleWrapper('del', { classes: 'strike' });
+                }
+            });
         }
-    });
-
-})(jQuery);
+    }
+});

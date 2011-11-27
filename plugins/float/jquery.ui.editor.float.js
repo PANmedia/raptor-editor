@@ -1,36 +1,34 @@
-(function($) {
-   
-    $.ui.editor.addButton('floatLeft', {
-        title: _('Float Left'),
-        icons: {
-            primary: 'ui-icon-float-left'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.applyStyle.call(this, { 'float': 'left' });
+$.ui.editor.registerUi({
+    'float-left': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Float Left'),
+                click: function() {
+                    editor.applyStyle({ 'float': 'left' });
+                }
+            });
         }
-    });
+    },
     
-    $.ui.editor.addButton('floatRight', {
-        title: _('Float Right'),
-        icons: {
-            primary: 'ui-icon-float-right'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.applyStyle.call(this, { 'float': 'right' });
+    'float-right': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Float Right'),
+                click: function() {
+                    editor.applyStyle({ 'float': 'right' });
+                }
+            });
         }
-    });
+    },
     
-    $.ui.editor.addButton('floatNone', {
-        title: _('Float None'),
-        icons: {
-            primary: 'ui-icon-float-none'
-        },
-        classes: 'ui-editor-icon',
-        click: function() {
-            this._selection.applyStyle.call(this, { 'float': 'none' });
+    'float-none': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Float None'),
+                click: function() {
+                    editor.applyStyle({ 'float': 'none' });
+                }
+            });
         }
-    });
-    
-})(jQuery);
+    }
+});

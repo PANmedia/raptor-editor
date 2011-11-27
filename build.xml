@@ -8,8 +8,6 @@
                 private $filesets = array();
 
                 public function main() {
-                
-                    // append any files in filesets
                     foreach($this->filesets as $fs) {
                         try {
                             $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
@@ -37,6 +35,116 @@
         ]]>
     </adhoc-task>
     
+    <adhoc-task name="sortedfileset">
+        <![CDATA[
+            class SortedFileSet extends Task {
+
+                private $filesets = array();
+                private $name = null;
+
+                public function main() {
+                    foreach($this->filesets as $fs) {
+                        try {
+                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
+                            sort($files);
+                            $this->project->setProperty($this->name, implode(',', $files));
+                        } catch (BuildException $be) {
+                            $this->log($be->getMessage(), Project::MSG_WARN);
+                        }
+                    }
+                }
+                
+                public function createFileSet() {
+                    $num = array_push($this->filesets, new FileSet());
+                    return $this->filesets[$num-1];
+                }
+                
+                public function setName($name) {
+                    $this->name = (string) $name;
+                }
+
+                public function getName() {
+                    return $this->name;
+                }
+            }
+        ]]>
+    </adhoc-task>
+    
+    <adhoc-task name="less">
+        <![CDATA[
+            class LessTask extends Task {
+
+                private $filesets = array();
+
+                public function main() {
+                    require_once $this->project->getBasedir() . '/dependencies/lessc.inc.php';
+                    foreach($this->filesets as $fs) {
+                        try {
+                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
+                            foreach ($files as $file) {
+                                lessc::ccompile($file, $file . '.css');
+                            }
+                        } catch (BuildException $be) {
+                            $this->log($be->getMessage(), Project::MSG_WARN);
+                        }
+                    }
+                }
+                
+                public function createFileSet() {
+                    $num = array_push($this->filesets, new FileSet());
+                    return $this->filesets[$num-1];
+                }
+            }
+        ]]>
+    </adhoc-task>
+    
+    <adhoc-task name="template">
+        <![CDATA[
+            class TemplateTask extends Task {
+
+                private $filesets = array();
+                private $name = null;
+
+                public function main() {
+                    $result = array();
+                    foreach($this->filesets as $fs) {
+                        try {
+                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
+                            foreach ($files as $file) {
+                                $preg = array();
+                                preg_match('/build[\/\\\\]{1}plugins[\/\\\\]{1}(.*?)[\/\\\\]{1}templates[\/\\\\]{1}(.*?)\\.html/i', $file, $preg);
+                                if (isset($preg[1]) && isset($preg[2])) {
+                                    $name = $preg[1] . '.' . $preg[2];
+                                } else {
+                                    $name = substr(basename($file), 0, -5);
+                                }
+                                
+                                $content = json_encode(file_get_contents($file));
+                                $result[] = "'$name': $content";
+                            }
+                        } catch (BuildException $be) {
+                            $this->log($be->getMessage(), Project::MSG_WARN);
+                        }
+                    }
+                    $this->project->setProperty($this->name, implode(',', $result));
+                }
+                
+                public function createFileSet() {
+                    $num = array_push($this->filesets, new FileSet());
+                    return $this->filesets[$num-1];
+                }
+                
+                public function setName($name) {
+                    $this->name = (string) $name;
+                }
+
+                public function getName() {
+                    return $this->name;
+                }
+            }
+        ]]>
+    </adhoc-task>
+    
     <!-- =================================================================== -->
     <!-- Run a complete build                                                -->
     <!-- =================================================================== -->
@@ -56,6 +164,17 @@
     </target>
     
     <target name="0deps" depends="copydeps,combine,compile,targz">
+    </target>
+    
+    <target name="pdefdeps">
+        <property name="no-jquery" value="true"/>
+        <property name="no-jquery-ui" value="true"/>
+        <property name="no-jquery-ui-theme" value="true"/>
+        <property name="no-jquery-cookie" value="true"/>
+        <property name="no-tiptip" value="true"/>
+    </target>
+    
+    <target name="pdeps" depends="pdefdeps,copydeps,combine,compile,targz,cleanup">
     </target>
     
     <target name="testbuild">
@@ -125,43 +244,60 @@
         <!-- Copy all dependancies and prefix a number to enforce load order -->
         
         <!-- jQuery -->
-        <copy file="dependencies/jquery-1.7.js" 
-              tofile="${buildpath}/01-jquery-1.7.js" />
+        <if><istrue value="${no-jquery}"/><then></then><else>
+            <copy file="dependencies/jquery.js" 
+                  tofile="${buildpath}/01-jquery.js" />
+        </else></if>
         
         <!-- jQuery plugins -->
-        <copy file="dependencies/jquery-cookie/jquery.cookie.js" 
-              tofile="${buildpath}/04-jquery-cookie.js" />
-        <copy file="dependencies/tiptip/jquery.tipTip.js" 
-              tofile="${buildpath}/05-jquery-tipTip.js" />
+        <if><istrue value="${no-jquery-cookie}"/><then></then><else>
+            <copy file="dependencies/jquery.cookie.js" 
+                  tofile="${buildpath}/04-jquery-cookie.js" />
+        </else></if>
+        
+        <!-- TipTip -->
+        <if><istrue value="${no-jquery-tiptip}"/><then></then><else>
+            <copy file="dependencies/tiptip/jquery.tiptip.js" 
+                  tofile="${buildpath}/05-jquery-tiptip.js" />
+            <copy file="dependencies/tiptip/tiptip.css" 
+                  tofile="${buildpath}/02-theme/tiptip.css" />
+        </else></if>
               
         <!-- jQuery UI -->
-        <copy file="dependencies/jquery-ui.1.8.16.js" 
-              tofile="${buildpath}/02-jquery-ui.1.8.16.js" />
-              
-        <!-- jQuery UI plugins -->
-        <copy file="dependencies/jquery-ui-selectmenu/jquery.ui.selectmenu.js" 
-              tofile="${buildpath}/04-jquery.ui.selectmenu.js" />
+        <if><istrue value="${no-jquery-ui}"/><then></then><else>
+            <copy file="dependencies/jquery-ui.js" 
+                  tofile="${buildpath}/02-jquery-ui.js" />
+        </else></if>
               
         <!-- Rangy -->
-        <copy file="dependencies/rangy/rangy-core.js" 
-              tofile="${buildpath}/06-rangy-core.js" />
-        <copy file="dependencies/rangy/rangy-cssclassapplier.js" 
-              tofile="${buildpath}/07-rangy-cssclassapplier.js" />
-        <copy file="dependencies/rangy/rangy-selectionsaverestore.js" 
-              tofile="${buildpath}/08-rangy-selectionsaverestore.js" />
-        <copy file="dependencies/rangy/rangy-serializer.js" 
-              tofile="${buildpath}/09-rangy-serializer.js" />
+        <if><istrue value="${no-rangy}"/><then></then><else>
+            <copy file="dependencies/rangy/rangy-core.js" 
+                  tofile="${buildpath}/06-rangy-core.js" />
+            <copy file="dependencies/rangy/rangy-cssclassapplier.js" 
+                  tofile="${buildpath}/07-rangy-cssclassapplier.js" />
+            <copy file="dependencies/rangy/rangy-selectionsaverestore.js" 
+                  tofile="${buildpath}/08-rangy-selectionsaverestore.js" />
+            <copy file="dependencies/rangy/rangy-serializer.js" 
+                  tofile="${buildpath}/09-rangy-serializer.js" />
+        </else></if>
+              
+        <!-- Append global wrapper open -->
+        <if>
+            <istrue value="${wrapper}"/>
+            <then>
+                <echo file="${buildpath}/99-wrapper-open.js" append="true">(function($, window, rangy, undefined) {</echo>
+            </then>
+        </if>
         
         <!-- CSS -->
-        <copy file="dependencies/tiptip/tipTip.css" 
-              tofile="${buildpath}/theme/tipTip.css" />
-        <copy file="dependencies/jquery-ui-selectmenu/jquery.ui.selectmenu.css" 
-              tofile="${buildpath}/theme/jquery.ui.selectmenu.css" />
-        <copy todir="${buildpath}/theme">
-            <fileset dir=".">
-                <include name="dependencies/themes/${theme}/**/*" />
-            </fileset>  
-        </copy>
+        <if><istrue value="${no-jquery-ui-theme}"/><then></then><else>
+            <copy todir="${buildpath}/01-theme">
+                <fileset dir=".">
+                    <include name="dependencies/themes/${theme}/jquery-ui.css" />
+                    <include name="dependencies/themes/${theme}/images/**/*" />
+                </fileset>  
+            </copy>
+        </else></if>
     </target>
     
     <!-- =================================================================== -->
@@ -185,6 +321,18 @@
     </target>
     
     <!-- =================================================================== -->
+    <!-- Convert LESS to CSS                                                 -->
+    <!-- =================================================================== -->
+    <target name="less" depends="prepare,clone">
+        <less>
+            <fileset dir=".">
+                <include name="${buildpath}/*.less" />
+                <include name="${buildpath}/**/*.less" />
+            </fileset>
+        </less>
+    </target>
+    
+    <!-- =================================================================== -->
     <!-- Convert images to data URIs                                         -->
     <!-- =================================================================== -->
     <target name="datauri" depends="prepare,clone">
@@ -197,33 +345,93 @@
     </target>
     
     <!-- =================================================================== -->
+    <!-- Convert HTML templates to JSON                                      -->
+    <!-- =================================================================== -->
+    <target name="template" depends="prepare,clone">
+        <template name="templates">
+            <fileset dir=".">
+                <include name="${buildpath}/*.html" />
+                <include name="${buildpath}/**/*.html" />
+            </fileset>
+        </template>
+        
+        <reflexive>
+            <fileset dir=".">
+                <include name="${buildpath}/jquery.ui.editor.js" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="\/\* &lt;templates\/&gt; \*\/" replace="${templates}"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+    
+    <!-- =================================================================== -->
     <!-- Combine and minify all files                                        -->
     <!-- =================================================================== -->
-    <target name="combine" depends="datauri">
-        <append destFile="${buildpath}/concat.js">
+    <target name="combine" depends="less,datauri,template">
+        <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
                 <include name="${buildpath}/*.js" />
                 <include name="${buildpath}/**/*.js" />
             </fileset>
+        </sortedfileset>
+        <append destFile="${buildpath}/concat.js">
+            <filelist dir="." files="${jsfiles}"/>
         </append>
-        <append destFile="${buildpath}/concat.css">
+        
+        <!-- Append global wrapper close -->
+        <if>
+            <istrue value="${wrapper}"/>
+            <then>
+                <echo file="${buildpath}/concat.js" append="true">})(jQuery, window, rangy);</echo>
+            </then>
+        </if>
+        
+        <sortedfileset name="cssfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.css" />
                 <include name="${buildpath}/*.css" />
                 <include name="${buildpath}/**/*.css" />
             </fileset>
+        </sortedfileset>
+        <echo>${cssfiles}</echo>
+        <append destFile="${buildpath}/concat.css">
+            <filelist dir="." files="${cssfiles}"/>
         </append>
     </target>
     
     <target name="compile" depends="combine">
-        <echo>java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
-        <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js" dir="." />
-        <echo>java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
-        <exec command="java -jar vendor\Yahoo\YUI\Compressor\build\yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" dir="." />
+        <if>
+            <istrue value="${compile-js}"/>
+            <then>
+                <echo>java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
+                <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js" 
+                      dir="." level="info" outputProperty="output"/>
+                <echo>${output}</echo>
+            </then>
+            <else>
+                <move file="${buildpath}/concat.js" tofile="${buildpath}/concat.min.js"/>
+            </else>
+        </if>
+        <if>
+            <istrue value="${compile-css}"/>
+            <then>
+                <echo>java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
+                <exec command="java -jar vendor/Yahoo/YUI/Compressor/build/yuicompressor-2.4.6.jar --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css" 
+                      dir="." level="info" outputProperty="output"/>
+                <echo>${output}</echo>
+            </then>
+            <else>
+                <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css"/>
+            </else>
+        </if>
     </target>
     
-    <target name="merge" depends="compile">
+    <target name="merge" depends="template">
         <!-- Append VERSION file in a comment -->
         <echo file="${buildpath}/merge.js" append="true">/*! VERSION: </echo>
         <append destFile="${buildpath}/merge.js">
@@ -243,12 +451,6 @@
         <echo file="${buildpath}/merge.js" append="true">*/</echo>
         <!-- Close the comment -->
         
-        <!-- Append global wrapper open -->
-        <!-- 
-        <echo file="${buildpath}/merge.js" append="true">(function($, window, rangy, undefined) {</echo>
-        <echo file="${buildpath}/merge.js" append="true">})(jQuery, window, rangy);</echo>
-        -->
-        
         <!-- Append the merged JS -->
         <append destFile="${buildpath}/merge.js">
             <fileset dir=".">
@@ -258,6 +460,19 @@
         
         <!-- Append the style inserter -->
         <echo file="${buildpath}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+        
+        <reflexive>
+            <fileset dir="${buildpath}">
+                <include pattern="concat.min.css" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="'" replace="\'"/>
+                    <regexp pattern="\n" replace="\n\${line.separator}"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
         <append destFile="${buildpath}/merge.js">
             <fileset dir=".">
                 <include name="${buildpath}/concat.min.css" />
