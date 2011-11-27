@@ -261,7 +261,7 @@ console.info('FIXME: remove link dialog on destroy');
     $.ui.editor.registerPlugin('link', link);
     
     $.ui.editor.registerUi({
-        'link': {
+        link: {
             init: function(editor) {
                 editor.bind('change', this.change, this);
                 
@@ -278,7 +278,7 @@ console.info('FIXME: remove link dialog on destroy');
             }
         },
     
-        'unlink': {
+        unlink: {
             init: function(editor) {
                 editor.bind('change', this.change, this);
                 

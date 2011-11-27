@@ -223,6 +223,30 @@ var domTools = {
     },
 
     /**
+     * @param {jQuerySelector|jQuery|Element} element
+     */
+    getStyles: function(element) {
+        var result = {};
+        var style = window.getComputedStyle(element[0], null);
+        for (var i = 0; i < style.length; i++) {
+            result[style.item(i)] = style.getPropertyValue(style.item(i));
+        };
+        return result;
+    },
+
+    /**
+     * @param {jQuerySelector|jQuery|Element} element1
+     * @param {jQuerySelector|jQuery|Element} element2
+     * @param {Object} style
+     */
+    swapStyles: function(element1, element2, style) {
+        for (var name in style) {
+            element1.css(name, element2.css(name));
+            element2.css(name, style[name]);
+        }
+    },
+    
+    /**
      *
      * @public @static
      */

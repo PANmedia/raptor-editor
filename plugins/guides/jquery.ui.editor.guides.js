@@ -1,4 +1,7 @@
-console.info('FIXME: check destroy gets called');
+// <debug>
+info('FIXME: check destroy gets called');
+// </debug>
+
 $.ui.editor.registerUi({
     'show-guides': {
         init: function(editor) {
