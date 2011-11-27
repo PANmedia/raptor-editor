@@ -1,58 +1,56 @@
+console.info('FIXME: remove dialog on destroy');
 (function($) {
     
-    $.ui.editor.addPlugin('viewSource', {
-        dialog: false,
-        stateChange: function() {
-            if (this._plugins.viewSource.dialog) this._plugins.viewSource.dialog.find('textarea').val(this.html.call(this));
+    $.ui.editor.registerUi({
+        'view-source':  {
+            init: function(editor, options) {
+                var dialog = this.dialog = $(editor.getTemplate('viewsource.dialog'));
+                dialog.dialog({
+                    modal: false,
+                    width: 600,
+                    height: 400,
+                    resizable: true,
+                    title: _('View Source'),
+                    autoOpen: false,
+                    dialogClass: options.baseClass + ' ' + options.dialogClass,
+                    show: options.dialogShowAnimation,
+                    hide: options.dialogHideAnimation,
+                    buttons: [
+                        {
+                            text: _('Apply Source'),
+                            click: function() {
+                                editor.setHtml($(this).find('textarea').val());
+                            }
+                        },
+                        {
+                            text: _('Close'),
+                            click: function() {
+                                dialog.dialog('close');
+                            }
+                        }
+                    ],
+                    open: function() {
+                        var buttons = dialog.parent().find('.ui-dialog-buttonpane');
+                        buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
+                        buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
+
+                        $(this).find('textarea').val(editor.getHtml());
+                    }
+                });
+
+                editor.bind('destroy', this.destroy, this);
+
+                return editor.uiButton({
+                    title: _('View / Edit Source'),
+                    click: function() {
+                        dialog.dialog('open');
+                    }
+                });
+            },
+            destroy: function() {
+                this.dialog.dialog('destroy').remove();
+            }
         }
     });
     
-    $.ui.editor.addButton('viewSource', {
-       
-        title: _('View / Edit Source'),
-        icons: {
-            primary: 'ui-icon-view-source'
-        },
-        classes: 'ui-editor-icon ui-widget-editor-button-view-source',
-        click: function() {
-            var editorInstance = this;
-
-            if (!this._plugins.viewSource.dialog) {
-                this._plugins.viewSource.dialog = $('<div style="display:none" class="ui-widget-editor-dialog-view-source">\
-                                <textarea></textarea>\
-                            </div>').appendTo(this._editor.toolbar);
-            }
-
-            this._plugins.viewSource.dialog.dialog({
-                modal: false,
-                width: 600,
-                height: 400,
-                resizable: true,
-                title: 'View Source',
-                dialogClass: this.options.dialogClass + ' ui-widget-editor-view-source',
-                show: this.options.dialogShowAnimation,
-                hide: this.options.dialogHideAnimation,
-                buttons: [
-                    {
-                        text: _('Apply Source'),
-                        'class': 'apply-source',
-                        click: function() {
-                            editorInstance.html($(this).find('textarea').val());
-                        }
-                    }
-                ],
-                open: function() {
-                    editorInstance._dialog.applyButtonIcon('apply-source', 'circle-check');
-
-                    $(this).find('textarea').val(editorInstance.html());
-                },
-                close: function() {
-                    $(this).dialog('destroy');
-                }
-            }).dialog('open');
-        },
-        destroy: function() {
-            if (this._plugins.viewSource.dialog) this._plugins.viewSource.dialog.dialog('close');
-        }
-    });
 })(jQuery);

@@ -1,16 +1,20 @@
-(function($) {
-   
-    $.ui.editor.addButton('showGuides', {
-        title: _('Show Guides'),
-        icons: {
-            primary: 'ui-icon-pencil'
-        },
-        click: function() {
-            this.element.toggleClass('ui-widget-editor-guides');
-        },
-        destroy: function() {
-            this.element.removeClass('ui-widget-editor-guides');
+// <debug>
+info('FIXME: check destroy gets called');
+// </debug>
+
+$.ui.editor.registerUi({
+    'show-guides': {
+        init: function(editor) {
+            return editor.uiButton({
+                title: _('Show Guides'),
+                icon: 'ui-icon-pencil',
+                click: function() {
+                    editor.getElement().toggleClass(options.baseClass + '-guides');
+                },
+                destroy: function() {
+                    editor.getElement().removeClass(options.baseClass + ' -guides');
+                }
+            });
         }
-    });
-    
-})(jQuery);
+    }
+});

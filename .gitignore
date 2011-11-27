@@ -2,3 +2,5 @@
 /packages/
 /build/
 /dependencies/
+/docs/
+/jsdoc.bat

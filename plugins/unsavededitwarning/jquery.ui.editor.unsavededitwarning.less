@@ -1,0 +1,30 @@
+.ui-editor-unsaved-edit-warning-warning {
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px 0 0 0;
+    border: 1px solid #D4D4D4;
+    background-color: rgba(255, 255, 242, 0.1);
+    background-image: -moz-linear-gradient(center top , rgba(255, 255, 242, 0.5), rgba(237, 236, 189, 1));
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0%,rgba(255, 255, 242, 0.5)),color-stop(100%,rgba(237, 236, 189, 1)));
+    opacity: 0;
+
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    transition: opacity 0.5s;
+
+    .ui-icon {
+        display: inline-block;
+        float: left;
+        margin: 8px 5px 0 5px;
+    }
+
+    &.ui-editor-unsaved-edit-warning-visible {
+        opacity: 0.5;
+    }
+
+    &.ui-editor-unsaved-edit-warning-visible:hover {
+        opacity: 1;
+    }
+}
