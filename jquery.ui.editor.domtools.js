@@ -117,8 +117,9 @@ var domTools = {
      * FIXME: this function needs reviewing
      * @public @static
      */
-    toggleWrapper: function(tag, classes) {
-        rangy.createCssClassApplier(classes, {
+    toggleWrapper: function(tag, options) {
+        options = options || {};
+        rangy.createCssClassApplier(options.classes || {}, {
             normalize: true,
             elementTagName: tag
         }).toggleSelection();
@@ -270,6 +271,7 @@ var domTools = {
             var node = domFragment.childNodes.item(j);
             // Prepend the node before the current node
             var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
+            console.debug(wrapperTag);
             if (content) {
                 $('<' + wrapperTag + '/>')
                     .html($.trim(content))
@@ -340,7 +342,7 @@ var domTools = {
      */
     tagSelection: function(tag, selection) {
         this.eachRange(function(range) {
-            if (this.rangeIsEmpty(range)) {
+            if (this.isEmpty(range)) {
                 // Apply to the whole element 
                 this.expandRangeToParent(range);
                 this.changeRangeTag(range, tag);
@@ -353,11 +355,11 @@ var domTools = {
                 // Extract the contents, and prepend it as a new node before the current node
                 var precontent = newRange.extractContents();
                 var parent = $(newRange.startContainer).parent();
-                this.insertDomFragmentBefore(precontent, parent[0].nodeName, parent);
+                this.insertDomFragmentBefore(precontent, parent, parent[0].nodeName);
 
                 // Extract the content in the selected range
                 var contents = range.extractContents();
-                this.insertDomFragmentBefore(contents, tag, parent);
+                this.insertDomFragmentBefore(contents, parent, tag);
             }
         }, selection);
     }

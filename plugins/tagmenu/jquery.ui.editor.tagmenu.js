@@ -14,7 +14,7 @@
                     title: _('Change HTML tag of selected element'),
                     select: $(editor.getTemplate('tagmenu.menu')),
                     change: function(value) {
-                        editor.changeTag2(value);
+                        editor.tagSelection(value);
                     }
                 });
             },

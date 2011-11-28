@@ -4,7 +4,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Insert Horizontal Rule'),
                 click: function() {
-                    editor.insertElement('hr');
+                    editor.insertTag('hr');
                 }
             });
         }
