@@ -1,6 +1,3 @@
-// <debug>
-console.info('FIXME: paste plugin detach, remove dialog');
-// </debug>
 (function($) {
     var paste = {
         init: function(editor, options) {
@@ -173,10 +170,6 @@ console.info('FIXME: paste plugin detach, remove dialog');
 
                 return true;
             }, this));
-
-            editor.bind('destroy', function() {
-                editor.getElement().unbind('paste.editor');
-            });
         }
     }
     
