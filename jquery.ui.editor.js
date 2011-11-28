@@ -196,12 +196,14 @@ $.widget('ui.editor',
      */
     cloneDomTools: function() {
         for (var i in this.options.domTools) {
-            this[i] = (function(i) { 
-                return function() {
-                    this.options.domTools.constrainSelection(this.getElement());
-                    return this.options.domTools[i].apply(this.options.domTools, arguments);
-                }
-            })(i);
+            if (!this[i]) {
+                this[i] = (function(i) { 
+                    return function() {
+                        this.options.domTools.constrainSelection(this.getElement());
+                        return this.options.domTools[i].apply(this.options.domTools, arguments);
+                    }
+                })(i);
+            }
         }
     },
 
