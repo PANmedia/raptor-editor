@@ -200,7 +200,9 @@ $.widget('ui.editor',
                 this[i] = (function(i) { 
                     return function() {
                         this.options.domTools.constrainSelection(this.getElement());
-                        return this.options.domTools[i].apply(this.options.domTools, arguments);
+                        var result = this.options.domTools[i].apply(this.options.domTools, arguments);
+                        this.fire('change');
+                        return result;
                     }
                 })(i);
             }
