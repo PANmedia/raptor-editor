@@ -7,7 +7,12 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Unordered List'),
                 click: function() {
-                    editor.toggleWrapper('ul');
+                    if (!editor.selectionExists(rangy.getSelection())) {
+                        editor.insertElement('<ul><li>First list item</li></ul>');
+                    } else {
+                        editor.toggleWrapper('ul');
+                        editor.toggleWrapper('li');
+                    }
                 }
             });
         }
@@ -17,7 +22,12 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Ordered List'),
                 click: function() {
-                    editor.toggleWrapper('ol');
+                    if (!editor.selectionExists(rangy.getSelection())) {
+                        editor.insertElement('<ol><li>First list item</li></ol>');
+                    } else {
+                        editor.toggleWrapper('ol');
+                        editor.toggleWrapper('li');
+                    }
                 }
             });
         }
