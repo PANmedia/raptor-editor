@@ -1416,9 +1416,9 @@ $.extend($.ui.editor,
      * @returns {String}
      */
     getUniqueId: function() {
-        var id = $.ui.editor.prototype.options.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+        var id = $.ui.editor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
         while ($('#' + id).length) {
-            id = $.ui.editor.prototype.options.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+            id = $.ui.editor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
         }
         return id;
     },
