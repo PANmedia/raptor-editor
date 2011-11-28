@@ -285,7 +285,6 @@ var domTools = {
             var node = domFragment.childNodes.item(j);
             // Prepend the node before the current node
             var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
-            console.debug(wrapperTag);
             if (content) {
                 $('<' + wrapperTag + '/>')
                     .html($.trim(content))
