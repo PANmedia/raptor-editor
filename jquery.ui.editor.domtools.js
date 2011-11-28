@@ -119,7 +119,7 @@ var domTools = {
      */
     toggleWrapper: function(tag, options) {
         options = options || {};
-        rangy.createCssClassApplier(options.classes || {}, {
+        rangy.createCssClassApplier(options.classes || '', {
             normalize: true,
             elementTagName: tag
         }).toggleSelection();

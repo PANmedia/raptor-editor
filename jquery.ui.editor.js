@@ -371,10 +371,10 @@ $.widget('ui.editor',
                 var i = $(this).data('ui-editor-selection');
                 if (i) {
                     // Get the element from the list array
-                    editor.selectElement(lists[i[0]][i[1]]);
+                    editor.selectOuter(lists[i[0]][i[1]]);
                     editor.updateTagTree();
                 } else {
-                    editor.selectElement(editor.getElement());
+                    editor.selectOuter(editor.getElement());
                 }
             });
     },
