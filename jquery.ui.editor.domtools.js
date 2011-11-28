@@ -114,21 +114,14 @@ var domTools = {
     },  
 
     /**
-     *
+     * FIXME: this function needs reviewing
      * @public @static
      */
-    toggleWrapper: function(tag, options) {
-        this.constrainSelection();
-
-        if (!options) options = {};
-        var classes = options.classes ? options.classes : tag;
-
-        rangy.createCssClassApplier(this.options.cssPrefix + classes, {
+    toggleWrapper: function(tag, classes) {
+        rangy.createCssClassApplier(classes, {
             normalize: true,
             elementTagName: tag
         }).toggleSelection();
-
-        this.fire('change');
     },
 
     /**
@@ -204,11 +197,10 @@ var domTools = {
 
 
     /**
-     *
+     * FIXME: this function needs reviewing
      * @public @static
      */
     applyStyle: function(styles) {
-        this.constrainSelection();
         $.each(this.getSelectedElements(), function(i, element) {
             $.each(styles, function(property, value) {
                 if ($(element).css(property) == value) {
@@ -218,11 +210,10 @@ var domTools = {
                 }
             });
         });
-
-        this.fire('change');
     },
 
     /**
+     * FIXME: this function needs reviewing
      * @param {jQuerySelector|jQuery|Element} element
      */
     getStyles: function(element) {
@@ -235,6 +226,7 @@ var domTools = {
     },
 
     /**
+     * @public @static
      * @param {jQuerySelector|jQuery|Element} element1
      * @param {jQuerySelector|jQuery|Element} element2
      * @param {Object} style
@@ -247,12 +239,12 @@ var domTools = {
     },
     
     /**
-     *
+     * FIXME: this function needs reviewing
      * @public @static
      */
-    replaceSelection: function(html) {
+    replaceSelection: function(html, selection) {
         var nodes = $('<div/>').append(html)[0].childNodes;
-        $(rangy.getSelection().getAllRanges()).each(function(i, range) {
+        this.eachRange(function(range) {
             range.deleteContents();
             if (nodes.length === undefined || nodes.length == 1) {
                 range.insertNode(nodes[0].cloneNode(true));
@@ -261,9 +253,7 @@ var domTools = {
                     range.insertNodeAtEnd(node.cloneNode(true));
                 });
             }
-        });
-
-        this.fire('change');
+        }, selection);
     },
     
     /**
