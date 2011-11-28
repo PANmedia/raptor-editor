@@ -1,5 +1,5 @@
 // <debug>
-info('FIXME: check destroy gets called');
+console.info('FIXME: check destroy gets called');
 // </debug>
 
 $.ui.editor.registerUi({
