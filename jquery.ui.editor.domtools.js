@@ -289,12 +289,11 @@ var domTools = {
      * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
      */
     selectionExists: function(selection) {
+        var selectionExists = false;
         this.eachRange(function(range) {
-            if (!this.isEmpty(range)) {
-                return true;
-            }
+            if (!this.isEmpty(range)) selectionExists = true;
         }, selection);
-        return false;
+        return selectionExists;
     },
     
     /**
