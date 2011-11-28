@@ -112,7 +112,7 @@ $.widget('ui.editor',
         this.bind('destroy', function() {
             this.getElement().unbind('click.' + this.widgetName, change)
             this.getElement().unbind('keyup.' + this.widgetName, change)
-        })
+        });
 //            console.log(this.selDialog('.ui-dialog-titlebar a'));
 //            this.selDialog('.ui-dialog-titlebar a')
 //                    .die('click.' + this.widgetName)
@@ -219,7 +219,7 @@ $.widget('ui.editor',
      */
     destruct: function(reinit) {
         // Disable editing unless we are re initialising
-        if (!this.reiniting) {
+        if (!reinit) {
             this.hideToolbar();
             this.disableEditing();
         }
@@ -775,13 +775,13 @@ $.widget('ui.editor',
                 if ($.ui.editor.ui[uiSet[j]]) {
                     var options = $.extend({}, editor.options, {
                         baseClass: editor.options.baseClass + '-ui-' + uiSet[j]
-                    }, options, editor.options.ui[uiSet[j]])
-
-
+                    }, editor.options.ui[uiSet[j]])
+                    
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, $.ui.editor.ui[uiSet[j]]);
+
                     uiObject.editor = editor;
-                    uiObject.options = options;
+                    uiObject.options = options;                    
                     uiObject.ui = uiObject.init(editor, options);
 
                     // Append the UI object to the group
