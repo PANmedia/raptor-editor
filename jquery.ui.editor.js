@@ -506,7 +506,7 @@ $.widget('ui.editor',
         });
 
         editor.bind('after:destroy', function() {
-            editor.toolbar.dialog('destory').remove();
+            editor.toolbar.dialog('destroy').remove();
         });
     },
 
