@@ -1,8 +1,6 @@
 // <debug>
-info('FIXME: cancel button');
-info('FIXME: cancel button confimation dialog');
-info('FIXME: cancel button confimation dialog get removed on unbind');
-info('TODO: make cancel function avalible as a plugin');
+console.info('FIXME: cancel button confimation dialog get removed on unbind');
+console.info('TODO: make cancel function avalible as a plugin');
 // </debug>
 
 $.ui.editor.registerUi({
@@ -14,15 +12,18 @@ $.ui.editor.registerUi({
                 name: 'cancel',
                 title: _('Cancel'),
                 icons: { primary: 'ui-icon-cancel' },
+                dialog: null,
                 click: function() {
+                    var editor = this.editor;
                     if (!editor.isDirty()) {
                         ui.cancel();
                     } else {
-                        $(editor.getTemplate('cancel.dialog')).dialog({
+                        if (!this.dialog) this.dialog = $(editor.getTemplate('cancel.dialog'));
+                        this.dialog.dialog({
                             modal: true,
                             resizable: false,
                             title: _('Confirm Cancel Editing'),
-                            dialogClass: options.dialogClass + ' ' + options.baseClass,
+                            dialogClass: editor.options.dialogClass + ' ' + editor.options.baseClass,
                             show: editor.options.dialogShowAnimation,
                             hide: editor.options.dialogHideAnimation,
                             buttons: [
