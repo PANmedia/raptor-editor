@@ -7,6 +7,9 @@ $.ui.editor.registerPlugin('clean', {
         stripEmptyTags: [
             'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
             'p'
+        ],
+        stripEmptyAttrs: [
+            'class', 'id'
         ]
     },
     
@@ -30,6 +33,14 @@ $.ui.editor.registerPlugin('clean', {
             this.editor.getElement()
                 .find(this.options.stripEmptyTags[i] + ':empty')
                 .remove();
+        }
+        for (i = 0; i < this.options.stripEmptyAttrs.length; i++) {
+            var attr = this.options.stripEmptyAttrs[i];
+            this.editor.getElement()
+                .find('[' + this.options.stripEmptyAttrs[i] + ']')
+                .filter(function() {
+                    return $.trim(this[attr]) === '';
+                }).removeAttr(this.options.stripEmptyAttrs[i]);
         }
     }
 });
