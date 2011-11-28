@@ -1,4 +1,6 @@
+// <debug>
 console.info('FIXME: remove link dialog on destroy');
+// </debug>
 (function($) {
     
     var defaultOptions = {
