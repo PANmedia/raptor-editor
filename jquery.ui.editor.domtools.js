@@ -66,19 +66,34 @@ var domTools = {
     getSelectedElements: function(selection) {
         var result = new jQuery();
         this.eachRange(function(range, selection) {
-            var commonAncestor;
-            // Check if the common ancestor container is a text node
-            if (range.commonAncestorContainer.nodeType == 3) {
-                // Use the parent instead
-                commonAncestor = range.commonAncestorContainer.parentNode;
-            } else {
-                commonAncestor = range.commonAncestorContainer;
-            }
-            result.push(commonAncestor);
+            result.push(this.getSelectedElement(range)[0]);
         });
         return result;
     },
     
+    getSelectedElement: function (range) {
+        var commonAncestor;
+        // Check if the common ancestor container is a text node
+        if (range.commonAncestorContainer.nodeType == 3) {
+            // Use the parent instead
+            commonAncestor = range.commonAncestorContainer.parentNode;
+        } else {
+            commonAncestor = range.commonAncestorContainer;
+        }
+        return $(commonAncestor);
+    },
+    
+    wrapTagWithAttribute: function(tag, attributes) {
+        this.eachRange(function(range) {
+            var element = this.getSelectedElement(range);
+            if (element.is(tag)) {
+                element.attr(attributes);
+            } else {
+                this.toggleWrapper(tag, { attributes: attributes});
+            }
+        });
+    },
+
     /**
      * Selects all the contents of the supplied element, excluding the element itself.
      *
@@ -121,7 +136,8 @@ var domTools = {
         options = options || {};
         rangy.createCssClassApplier(options.classes || '', {
             normalize: true,
-            elementTagName: tag
+            elementTagName: tag,
+            elementProperties: options.attributes || {}
         }).toggleSelection();
     },
 
