@@ -4,8 +4,8 @@ console.info('FIXME: paste plugin detach, remove dialog');
 (function($) {
     var paste = {
         init: function(editor, options) {
-            var inProgress = false
-            var dialog = false
+            var inProgress = false;
+            var dialog = false;
             var selector = '.uiWidgetEditorPasteBin';
 
             function filterWord(content) {
@@ -76,10 +76,9 @@ console.info('FIXME: paste plugin detach, remove dialog');
                 if (inProgress) return false;
                 inProgress = true;
 
-                // Save the selection
                 var selection = rangy.saveSelection();
 
-                // Makes a text area to capture pasted text
+                // Make a contentEditable div to capture pasted text
                 if ($(selector).length) $(selector).remove();
                 $('<div class="uiWidgetEditorPasteBin" contenteditable="true" style="width: 1px; height: 1px; overflow: hidden; position: fixed; top: -1px;" />').appendTo('body');
                 $(selector).focus();
