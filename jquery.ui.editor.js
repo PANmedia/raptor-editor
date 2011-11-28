@@ -218,9 +218,6 @@ $.widget('ui.editor',
      * should not hide the toolbar, or disable editing.
      */
     destruct: function(reinit) {
-        // <debug>
-        console.info('FIXME: destruct should call destroy before checking for reinit?');
-        // </debug>
         // Disable editing unless we are re initialising
         if (!this.reiniting) {
             this.hideToolbar();
@@ -232,6 +229,16 @@ $.widget('ui.editor',
 
         // Remove all event bindings
         this.events = {};
+    },
+
+    /**
+     * Unbinds all namespaced events from the element then calls the UI widget 
+     * destroy function 
+     */
+    destroy: function() {
+        this.destruct();
+        this.getElement().unbind('.' + this.widgetName);
+        $.Widget.prototype.destroy.call(this);
     },
 
     /*========================================================================*\
@@ -1426,6 +1433,12 @@ $.extend($.ui.editor,
         init: function(editor, options) {},
         persist: function(key, value) {
             return this.editor.persist(key, value);
+        },
+        bind: function(name, callback, context) {
+            this.editor.bind(name, callback, context || this);
+        },
+        unbind: function(name, callback, context) {
+            this.editor.unbind(name, callback, context || this);
         }
     },
 
