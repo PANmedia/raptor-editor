@@ -218,6 +218,9 @@ $.widget('ui.editor',
      * should not hide the toolbar, or disable editing.
      */
     destruct: function(reinit) {
+        // <debug>
+        console.info('FIXME: destruct should call destroy before checking for reinit?');
+        // </debug>
         // Disable editing unless we are re initialising
         if (!this.reiniting) {
             this.hideToolbar();
@@ -230,35 +233,6 @@ $.widget('ui.editor',
         // Remove all event bindings
         this.events = {};
     },
-
-//            wrapWithList: function(tag, options) {
-//                if (typeof options == 'undefined') options = {};
-//
-//                var editorInstance = this,
-//                    create_applier = function(tag) {
-//                        return rangy.createCssClassApplier(editorInstance.options.cssPrefix + tag, {
-//                            normalize: true,
-//                            elementTagName: tag
-//                        });
-//                    };
-//
-//                this._selection.enforceLegality.call(this);
-//                $(rangy.getSelection().getAllRanges()).each(function(){
-//                    if (this.startOffset == this.endOffset) {
-//                        var list = $('<' + tag + ' class="' + editorInstance.options.cssPrefix + tag + '">'
-//                                + '<li class="' + editorInstance.options.cssPrefix + 'li">' + _('First list item') + '</li></' + tag + '>');
-//                        editorInstance._content.replaceRange.call(editorInstance, list, this);
-//                        editorInstance._selection.selectElement.call(editorInstance, list.find('li:first'));
-//                    } else {
-//                        create_applier(tag).applyToRange(this);
-//                        create_applier('li').applyToRange(this);
-//                    }
-//                });
-//                this.trigger('change');
-//            },
-//
-
-
 
     /*========================================================================*\
      * Persistance Functions
@@ -314,7 +288,6 @@ $.widget('ui.editor',
     isEditing: function() {
         return this.options.enabled;
     },
-
 
     /**
      *
@@ -452,7 +425,6 @@ $.widget('ui.editor',
         });
     },
 
-
     /**
      * @param {String[]} messages
      */
@@ -487,7 +459,6 @@ $.widget('ui.editor',
     showWarning: function(messages) {
         this.showMessage('alert', messages);
     },
-
 
     /*========================================================================*\
      * Toolbar
@@ -559,7 +530,6 @@ $.widget('ui.editor',
         }
     },
 
-
     /**
      * @param {boolean} [instant]
      */
@@ -575,7 +545,6 @@ $.widget('ui.editor',
         }
     },
 
-
     /**
      * @param {boolean} [instant]
      */
@@ -584,7 +553,6 @@ $.widget('ui.editor',
             editor.hideToolbar(instant);
         }, false);
     },
-
 
     /**
      * @returns {boolean}
@@ -599,7 +567,6 @@ $.widget('ui.editor',
     dialog: function() {
         return this.toolbar.dialog.apply(this.toolbar, arguments);
     },
-
 
     /**
      * @param {int} top
@@ -772,7 +739,6 @@ $.widget('ui.editor',
         }
         return messages;
     },
-
 
     /*========================================================================*\
      * Buttons
@@ -1024,7 +990,6 @@ $.widget('ui.editor',
         };
     },
 
-
     /*========================================================================*\
      * Content accessors
     \*========================================================================*/
@@ -1052,7 +1017,6 @@ $.widget('ui.editor',
     getHtml: function() {
         return this.cleanHtml(this.getElement().html());
     },
-
 
     /**
      * @param {String} html
