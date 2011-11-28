@@ -1274,12 +1274,6 @@ $.extend($.ui.editor,
          * 
          * @type String
          */
-        cssPrefix: 'cms-',
-
-        /**
-         * 
-         * @type String
-         */
         baseClass: 'ui-editor',
 
         /**
