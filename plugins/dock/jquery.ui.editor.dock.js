@@ -95,7 +95,7 @@
             this.editor.selDialog()
                 .addClass(this.options.baseClass + '-docked');
                 
-            this.editor.fire('change');
+            this.editor.change();
         },
         
         dock: function() {

@@ -51,6 +51,7 @@ $.widget('ui.editor',
         this.ui = {}; 
         this.plugins = {}; 
         this.templates = $.extend({}, $.ui.editor.templates);
+        this.changeTimer = null;
 
         // Undo stack, redo pointer
         this.history = []; 
@@ -104,7 +105,7 @@ $.widget('ui.editor',
         this.bind('change', this.updateTagTree);
 
         var change = $.proxy(function() { 
-            this.fire('change'); 
+            this.change(); 
         }, this);
 
         this.getElement().bind('click.' + this.widgetName, change);
@@ -201,12 +202,21 @@ $.widget('ui.editor',
                     return function() {
                         this.options.domTools.constrainSelection(this.getElement());
                         var result = this.options.domTools[i].apply(this.options.domTools, arguments);
-                        this.fire('change');
+                        this.change();
                         return result;
                     }
                 })(i);
             }
         }
+    },
+
+    change: function() {
+        console.debug('change function');
+        if (this.changeTimer !== null) window.clearTimeout(this.changeTimer);
+        this.changeTimer = window.setTimeout(function(editor) {
+            editor.change();
+            editor.changeTimer = null;
+        }, 50, this);
     },
 
     /*========================================================================*\
@@ -274,7 +284,7 @@ $.widget('ui.editor',
             document.execCommand('styleWithCSS', true, true);
             this.fire('enabled');
             this.fire('resize');
-            this.fire('change');
+            this.change();
         }
     },
 
@@ -681,7 +691,7 @@ $.widget('ui.editor',
             this.present--;
             this.setHtml(this.history[this.present]);
             this.historyEnabled = false;
-            this.fire('change');
+            this.change();
             this.historyEnabled = true;
         }
     },
@@ -694,7 +704,7 @@ $.widget('ui.editor',
             this.present++;
             this.setHtml(this.history[this.present]);
             this.historyEnabled = false;
-            this.fire('change');
+            this.change();
             this.historyEnabled = true;
         }
     },
@@ -1032,7 +1042,7 @@ $.widget('ui.editor',
      */
     setHtml: function(html) {
         this.getElement().html(html);
-        this.fire('change');
+        this.change();
     },
 
     /**
