@@ -133,7 +133,6 @@ var domTools = {
         document.execCommand(command, arg1, arg2);
     },
 
-
     /**
      * Creates a new elements and inserts it at the start of each range in a selection.
      *
@@ -195,7 +194,6 @@ var domTools = {
             });
         }, selection)
     },
-
 
     /**
      * FIXME: this function needs reviewing
@@ -307,7 +305,6 @@ var domTools = {
                range.startContainer === range.endContainer;
     },
 
-    
     /**
      * Expands a range to to surround all of the content from its start container
      * to its end container.
@@ -320,7 +317,6 @@ var domTools = {
         range.setEndAfter(range.endContainer);
     },
 
-
     /**
      * 
      * @public @static
@@ -332,7 +328,6 @@ var domTools = {
         this.insertDomFragmentBefore(contents, range.startContainer, tag);
         $(range.startContainer).remove();
     },
-    
     
     /**
      *
