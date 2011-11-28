@@ -1,4 +1,6 @@
+// <debug>
 console.info('FIXME: list plugin');
+// </debug>
 $.ui.editor.registerUi({
     'list-unordered': {
         init: function(editor) {

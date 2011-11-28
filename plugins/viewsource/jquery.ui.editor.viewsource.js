@@ -1,4 +1,6 @@
+// <debug>
 console.info('FIXME: remove dialog on destroy');
+// </debug>
 (function($) {
     
     $.ui.editor.registerUi({

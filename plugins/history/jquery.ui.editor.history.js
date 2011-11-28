@@ -1,5 +1,7 @@
+// <debug>
 // Add history undo / redo buttons
 console.info('FIXME: unbind events on destroy');
+// </debug>
 $.ui.editor.registerUi({
     'undo': {
         init: function(editor) {
