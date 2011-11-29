@@ -39,7 +39,7 @@ $.ui.editor.registerPlugin('clean', {
             this.editor.getElement()
                 .find('[' + this.options.stripEmptyAttrs[i] + ']')
                 .filter(function() {
-                    return $.trim(this[attr]) === '';
+                    return $.trim($(this).attr(attr)) === '';
                 }).removeAttr(this.options.stripEmptyAttrs[i]);
         }
     }
