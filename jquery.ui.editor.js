@@ -1298,7 +1298,13 @@ $.extend($.ui.editor,
          * 
          * @type int[2]
          */
-        dialogPosition: [5, 47]
+        dialogPosition: [5, 47],
+        
+        /**
+         * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
+         * @type String
+         */
+        cssPrefix: 'cms-'
     },
     
     /**
