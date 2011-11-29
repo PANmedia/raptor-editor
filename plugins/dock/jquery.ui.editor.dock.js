@@ -211,7 +211,7 @@
         dock:  {
             init: function(editor, element) {
                 return editor.uiButton({
-                    title: _('Click to dock the toolbar'),
+                    title: _('Click to dock/undock from the toolbar'),
                     icon: editor.getPlugin('dock').isDocked() ? 'ui-icon-pin-w' : 'ui-icon-pin-s',
                     click: function() {
                         // Toggle dock on current editor
