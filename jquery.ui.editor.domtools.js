@@ -257,6 +257,43 @@ var domTools = {
         });
         rangy.restoreSelection(selection);
     },
+    
+    wrapRange: function(range, tag) {
+        range.replaceContents();
+    },
+    
+    /**
+     *
+     */
+    inverseWrapWithTagClass: function(tag1, class1, tag2, class2) {
+        var selection = rangy.saveSelection();
+        // Assign a temporary tag name (to fool rangy)
+        var id = 'domTools' + Math.ceil(Math.random() * 10000000);
+        
+        this.eachRange(function(range) {
+            var applier2 = rangy.createCssClassApplier(class2, {
+                elementTagName: tag2
+            });
+            
+            // Check if tag 2 is applied to range
+            if (applier2.isAppliedToRange(range)) {
+                // Remove tag 2 to range
+                applier2.toggleSelection();
+            } else {
+                // Apply tag 1 to range
+                rangy.createCssClassApplier(class1, {
+                    elementTagName: id
+                }).toggleSelection();                
+            }
+        });
+        
+        // Replace the temparay tag with the correct tag
+        $(id).each(function() {
+            $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
+        });
+        
+        rangy.restoreSelection(selection);
+    },
 
     /**
      * FIXME: this function needs reviewing

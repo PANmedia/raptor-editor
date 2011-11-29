@@ -906,7 +906,9 @@ $.widget('ui.editor',
                 ui.selectMenu.append(this.select.hide());
                 ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
                 ui.select.find('option').each(function() {
-                    var option = $('<div class="ui-editor-selectmenu-menu-item ui-corner-all"/>')
+                    var option = $('<button/>')
+                        .addClass('ui-editor-selectmenu-menu-item')
+                        .addClass('ui-corner-all')
                         .html($(this).html())
                         .appendTo(ui.menu)
                         .bind('mouseenter.' + editor.widgetName, function() {$(this).addClass('ui-state-focus')})
@@ -922,7 +924,8 @@ $.widget('ui.editor',
                         });
                 });
 
-                ui.button = $('<div class="ui-editor-selectmenu-button"/>')
+                ui.button = $('<button/>')
+                    .addClass('ui-editor-selectmenu-button')
                     .attr('title', this.title)
                     .button({icons: {secondary: 'ui-icon-triangle-1-s'}})
                     .prependTo(this.selectMenu);

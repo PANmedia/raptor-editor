@@ -19,10 +19,14 @@
 
 .ui-editor-dialog .ui-editor-toolbar {
     padding: 5px 0 0 0;
+    overflow: visible;
+}
+
+.ui-editor-dialog .ui-editor-toolbar,
+.ui-editor-dialog .ui-editor-toolbar * {
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
-    overflow: visible;
 }
 
 .ui-editor-dialog .ui-dialog-titlebar .ui-editor-element-path {
@@ -127,6 +131,7 @@
         display: -webkit-box;
         display: -moz-box;
         display: box;
+        text-align: left;
         -webkit-box-align: center;
         -moz-box-align: center;
         box-align: center;
@@ -144,6 +149,7 @@
         top: 100%;
         left: 0;
         margin-top: -1px !important;
+        padding-right: 4px;
     }
 
     &-menu-item {
@@ -153,6 +159,12 @@
         border: 1px solid transparent;
         cursor: pointer;
         z-index: 1;
+        background-color: inherit;
+        width: 100%;
+        text-align: left;
+        -webkit-appearance: normal;
+        -moz-appearance: normal;
+        appearance: normal;
     }
 
 }

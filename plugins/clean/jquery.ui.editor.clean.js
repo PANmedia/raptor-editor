@@ -6,7 +6,8 @@ $.ui.editor.registerPlugin('clean', {
         },
         stripEmptyTags: [
             'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
-            'p'
+            'p', 'b', 'i', 'u', 'strong', 'em',
+            'big', 'small'
         ],
         stripEmptyAttrs: [
             'class', 'id', 'style'
@@ -31,7 +32,10 @@ $.ui.editor.registerPlugin('clean', {
         }
         for (i = 0; i < this.options.stripEmptyTags.length; i++) {
             this.editor.getElement()
-                .find(this.options.stripEmptyTags[i] + ':empty')
+                .find(this.options.stripEmptyTags[i])
+                .filter(function() {
+                    return $.trim($(this).html()) === '';
+                })
                 .remove();
         }
         for (i = 0; i < this.options.stripEmptyAttrs.length; i++) {
