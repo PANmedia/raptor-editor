@@ -9,7 +9,7 @@ $.ui.editor.registerPlugin('clean', {
             'p'
         ],
         stripEmptyAttrs: [
-            'class', 'id'
+            'class', 'id', 'style'
         ]
     },
     
