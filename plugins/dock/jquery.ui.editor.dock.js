@@ -110,14 +110,17 @@
                 this.dockToBody();
             }
             
-            // Change the dock button icon
+            // Change the dock button icon & title
             this.editor.selDialog()
                 .find('.' + this.options.baseClass + '-button')
-                .button({icons: {primary: 'ui-icon-pin-w'}});
+                .button({icons: {primary: 'ui-icon-pin-w'}})
+                .attr('title', this.getTitle());
                 
             // Add the header class to the editor toolbar
             this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
                 .addClass('ui-widget-header');
+
+            this.editor.fire('resize');
         },
         
         undockFromElement: function() {
@@ -156,17 +159,18 @@
             this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
                 .removeClass('ui-widget-header');
                 
-            // Change the dock button icon
+            // Change the dock button icon & title
             this.editor.selDialog()
                 .find('.' + this.options.baseClass + '-button')
-                .button({icons: {primary: 'ui-icon-pin-s'}});
+                .button({icons: {primary: 'ui-icon-pin-s'}})
+                .attr('title', this.getTitle());
                 
             if (this.options.dockToElement) {
                 this.undockFromElement();
             } else {
                 this.undockFromBody();
             }
-            
+
             // Trigger the editor resize event to adjust other plugin element positions
             this.editor.fire('resize');
         },
@@ -175,6 +179,10 @@
             return this.docked;
         },
         
+        getTitle: function() {
+            return this.isDocked() ? _('Click to detach the toolbar') : _('Click to dock the toolbar');
+        },
+
         enable: function() {
             if (this.persist('docked') || this.options.docked) {
                 this.dock();
@@ -192,7 +200,7 @@
                     // Show the spacer 
                     var toolbar = dock.editor.selToolbar();
                     if (toolbar.is(':visible')) {
-                        spacer.height(toolbar.outerHeight()).show();
+                        spacer.height(toolbar.outerHeight() + parseInt(toolbar.css('top'))).show();
                     }
 
                     // Trigger the editor resize event to adjust other plugin element positions
@@ -211,7 +219,7 @@
         dock:  {
             init: function(editor, element) {
                 return editor.uiButton({
-                    title: _('Click to dock/undock from the toolbar'),
+                    title: editor.getPlugin('dock').getTitle(),
                     icon: editor.getPlugin('dock').isDocked() ? 'ui-icon-pin-w' : 'ui-icon-pin-s',
                     click: function() {
                         // Toggle dock on current editor
