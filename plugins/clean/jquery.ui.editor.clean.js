@@ -18,7 +18,6 @@ $.ui.editor.registerPlugin('clean', {
     },
         
     clean: function() {
-        console.debug('clean function');
         var i;
         for (i = 0; i < this.options.stripAttrs.length; i++) {
             this.editor.getElement()
