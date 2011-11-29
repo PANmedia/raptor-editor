@@ -201,8 +201,9 @@ $.widget('ui.editor',
                 this[i] = (function(i) { 
                     return function() {
                         this.options.domTools.constrainSelection(this.getElement());
+                        var html = this.getHtml();
                         var result = this.options.domTools[i].apply(this.options.domTools, arguments);
-                        this.change();
+                        if (html != this.getHtml()) this.change();
                         return result;
                     }
                 })(i);
@@ -211,10 +212,9 @@ $.widget('ui.editor',
     },
 
     change: function() {
-        console.debug('change function');
         if (this.changeTimer !== null) window.clearTimeout(this.changeTimer);
         this.changeTimer = window.setTimeout(function(editor) {
-            editor.change();
+            editor.fire('change');
             editor.changeTimer = null;
         }, 50, this);
     },
