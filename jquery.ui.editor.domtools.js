@@ -177,7 +177,7 @@ var domTools = {
     
     /**
      * Inserts a element at the start of each range in a selection. If the clone 
-     * paramter is true (default) then the each node in the element will be cloned 
+     * parameter is true (default) then the each node in the element will be cloned 
      * (copied). If false, then each node will be moved.
      * 
      * @public @static
