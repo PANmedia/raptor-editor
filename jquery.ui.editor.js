@@ -512,14 +512,10 @@ $.widget('ui.editor',
      * 
      */
     loadToolbar: function() {
-        var editor = this;
-        var pos = this.persist('position') || editor.options.dialogPosition;
+        this.toolbar = $('<div class="' + this.options.baseClass + '-toolbar"/>');
+        this.toolbar.append('<div class="' + this.options.baseClass + '-inner"/>');
 
-        editor.toolbar = $('<div class="' + editor.options.baseClass + '-toolbar"/>');
-        editor.toolbar.append('<div class="' + editor.options.baseClass + '-inner"/>');
-
-        editor.toolbar.dialog({
-            position: pos,
+        this.toolbar.dialog({
             resizable: false,
             closeOnEscape: false,
             width: 'auto',
@@ -529,23 +525,34 @@ $.widget('ui.editor',
             zIndex: 32000,
             title: _('Editor loading...'),
             autoOpen: false,
-            dialogClass: editor.options.dialogClass,
-            dragStop: function() {
-                var pos = editor.selDialog().position()
-                editor.unify(function(editor) {
-                    editor.reposition(pos.top, pos.left)
+            dialogClass: this.options.dialogClass,
+            dragStop: $.proxy(function() {
+                var pos = this.persist('position', [
+                    this.selDialog().css('top'), 
+                    this.selDialog().css('left')
+                ]);
+                this.selDialog().css({
+                    top: pos[0],
+                    left: pos[1]
                 });
-            },
-            open: function(event, ui) {
-                $(editor.toolbar).parent()
+            }, this),
+            open: $.proxy(function(event, ui) {
+                $(this.toolbar).parent()
+                    .css('position', 'fixed')
                     .find('.ui-dialog-titlebar-close', ui)
                     .remove();
-            }
+                    
+                var pos = this.persist('position') || this.options.dialogPosition;
+                this.selDialog().css({
+                    top: pos[0],
+                    left: pos[1]
+                });
+            }, this) 
         });
 
-        editor.bind('after:destroy', function() {
-            editor.toolbar.dialog('destroy').remove();
-        });
+        this.bind('after:destroy', $.proxy(function() {
+            this.toolbar.dialog('destroy').remove();
+        }, this));
     },
 
     /**
@@ -611,15 +618,6 @@ $.widget('ui.editor',
      */
     dialog: function() {
         return this.toolbar.dialog.apply(this.toolbar, arguments);
-    },
-
-    /**
-     * @param {int} top
-     * @param {int} left
-     */
-    reposition: function(top, left) {
-        this.selToolbar().dialog('option', 'position', [left, top]);
-        this.persist('position', [left, top]);
     },
 
     /*========================================================================*\
