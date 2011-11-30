@@ -1089,6 +1089,13 @@ $.widget('ui.editor',
     getOriginalHtml: function() {
         return this.originalHtml;
     },
+    
+    /**
+     *
+     */
+    save: function() {
+        this.setOriginalHtml(this.getHtml());
+    },
 
     /**
      * @param {String} html
@@ -1302,7 +1309,7 @@ $.extend($.ui.editor,
          * @type Object
          */
         message: {
-            delay: 5000,
+            delay: 5000
         },
 
         /**
