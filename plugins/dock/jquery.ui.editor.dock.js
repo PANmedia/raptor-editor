@@ -200,7 +200,7 @@
                     // Show the spacer 
                     var toolbar = dock.editor.selToolbar();
                     if (toolbar.is(':visible')) {
-                        spacer.height(toolbar.outerHeight()/* + parseInt(toolbar.css('top'))*/).show();
+                        spacer.height(toolbar.outerHeight()).show();
                     }
 
                     // Trigger the editor resize event to adjust other plugin element positions
