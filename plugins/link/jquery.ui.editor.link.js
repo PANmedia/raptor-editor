@@ -23,7 +23,7 @@ console.info('FIXME: remove link dialog on destroy');
                     init: function() {
                         this.content = this.plugin.editor.getTemplate('link.external', this.options);
                     },
-                    show: function(panel, edit, selectedElement) {
+                    show: function(panel, edit) {
                         if (edit) {
                             panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href'));
                             if (this.plugin.selectedElement.attr('target') === '_blank') {
@@ -111,6 +111,7 @@ console.info('FIXME: remove link dialog on destroy');
 
             this.show = function() {
                 if (!this.visible) {
+
                     var selection = rangy.saveSelection();
                     this.selectedElement = editor.getSelectedElements().first();
                     var edit = this.selectedElement.is('a');
@@ -172,22 +173,22 @@ console.info('FIXME: remove link dialog on destroy');
                             var buttons = dialog.parent().find('.ui-dialog-buttonpane');
                             buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                             buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
-
+                            
+                            var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                             if (!edit) {
-                                dialog.find('input[type="radio"]:first').prop('checked', true);
-                                plugin.typeChange(edit, true);
+                                radios.first().prop('checked', true);
                             } else {
-                                dialog.find('input[type="radio"]').each(function(){
-                                    var radio = $(this);
-                                    $(plugin.selectedElement.attr('class').split(' ')).each(function() {
-                                        if (radio.hasClass(this)) {
-                                            radio.prop('checked', true);
-                                            plugin.typeChange(edit, true);
-                                            return;
+                                var classes = plugin.selectedElement.attr('class').split(/\s/gi);
+                                radios.each(function(){
+                                    for (var i = 0; i < classes.length; i++) {
+                                        if (classes[i].trim() && $(this).hasClass(classes[i])) {
+                                            $(this).prop('checked', true);
+                                            break;
                                         }
-                                    });
+                                    }
                                 });
                             }
+                            plugin.typeChange(edit, true);
                         },
                         close: function() {
                             plugin.visible = false;
@@ -199,25 +200,26 @@ console.info('FIXME: remove link dialog on destroy');
             }
 
             this.typeChange = function(edit, initial) {
-                var linkType = plugin.types[dialog.find('input[type="radio"]:checked').val()];
+                var linkType = this.types[dialog.find('.ui-editor-link-menu input[type="radio"]:checked').val()];
                 var panel = dialog.find('.' + options.baseClass + '-content');
-                var wrap = panel.closest('.' + options.baseClass + '-wrap');
+                var plugin = this;
 
                 initial = initial || false;
                 
-                if (linkType.ajaxUri) wrap.addClass(options.baseClass + '-loading');
-        
                 panel.hide(options.panelAnimation, function(){
-                    if (!linkType.ajaxUri) {
+                    if (!linkType.ajaxUri || plugin.types[linkType.type].content) {
                         panel.html(linkType.content);
                         if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                         panel.show(options.panelAnimation);
                     } else {
+                        var wrap = panel.closest('.' + options.baseClass + '-wrap');
+                        wrap.addClass(options.baseClass + '-loading');
                         $.ajax({
                             url: linkType.ajaxUri,
                             type: 'get',
                             success: function(data) {
                                 panel.html(data);
+                                plugin.types[linkType.type].content = data;
                                 if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                                 panel.show(options.panelAnimation, function(){
                                     wrap.removeClass(options.baseClass + '-loading');
