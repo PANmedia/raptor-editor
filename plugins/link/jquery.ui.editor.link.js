@@ -183,7 +183,6 @@ console.info('FIXME: remove link dialog on destroy');
                             buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                             buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
 
-                            // if (!dialog.find('input[type="radio"]:checked').length) {
                             if (!edit) {
                                 dialog.find('input[type="radio"]:first').prop('checked', true);
                                 plugin.typeChange(edit, true);
@@ -199,7 +198,6 @@ console.info('FIXME: remove link dialog on destroy');
                                     });
                                 });
                             }
-                            // }
                         },
                         close: function() {
                             plugin.visible = false;
