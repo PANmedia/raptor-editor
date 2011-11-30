@@ -22,7 +22,6 @@ console.info('FIXME: remove link dialog on destroy');
                     title: _('Page on this or another website'),
                     init: function() {
                         this.content = this.plugin.editor.getTemplate('link.external', this.options);
-                        this.className = this.options.baseClass + '-external';
                     },
                     show: function(panel, edit, selectedElement) {
                         if (edit) {
@@ -51,8 +50,7 @@ console.info('FIXME: remove link dialog on destroy');
                     type: 'email',
                     title: _('Email address'),
                     init: function() {
-                        this.content = this.plugin.editor.getTemplate('link.email', this.options),
-                        this.className = this.options.baseClass + '-email';
+                        this.content = this.plugin.editor.getTemplate('link.email', this.options);
                     },
                     show: function(panel, edit) {
                         if (edit) {
@@ -78,7 +76,6 @@ console.info('FIXME: remove link dialog on destroy');
                 type: null,
                 title: null,
                 content: null,
-                className: null,
                 init: null,
                 show: null,
                 attributes: null,
@@ -89,14 +86,14 @@ console.info('FIXME: remove link dialog on destroy');
             if (options.replaceTypes) linkTypes = options.customTypes;
             else $.merge(linkTypes, options.customTypes);
 
-            var linkType, label;
+            var linkType;
             var linkTypesFieldset = dialog.find('fieldset').html('');                    
 
             for (var i = 0; i < linkTypes.length; i++) {
-                linkType = $.extend({}, defaultLinkType, linkTypes[i]);                
-                linkType.init();
+                linkType = $.extend({}, defaultLinkType, linkTypes[i], { className: options.baseClass + '-' + linkTypes[i].type });                
+                if ($.isFunction(linkType.init)) linkType.init();
                 this.types[linkType.type] = linkType;
-                label = $(this.editor.getTemplate('link.label', linkType)).appendTo(linkTypesFieldset);
+                $(this.editor.getTemplate('link.label', linkType)).appendTo(linkTypesFieldset);
             }
             
             var plugin = this;
