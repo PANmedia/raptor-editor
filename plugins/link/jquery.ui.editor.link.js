@@ -205,34 +205,27 @@ console.info('FIXME: remove link dialog on destroy');
 
                 initial = initial || false;
                 
-                if (linkType.ajax) wrap.addClass(options.baseClass + '-loading');
-
-                // This is the first showing of the panel, don't animate
-                // if (initial) {
-                //     panel.html(linkType.content);
-                //     panel.show();
-                //     if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                // } else {            
-                    panel.hide(options.panelAnimation, function(){
-                        if (!linkType.ajax) {
-                            panel.html(linkType.content);
-                            if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                            panel.html(linkType.content).show(options.panelAnimation);
-                        } else {
-                            $.ajax({
-                                url: linkType.ajax.uri,
-                                type: ((typeof linkType.ajax.type != 'undefined') ? 'get' : linkType.ajax.type),
-                                success: function(data) {
-                                    panel.html(data);
-                                    if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                                    panel.show(options.panelAnimation, function(){
-                                        wrap.removeClass(options.baseClass + '-loading');
-                                    });
-                                }   
-                            });
-                        }
-                    });
-                // }
+                if (linkType.ajaxUri) wrap.addClass(options.baseClass + '-loading');
+        
+                panel.hide(options.panelAnimation, function(){
+                    if (!linkType.ajaxUri) {
+                        panel.html(linkType.content);
+                        if ($.isFunction(linkType.show)) linkType.show(panel, edit);
+                        panel.show(options.panelAnimation);
+                    } else {
+                        $.ajax({
+                            url: linkType.ajaxUri,
+                            type: 'get',
+                            success: function(data) {
+                                panel.html(data);
+                                if ($.isFunction(linkType.show)) linkType.show(panel, edit);
+                                panel.show(options.panelAnimation, function(){
+                                    wrap.removeClass(options.baseClass + '-loading');
+                                });
+                            }   
+                        });
+                    }
+                });
             }
 
             this.remove = function() {
