@@ -22,7 +22,7 @@ console.info('FIXME: remove link dialog on destroy');
                     title: _('Page on this or another website'),
                     init: function() {
                         this.content = this.plugin.editor.getTemplate('link.external', this.options);
-                        this.className = this.plugin.options.baseClass + '-external';
+                        this.className = this.options.baseClass + '-external';
                     },
                     show: function(panel, edit, selectedElement) {
                         if (edit) {
@@ -51,8 +51,8 @@ console.info('FIXME: remove link dialog on destroy');
                     type: 'email',
                     title: _('Email address'),
                     init: function() {
-                        this.content = this.plugin.editor.getTemplate('link.email', options),
-                        this.className = this.plugin.options.baseClass + '-email';
+                        this.content = this.plugin.editor.getTemplate('link.email', this.options),
+                        this.className = this.options.baseClass + '-email';
                     },
                     show: function(panel, edit) {
                         if (edit) {
@@ -82,14 +82,15 @@ console.info('FIXME: remove link dialog on destroy');
                 init: null,
                 show: null,
                 attributes: null,
-                plugin: this
+                plugin: this,
+                options: options
             };
 
             if (options.replaceTypes) linkTypes = options.customTypes;
             else $.merge(linkTypes, options.customTypes);
 
             var linkType, label;
-            var linkTypesFieldset = dialog.find('.' + options.baseClass + '-menu fieldset');
+            var linkTypesFieldset = dialog.find('fieldset').html('');                    
 
             for (var i = 0; i < linkTypes.length; i++) {
                 linkType = $.extend({}, defaultLinkType, linkTypes[i]);                
@@ -113,17 +114,16 @@ console.info('FIXME: remove link dialog on destroy');
 
             this.show = function() {
                 if (!this.visible) {
-                    if (!dialog) dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
-
                     var selection = rangy.saveSelection();
                     this.selectedElement = editor.getSelectedElements().first();
                     var edit = this.selectedElement.is('a');
 
-                    // Remove & add custom radios
-                    dialog.find('.' + options.baseClass + '-menu fieldset').html('');
+                    if (!dialog) dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
                     
+                    console.log(options.baseClass);
                     this.prepareLinkTypes(options, dialog, edit);
-
+                    console.log(options.baseClass);
+                    
                     dialog.dialog({
                         autoOpen: false,
                         modal: true,
@@ -143,22 +143,17 @@ console.info('FIXME: remove link dialog on destroy');
 
                                     if (!attributes) return;
 
-                                    attributes['className'] = linkType.className;
-
-                                    if (edit) {
-                                        for (var i = 0; i < plugin.types.length; i++) {
-                                            plugin.selectedElement.removeClass(plugin.types[i].className);
-                                        }
+                                    var link = plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })));
+                                    if (!edit) {
+                                        attributes['className'] = linkType.className;
+                                        editor.wrapTagWithAttribute('a', $.extend(attributes, { className: linkType.className}));
+                                        editor.showConfirm(_('Added link: {{link}}', { link: link }));
+                                    } else {
+                                        // Remove all link type classes
+                                        plugin.selectedElement[0].className = plugin.selectedElement[0].className.replace(new RegExp(options.baseClass + '-[a-zA-Z]+','g'), '');
                                         plugin.selectedElement.addClass(linkType.className)
                                             .attr(attributes);
-                                        editor.showConfirm(_('Updated link: {{link}}', { 
-                                            link: plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })))
-                                        }));
-                                    } else {
-                                        editor.showConfirm(_('Added link: {{link}}', { 
-                                            link: plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })))
-                                        }));
-                                        editor.wrapTagWithAttribute('a', attributes);
+                                        editor.showConfirm(_('Updated link: {{link}}', { link: link }));                                        
                                     }
 
                                     $(this).dialog('close');
@@ -203,7 +198,6 @@ console.info('FIXME: remove link dialog on destroy');
                             plugin.visible = false;
                             dialog.find('.' + options.baseClass + '-content').hide();
                             $(this).dialog('destroy');
-
                         }
                     }).dialog('open');
                 }
