@@ -120,9 +120,7 @@ console.info('FIXME: remove link dialog on destroy');
 
                     if (!dialog) dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
                     
-                    console.log(options.baseClass);
                     this.prepareLinkTypes(options, dialog, edit);
-                    console.log(options.baseClass);
                     
                     dialog.dialog({
                         autoOpen: false,
@@ -212,20 +210,18 @@ console.info('FIXME: remove link dialog on destroy');
                 
                 if (linkType.ajax) wrap.addClass(options.baseClass + '-loading');
 
-                // This is the first showing of the panel
+                // This is the first showing of the panel, don't animate
                 if (initial) {
                     panel.html(linkType.content);
                     panel.show();
                     if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                } else {                  
+                } else {            
                     panel.hide(options.panelAnimation, function(){
                         if (!linkType.ajax) {
-                            // No animation for non-ajax content
                             panel.html(linkType.content);
                             if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                             panel.html(linkType.content).show(options.panelAnimation);
                         } else {
-                            // Animate ajax content
                             $.ajax({
                                 url: linkType.ajax.uri,
                                 type: ((typeof linkType.ajax.type != 'undefined') ? 'get' : linkType.ajax.type),
