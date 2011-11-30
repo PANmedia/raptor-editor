@@ -146,12 +146,18 @@ console.info('FIXME: remove link dialog on destroy');
                                     attributes['className'] = linkType.className;
 
                                     if (edit) {
-                                        for (var i = 0; i < this.plugin.types.length; i++) {
-                                            this.selectedElement.removeClass(this.plugin.types[i].className);
+                                        for (var i = 0; i < plugin.types.length; i++) {
+                                            plugin.selectedElement.removeClass(plugin.types[i].className);
                                         }
-                                        this.selectedElement.addClass(linkType.className)
+                                        plugin.selectedElement.addClass(linkType.className)
                                             .attr(attributes);
+                                        editor.showConfirm(_('Updated link: {{link}}', { 
+                                            link: plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })))
+                                        }));
                                     } else {
+                                        editor.showConfirm(_('Added link: {{link}}', { 
+                                            link: plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })))
+                                        }));
                                         editor.wrapTagWithAttribute('a', attributes);
                                     }
 
@@ -177,23 +183,23 @@ console.info('FIXME: remove link dialog on destroy');
                             buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                             buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
 
-                            if (!dialog.find('input[type="radio"]:checked').length) {
-                                if (!edit) {
-                                    dialog.find('input[type="radio"]:first').prop('checked', true);
-                                    plugin.typeChange(edit, true);
-                                } else {
-                                    dialog.find('input[type="radio"]').each(function(){
-                                        var radio = $(this);
-                                        $(plugin.selectedElement.attr('class').split(' ')).each(function() {
-                                            if (radio.hasClass(this)) {
-                                                radio.prop('checked', true);
-                                                plugin.typeChange(edit, true);
-                                                return;
-                                            }
-                                        });
+                            // if (!dialog.find('input[type="radio"]:checked').length) {
+                            if (!edit) {
+                                dialog.find('input[type="radio"]:first').prop('checked', true);
+                                plugin.typeChange(edit, true);
+                            } else {
+                                dialog.find('input[type="radio"]').each(function(){
+                                    var radio = $(this);
+                                    $(plugin.selectedElement.attr('class').split(' ')).each(function() {
+                                        if (radio.hasClass(this)) {
+                                            radio.prop('checked', true);
+                                            plugin.typeChange(edit, true);
+                                            return;
+                                        }
                                     });
-                                }
+                                });
                             }
+                            // }
                         },
                         close: function() {
                             plugin.visible = false;
@@ -214,6 +220,7 @@ console.info('FIXME: remove link dialog on destroy');
                 
                 if (linkType.ajax) wrap.addClass(options.baseClass + '-loading');
 
+                // This is the first showing of the panel
                 if (initial) {
                     panel.html(linkType.content);
                     panel.show();
@@ -221,10 +228,12 @@ console.info('FIXME: remove link dialog on destroy');
                 } else {                  
                     panel.hide(options.panelAnimation, function(){
                         if (!linkType.ajax) {
+                            // No animation for non-ajax content
                             panel.html(linkType.content);
                             if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                             panel.html(linkType.content).show(options.panelAnimation);
                         } else {
+                            // Animate ajax content
                             $.ajax({
                                 url: linkType.ajax.uri,
                                 type: ((typeof linkType.ajax.type != 'undefined') ? 'get' : linkType.ajax.type),
