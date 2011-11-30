@@ -662,12 +662,14 @@ $.widget('ui.editor',
      * @param {Object} variables
      * @param {String} prefix
      */
-    getTemplateVars: function(variables, prefix) {
+    getTemplateVars: function(variables, prefix, depth) {
         prefix = prefix ? prefix + '.' : '';
+        var maxDepth = 5;
+        if (!depth) depth = 1;
         var result = {};
         for (var name in variables) {
-            if (typeof variables[name] == 'object') {
-                var inner = this.getTemplateVars(variables[name], prefix + name);
+            if (typeof variables[name] == 'object' && depth < maxDepth) {
+                var inner = this.getTemplateVars(variables[name], prefix + name, ++depth);
                 for (var innerName in inner) {
                     result[innerName] = inner[innerName];
                 }
