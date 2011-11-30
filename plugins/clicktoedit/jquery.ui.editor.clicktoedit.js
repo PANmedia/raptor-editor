@@ -43,9 +43,19 @@
             }
 
             message.position(options.position);
+            
+            // Prevent obsucring links
+            editor.getElement().find('a').bind('mouseenter.' + editor.widgetName, plugin.hide);
+            editor.getElement().find('a').bind('mouseleave.' + editor.widgetName, plugin.show);
+
             editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
-            editor.getElement().bind('click.' + editor.widgetName, plugin.edit);
+            editor.getElement().bind('click.' + editor.widgetName, function(event) {
+                // Prevent disabling links
+                if (!$(event.target).is('a') && !$(event.target).parents('a').length) {
+                    plugin.edit();
+                }
+            });
             editor.bind('destroy', function() {
                 message.remove();
                 editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
