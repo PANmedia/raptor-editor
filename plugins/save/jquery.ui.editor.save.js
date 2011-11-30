@@ -38,6 +38,7 @@ $.ui.editor.registerPlugin('save', {
             if (editor.isDirty()) {
                 var plugin = editor.getPlugin('save');
                 $.extend(contentData, plugin.getData());
+                editor.save();
             }
         });
         
