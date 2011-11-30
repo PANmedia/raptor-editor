@@ -8,9 +8,13 @@
     &-message {
         padding: 10px;
         border: 1px solid #D4D4D4;
+        font-size: 14px;
+        z-index: 4000;
 
+        -webkit-pointer-events: none;
+        -moz-pointer-events: none;
         pointer-events: none;
-
+        
         -webkit-border-radius: 5px;
         -moz-border-radius: 5px;
         border-radius: 5px;
@@ -26,8 +30,6 @@
         -moz-box-shadow: 0px 2px 10px #CCC;
         -webkit-box-shadow: 0px 2px 10px #CCC;
         box-shadow: 0px 2px 10px #CCC;
-
-        font-size: 14px;
     }
 
     &-highlight {
