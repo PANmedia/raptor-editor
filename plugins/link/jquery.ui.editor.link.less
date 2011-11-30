@@ -1,4 +1,4 @@
-.ui-editor-link-button .ui-icon-link {
+    .ui-editor-link-button .ui-icon-link {
     background: url(images/link.png) 0 0;
 }
 
@@ -19,6 +19,25 @@
     height: 95%;
     width: 200px;
     float: left;
+    p {
+        font-weight: bold;
+        margin: 12px 0;
+    }
+    fieldset {
+        margin: 2px 4px;
+        padding: 7px 4px;
+        font-size: 12px;
+        label {
+            display: block;
+            margin-bottom: 10px;
+            span {
+                display: inline-block;
+                width: 150px;
+                font-size: 12px;
+                vertical-align: top;
+            }
+        }
+    }
 }
 
 .ui-editor-link-panel .ui-editor-link-menu fieldset,
@@ -26,27 +45,26 @@
     border: none;
 }
 
-.ui-editor-link-panel .ui-editor-link-menu fieldset {
-    font-size: 12px;
-}
-.ui-editor-link-panel .ui-editor-link-menu fieldset label {
-    display: block;
-    margin-bottom: 10px;
-}
-
-.ui-editor-link-panel .ui-editor-link-menu fieldset label input {
-    float: left;
-}
-
-.ui-editor-link-panel .ui-editor-link-menu fieldset label span {
-    display: inline-block;
-    width: 150px;
-}
-
 .ui-editor-link-panel .ui-editor-link-wrap {
     margin-left: 200px;
     padding-left: 20px;
     border-left: 1px dashed;
+    h2 {
+        margin: 14px 0;
+    }
+    fieldset {
+        margin: 2px 4px;
+        padding: 7px 4px;
+        font-size: 12px;
+        input[type="text"] {
+            width: 400px;
+        }
+    }
+    ol {
+        li {
+            list-style: decimal inside;
+        }
+    }
 }
 
 .ui-editor-link-panel .ui-editor-link-wrap fieldset .ui-editor-external-href {
