@@ -1,3 +1,73 @@
+$.ui.editor.registerPlugin('save', {
+    
+    options: {
+        ajax: {
+            url: '/',
+            type: 'post',
+            cache: false
+        },
+        id: { attr: 'name' },
+        postName: 'content'
+    },
+    
+    init: function() {
+    },
+    
+    getId: function() {
+        if (typeof(this.options.id) === 'string') {
+            return this.options.id;
+        } else if (this.options.id.attr) {
+            return this.editor.getOrignalElement().attr(this.options.id.attr);
+        }
+        return null;
+    },
+    
+    getData: function() {
+        var data = {};
+        data[this.getId()] = this.editor.getHtml();
+        return data;
+    },
+    
+    save: function() {
+        var message = this.editor.showLoading(_('Saving changes...'));
+        
+        // Get all unified content 
+        var contentData = {};
+        this.editor.unify(function(editor) {
+            var plugin = editor.getPlugin('save');
+            $.extend(contentData, plugin.getData());
+        });
+        
+        // Create POST data
+        var data = {};
+        
+        // Content is serialized to a JSON object, and sent as 1 post parameter
+        data[this.options.postName] = JSON.stringify(contentData);
+        
+        // Create the JSON request
+        var ajax = $.extend({}, this.options.ajax, {
+            data: data,
+            context: this
+        });
+        
+        // Send the data to the server
+        $.ajax(ajax).done(function() {
+            this.editor.showConfirm(_('Successfully saved content.'), {
+                delay: 1000,
+                hide: function() {
+                    this.editor.disableEditing();
+                    this.editor.hideToolbar();
+                }
+            });
+        }).fail(function() {
+            this.editor.showError(_('Failed to save content.'));
+        }).always(function() {
+            message.hide();
+        });
+    }
+    
+});
+
 $.ui.editor.registerUi({
     save: {
         init: function(editor, element) {
@@ -5,6 +75,7 @@ $.ui.editor.registerUi({
                 title: _('Save'),
                 icon: 'ui-icon-disk',
                 click: function() {
+                    editor.getPlugin('save').save();
                 }
             });
         }
