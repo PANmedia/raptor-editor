@@ -249,7 +249,6 @@ var domTools = {
         });
     },
     
-    
     /**
      * Wraps the inner content of an element with a tag
      * 
@@ -462,6 +461,9 @@ var domTools = {
                 this.insertDomFragmentBefore(contents, parent, tag);
             }
         }, selection);
-    }
+    },
     
+    outerHtml: function(element) {
+        return $(element).clone().wrap('<div/>').parent().html();
+    }
 }
