@@ -156,6 +156,13 @@ $.widget('ui.editor',
     getElement: function() {
         return this.target ? this.target : this.element;
     },
+    
+    /**
+     *
+     */
+    getOrignalElement: function() {
+        return this.element;
+    },
 
     /**
      * Replaces the original element with a content editable div. Typically used 
@@ -418,65 +425,84 @@ $.widget('ui.editor',
      * @param {String} type
      * @param {String[]} messages
      */
-    showMessage: function(type, messages) {
-        if (!$.isArray(messages)) messages = [messages];
-
-        var editor = this;
-        $.each(messages, function(i, message) {
-            var message = $(editor.getTemplate('message', {
+    showMessage: function(type, message, options) {
+        options = $.extend({}, this.options.message, options);
+        
+        var messageObject = {
+            timer: null,
+            editor: this,
+            show: function() {
+                this.element.slideDown();
+                this.timer = window.setTimeout(function(messageObject) {
+                    this.timer = null;
+                    messageObject.hide();
+                }, options.delay, this);
+            },
+            hide: function() {
+                if (this.timer) {
+                    window.clearTimeout(this.timer);
+                    this.timer = null;
+                }
+                this.element.stop().slideUp($.proxy(function() {
+                    if ($.isFunction(options.hide)) {
+                        options.hide.call(this);
+                    }
+                    this.element.remove();
+                }, this));
+            }
+        };
+        
+        messageObject.element = 
+            $(this.getTemplate('message', {
                 type: type,
                 message: message
             }))
-            message
-                .hide()
-                .appendTo(editor.selMessages())
-                .slideDown()
-                .delay(5000)
-                .slideUp(function() { 
-                    message.remove(); 
-                })
-                .find('.ui-editor-message-close')
+            .hide()
+            .appendTo(this.selMessages())
+            .find('.ui-editor-message-close')
                 .click(function() { 
-                    message.stop().slideUp(function() { 
-                        message.remove(); 
-                    }) 
-                });
-        });
+                    messageObject.hide();
+                })
+            .end();
+            
+        messageObject.show();
+        
+        return messageObject;
     },
 
     /**
      * @param {String[]} messages
      */
-    showLoading: function(messages) {
-        this.showMessage('clock', messages);
+    showLoading: function(message, options) {
+        return this.showMessage('clock', message, options);
     },
 
     /**
      * @param {String[]} messages
      */
-    showInfo: function(messages) {
-        this.showMessage('info', messages);
+    showInfo: function(message, options) {
+        return this.showMessage('info', message, options);
     },
 
     /**
      * @param {String[]} messages
      */
-    showError: function(messages) {
-        this.showMessage('circle-close', messages);
+    showError: function(message, options) {
+        return this.showMessage('circle-close', message, options);
     },
 
     /**
      * @param {String[]} messages
      */
-    showConfirm: function(messages) {
-        this.showMessage('circle-check', messages);
+    showConfirm: function(message, options) {
+        return this.showMessage('circle-check', message, options);
     },
 
     /**
      * @param {String[]} messages
      */
-    showWarning: function(messages) {
-        this.showMessage('alert', messages);
+    showWarning: function(message, options) {
+        return this.showMessage('alert', message, options);
     },
 
     /*========================================================================*\
@@ -1270,6 +1296,14 @@ $.extend($.ui.editor,
          * @type String[]
          */
         disabledUi: [],
+        
+        /**
+         * Default message opttions
+         * @type Object
+         */
+        message: {
+            delay: 5000,
+        },
 
         /**
          * Switch to indicate that the element the editor is being applied to should be replaced with a div (useful for textareas), the value/html of the replaced element will be automatically updated when the editor element is changed

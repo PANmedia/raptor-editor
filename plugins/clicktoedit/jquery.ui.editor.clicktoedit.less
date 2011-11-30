@@ -22,7 +22,7 @@
         background: -o-linear-gradient(top, #f2fff2 0%,#daf2d7 100%); /* Opera 11.10+ */
         background: -ms-linear-gradient(top, #f2fff2 0%,#daf2d7 100%); /* IE10+ */
         background: linear-gradient(top, #f2fff2 0%,#daf2d7 100%); /* W3C */
-
+        
         -moz-box-shadow: 0px 2px 10px #CCC;
         -webkit-box-shadow: 0px 2px 10px #CCC;
         box-shadow: 0px 2px 10px #CCC;
@@ -31,14 +31,22 @@
     }
 
     &-highlight {
+        cursor: pointer;
+        
         -webkit-transition: all 0.5s  0s;
         -moz-transition: all 0.5s  0s;
         -o-transition: all 0.5s  0s;
         -ms-transition: all 0.5s  0s;
         transition: all 0.5s  0s;
 
-        -moz-box-shadow: 0px 2px 10px #CCC;
-        -webkit-box-shadow: 0px 2px 10px #CCC;
-        box-shadow: 0px 2px 10px #CCC;
+        -webkit-box-shadow: 
+            0 0 0 1px rgba(0, 0, 0, 0.7),
+            0px 2px 10px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 
+            0 0 0 1px rgba(0, 0, 0, 0.7),
+            0px 2px 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 
+            0 0 0 1px rgba(0, 0, 0, 0.7),
+            0px 2px 10px rgba(0, 0, 0, 0.5);
     }
 }
