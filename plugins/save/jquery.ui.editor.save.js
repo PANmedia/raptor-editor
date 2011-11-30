@@ -1,13 +1,14 @@
 $.ui.editor.registerPlugin('save', {
     
     options: {
+        id: { attr: 'name' },
+        postName: 'content',
+        showResponse: false,
         ajax: {
             url: '/',
             type: 'post',
             cache: false
-        },
-        id: { attr: 'name' },
-        postName: 'content'
+        }
     },
     
     init: function() {
@@ -34,8 +35,10 @@ $.ui.editor.registerPlugin('save', {
         // Get all unified content 
         var contentData = {};
         this.editor.unify(function(editor) {
-            var plugin = editor.getPlugin('save');
-            $.extend(contentData, plugin.getData());
+            if (editor.isDirty()) {
+                var plugin = editor.getPlugin('save');
+                $.extend(contentData, plugin.getData());
+            }
         });
         
         // Create POST data
@@ -51,16 +54,16 @@ $.ui.editor.registerPlugin('save', {
         });
         
         // Send the data to the server
-        $.ajax(ajax).done(function() {
-            this.editor.showConfirm(_('Successfully saved content.'), {
+        $.ajax(ajax).done(function(data) {
+            this.editor.showConfirm(this.options.showResponse ? data : _('Successfully saved content.'), {
                 delay: 1000,
                 hide: function() {
                     this.editor.disableEditing();
                     this.editor.hideToolbar();
                 }
             });
-        }).fail(function() {
-            this.editor.showError(_('Failed to save content.'));
+        }).fail(function(data) {
+            this.editor.showError(this.options.showResponse ? data : _('Failed to save content.'));
         }).always(function() {
             message.hide();
         });
