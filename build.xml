@@ -232,33 +232,33 @@
         <!-- Copy all dependancies and prefix a number to enforce load order -->
         
         <!-- jQuery -->
-        <if><istrue value="${no-jquery}"/><then></then><else>
+        <if><istrue value="${jquery}"/><then>
             <copy file="dependencies/jquery.js" 
                   tofile="${buildpath}/01-jquery.js" />
-        </else></if>
+        </then></if>
         
         <!-- jQuery plugins -->
-        <if><istrue value="${no-jquery-cookie}"/><then></then><else>
+        <if><istrue value="${jquery-cookie}"/><then>
             <copy file="dependencies/jquery.cookie.js" 
                   tofile="${buildpath}/04-jquery-cookie.js" />
-        </else></if>
+        </then></if>
         
         <!-- TipTip -->
-        <if><istrue value="${no-jquery-tiptip}"/><then></then><else>
+        <if><istrue value="${jquery-tiptip}"/><then>
             <copy file="dependencies/tiptip/jquery.tiptip.js" 
                   tofile="${buildpath}/05-jquery-tiptip.js" />
             <copy file="dependencies/tiptip/tiptip.css" 
                   tofile="${buildpath}/02-theme/tiptip.css" />
-        </else></if>
+        </then></if>
               
         <!-- jQuery UI -->
-        <if><istrue value="${no-jquery-ui}"/><then></then><else>
+        <if><istrue value="${jquery-ui}"/><then>
             <copy file="dependencies/jquery-ui.js" 
                   tofile="${buildpath}/02-jquery-ui.js" />
-        </else></if>
+        </then></if>
               
         <!-- Rangy -->
-        <if><istrue value="${no-rangy}"/><then></then><else>
+        <if><istrue value="${rangy}"/><then>
             <copy file="dependencies/rangy/rangy-core.js" 
                   tofile="${buildpath}/06-rangy-core.js" />
             <copy file="dependencies/rangy/rangy-cssclassapplier.js" 
@@ -267,17 +267,17 @@
                   tofile="${buildpath}/08-rangy-selectionsaverestore.js" />
             <copy file="dependencies/rangy/rangy-serializer.js" 
                   tofile="${buildpath}/09-rangy-serializer.js" />
-        </else></if>
+        </then></if>
         
         <!-- CSS -->
-        <if><istrue value="${no-jquery-ui-theme}"/><then></then><else>
+        <if><istrue value="${jquery-ui-theme}"/><then>
             <copy todir="${buildpath}/01-theme">
                 <fileset dir=".">
                     <include name="dependencies/themes/${theme}/jquery-ui.css" />
                     <include name="dependencies/themes/${theme}/images/**/*" />
                 </fileset>  
             </copy>
-        </else></if>
+        </then></if>
     </target>
     
     <!-- =================================================================== -->
