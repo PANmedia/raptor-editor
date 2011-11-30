@@ -40,6 +40,7 @@ console.info('FIXME: remove dialog on destroy');
                     }
                 });
 
+                editor.bind('hide', this.hide, this);
                 editor.bind('destroy', this.destroy, this);
 
                 return editor.uiButton({
@@ -48,6 +49,9 @@ console.info('FIXME: remove dialog on destroy');
                         dialog.dialog('open');
                     }
                 });
+            },
+            hide: function() {
+                this.dialog.dialog('close');
             },
             destroy: function() {
                 this.dialog.dialog('destroy').remove();
