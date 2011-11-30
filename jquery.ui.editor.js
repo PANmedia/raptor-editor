@@ -1028,7 +1028,7 @@ $.widget('ui.editor',
             // Clone the plugin object (which should be extended from the defaultPlugin object)
             var pluginObject = $.extend({}, $.ui.editor.plugins[name]);
 
-            var options = $.extend({}, editor.options, {
+            var options = $.extend(true, {}, editor.options, {
                 baseClass: editor.options.baseClass + '-' + name
             }, pluginObject.options, editor.options.plugins[name]);
 
