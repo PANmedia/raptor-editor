@@ -11,6 +11,100 @@ console.info('FIXME: remove link dialog on destroy');
     };
     
     var link = { 
+        visible: null,
+        types: {},
+
+        prepareLinkTypes: function(options, dialog, edit) {
+            var linkTypes = [
+                // Page
+                {
+                    type: 'external',
+                    title: _('Page on this or another website'),
+                    init: function() {
+                        this.content = this.plugin.editor.getTemplate('link.external', this.options);
+                        this.className = this.plugin.options.baseClass + '-external';
+                    },
+                    show: function(panel, edit, selectedElement) {
+                        if (edit) {
+                            panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href'));
+                            if (this.plugin.selectedElement.attr('target') === '_blank') {
+                                panel.find('input[name="blank"]').prop('checked', true);
+                            }
+                        }
+                    },
+                    attributes: function(panel) {
+                        var attributes = {
+                            href: panel.find('input[name="location"]').val()
+                        };
+
+                        if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
+
+                        if (!/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attributes.href)) {
+                            this.plugin.editor.showWarning(_('The url for the link you inserted doesn\'t look well formed'));
+                        }
+
+                        return attributes;
+                    }
+                },
+                // Email
+                {
+                    type: 'email',
+                    title: _('Email address'),
+                    init: function() {
+                        this.content = this.plugin.editor.getTemplate('link.email', options),
+                        this.className = this.plugin.options.baseClass + '-email';
+                    },
+                    show: function(panel, edit) {
+                        if (edit) {
+                            panel.find('input[name="email"]').val(this.plugin.selectedElement.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
+                            if (/\?Subject\=/i.test(this.plugin.selectedElement.attr('href'))) {
+                                panel.find('input[name="subject"]').val(decodeURIComponent(this.plugin.selectedElement.attr('href').replace(/(.*\?Subject=)/i, '')));
+                            }
+                        }
+                    },
+                    attributes: function(panel) {
+                        var attributes = {
+                            href: 'mailto:' + panel.find('input[name="email"]').val()
+                        }, subject = panel.find('input[name="subject"]').val();
+
+                        if (subject) attributes.href = attributes.href + '?Subject=' + encodeURIComponent(subject);
+
+                        return attributes;
+                    }
+                }
+            ];
+            
+            defaultLinkType = {
+                type: null,
+                title: null,
+                content: null,
+                className: null,
+                init: null,
+                show: null,
+                attributes: null,
+                plugin: this
+            };
+
+            if (options.replaceTypes) linkTypes = options.customTypes;
+            else $.merge(linkTypes, options.customTypes);
+
+            var linkType, label;
+            var linkTypesFieldset = dialog.find('.' + options.baseClass + '-menu fieldset');
+
+            for (var i = 0; i < linkTypes.length; i++) {
+                linkType = $.extend({}, defaultLinkType, linkTypes[i]);                
+                linkType.init();
+                this.types[linkType.type] = linkType;
+                label = $(this.editor.getTemplate('link.label', linkType)).appendTo(linkTypesFieldset);
+            }
+            
+            var plugin = this;
+            linkTypesFieldset.find('input[type="radio"]').unbind('change.' + this.editor.widgetName).
+                bind('change.' + this.editor.widgetName, function(){
+                    plugin.typeChange(edit);
+                });
+        },
+
         init: function(editor, options) {
             var dialog = false;
             var plugin = this;
@@ -18,166 +112,86 @@ console.info('FIXME: remove link dialog on destroy');
             options = $.extend({}, defaultOptions, options);
 
             this.show = function() {
-                if (!dialog) {
-                    dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
-                }
+                if (!this.visible) {
+                    if (!dialog) dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
 
-                var selection = rangy.saveSelection(),
-                    linkDialog = dialog,
-                    label, linkTypesClasses = {};
+                    var selection = rangy.saveSelection();
+                    this.selectedElement = editor.getSelectedElements().first();
+                    var edit = this.selectedElement.is('a');
 
-                var selectedElement = editor.getSelectedElements().first();
-                var edit = selectedElement.is('a');
+                    // Remove & add custom radios
+                    dialog.find('.' + options.baseClass + '-menu fieldset').html('');
+                    
+                    this.prepareLinkTypes(options, dialog, edit);
 
-                var linkTypesFieldset = linkDialog.find('.' + options.baseClass + '-menu fieldset');
+                    dialog.dialog({
+                        autoOpen: false,
+                        modal: true,
+                        resizable: true,
+                        width: 750,
+                        height: 450,
+                        title: edit ? _('Edit Link') : _('Insert Link'),
+                        dialogClass: options.baseClass + ' ' + options.dialogClass,
+                        buttons: [
+                            {
+                                text: edit ? _('Update Link') : _('Insert Link'),
+                                click: function() {
+                                    rangy.restoreSelection(selection);
 
-                var linkTypes = [
-                    // Page
-                    {
-                        type: 'external',
-                        title: _('Page on this or another website'),
-                        content: editor.getTemplate('link.external', options),
-                        className: options.baseClass + '-external',
-                        show: function(panel, edit) {
-                            if (edit) {
-                                panel.find('input[name="location"]').val(selectedElement.attr('href'));
-                                if (selectedElement.attr('target') === '_blank') {
-                                    panel.find('input[name="blank"]').prop('checked', true);
-                                }
-                            }
-                        },
-                        attributes: function(panel) {
-                            var attributes = {
-                                href: panel.find('input[name="location"]').val()
-                            };
+                                    var linkType = plugin.types[dialog.find('input[type="radio"]:checked').val()];
+                                    var attributes = linkType.attributes(dialog.find('.' + options.baseClass + '-content'), edit);
 
-                            if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
+                                    if (!attributes) return;
 
-                            if (!/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attributes.href)) {
-                                editor.showWarning(_('The url for the link you inserted doesn\'t look well formed'));
-                            }
+                                    attributes['className'] = linkType.className;
 
-                            return attributes;
-                        }
-                    },
-                    // Email
-                    {
-                        type: 'email',
-                        title: _('Email address'),
-                        content: editor.getTemplate('link.email', options),
-                        className: options.baseClass + '-email',
-                        show: function(panel, edit) {
-                            if (edit) {
-                                panel.find('input[name="email"]').val(selectedElement.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
-                                if (/\?Subject\=/i.test(selectedElement.attr('href'))) {
-                                    panel.find('input[name="subject"]').val(decodeURIComponent(selectedElement.attr('href').replace(/(.*\?Subject=)/i, '')));
-                                }
-                            }
-                        },
-                        attributes: function(panel) {
-                            var attributes = {
-                                href: 'mailto:' + panel.find('input[name="email"]').val()
-                            }, subject = panel.find('input[name="subject"]').val();
-
-                            if (subject) attributes.href = attributes.href + '?Subject=' + encodeURIComponent(subject);
-
-                            return attributes;
-                        }
-                    }
-                ];
-
-                // Remove & add custom radios
-                linkDialog.find('.' + options.baseClass + '-menu fieldset').html('');
-
-                if (options.replaceTypes) {
-                    linkTypes = options.customTypes;
-                } else {
-                    $.merge(linkTypes, options.customTypes);
-                }
-
-                $(linkTypes).each(function(i, linkType) {
-                    label = $(editor.getTemplate('link.label', linkType)).appendTo(linkTypesFieldset);
-                    label.find('input[type="radio"]').data(options.typeDataName, this);
-                    linkTypesClasses[linkType.className] = linkType.className;
-                });
-
-                linkTypesFieldset.find('input[type="radio"]').unbind('change.editor').
-                        bind('change.editor', function(){
-                            plugin.typeChange(edit);
-                        });
-
-                var title = edit ? _('Edit Link') : _('Insert Link');
-
-                dialog.dialog({
-                    autoOpen: false,
-                    modal: true,
-                    resizable: true,
-                    width: 750,
-                    height: 450,
-                    title: title,
-                    dialogClass: options.baseClass + ' ' + options.dialogClass,
-                    show: editor.options.dialogShowAnimation,
-                    hide: editor.options.dialogHideAnimation,
-                    buttons: [
-                        {
-                            text: title,
-                            click: function() {
-                                rangy.restoreSelection(selection);
-
-                                var data = linkDialog.find('input[type="radio"]:checked').data(options.typeDataName),
-                                    attributes = data.attributes(linkDialog.find('.' + options.baseClass + '-content'), edit);
-
-                                if (!attributes) return;
-
-                                if (edit) {
-                                    $(linkTypes).each(function() {
-                                        selectedElement.removeClass(this.className);
-                                    });
-                                    selectedElement.addClass(data.className);
-                                    selectedElement.attr(attributes);
-                                } else {
-
-                                    if (selectedElement.is('img')) {
-                                        selectedElement.wrap($('a').attr(attributes).addClass(options.baseClass));
+                                    if (edit) {
+                                        for (var i = 0; i < plugin.types.length; i++) {
+                                            plugin.selectedElement.removeClass(plugin.types[i].className);
+                                        }
+                                        plugin.selectedElement.addClass(linkType.className)
+                                            .attr(attributes);
+                                        editor.showConfirm(_('Updated link: {{link}}', { 
+                                            link: plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })))
+                                        }));
                                     } else {
-                                        rangy.createCssClassApplier(options.baseClass + ' ' + data.className, {
-                                            normalize: true,
-                                            elementTagName: 'a',
-                                            elementProperties: attributes
-                                        }).applyToSelection();
+                                        editor.showConfirm(_('Added link: {{link}}', { 
+                                            link: plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })))
+                                        }));
+                                        editor.wrapTagWithAttribute('a', attributes);
                                     }
+
+                                    $(this).dialog('close');
                                 }
-
-                                editor.change();
-                                $(this).dialog('close');
+                            },
+                            {
+                                text: _('Cancel'),
+                                click: function() {
+                                    rangy.restoreSelection(selection);
+                                    $(this).dialog('close');
+                                }
                             }
+                        ],
+                        beforeopen: function() {
+                            plugin.dialog.find('.' + options.baseClass + '-content').hide();
                         },
-                        {
-                            text: _('Cancel'),
-                            click: function() {
-                                rangy.restoreSelection(selection);
-                                $(this).dialog('close');
-                            }
-                        }
-                    ],
-                    beforeopen: function() {
-                        plugin.dialog.find('.' + options.baseClass + '-content').hide();
-                    },
-                    open: function() {
-                        // Apply custom icons to the dialog buttons
-                        var buttons = dialog.parent().find('.ui-dialog-buttonpane');
-                        buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
-                        buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
+                        open: function() {
+                            plugin.visible = true;
 
-                        if (!linkDialog.find('input[type="radio"]:checked').length) {
+                            // Apply custom icons to the dialog buttons
+                            var buttons = dialog.parent().find('.ui-dialog-buttonpane');
+                            buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
+                            buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
+
+                            // if (!dialog.find('input[type="radio"]:checked').length) {
                             if (!edit) {
-                                linkDialog.find('input[type="radio"]:first').prop('checked', true);
+                                dialog.find('input[type="radio"]:first').prop('checked', true);
                                 plugin.typeChange(edit, true);
                             } else {
-                                linkDialog.find('input[type="radio"]').each(function(){
+                                dialog.find('input[type="radio"]').each(function(){
                                     var radio = $(this);
-                                    $(selectedElement.attr('class').split(' ')).each(function() {
-                                        if (linkTypesClasses[this] && radio.hasClass(this)) {
+                                    $(plugin.selectedElement.attr('class').split(' ')).each(function() {
+                                        if (radio.hasClass(this)) {
                                             radio.prop('checked', true);
                                             plugin.typeChange(edit, true);
                                             return;
@@ -185,42 +199,47 @@ console.info('FIXME: remove link dialog on destroy');
                                     });
                                 });
                             }
+                            // }
+                        },
+                        close: function() {
+                            plugin.visible = false;
+                            dialog.find('.' + options.baseClass + '-content').hide();
+                            $(this).dialog('destroy');
+
                         }
-                    },
-                    close: function() {
-                        dialog.find('.' + options.baseClass + '-content').hide();
-                        $(this).dialog('destroy');
-                    }
-                }).dialog('open');
+                    }).dialog('open');
+                }
             }
 
             this.typeChange = function(edit, initial) {
-                var linkTypeData = dialog.find('input[type="radio"]:checked').data(options.typeDataName),
-                    panel = dialog.find('.' + options.baseClass + '-content'),
-                    wrap = panel.closest('.' + options.baseClass + '-wrap'),
-                    ajax = (typeof linkTypeData.ajax != 'undefined');
+                var linkType = plugin.types[dialog.find('input[type="radio"]:checked').val()];
+                var panel = dialog.find('.' + options.baseClass + '-content');
+                var wrap = panel.closest('.' + options.baseClass + '-wrap');
 
                 initial = initial || false;
+                
+                if (linkType.ajax) wrap.addClass(options.baseClass + '-loading');
 
-                if (ajax) wrap.addClass(options.baseClass + '-loading');
-
+                // This is the first showing of the panel
                 if (initial) {
-                    panel.html(linkTypeData.content);
+                    panel.html(linkType.content);
                     panel.show();
-                    if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
+                    if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                 } else {                  
                     panel.hide(options.panelAnimation, function(){
-                        if (!ajax) {
-                            panel.html(linkTypeData.content);
-                            if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
-                            panel.html(linkTypeData.content).show(options.panelAnimation);
+                        if (!linkType.ajax) {
+                            // No animation for non-ajax content
+                            panel.html(linkType.content);
+                            if ($.isFunction(linkType.show)) linkType.show(panel, edit);
+                            panel.html(linkType.content).show(options.panelAnimation);
                         } else {
+                            // Animate ajax content
                             $.ajax({
-                                url: linkTypeData.ajax.uri,
-                                type: ((typeof linkTypeData.ajax.type != 'undefined') ? 'get' : linkTypeData.ajax.type),
+                                url: linkType.ajax.uri,
+                                type: ((typeof linkType.ajax.type != 'undefined') ? 'get' : linkType.ajax.type),
                                 success: function(data) {
                                     panel.html(data);
-                                    if ($.isFunction(linkTypeData.show)) linkTypeData.show(panel, edit);
+                                    if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                                     panel.show(options.panelAnimation, function(){
                                         wrap.removeClass(options.baseClass + '-loading');
                                     });
@@ -232,30 +251,7 @@ console.info('FIXME: remove link dialog on destroy');
             }
 
             this.remove = function() {
-                if (rangy.getSelection().getAllRanges().length == 1) {
-
-                    range = rangy.getSelection().getAllRanges()[0];
-
-                    node = range.commonAncestorContainer;
-                    node = node.nodeType == 3 ? $(node).parent().get(0) : $(node).get(0);
-
-                    if (node.nodeName.toLowerCase() == 'a') {
-                        range.selectNode(node);
-                        var children = [];
-
-                        $(node.childNodes).each(function(){
-                            children.push(this.cloneNode(true));
-                        });
-
-                        range.deleteContents();
-
-                        $(children).each(function(){
-                            range.insertNode(this);
-                        });
-                    }
-                }
-
-                editor.change();
+                this.editor.unwrapParentTag('a');
             }
         } 
     }
