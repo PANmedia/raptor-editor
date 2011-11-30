@@ -83,6 +83,14 @@ var domTools = {
         return $(commonAncestor);
     },
     
+    unwrapParentTag: function(tag) {
+        this.getSelectedElements().each(function(){
+            if ($(this).is(tag)) {
+                $(this).replaceWith($(this).html());
+            }
+        });
+    },
+
     wrapTagWithAttribute: function(tag, attributes) {
         this.eachRange(function(range) {
             var element = this.getSelectedElement(range);
@@ -240,7 +248,6 @@ var domTools = {
             this.toggleStyle(parent, styles);
         });
     },
-    
     
     /**
      * Wraps the inner content of an element with a tag
@@ -454,6 +461,9 @@ var domTools = {
                 this.insertDomFragmentBefore(contents, parent, tag);
             }
         }, selection);
-    }
+    },
     
+    outerHtml: function(element) {
+        return $(element).clone().wrap('<div/>').parent().html();
+    }
 }
