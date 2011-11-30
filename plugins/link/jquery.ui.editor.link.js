@@ -203,17 +203,18 @@ console.info('FIXME: remove link dialog on destroy');
                 var linkType = this.types[dialog.find('.ui-editor-link-menu input[type="radio"]:checked').val()];
                 var panel = dialog.find('.' + options.baseClass + '-content');
                 var plugin = this;
+                var wrap = panel.closest('.' + options.baseClass + '-wrap');
 
                 initial = initial || false;
-                
+
+                if (linkType.ajaxUri) wrap.addClass(options.baseClass + '-loading');
+
                 panel.hide(options.panelAnimation, function(){
                     if (!linkType.ajaxUri || plugin.types[linkType.type].content) {
                         panel.html(linkType.content);
                         if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                         panel.show(options.panelAnimation);
                     } else {
-                        var wrap = panel.closest('.' + options.baseClass + '-wrap');
-                        wrap.addClass(options.baseClass + '-loading');
                         $.ajax({
                             url: linkType.ajaxUri,
                             type: 'get',
@@ -221,9 +222,8 @@ console.info('FIXME: remove link dialog on destroy');
                                 panel.html(data);
                                 plugin.types[linkType.type].content = data;
                                 if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                                panel.show(options.panelAnimation, function(){
-                                    wrap.removeClass(options.baseClass + '-loading');
-                                });
+                                wrap.removeClass(options.baseClass + '-loading');
+                                panel.show(options.panelAnimation);
                             }   
                         });
                     }
