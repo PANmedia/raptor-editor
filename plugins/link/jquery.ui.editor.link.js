@@ -141,7 +141,7 @@ console.info('FIXME: remove link dialog on destroy');
 
                                     if (!attributes) return;
 
-                                    var link = plugin.editor.outerHtml($('<a>' + attributes.href + '</a>').attr($.extend({}, attributes, { target: '_blank' })));
+                                    var link = plugin.editor.outerHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').attr($.extend({}, attributes, { target: '_blank' })));
                                     if (!edit) {
                                         attributes['className'] = linkType.className;
                                         editor.wrapTagWithAttribute('a', $.extend(attributes, { className: linkType.className}));
@@ -211,11 +211,11 @@ console.info('FIXME: remove link dialog on destroy');
                 if (linkType.ajax) wrap.addClass(options.baseClass + '-loading');
 
                 // This is the first showing of the panel, don't animate
-                if (initial) {
-                    panel.html(linkType.content);
-                    panel.show();
-                    if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                } else {            
+                // if (initial) {
+                //     panel.html(linkType.content);
+                //     panel.show();
+                //     if ($.isFunction(linkType.show)) linkType.show(panel, edit);
+                // } else {            
                     panel.hide(options.panelAnimation, function(){
                         if (!linkType.ajax) {
                             panel.html(linkType.content);
@@ -235,7 +235,7 @@ console.info('FIXME: remove link dialog on destroy');
                             });
                         }
                     });
-                }
+                // }
             }
 
             this.remove = function() {
