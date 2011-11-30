@@ -59,8 +59,10 @@ $.ui.editor.registerPlugin('save', {
             this.editor.showConfirm(this.options.showResponse ? data : _('Successfully saved content.'), {
                 delay: 1000,
                 hide: function() {
-                    this.editor.disableEditing();
-                    this.editor.hideToolbar();
+                    this.editor.unify(function(editor) {
+                        editor.disableEditing();
+                        editor.hideToolbar();
+                    });
                 }
             });
         }).fail(function(data) {
