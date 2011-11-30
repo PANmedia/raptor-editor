@@ -35,7 +35,8 @@
                 message.stop().animate({ opacity: 0 });
             }
 
-            this.edit = function() {
+            this.edit = function(event) {
+                if ($(event.target).is('a')) return true;
                 plugin.hide();
                 if (!editor.isEditing()) editor.enableEditing();
                 if (!editor.isToolbarVisible()) editor.showToolbar();
