@@ -1,6 +1,8 @@
 // <debug>
-console.info('FIXME: cancel button confimation dialog get removed on unbind');
-console.info('TODO: make cancel function avalible as a plugin');
+if (debugLevel >= MAX) {
+    info('FIXME: cancel button confimation dialog get removed on unbind');
+    info('TODO: make cancel function avalible as a plugin');
+}
 // </debug>
 
 $.ui.editor.registerUi({
