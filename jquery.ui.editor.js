@@ -631,7 +631,7 @@ $.widget('ui.editor',
     getTemplate: function(name, variables) {
         var template;
         if (!this.templates[name]) {
-            template = $.ui.editor.getTemplate(name);
+            template = $.ui.editor.getTemplate(name, this.options.urlPrefix);
         } else {
             template = this.templates[name];
         }
@@ -1398,12 +1398,13 @@ $.extend($.ui.editor,
      * @param {String} name
      * @returns {String}
      */
-    getTemplate: function(name) {
+    getTemplate: function(name, urlPrefix) {
         var template;
         if (!this.templates[name]) {
             // Parse the URL
-            var url = this.urlPrefix;
+            var url = (typeof urlPrefix !== 'undefined') ? urlPrefix : this.urlPrefix;
             var split = name.split('.');
+            console.debug(url);
             if (split.length == 1) {
                 // URL is for and editor core template
                 url += 'templates/' + split[0] + '.html';
@@ -1411,6 +1412,7 @@ $.extend($.ui.editor,
                 // URL is for a plugin template
                 url += 'plugins/' + split[0] + '/templates/' + split.splice(1).join('/') + '.html';
             }
+
             // Request the template
             $.ajax({
                 url: url,
