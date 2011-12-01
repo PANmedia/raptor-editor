@@ -1,8 +1,6 @@
 (function($) {
     // <debug>
-    console.info('FIXME: tagmenu');
-    console.info('FIXME: tagmenu custom tooltips');
-    console.info('FIXME: tagmenu check destory detaches menu');
+    console.info('FIXME: tagmenu check destroy detaches menu');
     // </debug>
     $.ui.editor.registerUi({
         'tag-menu': {
