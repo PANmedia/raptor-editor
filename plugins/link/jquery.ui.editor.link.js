@@ -27,7 +27,7 @@ console.info('FIXME: remove link dialog on destroy');
                         if (edit) {
                             panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href'));
                             if (this.plugin.selectedElement.attr('target') === '_blank') {
-                                panel.find('input[name="blank"]').prop('checked', true);
+                                panel.find('input[name="blank"]').attr('checked', 'checked');
                             }
                         }
                     },
@@ -176,13 +176,13 @@ console.info('FIXME: remove link dialog on destroy');
                             
                             var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                             if (!edit) {
-                                radios.first().prop('checked', true);
+                                radios.first().attr('checked', 'checked');
                             } else {
                                 var classes = plugin.selectedElement.attr('class').split(/\s/gi);
                                 radios.each(function(){
                                     for (var i = 0; i < classes.length; i++) {
                                         if (classes[i].trim() && $(this).hasClass(classes[i])) {
-                                            $(this).prop('checked', true);
+                                            $(this).attr('checked', 'checked');
                                             break;
                                         }
                                     }
