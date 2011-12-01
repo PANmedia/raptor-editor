@@ -1,5 +1,7 @@
 // <debug>
-console.info('FIXME: remove link dialog on destroy');
+if (debugLevel >= MAX) {
+    info('FIXME: remove link dialog on destroy');
+}
 // </debug>
 (function($) {
     
