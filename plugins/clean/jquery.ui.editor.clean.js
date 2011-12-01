@@ -7,7 +7,7 @@ $.ui.editor.registerPlugin('clean', {
         stripEmptyTags: [
             'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
             'p', 'b', 'i', 'u', 'strong', 'em',
-            'big', 'small'
+            'big', 'small', 'div', 'span'
         ],
         stripEmptyAttrs: [
             'class', 'id', 'style'
