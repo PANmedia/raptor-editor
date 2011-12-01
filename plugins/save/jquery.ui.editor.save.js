@@ -4,6 +4,7 @@ $.ui.editor.registerPlugin('save', {
         id: { attr: 'name' },
         postName: 'content',
         showResponse: false,
+        appendId: false,
         ajax: {
             url: '/',
             type: 'post',
@@ -30,18 +31,87 @@ $.ui.editor.registerPlugin('save', {
     },
     
     save: function() {
-        var message = this.editor.showLoading(_('Saving changes...'));
+        this.message = this.editor.showLoading(_('Saving changes...'));
         
         // Get all unified content 
         var contentData = {};
+        var dirty = 0;
         this.editor.unify(function(editor) {
             if (editor.isDirty()) {
+                dirty++;
                 var plugin = editor.getPlugin('save');
                 $.extend(contentData, plugin.getData());
                 editor.save();
             }
         });
+        this.dirty = dirty;
         
+        // Count the number of requests 
+        this.saved = 0;
+        this.failed = 0;
+        this.requests = 0;
+        
+        // Check if we are passing the content data in multiple requests (rest)
+        if (this.options.multiple) {
+            // Pass each content block individually
+            for (var id in contentData) {
+                this.ajax(contentData[id], id);
+            }
+        } else {
+            // Pass all content at once
+            this.ajax(contentData);
+        }
+    },
+    
+    done: function(data) {
+        if (this.options.multiple) {
+            this.saved++;
+        } else {
+            this.saved = this.dirty;
+        }
+        if (this.options.showResponse) {
+            this.editor.showConfirm(data);
+        }
+    },
+    
+    fail: function(data) {
+        if (this.options.multiple) {
+            this.failed++;
+        } else {
+            this.failed = this.dirty;
+        }
+        if (this.options.showResponse) {
+            this.editor.showError(data);
+        }
+    },
+    
+    always: function() {
+        if (this.dirty === this.saved + this.failed) {
+            if (!this.options.showResponse) {
+                if (this.failed > 0 && this.saved === 0) {
+                    this.editor.showError(_('Failed to save {{failed}} content block(s).', this));
+                } else if (this.failed > 0) {
+                    this.editor.showError(_('Saved {{saved}} out of {{dirty}} content blocks.', this));
+                } else {
+                    this.editor.showConfirm(_('Successfully saved {{saved}} content block(s).', this), {
+                        delay: 1000,
+                        hide: function() {
+                            this.editor.unify(function(editor) {
+                                editor.disableEditing();
+                                editor.hideToolbar();
+                            });
+                        }
+                    });
+                }
+            }
+        
+            // Hide the loading message
+            this.message.hide();
+            this.message = null;
+        }
+    },
+    
+    ajax: function(contentData, id) {
         // Create POST data
         var data = {};
         
@@ -49,27 +119,21 @@ $.ui.editor.registerPlugin('save', {
         data[this.options.postName] = JSON.stringify(contentData);
         
         // Create the JSON request
-        var ajax = $.extend({}, this.options.ajax, {
-            data: data,
-            context: this
+        var ajax = $.extend(true, {}, this.options.ajax, {
+            data: data
         });
         
+        // Get the URL, if it is a callback
+        if ($.isFunction(ajax.url)) {
+            ajax.url = ajax.url.apply(this, [id]);
+        }
+        
         // Send the data to the server
-        $.ajax(ajax).done(function(data) {
-            this.editor.showConfirm(this.options.showResponse ? data : _('Successfully saved content.'), {
-                delay: 1000,
-                hide: function() {
-                    this.editor.unify(function(editor) {
-                        editor.disableEditing();
-                        editor.hideToolbar();
-                    });
-                }
-            });
-        }).fail(function(data) {
-            this.editor.showError(this.options.showResponse ? data : _('Failed to save content.'));
-        }).always(function() {
-            message.hide();
-        });
+        this.requests++;
+        $.ajax(ajax)
+            .done($.proxy(this.done, this))
+            .fail($.proxy(this.fail, this))
+            .always($.proxy(this.always, this));
     }
     
 });
