@@ -89,6 +89,7 @@
                 top = $(this.options.dockUnder).outerHeight();
             }
             
+            this.top = this.editor.selToolbar().css('top');
             this.editor.selToolbar()
                 .css('top', top);
             
@@ -141,6 +142,8 @@
         },
         
         undockFromBody: function() {
+            this.editor.selToolbar().css('top', this.top);
+            
             // Remove the docked class
             this.editor.selDialog()
                 .removeClass(this.options.baseClass + '-docked')
