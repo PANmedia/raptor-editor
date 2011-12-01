@@ -187,6 +187,7 @@
             <fileset dir=".">
                 <exclude name=".git" />
                 <exclude name=".git/**" />
+                <exclude name="jquery.ui.editor.loader.js" />
                 <exclude name="docs/**" />
                 <exclude name="vendor/**" />
                 <exclude name="dependencies/**" />
