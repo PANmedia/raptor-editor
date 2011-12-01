@@ -1402,9 +1402,8 @@ $.extend($.ui.editor,
         var template;
         if (!this.templates[name]) {
             // Parse the URL
-            var url = (typeof urlPrefix !== 'undefined') ? urlPrefix : this.urlPrefix;
+            var url = urlPrefix || this.urlPrefix;
             var split = name.split('.');
-            console.debug(url);
             if (split.length == 1) {
                 // URL is for and editor core template
                 url += 'templates/' + split[0] + '.html';
@@ -1412,7 +1411,7 @@ $.extend($.ui.editor,
                 // URL is for a plugin template
                 url += 'plugins/' + split[0] + '/templates/' + split.splice(1).join('/') + '.html';
             }
-
+            
             // Request the template
             $.ajax({
                 url: url,
