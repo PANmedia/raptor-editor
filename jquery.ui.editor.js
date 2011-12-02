@@ -543,6 +543,14 @@ $.widget('ui.editor',
                     .remove();
                     
                 var pos = this.persist('position') || this.options.dialogPosition;
+                
+                if (parseInt(pos[0]) + this.selDialog().outerHeight() > $(window).height()) {
+                    pos[0] = $(window).height() - this.selDialog().outerHeight();
+                } 
+                if (parseInt(pos[1]) + this.selDialog().outerWidth() > $(window).width()) {
+                    pos[1] = $(window).width() - this.selDialog().outerWidth();
+                } 
+                
                 this.selDialog().css({
                     top: pos[0],
                     left: pos[1]
