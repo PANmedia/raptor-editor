@@ -70,7 +70,15 @@ $.ui.editor.registerPlugin('save', {
             this.saved = this.dirty;
         }
         if (this.options.showResponse) {
-            this.editor.showConfirm(data);
+            this.editor.showConfirm(data, {
+                delay: 1000,
+                hide: function() {
+                    this.editor.unify(function(editor) {
+                        editor.disableEditing();
+                        editor.hideToolbar();
+                    });
+                }
+            });
         }
     },
     
