@@ -191,6 +191,7 @@
                 <exclude name="docs/**" />
                 <exclude name="vendor/**" />
                 <exclude name="dependencies/**" />
+                <exclude name="packages/**" />
                 <exclude name="${buildpath}" />
                 <exclude name="${buildpath}/**" />
                 <exclude name="${packagepath}" />
