@@ -532,8 +532,8 @@ $.widget('ui.editor',
                     this.selDialog().css('left')
                 ]);
                 this.selDialog().css({
-                    top: pos[0],
-                    left: pos[1]
+                    top: Math.abs(pos[0]),
+                    left: Math.abs(pos[1])
                 });
             }, this),
             open: $.proxy(function(event, ui) {
@@ -552,8 +552,8 @@ $.widget('ui.editor',
                 } 
                 
                 this.selDialog().css({
-                    top: pos[0],
-                    left: pos[1]
+                    top: Math.abs(pos[0]),
+                    left: Math.abs(pos[1])
                 });
             }, this) 
         });
