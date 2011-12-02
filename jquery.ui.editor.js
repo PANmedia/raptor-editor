@@ -1093,6 +1093,8 @@ $.widget('ui.editor',
      */
     save: function() {
         this.setOriginalHtml(this.getHtml());
+        this.fire('saved');
+        this.fire('change');
     },
 
     /**
