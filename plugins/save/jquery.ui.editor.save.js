@@ -19,7 +19,7 @@ $.ui.editor.registerPlugin('save', {
         if (typeof(this.options.id) === 'string') {
             return this.options.id;
         } else if (this.options.id.attr) {
-            return this.editor.getOrignalElement().attr(this.options.id.attr);
+            return this.editor.getOriginalElement().attr(this.options.id.attr);
         }
         return null;
     },
