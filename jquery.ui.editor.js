@@ -1587,7 +1587,6 @@ $.extend($.ui.editor,
         // </debug>
         if (!this.events[name]) return;
         for (var i = 0, l = this.events[name].length; i < l; i++) {
-            debug(this.events[name][i]);
             this.events[name][i].call(this);
         }
     },
