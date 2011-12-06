@@ -65,7 +65,7 @@ $.widget('ui.editor',
 
         // Replace the original element with a div (if specified)
         if (this.options.replace) {
-            this.replaceOrignal();
+            this.replaceOriginal();
             this.options.replace = false;
         }
 
@@ -83,6 +83,9 @@ $.widget('ui.editor',
         if (this.options.enabled) {
             this.enableEditing(); 
         }
+
+        // Unload warning 
+        $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
 
         this.ready = true;
         this.fire('ready');
@@ -160,7 +163,7 @@ $.widget('ui.editor',
     /**
      *
      */
-    getOrignalElement: function() {
+    getOriginalElement: function() {
         return this.element;
     },
 
@@ -168,7 +171,7 @@ $.widget('ui.editor',
      * Replaces the original element with a content editable div. Typically used 
      * to replace a textarea.
      */
-    replaceOrignal: function() {
+    replaceOriginal: function() {
         if (this.target) return;
 
         // Create the replacement div
