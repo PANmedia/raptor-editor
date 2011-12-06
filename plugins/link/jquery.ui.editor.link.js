@@ -9,7 +9,10 @@ if (debugLevel >= MAX) {
         panelAnimation: 'fade',
         replaceTypes: false,
         customTypes: [],
-        typeDataName: 'uiWidgetEditorLinkType'
+        typeDataName: 'uiWidgetEditorLinkType',
+        dialogWidth: 750,
+        dialogHeight: 'auto',
+        dialogMinWidth: 670
     };
     
     var link = { 
@@ -126,8 +129,9 @@ if (debugLevel >= MAX) {
                         autoOpen: false,
                         modal: true,
                         resizable: true,
-                        width: 750,
-                        height: 450,
+                        width: options.dialogWidth,
+                        minWidth: options.dialogMinWidth,
+                        height: options.dialogHeight,
                         title: edit ? _('Edit Link') : _('Insert Link'),
                         dialogClass: options.baseClass + ' ' + options.dialogClass,
                         buttons: [
