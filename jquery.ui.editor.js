@@ -111,18 +111,15 @@ $.widget('ui.editor',
             this.change();
         }, this);
 
+        this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
+            this.selectOuter(event.target);
+        }, this));
         this.getElement().bind('click.' + this.widgetName, change);
         this.getElement().bind('keyup.' + this.widgetName, change);
         this.bind('destroy', function() {
             this.getElement().unbind('click.' + this.widgetName, change)
             this.getElement().unbind('keyup.' + this.widgetName, change)
         });
-//            console.log(this.selDialog('.ui-dialog-titlebar a'));
-//            this.selDialog('.ui-dialog-titlebar a')
-//                    .die('click.' + this.widgetName)
-//                    .live('click.' + this.widgetName, function() {
-//                        console.log($(this));
-//                    });
     },
 
     /**
