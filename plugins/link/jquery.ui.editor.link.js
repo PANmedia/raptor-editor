@@ -210,13 +210,13 @@ if (debugLevel >= MAX) {
                 var panel = dialog.find('.' + options.baseClass + '-content');
                 var plugin = this;
                 var wrap = panel.closest('.' + options.baseClass + '-wrap');
-
+                var ajax = linkType.ajaxUri && !plugin.types[linkType.type].content;
                 initial = initial || false;
 
-                if (linkType.ajaxUri) wrap.addClass(options.baseClass + '-loading');
+                if (ajax) wrap.addClass(options.baseClass + '-loading');
 
                 panel.hide(options.panelAnimation, function(){
-                    if (!linkType.ajaxUri || plugin.types[linkType.type].content) {
+                    if (!ajax) {
                         panel.html(linkType.content);
                         if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                         panel.show(options.panelAnimation);
