@@ -1,32 +1,32 @@
 // <debug>
-/** 
+/**
  * Minimum debugging level (only available in dev and debug build)
  * @type int
- * @constant 
- */ 
+ * @constant
+ */
 var MIN = 100;
-/** 
+/**
  * Medium debugging level (only available in dev and debug build)
  * @type int
- * @constant 
- */ 
+ * @constant
+ */
 var MID = 500;
-/** 
+/**
  * Maximum debugging level (only available in development and debug build)
  * @type int
- * @constant 
- */ 
+ * @constant
+ */
 var MAX = 1000;
-/** 
+/**
  * Current debugging level
  * @type int
- */ 
+ */
 var debugLevel = MIN;
 
 
 /**
  * Output a informational message, by default to the JS console (only avalible in development and debug build).
- * 
+ *
  * @param {String} message1
  * @param {String} [message2...]
  */
@@ -38,7 +38,7 @@ function info() {
 
 /**
  * Output a debug message, by default to the JS console (only avalible in development and debug build).
- * 
+ *
  * @param {String} message1
  * @param {String} [message2...]
  */
@@ -119,8 +119,8 @@ $(function() {
     if (!rangy.initialized) {
         rangy.init();
     }
-        
-    // Add helper method to rangy 
+
+    // Add helper method to rangy
     if (!$.isFunction(rangy.rangePrototype.insertNodeAtEnd)) {
         rangy.rangePrototype.insertNodeAtEnd = function(node) {
             var range = this.cloneRange();
@@ -133,14 +133,14 @@ $(function() {
 });
 
 /**
- * Internationalisation function. Translates a string with tagged variable 
+ * Internationalisation function. Translates a string with tagged variable
  * references to the current locale.
- * 
+ *
  * <p>
- * Variable references should be surrounded with double curly braces {{ }} 
+ * Variable references should be surrounded with double curly braces {{ }}
  *      e.g. "This string has a variable: {{my.variable}} which will not be translated"
  * </p>
- * 
+ *
  * @static
  * @param {String} string
  * @param {Object} variables

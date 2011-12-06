@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
  * @version 0.1
@@ -8,9 +8,9 @@
  * @requires Rangy
  */
 
-$.widget('ui.editor', 
-    /** 
-     * @lends $.editor.prototype 
+$.widget('ui.editor',
+    /**
+     * @lends $.editor.prototype
      */
     {
 
@@ -19,12 +19,12 @@ $.widget('ui.editor',
      */
     _init: function() {
         $.ui.editor.instances.push(this);
-        
+
         this.options = $.extend({}, $.ui.editor.defaults, this.options);
 
         // Set the options after the widget initialisation, because jQuery UI widget tries to extend the array (and breaks it)
         this.options.uiOrder = this.options.uiOrder || [
-            ['save', 'cancel'], 
+            ['save', 'cancel'],
             ['dock', 'show-guides', 'clean'],
             ['view-source'],
             ['undo', 'redo'],
@@ -46,18 +46,18 @@ $.widget('ui.editor',
 
         this.reiniting = this.reiniting || false;
         this.ready = false;
-        this.toolbar = null; 
-        this.events = {}; 
-        this.ui = {}; 
-        this.plugins = {}; 
+        this.toolbar = null;
+        this.events = {};
+        this.ui = {};
+        this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
         this.changeTimer = null;
 
         // Undo stack, redo pointer
-        this.history = []; 
-        this.present = 0; 
-        this.historyEnabled = true; 
-        
+        this.history = [];
+        this.present = 0;
+        this.historyEnabled = true;
+
         // Clone the DOM tools functions
         this.cloneDomTools();
 
@@ -77,11 +77,11 @@ $.widget('ui.editor',
         this.loadUi();
 
         if (this.options.show) {
-            this.showToolbar(); 
+            this.showToolbar();
         }
 
         if (this.options.enabled) {
-            this.enableEditing(); 
+            this.enableEditing();
         }
 
         this.ready = true;
@@ -96,7 +96,7 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Core functions
     \*========================================================================*/
-    
+
     /**
      * Attaches the editors internal events.
      */
@@ -104,8 +104,8 @@ $.widget('ui.editor',
         this.bind('change', this.historyPush);
         this.bind('change', this.updateTagTree);
 
-        var change = $.proxy(function() { 
-            this.change(); 
+        var change = $.proxy(function() {
+            this.change();
         }, this);
 
         this.getElement().bind('click.' + this.widgetName, change);
@@ -149,14 +149,14 @@ $.widget('ui.editor',
     },
 
     /**
-     * Returns the current content editable element, which will be either the 
+     * Returns the current content editable element, which will be either the
      * orignal element, or the div the orignal element was replaced with.
      * @returns {jQuery} The current content editable element
      */
     getElement: function() {
         return this.target ? this.target : this.element;
     },
-    
+
     /**
      *
      */
@@ -165,7 +165,7 @@ $.widget('ui.editor',
     },
 
     /**
-     * Replaces the original element with a content editable div. Typically used 
+     * Replaces the original element with a content editable div. Typically used
      * to replace a textarea.
      */
     replaceOrignal: function() {
@@ -186,7 +186,7 @@ $.widget('ui.editor',
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
             target.css(this.options.replaceStyle[i], style[this.options.replaceStyle[i]]);
         }
-        
+
         this.element.hide();
         this.bind('change', function() {
             if (this.element.is(':input')) {
@@ -197,7 +197,7 @@ $.widget('ui.editor',
         });
         this.target = target;
     },
-    
+
     /**
      * Clones all of the DOM tools functions, and constrains the selection before
      * calling.
@@ -205,7 +205,7 @@ $.widget('ui.editor',
     cloneDomTools: function() {
         for (var i in this.options.domTools) {
             if (!this[i]) {
-                this[i] = (function(i) { 
+                this[i] = (function(i) {
                     return function() {
                         this.options.domTools.constrainSelection(this.getElement());
                         var html = this.getHtml();
@@ -229,11 +229,11 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Destructor
     \*========================================================================*/
-    
+
     /**
      * Hides the toolbar, disables editing, and fires the destroy event.
      * @public
-     * @param {boolean} Indicates the the editor is just reinitialising and 
+     * @param {boolean} Indicates the the editor is just reinitialising and
      * should not hide the toolbar, or disable editing.
      */
     destruct: function(reinit) {
@@ -251,8 +251,8 @@ $.widget('ui.editor',
     },
 
     /**
-     * Unbinds all namespaced events from the element then calls the UI widget 
-     * destroy function 
+     * Unbinds all namespaced events from the element then calls the UI widget
+     * destroy function
      */
     destroy: function() {
         this.destruct();
@@ -263,7 +263,7 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Persistance Functions
     \*========================================================================*/
-    
+
     /**
      * @param {String} key
      * @param {mixed} [value]
@@ -277,7 +277,7 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Other Functions
     \*========================================================================*/
-    
+
     /**
      *
      */
@@ -320,12 +320,12 @@ $.widget('ui.editor',
      */
     updateTagTree: function() {
         if (!this.isEditing()) return;
-        
+
         var editor = this;
         var title = '';
 
         // An array of ranges (by index), each with a list of elements in the range
-        var lists = []; 
+        var lists = [];
 
         // Loop all selected ranges
         var ranges = rangy.getSelection().getAllRanges();
@@ -427,7 +427,7 @@ $.widget('ui.editor',
      */
     showMessage: function(type, message, options) {
         options = $.extend({}, this.options.message, options);
-        
+
         var messageObject = {
             timer: null,
             editor: this,
@@ -451,8 +451,8 @@ $.widget('ui.editor',
                 }, this));
             }
         };
-        
-        messageObject.element = 
+
+        messageObject.element =
             $(this.getTemplate('message', {
                 type: type,
                 message: message
@@ -460,13 +460,13 @@ $.widget('ui.editor',
             .hide()
             .appendTo(this.selMessages())
             .find('.ui-editor-message-close')
-                .click(function() { 
+                .click(function() {
                     messageObject.hide();
                 })
             .end();
-            
+
         messageObject.show();
-        
+
         return messageObject;
     },
 
@@ -509,7 +509,7 @@ $.widget('ui.editor',
      * Toolbar
     \*========================================================================*/
     /**
-     * 
+     *
      */
     loadToolbar: function() {
         this.toolbar = $('<div class="' + this.options.baseClass + '-toolbar"/>');
@@ -528,7 +528,7 @@ $.widget('ui.editor',
             dialogClass: this.options.dialogClass,
             dragStop: $.proxy(function() {
                 var pos = this.persist('position', [
-                    this.selDialog().css('top'), 
+                    this.selDialog().css('top'),
                     this.selDialog().css('left')
                 ]);
                 this.selDialog().css({
@@ -541,21 +541,21 @@ $.widget('ui.editor',
                     .css('position', 'fixed')
                     .find('.ui-dialog-titlebar-close', ui)
                     .remove();
-                    
+
                 var pos = this.persist('position') || this.options.dialogPosition;
-                
+
                 if (parseInt(pos[0]) + this.selDialog().outerHeight() > $(window).height()) {
                     pos[0] = $(window).height() - this.selDialog().outerHeight();
-                } 
+                }
                 if (parseInt(pos[1]) + this.selDialog().outerWidth() > $(window).width()) {
                     pos[1] = $(window).width() - this.selDialog().outerWidth();
-                } 
-                
+                }
+
                 this.selDialog().css({
                     top: Math.abs(pos[0]),
                     left: Math.abs(pos[1])
                 });
-            }, this) 
+            }, this)
         });
 
         this.bind('after:destroy', $.proxy(function() {
@@ -583,7 +583,7 @@ $.widget('ui.editor',
             this.options.show = true;
             if (instant) {
                 this.selDialog().show();
-            } 
+            }
             this.selToolbar().dialog('open');
             this.fire('show');
             this.fire('resize');
@@ -742,7 +742,7 @@ $.widget('ui.editor',
             this.historyEnabled = true;
         }
     },
-    
+
     /*========================================================================*\
      * Selectors
     \*========================================================================*/
@@ -814,7 +814,7 @@ $.widget('ui.editor',
                 if (!this.options.enableUi &&
                         !this.options.ui[uiSet[j]]) continue;
 
-                // Check if we have explicitly disabled UI 
+                // Check if we have explicitly disabled UI
                 if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
 
                 // Check the UI has been registered
@@ -822,12 +822,12 @@ $.widget('ui.editor',
                     var options = $.extend({}, editor.options, {
                         baseClass: editor.options.baseClass + '-ui-' + uiSet[j]
                     }, editor.options.ui[uiSet[j]])
-                    
+
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, $.ui.editor.ui[uiSet[j]]);
 
                     uiObject.editor = editor;
-                    uiObject.options = options;                    
+                    uiObject.options = options;
                     uiObject.ui = uiObject.init(editor, options);
 
                     // Append the UI object to the group
@@ -1095,7 +1095,7 @@ $.widget('ui.editor',
     getOriginalHtml: function() {
         return this.originalHtml;
     },
-    
+
     /**
      *
      */
@@ -1155,7 +1155,7 @@ $.widget('ui.editor',
         if (!sub) this.fire('before:' + name, global, true);
 
         // <debug>
-        if (debugLevel == MAX) debug('Firing event: ' + name, this.getElement());
+        if (debugLevel >= MAX) debug('Firing event: ' + name, this.getElement());
         // </debug>
 
         if (this.events[name]) {
@@ -1213,14 +1213,14 @@ $.widget('ui.editor',
 /*============================================================================*\
  * Global static class definition
 \*============================================================================*/
-$.extend($.ui.editor, 
+$.extend($.ui.editor,
     /** @lends $.ui.editor */
     {
-    
-    /** 
+
+    /**
      * Default options for the jQuery UI Editor
      * @namespace Default settings for the jQuery UI Editor
-     */		
+     */
     defaults: {
         /**
          * Plugins option overrides
@@ -1311,7 +1311,7 @@ $.extend($.ui.editor,
          * @type String[]
          */
         disabledUi: [],
-        
+
         /**
          * Default message opttions
          * @type Object
@@ -1337,30 +1337,30 @@ $.extend($.ui.editor,
         ],
 
         /**
-         * 
+         *
          * @type String
          */
         baseClass: 'ui-editor',
 
         /**
-         * 
+         *
          * @type String
          */
         dialogClass: 'ui-editor-dialog',
 
         /**
-         * 
+         *
          * @type int[2]
          */
         dialogPosition: [5, 47],
-        
+
         /**
          * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
          * @type String
          */
         cssPrefix: 'cms-'
     },
-    
+
     /**
      * Events added via $.ui.editor.bind
      * @property {Object} events
@@ -1398,7 +1398,7 @@ $.extend($.ui.editor,
      * @property {String} urlPrefix
      */
     urlPrefix: '/jquery.ui.editor/',
-    
+
     /**
      * @property {Object} templates
      */
@@ -1421,7 +1421,7 @@ $.extend($.ui.editor,
                 // URL is for a plugin template
                 url += 'plugins/' + split[0] + '/templates/' + split.splice(1).join('/') + '.html';
             }
-            
+
             // Request the template
             $.ajax({
                 url: url,
@@ -1431,11 +1431,11 @@ $.extend($.ui.editor,
                 cache: false,
                 // </debug>
                 // 15 seconds
-                timeout: 15000, 
+                timeout: 15000,
                 error: function() {
                     template = null;
                 },
-                success: function(data) { 
+                success: function(data) {
                     template = data;
                 }
             });
@@ -1478,8 +1478,8 @@ $.extend($.ui.editor,
     unloadWarning: function() {
         var instances = this.getInstances();
         for (var i = 0; i < instances.length; i++) {
-            if (instances[i].isDirty() && 
-                    instances[i].isEditing() && 
+            if (instances[i].isDirty() &&
+                    instances[i].isEditing() &&
                     instances[i].options.unloadWarning) {
                 return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
             }
@@ -1489,7 +1489,7 @@ $.extend($.ui.editor,
     /*========================================================================*\
      * Plugins as UI
     \*========================================================================*/
-    
+
     /**
      * @property {Object} defaultUi
      */
@@ -1583,10 +1583,11 @@ $.extend($.ui.editor,
      */
     fire: function(name) {
         // <debug>
-        if (debugLevel === MAX) debug('Firing global/static event: ' + name);
+        if (debugLevel >= MAX) debug('Firing global/static event: ' + name);
         // </debug>
         if (!this.events[name]) return;
-        for (var i = 0, l = this.events.length; i < l; i++) {
+        for (var i = 0, l = this.events[name].length; i < l; i++) {
+            debug(this.events[name][i]);
             this.events[name][i].call(this);
         }
     },
@@ -1625,12 +1626,12 @@ $.extend($.ui.editor,
      * @property {String|null} currentLocale
      */
     currentLocale: null,
-    
+
     /**
      * @property {Object} locales
      */
     locales: {},
-    
+
     /**
      * @property {Object} localeNames
      */
