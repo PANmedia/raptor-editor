@@ -63,14 +63,14 @@ $.ui.editor.registerPlugin('save', {
         }
     },
 
-    done: function(data) {
+    done: function(xhr) {
         if (this.options.multiple) {
             this.saved++;
         } else {
             this.saved = this.dirty;
         }
         if (this.options.showResponse) {
-            this.editor.showConfirm(data, {
+            this.editor.showConfirm(xhr.responseText, {
                 delay: 1000,
                 hide: function() {
                     this.editor.unify(function(editor) {
@@ -82,14 +82,14 @@ $.ui.editor.registerPlugin('save', {
         }
     },
 
-    fail: function(data) {
+    fail: function(xhr) {
         if (this.options.multiple) {
             this.failed++;
         } else {
             this.failed = this.dirty;
         }
         if (this.options.showResponse) {
-            this.editor.showError(data);
+            this.editor.showError(xhr.responseText);
         }
     },
 
