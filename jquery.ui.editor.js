@@ -287,7 +287,8 @@ $.widget('ui.editor',
             this.getElement().attr('contenteditable', true)
                         .addClass(this.options.baseClass + '-editing');
             document.execCommand('enableInlineTableEditing', false, false);
-            document.execCommand('enableObjectResizing', false, false);
+            // Re-enabled for now so user knows they've selected an image
+            // document.execCommand('enableObjectResizing', false, false);
             document.execCommand('styleWithCSS', true, true);
             this.fire('enabled');
             this.fire('resize');
@@ -326,17 +327,19 @@ $.widget('ui.editor',
 
         // An array of ranges (by index), each with a list of elements in the range
         var lists = [];
+        var i = 0;
 
         // Loop all selected ranges
-        var ranges = rangy.getSelection().getAllRanges();
-        for (var i = 0; i < ranges.length; i++) {
+        this.eachRange(function(range) {
             // Get the selected nodes common parent
-            var node = ranges[i].commonAncestorContainer;
+            var node = range.commonAncestorContainer;
 
             var element;
             if (node.nodeType === 3) {
                 // If nodes common parent is a text node, then use its parent
                 element = $(node).parent();
+            // } else if(this.rangeEmptyTag(range)) {
+            //     element = $(this.domFragmentToHtml(range.cloneContents()));
             } else {
                 // Or else use the node
                 element = $(node);
@@ -360,7 +363,9 @@ $.widget('ui.editor',
                     data: '[' + i + ',' + j + ']'
                 });
             }
-        }
+            i++;
+        }, null, this);
+
         if (!title) title = this.getTemplate('root');
         this.selDialog('.ui-dialog-title')
             .html(title)
