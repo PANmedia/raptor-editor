@@ -79,11 +79,10 @@ if (debugLevel >= MAX) {
                 }
             ];
 
-            defaultLinkType = {
+            var defaultLinkType = {
                 type: null,
                 title: null,
                 content: null,
-                show: null,
                 plugin: this,
                 options: options,
                 attributes: null,
