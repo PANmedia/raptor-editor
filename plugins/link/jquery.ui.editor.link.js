@@ -4,7 +4,7 @@ if (debugLevel >= MAX) {
 }
 // </debug>
 (function($) {
-    
+
     var defaultOptions = {
         panelAnimation: 'fade',
         replaceTypes: false,
@@ -14,8 +14,8 @@ if (debugLevel >= MAX) {
         dialogHeight: 'auto',
         dialogMinWidth: 670
     };
-    
-    var link = { 
+
+    var link = {
         visible: null,
         types: {},
 
@@ -78,7 +78,7 @@ if (debugLevel >= MAX) {
                     }
                 }
             ];
-            
+
             defaultLinkType = {
                 type: null,
                 title: null,
@@ -96,14 +96,14 @@ if (debugLevel >= MAX) {
                         input.val('');
                         input.focus().val(value);
                     }
-                },
+                }
             };
 
             if (options.replaceTypes) linkTypes = options.customTypes;
             else $.merge(linkTypes, options.customTypes);
 
             var linkType;
-            var linkTypesFieldset = dialog.find('fieldset').html('');                    
+            var linkTypesFieldset = dialog.find('fieldset').html('');
 
             for (var i = 0; i < linkTypes.length; i++) {
                 linkType = $.extend({}, defaultLinkType, linkTypes[i], { classes: options.baseClass + '-' + linkTypes[i].type });
@@ -132,9 +132,9 @@ if (debugLevel >= MAX) {
                     var edit = this.selectedElement.is('a');
 
                     if (!dialog) dialog = $(editor.getTemplate('link.dialog', options)).appendTo('body');
-                    
+
                     this.prepareLinkTypes(options, dialog, edit);
-                    
+
                     dialog.dialog({
                         autoOpen: false,
                         modal: true,
@@ -168,7 +168,7 @@ if (debugLevel >= MAX) {
                                         plugin.selectedElement[0].className = plugin.selectedElement[0].className.replace(new RegExp(options.baseClass + '-[a-zA-Z]+','g'), '');
                                         plugin.selectedElement.addClass(linkType.classes)
                                                 .attr(attributes);
-                                        editor.showConfirm(_('Updated link: {{link}}', { link: link }));                                        
+                                        editor.showConfirm(_('Updated link: {{link}}', { link: link }));
                                     }
 
                                     $(this).dialog('close');
@@ -248,7 +248,7 @@ if (debugLevel >= MAX) {
                                 wrap.removeClass(options.baseClass + '-loading');
                                 linkType.show(panel, edit);
                                 panel.show(options.panelAnimation, $.proxy(linkType.focus, linkType));
-                            }   
+                            }
                         });
                     }
                 });
@@ -257,16 +257,16 @@ if (debugLevel >= MAX) {
             this.remove = function() {
                 this.editor.unwrapParentTag('a');
             }
-        } 
+        }
     }
-    
+
     $.ui.editor.registerPlugin('link', link);
-    
+
     $.ui.editor.registerUi({
         link: {
             init: function(editor) {
                 editor.bind('change', this.change, this);
-                
+
                 return editor.uiButton({
                     title: _('Insert Link'),
                     click: function() {
@@ -279,11 +279,11 @@ if (debugLevel >= MAX) {
                 else this.ui.enable();
             }
         },
-    
+
         unlink: {
             init: function(editor) {
                 editor.bind('change', this.change, this);
-                
+
                 return editor.uiButton({
                     title: _('Remove Link'),
                     click: function() {
@@ -297,5 +297,5 @@ if (debugLevel >= MAX) {
             }
         }
     });
-    
+
 })(jQuery);
