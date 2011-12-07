@@ -1,5 +1,5 @@
 $.ui.editor.registerPlugin('save', {
-    
+
     options: {
         id: { attr: 'name' },
         postName: 'content',
@@ -11,10 +11,10 @@ $.ui.editor.registerPlugin('save', {
             cache: false
         }
     },
-    
+
     init: function() {
     },
-    
+
     getId: function() {
         if (typeof(this.options.id) === 'string') {
             return this.options.id;
@@ -23,17 +23,17 @@ $.ui.editor.registerPlugin('save', {
         }
         return null;
     },
-    
+
     getData: function() {
         var data = {};
         data[this.getId()] = this.editor.getHtml();
         return data;
     },
-    
+
     save: function() {
         this.message = this.editor.showLoading(_('Saving changes...'));
-        
-        // Get all unified content 
+
+        // Get all unified content
         var contentData = {};
         var dirty = 0;
         this.editor.unify(function(editor) {
@@ -45,12 +45,12 @@ $.ui.editor.registerPlugin('save', {
             }
         });
         this.dirty = dirty;
-        
-        // Count the number of requests 
+
+        // Count the number of requests
         this.saved = 0;
         this.failed = 0;
         this.requests = 0;
-        
+
         // Check if we are passing the content data in multiple requests (rest)
         if (this.options.multiple) {
             // Pass each content block individually
@@ -62,7 +62,7 @@ $.ui.editor.registerPlugin('save', {
             this.ajax(contentData);
         }
     },
-    
+
     done: function(data) {
         if (this.options.multiple) {
             this.saved++;
@@ -81,7 +81,7 @@ $.ui.editor.registerPlugin('save', {
             });
         }
     },
-    
+
     fail: function(data) {
         if (this.options.multiple) {
             this.failed++;
@@ -92,7 +92,7 @@ $.ui.editor.registerPlugin('save', {
             this.editor.showError(data);
         }
     },
-    
+
     always: function() {
         if (this.dirty === this.saved + this.failed) {
             if (!this.options.showResponse) {
@@ -112,30 +112,32 @@ $.ui.editor.registerPlugin('save', {
                     });
                 }
             }
-        
+
             // Hide the loading message
             this.message.hide();
             this.message = null;
         }
     },
-    
+
     ajax: function(contentData, id) {
         // Create POST data
-        var data = {};
-        
+        //var data = {};
+
         // Content is serialized to a JSON object, and sent as 1 post parameter
-        data[this.options.postName] = JSON.stringify(contentData);
-        
+        //data[this.options.postName] = JSON.stringify(contentData);
+
         // Create the JSON request
-        var ajax = $.extend(true, {}, this.options.ajax, {
-            data: data
-        });
-        
+        var ajax = $.extend(true, {}, this.options.ajax);
+
+        if ($.isFunction(ajax.data)) {
+            ajax.data = ajax.data.apply(this, [id, contentData]);
+        }
+
         // Get the URL, if it is a callback
         if ($.isFunction(ajax.url)) {
             ajax.url = ajax.url.apply(this, [id]);
         }
-        
+
         // Send the data to the server
         this.requests++;
         $.ajax(ajax)
@@ -143,7 +145,7 @@ $.ui.editor.registerPlugin('save', {
             .fail($.proxy(this.fail, this))
             .always($.proxy(this.always, this));
     }
-    
+
 });
 
 $.ui.editor.registerUi({
