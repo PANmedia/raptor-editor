@@ -30,6 +30,7 @@ $.widget('ui.editor',
             ['undo', 'redo'],
             ['align-left', 'align-center', 'align-justify', 'align-right'],
             ['text-bold', 'text-italic', 'text-underline', 'text-strike'],
+            ['text-super', 'text-sub'],
             ['list-unordered', 'list-ordered'],
             ['hr', 'quote-block'],
             ['font-size-inc', 'font-size-dec'],
@@ -84,7 +85,7 @@ $.widget('ui.editor',
             this.enableEditing();
         }
 
-        // Unload warning 
+        // Unload warning
         $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
 
         this.ready = true;

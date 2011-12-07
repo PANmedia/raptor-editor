@@ -63,14 +63,14 @@ $.ui.editor.registerPlugin('save', {
         }
     },
 
-    done: function(xhr) {
+    done: function(data) {
         if (this.options.multiple) {
             this.saved++;
         } else {
             this.saved = this.dirty;
         }
         if (this.options.showResponse) {
-            this.editor.showConfirm(xhr.responseText, {
+            this.editor.showConfirm(data, {
                 delay: 1000,
                 hide: function() {
                     this.editor.unify(function(editor) {
@@ -131,6 +131,9 @@ $.ui.editor.registerPlugin('save', {
 
         if ($.isFunction(ajax.data)) {
             ajax.data = ajax.data.apply(this, [id, contentData]);
+        } else if (this.options.postName) {
+            ajax.data = {};
+            ajax.data[this.options.postName] = JSON.stringify(contentData);
         }
 
         // Get the URL, if it is a callback
