@@ -151,18 +151,23 @@ var domTools = {
             elementProperties: options.attributes || {}
         });
         this.eachRange(function(range) {
-            var contents = range.cloneContents();
-            var html = this.domFragmentToHtml(contents);
-            if ($(html).is(':empty')) {
+            if (this.rangeEmptyTag(range)) {
                 var element = $('<' + tag + '/>')
                     .addClass(options.classes)
                     .attr(options.attributes || {})
-                    .append(html);
+                    .append(this.domFragmentToHtml(range.cloneContents()));
                 this.replaceRange(element, range);
             } else {
                 applier.toggleRange(range);
             }
         })
+    },
+
+    rangeEmptyTag: function(range) {
+        var contents = range.cloneContents();
+        var html = this.domFragmentToHtml(contents);
+        if ($(html).is(':empty')) return true;
+        return false;
     },
 
     /**
