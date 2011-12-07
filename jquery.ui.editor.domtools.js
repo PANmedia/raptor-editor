@@ -370,7 +370,7 @@ var domTools = {
      */
     replaceSelection: function(html, selection) {
         this.eachRange(function(range) {
-            this.replaceRange(html, selection);
+            this.replaceRange(html, range);
         }, selection);
     },
 
