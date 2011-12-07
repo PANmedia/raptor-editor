@@ -39,7 +39,6 @@
                 bottomSpacer = $('<div class="' + this.options.baseClass + '-bottom-spacer"/>')
                     .appendTo('body')
                     .hide();
-                    console.debug(bottomSpacer);
             }
             
             this.docked = false;
