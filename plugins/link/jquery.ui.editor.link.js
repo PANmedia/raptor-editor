@@ -25,6 +25,7 @@ if (debugLevel >= MAX) {
                 {
                     type: 'external',
                     title: _('Page on this or another website'),
+                    focusSelector: 'input[name="location"]',
                     init: function() {
                         this.content = this.plugin.editor.getTemplate('link.external', this.options);
                     },
@@ -54,6 +55,7 @@ if (debugLevel >= MAX) {
                 {
                     type: 'email',
                     title: _('Email address'),
+                    focusSelector: 'input[name="email"]',
                     init: function() {
                         this.content = this.plugin.editor.getTemplate('link.email', this.options);
                     },
@@ -81,11 +83,20 @@ if (debugLevel >= MAX) {
                 type: null,
                 title: null,
                 content: null,
-                init: null,
                 show: null,
-                attributes: null,
                 plugin: this,
-                options: options
+                options: options,
+                attributes: null,
+                init: function() {},
+                show: function() {},
+                focus: function() {
+                    if (this.focusSelector) {
+                        var input = $(this.focusSelector);
+                        var value = input.val();
+                        input.val('');
+                        input.focus().val(value);
+                    }
+                },
             };
 
             if (options.replaceTypes) linkTypes = options.customTypes;
@@ -95,12 +106,11 @@ if (debugLevel >= MAX) {
             var linkTypesFieldset = dialog.find('fieldset').html('');                    
 
             for (var i = 0; i < linkTypes.length; i++) {
-                linkType = $.extend({}, defaultLinkType, linkTypes[i], { className: options.baseClass + '-' + linkTypes[i].type });                
-                if ($.isFunction(linkType.init)) linkType.init();
+                linkType = $.extend({}, defaultLinkType, linkTypes[i], { classes: options.baseClass + '-' + linkTypes[i].type });
+                linkType.init();
                 this.types[linkType.type] = linkType;
                 $(this.editor.getTemplate('link.label', linkType)).appendTo(linkTypesFieldset);
             }
-            
             var plugin = this;
             linkTypesFieldset.find('input[type="radio"]').unbind('change.' + this.editor.widgetName).
                 bind('change.' + this.editor.widgetName, function(){
@@ -143,18 +153,21 @@ if (debugLevel >= MAX) {
                                     var linkType = plugin.types[dialog.find('input[type="radio"]:checked').val()];
                                     var attributes = linkType.attributes(dialog.find('.' + options.baseClass + '-content'), edit);
 
+                                    // No attributes to apply
                                     if (!attributes) return;
 
-                                    var link = plugin.editor.outerHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').attr($.extend({}, attributes, { target: '_blank' })));
+                                    // Prepare link to be shown in any confirm message
+                                    var link = plugin.editor.outerHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
+                                            attr($.extend({}, attributes, { target: '_blank' })));
+
                                     if (!edit) {
-                                        attributes['className'] = linkType.className;
-                                        editor.wrapTagWithAttribute('a', $.extend(attributes, { className: linkType.className}));
+                                        editor.wrapTagWithAttribute('a', attributes, linkType.classes);
                                         editor.showConfirm(_('Added link: {{link}}', { link: link }));
                                     } else {
                                         // Remove all link type classes
                                         plugin.selectedElement[0].className = plugin.selectedElement[0].className.replace(new RegExp(options.baseClass + '-[a-zA-Z]+','g'), '');
-                                        plugin.selectedElement.addClass(linkType.className)
-                                            .attr(attributes);
+                                        plugin.selectedElement.addClass(linkType.classes)
+                                                .attr(attributes);
                                         editor.showConfirm(_('Updated link: {{link}}', { link: link }));                                        
                                     }
 
@@ -179,7 +192,12 @@ if (debugLevel >= MAX) {
                             var buttons = dialog.parent().find('.ui-dialog-buttonpane');
                             buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                             buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
-                            
+
+                            // Bind keyup to dialog so we can detect when user presses enter
+                            $(this).unbind('keyup.' + editor.widgetName).bind('keyup.' + editor.widgetName, function(event) {
+                                if (event.keyCode == 13) buttons.find('button:eq(0)').trigger('click');
+                            });
+
                             var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                             if (!edit) {
                                 radios.first().attr('checked', 'checked');
@@ -218,8 +236,8 @@ if (debugLevel >= MAX) {
                 panel.hide(options.panelAnimation, function(){
                     if (!ajax) {
                         panel.html(linkType.content);
-                        if ($.isFunction(linkType.show)) linkType.show(panel, edit);
-                        panel.show(options.panelAnimation);
+                        linkType.show(panel, edit);
+                        panel.show(options.panelAnimation, $.proxy(linkType.focus, linkType));
                     } else {
                         $.ajax({
                             url: linkType.ajaxUri,
@@ -227,9 +245,9 @@ if (debugLevel >= MAX) {
                             success: function(data) {
                                 panel.html(data);
                                 plugin.types[linkType.type].content = data;
-                                if ($.isFunction(linkType.show)) linkType.show(panel, edit);
                                 wrap.removeClass(options.baseClass + '-loading');
-                                panel.show(options.panelAnimation);
+                                linkType.show(panel, edit);
+                                panel.show(options.panelAnimation, $.proxy(linkType.focus, linkType));
                             }   
                         });
                     }
@@ -257,7 +275,7 @@ if (debugLevel >= MAX) {
                 });
             },
             change: function() {
-                if (this.editor.getSelectedElements().length !== 1) this.ui.disable();
+                if (!this.editor.getSelectedElements().length) this.ui.disable();
                 else this.ui.enable();
             }
         },
