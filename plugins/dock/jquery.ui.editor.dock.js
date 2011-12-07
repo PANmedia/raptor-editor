@@ -1,6 +1,7 @@
 (function($) {
     
-    var spacer;
+    var topSpacer;
+    var bottomSpacer;
     
     function swapStyle(to, from, style) {
         var result = {};
@@ -29,18 +30,26 @@
         },
         
         init: function(editor) {
-            if (!spacer) {
-                spacer = $('<div class="' + this.options.baseClass + '-spacer"/>')
+            if (!topSpacer) {
+                topSpacer = $('<div class="' + this.options.baseClass + '-top-spacer"/>')
                     .prependTo('body')
                     .hide();
+            }
+            if (!bottomSpacer) {
+                bottomSpacer = $('<div class="' + this.options.baseClass + '-bottom-spacer"/>')
+                    .appendTo('body')
+                    .hide();
+                    console.debug(bottomSpacer);
             }
             
             this.docked = false;
                 
             this.bind('enabled', this.enable);
             this.bind('disabled', this.disable);
-            this.bind('show', spacer.show, spacer);
-            this.bind('hide', spacer.hide, spacer);
+            this.bind('show', topSpacer.show, topSpacer);
+            this.bind('hide', topSpacer.hide, topSpacer);
+            this.bind('show', bottomSpacer.show, bottomSpacer);
+            this.bind('hide', bottomSpacer.hide, bottomSpacer);
             this.bind('destroy', this.destroy, this);
             
             if (!this.options.dockToElement) {
@@ -148,8 +157,9 @@
             this.editor.selDialog()
                 .removeClass(this.options.baseClass + '-docked')
             
-            // Hide the spacer 
-            spacer.hide();
+            // Hide the spacers
+            topSpacer.hide();
+            bottomSpacer.hide();
         },
         
         undock: function() {
@@ -193,17 +203,22 @@
         },
         
         disable: function() {
-            spacer.hide();
+            topSpacer.hide();
+            bottomSpacer.hide();
         },
         
         change: function() {
             if (this.isDocked() && this.editor.isEditing()) {
-                // Reinitialise spacer when the toolbar is visible and stoped animating
+                // Reinitialise spacer(s) when the toolbar is visible and stopped animating
                 window.setTimeout(function(dock) {
-                    // Show the spacer 
+                    // Show the spacer(s)
                     var toolbar = dock.editor.selToolbar();
                     if (toolbar.is(':visible')) {
-                        spacer.height(toolbar.outerHeight()).show();
+                        topSpacer.height(toolbar.outerHeight()).show();
+                        // Show the bottom spacer only when not docked to an element
+                        if(!dock.options.dockToElement) {
+                            bottomSpacer.height(dock.editor.selTitle().outerHeight()).show();
+                        }
                     }
 
                     // Trigger the editor resize event to adjust other plugin element positions
