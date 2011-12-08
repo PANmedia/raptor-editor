@@ -1,3 +1,7 @@
+/**
+ * @name $.editor.plugin.imageAutoResize
+ * @class
+ */
 $.ui.editor.registerPlugin('imageAutoResize', {
 
     options: {
