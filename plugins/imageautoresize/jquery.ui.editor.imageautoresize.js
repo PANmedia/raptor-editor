@@ -2,7 +2,7 @@
  * @name $.editor.plugin.imageAutoResize
  * @class
  */
-$.ui.editor.registerPlugin('imageAutoResize', {
+$.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAutoResize.prototype */ {
 
     options: {
         resizeAjax: true,
@@ -39,7 +39,7 @@ $.ui.editor.registerPlugin('imageAutoResize', {
 
     /**
      * Handler simulating a 'resize' event for image elements
-     * @param  {object} event
+     * @param {Object} event
      */
     imageResized: function(event) {
         var target = $(event.target);
@@ -67,9 +67,9 @@ $.ui.editor.registerPlugin('imageAutoResize', {
     
     /**
      * Proportionately resizes the image, applying width & height attributes and CSS styles
-     * @param  {array} images     the images to be resized
-     * @param  {int} maxWidth  the editing element's maximum width
-     * @param  {int} maxHeight the editing element's maximum height
+     * @param  {String[]} image The images to be resized
+     * @param  {int} maxWidth The editing element's maximum width
+     * @param  {int} maxHeight The editing element's maximum height
      */
     resizeImageElements: function(images, maxWidth, maxHeight) {
 
