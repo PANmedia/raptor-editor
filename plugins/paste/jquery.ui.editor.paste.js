@@ -1,8 +1,13 @@
 /**
- * @name $.editor.plugin.imageAutoResize
+ * @name $.editor.plugin.paste
  * @class
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */{
+
+    /**
+     * @param  {$.ui.editor} editor
+     * @param  {Object} options
+     */
     init: function(editor, options) {
         var inProgress = false;
         var dialog = false;
