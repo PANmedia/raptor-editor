@@ -156,7 +156,7 @@ $.ui.editor.registerPlugin('imageAutoResize', {
             if (!$(this).attr('id')) $(this).attr('id', plugin.editor.getUniqueId());
             images.push({
                 id: $(this).attr('id'),
-                src: plugin.absoluteUrl($(this).attr('src')),
+                src: this.src,
                 width: $(this).width(),
                 height: $(this).height()
             });
@@ -218,29 +218,5 @@ $.ui.editor.registerPlugin('imageAutoResize', {
         for (var i = 0; i < classNames.length; i++) {
             this.editor.getElement().find('img.' + classNames[i]).removeClass(classNames[i]);
         }
-    },
-
-    /**
-     * Attempt to convert an uri to be root relative
-     * @param  {string} url 
-     * @return {string} the absolute url
-     */
-    absoluteUrl: function(url) {
-        if (/^\w+:/.test(url)) {
-            return url;
-        }
-        fullHost = location.protocol + '//' + location.host;
-        if (url.indexOf('/') == 0) {
-            return fullHost + url;
-        }
-        pathname = location.pathname.replace(/\/[^\/]*$/, '');
-        file = url.match(/\.\.\//g);
-        if (file) {
-            url = url.substring(file.length * 3);
-            for (i = file.length; i--;) {
-                pathname = pathname.substring(0, pathname.lastIndexOf('/'));
-            }
-        }
-        return fullHost + pathname + '/' + url;
     }
 });
