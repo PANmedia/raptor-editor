@@ -1,5 +1,35 @@
+/**
+ * @name $.editor.ui.text-bold
+ * @class
+ */
+
+/**
+ * @name $.editor.ui.text-italic
+ * @class
+ */
+
+/**
+ * @name $.editor.ui.text-underline
+ * @class
+ */
+
+/**
+ * @name $.editor.ui.text-strike
+ * @class
+ */
+
+/**
+ * @name $.editor.ui.text-sub
+ * @class
+ */
+
+/**
+ * @name $.editor.ui.text-super
+ * @class
+ */
+
 $.ui.editor.registerUi({
-    'text-bold': {
+    'text-bold': /** @lends $.editor.ui.text-bold.prototype */ {
         init: function(editor, options) {
             return this.editor.uiButton({
                 title: _('Bold'),
@@ -9,7 +39,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-italic': {
+    'text-italic': /** @lends $.editor.ui.text-italic.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Italic'),
@@ -19,7 +49,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-underline': {
+    'text-underline': /** @lends $.editor.ui.text-underline.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Underline'),
@@ -29,7 +59,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-strike': {
+    'text-strike': /** @lends $.editor.ui.text-strike.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Strikethrough'),
@@ -39,7 +69,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-sub': {
+    'text-sub': /** @lends $.editor.ui.text-sub.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Sub script'),
@@ -49,7 +79,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-super': {
+    'text-super': /** @lends $.editor.ui.text-super.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Super script'),
