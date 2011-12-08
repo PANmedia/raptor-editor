@@ -1106,9 +1106,11 @@ $.widget('ui.editor',
      *
      */
     save: function() {
+        this.fire('save');
         this.setOriginalHtml(this.getHtml());
         this.fire('saved');
         this.fire('change');
+        return this.getHtml();
     },
 
     /**
