@@ -1158,9 +1158,11 @@ $.widget('ui.editor',
      * @param {Object} [context]
      */
     unbind: function(name, callback, context) {
+
         for (var i = 0, l = this.events[name].length; i < l; i++) {
-            if (this.events[name][i].callback === callback &&
-                    this.events[name][i].context === context) {
+            if (this.events[name][i]
+                && this.events[name][i].callback === callback 
+                && this.events[name][i].context === context) {
                 this.events[name].splice(i, 1);
             }
         }
