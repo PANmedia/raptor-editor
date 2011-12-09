@@ -164,6 +164,8 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
         
         if (!images.length) return;
 
+        var loading = this.editor.showLoading(_('Resizing image(s)'));
+
         // Create the JSON request
         var ajax = this.options.ajax;
         
@@ -176,11 +178,13 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
                     $('#' + this.id).attr('src', this.src).removeAttr('id');
                 });
                 plugin.editor.fire('change');
+                loading.hide();
                 plugin.editor.showConfirm(_('{{images}} image(s) have been replaced with resized versions', {
                     images: images.length
                 }));
             })
             .fail(function(data) {
+                loading.hide();
                 plugin.editor.showError(_('Failed to resize images (error {{error}})', {
                     error: data.status
                 }));
