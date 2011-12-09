@@ -21,18 +21,20 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
             resizeAjaxClass: this.options.baseClass + '-on-save'
         });
         
-        editor.bind('change', $.proxy(this.scanImages, this));
-        editor.bind('destroy', $.proxy(this.destroy, this));
-        editor.bind('save', $.proxy(this.save, this));
+        editor.bind('change', this.scanImages, this);
+        editor.bind('destroy', this.destroy, this);
+        editor.bind('save', this.save, this);
+        editor.bind('cancel', this.cancel, this);
 
         // If the function addEventListener exists, bind our custom image resized event
+        this.resized = $.proxy(this.imageResized, this);
+        var plugin = this;
         editor.getElement().find('img').each(function(){
-            var plugin = this;
             if (this.addEventListener) {
-                this.addEventListener('DOMAttrModified', $.proxy(plugin.imageResized, plugin), false);
+                this.addEventListener('DOMAttrModified', plugin.resized, false);
             }
             if (this.attachEvent) {  // Internet Explorer and Opera
-                elemToCheck.attachEvent('onpropertychange', $.proxy(plugin.imageResized, plugin));
+                elemToCheck.attachEvent('onpropertychange', plugin.resized);
             }
         });
     },
@@ -118,23 +120,25 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
         }
     },
 
+    cancel: function() {
+        this.removeClasses();
+        this.editor.unbind('change', this.scanImages, this);
+        var plugin = this;
+        this.editor.getElement().find('img').each(function(){
+            if (this.removeEventListener) {
+                this.addEventListener('DOMAttrModified', plugin.resized, false);
+            }
+            if (this.detachEvent) {
+                this.detachEvent('onpropertychange', plugin.resized);
+            }
+        });
+    },
+
     /**
      * Remove any left over classes, remove event listener
      */
     destroy: function() {
-        this.removeClasses([
-            this.options.resizingClass,
-            this.options.resizeAjaxClass
-        ]);
-        this.editor.getElement().find('img').each(function(){
-            var plugin = this;
-            if (this.removeEventListener) {
-                this.addEventListener('DOMAttrModified', $.proxy(plugin.imageResized, plugin), false);
-            }
-            if (this.detachEvent) {
-                this.detachEvent('onpropertychange', $.proxy(plugin.imageResized, plugin));
-            }
-        });
+        this.cancel();
     },
 
     /**
@@ -218,6 +222,7 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
      * @param  {array} classNames to be removed
      */
     removeClasses: function(classNames) {
+        if (!classNames) classNames = [this.options.resizingClass, this.options.resizeAjaxClass];
         if (!$.isArray(classNames)) classNames = [classNames];
         for (var i = 0; i < classNames.length; i++) {
             this.editor.getElement().find('img.' + classNames[i]).removeClass(classNames[i]);
