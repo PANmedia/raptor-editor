@@ -901,7 +901,7 @@ $.widget('ui.editor',
 
                 // Create the jQuery UI button
                 this.button.button({
-                    icons: {primary: this.icon || 'ui-icon-' + name},
+                    icons: {primary: this.icon || 'ui-icon-' + baseClass},
                     disabled: options.disabled ? true : false,
                     text: false
                 });
