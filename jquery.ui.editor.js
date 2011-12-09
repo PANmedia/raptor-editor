@@ -25,18 +25,18 @@ $.widget('ui.editor',
         // Set the options after the widget initialisation, because jQuery UI widget tries to extend the array (and breaks it)
         this.options.uiOrder = this.options.uiOrder || [
             ['save', 'cancel'],
-            ['dock', 'show-guides', 'clean'],
-            ['view-source'],
+            ['dock', 'showGuides', 'clean'],
+            ['viewSource'],
             ['undo', 'redo'],
-            ['align-left', 'align-center', 'align-justify', 'align-right'],
-            ['text-bold', 'text-italic', 'text-underline', 'text-strike'],
-            ['text-super', 'text-sub'],
-            ['list-unordered', 'list-ordered'],
-            ['hr', 'quote-block'],
-            ['font-size-inc', 'font-size-dec'],
+            ['alignLeft', 'alignCenter', 'alignJustify', 'alignRight'],
+            ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
+            ['textSuper', 'textSub'],
+            ['listUnordered', 'listOrdered'],
+            ['hr', 'quoteBlock'],
+            ['fontSizeInc', 'fontSizeDec'],
             ['link', 'unlink'],
-            ['float-left', 'float-none', 'float-right'],
-            ['tag-menu'],
+            ['floatLeft', 'floatNone', 'floatRight'],
+            ['tagMenu'],
             ['i18n']
         ];
 
@@ -823,15 +823,18 @@ $.widget('ui.editor',
                 // Check if we have explicitly disabled UI
                 if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
 
+                var baseClass = uiSet[j].replace(/([A-Z])/g, function(match) {
+                    return '-' + match.toLowerCase();
+                });
+
                 // Check the UI has been registered
                 if ($.ui.editor.ui[uiSet[j]]) {
                     var options = $.extend({}, editor.options, {
-                        baseClass: editor.options.baseClass + '-ui-' + uiSet[j]
+                        baseClass: editor.options.baseClass + '-ui-' + baseClass
                     }, editor.options.ui[uiSet[j]])
 
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, $.ui.editor.ui[uiSet[j]]);
-
                     uiObject.editor = editor;
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(editor, options);
@@ -868,11 +871,13 @@ $.widget('ui.editor',
             button: null,
             options: {},
             init: function(name, editor, options, object) {
+                var baseClass = name.replace(/([A-Z])/g, function(match) {
+                    return '-' + match.toLowerCase();
+                });
                 // Extend options overriding editor < base class < supplied options < user options
                 var options = $.extend({}, editor.options, {
-                    baseClass: editor.options.baseClass + '-' + name + '-button'
+                    baseClass: editor.options.baseClass + '-' + baseClass + '-button'
                 }, this.options, editor.options.ui[name])
-
                 // Default title if not set in plugin
                 if (!this.title) this.title = _('Unnamed Button');
 
@@ -933,9 +938,13 @@ $.widget('ui.editor',
             init: function(name, editor) {
                 var ui = this;
 
+                var baseClass = name.replace(/([A-Z])/g, function(match) {
+                    return '-' + match.toLowerCase();
+                });
+
                 // Extend options overriding editor < base class < supplied options < user options
                 var options = $.extend({}, editor.options, {
-                    baseClass: editor.options.baseClass + '-button-' + name
+                    baseClass: editor.options.baseClass + baseClass + '-select-menu'
                 }, ui.options, editor.options.ui[name])
 
                 // Default title if not set in plugin
@@ -1040,8 +1049,12 @@ $.widget('ui.editor',
             // Clone the plugin object (which should be extended from the defaultPlugin object)
             var pluginObject = $.extend({}, $.ui.editor.plugins[name]);
 
+            var baseClass = name.replace(/([A-Z])/g, function(match) {
+                return '-' + match.toLowerCase();
+            });
+
             var options = $.extend(true, {}, editor.options, {
-                baseClass: editor.options.baseClass + '-' + name
+                baseClass: editor.options.baseClass + '-' + baseClass
             }, pluginObject.options, editor.options.plugins[name]);
 
             pluginObject.editor = editor;
@@ -1519,16 +1532,23 @@ $.extend($.ui.editor,
 
     /**
      *
+     * @param {Object|String} mixed
+     * @param {Object} [ui]
      */
-    registerUi: function(uiSet) {
-        for (var name in uiSet) {
+    registerUi: function(mixed, ui) {
+        // Allow array objects, and single plugins
+        if (typeof(mixed) === 'string') {
             // <strict>
-            if (this.ui[name]) {
-                handleError(_('UI "{{name}}" has already been registered, and will be overwritten', {name: name}));
+            if (this.ui[mixed]) {
+                handleError(_('UI "{{name}}" has already been registered, and will be overwritten', {name: mixed}));
             }
             // </strict>
-            this.ui[name] = $.isFunction(uiSet[name]) ? uiSet[name] : $.extend({}, this.defaultUi, uiSet[name]);
-        };
+            this.ui[mixed] = $.extend({}, this.defaultUi, ui);
+        } else {
+            for (var name in mixed) {
+                this.registerUi(name, mixed[name]);
+            }
+        }
     },
 
     /**
@@ -1551,13 +1571,22 @@ $.extend($.ui.editor,
 
     /**
      *
+     * @param {Object|String} mixed
+     * @param {Object} [plugin]
      */
-    registerPlugin: function(name, plugin) {
-        // <strict>
-        if (this.plugins[name]) handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: name}));
-        // </strict>
+    registerPlugin: function(mixed, plugin) {
+        // Allow array objects, and single plugins
+        if (typeof(mixed) === 'string') {
+            // <strict>
+            if (this.plugins[mixed]) handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: mixed}));
+            // </strict>
 
-        this.plugins[name] = $.isFunction(plugin) ? plugin : $.extend({}, this.defaultPlugin, plugin);
+            this.plugins[mixed] = $.extend({}, this.defaultPlugin, plugin);
+        } else {
+            for (var name in mixed) {
+                this.registerPlugin(name, mixed[name]);
+            }
+        }
     },
 
     /*========================================================================*\
