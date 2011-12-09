@@ -408,7 +408,7 @@ var domTools = {
         }
     },
 
-    domFragmentToHtml: function(domFragment) {
+    domFragmentToHtml: function(domFragment, tag) {
         var html = '';
         // Get all nodes in the extracted content
         for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
@@ -417,6 +417,12 @@ var domTools = {
             if (content) {
                 html += content;
             }
+        }
+        if (tag) {
+            html = $('<' + tag + '>' + html + '</' + tag + '>');
+            html.find('p').wrapInner('<' + tag + '/>');
+            html.find('p > *').unwrap();
+            html = $('<div/>').html(html).html();
         }
         return html;
     },
@@ -484,19 +490,8 @@ var domTools = {
                 this.expandRangeToParent(range);
                 this.changeRangeTag(range, tag);
             } else {
-                // Create a range from the start of the current range, to the beginning of the start element
-                var newRange = rangy.createRange();
-                newRange.setStart(range.startContainer, 0);
-                newRange.setEnd(range.startContainer, range.startOffset);
-
-                // Extract the contents, and prepend it as a new node before the current node
-                var precontent = newRange.extractContents();
-                var parent = $(newRange.startContainer).parent();
-                this.insertDomFragmentBefore(precontent, parent, parent[0].nodeName);
-
-                // Extract the content in the selected range
-                var contents = range.extractContents();
-                this.insertDomFragmentBefore(contents, parent, tag);
+                var content = range.extractContents();
+                this.replaceRange(this.domFragmentToHtml(content, tag), range);
             }
         }, selection);
     },
