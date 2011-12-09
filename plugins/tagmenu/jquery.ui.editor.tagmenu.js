@@ -5,7 +5,7 @@ if (debugLevel >= MAX) {
 // </debug>
 
 $.ui.editor.registerUi({
-    'tag-menu': {
+    tagMenu: {
         init: function(editor) {
             editor.bind('change', this.change, this);
 

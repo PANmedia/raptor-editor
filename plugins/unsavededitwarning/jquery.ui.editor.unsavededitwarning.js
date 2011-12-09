@@ -1,6 +1,6 @@
 (function() {
-        
-    $.ui.editor.registerPlugin('unsaved-edit-warning', {
+
+    $.ui.editor.registerPlugin('unsavedEditWarning', {
         // Default options
         options: {
             contentClass: '',
@@ -17,7 +17,7 @@
                 }
             }
         },
-        
+
         init: function(editor, options) {
             this.warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))
                 .attr('id', editor.getUniqueId())
@@ -33,7 +33,7 @@
                 this.warning = null;
             }, this);
         },
-        
+
         show: function() {
             this.reposition();
             this.warning.addClass(this.options.baseClass + '-visible').show();
@@ -48,7 +48,7 @@
             this.options.position.of = '#' + this.editor.getElement().attr('id');
             // <strict>
             if (!$(this.options.position.of).length) {
-                throw 'Editor element has been removed, unsaved edit warning plugin cannot reposition'; 
+                throw 'Editor element has been removed, unsaved edit warning plugin cannot reposition';
             }
             // </strict>
             this.warning.position(this.options.position);
@@ -63,5 +63,5 @@
             }
         };
     });
-    
+
 })();

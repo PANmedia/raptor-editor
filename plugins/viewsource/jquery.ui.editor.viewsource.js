@@ -4,9 +4,9 @@ if (debugLevel >= MAX) {
 }
 // </debug>
 (function($) {
-    
+
     $.ui.editor.registerUi({
-        'view-source':  {
+        viewSource:  {
             init: function(editor, options) {
                 var dialog = this.dialog = $(editor.getTemplate('viewsource.dialog'));
                 dialog.dialog({
@@ -60,5 +60,5 @@ if (debugLevel >= MAX) {
             }
         }
     });
-    
+
 })(jQuery);

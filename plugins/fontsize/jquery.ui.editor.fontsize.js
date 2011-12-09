@@ -1,5 +1,5 @@
 $.ui.editor.registerUi({
-    'font-size-inc': {
+    fontSizeInc: {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Increase Font Size'),
@@ -9,7 +9,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'font-size-dec': {
+    fontSizeDec: {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Decrease Font Size'),
