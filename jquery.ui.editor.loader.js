@@ -239,8 +239,8 @@
         getJs(root + 'plugins/blockquote/jquery.ui.editor.blockquote.js', null, ['editor']);
         getLess(root + 'plugins/blockquote/jquery.ui.editor.blockquote.less');
 
-        getJs(root + 'plugins/snipet/jquery.ui.editor.snipet.js', null, ['editor']);
-        getLess(root + 'plugins/snipet/jquery.ui.editor.snipet.less');
+        getJs(root + 'plugins/snippet/jquery.ui.editor.snippet.js', null, ['editor']);
+        getLess(root + 'plugins/snippet/jquery.ui.editor.snippet.less');
 
         getJs(root + 'plugins/tagmenu/jquery.ui.editor.tagmenu.js', null, ['editor']);
         getLess(root + 'plugins/tagmenu/jquery.ui.editor.tagmenu.less');
