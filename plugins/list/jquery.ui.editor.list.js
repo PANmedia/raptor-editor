@@ -1,5 +1,5 @@
 $.ui.editor.registerUi({
-    'list-unordered': {
+    listUnordered: {
         init: function(editor) {
             return editor.uiButton({
                 title: _('Unordered List'),
@@ -14,7 +14,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'list-ordered': {
+    listOrdered: {
         init: function(editor) {
             return editor.uiButton({
                 title: _('Ordered List'),

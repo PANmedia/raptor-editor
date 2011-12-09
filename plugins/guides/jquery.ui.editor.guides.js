@@ -1,5 +1,5 @@
 $.ui.editor.registerUi({
-    'show-guides': {
+    showGuides: {
         init: function(editor, options) {
             this.bind('destroy', function() {
                 this.editor.getElement().removeClass(options.baseClass + '-visible');

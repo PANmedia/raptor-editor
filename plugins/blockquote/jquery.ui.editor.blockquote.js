@@ -1,5 +1,5 @@
 $.ui.editor.registerUi({
-    'quote-block': {
+    quoteBlock: {
         init: function(editor) {
             return editor.uiButton({
                 title: _('Blockquote'),
@@ -10,4 +10,3 @@ $.ui.editor.registerUi({
         }
     }
 });
-    

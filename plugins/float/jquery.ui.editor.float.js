@@ -1,5 +1,5 @@
 $.ui.editor.registerUi({
-    'float-left': {
+    floatLeft: {
         init: function(editor) {
             return editor.uiButton({
                 title: _('Float Left'),
@@ -9,8 +9,8 @@ $.ui.editor.registerUi({
             });
         }
     },
-    
-    'float-right': {
+
+    floatRight: {
         init: function(editor) {
             return editor.uiButton({
                 title: _('Float Right'),
@@ -20,8 +20,8 @@ $.ui.editor.registerUi({
             });
         }
     },
-    
-    'float-none': {
+
+    floatNone: {
         init: function(editor) {
             return editor.uiButton({
                 title: _('Float None'),

@@ -1,6 +1,6 @@
 (function($) {
-    
-    $.ui.editor.registerPlugin('clicktoedit', {
+
+    $.ui.editor.registerPlugin('clickToEdit', {
         init: function(editor, options) {
             var plugin = this;
             var message = $(editor.getTemplate('clicktoedit.message', options)).appendTo('body');
@@ -20,7 +20,7 @@
                     }
                 }
             }, options);
-
+            
             this.show = function() {
                 if (editor.isEditing()) return;
                 editor.getElement().addClass(options.baseClass + '-highlight');
@@ -42,7 +42,7 @@
             }
 
             message.position(options.position);
-            
+
             // Prevent obsucring links
             editor.getElement().find('a').bind('mouseenter.' + editor.widgetName, plugin.hide);
             editor.getElement().find('a').bind('mouseleave.' + editor.widgetName, plugin.show);
@@ -63,5 +63,5 @@
             })
         }
     });
-    
+
 })(jQuery);

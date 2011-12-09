@@ -29,7 +29,7 @@
  */
 
 $.ui.editor.registerUi({
-    'text-bold': /** @lends $.editor.ui.text-bold.prototype */ {
+    textBold: /** @lends $.editor.ui.text-bold.prototype */ {
         init: function(editor, options) {
             return this.editor.uiButton({
                 title: _('Bold'),
@@ -39,7 +39,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-italic': /** @lends $.editor.ui.text-italic.prototype */ {
+    textItalic: /** @lends $.editor.ui.text-italic.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Italic'),
@@ -49,7 +49,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-underline': /** @lends $.editor.ui.text-underline.prototype */ {
+    textUnderline: /** @lends $.editor.ui.text-underline.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Underline'),
@@ -59,7 +59,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-strike': /** @lends $.editor.ui.text-strike.prototype */ {
+    textStrike: /** @lends $.editor.ui.text-strike.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Strikethrough'),
@@ -69,7 +69,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-sub': /** @lends $.editor.ui.text-sub.prototype */ {
+    textSub: /** @lends $.editor.ui.text-sub.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Sub script'),
@@ -79,7 +79,7 @@ $.ui.editor.registerUi({
             });
         }
     },
-    'text-super': /** @lends $.editor.ui.text-super.prototype */ {
+    textSuper: /** @lends $.editor.ui.text-super.prototype */ {
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Super script'),
