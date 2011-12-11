@@ -7,7 +7,6 @@
 /**
  * Aligns text left within the selected or nearest block-level element.
  * <br/>
- * <br/>
  * Toggles <tt>text-align: left</tt>
  * 
  * @name $.editor.ui.alignLeft
@@ -16,7 +15,6 @@
 
  /**
  * Justifies text within the selected or nearest block-level element.
- * <br/>
  * <br/>
  * Toggles <tt>text-align: justify</tt>
  * 
@@ -27,7 +25,6 @@
  /**
  * Centers text within the selected or nearest block-level element.
  * <br/>
- * <br/>
  * Toggles: <tt>text-align: center</tt>
  * 
  * @name $.editor.ui.alignCenter
@@ -36,7 +33,6 @@
 
  /**
  * Aligns text right within the selected or nearest block-level element.
- * <br/>
  * <br/>
  * Toggles <tt>text-align: right</tt>
  * 
