@@ -294,15 +294,14 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     }
 });
 
-/**
- * Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
- * @name $.editor.ui.dock
- * @see  $.editor.plugin.dock
- * @class
- */
 $.ui.editor.registerUi({
     
-    
+    /**
+     * Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
+     * @name $.editor.ui.dock
+     * @see  $.editor.plugin.dock
+     * @class
+     */
     dock: /** @lends $.editor.ui.dock.prototype */ {
         /**
          * Initialise the ui component

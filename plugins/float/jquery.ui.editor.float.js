@@ -15,6 +15,12 @@
      * @class
      */
     floatLeft: /** @lends $.editor.ui.floatLeft.prototype */ {
+        /**
+         * Initialise the ui component
+         * @param  {$.editor} editor The editor instance 
+         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @return {$.editor.ui.floatLeft}
+         */
         init: function(editor) {
             return editor.uiButton({
                 title: _('Float Left'),
@@ -34,6 +40,12 @@
      * @class
      */
     floatRight: /** @lends $.editor.ui.floatLeft.prototype */ {
+        /**
+         * Initialise the ui component
+         * @param  {$.editor} editor The editor instance 
+         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @return {$.editor.ui.floatRight}
+         */
         init: function(editor) {
             return editor.uiButton({
                 title: _('Float Right'),
@@ -53,6 +65,12 @@
      * @class
      */
     floatNone: /** @lends $.editor.ui.floatNone.prototype */ {
+        /**
+         * Initialise the ui component
+         * @param  {$.editor} editor The editor instance 
+         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @return {$.editor.ui.floatNone}
+         */
         init: function(editor) {
             return editor.uiButton({
                 title: _('Float None'),

@@ -4,43 +4,16 @@
  * @author Michael Robinson mike@panmedia.co.nz
  */
 
-/**
- * Aligns text left within the selected or nearest block-level element.
- * <br/>
- * Toggles <tt>text-align: left</tt>
- * 
- * @name $.editor.ui.alignLeft
- * @class
- */
-
- /**
- * Justifies text within the selected or nearest block-level element.
- * <br/>
- * Toggles <tt>text-align: justify</tt>
- * 
- * @name $.editor.ui.alignJustify
- * @class
- */
-
- /**
- * Centers text within the selected or nearest block-level element.
- * <br/>
- * Toggles: <tt>text-align: center</tt>
- * 
- * @name $.editor.ui.alignCenter
- * @class
- */
-
- /**
- * Aligns text right within the selected or nearest block-level element.
- * <br/>
- * Toggles <tt>text-align: right</tt>
- * 
- * @name $.editor.ui.alignRight
- * @class
- */
-
 $.ui.editor.registerUi({
+
+    /**
+     * Aligns text left within the selected or nearest block-level element.
+     * <br/>
+     * Toggles <tt>text-align: left</tt>
+     * 
+     * @name $.editor.ui.alignLeft
+     * @class
+     */
     alignLeft: /** @lends $.editor.ui.alignLeft.prototype */ {
         /**
          * Initialise the ui component
@@ -59,6 +32,14 @@ $.ui.editor.registerUi({
         }
     },
 
+    /**
+     * Justifies text within the selected or nearest block-level element.
+     * <br/>
+     * Toggles <tt>text-align: justify</tt>
+     * 
+     * @name $.editor.ui.alignJustify
+     * @class
+     */
     alignJustify: /** @lends $.editor.ui.alignJustify.prototype */ {
         /**
          * Initialise the ui component
@@ -77,6 +58,14 @@ $.ui.editor.registerUi({
         }
     },
 
+    /**
+     * Centers text within the selected or nearest block-level element.
+     * <br/>
+     * Toggles: <tt>text-align: center</tt>
+     * 
+     * @name $.editor.ui.alignCenter
+     * @class
+     */
     alignCenter: /** @lends $.editor.ui.alignCenter.prototype */  {
         /**
          * Initialise the ui component
@@ -95,6 +84,14 @@ $.ui.editor.registerUi({
         }
     },
 
+    /**
+     * Aligns text right within the selected or nearest block-level element.
+     * <br/>
+     * Toggles <tt>text-align: right</tt>
+     * 
+     * @name $.editor.ui.alignRight
+     * @class
+     */
     alignRight: /** @lends $.editor.ui.alignRight.prototype */  {
         /**
          * Initialise the ui component
