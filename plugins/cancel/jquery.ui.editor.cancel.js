@@ -1,22 +1,14 @@
 /**
- * @fileOverview Cancel ui component
+ * @fileOverview Cancel plugin & ui component
  * @author David Neilson david@panmedia.co.nz
  * @author Michael Robinson mike@panmedia.co.nz
  */
-
 
  /**
   * Cancels editing
   * @name $.editor.ui.cancel
   * @class
   */
-
-// <debug>
-if (debugLevel >= MAX) {
-    info('TODO: make cancel function avalible as a plugin');
-}
-// </debug>
-
 $.ui.editor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
 
@@ -42,10 +34,10 @@ $.ui.editor.registerUi({
          * If the user accepts of if the editor is not dirty, cancel editing.
          */
         confirm: function() {
-            var ui = this;
+            var plugin = this.editor.plugins.cancel;
             var editor = this.editor;
             if (!editor.isDirty()) {
-                ui.cancel();
+                plugin.cancel();
             } else {
                 if (!this.dialog) this.dialog = $(editor.getTemplate('cancel.dialog'));
                 this.dialog.dialog({
@@ -59,7 +51,7 @@ $.ui.editor.registerUi({
                         {
                             text: _('OK'),
                             click: function() {
-                                ui.cancel();
+                                plugin.cancel();
                                 $(this).dialog('close');
                             }
                         },
@@ -81,8 +73,19 @@ $.ui.editor.registerUi({
                     }
                 });
             }
-        },
+        }
 
+    }
+});
+
+/**
+  * Plugin providing cancel functionality
+  * @name $.editor.plugin.cancel
+  * @class
+  */
+$.ui.editor.registerPlugin({
+   cancel: /** @lends $.editor.plugin.cancel.prototype */ {
+       
         /**
          * Cancel editing 
          * by resetting the editor's html its pre-intitialisation state, hiding the toolbar and disabling editing on the element
@@ -95,5 +98,5 @@ $.ui.editor.registerUi({
                 editor.disableEditing();
             });
         }
-    }
+   } 
 });
