@@ -28,6 +28,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 {regexp: /(<meta\s*[^>]*\s*>)|(<\s*link\s* href="file:[^>]*\s*>)|(<\/?\s*\w+:[^>]*\s*>)/gi, handler: ''},
                 // MS class tags and comment tags.
                 {regexp: /(class="Mso[^"]*")|(<!--(.|\s){1,}?-->)/gi, handler: ''},
+                // Apple class tags
+                {regexp: /(class="Apple-(style|converted)-[a-z]+\s?[^"]+")/, handle: ''},
                 // blank p tags
                 {regexp: /(<p[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/p[^>]*>)|(<p[^>]*>\s*<font[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/\s*font\s*>\s<\/p[^>]*>)/ig, handler: ''},
                 // Strip out styles containing mso defs and margins, as likely added in IE and are not good to have as it mangles presentation.
@@ -93,21 +95,33 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = filterWord(content);
                 content = filterChars(content);
+                
                 dialog = $(editor.getTemplate('paste.dialog', {
-                    pastedHtml: content
+                    html: content,
+                    plain: $('<div/>').html(content).text()
                 }));
 
-                dialog.find('.ui-editor-paste-plain').bind('keypress.' + editor.widgetName, function() {
-                    dialog.find('.ui-editor-paste-rich').html($(this).val());
-                    dialog.find('.ui-editor-paste-source').val($(this).val());
+                var synchronize = dialog.find('.ui-editor-paste-synchronize-text input[type="checkbox"]');
+
+                dialog.find('.ui-editor-paste-plain').bind('keyup.' + editor.widgetName, function() {
+                    if (synchronize.attr('checked')) {
+                        dialog.find('.ui-editor-paste-rich').html($(this).val());
+                        dialog.find('.ui-editor-paste-source').val($(this).val());
+                    }
                 });
-                dialog.find('.ui-editor-paste-rich').bind('keypress.' + editor.widgetName, function() {
-                    dialog.find('.ui-editor-paste-plain').val($(this).html());
-                    dialog.find('.ui-editor-paste-source').val($(this).html());
-                }).trigger('keypress');
-                dialog.find('.ui-editor-paste-source').bind('keypress.' + editor.widgetName, function() {
-                    dialog.find('.ui-editor-paste-plain').val($(this).val());
-                    dialog.find('.ui-editor-paste-rich').html($(this).val());
+
+                dialog.find('.ui-editor-paste-rich').bind('keyup.' + editor.widgetName, function() {
+                    if (synchronize.attr('checked')) {
+                        dialog.find('.ui-editor-paste-plain').val($(this).text());
+                        dialog.find('.ui-editor-paste-source').val($(this).html());
+                    }
+                });
+
+                dialog.find('.ui-editor-paste-source').bind('keyup.' + editor.widgetName, function() {
+                    if (synchronize.attr('checked')) {
+                        dialog.find('.ui-editor-paste-plain').val($(this).text());
+                        dialog.find('.ui-editor-paste-rich').html($(this).val());
+                    }
                 });
 
                 $(dialog).dialog({
