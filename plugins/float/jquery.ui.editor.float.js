@@ -39,7 +39,7 @@
      * @name $.editor.ui.floatRight
      * @class
      */
-    floatRight: /** @lends $.editor.ui.floatLeft.prototype */ {
+    floatRight: /** @lends $.editor.ui.floatRight.prototype */ {
         /**
          * Initialise the ui component
          * @param  {$.editor} editor The editor instance 

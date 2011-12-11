@@ -39,7 +39,7 @@ $.ui.editor.registerUi({
     /**
      * Step forward through the stored history
      * 
-     * @name $.editor.ui.undo
+     * @name $.editor.ui.redo
      * @class
      */
     'redo': /** @lends $.editor.ui.redo.prototype */ {

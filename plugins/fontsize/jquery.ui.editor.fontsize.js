@@ -31,7 +31,7 @@
     /**
      * Wraps selection with &lt;small&gt; tags or unwraps &lt;big&gt; tags from selection
      * 
-     * @name $.editor.ui.fontSizeInc
+     * @name $.editor.ui.fontSizeDec
      * @class
      */
     fontSizeDec: /** @lends $.editor.ui.fontSizeDec.prototype */ {
