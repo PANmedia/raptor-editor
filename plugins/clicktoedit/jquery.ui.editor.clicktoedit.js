@@ -10,7 +10,7 @@
   * @name $.editor.plugin.clickToEdit
   * @class
   */
-$.ui.editor.registerPlugin(clickToEdit, /** @lends $.editor.plugin.clickToEdit.prototype */ {
+$.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit.prototype */ {
     
     /**
      * Initialise the plugin
