@@ -16,15 +16,13 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
     },
 
     init: function(editor, options) {
+
         this.options = $.extend(this.options, {
             resizingClass: this.options.baseClass + '-in-progress',
             resizeAjaxClass: this.options.baseClass + '-on-save'
         });
         
-        editor.bind('change', this.scanImages, this);
-        editor.bind('destroy', this.destroy, this);
-        editor.bind('save', this.save, this);
-        editor.bind('cancel', this.cancel, this);
+        editor.bind('enabled', this.bind, this);
 
         // If the function addEventListener exists, bind our custom image resized event
         this.resized = $.proxy(this.imageResized, this);
@@ -40,12 +38,24 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
     },
 
     /**
+     * Bind events
+     */
+    bind: function() {
+        this.editor.bind('change', this.scanImages, this);
+        this.editor.bind('destroy', this.destroy, this);
+        this.editor.bind('save', this.save, this);
+        this.editor.bind('cancel', this.cancel, this);
+    },
+
+    /**
      * Handler simulating a 'resize' event for image elements
      * @param {Object} event
      */
     imageResized: function(event) {
         var target = $(event.target);
-        if(target.is('img') /*&& target.attr('_moz_resizing')*/ && event.attrName == 'style' && event.newValue.match(/width|height/)) {
+        if(target.is('img') /*&& target.attr('_moz_resizing')*/ 
+            && event.attrName == 'style' 
+            && event.newValue.match(/width|height/)) {
             if (this.options.resizeAjax) target.addClass(this.options.resizeAjaxClass);
             this.editor.fire('change');
         }
