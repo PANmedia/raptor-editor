@@ -2,7 +2,7 @@
  * @name $.editor.plugin.paste
  * @class
  */
-$.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */{
+$.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
     /**
      * @param  {$.ui.editor} editor
