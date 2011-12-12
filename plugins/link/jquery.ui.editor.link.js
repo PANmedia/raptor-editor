@@ -106,11 +106,6 @@
     },
 
     /**
-     * @name $.editor.plugin.link.defaultLinkTypes
-     * @namespace
-     */
-
-    /**
      * Array of default link types
      * @type {Array}
      */
