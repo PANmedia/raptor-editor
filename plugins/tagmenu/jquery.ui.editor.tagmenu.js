@@ -3,10 +3,14 @@
  * @author David Neilson david@panmedia.co.nz
  * @author Michael Robinson mike@panmedia.co.nz
  */
-
 $.ui.editor.registerUi({
     
-    tagMenu: {
+    /**
+     * @name $.editor.plugin.tagMenu
+     * @augments $.ui.editor.defaultPlugin
+     * @class Select menu allowing users to change the tag for selection
+     */
+    tagMenu: /** @lends $.editor.plugin.tagMenu.prototype */ {
     
         /**
          * @see $.ui.editor.defaultUi#init
