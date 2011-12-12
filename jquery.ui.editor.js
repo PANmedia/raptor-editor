@@ -1516,17 +1516,51 @@ $.extend($.ui.editor,
     /**
      * @property {Object} defaultUi
      */
-    defaultUi: {
+    defaultUi: /** @lends $.editor.ui.prototype */ {
         ui: null,
+        
+        /**
+         * The {@link $.ui.editor} instance
+         * @type {Object}
+         */
         editor: null,
+
+        /**
+         * @type {Object}
+         */
         options: null,
+
+        /**
+         * Initialise & return an instance of this UI component
+         * @param  {$.editor} editor  The editor instance
+         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @return {Object} An instance of the ui component
+         */
         init: function(editor, options) {},
+
+        /**
+         * @param  {String} key   The key
+         * @param  {[String|Object|int|float]} value A value to be stored
+         * @return {String|Object|int|float} The stored value
+         */
         persist: function(key, value) {
             return this.editor.persist(key, value);
         },
+
+        /**
+         * @param  {String}   name     
+         * @param  {Function} callback 
+         * @param  {String}   context  
+         */
         bind: function(name, callback, context) {
             this.editor.bind(name, callback, context || this);
         },
+
+        /**
+         * @param  {String}   name     
+         * @param  {Function} callback 
+         * @param  {Object}   context  
+         */
         unbind: function(name, callback, context) {
             this.editor.unbind(name, callback, context || this);
         }
@@ -1556,16 +1590,50 @@ $.extend($.ui.editor,
     /**
      * @property {Object} defaultPlugin
      */
-    defaultPlugin: {
+    defaultPlugin: /** @lends $.editor.plugin.prototype */ {
+        
+        /**
+         * The {@link $.ui.editor} instance
+         * @type {Object}
+         */
         editor: null,
+        
+        /**
+         * @type {Object}
+         */
         options: null,
+        
+        /**
+         * Initialise & return an instance of this plugin
+         * @param  {$.editor} editor  The editor instance
+         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @return {Object} An instance of the ui component
+         */
         init: function(editor, options) {},
+        
+        /**
+         * @param  {String} key   The key
+         * @param  {[String|Object|int|float]} value A value to be stored
+         * @return {String|Object|int|float} The stored value
+         */
         persist: function(key, value) {
             return this.editor.persist(key, value);
         },
+
+        /**
+         * @param  {String}   name     
+         * @param  {Function} callback 
+         * @param  {String}   context  
+         */
         bind: function(name, callback, context) {
             this.editor.bind(name, callback, context || this);
         },
+
+        /**
+         * @param  {String}   name     
+         * @param  {Function} callback 
+         * @param  {Object}   context  
+         */
         unbind: function(name, callback, context) {
             this.editor.unbind(name, callback, context || this);
         }
