@@ -1,4 +1,8 @@
-    .ui-editor-link-button .ui-icon-link {
+.textOverrides {
+    text-shadow: none;
+    color: #000;
+}
+.ui-editor-link-button .ui-icon-link {
     background: url(images/link.png) 0 0;
 }
 
@@ -32,6 +36,7 @@
     float: left;
     border-right: 1px dashed #D4D4D4;
     p {
+        .textOverrides;
         font-weight: bold;
         margin: 12px 0;
     }
@@ -40,6 +45,7 @@
         padding: 7px 4px;
         font-size: 12px;
         label {
+            .textOverrides;
             display: block;
             margin-bottom: 10px;
             span {
@@ -73,12 +79,16 @@
         }
     }
     h2 {
+        .textOverrides;
         margin: 10px 0 0;
     }
     fieldset {
         margin: 2px 4px;
         padding: 7px 4px;
         font-size: 12px;
+        label {
+            .textOverrides;
+        }
         input[type="text"] {
             width: 400px;
         }
@@ -95,6 +105,7 @@
     }
     ol {
         li {
+            .textOverrides;
             list-style: decimal inside;
         }
     }
