@@ -99,3 +99,14 @@
  * @name $.editor#originalHtml
  * @property {String} originalHtml 
  */
+
+
+/**
+ * @name $.editor.ui
+ * @class
+ */
+
+/**
+ * @name $.editor.plugin
+ * @class
+ */
