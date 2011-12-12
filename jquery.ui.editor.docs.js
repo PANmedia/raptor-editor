@@ -100,13 +100,12 @@
  * @property {String} originalHtml 
  */
 
-
 /**
  * @name $.editor.ui
- * @class
+ * @namespace Namespace beneath which all ui components reside
  */
 
 /**
  * @name $.editor.plugin
- * @class
+ * @namespace Namespace beneath which all plugins reside
  */
