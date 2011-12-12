@@ -17,95 +17,6 @@
     dialog: null,
 
     /**
-     * @name $.editor.plugin.link.baseLinkType
-     * @class Default {@link $.editor.plugin.link} type
-     * @see $.editor.plugin.link
-     * @type {Object}
-     */
-    baseLinkType: /** @lends $.editor.plugin.link.baseLinkType.prototype */ {
-        
-        /**
-         * Name of the link type
-         * @type {String}
-         */
-        type: null,
-
-        /**
-         * Title of the link type.
-         * Used in the link panel's radio button
-         */
-        title: null,
-
-        /**
-         * Content intended for use in the {@link $.editor.plugin.link} dialog's panel
-         */
-        content: null,
-
-        /**
-         * Reference to the instance of {@link $.editor.plugin.link}
-         */
-        plugin: this,
-
-        /**
-         * Reference to {@link $.editor.plugin.link#options}
-         */
-        options: this.options,
-
-        /**
-         * Function returning the attributes to be applied to the selection
-         */
-        attributes: function() {},
-
-        /**
-         * Initialise the link type
-         */
-        init: function() {
-            return this;
-        },
-
-        /**
-         * Any actions (binding, population of inputs) required before the {@link $.editor.plugin.link} dialog's panel for this link type is made visible
-         */
-        show: function() {},
-
-        /**
-         * Function determining whether this link type's radio button should be selected
-         * @param  {Object} link The selected element
-         * @return {Boolean} True if the selection represents a link of this type
-         */
-        editing: function(link) {
-            if (link.attr('class')) {
-                var classes = link.attr('class').split(/\s/gi);
-                for (var i = 0; i < classes.length; i++) {
-                    if (classes[i].trim() && $(this).hasClass(classes[i])) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        },
-
-        /**
-         * CSS selector for the input that the {@link $.editor.plugin.link.baseLinkType.focus} function should use
-         * @type {String}
-         */
-        focusSelector: null,
-
-        /**
-         * Any actions required after this link type's content is made visible
-         * @private
-         */
-        focus: function() {
-            if (this.focusSelector) {
-                var input = $(this.focusSelector);
-                var value = input.val();
-                input.val('');
-                input.focus().val(value);
-            }
-        }
-    },
-
-    /**
      * Array of default link types
      * @type {Array}
      */
@@ -226,8 +137,8 @@
 
                 return attributes;
             }
-        ]
-    },
+        },
+    ],
 
     /**
      * @see $.ui.editor.defaultPlugin#init
@@ -251,6 +162,94 @@
      */
     initTypes: function(edit) {
 
+        /**
+         * @name $.editor.plugin.link.baseLinkType
+         * @class Default {@link $.editor.plugin.link} type
+         * @see $.editor.plugin.link
+         */
+        var baseLinkType = /** @lends $.editor.plugin.link.baseLinkType.prototype */ {
+            
+            /**
+             * Name of the link type
+             * @type {String}
+             */
+            type: null,
+
+            /**
+             * Title of the link type.
+             * Used in the link panel's radio button
+             */
+            title: null,
+
+            /**
+             * Content intended for use in the {@link $.editor.plugin.link} dialog's panel
+             */
+            content: null,
+
+            /**
+             * Reference to the instance of {@link $.editor.plugin.link}
+             */
+            plugin: this,
+
+            /**
+             * Reference to {@link $.editor.plugin.link#options}
+             */
+            options: this.options,
+
+            /**
+             * Function returning the attributes to be applied to the selection
+             */
+            attributes: function() {},
+
+            /**
+             * Initialise the link type
+             */
+            init: function() {
+                return this;
+            },
+
+            /**
+             * Any actions (binding, population of inputs) required before the {@link $.editor.plugin.link} dialog's panel for this link type is made visible
+             */
+            show: function() {},
+
+            /**
+             * Function determining whether this link type's radio button should be selected
+             * @param  {Object} link The selected element
+             * @return {Boolean} True if the selection represents a link of this type
+             */
+            editing: function(link) {
+                if (link.attr('class')) {
+                    var classes = link.attr('class').split(/\s/gi);
+                    for (var i = 0; i < classes.length; i++) {
+                        if (classes[i].trim() && $(this).hasClass(classes[i])) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            },
+
+            /**
+             * CSS selector for the input that the {@link $.editor.plugin.link.baseLinkType.focus} function should use
+             * @type {String}
+             */
+            focusSelector: null,
+
+            /**
+             * Any actions required after this link type's content is made visible
+             * @private
+             */
+            focus: function() {
+                if (this.focusSelector) {
+                    var input = $(this.focusSelector);
+                    var value = input.val();
+                    input.val('');
+                    input.focus().val(value);
+                }
+            }
+        };
+
         if (this.options.replaceTypes) linkTypes = this.options.customTypes;
         else linkTypes = $.merge(this.defaultLinkTypes, this.options.customTypes);
 
@@ -258,7 +257,7 @@
         var link; 
 
         for (var i = 0; i < linkTypes.length; i++) {
-            link = $.extend({}, this.baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
+            link = $.extend({}, baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
             this.types[link.type] = link;
             $(this.editor.getTemplate('link.label', link)).appendTo(linkTypesFieldset);
         }
