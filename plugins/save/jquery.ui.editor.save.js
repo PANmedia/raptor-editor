@@ -1,6 +1,21 @@
-$.ui.editor.registerPlugin('save', {
+/**
+ * @name $.editor.plugin.save
+ * @augments $.ui.editor.defaultPlugin
+ * @class Provides an interface for saving the element's content via AJAX
+ */
+$.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ {
 
-    options: {
+    /**
+     * Default options
+     * @name $.editor.plugin.save.options
+     * @type {Object}
+     * @class
+     */
+    options: /** @lends $.editor.plugin.save.options.prototype */  {
+        /**
+         * @name $.editor.plugin.save.options#id
+         * @type {Object}
+         */
         id: { attr: 'name' },
         postName: 'content',
         showResponse: false,
@@ -12,6 +27,9 @@ $.ui.editor.registerPlugin('save', {
         }
     },
 
+    /**
+     * @see $.ui.editor.defaultPlugin#init
+     */
     init: function() {
     },
 
@@ -151,6 +169,10 @@ $.ui.editor.registerPlugin('save', {
 });
 
 $.ui.editor.registerUi({
+
+    /**
+     * @see $.ui.editor.defaultUi#init
+     */
     save: {
         init: function(editor, element) {
             return editor.uiButton({

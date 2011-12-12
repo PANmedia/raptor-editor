@@ -99,3 +99,13 @@
  * @name $.editor#originalHtml
  * @property {String} originalHtml 
  */
+
+/**
+ * @name $.editor.ui
+ * @namespace Namespace beneath which all ui components reside
+ */
+
+/**
+ * @name $.editor.plugin
+ * @namespace Namespace beneath which all plugins reside
+ */

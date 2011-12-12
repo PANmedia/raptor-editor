@@ -1,12 +1,21 @@
-// <debug>
-if (debugLevel >= MAX) {
-    info('FIXME: unbind events on destroy');
-}
-// </debug>
-
-// Add history undo / redo buttons
+/**
+ * @fileOverview History ui components
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
+        
 $.ui.editor.registerUi({
-    'undo': {
+    
+    /**
+     * @name $.editor.ui.undo
+     * @augments $.ui.editor.defaultUi
+     * @class Revert most recent change to element content
+     */
+    undo: /** @lends $.editor.ui.undo.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor) {
             editor.bind('change', this.change, this);
             
@@ -23,7 +32,17 @@ $.ui.editor.registerUi({
             else this.ui.enable();
         }
     },
-    'redo': {
+
+    /**
+     * @name $.editor.ui.redo
+     * @augments $.ui.editor.defaultUi
+     * @class Step forward through the stored history
+     */
+    redo: /** @lends $.editor.ui.redo.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor) {
             editor.bind('change', this.change, this);
             

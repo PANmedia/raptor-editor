@@ -1,82 +1,20 @@
 /**
  * @name $.editor.plugin.paste
- * @class
+ * @extends $.editor.plugin
+ * @class Plugin that captures paste events on the element and shows a modal dialog containing different versions of what was pasted.
+ * Intended to prevent horrible 'paste from word' catastophes.
  */
-$.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */{
-
+$.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
+    
     /**
-     * @param  {$.ui.editor} editor
-     * @param  {Object} options
+     * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         var inProgress = false;
         var dialog = false;
         var selector = '.uiWidgetEditorPasteBin';
+        var plugin = this;
 
-        function filterWord(content) {
-            // The filters variable is an array of of regular expression & handler pairs.
-            // 
-            // The regular expressions attempt to strip out a lot of style data that 
-            // MS Word likes to insert when pasting into a contentEditable.
-            // Almost all of it is junk and not good html.  
-            // 
-            // The hander is a place to put a function for match handling.  
-            // In most cases, it just handles it as empty string.  But the option is there 
-            // for more complex handling.
-            var filters = [
-                // Meta tags, link tags, and prefixed tags
-                {regexp: /(<meta\s*[^>]*\s*>)|(<\s*link\s* href="file:[^>]*\s*>)|(<\/?\s*\w+:[^>]*\s*>)/gi, handler: ''},
-                // MS class tags and comment tags.
-                {regexp: /(class="Mso[^"]*")|(<!--(.|\s){1,}?-->)/gi, handler: ''},
-                // blank p tags
-                {regexp: /(<p[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/p[^>]*>)|(<p[^>]*>\s*<font[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/\s*font\s*>\s<\/p[^>]*>)/ig, handler: ''},
-                // Strip out styles containing mso defs and margins, as likely added in IE and are not good to have as it mangles presentation.
-                {regexp: /(style="[^"]*mso-[^;][^"]*")|(style="margin:\s*[^;"]*;")/gi, handler: ''},
-                // Style tags
-                {regexp: /(?:<style([^>]*)>([\s\S]*?)<\/style>|<link\s+(?=[^>]*rel=['"]?stylesheet)([^>]*?href=(['"])([^>]*?)\4[^>\/]*)\/?>)/gi, handler: ''},
-                // Scripts (if any)
-                {regexp: /(<\s*script[^>]*>((.|\s)*?)<\\?\/\s*script\s*>)|(<\s*script\b([^<>]|\s)*>?)|(<[^>]*=(\s|)*[("|')]javascript:[^$1][(\s|.)]*[$1][^>]*>)/ig, handler: ''}
-            ];
-
-            $.each(filters, function(i, filter) {
-                content = content.replace(filter.regexp, filter.handler);
-            });
-
-            return content;
-        }
-
-        // Replaces commonly-used Windows 1252 encoded chars that do not exist in 
-        // ASCII or ISO-8859-1 with ISO-8859-1 cognates.
-        function filterChars(content) {
-            var s = content;
-
-            // smart single quotes and apostrophe
-            s = s.replace(/[\u2018|\u2019|\u201A]/g, '\'');
-
-            // smart double quotes
-            s = s.replace(/[\u201C|\u201D|\u201E]/g, '\"');
-
-            // ellipsis
-            s = s.replace(/\u2026/g, '...');
-
-            // dashes
-            s = s.replace(/[\u2013|\u2014]/g, '-');
-
-            // circumflex
-            s = s.replace(/\u02C6/g, '^');
-
-            // open angle bracket
-            s = s.replace(/\u2039/g, '<');
-
-            // close angle bracket
-            s = s.replace(/\u203A/g, '>');
-
-            // spaces
-            s = s.replace(/[\u02DC|\u00A0]/g, ' ');
-
-            return s;
-        }
-        
         // Event binding
         editor.getElement().bind('paste.' + editor.widgetName, $.proxy(function(event) {
             if (inProgress) return false;
@@ -91,28 +29,24 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
             window.setTimeout(function() {
                 var content = $(selector).html();
-                content = filterWord(content);
-                content = filterChars(content);
-                dialog = $(editor.getTemplate('paste.dialog', {
-                    pastedHtml: content
-                }));
+                content = plugin.filterAttributes(content);
+                content = plugin.filterChars(content);
+                var vars = {
+                    html: content,
+                    plain: $('<div/>').html(content).text(),
+                    markup: plugin.stripAttributes(content)
+                };
+                console.debug(vars);
+                dialog = $(editor.getTemplate('paste.dialog', vars));
 
-                dialog.find('.ui-editor-paste-plain').bind('keypress.' + editor.widgetName, function() {
-                    dialog.find('.ui-editor-paste-rich').html($(this).val());
-                    dialog.find('.ui-editor-paste-source').val($(this).val());
+                dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
+                    plugin.updateAreas(this, dialog);    
                 });
-                dialog.find('.ui-editor-paste-rich').bind('keypress.' + editor.widgetName, function() {
-                    dialog.find('.ui-editor-paste-plain').val($(this).html());
-                    dialog.find('.ui-editor-paste-source').val($(this).html());
-                }).trigger('keypress');
-                dialog.find('.ui-editor-paste-source').bind('keypress.' + editor.widgetName, function() {
-                    dialog.find('.ui-editor-paste-plain').val($(this).val());
-                    dialog.find('.ui-editor-paste-rich').html($(this).val());
-                });
+
 
                 $(dialog).dialog({
                     modal: true,
-                    width: 450,
+                    width: 650,
                     height: 500,
                     resizable: true,
                     title: 'Paste',
@@ -126,15 +60,16 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                 text: _('Insert'),
                                 click: function() {
                                     var html = null;
-                                    var element = $(this).find('textarea:visible, .ui-editor-paste-rich:visible');
+                                    var element = $(this).find('.ui-editor-paste-area:visible');
 
                                     if (element.hasClass('ui-editor-paste-plain') || element.hasClass('ui-editor-paste-source')) {
                                         html = element.val();
-                                    } else if (element.hasClass('ui-editor-paste-rich')) {
+                                    } else {
                                         html = element.html();
                                     }
-                                    html = filterWord(html);
-                                    html = filterChars(html);
+
+                                    html = plugin.filterAttributes(html);
+                                    html = plugin.filterChars(html);
 
                                     rangy.restoreSelection(selection);
                                     editor.replaceSelection(html);
@@ -178,5 +113,121 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
             return true;
         }, this));
+    },
+
+    /**
+     * Attempts to filter rubbish from content using regular expressions
+     * @param  {String} content Dirty text
+     * @return {String} The filtered content
+     */
+    filterAttributes: function(content) {
+        // The filters variable is an array of of regular expression & handler pairs.
+        // 
+        // The regular expressions attempt to strip out a lot of style data that 
+        // MS Word likes to insert when pasting into a contentEditable.
+        // Almost all of it is junk and not good html.  
+        // 
+        // The hander is a place to put a function for match handling.  
+        // In most cases, it just handles it as empty string.  But the option is there 
+        // for more complex handling.
+        var filters = [
+            // Meta tags, link tags, and prefixed tags
+            {regexp: /(<meta\s*[^>]*\s*>)|(<\s*link\s* href="file:[^>]*\s*>)|(<\/?\s*\w+:[^>]*\s*>)/gi, handler: ''},
+            // MS class tags and comment tags.
+            {regexp: /(class="Mso[^"]*")|(<!--(.|\s){1,}?-->)/gi, handler: ''},
+            // Apple class tags
+            {regexp: /(class="Apple-(style|converted)-[a-z]+\s?[^"]+")/, handle: ''},
+            // Google doc attributes 
+            {regexp: /id="internal-source-marker_[^"]+"|dir="[rtl]{3}"/, handle: ''},
+            // blank p tags
+            {regexp: /(<p[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/p[^>]*>)|(<p[^>]*>\s*<font[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/\s*font\s*>\s<\/p[^>]*>)/ig, handler: ''},
+            // Strip out styles containing mso defs and margins, as likely added in IE and are not good to have as it mangles presentation.
+            {regexp: /(style="[^"]*mso-[^;][^"]*")|(style="margin:\s*[^;"]*;")/gi, handler: ''},
+            // Style tags
+            {regexp: /(?:<style([^>]*)>([\s\S]*?)<\/style>|<link\s+(?=[^>]*rel=['"]?stylesheet)([^>]*?href=(['"])([^>]*?)\4[^>\/]*)\/?>)/gi, handler: ''},
+            // Scripts (if any)
+            {regexp: /(<\s*script[^>]*>((.|\s)*?)<\\?\/\s*script\s*>)|(<\s*script\b([^<>]|\s)*>?)|(<[^>]*=(\s|)*[("|')]javascript:[^$1][(\s|.)]*[$1][^>]*>)/ig, handler: ''}
+        ];
+
+        $.each(filters, function(i, filter) {
+            content = content.replace(filter.regexp, filter.handler);
+        });
+
+        return content;
+    },
+
+    /**
+     * Replaces commonly-used Windows 1252 encoded chars that do not exist in ASCII or ISO-8859-1 with ISO-8859-1 cognates.
+     * @param  {[type]} content [description]
+     * @return {[type]}
+     */
+    filterChars: function(content) {
+        var s = content;
+
+        // smart single quotes and apostrophe
+        s = s.replace(/[\u2018|\u2019|\u201A]/g, '\'');
+
+        // smart double quotes
+        s = s.replace(/[\u201C|\u201D|\u201E]/g, '\"');
+
+        // ellipsis
+        s = s.replace(/\u2026/g, '...');
+
+        // dashes
+        s = s.replace(/[\u2013|\u2014]/g, '-');
+
+        // circumflex
+        s = s.replace(/\u02C6/g, '^');
+
+        // open angle bracket
+        s = s.replace(/\u2039/g, '<');
+
+        // close angle bracket
+        s = s.replace(/\u203A/g, '>');
+
+        // spaces
+        s = s.replace(/[\u02DC|\u00A0]/g, ' ');
+
+        return s;
+    },
+
+    /**
+     * Strip all attributes from content (if it's an element), and every element contained within
+     * Strip loop taken from <a href="http://stackoverflow.com/a/1870487/187954">Remove all attributes</a>
+     * @param  {String|Element} content The string / element to be cleaned
+     * @return {String} The cleaned string
+     */
+    stripAttributes: function(content) {
+        content = $('<div/>').html(content);
+        $(content.find('*')).each(function() {
+            // First copy the attributes to remove if we don't do this it causes problems iterating over the array we're removing elements from
+            var attributes = $.map(this.attributes, function(item) {
+                return item.name;
+            });
+
+            // now use jQuery to remove the attributes
+            var img = $(this);
+            $.each(attributes, function(i, item) {
+                img.removeAttr(item);
+            });
+        });
+        return content.html();
+    },
+
+    /**
+     * Update text input content
+     * @param  {Element} target The input being edited
+     * @param  {Element} dialog The paste dialog
+     */
+    updateAreas: function(target, dialog) {
+
+        var synchronize = dialog.find('.ui-editor-paste-synchronize-text input[type="checkbox"]');
+        var content = $(target).is('textarea') ? $(target).val() : $(target).html();
+        if (synchronize.attr('checked')) {
+            if (!$(target).hasClass('ui-editor-paste-plain')) dialog.find('.ui-editor-paste-plain').val($('<div/>').html(content).text());
+            if (!$(target).hasClass('ui-editor-paste-rich')) dialog.find('.ui-editor-paste-rich').html(content);
+            if (!$(target).hasClass('ui-editor-paste-source')) dialog.find('.ui-editor-paste-source').html(content);
+            if (!$(target).hasClass('ui-editor-paste-markup')) dialog.find('.ui-editor-paste-markup').html(this.stripAttributes(content));
+        }
     }
 });

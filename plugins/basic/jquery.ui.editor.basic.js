@@ -1,35 +1,23 @@
 /**
- * @name $.editor.ui.text-bold
- * @class
- */
-
-/**
- * @name $.editor.ui.text-italic
- * @class
- */
-
-/**
- * @name $.editor.ui.text-underline
- * @class
- */
-
-/**
- * @name $.editor.ui.text-strike
- * @class
- */
-
-/**
- * @name $.editor.ui.text-sub
- * @class
- */
-
-/**
- * @name $.editor.ui.text-super
- * @class
+ * @fileOverview Basic text styling ui components
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
  */
 
 $.ui.editor.registerUi({
-    textBold: /** @lends $.editor.ui.text-bold.prototype */ {
+
+    /**
+     * @name $.editor.ui.textBold
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps (or unwraps) the selection with &lt;strong&gt; tags
+     * <br/>
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element 
+     */
+    textBold: /** @lends $.editor.ui.textBold.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             return this.editor.uiButton({
                 title: _('Bold'),
@@ -39,7 +27,18 @@ $.ui.editor.registerUi({
             });
         }
     },
-    textItalic: /** @lends $.editor.ui.text-italic.prototype */ {
+
+    /**
+     * @name $.editor.ui.textItalic
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps (or unwraps) the selection with &lt;em&gt; tags
+     * <br/>
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element 
+     */
+    textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Italic'),
@@ -49,7 +48,19 @@ $.ui.editor.registerUi({
             });
         }
     },
-    textUnderline: /** @lends $.editor.ui.text-underline.prototype */ {
+
+    /**
+     * @name $.editor.ui.textUnderline
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps (or unwraps) the selection with &lt;u&gt; tags
+     * <br/>
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element 
+     */
+    textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */        
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Underline'),
@@ -59,7 +70,19 @@ $.ui.editor.registerUi({
             });
         }
     },
-    textStrike: /** @lends $.editor.ui.text-strike.prototype */ {
+
+    /**
+     * @name $.editor.ui.textStrike
+     * @augments $.ui.editor.defaultUi
+     * @class  Wraps (or unwraps) the selection with &lt;del&gt; tags
+     * <br/>
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element 
+     */
+    textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */        
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Strikethrough'),
@@ -69,7 +92,19 @@ $.ui.editor.registerUi({
             });
         }
     },
-    textSub: /** @lends $.editor.ui.text-sub.prototype */ {
+
+    /**
+     * @name $.editor.ui.textSub
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps (or unwraps) the selection with &lt;sub&gt; tags
+     * <br/>
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element 
+     */
+    textSub: /** @lends $.editor.ui.textSub.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Sub script'),
@@ -79,7 +114,19 @@ $.ui.editor.registerUi({
             });
         }
     },
-    textSuper: /** @lends $.editor.ui.text-super.prototype */ {
+
+    /**
+     * @name $.editor.ui.textSuper
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps (or unwraps) the selection with &lt;sup&gt; tags
+     * <br/>
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'super' or a custom class (if present) to the &lt;sub&gt; element 
+     */
+    textSuper: /** @lends $.editor.ui.textSuper.prototype */ {
+
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Super script'),

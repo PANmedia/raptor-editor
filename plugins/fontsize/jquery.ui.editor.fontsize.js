@@ -1,5 +1,21 @@
-$.ui.editor.registerUi({
-    fontSizeInc: {
+/**
+ * @fileOverview Font size ui components
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
+
+ $.ui.editor.registerUi({
+    
+    /**
+     * @name $.editor.ui.fontSizeInc
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps selection with &lt;big&gt; tags or unwraps &lt;small&gt; tags from selection
+     */
+    fontSizeInc: /** @lends $.editor.ui.fontSizeInc.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Increase Font Size'),
@@ -9,7 +25,17 @@ $.ui.editor.registerUi({
             });
         }
     },
-    fontSizeDec: {
+
+    /**
+     * @name $.editor.ui.fontSizeDec
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps selection with &lt;small&gt; tags or unwraps &lt;big&gt; tags from selection
+     */
+    fontSizeDec: /** @lends $.editor.ui.fontSizeDec.prototype */ {
+        
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Decrease Font Size'),

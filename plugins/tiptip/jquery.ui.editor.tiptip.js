@@ -9,6 +9,9 @@ $.ui.editor.registerPlugin('tiptip', {
     currentLocale: null,
     docked: false,
 
+    /**
+     * @see $.ui.editor.defaultPlugin#init
+     */
     init: function(editor, options) {
         var ui = this;
 

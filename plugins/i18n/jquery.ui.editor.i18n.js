@@ -1,5 +1,20 @@
-$.ui.editor.registerUi({
+/**
+ * @fileOverview Internationalization UI component
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
+ $.ui.editor.registerUi({
+    
+    /**
+     * @name $.editor.ui.i18n
+     * @augments $.ui.editor.defaultUi
+     * @class Provides a dropdown to allow the user to switch between available localizations
+     */
     i18n: {
+
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, options) {
             var ui = this;
             var locale = this.persist('locale');
