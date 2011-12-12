@@ -1,8 +1,8 @@
-// <debug>
-if (debugLevel >= MAX) {
-    info('FIXME: tagmenu check destroy detaches menu');
-}
-// </debug>
+/**
+ * @fileOverview UI Component for a tag-change select menu
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
 
 $.ui.editor.registerUi({
     
@@ -23,6 +23,10 @@ $.ui.editor.registerUi({
                 }
             });
         },
+
+        /**
+         * Content changed event
+         */
         change: function() {
             var tag = this.editor.getSelectedElements()[0];
             if (!tag) return;
