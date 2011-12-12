@@ -53,54 +53,85 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      * Keep a track of whether the editor is docked or not - if this changes then the tiptips need to be regenerated
      * @type {Boolean}
      */
-    docked: false,
+    wasDocked: false,
 
     /**
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
-        editor.bind('resize', this.resize, this);
+        
+        // <strict>    
+        // Ensure tipTip has been included
+        if (!$.isFunction($.fn.tipTip)) {
+            handleError(_('jquery.ui.editor.tiptip requires TipTip. '));
+            return;
+        }
+        // </strict>
+        
+        editor.bind('resize', this.rebuildUi, this);
+        editor.bind('dock', this.rebuildUi, this);
+        editor.bind('tagTreeUpdated', this.rebuildTagTree, this);
     },
 
     /**
      * Rebuild tiptip tooltips if the editor has been docked / undocked or the locale has been changed since last resize
      */
-    resize: function() {
-
-        // Need to check for the docking plugin, and if so whether the editor has been docked / undocked
-        var docked = this.editor.getPlugin('dock') ? this.editor.getPlugin('dock').isDocked() : false;
+    rebuildUi: function() {
 
         // Only apply tiptip to the core elements if it hasn't yet been applied, 
         // or the locale has been changed or the editor docked / undocked
-        if (this.currentLocale != this.options.locale || docked != this.docked) {
-            // <strict>
-            // Ensure jQuery has been included
-            if (!$.isFunction($.fn.tipTip)) {
-                handleError(_('jquery.ui.editor.tiptip requires TipTip. '));
-                return;
-            }
-            // </strict>
-            var tipTipOptions = {
-                maxWidth: 'auto',
-                delay: this.options.delay,
-                fadeIn: this.options.fadeIn,
-                fadeOut: this.options.fadeOut,
-                defaultPosition: docked ? 'bottom' : 'top' 
-            };
+        if (this.currentLocale != this.options.locale || this.isDocked() != this.wasDocked) {
 
             var ui = this;
             // Apply tiptip to all children of the relevant elements that either have a title attribute or the required class
-            var elements = $.merge(this.editor.selToolbar('[title], .' + this.options.baseClass + '-tiptip'), 
-                            this.editor.selTitle('[title], .' + this.options.baseClass + '-tiptip'));
-
-            elements.each(function() {
-                $(this).tipTip(tipTipOptions).addClass(ui.options.baseClass + '-tiptip');
+            this.editor.selToolbar('[title], .' + this.options.baseClass + '-tiptip').each(function() {
+                $(this).tipTip(ui.tipTipOptions()).addClass(ui.options.baseClass + '-tiptip');
             });
 
-            this.docked = docked;
+            this.rebuildTagTree();
+
+            this.wasDocked = this.isDocked();
             this.currentLocale = this.options.locale;
         }
         // Unsaved edit warnings could be added / removed on change, so we should check for them each time
-        $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(tipTipOptions, { defaultPosition: 'right' }));
+        $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(this.tipTipOptions(), { defaultPosition: 'right' }));
+    },
+
+    /**
+     * Apply tipTip to all relevant title bar elements
+     */
+    rebuildTagTree: function() {
+        var ui = this;
+        this.editor.selTitle('[title], .' + this.options.baseClass + '-tiptip').each(function() {
+            $(this).tipTip(ui.tipTipOptions(true)).addClass(ui.options.baseClass + '-tiptip');
+        })
+    },
+
+    /**
+     * Prepare and return the tipTip options
+     * @param  {Boolean} tagTree whether these options are to be applied to tag tree tipTips
+     * @return {Object}
+     */
+    tipTipOptions: function(tagTree) {
+        var options = {
+            maxWidth: 'auto',
+            delay: this.options.delay,
+            fadeIn: this.options.fadeIn,
+            fadeOut: this.options.fadeOut
+        };
+
+        if (tagTree) options.defaultPosition = 'top';
+        else options.defaultPosition = this.isDocked() ? 'bottom' : 'top';
+
+        return options;
+    },
+
+    /**
+     * Determine whether the editor toolbar is is docked
+     * @return {Boolean} True if the editor toolbar is docked
+     */
+    isDocked: function() {
+        // Need to check for the docking plugin, and if so whether the editor has been docked / undocked
+        return this.editor.getPlugin('dock') ? this.editor.getPlugin('dock').isDocked() : false;
     }
 });
