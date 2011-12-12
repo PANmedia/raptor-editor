@@ -54,6 +54,11 @@ $.widget('ui.editor',
         this.templates = $.extend({}, $.ui.editor.templates);
         this.changeTimer = null;
 
+        // Bind default events
+        for (var name in this.options.bind) {
+            this.bind(name, this.options.bind[name]);
+        }
+
         // Undo stack, redo pointer
         this.history = [];
         this.present = 0;
@@ -823,7 +828,14 @@ $.widget('ui.editor',
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
                 // Check if we are not automaticly enabling UI, and if not, check if the UI was manually enabled
                 if (!this.options.enableUi &&
-                        !this.options.ui[uiSet[j]]) continue;
+                        !this.options.ui[uiSet[j]]) {
+                    // <debug>
+                    if (debugLevel >= MID) {
+                        debug('UI with name ' + uiSet[j] + ' does not exist');
+                    }
+                    continue;
+                    // </debug>
+                }
 
                 // Check if we have explicitly disabled UI
                 if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
@@ -1046,7 +1058,14 @@ $.widget('ui.editor',
         for (var name in $.ui.editor.plugins) {
             // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
             if (!this.options.enablePlugins &&
-                    !this.options.plugins[name]) continue;
+                    !this.options.plugins[name]) {
+                // <debug>
+                if (debugLevel >= MID) {
+                    debug('Plugin with name ' + name + ' does not exist');
+                }
+                // </debug>
+                continue;
+            }
 
             // Check if we have explicitly disabled the plugin
             if ($.inArray(name, this.options.disabledPlugins) !== -1) continue;
@@ -1102,6 +1121,7 @@ $.widget('ui.editor',
      */
     setHtml: function(html) {
         this.getElement().html(html);
+        this.fire('html');
         this.change();
     },
 
@@ -1165,7 +1185,7 @@ $.widget('ui.editor',
 
         for (var i = 0, l = this.events[name].length; i < l; i++) {
             if (this.events[name][i]
-                && this.events[name][i].callback === callback 
+                && this.events[name][i].callback === callback
                 && this.events[name][i].context === context) {
                 this.events[name].splice(i, 1);
             }
@@ -1260,6 +1280,12 @@ $.extend($.ui.editor,
          * @type Object
          */
         ui: {},
+
+        /**
+         * Default events to bind
+         * @type Object
+         */
+        bind: {},
 
         /**
          *
@@ -1530,7 +1556,7 @@ $.extend($.ui.editor,
      */
     defaultUi: /** @lends $.ui.editor.defaultUi.prototype */ {
         ui: null,
-        
+
         /**
          * The {@link $.ui.editor} instance
          * @type {Object}
@@ -1560,18 +1586,18 @@ $.extend($.ui.editor,
         },
 
         /**
-         * @param  {String}   name     
-         * @param  {Function} callback 
-         * @param  {String}   context  
+         * @param  {String}   name
+         * @param  {Function} callback
+         * @param  {String}   context
          */
         bind: function(name, callback, context) {
             this.editor.bind(name, callback, context || this);
         },
 
         /**
-         * @param  {String}   name     
-         * @param  {Function} callback 
-         * @param  {Object}   context  
+         * @param  {String}   name
+         * @param  {Function} callback
+         * @param  {Object}   context
          */
         unbind: function(name, callback, context) {
             this.editor.unbind(name, callback, context || this);
@@ -1605,18 +1631,18 @@ $.extend($.ui.editor,
      * @property {Object} defaultPlugin
      */
     defaultPlugin: /** @lends $.ui.editor.defaultPlugin.prototype */ {
-        
+
         /**
          * The {@link $.ui.editor} instance
          * @type {Object}
          */
         editor: null,
-        
+
         /**
          * @type {Object}
          */
         options: null,
-        
+
         /**
          * Initialise & return an instance of this plugin
          * @param  {$.editor} editor  The editor instance
@@ -1624,7 +1650,7 @@ $.extend($.ui.editor,
          * @return {Object} An instance of the ui component
          */
         init: function(editor, options) {},
-        
+
         /**
          * @param  {String} key   The key
          * @param  {[String|Object|int|float]} value A value to be stored
@@ -1635,18 +1661,18 @@ $.extend($.ui.editor,
         },
 
         /**
-         * @param  {String}   name     
-         * @param  {Function} callback 
-         * @param  {String}   context  
+         * @param  {String}   name
+         * @param  {Function} callback
+         * @param  {String}   context
          */
         bind: function(name, callback, context) {
             this.editor.bind(name, callback, context || this);
         },
 
         /**
-         * @param  {String}   name     
-         * @param  {Function} callback 
-         * @param  {Object}   context  
+         * @param  {String}   name
+         * @param  {Function} callback
+         * @param  {Object}   context
          */
         unbind: function(name, callback, context) {
             this.editor.unbind(name, callback, context || this);
