@@ -1514,9 +1514,11 @@ $.extend($.ui.editor,
     \*========================================================================*/
 
     /**
+     * @name $.ui.editor.defaultUi
+     * @class The default UI component
      * @property {Object} defaultUi
      */
-    defaultUi: /** @lends $.editor.ui.prototype */ {
+    defaultUi: /** @lends $.ui.editor.defaultUi.prototype */ {
         ui: null,
         
         /**
@@ -1588,9 +1590,11 @@ $.extend($.ui.editor,
     },
 
     /**
+     * @name $.ui.editor.defaultPlugin
+     * @class The default plugin
      * @property {Object} defaultPlugin
      */
-    defaultPlugin: /** @lends $.editor.plugin.prototype */ {
+    defaultPlugin: /** @lends $.ui.editor.defaultPlugin.prototype */ {
         
         /**
          * The {@link $.ui.editor} instance
