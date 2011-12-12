@@ -15,16 +15,140 @@
     visible: null,
     types: {},
     dialog: null,
+
+    /**
+     * @name $.editor.plugin.link.baseLinkType
+     * @class Default {@link $.editor.plugin.link} type
+     * @see $.editor.plugin.link
+     * @type {Object}
+     */
+    baseLinkType: /** @lends $.editor.plugin.link.baseLinkType.prototype */ {
+        
+        /**
+         * Name of the link type
+         * @type {String}
+         */
+        type: null,
+
+        /**
+         * Title of the link type.
+         * Used in the link panel's radio button
+         */
+        title: null,
+
+        /**
+         * Content intended for use in the {@link $.editor.plugin.link} dialog's panel
+         */
+        content: null,
+
+        /**
+         * Reference to the instance of {@link $.editor.plugin.link}
+         */
+        plugin: this,
+
+        /**
+         * Reference to {@link $.editor.plugin.link#options}
+         */
+        options: this.options,
+
+        /**
+         * Function returning the attributes to be applied to the selection
+         */
+        attributes: function() {},
+
+        /**
+         * Initialise the link type
+         */
+        init: function() {
+            return this;
+        },
+
+        /**
+         * Any actions (binding, population of inputs) required before the {@link $.editor.plugin.link} dialog's panel for this link type is made visible
+         */
+        show: function() {},
+
+        /**
+         * Function determining whether this link type's radio button should be selected
+         * @param  {Object} link The selected element
+         * @return {Boolean} True if the selection represents a link of this type
+         */
+        editing: function(link) {
+            if (link.attr('class')) {
+                var classes = link.attr('class').split(/\s/gi);
+                for (var i = 0; i < classes.length; i++) {
+                    if (classes[i].trim() && $(this).hasClass(classes[i])) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        },
+
+        /**
+         * CSS selector for the input that the {@link $.editor.plugin.link.baseLinkType.focus} function should use
+         * @type {String}
+         */
+        focusSelector: null,
+
+        /**
+         * Any actions required after this link type's content is made visible
+         * @private
+         */
+        focus: function() {
+            if (this.focusSelector) {
+                var input = $(this.focusSelector);
+                var value = input.val();
+                input.val('');
+                input.focus().val(value);
+            }
+        }
+    },
+
+    /**
+     * @name $.editor.plugin.link.defaultLinkTypes
+     * @namespace
+     */
+
+    /**
+     * Array of default link types
+     * @type {Array}
+     */
     defaultLinkTypes: [
-        // Page
-        {
+
+        /**
+         * @name $.editor.plugin.link.defaultLinkTypes.page
+         * @class
+         * @extends $.editor.plugin.link.baseLinkType
+         */
+        /** @lends $.editor.plugin.link.defaultLinkTypes.page.prototype */ {
+            
+            /**
+             * @see $.editor.plugin.link.baseLinkType#type
+             */
             type: 'external',
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#title
+             */
             title: _('Page on this or another website'),
+            
+            /**
+             * @see $.editor.plugin.link.baseLinkType#focusSelector
+             */
             focusSelector: 'input[name="location"]',
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#init
+             */
             init: function() {
                 this.content = this.plugin.editor.getTemplate('link.external', this.options);
                 return this;
             },
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#show
+             */
             show: function(panel, edit) {
                 if (edit) {
                     panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href'));
@@ -34,6 +158,10 @@
                 }
                 return this;
             },
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#attributes
+             */
             attributes: function(panel) {
                 var attributes = {
                     href: panel.find('input[name="location"]').val()
@@ -48,15 +176,40 @@
                 return attributes;
             }
         },
-        // Email
-        {
+
+        /**
+         * @name $.editor.plugin.link.defaultLinkTypes.email
+         * @class
+         * @extends $.editor.plugin.link.baseLinkType
+         */
+        /** @lends $.editor.plugin.link.defaultLinkTypes.email.prototype */  {
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#type
+             */
             type: 'email',
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#title
+             */
             title: _('Email address'),
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#focusSelector
+             */
             focusSelector: 'input[name="email"]',
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#init
+             */
             init: function() {
                 this.content = this.plugin.editor.getTemplate('link.email', this.options);
                 return this;
             },
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#show
+             */
             show: function(panel, edit) {
                 if (edit) {
                     panel.find('input[name="email"]').val(this.plugin.selectedElement.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
@@ -65,6 +218,10 @@
                     }
                 }
             },
+
+            /**
+             * @see $.editor.plugin.link.baseLinkType#attributes
+             */
             attributes: function(panel) {
                 var attributes = {
                     href: 'mailto:' + panel.find('input[name="email"]').val()
@@ -74,8 +231,8 @@
 
                 return attributes;
             }
-        }
-    ],
+        ]
+    },
 
     /**
      * @see $.ui.editor.defaultPlugin#init
@@ -99,36 +256,6 @@
      */
     initTypes: function(edit) {
 
-        var baseLinkType = {
-            type: null,
-            title: null,
-            content: null,
-            plugin: this,
-            options: this.options,
-            attributes: null,
-            init: function() {
-                return this;
-            },
-            show: function() {},
-            editing: function(link) {
-                var classes = link.attr('class').split(/\s/gi);
-                for (var i = 0; i < classes.length; i++) {
-                    if (classes[i].trim() && $(this).hasClass(classes[i])) {
-                        return true;
-                    }
-                }
-                return false;
-            },
-            focus: function() {
-                if (this.focusSelector) {
-                    var input = $(this.focusSelector);
-                    var value = input.val();
-                    input.val('');
-                    input.focus().val(value);
-                }
-            }
-        };
-
         if (this.options.replaceTypes) linkTypes = this.options.customTypes;
         else linkTypes = $.merge(this.defaultLinkTypes, this.options.customTypes);
 
@@ -136,7 +263,7 @@
         var link; 
 
         for (var i = 0; i < linkTypes.length; i++) {
-            link = $.extend({}, baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
+            link = $.extend({}, this.baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
             this.types[link.type] = link;
             $(this.editor.getTemplate('link.label', link)).appendTo(linkTypesFieldset);
         }
