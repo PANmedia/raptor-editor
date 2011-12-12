@@ -34,7 +34,7 @@ $.ui.editor.registerUi({
          * If the user accepts of if the editor is not dirty, cancel editing.
          */
         confirm: function() {
-            var plugin = this.editor.plugins.cancel;
+            var plugin = this.editor.getPlugin('cancel');
             var editor = this.editor;
             if (!editor.isDirty()) {
                 plugin.cancel();
