@@ -6,7 +6,7 @@
 
 /**
  * @name $.editor.plugin.dock
- * @augments $.editor.plugin
+ * @augments $.ui.editor.defaultPlugin
  * @see  $.editor.ui.dock
  * @class Allow the user to dock / undock the toolbar from the document body or editing element
  */
@@ -22,7 +22,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     },
     
     /**
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */   
     init: function(editor) {
         if (!this.topSpacer) {
@@ -296,14 +296,14 @@ $.ui.editor.registerUi({
     
     /**
      * @name $.editor.ui.dock
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @see  $.editor.plugin.dock
      * @class Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
      */
     dock: /** @lends $.editor.ui.dock.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

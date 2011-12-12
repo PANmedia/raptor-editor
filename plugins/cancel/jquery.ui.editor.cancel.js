@@ -6,14 +6,14 @@
 
  /**
   * @name $.editor.ui.cancel
-  * @augments $.editor.ui
+  * @augments $.ui.editor.defaultUi
   * @class Cancels editing
   */
 $.ui.editor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
 
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -79,7 +79,7 @@ $.ui.editor.registerUi({
 $.ui.editor.registerPlugin({
   /**
     * @name $.editor.plugin.cancel
-    * @augments $.editor.plugin
+    * @augments $.ui.editor.defaultPlugin
     * @class Plugin providing cancel functionality
     */
    cancel: /** @lends $.editor.plugin.cancel.prototype */ {

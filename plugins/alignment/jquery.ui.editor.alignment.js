@@ -7,7 +7,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.alignLeft
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Aligns text left within the selected or nearest block-level element.
      * <br/>
      * Toggles <tt>text-align: left</tt>
@@ -15,7 +15,7 @@ $.ui.editor.registerUi({
     alignLeft: /** @lends $.editor.ui.alignLeft.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -31,7 +31,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.alignJustify
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Justifies text within the selected or nearest block-level element.
      * <br/>
      * Toggles <tt>text-align: justify</tt>
@@ -39,7 +39,7 @@ $.ui.editor.registerUi({
     alignJustify: /** @lends $.editor.ui.alignJustify.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -55,7 +55,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.alignCenter
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Centers text within the selected or nearest block-level element.
      * <br/>
      * Toggles: <tt>text-align: center</tt>
@@ -63,7 +63,7 @@ $.ui.editor.registerUi({
     alignCenter: /** @lends $.editor.ui.alignCenter.prototype */  {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -79,7 +79,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.alignRight
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Aligns text right within the selected or nearest block-level element.
      * <br/>
      * Toggles <tt>text-align: right</tt>
@@ -87,7 +87,7 @@ $.ui.editor.registerUi({
     alignRight: /** @lends $.editor.ui.alignRight.prototype */  {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */        
         init: function(editor) {
             return editor.uiButton({

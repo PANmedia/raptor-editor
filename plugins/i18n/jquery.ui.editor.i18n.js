@@ -7,13 +7,13 @@
     
     /**
      * @name $.editor.ui.i18n
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Provides a dropdown to allow the user to switch between available localizations
      */
     i18n: {
 
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             var ui = this;

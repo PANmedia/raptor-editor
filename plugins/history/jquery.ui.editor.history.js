@@ -8,13 +8,13 @@ $.ui.editor.registerUi({
     
     /**
      * @name $.editor.ui.undo
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Revert most recent change to element content
      */
     undo: /** @lends $.editor.ui.undo.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
@@ -35,13 +35,13 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.redo
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Step forward through the stored history
      */
     redo: /** @lends $.editor.ui.redo.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);

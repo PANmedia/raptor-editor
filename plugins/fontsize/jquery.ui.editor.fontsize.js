@@ -8,13 +8,13 @@
     
     /**
      * @name $.editor.ui.fontSizeInc
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps selection with &lt;big&gt; tags or unwraps &lt;small&gt; tags from selection
      */
     fontSizeInc: /** @lends $.editor.ui.fontSizeInc.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -28,13 +28,13 @@
 
     /**
      * @name $.editor.ui.fontSizeDec
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps selection with &lt;small&gt; tags or unwraps &lt;big&gt; tags from selection
      */
     fontSizeDec: /** @lends $.editor.ui.fontSizeDec.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({

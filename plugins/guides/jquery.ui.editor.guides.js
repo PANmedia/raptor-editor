@@ -8,13 +8,13 @@ $.ui.editor.registerUi({
      
      /**
      * @name $.editor.ui.showGuides
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Outlines elements contained within the editing element
      */
     showGuides: /** @lends $.editor.ui.showGuides.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             this.bind('destroy', function() {

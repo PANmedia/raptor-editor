@@ -17,7 +17,7 @@ $.ui.editor.registerPlugin('unsavedEditWarning', {
     },
 
     /**
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         this.warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))

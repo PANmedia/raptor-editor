@@ -8,7 +8,7 @@
 
     /**
      * @name $.editor.ui.floatLeft
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Floats the selected or nearest block-level element left
      * <br/>
      * Toggles <tt>float: left</tt>
@@ -16,7 +16,7 @@
     floatLeft: /** @lends $.editor.ui.floatLeft.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -30,7 +30,7 @@
     
     /**
      * @name $.editor.ui.floatRight
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Floats the selected or nearest block-level element right
      * <br/>
      * Toggles <tt>float: right</tt>
@@ -38,7 +38,7 @@
     floatRight: /** @lends $.editor.ui.floatRight.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -52,7 +52,7 @@
     
     /**
      * @name $.editor.ui.floatNone
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Sets float none to the selected or nearest block-level element
      * <br/>
      * Toggles <tt>float: right</tt>
@@ -60,7 +60,7 @@
     floatNone: /** @lends $.editor.ui.floatNone.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

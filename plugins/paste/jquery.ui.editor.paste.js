@@ -7,7 +7,7 @@
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
     
     /**
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         var inProgress = false;

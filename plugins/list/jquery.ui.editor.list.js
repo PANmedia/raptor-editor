@@ -5,10 +5,16 @@
  */
 
 $.ui.editor.registerUi({
+
+    /**
+     * @name $.editor.ui.listUnordered
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps the selection with a &lt;ul&gt;, then a &lt;li&gt;
+     */
     listUnordered: {
 
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -24,10 +30,16 @@ $.ui.editor.registerUi({
             });
         }
     },
+
+    /**
+     * @name $.editor.ui.listOrdered
+     * @augments $.ui.editor.defaultUi
+     * @class Wraps the selection with a &lt;ol&gt;, then a &lt;li&gt;
+     */    
     listOrdered: {
 
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
