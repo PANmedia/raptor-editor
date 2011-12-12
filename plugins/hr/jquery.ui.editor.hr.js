@@ -7,14 +7,14 @@
 
     /**
      * @name $.editor.ui.hr
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Shows a message at the center of an editable block,
      * informing the user that they may click to edit the block contents
      */
     hr: /** @lends $.editor.ui.hr.prototype */ {
 
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

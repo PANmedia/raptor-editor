@@ -6,7 +6,7 @@
 
  /**
   * @name $.editor.plugin.clean
-  * @augments $.editor.plugin
+  * @augments $.ui.editor.defaultPlugin
   * @class Strips empty tags and unwanted attributes from editing element
   */
   $.ui.editor.registerPlugin('clean', /** @lends $.editor.plugin.clean.prototype */ {
@@ -53,7 +53,7 @@
     
     /**
      * Binds {@link $.editor.plugin.clean#clean} to the change event
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         editor.bind('change', this.clean, this);
@@ -96,13 +96,13 @@
 $.ui.editor.registerUi({
     /**
       * @name $.editor.ui.clean
-      * @augments $.editor.ui
+      * @augments $.ui.editor.defaultUi
       * @class UI component that calls {@link $.editor.plugin.clean#clean} when clicked
       */
     clean: /** @lends $.editor.ui.clean.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

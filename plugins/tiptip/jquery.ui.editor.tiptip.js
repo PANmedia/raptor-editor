@@ -10,7 +10,7 @@ $.ui.editor.registerPlugin('tiptip', {
     docked: false,
 
     /**
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         var ui = this;

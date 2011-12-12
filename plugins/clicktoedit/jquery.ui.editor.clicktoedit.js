@@ -6,14 +6,14 @@
 
  /**
   * @name $.editor.plugin.clickToEdit
-  * @augments $.editor.plugin
+  * @augments $.ui.editor.defaultPlugin
   * @class Shows a message at the center of an editable block,
   * informing the user that they may click to edit the block contents
   */
 $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit.prototype */ {
     
     /**
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         var plugin = this;

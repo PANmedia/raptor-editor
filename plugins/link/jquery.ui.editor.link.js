@@ -6,7 +6,7 @@
 
 /**
  * @name $.editor.plugin.link
- * @augments $.editor.plugin
+ * @augments $.ui.editor.defaultPlugin 
  * @see  $.editor.ui.link
  * @see  $.editor.ui.unlink
  * @class Allow the user to wrap the selection with a link or insert a new link
@@ -78,7 +78,7 @@
     ],
 
     /**
-     * @see $.editor.plugin#init
+     * @see $.ui.editor.defaultPlugin#init
      */   
     init: function(editor, options) {
 
@@ -303,15 +303,15 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.link
-     * @augments $.editor.ui
-     * @see $.editor.ui.unlink
+     * @augments $.ui.editor.defaultUi
+     * @see $.ui.editor.defaultUi.unlink
      * @see  $.editor.plugin.link
      * @class Button initiating the insert link plugin
      */
     link: /** @lends $.editor.ui.link.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
@@ -331,15 +331,15 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.unlink
-     * @augments $.editor.ui
-     * @see $.editor.ui.link
+     * @augments $.ui.editor.defaultUi
+     * @see $.ui.editor.defaultUi.link
      * @see  $.editor.plugin.link
      * @class Button allowing the user to unlink text
      */
     unlink: /** @lends $.editor.ui.unlink.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);

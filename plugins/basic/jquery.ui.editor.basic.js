@@ -8,7 +8,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textBold
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;strong&gt; tags
      * <br/>
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element 
@@ -16,7 +16,7 @@ $.ui.editor.registerUi({
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             return this.editor.uiButton({
@@ -30,14 +30,14 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textItalic
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;em&gt; tags
      * <br/>
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element 
      */
     textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -51,7 +51,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textUnderline
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;u&gt; tags
      * <br/>
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element 
@@ -59,7 +59,7 @@ $.ui.editor.registerUi({
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */        
         init: function(editor, options) {
             return editor.uiButton({
@@ -73,7 +73,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textStrike
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class  Wraps (or unwraps) the selection with &lt;del&gt; tags
      * <br/>
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element 
@@ -81,7 +81,7 @@ $.ui.editor.registerUi({
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */        
         init: function(editor, options) {
             return editor.uiButton({
@@ -95,7 +95,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textSub
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;sub&gt; tags
      * <br/>
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element 
@@ -103,7 +103,7 @@ $.ui.editor.registerUi({
     textSub: /** @lends $.editor.ui.textSub.prototype */ {
         
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -117,7 +117,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textSuper
-     * @augments $.editor.ui
+     * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;sup&gt; tags
      * <br/>
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'super' or a custom class (if present) to the &lt;sub&gt; element 
@@ -125,7 +125,7 @@ $.ui.editor.registerUi({
     textSuper: /** @lends $.editor.ui.textSuper.prototype */ {
 
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({

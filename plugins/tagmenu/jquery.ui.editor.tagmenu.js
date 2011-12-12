@@ -9,7 +9,7 @@ $.ui.editor.registerUi({
     tagMenu: {
     
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);

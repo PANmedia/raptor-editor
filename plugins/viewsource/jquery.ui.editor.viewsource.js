@@ -1,7 +1,7 @@
 $.ui.editor.registerUi({
     viewSource:  {
         /**
-         * @see $.editor.ui#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
             var dialog = this.dialog = $(editor.getTemplate('viewsource.dialog'));
