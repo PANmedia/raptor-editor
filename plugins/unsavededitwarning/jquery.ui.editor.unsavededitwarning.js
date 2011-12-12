@@ -49,7 +49,7 @@ $.ui.editor.registerPlugin('unsavedEditWarning', {
         this.options.position.of = '#' + this.editor.getElement().attr('id');
         // <strict>
         if (!$(this.options.position.of).length) {
-            throw 'Editor element has been removed, unsaved edit warning plugin cannot reposition';
+            handleError(_('Editor element has been removed, unsaved edit warning plugin cannot reposition'));
         }
         // </strict>
         this.warning.position(this.options.position);
