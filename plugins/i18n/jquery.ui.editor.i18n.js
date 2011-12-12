@@ -10,7 +10,7 @@
      * @augments $.ui.editor.defaultUi
      * @class Provides a dropdown to allow the user to switch between available localizations
      */
-    i18n: {
+    i18n: /** @lends $.editor.ui.i18n.prototype */ {
 
         /**
          * @see $.ui.editor.defaultUi#init
