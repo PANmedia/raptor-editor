@@ -170,16 +170,16 @@
 
     if (param('rangy')) {
         getJs(root + 'dependencies/rangy/rangy-core.js', 'rangy');
-        getJs(root + 'dependencies/rangy/rangy-cssclassapplier.js', null, ['rangy']);
-        getJs(root + 'dependencies/rangy/rangy-selectionsaverestore.js', null, ['rangy']);
-        getJs(root + 'dependencies/rangy/rangy-serializer.js', null, ['rangy']);
+        getJs(root + 'dependencies/rangy/rangy-cssclassapplier.js', 'rangy-mods', ['rangy']);
+        getJs(root + 'dependencies/rangy/rangy-selectionsaverestore.js', 'rangy-mods', ['rangy']);
+        getJs(root + 'dependencies/rangy/rangy-serializer.js', 'rangy-mods', ['rangy']);
     } else {
         loaded['rangy'] = true;
     }
 
     if (param('editor', true)) {
-        getJs(root + 'jquery.ui.editor.init.js', 'init', ['jquery-ui', 'rangy']);
-        getJs(root + 'jquery.ui.editor.domtools.js', 'domtools', ['jquery-ui', 'rangy']);
+        getJs(root + 'jquery.ui.editor.init.js', 'init', ['jquery-ui', 'rangy', 'rangy-mods']);
+        getJs(root + 'jquery.ui.editor.domtools.js', 'domtools', ['jquery-ui', 'rangy', 'rangy-mods']);
         getJs(root + 'jquery.ui.editor.js', 'editor', ['init', 'domtools']);
         getLess(root + 'jquery.ui.editor.less');
     } else {
