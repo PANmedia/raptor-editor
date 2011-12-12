@@ -5,11 +5,11 @@
  */
 
 /**
- * Allow the user to wrap the selection with a link or insert a new link
  * @name $.editor.plugin.link
+ * @augments $.editor.plugin
  * @see  $.editor.ui.link
  * @see  $.editor.ui.unlink
- * @class
+ * @class Allow the user to wrap the selection with a link or insert a new link
  */
  $.ui.editor.registerPlugin('link', /** @lends $.editor.plugin.link.prototype */ {
     visible: null,
@@ -78,7 +78,7 @@
     ],
 
     /**
-     * @extends {$.editor.ui#init}
+     * @see $.editor.plugin#init
      */   
     init: function(editor, options) {
 
@@ -91,9 +91,62 @@
             dialogHeight: 'auto',
             dialogMinWidth: 670
         }, options);
-
     },
 
+    /**
+     * Initialise the link types
+     * @param  {Boolean} edit True if the user is editing an existing anchor
+     */
+    initTypes: function(edit) {
+
+        var baseLinkType = {
+            type: null,
+            title: null,
+            content: null,
+            plugin: this,
+            options: this.options,
+            attributes: null,
+            init: function() {
+                return this;
+            },
+            show: function() {},
+            editing: function(link) {
+                var classes = link.attr('class').split(/\s/gi);
+                for (var i = 0; i < classes.length; i++) {
+                    if (classes[i].trim() && $(this).hasClass(classes[i])) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+            focus: function() {
+                if (this.focusSelector) {
+                    var input = $(this.focusSelector);
+                    var value = input.val();
+                    input.val('');
+                    input.focus().val(value);
+                }
+            }
+        };
+
+        if (this.options.replaceTypes) linkTypes = this.options.customTypes;
+        else linkTypes = $.merge(this.defaultLinkTypes, this.options.customTypes);
+
+        var linkTypesFieldset = this.dialog.find('fieldset').html('');
+        var link; 
+
+        for (var i = 0; i < linkTypes.length; i++) {
+            link = $.extend({}, baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
+            this.types[link.type] = link;
+            $(this.editor.getTemplate('link.label', link)).appendTo(linkTypesFieldset);
+        }
+
+        linkTypesFieldset.find('input[type="radio"]').bind('change.' + this.editor.widgetName, $.proxy(this.typeChange, this));
+    },
+
+    /**
+     * Show the link control dialog.
+     */
     show: function() {
         if (!this.visible) {
 
@@ -164,7 +217,7 @@
                         }
                     }
 
-                    plugin.typeChange(edit, true);
+                    plugin.typeChange(edit);
                 },
                 close: function() {
                     plugin.visible = false;
@@ -175,6 +228,10 @@
         }
     },
 
+    /**
+     * Apply the link attributes to the selection
+     * @param  {Boolean} edit True if this is an edit
+     */
     apply: function(edit) {
         var linkType = this.types[this.dialog.find('input[type="radio"]:checked').val()];
         var attributes = linkType.attributes(this.dialog.find('.' + this.options.baseClass + '-content'), edit);
@@ -197,17 +254,16 @@
             this.editor.showConfirm(_('Updated link: {{link}}', { link: link }));
         }
     },
-
-    remove: function() {
-        this.editor.unwrapParentTag('a');
-    },
-
-    typeChange: function(edit, initial) {
+    
+    /**
+     * Update the link control panel's content depending on which radio button is selected
+     * @param  {Boolean} edit    True if the user is editing a link
+     */
+    typeChange: function(edit) {
         var linkType = this.types[this.dialog.find('.ui-editor-link-menu input[type="radio"]:checked').val()];
         var panel = this.dialog.find('.' + this.options.baseClass + '-content');
         var wrap = panel.closest('.' + this.options.baseClass + '-wrap');
         var ajax = linkType.ajaxUri && !plugin.types[linkType.type].content;
-        initial = initial || false;
 
         if (ajax) wrap.addClass(options.baseClass + '-loading');
         
@@ -234,64 +290,23 @@
         });
     },
 
-    initTypes: function(edit) {
-
-        var baseLinkType = {
-            type: null,
-            title: null,
-            content: null,
-            plugin: this,
-            options: this.options,
-            attributes: null,
-            init: function() {
-                return this;
-            },
-            show: function() {},
-            editing: function(link) {
-                var classes = link.attr('class').split(/\s/gi);
-                for (var i = 0; i < classes.length; i++) {
-                    if (classes[i].trim() && $(this).hasClass(classes[i])) {
-                        return true;
-                    }
-                }
-                return false;
-            },
-            focus: function() {
-                if (this.focusSelector) {
-                    var input = $(this.focusSelector);
-                    var value = input.val();
-                    input.val('');
-                    input.focus().val(value);
-                }
-            }
-        };
-
-        if (this.options.replaceTypes) linkTypes = this.options.customTypes;
-        else linkTypes = $.merge(this.defaultLinkTypes, this.options.customTypes);
-
-        var linkTypesFieldset = this.dialog.find('fieldset').html('');
-        var link; 
-
-        for (var i = 0; i < linkTypes.length; i++) {
-            link = $.extend({}, baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
-            this.types[link.type] = link;
-            $(this.editor.getTemplate('link.label', link)).appendTo(linkTypesFieldset);
-        }
-
-        linkTypesFieldset.find('input[type="radio"]').bind('change.' + this.editor.widgetName, $.proxy(this.typeChange, this));
-    }
+    /**
+     * Remove the link tags from the selection. Expand to the commonAncestor if the user has selected only a portion of an anchor
+     */
+    remove: function() {
+        this.editor.unwrapParentTag('a');
+    },
 
 });
 
 $.ui.editor.registerUi({
 
     /**
-     * Button initiating the insert link plugin
      * @name $.editor.ui.link
      * @augments $.editor.ui
      * @see $.editor.ui.unlink
      * @see  $.editor.plugin.link
-     * @class
+     * @class Button initiating the insert link plugin
      */
     link: /** @lends $.editor.ui.link.prototype */ {
         
@@ -315,14 +330,14 @@ $.ui.editor.registerUi({
     },
 
     /**
-     * Button allowing the user to unlink text
      * @name $.editor.ui.unlink
      * @augments $.editor.ui
      * @see $.editor.ui.link
      * @see  $.editor.plugin.link
-     * @class
+     * @class Button allowing the user to unlink text
      */
     unlink: /** @lends $.editor.ui.unlink.prototype */ {
+        
         /**
          * @see $.editor.ui#init
          */
@@ -336,8 +351,9 @@ $.ui.editor.registerUi({
                 }
             });
         },
+
         /**
-         * Disable UI component
+         * Enable UI component only when an anchor is selected
          */
         change: function() {
             if (!this.editor.getSelectedElements().is('a')) this.ui.disable();

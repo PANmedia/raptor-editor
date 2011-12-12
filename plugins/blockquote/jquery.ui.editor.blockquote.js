@@ -4,20 +4,18 @@
  * @author Michael Robinson mike@panmedia.co.nz
  */
 
- /**
-  * Wraps (or unwraps) selection in &lt;blockquote&gt; tags
-  * <br/>
-  * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element 
-  * @name $.editor.ui.quoteBlock
-  * @class
-  */
  $.ui.editor.registerUi({
+   /**
+    * @name $.editor.ui.quoteBlock
+    * @augments $.editor.ui
+    * @class Wraps (or unwraps) selection in &lt;blockquote&gt; tags
+    * <br/>
+    * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element 
+    */
     quoteBlock: /** @lends $.editor.ui.quoteBlock.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor The editor instance 
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {$.editor.plugin.quoteBlock}
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             return editor.uiButton({

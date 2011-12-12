@@ -5,9 +5,9 @@
  */
 
  /**
-  * Strips empty tags and unwanted attributes from editing element
   * @name $.editor.plugin.clean
-  * @class
+  * @augments $.editor.plugin
+  * @class Strips empty tags and unwanted attributes from editing element
   */
   $.ui.editor.registerPlugin('clean', /** @lends $.editor.plugin.clean.prototype */ {
     
@@ -16,11 +16,13 @@
      * @type {Object}
      */
     options: {
+
         /**
          * Attributes to be completely removed
          * @type {Array}
          */
         stripAttrs: ['_moz_dirty'],
+        
         /**
          * Attribute contents to be stripped
          * @type {Object}
@@ -28,6 +30,7 @@
         stripAttrContent: {
             type: '_moz'
         },
+        
         /**
          * Tags to be removed if empty
          * @type {Array}
@@ -37,6 +40,8 @@
             'p', 'b', 'i', 'u', 'strong', 'em',
             'big', 'small', 'div', 'span'
         ],
+        
+
         /**
          * Attributes to be removed if empty
          * @type {Array}
@@ -47,17 +52,15 @@
     },
     
     /**
-     * Initialise the plugin
-     * Binds the $.editor.plugin.clean.clean to the change event
-     * @param  {$.editor} editor  The editor instance
-     * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+     * Binds {@link $.editor.plugin.clean#clean} to the change event
+     * @see $.editor.plugin#init
      */
     init: function(editor, options) {
         editor.bind('change', this.clean, this);
     },
       
     /**
-     * Remove empty tags and unwanted attributes from the element
+     * Removes empty tags and unwanted attributes from the element
      */  
     clean: function() {
         var i;
@@ -90,16 +93,16 @@
     }
 });
 
-/**
-  * UI component that calls {@link $.editor.plugin.clean#clean} when clicked
-  * @name $.editor.ui.clean
-  * @class
-  */
 $.ui.editor.registerUi({
+    /**
+      * @name $.editor.ui.clean
+      * @augments $.editor.ui
+      * @class UI component that calls {@link $.editor.plugin.clean#clean} when clicked
+      */
     clean: /** @lends $.editor.ui.clean.prototype */ {
+        
         /**
-         * Intialise the ui component
-         * @param  {$.editor} editor  The editor instance
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             return editor.uiButton({

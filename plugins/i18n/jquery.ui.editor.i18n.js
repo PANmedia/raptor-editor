@@ -6,16 +6,14 @@
  $.ui.editor.registerUi({
     
     /**
-     * Provides a dropdown to allow the user to switch between available localizations
      * @name $.editor.ui.i18n
-     * @class
+     * @augments $.editor.ui
+     * @class Provides a dropdown to allow the user to switch between available localizations
      */
     i18n: {
 
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor  The editor instance
-         * @return {$.editor.ui.i18n}
+         * @see $.editor.ui#init
          */
         init: function(editor, options) {
             var ui = this;

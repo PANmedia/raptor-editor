@@ -5,10 +5,10 @@
  */
 
 /**
- * Allow the user to dock / undock the toolbar from the document body or editing element
  * @name $.editor.plugin.dock
+ * @augments $.editor.plugin
  * @see  $.editor.ui.dock
- * @class
+ * @class Allow the user to dock / undock the toolbar from the document body or editing element
  */
 $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ {
 
@@ -22,9 +22,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     },
     
     /**
-     * Initialise the plugin
-     * @param  {$.editor} editor  The editor instance
-     * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+     * @see $.editor.plugin#init
      */   
     init: function(editor) {
         if (!this.topSpacer) {
@@ -297,17 +295,15 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
 $.ui.editor.registerUi({
     
     /**
-     * Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
      * @name $.editor.ui.dock
+     * @augments $.editor.ui
      * @see  $.editor.plugin.dock
-     * @class
+     * @class Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
      */
     dock: /** @lends $.editor.ui.dock.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @see  $.editor.plugin.dock
-         * @param  {$.editor} editor  The editor instance
-         * @return {$.editor.ui.dock} Initialised dock ui component
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             return editor.uiButton({

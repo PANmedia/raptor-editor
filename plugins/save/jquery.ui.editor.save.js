@@ -12,6 +12,9 @@ $.ui.editor.registerPlugin('save', {
         }
     },
 
+    /**
+     * @see $.editor.plugin#init
+     */
     init: function() {
     },
 
@@ -151,6 +154,10 @@ $.ui.editor.registerPlugin('save', {
 });
 
 $.ui.editor.registerUi({
+
+    /**
+     * @see $.editor.ui#init
+     */
     save: {
         init: function(editor, element) {
             return editor.uiButton({

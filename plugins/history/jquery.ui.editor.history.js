@@ -7,17 +7,14 @@
 $.ui.editor.registerUi({
     
     /**
-     * Revert most recent change to element content
-     * 
      * @name $.editor.ui.undo
-     * @class
+     * @augments $.editor.ui
+     * @class Revert most recent change to element content
      */
-    'undo': /** @lends $.editor.ui.undo.prototype */ {
+    undo: /** @lends $.editor.ui.undo.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor The editor instance 
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {$.editor.ui.undo}
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
@@ -37,17 +34,14 @@ $.ui.editor.registerUi({
     },
 
     /**
-     * Step forward through the stored history
-     * 
      * @name $.editor.ui.redo
-     * @class
+     * @augments $.editor.ui
+     * @class Step forward through the stored history
      */
-    'redo': /** @lends $.editor.ui.redo.prototype */ {
+    redo: /** @lends $.editor.ui.redo.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor The editor instance 
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {$.editor.ui.redo}
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
