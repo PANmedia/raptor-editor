@@ -285,8 +285,14 @@ $.widget('ui.editor',
     enableEditing: function() {
         if (!this.options.enabled || this.reiniting) {
             this.options.enabled = true;
-            this.getElement().attr('contenteditable', true)
-                        .addClass(this.options.baseClass + '-editing');
+            this.getElement().addClass(this.options.baseClass + '-editing');
+
+            if (this.options.partialEdit) {
+                this.getElement().find(this.options.partialEdit).attr('contenteditable', true);
+            } else {
+                this.getElement().attr('contenteditable', true);
+            }
+
             document.execCommand('enableInlineTableEditing', false, false);
             // Re-enabled for now so user knows they've selected an image
             // document.execCommand('enableObjectResizing', false, false);
@@ -807,15 +813,14 @@ $.widget('ui.editor',
      *
      */
     loadUi: function() {
-        var editor = this;
         // Loop the UI order option
-        for (var i = 0; i < this.options.uiOrder.length; i++) {
+        for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiSet = this.options.uiOrder[i];
             // Each element of the UI order should be an array of UI which will be grouped
             var uiGroup = $('<div/>');
 
             // Loop each UI in the array
-            for (var j = 0; j < uiSet.length; j++) {
+            for (var j = 0, ll = uiSet.length; j < ll; j++) {
                 // Check if we are not automaticly enabling UI, and if not, check if the UI was manually enabled
                 if (!this.options.enableUi &&
                         !this.options.ui[uiSet[j]]) continue;
@@ -829,18 +834,18 @@ $.widget('ui.editor',
 
                 // Check the UI has been registered
                 if ($.ui.editor.ui[uiSet[j]]) {
-                    var options = $.extend({}, editor.options, {
-                        baseClass: editor.options.baseClass + '-ui-' + baseClass
-                    }, editor.options.ui[uiSet[j]])
+                    var options = $.extend({}, this.options, {
+                        baseClass: this.options.baseClass + '-ui-' + baseClass
+                    }, this.options.ui[uiSet[j]])
 
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, $.ui.editor.ui[uiSet[j]]);
-                    uiObject.editor = editor;
+                    uiObject.editor = this;
                     uiObject.options = options;
-                    uiObject.ui = uiObject.init(editor, options);
+                    uiObject.ui = uiObject.init(this, options);
 
                     // Append the UI object to the group
-                    uiObject.ui.init(uiSet[j], editor, options, uiObject).appendTo(uiGroup);
+                    uiObject.ui.init(uiSet[j], this, options, uiObject).appendTo(uiGroup);
                 }
                 // <strict>
                 else {
@@ -849,18 +854,18 @@ $.widget('ui.editor',
                 // </strict>
             }
 
-            uiGroup.addClass(editor.options.baseClass + '-group');
+            uiGroup.addClass(this.options.baseClass + '-group');
 
             if (uiGroup.children().length > 1) {
-                uiGroup.addClass(editor.options.baseClass + '-buttonset');
+                uiGroup.addClass(this.options.baseClass + '-buttonset');
             }
 
             // Append the UI group to the editor toolbar
             if (uiGroup.children().length > 0) {
-                uiGroup.appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
+                uiGroup.appendTo(this.selToolbar('.' + this.options.baseClass + '-inner'));
             }
         };
-        $('<div/>').addClass('ui-helper-clearfix').appendTo(editor.selToolbar('.' + editor.options.baseClass + '-inner'));
+        $('<div/>').addClass('ui-helper-clearfix').appendTo(this.selToolbar('.' + this.options.baseClass + '-inner'));
     },
 
     /**
@@ -1077,20 +1082,19 @@ $.widget('ui.editor',
     },
 
     /**
-     * @param {String} html
-     * @returns {String}
-     */
-    cleanHtml: function(html) {
-        var content = $('<div/>').html(html);
-        content.find('.rangySelectionBoundary').remove();
-        return content.html();
-    },
-
-    /**
      * @returns {String}
      */
     getHtml: function() {
-        return this.cleanHtml(this.getElement().html());
+        this.fire('clean')
+        var content = this.getElement().html();
+        this.fire('restore');
+
+        // Remove saved rangy ranges
+        content = $('<div/>').html(content)
+        content.find('.rangySelectionBoundary').remove();
+        content = content.html();
+
+        return content;
     },
 
     /**
@@ -1302,6 +1306,12 @@ $.extend($.ui.editor,
          * @type boolean
          */
         autoEnable: false,
+
+        /**
+         * Only enable editing on certian parts of the element
+         * @type {jQuerySelector}
+         */
+        partialEdit: false,
 
         /**
          * Switch to specify if the editor should automatically enable all plugins, if set to false, only the plugins specified in the 'plugins' option object will be enabled
