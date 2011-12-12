@@ -1,25 +1,50 @@
 /**
  * @name $.editor.plugin.save
  * @augments $.ui.editor.defaultPlugin
- * @class Provides an interface for saving the element's content via AJAX
+ * @class Provides an interface for saving the element's content via AJAX. For options see {@link $.editor.plugin.save.options}
  */
 $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ {
 
     /**
-     * Default options
      * @name $.editor.plugin.save.options
      * @type {Object}
-     * @class
+     * @namespace Default options
+     * @see $.editor.plugin.save
      */
-    options: /** @lends $.editor.plugin.save.options.prototype */  {
+    options: /** @lends $.editor.plugin.save.options */  {
+        
         /**
-         * @name $.editor.plugin.save.options#id
          * @type {Object}
+         * @default <tt>{ attr: "name" }</tt>
          */
         id: { attr: 'name' },
+
+        /**
+         * @type {String}
+         * @default "content"
+         */
         postName: 'content',
+        
+        /**
+         * @default false
+         * @type {Boolean}
+         */
         showResponse: false,
+        
+        /**
+         * @default false
+         * @type {Boolean}
+         */
         appendId: false,
+
+        /**
+         * @default <tt>{
+         *    url: '/',
+         *    type: 'post',
+         *    cache: false
+         * }</tt>
+         * @type {Object}
+         */
         ajax: {
             url: '/',
             type: 'post',
