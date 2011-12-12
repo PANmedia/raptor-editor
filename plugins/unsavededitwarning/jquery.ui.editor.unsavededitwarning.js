@@ -1,7 +1,29 @@
-$.ui.editor.registerPlugin('unsavedEditWarning', {
-    // Default options
-    options: {
-        contentClass: '',
+/**
+ * @fileOverview UI Component for displaying a warning in a corner of the element when unsaved edits exist
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
+
+/**
+ * @name $.editor.plugin.unsavedEditWarning
+ * @augments $.ui.editor.defaultPlugin
+ * @see $.editor.plugin.unsavedEditWarning.options
+ * @class 
+ */
+$.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsavedEditWarning.prototype */ {
+    
+    /**
+     * @name $.editor.plugin.unsavedEditWarning.options
+     * @namespace Default options
+     * @see $.editor.plugin.unsavedEditWarning
+     * @type {Object}
+     */
+    options: /** @lends $.editor.plugin.unsavedEditWarning.options.prototype */  {
+
+        /**
+         * @see $.editor.plugin.unsavedEditWarning.options
+         * @type {Object}
+         */
         position: {
             collision: 'right bottom',
             at: 'right bottom',
@@ -35,15 +57,24 @@ $.ui.editor.registerPlugin('unsavedEditWarning', {
         }, this);
     },
 
+    /**
+     * Show the warning
+     */
     show: function() {
         this.reposition();
         this.warning.addClass(this.options.baseClass + '-visible').show();
     },
 
+    /**
+     * Hide the warning
+     */
     hide: function() {
         this.warning.removeClass(this.options.baseClass + '-visible');
     },
 
+    /**
+     * Reposition the warning according to the element's dimensions
+     */
     reposition: function() {
         // Have to use the ID because if given the element, the browser will memory leak and crash
         this.options.position.of = '#' + this.editor.getElement().attr('id');
@@ -59,8 +90,8 @@ $.ui.editor.registerPlugin('unsavedEditWarning', {
 $.ui.editor.bind('resize', function() {
     var instances = this.getInstances();
     for (var i = 0; i < instances.length; i++) {
-        if (instances[i].getPlugin('unsaved-edit-warning')) {
-            instances[i].getPlugin('unsaved-edit-warning').reposition();
+        if (instances[i].getPlugin('unsavedEditWarning')) {
+            instances[i].getPlugin('unsavedEditWarning').reposition();
         }
     };
 });
