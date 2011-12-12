@@ -1,4 +1,9 @@
 /**
+ * @name $
+ * @namespace jQuery
+ */
+
+/**
  * jQuery UI Editor
  * 
  * <p>
@@ -23,6 +28,11 @@
  * 
  * @name $.editor
  * @class 
+ */
+
+/**
+ * @name $.ui
+ * @namespace  jQuery UI
  */
 
 /**
