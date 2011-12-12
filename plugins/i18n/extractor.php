@@ -73,8 +73,8 @@ if ((!$replace && !$merge) && file_exists($locale_file)) {
 $write = function($locale_file, $strings) use ($locale, $locale_name) {
     $output = array();
     $tab = '    ';
-    $head = "(function($){ \n$tab$.ui.editor.registerLocale('$locale', '$locale_name', {\n";
-    $tail = "\n$tab});\n})(jQuery);\n";
+    $head = "$.ui.editor.registerLocale('$locale', '$locale_name', {\n";
+    $tail = "\n});\n";
     ksort($strings);
     
     $locale_handle = fopen($locale_file, 'w');
@@ -82,7 +82,7 @@ $write = function($locale_file, $strings) use ($locale, $locale_name) {
     fwrite($locale_handle, $head);
 
     foreach ($strings as $key => $value) {
-        $output[] = $tab.$tab.'"'.str_replace('"', '\"', $key).'": "'.str_replace('"', '\"', $value).'"';
+        $output[] = $tab.'"'.str_replace('"', '\"', $key).'": "'.str_replace('"', '\"', $value).'"';
     }
 
     fwrite($locale_handle, implode(",\n", $output));

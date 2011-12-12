@@ -19,6 +19,22 @@
     -webkit-box-orient: vertical;
     -moz-box-orient: vertical;
     box-orient: vertical;
+
+    position: relative;
+
+    .ui-editor-paste-synchronize-text {
+        height: 25px;
+        line-height: 25px;
+        position: absolute;
+        right: 35px;
+        top: 15px;
+        width: 100px;
+        input {
+            margin: 0;
+            padding: 0;
+            vertical-align: text-bottom;
+        }
+    }
 }
 
 .ui-editor-paste-panel-tabs > div {
@@ -37,8 +53,11 @@
     box-sizing: border-box; 
 }
 
-.ui-editor-paste-panel-tabs > div > * {
+.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     box-flex: 1;
+
+    height: 100%;
+    width: 100%;
 }
