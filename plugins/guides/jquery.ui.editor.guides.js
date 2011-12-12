@@ -5,18 +5,16 @@
  */
 
 $.ui.editor.registerUi({
+     
      /**
-     * Outlines elements contained within the editing element
-     * 
      * @name $.editor.ui.showGuides
-     * @class
+     * @augments $.editor.ui
+     * @class Outlines elements contained within the editing element
      */
     showGuides: /** @lends $.editor.ui.showGuides.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor The editor instance 
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {$.editor.ui.showGuides}
+         * @see $.editor.ui#init
          */
         init: function(editor, options) {
             this.bind('destroy', function() {

@@ -5,18 +5,16 @@
  */
 
  $.ui.editor.registerUi({
+    
     /**
-     * Wraps selection with &lt;big&gt; tags or unwraps &lt;small&gt; tags from selection
-     * 
      * @name $.editor.ui.fontSizeInc
-     * @class
+     * @augments $.editor.ui
+     * @class Wraps selection with &lt;big&gt; tags or unwraps &lt;small&gt; tags from selection
      */
     fontSizeInc: /** @lends $.editor.ui.fontSizeInc.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor The editor instance 
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {$.editor.ui.fontSizeInc}
+         * @see $.editor.ui#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -29,17 +27,14 @@
     },
 
     /**
-     * Wraps selection with &lt;small&gt; tags or unwraps &lt;big&gt; tags from selection
-     * 
      * @name $.editor.ui.fontSizeDec
-     * @class
+     * @augments $.editor.ui
+     * @class Wraps selection with &lt;small&gt; tags or unwraps &lt;big&gt; tags from selection
      */
     fontSizeDec: /** @lends $.editor.ui.fontSizeDec.prototype */ {
+        
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor The editor instance 
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {$.editor.ui.fontSizeDec}
+         * @see $.editor.ui#init
          */
         init: function(editor, options) {
             return editor.uiButton({

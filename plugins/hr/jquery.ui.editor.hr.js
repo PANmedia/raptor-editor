@@ -6,17 +6,15 @@
  $.ui.editor.registerUi({
 
     /**
-     * Shows a message at the center of an editable block,
-     * informing the user that they may click to edit the block contents
      * @name $.editor.ui.hr
-     * @class
+     * @augments $.editor.ui
+     * @class Shows a message at the center of an editable block,
+     * informing the user that they may click to edit the block contents
      */
     hr: /** @lends $.editor.ui.hr.prototype */ {
 
         /**
-         * Initialise the ui component
-         * @param  {$.editor} editor  The editor instance
-         * @return {$.editor.ui.hr}
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             return editor.uiButton({

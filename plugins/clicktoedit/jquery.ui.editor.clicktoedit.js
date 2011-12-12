@@ -5,17 +5,15 @@
  */
 
  /**
-  * Shows a message at the center of an editable block,
-  * informing the user that they may click to edit the block contents
   * @name $.editor.plugin.clickToEdit
-  * @class
+  * @augments $.editor.plugin
+  * @class Shows a message at the center of an editable block,
+  * informing the user that they may click to edit the block contents
   */
 $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit.prototype */ {
     
     /**
-     * Initialise the plugin
-     * @param  {$.editor} editor  The editor instance
-     * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+     * @see $.editor.plugin#init
      */
     init: function(editor, options) {
         var plugin = this;

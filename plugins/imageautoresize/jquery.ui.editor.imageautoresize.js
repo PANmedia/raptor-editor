@@ -1,6 +1,8 @@
 /**
  * @name $.editor.plugin.imageAutoResize
- * @class
+ * @augments $.editor.plugin
+ * @class Automatically resize oversized images with CSS and height / width attributes. If {@link $.editor.plugin.options#resizeAjax} is true, 
+ * the plugin will make a request to the server for resized image paths.
  */
 $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAutoResize.prototype */ {
 
@@ -15,6 +17,9 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
         }
     },
 
+    /**
+     * @see $.editor.plugin#init
+     */
     init: function(editor, options) {
 
         this.options = $.extend(this.options, {

@@ -1,5 +1,15 @@
+/**
+ * @fileOverview UI Components for inserting ordered and unordered lists
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
+
 $.ui.editor.registerUi({
     listUnordered: {
+
+        /**
+         * @see $.editor.ui#init
+         */
         init: function(editor) {
             return editor.uiButton({
                 title: _('Unordered List'),
@@ -15,6 +25,10 @@ $.ui.editor.registerUi({
         }
     },
     listOrdered: {
+
+        /**
+         * @see $.editor.ui#init
+         */
         init: function(editor) {
             return editor.uiButton({
                 title: _('Ordered List'),

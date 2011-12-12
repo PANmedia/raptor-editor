@@ -5,8 +5,9 @@
  * Intended to prevent horrible 'paste from word' catastophes.
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
+    
     /**
-     *@see $.editor.plugin#init
+     * @see $.editor.plugin#init
      */
     init: function(editor, options) {
         var inProgress = false;

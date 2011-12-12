@@ -5,18 +5,15 @@
  */
 
  /**
-  * Cancels editing
   * @name $.editor.ui.cancel
-  * @class
+  * @augments $.editor.ui
+  * @class Cancels editing
   */
 $.ui.editor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
 
         /**
-         * Initialise the ui component
-         * 
-         * @param  {$.editor} editor The editor instance 
-         * @return {$.editor.plugin.cancel}
+         * @see $.editor.ui#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -29,6 +26,7 @@ $.ui.editor.registerUi({
                 }
             });
         },
+
         /**
          * If the editor is dirty, inform the user that to cancel editing will discard their unsaved changes.
          * If the user accepts of if the editor is not dirty, cancel editing.
@@ -78,12 +76,12 @@ $.ui.editor.registerUi({
     }
 });
 
-/**
-  * Plugin providing cancel functionality
-  * @name $.editor.plugin.cancel
-  * @class
-  */
 $.ui.editor.registerPlugin({
+  /**
+    * @name $.editor.plugin.cancel
+    * @augments $.editor.plugin
+    * @class Plugin providing cancel functionality
+    */
    cancel: /** @lends $.editor.plugin.cancel.prototype */ {
        
         /**
