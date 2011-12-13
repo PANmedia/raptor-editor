@@ -8,17 +8,9 @@ $.ui.editor.registerPlugin({
                     this.createSnippet(options.snippets[i], editor);
                 }
                 this.createButtons();
+                editor.bind('clean', this.removeButtons, this);
+                editor.bind('restore', this.createButtons, this);
             }
-            editor.bind('clean', this.clean, this);
-            editor.bind('restore', this.restore, this);
-        },
-
-        clean: function() {
-            this.removeButtons();
-        },
-
-        restore: function() {
-            this.createButtons();
         },
 
         createSnippet: function(snippet, editor) {
