@@ -7,7 +7,7 @@
 $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAutoResize.prototype */ {
 
     options: {
-        resizeAjax: true,
+        resizeAjax: false,
         resizingClass: '',
         resizeAjaxClass: '',
         ajax: {
