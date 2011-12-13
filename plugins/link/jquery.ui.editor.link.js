@@ -13,8 +13,8 @@
  */
  $.ui.editor.registerPlugin('link', /** @lends $.editor.plugin.link.prototype */ {
     visible: null,
-    types: {},
     dialog: null,
+    types: {},
 
     /**
      * Array of default link types
@@ -154,6 +154,9 @@
             dialogHeight: 'auto',
             dialogMinWidth: 670
         }, options);
+
+        editor.bind('save', this.repairLinks, this);
+        editor.bind('cancel', this.cancel, this);
     },
 
     /**
@@ -280,7 +283,7 @@
             this.dialog = $(this.editor.getTemplate('link.dialog', options)).appendTo('body');
 
             var dialog = this.dialog;
-
+            
             this.initTypes(edit);
 
             this.dialog.dialog({
@@ -365,8 +368,9 @@
                 attr($.extend({}, attributes, { target: '_blank' })));
 
         if (!edit) {
-            this.editor.wrapTagWithAttribute('a', attributes, linkType.classes);
+            this.editor.wrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
             this.editor.showConfirm(_('Added link: {{link}}', { link: link }));
+            this.selectedElement = $('#' + attributes.id).removeAttr('id');
         } else {
             // Remove all link type classes
             this.selectedElement[0].className = this.selectedElement[0].className.replace(new RegExp(this.options.baseClass + '-[a-zA-Z]+','g'), '');
@@ -374,6 +378,8 @@
                     .attr(attributes);
             this.editor.showConfirm(_('Updated link: {{link}}', { link: link }));
         }
+
+        this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
     },
     
     /**
@@ -418,6 +424,26 @@
         this.editor.unwrapParentTag('a');
     },
 
+    /**
+     * Replace the href for links with their data version, if stored.
+     * This is an attempt to workaround browsers that "helpfully" convert relative & root-relative links to their absolute forms.
+     */
+    repairLinks: function() {
+        var ui = this;
+        this.editor.getElement().find('a[class^="' + this.options.baseClass + '"]').each(function(){
+            if ($(this).data(ui.options.baseClass + '-href')) {
+                $(this).attr('href', $(this).data(ui.options.baseClass + '-href'));
+            }
+        });
+    },
+
+    /**
+     * Tidy up after the user has canceled editing
+     */
+    cancel: function() {
+        if (this.dialog) $(this.dialog.dialog('close'));
+    }
+
 });
 
 $.ui.editor.registerUi({
@@ -444,6 +470,7 @@ $.ui.editor.registerUi({
                 }
             });
         },
+
         change: function() {
             if (!this.editor.getSelectedElements().length) this.ui.disable();
             else this.ui.enable();
