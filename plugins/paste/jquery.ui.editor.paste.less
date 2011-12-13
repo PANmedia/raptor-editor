@@ -51,6 +51,10 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box; 
+
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
 }
 
 .ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
@@ -58,6 +62,7 @@
     -moz-box-flex: 1;
     box-flex: 1;
 
-    height: 100%;
-    width: 100%;
+    display: -moz-box;
+    display: -webkit-box;
+    display: box;
 }

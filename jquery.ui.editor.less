@@ -183,8 +183,13 @@
 }
 
 .ui-editor-dialog textarea {
-    height: 94%;
-    width: 99%;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+
+    display: -moz-box;
+    display: -webkit-box;
+    display: box;
 }
 
 html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {

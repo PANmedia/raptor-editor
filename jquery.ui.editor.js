@@ -393,6 +393,8 @@ $.widget('ui.editor',
                     editor.selectOuter(editor.getElement());
                 }
             });
+
+        this.fire('tagTreeUpdated');
     },
 
     /**

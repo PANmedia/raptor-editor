@@ -1,4 +1,10 @@
 /**
+ * @fileOverview Save plugin & ui component
+ * @author David Neilson david@panmedia.co.nz
+ * @author Michael Robinson mike@panmedia.co.nz
+ */
+
+/**
  * @name $.editor.plugin.save
  * @augments $.ui.editor.defaultPlugin
  * @class Provides an interface for saving the element's content via AJAX. For options see {@link $.editor.plugin.save.options}
@@ -58,6 +64,10 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
     init: function() {
     },
 
+    /**
+     * Get the identifier for this element
+     * @return {String} The identifier
+     */
     getId: function() {
         if (typeof(this.options.id) === 'string') {
             return this.options.id;
@@ -67,12 +77,19 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
         return null;
     },
 
+    /**
+     * Get the cleaned content for the element
+     * @return {String}
+     */
     getData: function() {
         var data = {};
         data[this.getId()] = this.editor.save();
         return data;
     },
 
+    /**
+     * Perform save
+     */
     save: function() {
         this.message = this.editor.showLoading(_('Saving changes...'));
 
@@ -105,6 +122,9 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
         }
     },
 
+    /**
+     * @param  {Object} data Data returned from server
+     */
     done: function(data) {
         if (this.options.multiple) {
             this.saved++;
@@ -124,6 +144,10 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
         }
     },
 
+    /**
+     * Called if a save AJAX request fails
+     * @param  {Object} xhr 
+    */
     fail: function(xhr) {
         if (this.options.multiple) {
             this.failed++;
@@ -135,6 +159,9 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
         }
     },
 
+    /**
+     * Called after every save AJAX request
+     */
     always: function() {
         if (this.dirty === this.saved + this.failed) {
             if (!this.options.showResponse) {
@@ -161,6 +188,11 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
         }
     },
 
+    /**
+     * Handle the save AJAX request(s)
+     * @param  {String} contentData The element's content
+     * @param  {String} id Editing element's identfier
+     */
     ajax: function(contentData, id) {
         // Create POST data
         //var data = {};
@@ -196,9 +228,14 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
 $.ui.editor.registerUi({
 
     /**
-     * @see $.ui.editor.defaultUi#init
+     * @name $.editor.ui.save
+     * @augments $.ui.editor.defaultPlugin
+     * @class The save UI component
      */
     save: {
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
         init: function(editor, element) {
             return editor.uiButton({
                 title: _('Save'),
