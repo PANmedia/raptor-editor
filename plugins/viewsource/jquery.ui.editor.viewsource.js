@@ -36,7 +36,7 @@
          * Hide, destroy & remove the view source dialog. Enable the button.
          */
         hide: function() {
-            this.dialog.dialog('destroy').remove();
+            if (this.dialog) $(this.dialog).dialog('destroy').remove();
             this.dialog = null;
             $(this.ui.button).button('option', 'disabled', false);
         },
