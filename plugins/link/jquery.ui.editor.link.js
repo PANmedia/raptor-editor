@@ -354,7 +354,7 @@
                     }
                     
                     if (!edit || edit && !changedType) {
-                        plugin.typeChange(plugin.types[dialog.filter(':checked').val()], edit);
+                        plugin.typeChange(plugin.types[radios.filter(':checked').val()], edit);
                     }
                 },
                 close: function() {
