@@ -6,7 +6,7 @@
 
 /**
  * @name $.editor.plugin.link
- * @augments $.ui.editor.defaultPlugin 
+ * @augments $.ui.editor.defaultPlugin
  * @see  $.editor.ui.link
  * @see  $.editor.ui.unlink
  * @class Allow the user to wrap the selection with a link or insert a new link
@@ -28,7 +28,7 @@
          * @extends $.editor.plugin.link.baseLinkType
          */
         /** @lends $.editor.plugin.link.defaultLinkTypes.page.prototype */ {
-            
+
             /**
              * @see $.editor.plugin.link.baseLinkType#type
              */
@@ -38,7 +38,7 @@
              * @see $.editor.plugin.link.baseLinkType#title
              */
             title: _('Page on this or another website'),
-            
+
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
              */
@@ -137,12 +137,12 @@
 
                 return attributes;
             }
-        },
+        }
     ],
 
     /**
      * @see $.ui.editor.defaultPlugin#init
-     */   
+     */
     init: function(editor, options) {
 
         this.options = $.extend({}, {
@@ -171,7 +171,7 @@
          * @see $.editor.plugin.link
          */
         var baseLinkType = /** @lends $.editor.plugin.link.baseLinkType.prototype */ {
-            
+
             /**
              * Name of the link type
              * @type {String}
@@ -257,7 +257,7 @@
         else linkTypes = $.merge(this.defaultLinkTypes, this.options.customTypes);
 
         var linkTypesFieldset = this.dialog.find('fieldset').html('');
-        var link; 
+        var link;
 
         for (var i = 0; i < linkTypes.length; i++) {
             link = $.extend({}, baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
@@ -283,7 +283,7 @@
             this.dialog = $(this.editor.getTemplate('link.dialog', options)).appendTo('body');
 
             var dialog = this.dialog;
-            
+
             this.initTypes(edit);
 
             this.dialog.dialog({
@@ -332,7 +332,7 @@
 
                     var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                     radios.first().attr('checked', 'checked');
-                    
+
                     if (edit) {
                         for(type in plugin.types) {
                             if (plugin.types[type].editing(plugin.selectedElement)) {
@@ -381,7 +381,7 @@
 
         this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
     },
-    
+
     /**
      * Update the link control panel's content depending on which radio button is selected
      * @param  {Boolean} edit    True if the user is editing a link
@@ -393,7 +393,7 @@
         var ajax = linkType.ajaxUri && !plugin.types[linkType.type].content;
 
         if (ajax) wrap.addClass(options.baseClass + '-loading');
-        
+
         var plugin = this;
 
         panel.hide(this.options.panelAnimation, function(){
@@ -456,7 +456,7 @@ $.ui.editor.registerUi({
      * @class Button initiating the insert link plugin
      */
     link: /** @lends $.editor.ui.link.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -485,7 +485,7 @@ $.ui.editor.registerUi({
      * @class Button allowing the user to unlink text
      */
     unlink: /** @lends $.editor.ui.unlink.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
