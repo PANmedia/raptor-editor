@@ -1,0 +1,3 @@
+[submodule "dependencies"]
+	path = dependencies
+	url = git@git.panmedia.co.nz:siteignite/modules/jquery-ui-editor-deps
