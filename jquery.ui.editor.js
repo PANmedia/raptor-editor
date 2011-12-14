@@ -833,7 +833,7 @@ $.widget('ui.editor',
                          $.inArray(uiSet[j], this.options.ui) === -1) {
                     // <debug>
                     if (debugLevel >= MID) {
-                        debug('UI with name ' + uiSet[j] + ' does not exist');
+                        debug('UI with name ' + uiSet[j] + ' has been disabled');
                     }
                     continue;
                     // </debug>
@@ -1362,7 +1362,7 @@ $.extend($.ui.editor,
         uiOrder: null,
 
         /**
-         * Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the 'ui' option object will be enabled
+         * Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui} option object will be enabled
          * @type boolean
          */
         enableUi: true,
@@ -1374,7 +1374,7 @@ $.extend($.ui.editor,
         disabledUi: [],
 
         /**
-         * Default message opttions
+         * Default message options
          * @type Object
          */
         message: {
