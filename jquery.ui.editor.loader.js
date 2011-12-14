@@ -253,6 +253,7 @@
 
         getJs(root + 'plugins/i18n/jquery.ui.editor.i18n.js', null, ['editor']);
         getJs(root + 'plugins/i18n/locales/en.js', null, ['editor']);
+        getJs(root + 'plugins/i18n/locales/zh_CN.js', null, ['editor']);
         getLess(root + 'plugins/i18n/jquery.ui.editor.i18n.less');
     }
 

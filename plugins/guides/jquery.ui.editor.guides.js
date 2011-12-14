@@ -17,9 +17,10 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
-            this.bind('destroy', function() {
-                this.editor.getElement().removeClass(options.baseClass + '-visible');
-            });
+            
+            editor.bind('cancel', this.cancel, this);
+            editor.bind('destroy', this.cancel, this);
+
             return editor.uiButton({
                 title: _('Show Guides'),
                 icon: 'ui-icon-pencil',
@@ -27,6 +28,10 @@ $.ui.editor.registerUi({
                     editor.getElement().toggleClass(options.baseClass + '-visible');
                 }
             });
+        },
+
+        cancel: function() {
+            this.editor.getElement().removeClass(this.options.baseClass + '-visible');
         }
     }
 });
