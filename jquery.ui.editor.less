@@ -35,17 +35,27 @@
     width: 100%;
     padding: 5px 0 0 0;
     line-height: 10px;
-    
+
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 
     > .ui-editor-group {
-        margin: 0 5px 5px 5px;
         float: left;
+        margin: 0 5px 5px 5px;
     }
-    
+
+    .ui-editor-buttonset {
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+        -webkit-box-orient: horizontal;
+        -moz-box-orient: horizontal;
+        box-orient: horizontal;
+    }
+
     .ui-editor-buttonset > .ui-button {
+        display: block;
         margin: 0 -1px 0 0;
         -webkit-border-radius: 0px;
         -moz-border-radius: 0px;
@@ -67,14 +77,14 @@
         -moz-border-radius: 0 5px 5px 0;
         border-radius: 0 5px 5px 0;
     }
-    
+
     .ui-editor-buttonset .ui-editor-selectmenu {
-        display: inline-block;
+        display: block;
     }
-    
+
     .ui-editor-buttonset > .ui-editor-selectmenu .ui-button {
         margin: 0 -1px 0 0;
-        
+
         -webkit-border-radius: 0px;
         -moz-border-radius: 0px;
         border-radius: 0px;
@@ -84,7 +94,7 @@
         -webkit-border-radius: 5px 0 0 5px;
         -moz-border-radius: 5px 0 0 5px;
         border-radius: 5px 0 0 5px;
-        
+
         &.ui-corner-top {
             -webkit-border-radius: 5px 0 0 0;
             -moz-border-radius: 5px 0 0 0;
@@ -96,7 +106,7 @@
         -webkit-border-radius: 0 5px 5px 0;
         -moz-border-radius: 0 5px 5px 0;
         border-radius: 0 5px 5px 0;
-        
+
         &.ui-corner-top {
             -webkit-border-radius: 0 5px 0 0;
             -moz-border-radius: 0 5px 0 0;
@@ -167,7 +177,7 @@
 
 
 /******************************************************************************\
- * Inputs 
+ * Inputs
 \******************************************************************************/
 .ui-editor-dialog textarea,
 .ui-editor-dialog input {
@@ -176,7 +186,7 @@
 }
 
 /******************************************************************************\
- * Dialogs 
+ * Dialogs
 \******************************************************************************/
 .ui-editor-dialog .ui-dialog-content {
     font-size: 12px;
@@ -197,11 +207,11 @@ html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.u
 }
 
 /******************************************************************************\
- * Messages 
+ * Messages
 \******************************************************************************/
 .ui-editor-messages {
     margin: 5px;
-    
+
     .ui-editor-message-close {
         float: right;
         cursor: pointer;
@@ -219,15 +229,15 @@ html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.u
 
     .ui-editor-message-wrapper {
         padding: 3px 3px 3px 1px;
-        -webkit-box-shadow: 
-            inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/ 
-            inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/ 
-        -moz-box-shadow: 
-            inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/ 
-            inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/ 
-        box-shadow: 
-            inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/ 
-            inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/ 
+        -webkit-box-shadow:
+            inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/
+            inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/
+        -moz-box-shadow:
+            inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/
+            inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/
+        box-shadow:
+            inset 0 -1px 1px rgba(0,0,0,0.35), /*top internal highlight*/
+            inset 0 1px 2px rgba(255,255,255,0.5); /*bottom internal shadow*/
     }
 
     :first-child {
