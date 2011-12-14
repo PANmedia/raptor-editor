@@ -3,6 +3,7 @@
     var loaded = {};
     var loading = [];
     var ready = false;
+    var debug = false;
     var processing = false;
     var scripts = document.getElementsByTagName('script');
     var script = scripts[scripts.length - 1];
@@ -17,70 +18,47 @@
     var root = param('root', 'jquery.ui.editor/');
 
     function init() {
-        if (ready && loading.length === 0) {
+        if (ready && !processing && loading.length === 0) {
             ready = false;
+            if (debug && console && console.info) {
+                console.info('Running editor loaded callback: ', param('loaded'), window[param('loaded')]);
+            }
             if (window[param('loaded')]) {
                 window[param('loaded')]();
             }
         }
     }
 
-    function callback() {
-        if (!processing && queue.length) {
-            processing = true;
-            var file = queue.shift();
-            var node = document.createElement('script');
-            node.setAttribute('type', 'text/javascript');
-            node.setAttribute('src', file);
-            document.getElementsByTagName('head')[0].appendChild(node)
-
-            if (node.readyState) {
-                // IE
-                node.onreadystatechange = function(){
-                    if (node.readyState == 'loaded' ||
-                            node.readyState == 'complete') {
-                        node.onreadystatechange = null;
-                        processing = false;
-                        callback();
-                    }
-                };
-            } else {
-                // Others
-                node.onload = function(){
-                    processing = false;
-                    callback();
-                };
-            }
-        }
-        init();
-    }
-
     var next;
 
     function ajax(file, name) {
         loading.push(file);
-//        if (console && console.info) {
-//            console.info('Loading file: ' + file);
-//        }
+        if (debug && console && console.info) {
+            console.info('Loading file: ' + file);
+        }
         $.ajax({
             url: file,
             dataType: 'script'
         }).done(function() {
-//            if (console && console.info) {
-//                console.info('Loaded file: ' + file);
-//            }
+            if (debug && console && console.info) {
+                console.info('Loaded file: ' + file);
+            }
             loaded[name] = true;
             loading.pop();
             next();
         }).error(function(data) {
-            if (console && console.error) {
+            if (debug && console && console.error) {
                 console.error('Error loading file: ' + file, data);
             }
+            loaded[name] = true;
+            loading.pop();
+            next();
         });
 
     }
 
     next = function() {
+        if (processing) return;
         var i = queue.length;
         while (i--) {
             var load = true;
@@ -104,13 +82,13 @@
     }
 
     function getJs(file, name, deps) {
-        if (!deps) {
+        if (!processing && !deps) {
             ajax(file, name);
         } else {
             queue.push({
                 file: file,
                 name: name,
-                deps: deps
+                deps: deps || []
             });
             next();
         }
@@ -134,6 +112,10 @@
 
     // Get jQuery first
     if (param('jquery')) {
+        if (debug && console && console.info) {
+            console.info('Loading jQuery');
+        }
+        processing = true;
         var node = document.createElement('script');
         node.setAttribute('type', 'text/javascript');
         node.setAttribute('src', root + 'dependencies/jquery.js');
@@ -152,6 +134,9 @@
         } else {
             // Others
             node.onload = function(){
+                if (debug && console && console.info) {
+                    console.info('Loaded jQuery');
+                }
                 processing = false;
                 next();
             };
@@ -186,6 +171,11 @@
         loaded['init'] = true;
         loaded['domtools'] = true;
         loaded['editor'] = true;
+    }
+
+    if (param('raptorize', true)) {
+        getJs(root + 'dependencies/raptorize/jquery.raptorize.js', 'raptorize');
+        getJs(root + 'plugins/raptorize/jquery.ui.editor.raptorize.js', null, ['editor', 'raptorize']);
     }
 
     if (param('plugins', true)) {
