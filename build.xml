@@ -151,7 +151,7 @@
     <target name="build" depends="stripblocks,combine,compile,package,targz">
     </target>
 
-    <target name="0deps" depends="stripblocks,copydeps,combine,compile,targz,cleanup">
+    <target name="0deps" depends="stripblocks,copydeps,combine,compile,targz">
     </target>
 
     <target name="testbuild">
@@ -163,6 +163,7 @@
         <echo>${buildpath}</echo>
         <echo>${stripblocks}</echo>
         <echo>${theme}</echo>
+        <echo>${plugins}</echo>
     </target>
 
     <!-- =================================================================== -->
@@ -192,11 +193,23 @@
                 <exclude name="vendor/**" />
                 <exclude name="dependencies/**" />
                 <exclude name="packages/**" />
+                <exclude name="plugins/**" />
                 <exclude name="${buildpath}" />
                 <exclude name="${buildpath}/**" />
                 <exclude name="${packagepath}" />
                 <exclude name="${packagepath}/**" />
                 <include name="**/*" />
+            </fileset>
+        </copy>
+
+        <foreach list="${plugins}" param="plugin" target="cloneplugin"/>
+    </target>
+
+    <target name="cloneplugin">
+        <echo>${plugin}</echo>
+        <copy todir="${buildpath}" >
+            <fileset dir=".">
+                <include name="plugins/${plugin}/**" />
             </fileset>
         </copy>
     </target>
@@ -239,6 +252,12 @@
                   tofile="${buildpath}/01-jquery.js" />
         </then></if>
 
+        <!-- jQuery UI -->
+        <if><istrue value="${jquery-ui}"/><then>
+            <copy file="dependencies/jquery-ui.js"
+                  tofile="${buildpath}/02-jquery-ui.js" />
+        </then></if>
+
         <!-- jQuery plugins -->
         <if><istrue value="${jquery-cookie}"/><then>
             <copy file="dependencies/jquery.cookie.js"
@@ -253,12 +272,6 @@
                   tofile="${buildpath}/02-theme/tipTip.css" />
         </then></if>
 
-        <!-- jQuery UI -->
-        <if><istrue value="${jquery-ui}"/><then>
-            <copy file="dependencies/jquery-ui.js"
-                  tofile="${buildpath}/02-jquery-ui.js" />
-        </then></if>
-
         <!-- Rangy -->
         <if><istrue value="${rangy}"/><then>
             <copy file="dependencies/rangy/rangy-core.js"
@@ -269,6 +282,12 @@
                   tofile="${buildpath}/08-rangy-selectionsaverestore.js" />
             <copy file="dependencies/rangy/rangy-serializer.js"
                   tofile="${buildpath}/09-rangy-serializer.js" />
+        </then></if>
+
+        <!-- Raptorize -->
+        <if><istrue value="${raptorize}"/><then>
+            <copy file="dependencies/raptorize/jquery.raptorize.js"
+                  tofile="${buildpath}/10-raptorize.js" />
         </then></if>
 
         <!-- CSS -->
@@ -392,7 +411,7 @@
             <istrue value="${compile-js}"/>
             <then>
                 <echo>java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
-                <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js"
+                <exec command="java -jar vendor/Google/ClosureCompiler/compiler.jar ${closure-options} --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js"
                       dir="." level="info" outputProperty="output"/>
                 <echo>${output}</echo>
             </then>
