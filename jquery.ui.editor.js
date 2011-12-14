@@ -188,7 +188,7 @@ $.widget('ui.editor',
             // Copy the origianl elements class(es) to the replacement div
             .attr('class', this.element.attr('class'));
 
-        var style = this.getStyles(this.element);
+        var style = this.options.domTools.getStyles(this.element);
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
             target.css(this.options.replaceStyle[i], style[this.options.replaceStyle[i]]);
         }
