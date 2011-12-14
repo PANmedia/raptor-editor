@@ -176,6 +176,7 @@
     if (param('raptorize', true)) {
         getJs(root + 'dependencies/raptorize/jquery.raptorize.js', 'raptorize');
         getJs(root + 'plugins/raptorize/jquery.ui.editor.raptorize.js', null, ['editor', 'raptorize']);
+        getLess(root + 'plugins/raptorize/jquery.ui.editor.raptorize.less');
     }
 
     if (param('plugins', true)) {
