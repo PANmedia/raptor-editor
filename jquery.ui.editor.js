@@ -828,9 +828,9 @@ $.widget('ui.editor',
 
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
-                // Check if we are not automaticly enabling UI, and if not, check if the UI was manually enabled
+                // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
                 if (!this.options.enableUi &&
-                        !this.options.ui[uiSet[j]]) {
+                         $.inArray(uiSet[j], this.options.ui) === -1) {
                     // <debug>
                     if (debugLevel >= MID) {
                         debug('UI with name ' + uiSet[j] + ' does not exist');
