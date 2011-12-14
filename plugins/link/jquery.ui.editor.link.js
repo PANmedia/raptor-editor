@@ -165,6 +165,8 @@
      */
     initTypes: function(edit) {
 
+        this.types = {};
+
         /**
          * @name $.editor.plugin.link.baseLinkType
          * @class Default {@link $.editor.plugin.link} type
@@ -223,9 +225,9 @@
              */
             editing: function(link) {
                 if (link.attr('class')) {
-                    var classes = link.attr('class').split(/\s/gi);
+                    var classes = this.classes.split(/\s/gi);
                     for (var i = 0; i < classes.length; i++) {
-                        if (classes[i].trim() && $(this).hasClass(classes[i])) {
+                        if (classes[i].trim() && $(link).hasClass(classes[i])) {
                             return true;
                         }
                     }
@@ -253,23 +255,20 @@
             }
         };
 
+        var linkTypes = null;
+
         if (this.options.replaceTypes) linkTypes = this.options.customTypes;
         else linkTypes = $.merge(this.defaultLinkTypes, this.options.customTypes);
 
-        var linkTypesFieldset = this.dialog.find('fieldset').html('');
         var link;
-
         for (var i = 0; i < linkTypes.length; i++) {
             link = $.extend({}, baseLinkType, linkTypes[i], { classes: this.options.baseClass + '-' + linkTypes[i].type }).init();
             this.types[link.type] = link;
-            $(this.editor.getTemplate('link.label', link)).appendTo(linkTypesFieldset);
         }
-
-        linkTypesFieldset.find('input[type="radio"]').bind('change.' + this.editor.widgetName, $.proxy(this.typeChange, this));
     },
 
     /**
-     * Show the link control dialog.
+     * Show the link control dialog
      */
     show: function() {
         if (!this.visible) {
@@ -284,9 +283,19 @@
 
             var dialog = this.dialog;
 
-            this.initTypes(edit);
+            this.initTypes();
+            
+            // Add link type radio buttons
+            var linkTypesFieldset = this.dialog.find('fieldset');
+            for (type in this.types) {
+                $(this.editor.getTemplate('link.label', this.types[type])).appendTo(linkTypesFieldset);
+            }
 
-            this.dialog.dialog({
+            linkTypesFieldset.find('input[type="radio"]').bind('change.' + this.editor.widgetName, function(){
+                plugin.typeChange(plugin.types[$(this).val()], edit);
+            });
+
+            dialog.dialog({
                 autoOpen: false,
                 modal: true,
                 resizable: true,
@@ -333,15 +342,17 @@
                     var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                     radios.first().attr('checked', 'checked');
 
-                    if (edit) {
+                    if (!edit) {
+                        plugin.typeChange(plugin.types[dialog.filter(':checked').val()], edit);
+                    } else {
                         for(type in plugin.types) {
                             if (plugin.types[type].editing(plugin.selectedElement)) {
-                                radios.find('[value="' + type + '""]').attr('checked', 'checked');
+                                radios.filter('[value="' + type + '"]').attr('checked', 'checked');
+                                plugin.typeChange(plugin.types[type], edit);
+                                break;
                             }
                         }
                     }
-
-                    plugin.typeChange(edit);
                 },
                 close: function() {
                     plugin.visible = false;
@@ -386,8 +397,7 @@
      * Update the link control panel's content depending on which radio button is selected
      * @param  {Boolean} edit    True if the user is editing a link
      */
-    typeChange: function(edit) {
-        var linkType = this.types[this.dialog.find('.ui-editor-link-menu input[type="radio"]:checked').val()];
+    typeChange: function(linkType, edit) {
         var panel = this.dialog.find('.' + this.options.baseClass + '-content');
         var wrap = panel.closest('.' + this.options.baseClass + '-wrap');
         var ajax = linkType.ajaxUri && !this.types[linkType.type].content;
