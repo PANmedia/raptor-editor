@@ -37,7 +37,7 @@ $.widget('ui.editor',
             ['link', 'unlink'],
             ['floatLeft', 'floatNone', 'floatRight'],
             ['tagMenu'],
-            ['i18n']
+            ['i18n', 'raptorize']
         ];
 
         // Give the element a unique ID
@@ -868,8 +868,6 @@ $.widget('ui.editor',
                 // </strict>
             }
 
-            uiGroup.addClass(this.options.baseClass + '-group');
-
             if (uiGroup.children().length > 1) {
                 uiGroup.addClass(this.options.baseClass + '-buttonset');
             }
@@ -878,6 +876,8 @@ $.widget('ui.editor',
             if (uiGroup.children().length > 0) {
                 uiGroup.appendTo(this.selToolbar('.' + this.options.baseClass + '-inner'));
             }
+
+            uiGroup.wrap($('<div/>').addClass(this.options.baseClass + '-group'));
         };
         $('<div/>').addClass('ui-helper-clearfix').appendTo(this.selToolbar('.' + this.options.baseClass + '-inner'));
     },
