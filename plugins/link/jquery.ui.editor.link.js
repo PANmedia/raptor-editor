@@ -390,9 +390,9 @@
         var linkType = this.types[this.dialog.find('.ui-editor-link-menu input[type="radio"]:checked').val()];
         var panel = this.dialog.find('.' + this.options.baseClass + '-content');
         var wrap = panel.closest('.' + this.options.baseClass + '-wrap');
-        var ajax = linkType.ajaxUri && !plugin.types[linkType.type].content;
+        var ajax = linkType.ajaxUri && !this.types[linkType.type].content;
 
-        if (ajax) wrap.addClass(options.baseClass + '-loading');
+        if (ajax) wrap.addClass(this.options.baseClass + '-loading');
 
         var plugin = this;
 
@@ -408,7 +408,7 @@
                     success: function(data) {
                         panel.html(data);
                         plugin.types[linkType.type].content = data;
-                        wrap.removeClass(options.baseClass + '-loading');
+                        wrap.removeClass(plugin.options.baseClass + '-loading');
                         linkType.show(panel, edit);
                         panel.show(plugin.options.panelAnimation, $.proxy(linkType.focus, linkType));
                     }
