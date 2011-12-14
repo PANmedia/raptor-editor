@@ -342,16 +342,19 @@
                     var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                     radios.first().attr('checked', 'checked');
 
-                    if (!edit) {
-                        plugin.typeChange(plugin.types[dialog.filter(':checked').val()], edit);
-                    } else {
+                    var changedType = false;
+                    if (edit) {
                         for(type in plugin.types) {
-                            if (plugin.types[type].editing(plugin.selectedElement)) {
+                            if (changedType = plugin.types[type].editing(plugin.selectedElement)) {
                                 radios.filter('[value="' + type + '"]').attr('checked', 'checked');
                                 plugin.typeChange(plugin.types[type], edit);
                                 break;
                             }
                         }
+                    }
+                    
+                    if (!edit || edit && !changedType) {
+                        plugin.typeChange(plugin.types[dialog.filter(':checked').val()], edit);
                     }
                 },
                 close: function() {
