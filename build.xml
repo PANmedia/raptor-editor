@@ -247,10 +247,10 @@
 
         <!-- TipTip -->
         <if><istrue value="${jquery-tiptip}"/><then>
-            <copy file="dependencies/tiptip/jquery.tiptip.js"
-                  tofile="${buildpath}/05-jquery-tiptip.js" />
-            <copy file="dependencies/tiptip/tiptip.css"
-                  tofile="${buildpath}/02-theme/tiptip.css" />
+            <copy file="dependencies/tiptip/jquery.tipTip.js"
+                  tofile="${buildpath}/05-jquery-tipTip.js" />
+            <copy file="dependencies/tiptip/tipTip.css"
+                  tofile="${buildpath}/02-theme/tipTip.css" />
         </then></if>
 
         <!-- jQuery UI -->

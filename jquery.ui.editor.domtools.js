@@ -166,6 +166,9 @@ var domTools = {
     rangeEmptyTag: function(range) {
         var contents = range.cloneContents();
         var html = this.domFragmentToHtml(contents);
+        if (typeof html === 'string') {
+            html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+        }
         if ($(html).is(':empty')) return true;
         return false;
     },
