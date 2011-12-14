@@ -390,7 +390,7 @@
         var linkType = this.types[this.dialog.find('.ui-editor-link-menu input[type="radio"]:checked').val()];
         var panel = this.dialog.find('.' + this.options.baseClass + '-content');
         var wrap = panel.closest('.' + this.options.baseClass + '-wrap');
-        var ajax = linkType.ajaxUri && !plugin.types[linkType.type].content;
+        var ajax = linkType.ajaxUri && !this.types[linkType.type].content;
 
         if (ajax) wrap.addClass(options.baseClass + '-loading');
         
