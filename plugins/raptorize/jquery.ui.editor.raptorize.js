@@ -18,9 +18,7 @@ $.ui.editor.registerUi({
          */
         init: function(editor) {
             var button = editor.uiButton({
-                title: _('Raptorize'),
-                click: function() {
-                }
+                title: _('Raptorize')
             });
             editor.bind('ready', function() {
                 button.button.raptorize();
