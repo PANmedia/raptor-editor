@@ -67,7 +67,7 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
             return;
         }
         // </strict>
-        
+        if (editor.getPlugin('unsavedEditWarning')) editor.bind('change', this.rebuildUnsavedEditWarning, this);
         editor.bind('resize', this.rebuildUi, this);
         editor.bind('dock', this.rebuildUi, this);
         editor.bind('tagTreeUpdated', this.rebuildTagTree, this);
@@ -93,8 +93,6 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
             this.wasDocked = this.isDocked();
             this.currentLocale = this.options.locale;
         }
-        // Unsaved edit warnings could be added / removed on change, so we should check for them each time
-        $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(this.tipTipOptions(), { defaultPosition: 'right' }));
     },
 
     /**
@@ -105,6 +103,16 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
         this.editor.selTitle('[title], .' + this.options.baseClass + '-tiptip').each(function() {
             $(this).tipTip(ui.tipTipOptions(true)).addClass(ui.options.baseClass + '-tiptip');
         })
+    },
+
+    /**
+     * Check for title attribute on unsaved edit warnings and tipTip-ize it
+     */
+    rebuildUnsavedEditWarning: function() {
+        // Unsaved edit warnings could be added / removed on change, so we should check for them each time
+        $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(this.tipTipOptions(), { 
+            defaultPosition: 'right' 
+        }));
     },
 
     /**
