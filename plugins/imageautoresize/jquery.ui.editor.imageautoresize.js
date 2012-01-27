@@ -99,16 +99,14 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
         for (var i = 0; i < images.length; i++) {
 
             var image = images[i];
-            var width = image.outerWidth();
-            var height = image.outerHeight();
 
-            if (image.outerHeight() > image.outerWidth()) {
-                width = Math.floor((width / height) * maxHeight);
-                height = maxHeight;
-            } else {
-                height = Math.floor((height / width) * maxWidth); 
-                width = maxWidth;
-            }
+            var image = images[i];
+            var width = image.width();
+            var height = image.height();
+            var ratio = Math.min(maxWidth / width, maxHeight / height);
+
+            width = ratio * width;
+            height = ratio * height;
 
             image.addClass(this.options.resizingClass);
 
