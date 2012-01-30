@@ -1,7 +1,7 @@
 /**
  * @name $.editor.plugin.imageAutoResize
  * @augments $.ui.editor.defaultPlugin
- * @class Automatically resize oversized images with CSS and height / width attributes. If {@link $.editor.plugin.options#resizeAjax} is true, 
+ * @class Automatically resize oversized images with CSS and height / width attributes. If {@link $.editor.plugin.options#resizeAjax} is true,
  * the plugin will make a request to the server for resized image paths.
  */
 $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAutoResize.prototype */ {
@@ -26,7 +26,7 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
             resizingClass: this.options.baseClass + '-in-progress',
             resizeAjaxClass: this.options.baseClass + '-on-save'
         });
-        
+
         editor.bind('enabled', this.bind, this);
 
         // If the function addEventListener exists, bind our custom image resized event
@@ -37,7 +37,7 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
                 this.addEventListener('DOMAttrModified', plugin.resized, false);
             }
             if (this.attachEvent) {  // Internet Explorer and Opera
-                elemToCheck.attachEvent('onpropertychange', plugin.resized);
+                this.attachEvent('onpropertychange', plugin.resized);
             }
         });
     },
@@ -58,8 +58,8 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
      */
     imageResized: function(event) {
         var target = $(event.target);
-        if(target.is('img') /*&& target.attr('_moz_resizing')*/ 
-            && event.attrName == 'style' 
+        if(target.is('img') /*&& target.attr('_moz_resizing')*/
+            && event.attrName == 'style'
             && event.newValue.match(/width|height/)) {
             if (this.options.resizeAjax) target.addClass(this.options.resizeAjaxClass);
             this.editor.fire('change');
@@ -81,7 +81,7 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
 
         if (images.length) plugin.resizeImageElements(images, element.width(), element.height());
     },
-    
+
     /**
      * Proportionately resizes the image, applying width & height attributes and CSS styles
      * @param  {String[]} image The images to be resized
@@ -116,10 +116,10 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
             // Resize the image with CSS / attributes
             $(image).css({
                 'width': width,
-                'height': height 
+                'height': height
             }).attr('height', height).
                 attr('width', width);
-            
+
             if (this.options.resizeAjax) {
                 image.addClass(this.options.resizeAjaxClass);
             }
@@ -128,7 +128,7 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
             this.showOversizeWarning(this.editor.outerHtml(imageLink), {
                 hide: function() {
                     image.removeClass(plugin.options.resizingClass);
-                }   
+                }
             });
         }
     },
@@ -178,14 +178,14 @@ $.ui.editor.registerPlugin('imageAutoResize', /** @lends $.editor.plugin.imageAu
                 height: $(this).height()
             });
         });
-        
+
         if (!images.length) return;
 
         var loading = this.editor.showLoading(_('Resizing image(s)'));
 
         // Create the JSON request
         var ajax = this.options.ajax;
-        
+
         ajax.data = { images: images };
         ajax.async = false;
 
