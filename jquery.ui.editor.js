@@ -901,12 +901,11 @@ $.widget('ui.editor',
                 if (!this.title) this.title = _('Unnamed Button');
 
                 // Create the HTML button
-                this.button = $('<button/>')
+                this.button = $('<button type="button" />')
                     .html(this.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
                     .attr('title', this.title)
-                    .attr('type', 'button')
                     .val(name);
 
                 if (options.classes) this.button.addClass(options.classes);
