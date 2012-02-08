@@ -1,15 +1,19 @@
 $.ui.editor.registerPlugin({
     snippet: {
         ids: [],
+        enabled: false,
 
         init: function(editor, options) {
             if (options.snippets) {
                 for (var i = 0, l = options.snippets.length; i < l; i++) {
                     this.createSnippet(options.snippets[i], editor);
                 }
-                this.createButtons();
-                editor.bind('clean', this.removeButtons, this);
+
                 editor.bind('restore', this.createButtons, this);
+                editor.bind('clean', this.removeButtons, this);
+
+                editor.bind('enabled', this.enable, this);
+                editor.bind('disabled', this.disable, this);
             }
         },
 
@@ -24,6 +28,16 @@ $.ui.editor.registerPlugin({
 //            });
         },
 
+        enable: function() {
+            this.enabled = true;
+            this.createButtons();
+        },
+
+        disable: function() {
+            this.removeButtons();
+            this.enabled = false;
+        },
+
         createButtons: function() {
             var editor = this.editor;
 
@@ -36,6 +50,9 @@ $.ui.editor.registerPlugin({
         },
 
         createButton: function(snippet, editor) {
+            if (!this.enabled) {
+                return;
+            }
             var plugin = this;
             var id = editor.getUniqueId();
             this.ids.push(id);
@@ -64,8 +81,19 @@ $.ui.editor.registerPlugin({
         },
 
         removeButtons: function() {
+            if (!this.enabled) {
+                return;
+            }
+            // Remove the button by the ID
             for (var i = 0, l = this.ids.length; i < l; i++) {
                 $('.' + this.ids[i]).remove();
+            }
+            // Run clean function (if supplied)
+            for (i = 0, l = this.options.snippets.length; i < l; i++) {
+                var snippet = this.options.snippets[i];
+                if ($.isFunction(snippet.clean)) {
+                    snippet.clean.call(snippet, this, this.editor);
+                }
             }
         },
 
@@ -79,10 +107,8 @@ $.ui.editor.registerPlugin({
                 $(template).appendTo(appendTo);
             }
 
-            this.removeButtons();
             editor.disableEditing();
             editor.enableEditing();
-            this.createButtons();
         }
 
     }
