@@ -66,6 +66,7 @@ if (debugLevel >= MID) {
 }
 
 if (debugLevel >= MAX) {
+    info('TODO: dont fire events when editing is disabled');
     info('TODO: use cookies when local storage is not available, or chosen by option');
     info('TODO: make a way to disable all buttons then selectivity enable ones');
     info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
