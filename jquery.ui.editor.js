@@ -216,7 +216,14 @@ $.widget('ui.editor',
                         this.options.domTools.constrainSelection(this.getElement());
                         var html = this.getHtml();
                         var result = this.options.domTools[i].apply(this.options.domTools, arguments);
-                        if (html != this.getHtml()) this.change();
+                        if (html !== this.getHtml()) {
+                            // <debug>
+                            if (debugLevel >= MID) {
+                                debug('Dom tools function (' + i + ') changed content, firing change.');
+                            }
+                            // </debug>
+                            this.change();
+                        }
                         return result;
                     }
                 })(i);
@@ -225,11 +232,13 @@ $.widget('ui.editor',
     },
 
     change: function() {
-        if (this.changeTimer !== null) window.clearTimeout(this.changeTimer);
+        if (this.changeTimer !== null) {
+            return;
+        }
         this.changeTimer = window.setTimeout(function(editor) {
             editor.fire('change');
             editor.changeTimer = null;
-        }, 50, this);
+        }, 1000, this);
     },
 
     /*========================================================================*\
@@ -820,6 +829,7 @@ $.widget('ui.editor',
      *
      */
     loadUi: function() {
+        console.log(this.options.ui);
         // Loop the UI order option
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiSet = this.options.uiOrder[i];
@@ -829,14 +839,17 @@ $.widget('ui.editor',
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
                 // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
-                if (!this.options.enableUi &&
-                         $.inArray(uiSet[j], this.options.ui) === -1) {
+                if (this.options.enableUi === false &&
+                        typeof this.options.ui[uiSet[j]] === 'undefined' ||
+                        this.options.ui[uiSet[j]] === false) {
                     // <debug>
                     if (debugLevel >= MID) {
-                        debug('UI with name ' + uiSet[j] + ' has been disabled');
+                        debug('UI with name ' + uiSet[j] + ' has been disabled ' + (
+                            this.options.enableUi === false ? 'by default' : 'manually'
+                        ) + $.inArray(uiSet[j], this.options.ui));
                     }
-                    continue;
                     // </debug>
+                    continue;
                 }
 
                 // Check if we have explicitly disabled UI
@@ -1203,7 +1216,13 @@ $.widget('ui.editor',
         if (!sub) this.fire('before:' + name, global, true);
 
         // <debug>
-        if (debugLevel >= MAX) debug('Firing event: ' + name, this.getElement());
+        if (debugLevel === MAX) {
+            if (!name.match(/^before:/) && !name.match(/^after:/)) {
+                debug('Firing event: ' + name);
+            }
+        } else if (debugLevel > MAX) {
+            debug('Firing event: ' + name, this.getElement());
+        }
         // </debug>
 
         if (this.events[name]) {
@@ -1731,7 +1750,9 @@ $.extend($.ui.editor,
      */
     fire: function(name) {
         // <debug>
-        if (debugLevel >= MAX) debug('Firing global/static event: ' + name);
+        if (debugLevel > MAX) {
+            debug('Firing global/static event: ' + name);
+        }
         // </debug>
         if (!this.events[name]) return;
         for (var i = 0, l = this.events[name].length; i < l; i++) {
