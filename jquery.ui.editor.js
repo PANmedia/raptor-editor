@@ -829,7 +829,6 @@ $.widget('ui.editor',
      *
      */
     loadUi: function() {
-        console.log(this.options.ui);
         // Loop the UI order option
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiSet = this.options.uiOrder[i];
