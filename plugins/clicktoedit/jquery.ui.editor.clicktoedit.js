@@ -21,6 +21,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
 
         // Default options
         options = $.extend({}, {
+            obscureLinks: false,
             position: {
                 at: 'center center',
                 of: editor.getElement(),
@@ -34,7 +35,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
                 }
             }
         }, options);
-        
+
         /**
          * Show the click to edit message
          */
@@ -66,15 +67,16 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
 
         message.position(options.position);
 
-        // Prevent obscuring links
-        editor.getElement().find('a').bind('mouseenter.' + editor.widgetName, plugin.hide);
-        editor.getElement().find('a').bind('mouseleave.' + editor.widgetName, plugin.show);
-
+        // Prevent disabling links if required
+        if (!options.obscureLinks) {
+            editor.getElement().find('a').bind('mouseenter.' + editor.widgetName, plugin.hide);
+            editor.getElement().find('a').bind('mouseleave.' + editor.widgetName, plugin.show);
+        }
         editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
         editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
         editor.getElement().bind('click.' + editor.widgetName, function(event) {
-            // Prevent disabling links
-            if (!$(event.target).is('a') && !$(event.target).parents('a').length) {
+            // Prevent disabling links if required
+            if (options.obscureLinks || (!$(event.target).is('a') && !$(event.target).parents('a').length)) {
                 plugin.edit();
             }
         });
