@@ -19,8 +19,15 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         var plugin = this;
         var message = $(editor.getTemplate('clicktoedit.message', options)).appendTo('body');
 
-        // Default options
+        /**
+        * Plugin option defaults
+        * @type {Object}
+        */
         options = $.extend({}, {
+            
+            /**
+             * @type {Boolean} true if links should be obscured
+             */
             obscureLinks: false,
             position: {
                 at: 'center center',
