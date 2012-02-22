@@ -613,6 +613,7 @@ $.widget('ui.editor',
                 this.selDialog().show();
             }
             this.selToolbar().dialog('open');
+            this.getElement().focus();
             this.fire('show');
             this.fire('resize');
         }
