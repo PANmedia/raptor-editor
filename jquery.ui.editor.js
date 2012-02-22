@@ -613,9 +613,9 @@ $.widget('ui.editor',
                 this.selDialog().show();
             }
             this.selToolbar().dialog('open');
-            this.getElement().focus();
             this.fire('show');
             this.fire('resize');
+            this.getElement().attr('tabindex', -1).focus();
         }
     },
 
