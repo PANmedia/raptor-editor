@@ -616,6 +616,10 @@ $.widget('ui.editor',
             this.selToolbar().dialog('open');
             this.fire('show');
             this.fire('resize');
+            if (typeof this.getElement().attr('tabindex') === 'undefined') {
+                this.getElement().attr('tabindex', -1);
+            }
+            this.getElement().focus();
         }
     },
 
