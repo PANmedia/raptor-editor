@@ -23,17 +23,17 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
         
         /**
          * Delay between user hovering the element and the tooltip being displayed
-         * @default  400
+         * @default  300
          * @type {Number} Time in milliseconds
          */
-        delay: 400,
+        delay: 250,
 
         /**
          * Fade in animation time
          * @default 200
          * @type {Number} Time in milliseconds
          */
-        fadeIn: 200,
+        fadeIn: 250,
 
         /**
          * Fade out animation time
