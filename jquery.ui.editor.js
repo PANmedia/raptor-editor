@@ -544,6 +544,7 @@ $.widget('ui.editor',
         this.toolbar.append('<div class="' + this.options.baseClass + '-inner"/>');
 
         this.toolbar.dialog({
+            modal: false,
             resizable: false,
             closeOnEscape: false,
             width: 'auto',
