@@ -17,7 +17,7 @@
         /**
          * @see $.ui.editor.defaultUi#init
          */
-        init: function(editor) {
+        init: function(editor, options) {
             return editor.uiButton({
                 title: _('Blockquote'),
                 click: function() {
