@@ -56,12 +56,22 @@
              * @see $.editor.plugin.link.baseLinkType#show
              */
             show: function(panel, edit) {
+
+                var link = this;
+                panel.find('input[name="location"]').bind('keyup', function(){
+                    link.validate(panel);
+                });
+
                 if (edit) {
-                    panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href'));
+                    panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href')).
+                        trigger('keyup');
+
                     if (this.plugin.selectedElement.attr('target') === '_blank') {
                         panel.find('input[name="blank"]').attr('checked', 'checked');
                     }
+
                 }
+                
                 return this;
             },
 
@@ -74,12 +84,37 @@
                 };
 
                 if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
-
-                if (!/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attributes.href)) {
+                                
+                if (!this.options.regexLink.test(attributes.href)) {
                     this.plugin.editor.showWarning(_('The url for the link you inserted doesn\'t look well formed'));
                 }
 
                 return attributes;
+            },
+             
+            /**
+             * @return {Boolean} True if the link is valid
+             */
+            validate: function(panel) {
+                
+                var href = panel.find('input[name="location"]').val();
+                var errorMessageSelector = '.' + this.options.baseClass + '-error-message-url';
+                var isValid = true;
+                
+                if (!this.options.regexLink.test(href)) {
+                    if (!panel.find(errorMessageSelector).size()) {
+                        panel.find('input[name="location"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, { 
+                            messageClass: this.options.baseClass + '-error-message-url',
+                            message: _('The URL does not look well formed')
+                        })));
+                    }
+                    panel.find(errorMessageSelector).not(':visible').show();
+                    isValid = false;
+                } else {
+                    panel.find(errorMessageSelector).has(':visible').hide();
+                }
+                
+                return isValid;
             }
         },
 
@@ -117,12 +152,21 @@
              * @see $.editor.plugin.link.baseLinkType#show
              */
             show: function(panel, edit) {
+                
+                var email = this;
+                panel.find('input[name="email"]').bind('keyup', function(){
+                    email.validate(panel);
+                });
+
                 if (edit) {
-                    panel.find('input[name="email"]').val(this.plugin.selectedElement.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, ''));
+                    panel.find('input[name="email"]').val(this.plugin.selectedElement.attr('href').replace(/(mailto:)|(\?Subject.*)/gi, '')).
+                        trigger('keyup');
                     if (/\?Subject\=/i.test(this.plugin.selectedElement.attr('href'))) {
                         panel.find('input[name="subject"]').val(decodeURIComponent(this.plugin.selectedElement.attr('href').replace(/(.*\?Subject=)/i, '')));
                     }
                 }
+
+                return this;
             },
 
             /**
@@ -136,6 +180,30 @@
                 if (subject) attributes.href = attributes.href + '?Subject=' + encodeURIComponent(subject);
 
                 return attributes;
+            },
+             
+            /**
+             * @return {Boolean} True if the link is valid
+             */
+            validate: function(panel) {
+
+                var email = panel.find('input[name="email"]').val();
+                var errorMessageSelector = '.' + this.options.baseClass + '-error-message-email';
+                var isValid = true;
+                if (!this.options.regexEmail.test(email)) {
+                    if (!panel.find(errorMessageSelector).size()) {
+                        panel.find('input[name="email"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, { 
+                            messageClass: this.options.baseClass + '-error-message-email',
+                            message: _('The email address does not look well formed')
+                        })));
+                    }
+                    panel.find(errorMessageSelector).not(':visible').show();
+                    isValid = false;
+                } else {
+                    panel.find(errorMessageSelector).has(':visible').hide();
+                }
+                
+                return isValid;
             }
         },
         
@@ -173,12 +241,20 @@
              * @see $.editor.plugin.link.baseLinkType#show
              */
             show: function(panel, edit) {
+
+                var link = this;
+                panel.find('input[name="location"]').bind('keyup', function(){
+                    link.validate(panel);
+                });
+
                 if (edit) {
-                    panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href'));
+                    panel.find('input[name="location"]').val(this.plugin.selectedElement.attr('href')).
+                        trigger('click');
                     if (this.plugin.selectedElement.attr('target') === '_blank') {
                         panel.find('input[name="blank"]').attr('checked', 'checked');
                     }
                 }
+                
                 return this;
             },
 
@@ -192,13 +268,39 @@
 
                 if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
 
-                if (!/^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i.test(attributes.href)) {
+                if (!this.options.regexLink.test(attributes.href)) {
                     this.plugin.editor.showWarning(_('The url for the file you inserted doesn\'t look well formed'));
                 }
 
                 return attributes;
-            }
+            },
+             
+            /**
+             * @return {Boolean} True if the link is valid
+             */
+            validate: function(panel) {
+                
+                var href = panel.find('input[name="location"]').val();
+                var errorMessageSelector = '.' + this.options.baseClass + '-error-message-file-url';
+                var isValid = true;
+                
+                if (!this.options.regexLink.test(href)) {
+                    if (!panel.find(errorMessageSelector).size()) {
+                        panel.find('input[name="location"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, { 
+                            messageClass: this.options.baseClass + '-error-message-file-url',
+                            message: _('The URL does not look well formed')
+                        })));
+                    }
+                    panel.find(errorMessageSelector).not(':visible').show();
+                    isValid = false;
+                } else {
+                    panel.find(errorMessageSelector).has(':visible').hide();
+                }
+                
+                return isValid;
+            }            
         }
+        
     ],
 
     /**
@@ -213,7 +315,9 @@
             typeDataName: 'uiWidgetEditorLinkType',
             dialogWidth: 750,
             dialogHeight: 'auto',
-            dialogMinWidth: 670
+            dialogMinWidth: 670,
+            regexLink: /^(http|https|ftp):\/\/[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i,
+            regexEmail: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
         }, options);
 
         editor.bind('save', this.repairLinks, this);
@@ -348,7 +452,7 @@
             
             // Add link type radio buttons
             var linkTypesFieldset = this.dialog.find('fieldset');
-            for (type in this.types) {
+            for (var type in this.types) {
                 $(this.editor.getTemplate('link.label', this.types[type])).appendTo(linkTypesFieldset);
             }
 
@@ -371,9 +475,11 @@
                         click: function() {
                             rangy.restoreSelection(selection);
 
-                            plugin.apply(edit);
-
-                            $(this).dialog('close');
+                            if (!plugin.apply(edit)) {
+                                selection = rangy.saveSelection();
+                            } else {
+                                $(this).dialog('close');
+                            }
                         }
                     },
                     {
@@ -395,17 +501,12 @@
                     buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                     buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
 
-                    // Bind keyup to dialog so we can detect when user presses enter
-                    $(this).unbind('keyup.' + plugin.editor.widgetName).bind('keyup.' + plugin.editor.widgetName, function(event) {
-                        if (event.keyCode == 13) buttons.find('button:eq(0)').trigger('click');
-                    });
-
                     var radios = dialog.find('.ui-editor-link-menu input[type="radio"]');
                     radios.first().attr('checked', 'checked');
 
                     var changedType = false;
                     if (edit) {
-                        for(type in plugin.types) {
+                        for(var type in plugin.types) {
                             if (changedType = plugin.types[type].editing(plugin.selectedElement)) {
                                 radios.filter('[value="' + type + '"]').attr('checked', 'checked');
                                 plugin.typeChange(plugin.types[type], edit);
@@ -413,10 +514,21 @@
                             }
                         }
                     }
-                    
+
                     if (!edit || edit && !changedType) {
                         plugin.typeChange(plugin.types[radios.filter(':checked').val()], edit);
                     }
+                    
+                    // Bind keyup to dialog so we can detect when user presses enter
+                    $(this).unbind('keyup.' + plugin.editor.widgetName).bind('keyup.' + plugin.editor.widgetName, function(event) {
+                        if (event.keyCode == 13) {
+                            // Check for and trigger validation - only allow enter to trigger insert if validation not present or successful
+                            var linkType = plugin.types[radios.filter(':checked').val()];
+                            if (!$.isFunction(linkType.validate) || linkType.validate(plugin.dialog.find('.' + plugin.options.baseClass + '-content'))) {
+                                buttons.find('button:eq(0)').trigger('click');
+                            }
+                        }
+                    });
                 },
                 close: function() {
                     plugin.visible = false;
@@ -430,13 +542,17 @@
     /**
      * Apply the link attributes to the selection
      * @param  {Boolean} edit True if this is an edit
+     * @return {Boolean} True if the application was successful
      */
     apply: function(edit) {
         var linkType = this.types[this.dialog.find('input[type="radio"]:checked').val()];
+        
         var attributes = linkType.attributes(this.dialog.find('.' + this.options.baseClass + '-content'), edit);
 
         // No attributes to apply
-        if (!attributes) return;
+        if (!attributes) {
+            return true;
+        }
 
         // Prepare link to be shown in any confirm message
         var link = this.editor.outerHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
@@ -455,6 +571,8 @@
         }
 
         this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
+        
+        return true;
     },
 
     /**
