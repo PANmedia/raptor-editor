@@ -22,7 +22,7 @@ var domTools = {
      * @param {object} [context] The context in which to call the callback, or by default, the domTools object.
      */
     eachRange: function(callback, selection, context) {
-        selection = rangy.getSelection()
+        selection = rangy.getSelection();
         context = context || this;
         var range, i = 0;
         // Create a new range set every time to update range offsets
@@ -45,7 +45,7 @@ var domTools = {
 
         var commonAncestor;
         $(selection.getAllRanges()).each(function(i, range){
-            if (this.commonAncestorContainer.nodeType == 3) {
+            if (this.commonAncestorContainer.nodeType === 3) {
                 commonAncestor = $(range.commonAncestorContainer).parent()[0];
             } else {
                 commonAncestor = range.commonAncestorContainer;
@@ -74,7 +74,7 @@ var domTools = {
     getSelectedElement: function (range) {
         var commonAncestor;
         // Check if the common ancestor container is a text node
-        if (range.commonAncestorContainer.nodeType == 3) {
+        if (range.commonAncestorContainer.nodeType === 3) {
             // Use the parent instead
             commonAncestor = range.commonAncestorContainer.parentNode;
         } else {
@@ -160,7 +160,7 @@ var domTools = {
             } else {
                 applier.toggleRange(range);
             }
-        })
+        });
     },
 
     rangeEmptyTag: function(range) {
@@ -191,7 +191,7 @@ var domTools = {
     insertTag: function(tagName, selection) {
         this.eachRange(function(range) {
             range.insertNode($('<' + tagName + '/>')[0]);
-        }, selection)
+        }, selection);
     },
 
     /**
@@ -204,7 +204,7 @@ var domTools = {
     insertTagAtEnd: function(tagName, selection) {
         this.eachRange(function(range) {
             range.insertNodeAtEnd($('<' + tagName + '/>')[0]);
-        }, selection)
+        }, selection);
     },
 
     /**
@@ -222,7 +222,7 @@ var domTools = {
             $(element).each(function() {
                 range.insertNode(clone === false ? this : this.cloneNode(true));
             });
-        }, selection)
+        }, selection);
     },
 
     /**
@@ -240,7 +240,7 @@ var domTools = {
             $(element).each(function() {
                 range.insertNodeAtEnd(clone === false ? this : this.cloneNode(true));
             });
-        }, selection)
+        }, selection);
     },
 
     /**
@@ -333,7 +333,7 @@ var domTools = {
      */
     toggleStyle: function(element, styles) {
         $.each(styles, function(property, value) {
-            if ($(element).css(property) == value) {
+            if ($(element).css(property) === value) {
                 $(element).css(property, '');
             } else {
                 $(element).css(property, value);
@@ -350,7 +350,7 @@ var domTools = {
         var style = window.getComputedStyle(element[0], null);
         for (var i = 0; i < style.length; i++) {
             result[style.item(i)] = style.getPropertyValue(style.item(i));
-        };
+        }
         return result;
     },
 
@@ -380,7 +380,7 @@ var domTools = {
     replaceRange: function(html, range) {
         var nodes = $('<div/>').append(html)[0].childNodes;
         range.deleteContents();
-        if (nodes.length === undefined || nodes.length == 1) {
+        if (nodes.length === undefined || nodes.length === 1) {
             range.insertNode(nodes[0].cloneNode(true));
         } else {
             $.each(nodes, function(i, node) {
@@ -502,4 +502,4 @@ var domTools = {
     outerHtml: function(element) {
         return $(element).clone().wrap('<div/>').parent().html();
     }
-}
+};
