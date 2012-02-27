@@ -10,7 +10,7 @@
     * @augments $.ui.editor.defaultUi
     * @class Wraps (or unwraps) selection in &lt;blockquote&gt; tags
     * <br/>
-    * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element 
+    * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element
     */
     quoteBlock: /** @lends $.editor.ui.quoteBlock.prototype */ {
         
