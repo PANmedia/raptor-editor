@@ -11,7 +11,7 @@ $.ui.editor.registerUi({
      * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;strong&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element 
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element
      */
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
         
@@ -33,7 +33,7 @@ $.ui.editor.registerUi({
      * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;em&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element 
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element
      */
     textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
         /**
@@ -54,13 +54,13 @@ $.ui.editor.registerUi({
      * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;u&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element 
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element
      */
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
         
         /**
          * @see $.ui.editor.defaultUi#init
-         */        
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Underline'),
@@ -76,13 +76,13 @@ $.ui.editor.registerUi({
      * @augments $.ui.editor.defaultUi
      * @class  Wraps (or unwraps) the selection with &lt;del&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element 
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element
      */
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
         
         /**
          * @see $.ui.editor.defaultUi#init
-         */        
+         */
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Strikethrough'),
@@ -98,7 +98,7 @@ $.ui.editor.registerUi({
      * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;sub&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element 
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element
      */
     textSub: /** @lends $.editor.ui.textSub.prototype */ {
         
@@ -120,7 +120,7 @@ $.ui.editor.registerUi({
      * @augments $.ui.editor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;sup&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'super' or a custom class (if present) to the &lt;sub&gt; element 
+     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'super' or a custom class (if present) to the &lt;sub&gt; element
      */
     textSuper: /** @lends $.editor.ui.textSuper.prototype */ {
 
