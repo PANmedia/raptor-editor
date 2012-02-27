@@ -146,7 +146,7 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
 
     /**
      * Called if a save AJAX request fails
-     * @param  {Object} xhr 
+     * @param  {Object} xhr
     */
     fail: function(xhr) {
         if (this.options.multiple) {
