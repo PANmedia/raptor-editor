@@ -79,7 +79,7 @@
             }
         }
         init();
-    }
+    };
 
     function getJs(file, name, deps) {
         if (!processing && !deps) {
@@ -99,7 +99,7 @@
         node.setAttribute('rel', 'stylesheet');
         node.setAttribute('type', 'text/css');
         node.setAttribute('href', file);
-        document.getElementsByTagName('head')[0].appendChild(node)
+        document.getElementsByTagName('head')[0].appendChild(node);
     }
 
     function getLess(file) {
@@ -107,7 +107,7 @@
         node.setAttribute('rel', 'stylesheet/less');
         node.setAttribute('type', 'text/css');
         node.setAttribute('href', file);
-        document.getElementsByTagName('head')[0].appendChild(node)
+        document.getElementsByTagName('head')[0].appendChild(node);
     }
 
     // Get jQuery first
@@ -119,13 +119,13 @@
         var node = document.createElement('script');
         node.setAttribute('type', 'text/javascript');
         node.setAttribute('src', root + 'dependencies/jquery.js');
-        document.getElementsByTagName('head')[0].appendChild(node)
+        document.getElementsByTagName('head')[0].appendChild(node);
 
         if (node.readyState) {
             // IE
             node.onreadystatechange = function(){
-                if (node.readyState == 'loaded' ||
-                        node.readyState == 'complete') {
+                if (node.readyState === 'loaded' ||
+                        node.readyState === 'complete') {
                     node.onreadystatechange = null;
                     processing = false;
                     next();
