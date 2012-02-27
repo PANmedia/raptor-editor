@@ -60,7 +60,7 @@ if (debugLevel >= MID) {
         info(_('Plugins loaded: {{plugins}} ', {plugins: result.join(', ')}));
 
         result = [];
-        for (var key in $.ui.editor.translations) result.push(key);
+        for (key in $.ui.editor.translations) result.push(key);
         info(_('Locales loaded: {{translations}} ', {translations: result.join(', ')}));
     });
 }
@@ -72,7 +72,6 @@ if (debugLevel >= MAX) {
     info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
     info('TODO: locale switches should affect all instances');
     info('FIXME: remove editor instance from instances array on destroy');
-    info('FIXME: custom tool tips');
     info('FIXME: Check for localStorage or use jQuery cookie');
     info('FIXME: updateTagTree click bindings');
     info('FIXME: updateTagTree should filter out duplicates');
@@ -156,14 +155,14 @@ function _(string, variables) {
         });
         return string;
     }
-};
+}
 
 
 // Select menu close event (triggered when clicked off)
 $('html').click(function(event) {
     var parent = $(event.target).parents('.ui-editor-selectmenu');
     $('.ui-editor-selectmenu-menu').each(function() {
-        if ($(this).parent()[0] != parent[0]) {
+        if ($(this).parent()[0] !== parent[0]) {
             $(this).hide();
             $(this).parent().find('.ui-editor-selectmenu-button')
                 .removeClass('ui-corner-top')
