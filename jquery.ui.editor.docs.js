@@ -5,7 +5,7 @@
 
 /**
  * jQuery UI Editor
- * 
+ *
  * <p>
  * Events:
  * <dl>
@@ -25,9 +25,9 @@
  *     <dd>Triggers when the editing is disabled on the element</dt>
  * </dl>
  * </p>
- * 
+ *
  * @name $.editor
- * @class 
+ * @class
  */
 
 /**
@@ -45,69 +45,69 @@
  * Default settings for the jQuery UI Editor widget
  * @name $.editor#options
  * @property {boolean} options
- */ 
+ */
 
 /**
  * @name $.editor#reiniting
- * @property {boolean} reiniting 
+ * @property {boolean} reiniting
  */
 
 /**
  * @name $.editor#ready
- * @property {boolean} ready 
+ * @property {boolean} ready
  */
 
 /**
  * @name $.editor#element
- * @property {jQuery} element 
+ * @property {jQuery} element
  */
 
 /**
  * @name $.editor#toolbar
- * @property {jQuery} toolbar 
+ * @property {jQuery} toolbar
  */
 
 /**
  * @name $.editor#events
- * @property {Object} events 
+ * @property {Object} events
  */
 
 /**
  * @name $.editor#ui
- * @property {Object} ui 
+ * @property {Object} ui
  */
 
 /**
  * @name $.editor#plugins
- * @property {Object} plugins 
+ * @property {Object} plugins
  */
 
 /**
  * @name $.editor#templates
- * @property {Object} templates 
+ * @property {Object} templates
  */
 
 /**
  * @name $.editor#history
- * @property {String[]} history 
+ * @property {String[]} history
  */
 
 /**
  * @name $.editor#present
- * @property {int} present 
+ * @property {int} present
  */
 
 /**
- * Switch to temporarly disable history function. Used when the history is being 
+ * Switch to temporarly disable history function. Used when the history is being
  * traversed.
  *
  * @name $.editor#historyEnabled
- * @property {boolean} historyEnabled 
+ * @property {boolean} historyEnabled
  */
 
 /**
  * @name $.editor#originalHtml
- * @property {String} originalHtml 
+ * @property {String} originalHtml
  */
 
 /**
