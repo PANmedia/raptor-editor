@@ -43,6 +43,16 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
             }
         }, options);
 
+        this.selection = function() {
+            var range;
+            if (document.selection) {
+                range = document.selection.createRange();
+            } else {
+                range = document.getSelection().getRangeAt(0);
+            }
+            return range;
+        };
+
         /**
          * Show the click to edit message
          */
@@ -52,7 +62,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
             editor.getElement().addClass(options.baseClass + '-hover');
             message.position(options.position);
             message.stop().animate({ opacity: 1 });
-        }
+        };
 
         /**
          * Hide the click to edit message
@@ -61,7 +71,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
             editor.getElement().removeClass(options.baseClass + '-highlight');
             editor.getElement().removeClass(options.baseClass + '-hover');
             message.stop().animate({ opacity: 0 });
-        }
+        };
 
         /**
          * Hide the click to edit message and show toolbar
@@ -69,8 +79,8 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         this.edit = function() {
             plugin.hide();
             if (!editor.isEditing()) editor.enableEditing();
-            if (!editor.isToolbarVisible()) editor.showToolbar();
-        }
+            if (!editor.isToolbarVisible()) editor.showToolbar(plugin.selection());
+        };
 
         message.position(options.position);
 
@@ -92,6 +102,6 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
             editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().unbind('mouseleave.' + editor.widgetName, plugin.hide);
             editor.getElement().unbind('click.' + editor.widgetName, plugin.edit);
-        })
+        });
     }
 });
