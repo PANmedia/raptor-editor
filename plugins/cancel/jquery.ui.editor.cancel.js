@@ -85,7 +85,7 @@ $.ui.editor.registerPlugin({
    cancel: /** @lends $.editor.plugin.cancel.prototype */ {
        
         /**
-         * Cancel editing 
+         * Cancel editing
          * by resetting the editor's html its pre-intitialisation state, hiding the toolbar and disabling editing on the element
          */
         cancel: function() {
@@ -96,5 +96,5 @@ $.ui.editor.registerPlugin({
                 editor.disableEditing();
             });
         }
-   } 
+   }
 });
