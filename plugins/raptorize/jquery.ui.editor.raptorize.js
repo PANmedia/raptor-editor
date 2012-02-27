@@ -21,8 +21,14 @@ $.ui.editor.registerUi({
                 title: _('Raptorize')
             });
             editor.bind('ready', function() {
+                if (!button.button.raptorize) {
+                    // <strict>
+                    handleError(_('Raptorize plugin requires the raptorize dependency - https://github.com/PANmedia/jQuery-Raptor-Dependencies'));
+                    // </strict>
+                    return;
+                }
                 button.button.raptorize();
-            })
+            });
             return button;
         }
     }
