@@ -612,7 +612,6 @@ $.widget('ui.editor',
             }
             this.options.show = true;
             this.selToolbar().dialog('open');
-            this.fire('show');
             this.fire('resize');
             if (typeof this.getElement().attr('tabindex') === 'undefined') {
                 this.getElement().attr('tabindex', -1);
@@ -628,6 +627,7 @@ $.widget('ui.editor',
                 }
             }
 
+            this.fire('show');
             this.getElement().focus();
         }
     },
@@ -1451,6 +1451,7 @@ $.extend($.ui.editor,
          * @type String
          */
         cssPrefix: 'cms-'
+
     },
 
     /**
