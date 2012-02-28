@@ -29,14 +29,14 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
              * @default p
              * @type {String}
              */
-            contentTag: 'p',
+            tag: 'p',
             
             /**
              * Select content on insertion
              * @default true
              * @type {Boolean} False to prevent automatic selection of inserted placeholder
              */
-            selectContent: true
+            select: true
         }, options);
 
         /**
@@ -45,10 +45,10 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
         this.show = function() {
             if (!editor.getElement().html()) {
                 
-                var content = $(document.createElement(options.contentTag)).html(options.content);
+                var content = $(document.createElement(options.tag)).html(options.content);
                 editor.getElement().html(content);
 
-                if (options.selectContent) {
+                if (options.select) {
                     editor.selectInner(content);
                 }
             }
