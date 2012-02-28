@@ -47,7 +47,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
             var range;
             if (document.selection) {   // IE
                 range = document.selection.createRange();
-            } else {    // Others
+            } else if (document.getSelection()) {    // Others
                 range = document.getSelection().getRangeAt(0);
             }
             return range;
