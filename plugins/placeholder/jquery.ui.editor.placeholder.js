@@ -22,7 +22,7 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
              * @default Placeholder content
              * @type {String}
              */
-            content: 'Placeholder content',
+            content: '[Your content here]',
 
             /**
              * Tag to wrap content
