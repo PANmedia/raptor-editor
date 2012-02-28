@@ -622,7 +622,7 @@ $.widget('ui.editor',
             if (typeof this.getElement().attr('tabindex') === 'undefined') {
                 this.getElement().attr('tabindex', -1);
             }
-            
+
             if (range) {
                 if (range.select) { // IE
                     range.select();
@@ -880,12 +880,13 @@ $.widget('ui.editor',
 
                 // Check the UI has been registered
                 if ($.ui.editor.ui[uiSet[j]]) {
-                    var options = $.extend({}, this.options, {
-                        baseClass: this.options.baseClass + '-ui-' + baseClass
-                    }, this.options.ui[uiSet[j]]);
-
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, $.ui.editor.ui[uiSet[j]]);
+
+                    var options = $.extend(true, {}, this.options, {
+                        baseClass: this.options.baseClass + '-ui-' + baseClass
+                    }, uiObject.options, this.options.ui[uiSet[j]]);
+
                     uiObject.editor = this;
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(this, options);
@@ -1733,7 +1734,9 @@ $.extend($.ui.editor,
         // Allow array objects, and single plugins
         if (typeof(mixed) === 'string') {
             // <strict>
-            if (this.plugins[mixed]) handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: mixed}));
+            if (this.plugins[mixed]) {
+                handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: mixed}));
+            }
             // </strict>
 
             this.plugins[mixed] = $.extend({}, this.defaultPlugin, plugin);
