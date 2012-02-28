@@ -20,9 +20,7 @@ $.ui.editor.registerUi({
         options: {
             plugin: 'saveJson'
         },
-        init: function() {
-            console.log(this);
-        },
+        
         /**
          * @see $.ui.editor.defaultUi#init
          */
