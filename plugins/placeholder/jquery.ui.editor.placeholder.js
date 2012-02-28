@@ -43,7 +43,7 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
          * Show the click to edit message
          */
         this.show = function() {
-            if (!editor.getElement().html()) {
+            if (!$.trim(editor.getElement().html())) {
                 
                 var content = $(document.createElement(options.tag)).html(options.content);
                 editor.getElement().html(content);
