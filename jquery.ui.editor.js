@@ -543,18 +543,23 @@ $.widget('ui.editor',
         this.toolbar = $('<div class="' + this.options.baseClass + '-toolbar"/>');
         this.toolbar.append('<div class="' + this.options.baseClass + '-inner"/>');
 
-        this.toolbar.dialog({
+        this.toolbar.dialog($.extend({}, {
+            disabled: false,
+            autoOpen: false,
+            closeOnEscape: false,
+            dialogClass: this.options.dialogClass,
+            draggable: true,
+            height: 'auto',
+            maxHeight: 'auto',
+            maxWidth: 'auto',
+            minHeight: 'auto',
+            minWidth: 'auto',
             modal: false,
             resizable: false,
-            closeOnEscape: false,
             width: 'auto',
-            height: 'auto',
-            minHeight: 'auto',
             resize: 'auto',
             zIndex: 32000,
             title: _('Editor loading...'),
-            autoOpen: false,
-            dialogClass: this.options.dialogClass,
             dragStop: $.proxy(function() {
                 var pos = this.persist('position', [
                     this.selDialog().css('top'),
@@ -585,7 +590,7 @@ $.widget('ui.editor',
                     left: Math.abs(pos[1])
                 });
             }, this)
-        });
+        }, this.options.dialogOptions));
 
         this.bind('after:destroy', $.proxy(function() {
             this.toolbar.dialog('destroy').remove();
@@ -600,15 +605,16 @@ $.widget('ui.editor',
         if (!this.options.show || this.reiniting) {
             // If unify option is set, hide all other toolbars first
             if (this.options.unify) {
-                var otherEnabled = false;
-                this.unify(function(editor) {
-                    otherEnabled = otherEnabled || editor.options.show;
-                });
-                if (otherEnabled) {
-                    this.unify(function(editor) {
-                        editor.hideToolbar(true);
-                    });
-                }
+                this.hideOtherToolbars(true);
+                // var otherEnabled = false;
+                // this.unify(function(editor) {
+                //     otherEnabled = otherEnabled || editor.options.show;
+                // });
+                // if (otherEnabled) {
+                //     this.unify(function(editor) {
+                //         editor.hideToolbar(true);
+                //     });
+                // }
             }
             this.options.show = true;
             this.selToolbar().dialog('open');
@@ -1447,11 +1453,16 @@ $.extend($.ui.editor,
         dialogPosition: [5, 47],
 
         /**
+         * Overrides or extra options to be extended onto the standard toolbar dialog options
+         * @type {Object}
+         */
+        dialogOptions: {},
+
+        /**
          * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
          * @type String
          */
         cssPrefix: 'cms-'
-
     },
 
     /**
