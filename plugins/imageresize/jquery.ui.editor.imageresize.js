@@ -110,7 +110,6 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         var editor = this.editor;
         var options = this.options;
 
-
         $(image).bind('mouseover', function() {
             $(this).addClass(options.resizeHoverClass);
         });
@@ -144,14 +143,16 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             
             if (direction.length) {
                 $(this).addClass(options.resizeInProgressClass);
+
                 var dimensions = {
                     width: $(this).width(),
                     height: $(this).height()
                 };
-                if ($.inArray('e', direction) || $.inArray('w', direction)) {
+
+                if ($.inArray('e', direction) !== -1 || $.inArray('w', direction) !== -1) {
                     dimensions.width = Math.round(event.pageX - $(this).offset().left);
                 }
-                if ($.inArray('n') || $.inArray('s')) {
+                if ($.inArray('n', direction) !== -1 || $.inArray('s', direction) !== -1) {
                     dimensions.height = Math.round(Math.abs($(this).offset().top - event.pageY));
                 }
 
