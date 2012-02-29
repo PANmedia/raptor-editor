@@ -272,6 +272,12 @@
                   tofile="${buildpath}/02-theme/tipTip.css" />
         </then></if>
 
+        <!-- jQuery Event Drag -->
+        <if><istrue value="${jquery-event-drag}"/><then>
+            <copy file="dependencies/jquery.event.drag-2.0.js"
+                  tofile="${buildpath}/04-jquery-event-drag.js" />
+        </then></if>
+
         <!-- Rangy -->
         <if><istrue value="${rangy}"/><then>
             <copy file="dependencies/rangy/rangy-core.js"
