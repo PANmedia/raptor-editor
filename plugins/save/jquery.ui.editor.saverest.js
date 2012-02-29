@@ -1,47 +1,28 @@
 /**
- * @fileOverview Save plugin & ui component
+ * @fileOverview
  * @author David Neilson david@panmedia.co.nz
- * @author Michael Robinson mike@panmedia.co.nz
  */
 
 /**
- * @name $.editor.plugin.save
+ * @name $.editor.plugin.saverest
  * @augments $.ui.editor.defaultPlugin
- * @class Provides an interface for saving the element's content via AJAX. For options see {@link $.editor.plugin.save.options}
+ * @class
  */
-$.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ {
+$.ui.editor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.prototype */ {
 
     /**
-     * @name $.editor.plugin.save.options
+     * @name $.editor.plugin.saveRest.options
      * @type {Object}
      * @namespace Default options
-     * @see $.editor.plugin.save
+     * @see $.editor.plugin.saveRest
      */
-    options: /** @lends $.editor.plugin.save.options */  {
-        
-        /**
-         * @type {Object}
-         * @default <tt>{ attr: "name" }</tt>
-         */
-        id: { attr: 'name' },
+    options: /** @lends $.editor.plugin.saveRest.options */  {
 
-        /**
-         * @type {String}
-         * @default "content"
-         */
-        postName: 'content',
-        
         /**
          * @default false
          * @type {Boolean}
          */
         showResponse: false,
-        
-        /**
-         * @default false
-         * @type {Boolean}
-         */
-        appendId: false,
 
         /**
          * @default <tt>{
@@ -72,58 +53,57 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
         if (typeof(this.options.id) === 'string') {
             return this.options.id;
         } else if (this.options.id.attr) {
-            return this.editor.getOriginalElement().attr(this.options.id.attr);
+            // Check the ID attribute exists on the content block
+            var id = this.editor.getOriginalElement().attr(this.options.id.attr);
+            if (id) {
+                return id;
+            }
         }
         return null;
     },
 
     /**
-     * Get the cleaned content for the element
+     * Get the cleaned content for the element.
+     * @param {String} id ID to use if no ID can be found.
      * @return {String}
      */
-    getData: function() {
+    getData: function(id) {
         var data = {};
-        data[this.getId()] = this.editor.save();
-        return data;
+        data[this.getId() || id] = this.editor.save();
+        return this.editor.save();
     },
 
     /**
-     * Perform save
+     * Perform save.
      */
     save: function() {
         this.message = this.editor.showLoading(_('Saving changes...'));
-
-        // Get all unified content
-        var contentData = {};
-        var dirty = 0;
-        this.editor.unify(function(editor) {
-            if (editor.isDirty()) {
-                dirty++;
-                var plugin = editor.getPlugin('save');
-                $.extend(contentData, plugin.getData());
-            }
-        });
-        this.dirty = dirty;
 
         // Count the number of requests
         this.saved = 0;
         this.failed = 0;
         this.requests = 0;
 
-        // Check if we are passing the content data in multiple requests (rest)
-        if (this.options.multiple) {
-            // Pass each content block individually
-            for (var id in contentData) {
-                this.ajax(contentData[id], id);
+        // Get all unified content
+        var dirty = 0;
+        this.editor.unify(function(editor) {
+            if (editor.isDirty()) {
+                dirty++;
+                var plugin = editor.getPlugin('saveRest');
+                var content = plugin.editor.save();
+                plugin.ajax(content);
             }
-        } else {
-            // Pass all content at once
-            this.ajax(contentData);
+        });
+        this.dirty = dirty;
+
+        if (dirty === 0) {
+            this.message.hide();
+            this.editor.showInfo(_('No changes detected to save...'));
         }
     },
 
     /**
-     * @param  {Object} data Data returned from server
+     * @param {Object} data Data returned from server
      */
     done: function(data) {
         if (this.options.multiple) {
@@ -223,27 +203,4 @@ $.ui.editor.registerPlugin('save', /** @lends $.editor.plugin.save.prototype */ 
             .always($.proxy(this.always, this));
     }
 
-});
-
-$.ui.editor.registerUi({
-
-    /**
-     * @name $.editor.ui.save
-     * @augments $.ui.editor.defaultPlugin
-     * @class The save UI component
-     */
-    save: {
-        /**
-         * @see $.ui.editor.defaultUi#init
-         */
-        init: function(editor, element) {
-            return editor.uiButton({
-                title: _('Save'),
-                icon: 'ui-icon-disk',
-                click: function() {
-                    editor.getPlugin('save').save();
-                }
-            });
-        }
-    }
 });

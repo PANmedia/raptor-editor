@@ -145,7 +145,7 @@ $(function() {
  * @param {String} string
  * @param {Object} variables
  */
-function _(string, variables) {
+var _ = function(string, variables) {
     string = $.ui.editor.translate(string);
     if (!variables) {
         return string;
