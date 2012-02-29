@@ -308,8 +308,7 @@ $.widget('ui.editor',
             }
 
             document.execCommand('enableInlineTableEditing', false, false);
-            // Re-enabled for now so user knows they've selected an image
-            // document.execCommand('enableObjectResizing', false, false);
+            document.execCommand('enableObjectResizing', false, false);
             document.execCommand('styleWithCSS', true, true);
             this.fire('enabled');
             this.fire('resize');
