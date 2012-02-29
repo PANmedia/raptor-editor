@@ -75,13 +75,6 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         return direction;
     },
 
-    clean: function() {
-        var options = this.options;
-        this.editor.getElement().find('img').each(function(){
-            $(this).removeClass(options.resizeInProgressClass);
-        });
-    },
-
     /**
      * Check for oversize images within the editing element
      */
@@ -219,6 +212,13 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             });
         }
     },
+    
+    clean: function() {
+        var options = this.options;
+        this.editor.getElement().find('img').each(function(){
+            $(this).removeClass([options.resizeAjaxClass, options.resizeHoverClass, options.resizeInProgressClass].join(' '));
+        });
+    },
 
     cancel: function() {
         this.clean();
@@ -274,7 +274,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         $.ajax(ajax)
             .done(function(data) {
                 $(data).each(function(){
-                    $('#' + this.id).attr('src', this.src).removeAttr('id');
+                    $('#' + this.id).attr('src', this.src).removeAttr('id').removeClass(plugin.options.resizeAjaxClass);
                 });
                 plugin.editor.fire('change');
                 loading.hide();
