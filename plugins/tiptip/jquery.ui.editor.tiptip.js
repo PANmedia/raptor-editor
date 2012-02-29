@@ -6,7 +6,7 @@
 
 /**
  * @name $.editor.plugin.tiptip
- * @augments $.ui.editor.defaultPlugin 
+ * @augments $.ui.editor.defaultPlugin
  * @see  http://code.drewwilson.com/entry/tiptip-jquery-plugin
  * @class Converts native tooltips to 'tipTips'
  */
@@ -60,7 +60,7 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      */
     init: function(editor, options) {
         
-        // <strict>    
+        // <strict>
         // Ensure tipTip has been included
         if (!$.isFunction($.fn.tipTip)) {
             handleError(_('jquery.ui.editor.tiptip requires TipTip. '));
