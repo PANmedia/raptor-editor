@@ -51,6 +51,10 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         this.editor.bind('cancel', this.cancel, this);
     },
 
+    unbind: function() {
+        $(image).unbind('mouseup.imageresize drag.imageresize dragstart.imageresize mousemove.imageresize mouseover.imageresize');
+    },
+
     parseDirection: function(event, element) {
         var x = event.pageX - $(element).offset().left;
         var y = event.pageY - $(element).offset().top;
@@ -103,14 +107,14 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         var editor = this.editor;
         var options = this.options;
 
-        $(image).bind('mouseover', function() {
+        $(image).bind('mouseover.imageresize', function() {
             $(this).addClass(options.resizeHoverClass);
         });
-        $(image).bind('mouseout', function() {
+        $(image).bind('mouseout.imageresize', function() {
             $(this).removeClass(options.resizeHoverClass);
         });
 
-        $(image).bind('mousemove', function(event){
+        $(image).bind('mousemove.imageresize', function(event){
             
             var direction = plugin.parseDirection(event, this);
 
@@ -125,11 +129,11 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             $(this).css({ cursor: cursor });
         });
 
-        $(image).bind('dragstart', function(event) {
+        $(image).bind('dragstart.imageresize', function(event) {
             event.preventDefault();
         });
 
-        $(image).bind('drag', function(event) {
+        $(image).bind('drag.imageresize', function(event) {
             event.preventDefault();
 
             var direction = plugin.parseDirection(event, this);
@@ -157,7 +161,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             }
         });
 
-        $(image).bind('mouseup', function(event) {
+        $(image).bind('mouseup.imageresize', function(event) {
             $(this).removeClass(options.resizeInProgressClass);
             editor.fire('change');
         });
@@ -216,7 +220,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     clean: function() {
         var options = this.options;
         this.editor.getElement().find('img').each(function(){
-            $(this).removeClass([options.resizeAjaxClass, options.resizeHoverClass, options.resizeInProgressClass].join(' '));
+            $(this).removeClass([options.resizeAjaxClass, options.resizeHoverClass, options.resizeInProgressClass].join(' '))
+                .css({'cursor': ''});
         });
     },
 
@@ -240,6 +245,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             this.resizeImagesAjax();
         }
         this.clean();
+        this.unbind();
     },
 
     /**
