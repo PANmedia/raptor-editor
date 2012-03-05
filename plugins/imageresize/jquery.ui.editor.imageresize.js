@@ -52,7 +52,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     unbind: function() {
-        $(image).unbind('mouseup.imageresize drag.imageresize dragstart.imageresize mousemove.imageresize mouseover.imageresize');
+        $(this.editor.getElement().find('img')).unbind('mouseup.imageresize drag.imageresize dragstart.imageresize mousemove.imageresize mouseover.imageresize');
     },
 
     parseDirection: function(event, element) {
