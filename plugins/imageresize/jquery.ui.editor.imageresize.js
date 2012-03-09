@@ -8,9 +8,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
     options: {
         resizeAjax: false,
-        resizeInProgressClass: '',
+        resizingClass: '',
         resizeAjaxClass: '',
-        resizeHoverClass: '',
         ajax: {
             url: '/',
             type: 'post',
@@ -22,61 +21,50 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
-        
-        // <strict>
-        // Ensure jQuery Event Drag has been included
-        if (!$.isFunction($.fn.drag)) {
-            handleError(_('jquery.ui.editor.imageResize requires jQuery Event Drag - http://threedubmedia.com/code/event/drag'));
-            return;
-        }
-        // </strict>
 
         this.options = $.extend(this.options, {
-            resizeInProgressClass: this.options.baseClass + '-in-progress',
-            resizeAjaxClass: this.options.baseClass + '-on-save',
-            resizeHoverClass: this.options.baseClass + '-hover'
+            resizingClass: this.options.baseClass + '-in-progress',
+            resizeAjaxClass: this.options.baseClass + '-on-save'
         });
 
         editor.bind('enabled', this.bind, this);
+
+        // If the function addEventListener exists, bind our custom image resized event
+        this.resized = $.proxy(this.imageResized, this);
+        var plugin = this;
+        editor.getElement().find('img').each(function(){
+            if (this.addEventListener) {
+                this.addEventListener('DOMAttrModified', plugin.resized, false);
+            }
+            if (this.attachEvent) {  // Internet Explorer and Opera
+                this.attachEvent('onpropertychange', plugin.resized);
+            }
+        });
     },
 
     /**
      * Bind events
      */
     bind: function() {
-        this.scanImages();
         this.editor.bind('change', this.scanImages, this);
         this.editor.bind('destroy', this.destroy, this);
         this.editor.bind('save', this.save, this);
         this.editor.bind('cancel', this.cancel, this);
     },
 
-    unbind: function() {
-        $(this.editor.getElement().find('img')).unbind('mouseup.imageresize drag.imageresize dragstart.imageresize mousemove.imageresize mouseover.imageresize');
-    },
-
-    parseDirection: function(event, element) {
-        var x = event.pageX - $(element).offset().left;
-        var y = event.pageY - $(element).offset().top;
-        
-        var direction = [];
-        var handle = 8;
-
-        // if (y < handle) {
-        //     direction.push('n');
-        // } else
-        if(y > $(element).height() - handle) {
-            direction.push('s');
+    /**
+     * Handler simulating a 'resize' event for image elements
+     * @param {Object} event
+     */
+    imageResized: function(event) {
+        var target = $(event.target);
+        if(target.is('img') &&
+            target.attr('_moz_resizing') &&
+            event.attrName == 'style' &&
+            event.newValue.match(/width|height/)) {
+            if (this.options.resizeAjax) target.addClass(this.options.resizeAjaxClass);
+            this.editor.fire('change');
         }
-
-        // if (x < handle) {
-        //     direction.push('w');
-        // } else
-        if(x > $(element).width() - handle) {
-            direction.push('e');
-        }
-
-        return direction;
     },
 
     /**
@@ -84,87 +72,18 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      */
     scanImages: function() {
         var element = this.editor.getElement();
-        var editor = this.editor;
         var plugin = this;
         var images = [];
-
         $(element.find('img')).each(function() {
-            // Image is oversize, automatically resize it
             if (element.height() < $(this).outerHeight() || element.width() < $(this).outerWidth()) {
+                console.log('here', element.width(), $(this).outerWidth());
                 images.push($(this));
             }
-            plugin.bindImageEvents(this);
         });
 
         if (images.length) {
             plugin.resizeImageElements(images, element.width(), element.height());
         }
-    },
-
-    bindImageEvents: function(image) {
-        
-        var plugin = this;
-        var editor = this.editor;
-        var options = this.options;
-
-        $(image).bind('mouseover.imageresize', function() {
-            $(this).addClass(options.resizeHoverClass);
-        });
-        $(image).bind('mouseout.imageresize', function() {
-            $(this).removeClass(options.resizeHoverClass);
-        });
-
-        $(image).bind('mousemove.imageresize', function(event){
-            
-            var direction = plugin.parseDirection(event, this);
-
-            var cursor = '';
-
-            if (direction.length) {
-                cursor = direction.join('') + '-resize';
-            } else {
-                cursor = 'default';
-            }
-
-            $(this).css({ cursor: cursor });
-        });
-
-        $(image).bind('dragstart.imageresize', function(event) {
-            event.preventDefault();
-        });
-
-        $(image).bind('drag.imageresize', function(event) {
-            event.preventDefault();
-
-            var direction = plugin.parseDirection(event, this);
-            
-            if (direction.length) {
-                $(this).addClass(options.resizeInProgressClass);
-
-                var dimensions = {
-                    width: $(this).width(),
-                    height: $(this).height()
-                };
-
-                if ($.inArray('e', direction) !== -1 || $.inArray('w', direction) !== -1) {
-                    dimensions.width = Math.round(event.pageX - $(this).offset().left);
-                }
-                if ($.inArray('n', direction) !== -1 || $.inArray('s', direction) !== -1) {
-                    dimensions.height = Math.round(Math.abs($(this).offset().top - event.pageY));
-                }
-
-                $(this).css(dimensions).attr('width', dimensions.width).attr('height', dimensions.height);
-
-                if (plugin.options.resizeAjax) {
-                    $(this).addClass(plugin.options.resizeAjaxClass);
-                }
-            }
-        });
-
-        $(image).bind('mouseup.imageresize', function(event) {
-            $(this).removeClass(options.resizeInProgressClass);
-            editor.fire('change');
-        });
     },
 
     /**
@@ -184,19 +103,18 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         for (var i = 0; i < images.length; i++) {
 
             var image = images[i];
-
-            var width = image.width();
-            var height = image.height();
+            var width = image.outerWidth();
+            var height = image.outerHeight();
             var ratio = Math.min(maxWidth / width, maxHeight / height);
 
-            width = ratio * width;
-            height = ratio * height;
+            width = Math.abs(ratio * (width - (image.outerWidth() - image.width())));
+            height = Math.abs(ratio * (height - (image.outerHeight() - image.height())));
 
-            image.addClass(this.options.resizeInProgressClass);
+            image.addClass(this.options.resizingClass);
 
             imageLink = imageLink.html(image.attr('title') || image.attr('src').substr(image.attr('src').lastIndexOf('/') + 1)).
                     attr('href', image.attr('src'));
-
+            console.log('resizing', width);
             // Resize the image with CSS / attributes
             $(image).css({
                 'width': width,
@@ -211,23 +129,24 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             var plugin = this;
             this.showOversizeWarning(this.editor.outerHtml(imageLink), {
                 hide: function() {
-                    image.removeClass(plugin.options.resizeInProgressClass);
+                    image.removeClass(plugin.options.resizingClass);
                 }
             });
         }
     },
-    
-    clean: function() {
-        var options = this.options;
-        this.editor.getElement().find('img').each(function(){
-            $(this).removeClass([options.resizeAjaxClass, options.resizeHoverClass, options.resizeInProgressClass].join(' '))
-                .css({'cursor': ''});
-        });
-    },
 
     cancel: function() {
-        this.clean();
+        this.removeClasses();
         this.editor.unbind('change', this.scanImages, this);
+        var plugin = this;
+        this.editor.getElement().find('img').each(function(){
+            if (this.removeEventListener) {
+                this.addEventListener('DOMAttrModified', plugin.resized, false);
+            }
+            if (this.detachEvent) {
+                this.detachEvent('onpropertychange', plugin.resized);
+            }
+        });
     },
 
     /**
@@ -238,14 +157,11 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * Remove resizeInProgressClass, call resizeImagesAjax if applicable
+     * Remove resizingClass, call resizeImagesAjax if applicable
      */
     save: function() {
-        if (this.options.resizeAjax) {
-            this.resizeImagesAjax();
-        }
-        this.clean();
-        this.unbind();
+        this.removeClasses(this.options.resizingClass);
+        if (this.options.resizeAjax) this.resizeImagesAjax();
     },
 
     /**
@@ -265,9 +181,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             });
         });
 
-        if (!images.length) {
-            return;
-        }
+        if (!images.length) return;
 
         var loading = this.editor.showLoading(_('Resizing image(s)'));
 
@@ -280,7 +194,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         $.ajax(ajax)
             .done(function(data) {
                 $(data).each(function(){
-                    $('#' + this.id).attr('src', this.src).removeAttr('id').removeClass(plugin.options.resizeAjaxClass);
+                    $('#' + this.id).attr('src', this.src).removeAttr('id');
                 });
                 plugin.editor.fire('change');
                 loading.hide();
@@ -294,7 +208,11 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                     error: data.status
                 }));
             })
-            .always(function(data) {});
+            .always(function(data) {
+                plugin.removeClasses([
+                    plugin.options.resizeAjaxClass
+                ]);
+            });
     },
 
     /**
@@ -312,6 +230,17 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 image: imageLink
             }), options);
         }
-    }
+    },
 
+    /**
+     * Remove the given classes from any of the element's images
+     * @param  {array} classNames to be removed
+     */
+    removeClasses: function(classNames) {
+        if (!classNames) classNames = [this.options.resizingClass, this.options.resizeAjaxClass];
+        if (!$.isArray(classNames)) classNames = [classNames];
+        for (var i = 0; i < classNames.length; i++) {
+            this.editor.getElement().find('img.' + classNames[i]).removeClass(classNames[i]);
+        }
+    }
 });
