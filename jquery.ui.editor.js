@@ -308,7 +308,7 @@ $.widget('ui.editor',
             }
 
             document.execCommand('enableInlineTableEditing', false, false);
-            document.execCommand('enableObjectResizing', false, false);
+            // document.execCommand('enableObjectResizing', false, false);
             document.execCommand('styleWithCSS', true, true);
             this.fire('enabled');
             this.fire('resize');
