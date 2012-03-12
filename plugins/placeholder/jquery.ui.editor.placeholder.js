@@ -5,13 +5,13 @@
  */
 
 $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder.prototype */ {
-    
+
     /**
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
         var plugin = this;
-        
+
         /**
         * Plugin option defaults
         * @type {Object}
@@ -30,7 +30,7 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
              * @type {String}
              */
             tag: 'p',
-            
+
             /**
              * Select content on insertion
              * @default true
@@ -44,7 +44,7 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
          */
         this.show = function() {
             if (!$.trim(editor.getElement().html())) {
-                
+
                 var content = $(document.createElement(options.tag)).html(options.content);
                 editor.getElement().html(content);
 
