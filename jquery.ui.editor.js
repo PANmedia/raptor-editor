@@ -195,10 +195,10 @@ $.widget('ui.editor',
 
         this.element.hide();
         this.bind('change', function() {
-            if (this.element.is(':input')) {
-                this.element.val(this.getHtml());
-            } else {
+            if (this.element.is('textarea')) {
                 this.element.html(this.getHtml());
+            } else {
+                this.element.val(this.getHtml());
             }
         });
         this.target = target;
