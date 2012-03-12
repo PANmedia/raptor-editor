@@ -14,16 +14,16 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
 
     topSpacer: null,
     bottomSpacer: null,
-    
+
     options: {
         docked: false,
         dockToElement: false,
         dockUnder: false
     },
-    
+
     /**
      * @see $.ui.editor.defaultPlugin#init
-     */   
+     */
     init: function(editor) {
         if (!this.topSpacer) {
             this.topSpacer = $('<div class="' + this.options.baseClass + '-top-spacer"/>')
@@ -35,9 +35,9 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
                 .appendTo('body')
                 .hide();
         }
-        
+
         this.docked = false;
-            
+
         this.bind('enabled', this.enable);
         this.bind('disabled', this.disable);
         this.bind('show', this.topSpacer.show, this.topSpacer);
@@ -45,19 +45,19 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.bind('show', this.bottomSpacer.show, this.bottomSpacer);
         this.bind('hide', this.bottomSpacer.hide, this.bottomSpacer);
         this.bind('destroy', this.destroy, this);
-        
+
         if (!this.options.dockToElement) {
             this.bind('change', this.change, this);
         }
     },
-    
+
     /**
      * Change CSS styles between two values
      * @param  {Object} to    Map of CSS styles to change to
      * @param  {Object} from  Map of CSS styles to change from
      * @param  {Object} style Map of styles to perform changes within
      * @return {Object} Map of styles that were changed
-     */ 
+     */
     swapStyle: function(to, from, style) {
         var result = {};
         for (var name in style) {
@@ -109,17 +109,17 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             'width': 'auto'
         });
 
-        wrapper.css('width', wrapper.width() + 
-            parseInt(this.editor.getElement().css('padding-left')) +
-            parseInt(this.editor.getElement().css('padding-right'))/* +
+        wrapper.css('width', wrapper.width() +
+            parseInt(this.editor.getElement().css('padding-left'), 10) +
+            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
             parseInt(this.editor.getElement().css('border-right-width')) +
-            parseInt(this.editor.getElement().css('border-left-width'))*/);
-        
+            parseInt(this.editor.getElement().css('border-left-width')));*/
+
         this.editor.getElement()
             .appendTo(this.editor.selDialog())
             .addClass(this.options.baseClass + '-docked-element');
     },
-    
+
     /**
      * Dock the toolbar to the document body
      */
@@ -128,113 +128,113 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         if ($(this.options.dockUnder).length) {
             top = $(this.options.dockUnder).outerHeight();
         }
-        
+
         this.top = this.editor.selToolbar().css('top');
         this.editor.selToolbar()
             .css('top', top);
-        
+
         this.editor.selDialog()
             .addClass(this.options.baseClass + '-docked');
-            
+
         this.editor.change();
     },
-    
+
     /**
      * Dock toolbar to element or body
      */
     dock: function() {
         if (this.docked) return;
-        
+
         // Save the state of the dock
         this.docked = this.persist('docked', true);
-        
+
         if (this.options.dockToElement) {
             this.dockToElement();
         } else {
             this.dockToBody();
         }
-        
+
         // Change the dock button icon & title
         this.editor.selDialog()
             .find('.' + this.options.baseClass + '-button')
             .button({icons: {primary: 'ui-icon-pin-w'}})
             .attr('title', this.getTitle());
-            
+
         // Add the header class to the editor toolbar
         this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
             .addClass('ui-widget-header');
 
         this.editor.fire('resize');
     },
-    
+
     /**
      * Undock toolbar from editing element
      */
     undockFromElement: function() {
         var wrapper = this.editor.selDialog().parent();
-        
+
         this.editor.getElement()
             .insertAfter(wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
         this.editor.selDialog()
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
-            
+
         this.revertStyle(this.editor.getElement(), this.previousStyle);
-        
+
         this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
-        
+
         wrapper.remove();
     },
-    
+
     /**
      * Undock toolbar from document body
      */
     undockFromBody: function() {
         this.editor.selToolbar().css('top', this.top);
-        
+
         // Remove the docked class
         this.editor.selDialog()
-            .removeClass(this.options.baseClass + '-docked')
-        
+            .removeClass(this.options.baseClass + '-docked');
+
         // Hide the spacers
         this.topSpacer.hide();
         this.bottomSpacer.hide();
     },
-    
+
     /**
-     * Undock toolbar 
+     * Undock toolbar
      */
     undock: function() {
         if (!this.docked) return;
-        
+
         // Save the state of the dock
         this.docked = this.destroying ? false : this.persist('docked', false);
-        
+
         // Remove the header class from the editor toolbar
         this.editor.selToolbar('.' + this.editor.options.baseClass + '-inner')
             .removeClass('ui-widget-header');
-            
+
         // Change the dock button icon & title
         this.editor.selDialog()
             .find('.' + this.options.baseClass + '-button')
             .button({icons: {primary: 'ui-icon-pin-s'}})
             .attr('title', this.getTitle());
-            
+
         if (this.options.dockToElement) this.undockFromElement();
         else this.undockFromBody();
 
         // Trigger the editor resize event to adjust other plugin element positions
         this.editor.fire('resize');
     },
-    
+
     /**
      * @return {Boolean} True if the toolbar is docked to the editing element or document body
      */
     isDocked: function() {
         return this.docked;
     },
-    
+
     /**
      * @return {String} Title text for the dock ui button, differing depending on docked state
      */
@@ -248,9 +248,9 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     enable: function() {
         if (this.persist('docked') || this.options.docked) {
             this.dock();
-        } 
+        }
     },
-    
+
     /**
      * Hide the top and bottom spacers when editing is disabled
      */
@@ -258,7 +258,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.topSpacer.hide();
         this.bottomSpacer.hide();
     },
-    
+
     /**
      * If the toolbar is docked and the element is being edited, reinitialise spacer(s) when the toolbar is visible and stopped animating and trigger the resize event
      */
@@ -293,7 +293,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
 });
 
 $.ui.editor.registerUi({
-    
+
     /**
      * @name $.editor.ui.dock
      * @augments $.ui.editor.defaultUi
@@ -301,7 +301,7 @@ $.ui.editor.registerUi({
      * @class Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
      */
     dock: /** @lends $.editor.ui.dock.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
