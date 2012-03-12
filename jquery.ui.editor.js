@@ -186,7 +186,7 @@ $.widget('ui.editor',
             // Give the div a unique ID
             .attr('id', this.getUniqueId())
             // Copy the origianl elements class(es) to the replacement div
-            .attr('class', this.element.attr('class'));
+            .addClass(this.element.attr('class'));
 
         var style = this.options.domTools.getStyles(this.element);
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
@@ -1854,8 +1854,8 @@ $.extend($.ui.editor,
      * @returns {String}
      */
     translate: function(string) {
-          if (this.currentLocale && this.locales[this.currentLocale]
-                && this.locales[this.currentLocale][string]) {
+          if (this.currentLocale && this.locales[this.currentLocale] &&
+            this.locales[this.currentLocale][string]) {
             string = this.locales[this.currentLocale][string];
         }
         return string;
