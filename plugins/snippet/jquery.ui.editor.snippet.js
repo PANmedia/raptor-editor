@@ -10,10 +10,12 @@ $.ui.editor.registerPlugin({
                 }
 
                 editor.bind('restore', this.createButtons, this);
-                editor.bind('clean', this.removeButtons, this);
+                editor.bind('save', this.disable, this);
+                editor.bind('cancel', this.disable, this);
 
                 editor.bind('enabled', this.enable, this);
                 editor.bind('disabled', this.disable, this);
+
             }
         },
 
