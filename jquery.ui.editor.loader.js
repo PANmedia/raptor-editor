@@ -211,7 +211,7 @@
         getJs(root + 'plugins/guides/jquery.ui.editor.guides.js', null, ['editor']);
         getLess(root + 'plugins/guides/jquery.ui.editor.guides.less');
 
-        getJs(root + 'plugins/save/jquery.ui.editor.save.js', null, ['editor']);
+        // getJs(root + 'plugins/save/jquery.ui.editor.save.js', null, ['editor']);
 
         getJs(root + 'plugins/paste/jquery.ui.editor.paste.js', null, ['editor']);
         getLess(root + 'plugins/paste/jquery.ui.editor.paste.less');
