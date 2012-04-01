@@ -71,6 +71,8 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
     getId: function() {
         if (typeof(this.options.id) === 'string') {
             return this.options.id;
+        } else if (typeof(this.options.id) === 'function') {
+            return this.options.id.apply(this, [this.editor.getOriginalElement()]);
         } else if (this.options.id.attr) {
             // Check the ID attribute exists on the content block
             var id = this.editor.getOriginalElement().attr(this.options.id.attr);
