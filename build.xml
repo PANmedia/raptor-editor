@@ -1,163 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="jquery-ui-editor" basedir="." default="build">
-
-    <adhoc-task name="datauri">
-        <![CDATA[
-            class DataURI extends Task {
-
-                private $filesets = array();
-
-                public function main() {
-                    foreach($this->filesets as $fs) {
-                        try {
-                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
-                            foreach ($files as $file) {
-                                $content = file_get_contents($file);
-                                $content = preg_replace_callback('/url\((.*?)\.(png|jpe?g|gif)\)/i', function($matches) use($file) {
-                                    $image = file_get_contents(dirname($file).'/'.$matches[1].'.'.$matches[2]);
-                                    $image = base64_encode($image);
-                                    return "url(data:image/$matches[2];base64,$image)";
-                                }, $content);
-                                file_put_contents($file, $content);
-                            }
-                        } catch (BuildException $be) {
-                            $this->log($be->getMessage(), Project::MSG_WARN);
-                        }
-                    }
-                }
-
-                public function createFileSet() {
-                    $num = array_push($this->filesets, new FileSet());
-                    return $this->filesets[$num-1];
-                }
-
-            }
-        ]]>
-    </adhoc-task>
-
-    <adhoc-task name="sortedfileset">
-        <![CDATA[
-            class SortedFileSet extends Task {
-
-                private $filesets = array();
-                private $name = null;
-
-                public function main() {
-                    foreach($this->filesets as $fs) {
-                        try {
-                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
-                            sort($files);
-                            $this->project->setProperty($this->name, implode(',', $files));
-                        } catch (BuildException $be) {
-                            $this->log($be->getMessage(), Project::MSG_WARN);
-                        }
-                    }
-                }
-
-                public function createFileSet() {
-                    $num = array_push($this->filesets, new FileSet());
-                    return $this->filesets[$num-1];
-                }
-
-                public function setName($name) {
-                    $this->name = (string) $name;
-                }
-
-                public function getName() {
-                    return $this->name;
-                }
-            }
-        ]]>
-    </adhoc-task>
-
-    <adhoc-task name="less">
-        <![CDATA[
-            class LessTask extends Task {
-
-                private $filesets = array();
-
-                public function main() {
-                    require_once $this->project->getBasedir() . '/dependencies/lessc.inc.php';
-                    foreach($this->filesets as $fs) {
-                        try {
-                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
-                            foreach ($files as $file) {
-                                lessc::ccompile($file, $file . '.css');
-                            }
-                        } catch (BuildException $be) {
-                            $this->log($be->getMessage(), Project::MSG_WARN);
-                        }
-                    }
-                }
-
-                public function createFileSet() {
-                    $num = array_push($this->filesets, new FileSet());
-                    return $this->filesets[$num-1];
-                }
-            }
-        ]]>
-    </adhoc-task>
-
-    <adhoc-task name="template">
-        <![CDATA[
-            class TemplateTask extends Task {
-
-                private $filesets = array();
-                private $name = null;
-
-                public function main() {
-                    $result = array();
-                    foreach($this->filesets as $fs) {
-                        try {
-                            $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
-                            foreach ($files as $file) {
-                                $preg = array();
-                                preg_match('/build[\/\\\\]{1}plugins[\/\\\\]{1}(.*?)[\/\\\\]{1}templates[\/\\\\]{1}(.*?)\\.html/i', $file, $preg);
-                                if (isset($preg[1]) && isset($preg[2])) {
-                                    $name = $preg[1] . '.' . $preg[2];
-                                } else {
-                                    $name = substr(basename($file), 0, -5);
-                                }
-
-                                $content = json_encode(file_get_contents($file));
-                                $result[] = "'$name': $content";
-                            }
-                        } catch (BuildException $be) {
-                            $this->log($be->getMessage(), Project::MSG_WARN);
-                        }
-                    }
-                    $this->project->setProperty($this->name, implode(',', $result));
-                }
-
-                public function createFileSet() {
-                    $num = array_push($this->filesets, new FileSet());
-                    return $this->filesets[$num-1];
-                }
-
-                public function setName($name) {
-                    $this->name = (string) $name;
-                }
-
-                public function getName() {
-                    return $this->name;
-                }
-            }
-        ]]>
-    </adhoc-task>
+<project name="jQuery Raptor" basedir="." default="build">
 
     <!-- =================================================================== -->
-    <!-- Run a complete build                                                -->
+    <!-- main build targets                                                  -->
     <!-- =================================================================== -->
-    <target name="build" depends="stripblocks,combine,compile,package,targz">
+    <target name="build">
+        <phingcall target="stripblocks" />
+        <phingcall target="copydeps" />
+        <phingcall target="combine" />
+        <phingcall target="compile" />
+        <phingcall target="package" />
     </target>
 
-    <target name="0deps" depends="stripblocks,copydeps,combine,compile,targz">
-    </target>
-
-    <target name="testbuild">
-        <!-- Load properties -->
-        <property file="build.properties" />
-        <!-- Check properties -->
+    <target name="testbuild" depends="properties">
         <echo>${phing.project.name}</echo>
         <echo>${packagepath}</echo>
         <echo>${buildpath}</echo>
@@ -169,9 +24,16 @@
     <!-- =================================================================== -->
     <!-- Prepare for build                                                   -->
     <!-- =================================================================== -->
-    <target name="prepare">
-        <!-- Load properties -->
+    <target name="properties">
         <property file="build.properties" />
+    </target>
+
+    <target name="clean">
+        <delete dir="${buildpath}" includeemptydirs="true" failonerror="true" />
+        <delete dir="${packagepath}" includeemptydirs="true" failonerror="true" />
+    </target>
+
+    <target name="prepare">
         <!-- Clean up previous build -->
         <delete file="${packagepath}/${filename}.tar.gz" />
         <delete file="${packagepath}/${filename}" />
@@ -182,7 +44,7 @@
         <mkdir dir="${buildpath}" />
     </target>
 
-    <target name="clone" depends="prepare">
+    <target name="clone" depends="properties,prepare">
         <!-- Copy all files needed files -->
         <copy todir="${buildpath}" >
             <fileset dir=".">
@@ -233,7 +95,7 @@
     <!-- =================================================================== -->
     <!-- Copy dependencies                                                   -->
     <!-- =================================================================== -->
-    <target name="openwrapper" depends="prepare">
+    <target name="openwrapper" depends="properties,prepare">
         <!-- Append global wrapper open -->
         <if>
             <istrue value="${wrapper}"/>
@@ -243,7 +105,7 @@
         </if>
     </target>
 
-    <target name="copydeps" depends="prepare">
+    <target name="copydeps" depends="properties,prepare">
         <!-- Copy all dependancies and prefix a number to enforce load order -->
 
         <!-- jQuery -->
@@ -310,7 +172,7 @@
     <!-- =================================================================== -->
     <!-- Strip debug/strict blocks                                           -->
     <!-- =================================================================== -->
-    <target name="stripblocks" depends="prepare,clone">
+    <target name="stripblocks" depends="properties,prepare,clone">
         <echo>Stripping blocks ${stripblocks}</echo>
         <reflexive>
             <fileset dir="${buildpath}">
@@ -331,7 +193,7 @@
     <!-- =================================================================== -->
     <!-- Convert LESS to CSS                                                 -->
     <!-- =================================================================== -->
-    <target name="less" depends="prepare,clone">
+    <target name="less" depends="properties,prepare,clone">
         <less>
             <fileset dir=".">
                 <include name="${buildpath}/*.less" />
@@ -343,7 +205,7 @@
     <!-- =================================================================== -->
     <!-- Convert images to data URIs                                         -->
     <!-- =================================================================== -->
-    <target name="datauri" depends="prepare,clone">
+    <target name="datauri" depends="properties,prepare,clone">
         <datauri>
             <fileset dir=".">
                 <include name="${buildpath}/*.css" />
@@ -355,7 +217,7 @@
     <!-- =================================================================== -->
     <!-- Convert HTML templates to JSON                                      -->
     <!-- =================================================================== -->
-    <target name="template" depends="prepare,clone">
+    <target name="template" depends="properties,prepare,clone">
         <template name="templates">
             <fileset dir=".">
                 <include name="${buildpath}/*.html" />
@@ -379,7 +241,7 @@
     <!-- =================================================================== -->
     <!-- Combine and minify all files                                        -->
     <!-- =================================================================== -->
-    <target name="combine" depends="less,datauri,template,openwrapper">
+    <target name="combine" depends="properties,less,datauri,template,openwrapper">
         <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
@@ -412,7 +274,7 @@
         </append>
     </target>
 
-    <target name="compile" depends="combine">
+    <target name="compile" depends="properties,combine">
         <if>
             <istrue value="${compile-js}"/>
             <then>
@@ -439,7 +301,7 @@
         </if>
     </target>
 
-    <target name="merge" depends="prepare">
+    <target name="merge" depends="properties,prepare">
         <!-- Append VERSION file in a comment -->
         <echo file="${buildpath}/merge.js" append="true">/*! VERSION: </echo>
         <append destFile="${buildpath}/merge.js">
@@ -492,18 +354,13 @@
     <!-- =================================================================== -->
     <!-- Package files                                                       -->
     <!-- =================================================================== -->
-    <target name="package" depends="merge">
+    <target name="package" depends="properties,merge">
         <mkdir dir="${packagepath}" />
         <copy file="${buildpath}/merge.js" tofile="${packagepath}/${filename}" />
         <echo>${packagepath}/${filename}</echo>
     </target>
 
     <target name="targz" depends="package">
-        <tar destfile="${packagepath}/${filename}.tar.gz" compression="gzip">
-            <fileset dir="${packagepath}">
-                <include name="${filename}" />
-            </fileset>
-        </tar>
     </target>
 
     <!-- =================================================================== -->
@@ -512,5 +369,21 @@
     <target name="cleanup">
         <delete dir="${buildpath}" includeemptydirs="true" failonerror="true" />
     </target>
+
+    <adhoc-task name="datauri">
+        require_once 'classes/DataURI.php';
+    </adhoc-task>
+
+    <adhoc-task name="sortedfileset">
+        require_once 'classes/SortedFileSet.php';
+    </adhoc-task>
+
+    <adhoc-task name="less">
+        require_once 'classes/LessTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="template">
+        require_once 'classes/TemplateTask.php';
+    </adhoc-task>
 
 </project>
