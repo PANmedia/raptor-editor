@@ -20,14 +20,14 @@ $.ui.editor.registerUi({
         options: {
             plugin: 'saveJson'
         },
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, element) {
             return editor.uiButton({
                 title: _('Save'),
-                icon: 'ui-icon-disk',
+                icon: 'ui-icon-save',
                 click: function() {
                     editor.getPlugin(this.options.plugin).save();
                 }
