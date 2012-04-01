@@ -1,7 +1,7 @@
 /**
  * @fileOverview Basic text styling ui components
  * @author David Neilson david@panmedia.co.nz
- * @author Michael Robinson mike@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 
 $.ui.editor.registerUi({
