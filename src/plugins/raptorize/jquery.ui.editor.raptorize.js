@@ -17,19 +17,19 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            var button = editor.uiButton({
+            var ui = editor.uiButton({
                 title: _('Raptorize')
             });
             editor.bind('ready', function() {
-                if (!button.button.raptorize) {
+                if (!ui.button.raptorize) {
                     // <strict>
                     handleError(_('Raptorize plugin requires the raptorize dependency - https://github.com/PANmedia/jQuery-Raptor-Dependencies'));
                     // </strict>
                     return;
                 }
-                button.button.raptorize();
+                ui.button.raptorize();
             });
-            return button;
+            return ui;
         }
     }
 
