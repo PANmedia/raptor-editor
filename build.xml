@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="jQuery Raptor" basedir="." default="build">
+<project name="jQuery Raptor" default="build">
 
     <!-- =================================================================== -->
     <!-- main build targets                                                  -->
@@ -15,11 +15,12 @@
         <phingcall target="package" />
     </target>
 
-    <target name="testbuild">
+    <target name="testbuild" depends="properties">
         <echo>${phing.project.name}</echo>
+        <echo>${project.basedir}</echo>
         <echo>${packagepath}</echo>
         <echo>${buildpath}</echo>
-        <echo>${strip-blocks}</echo>
+        <echo>${strip.blocks}</echo>
         <echo>${theme}</echo>
         <echo>${plugins}</echo>
     </target>
