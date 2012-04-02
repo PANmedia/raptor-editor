@@ -4,21 +4,36 @@
     <!-- =================================================================== -->
     <!-- main build targets                                                  -->
     <!-- =================================================================== -->
-    <target name="build">
-        <phingcall target="stripblocks" />
-        <phingcall target="copydeps" />
+    <target name="build" depends="properties">
+        <phingcall target="clean" />
+        <phingcall target="clone" />
+        <phingcall target="strip-blocks" />
+        <phingcall target="copy-dependencies" />
         <phingcall target="combine" />
         <phingcall target="compile" />
+        <phingcall target="merge" />
         <phingcall target="package" />
     </target>
 
-    <target name="testbuild" depends="properties">
+    <target name="testbuild">
         <echo>${phing.project.name}</echo>
         <echo>${packagepath}</echo>
         <echo>${buildpath}</echo>
-        <echo>${stripblocks}</echo>
+        <echo>${strip-blocks}</echo>
         <echo>${theme}</echo>
         <echo>${plugins}</echo>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compress PNG images                                                 -->
+    <!-- =================================================================== -->
+    <target name="pngout">
+        <foreach param="input.file.name" absparam="input.file" target="pngout-exec">
+            <fileset dir="src">
+                <include name="*.png" />
+                <include name="**/*.png" />
+            </fileset>
+        </foreach>
     </target>
 
     <!-- =================================================================== -->
@@ -31,103 +46,84 @@
     <target name="clean">
         <delete dir="${buildpath}" includeemptydirs="true" failonerror="true" />
         <delete dir="${packagepath}" includeemptydirs="true" failonerror="true" />
-    </target>
-
-    <target name="prepare">
-        <!-- Clean up previous build -->
-        <delete file="${packagepath}/${filename}.tar.gz" />
-        <delete file="${packagepath}/${filename}" />
-        <delete dir="${buildpath}"
-                includeemptydirs="true"
-                failonerror="true" />
-        <!-- Create new build directory -->
         <mkdir dir="${buildpath}" />
+        <mkdir dir="${packagepath}" />
     </target>
 
-    <target name="clone" depends="properties,prepare">
-        <!-- Copy all files needed files -->
+    <target name="clone">
+        <!-- Copy all source files excluding plugins -->
         <copy todir="${buildpath}" >
-            <fileset dir=".">
-                <exclude name=".git" />
-                <exclude name=".git/**" />
+            <fileset dir="src">
                 <exclude name="jquery.ui.editor.loader.js" />
-                <exclude name="docs/**" />
-                <exclude name="vendor/**" />
-                <exclude name="dependencies/**" />
-                <exclude name="packages/**" />
                 <exclude name="plugins/**" />
-                <exclude name="${buildpath}" />
-                <exclude name="${buildpath}/**" />
-                <exclude name="${packagepath}" />
-                <exclude name="${packagepath}/**" />
                 <include name="**/*" />
             </fileset>
         </copy>
 
-        <foreach list="${plugins}" param="plugin" target="cloneplugin"/>
+        <!-- Copy specified plugins -->
+        <foreach list="${plugins}" param="plugin" target="clone-plugin" />
     </target>
 
-    <target name="cloneplugin">
+    <target name="clone-plugin">
         <echo>${plugin}</echo>
         <copy todir="${buildpath}" >
-            <fileset dir=".">
+            <fileset dir="src">
                 <include name="plugins/${plugin}/**" />
             </fileset>
         </copy>
     </target>
 
-    <!-- =================================================================== -->
-    <!-- Compress PNG iamges                                                 -->
-    <!-- =================================================================== -->
-    <target name="pngout">
-        <foreach param="fname" absparam="abs-fname" target="pngoutexec">
-            <fileset dir=".">
-                <include name="*.png" />
-                <include name="**/*.png" />
-            </fileset>
-        </foreach>
+    <target name="pngout-exec">
+        <exec command="pngout ${input.file}" logoutput="true" />
     </target>
 
-    <target name="pngoutexec">
-        <exec command="pngout ${abs-fname}" logoutput="true" />
+    <!-- =================================================================== -->
+    <!-- Strip debug/strict blocks                                           -->
+    <!-- =================================================================== -->
+    <target name="strip-blocks">
+        <echo>Stripping blocks ${strip.blocks}</echo>
+        <reflexive>
+            <fileset dir="${buildpath}">
+                <include pattern="**/*" />
+            </fileset>
+            <filterchain>
+                <!-- Replace the blocks using regex -->
+                <replaceregexp>
+                    <regexp pattern="//\s&lt;(${strip.blocks})&gt;.*?//\s&lt;/(${strip.blocks})&gt;"
+                            replace="// &lt;$1/&gt;"
+                            ignoreCase="true"
+                            multiline="true" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
     </target>
 
     <!-- =================================================================== -->
     <!-- Copy dependencies                                                   -->
     <!-- =================================================================== -->
-    <target name="openwrapper" depends="properties,prepare">
-        <!-- Append global wrapper open -->
-        <if>
-            <istrue value="${wrapper}"/>
-            <then>
-                <echo file="${buildpath}/99-wrapper-open.js" append="true">(function($, window, rangy, undefined) {</echo>
-            </then>
-        </if>
-    </target>
-
-    <target name="copydeps" depends="properties,prepare">
-        <!-- Copy all dependancies and prefix a number to enforce load order -->
+    <target name="copy-dependencies">
+        <!-- Copy all dependencies and prefix a number to enforce load order -->
 
         <!-- jQuery -->
-        <if><istrue value="${jquery}"/><then>
+        <if><istrue value="${jquery}" /><then>
             <copy file="dependencies/jquery.js"
                   tofile="${buildpath}/01-jquery.js" />
         </then></if>
 
         <!-- jQuery UI -->
-        <if><istrue value="${jquery-ui}"/><then>
+        <if><istrue value="${jquery-ui}" /><then>
             <copy file="dependencies/jquery-ui.js"
                   tofile="${buildpath}/02-jquery-ui.js" />
         </then></if>
 
         <!-- jQuery plugins -->
-        <if><istrue value="${jquery-cookie}"/><then>
+        <if><istrue value="${jquery-cookie}" /><then>
             <copy file="dependencies/jquery.cookie.js"
                   tofile="${buildpath}/04-jquery-cookie.js" />
         </then></if>
 
         <!-- TipTip -->
-        <if><istrue value="${jquery-tiptip}"/><then>
+        <if><istrue value="${jquery-tiptip}" /><then>
             <copy file="dependencies/tiptip/jquery.tipTip.js"
                   tofile="${buildpath}/05-jquery-tipTip.js" />
             <copy file="dependencies/tiptip/tipTip.css"
@@ -135,13 +131,13 @@
         </then></if>
 
         <!-- jQuery Event Drag -->
-        <if><istrue value="${jquery-event-drag}"/><then>
+        <if><istrue value="${jquery-event-drag}" /><then>
             <copy file="dependencies/jquery.event.drag-2.0.js"
                   tofile="${buildpath}/04-jquery-event-drag.js" />
         </then></if>
 
         <!-- Rangy -->
-        <if><istrue value="${rangy}"/><then>
+        <if><istrue value="${rangy}" /><then>
             <copy file="dependencies/rangy/rangy-core.js"
                   tofile="${buildpath}/06-rangy-core.js" />
             <copy file="dependencies/rangy/rangy-cssclassapplier.js"
@@ -153,13 +149,13 @@
         </then></if>
 
         <!-- Raptorize -->
-        <if><istrue value="${raptorize}"/><then>
+        <if><istrue value="${raptorize}" /><then>
             <copy file="dependencies/raptorize/jquery.raptorize.js"
                   tofile="${buildpath}/10-raptorize.js" />
         </then></if>
 
         <!-- CSS -->
-        <if><istrue value="${jquery-ui-theme}"/><then>
+        <if><istrue value="${jquery-ui-theme}" /><then>
             <copy todir="${buildpath}/01-theme">
                 <fileset dir=".">
                     <include name="dependencies/themes/${theme}/jquery-ui.css" />
@@ -170,30 +166,9 @@
     </target>
 
     <!-- =================================================================== -->
-    <!-- Strip debug/strict blocks                                           -->
-    <!-- =================================================================== -->
-    <target name="stripblocks" depends="properties,prepare,clone">
-        <echo>Stripping blocks ${stripblocks}</echo>
-        <reflexive>
-            <fileset dir="${buildpath}">
-                <include pattern="**/*" />
-            </fileset>
-            <filterchain>
-                <!-- Replace the blocks using regex -->
-                <replaceregexp>
-                    <regexp pattern="//\s&lt;(${stripblocks})&gt;.*?//\s&lt;/(${stripblocks})&gt;"
-                            replace="// &lt;$1/&gt;"
-                            ignoreCase="true"
-                            multiline="true" />
-                </replaceregexp>
-            </filterchain>
-        </reflexive>
-    </target>
-
-    <!-- =================================================================== -->
     <!-- Convert LESS to CSS                                                 -->
     <!-- =================================================================== -->
-    <target name="less" depends="properties,prepare,clone">
+    <target name="less">
         <less>
             <fileset dir=".">
                 <include name="${buildpath}/*.less" />
@@ -205,7 +180,7 @@
     <!-- =================================================================== -->
     <!-- Convert images to data URIs                                         -->
     <!-- =================================================================== -->
-    <target name="datauri" depends="properties,prepare,clone">
+    <target name="datauri">
         <datauri>
             <fileset dir=".">
                 <include name="${buildpath}/*.css" />
@@ -217,7 +192,7 @@
     <!-- =================================================================== -->
     <!-- Convert HTML templates to JSON                                      -->
     <!-- =================================================================== -->
-    <target name="template" depends="properties,prepare,clone">
+    <target name="template">
         <template name="templates">
             <fileset dir=".">
                 <include name="${buildpath}/*.html" />
@@ -232,16 +207,16 @@
             <filterchain>
                 <!-- Escape quotes -->
                 <replaceregexp>
-                    <regexp pattern="\/\* &lt;templates\/&gt; \*\/" replace="${templates}"/>
+                    <regexp pattern="\/\* &lt;templates\/&gt; \*\/" replace="${templates}" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
     </target>
 
     <!-- =================================================================== -->
-    <!-- Combine and minify all files                                        -->
+    <!-- Combine all files                                                   -->
     <!-- =================================================================== -->
-    <target name="combine" depends="properties,less,datauri,template,openwrapper">
+    <target name="combine" depends="less,datauri,template,open-wrapper">
         <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
@@ -250,12 +225,12 @@
             </fileset>
         </sortedfileset>
         <append destFile="${buildpath}/concat.js">
-            <filelist dir="." files="${jsfiles}"/>
+            <filelist dir="." files="${jsfiles}" />
         </append>
 
         <!-- Append global wrapper close -->
         <if>
-            <istrue value="${wrapper}"/>
+            <istrue value="${wrapper}" />
             <then>
                 <echo file="${buildpath}/concat.js" append="true">})(jQuery, window, rangy);</echo>
             </then>
@@ -270,38 +245,54 @@
         </sortedfileset>
         <echo>${cssfiles}</echo>
         <append destFile="${buildpath}/concat.css">
-            <filelist dir="." files="${cssfiles}"/>
+            <filelist dir="." files="${cssfiles}" />
         </append>
     </target>
 
-    <target name="compile" depends="properties,combine">
+    <target name="open-wrapper">
+        <!-- Append global wrapper open -->
         <if>
-            <istrue value="${compile-js}"/>
+            <istrue value="${wrapper}" />
+            <then>
+                <echo file="${buildpath}/99-wrapper-open.js">(function($, window, rangy, undefined) {</echo>
+            </then>
+        </if>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compile (minify) all files                                          -->
+    <!-- =================================================================== -->
+    <target name="compile">
+        <if>
+            <istrue value="${compile-js}" />
             <then>
                 <echo>closure --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
                 <exec command="closure ${closure-options} --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js"
-                      dir="." level="info" outputProperty="output"/>
+                      dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
             </then>
             <else>
-                <move file="${buildpath}/concat.js" tofile="${buildpath}/concat.min.js"/>
+                <move file="${buildpath}/concat.js" tofile="${buildpath}/concat.min.js" />
             </else>
         </if>
         <if>
-            <istrue value="${compile-css}"/>
+            <istrue value="${compile-css}" />
             <then>
                 <echo>yui-compressor --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
                 <exec command="yui-compressor --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css"
-                      dir="." level="info" outputProperty="output"/>
+                      dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
             </then>
             <else>
-                <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css"/>
+                <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css" />
             </else>
         </if>
     </target>
 
-    <target name="merge" depends="properties,prepare">
+    <!-- =================================================================== -->
+    <!-- Merge CSS and JS into one file                                      -->
+    <!-- =================================================================== -->
+    <target name="merge">
         <!-- Append VERSION file in a comment -->
         <echo file="${buildpath}/merge.js" append="true">/*! VERSION: </echo>
         <append destFile="${buildpath}/merge.js">
@@ -338,8 +329,8 @@
             <filterchain>
                 <!-- Escape quotes -->
                 <replaceregexp>
-                    <regexp pattern="'" replace="\'"/>
-                    <regexp pattern="\n" replace="\n\${line.separator}"/>
+                    <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\n" replace="\n\${line.separator}" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
@@ -354,22 +345,25 @@
     <!-- =================================================================== -->
     <!-- Package files                                                       -->
     <!-- =================================================================== -->
-    <target name="package" depends="properties,merge">
+    <target name="package">
         <mkdir dir="${packagepath}" />
         <copy file="${buildpath}/merge.js" tofile="${packagepath}/${filename}" />
         <echo>${packagepath}/${filename}</echo>
     </target>
 
-    <target name="targz" depends="package">
+    <target name="targz">
+        <!--
+        <tar destfile="${packagepath}/${filename}.tar.gz" compression="gzip">
+            <fileset dir="${packagepath}">
+                <include name="${filename}" />
+            </fileset>
+        </tar>
+        -->
     </target>
 
     <!-- =================================================================== -->
-    <!-- Cleanup files                                                       -->
+    <!-- Adhoc classes                                                       -->
     <!-- =================================================================== -->
-    <target name="cleanup">
-        <delete dir="${buildpath}" includeemptydirs="true" failonerror="true" />
-    </target>
-
     <adhoc-task name="datauri">
         require_once 'classes/DataURI.php';
     </adhoc-task>
