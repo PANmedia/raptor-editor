@@ -1,7 +1,7 @@
 /**
  * @fileOverview View source UI component
  * @author David Neilson david@panmedia.co.nz
- * @author Michael Robinson mike@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
  */
  $.ui.editor.registerUi({
 
@@ -11,7 +11,7 @@
      * @class Shows a dialog containing the element's markup, allowing the user to edit the source directly
      */
     viewSource: /** @lends $.editor.ui.viewSource.prototype */ {
-        
+
         /**
          * Reference to the view source dialog
          * @type {Object}
