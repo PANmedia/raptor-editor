@@ -38,6 +38,26 @@
     </target>
 
     <!-- =================================================================== -->
+    <!-- Development build                                                   -->
+    <!-- =================================================================== -->
+    <target name="dev" depends="properties">
+        <phingcall target="clean" />
+        <phingcall target="dev-clone" />
+    </target>
+
+    <target name="dev-clone">
+        <copy todir="${buildpath}" >
+            <fileset dir="src">
+                <include name="**/*" />
+            </fileset>
+            <fileset dir=".">
+                <exclude name="dependencies/.git" />
+                <include name="dependencies/**/*" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- =================================================================== -->
     <!-- Prepare for build                                                   -->
     <!-- =================================================================== -->
     <target name="properties">
