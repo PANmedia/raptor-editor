@@ -1502,7 +1502,7 @@ $.extend($.ui.editor,
     /**
      * @property {String} urlPrefix
      */
-    urlPrefix: '/jquery.ui.editor/',
+    urlPrefix: '/jquery-raptor/',
 
     /**
      * @property {Object} templates
