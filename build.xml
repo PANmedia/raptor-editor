@@ -8,6 +8,7 @@
         <phingcall target="clean" />
         <phingcall target="clone" />
         <phingcall target="strip-blocks" />
+        <phingcall target="version" />
         <phingcall target="copy-dependencies" />
         <phingcall target="combine" />
         <phingcall target="compile" />
@@ -94,6 +95,24 @@
                             replace="// &lt;$1/&gt;"
                             ignoreCase="true"
                             multiline="true" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Replace version token with current version string                   -->
+    <!-- =================================================================== -->
+    <target name="version">
+        <echo>Replacing version token ${version}</echo>
+        <reflexive>
+            <fileset dir="${buildpath}">
+                <include pattern="**/*" />
+            </fileset>
+            <filterchain>
+                <!-- Replace the blocks using regex -->
+                <replaceregexp>
+                    <regexp pattern="VERSION" replace="${version}" />
                 </replaceregexp>
             </filterchain>
         </reflexive>
