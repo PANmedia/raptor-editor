@@ -24,6 +24,7 @@ $.widget('ui.editor',
 
         // Set the options after the widget initialisation, because jQuery UI widget tries to extend the array (and breaks it)
         this.options.uiOrder = this.options.uiOrder || [
+            ['logo'],
             ['save', 'cancel'],
             ['dock', 'showGuides', 'clean'],
             ['viewSource'],
