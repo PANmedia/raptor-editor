@@ -1006,7 +1006,7 @@ $.widget('ui.editor',
                 ui.selectMenu.append(this.select.hide());
                 ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
                 ui.select.find('option').each(function() {
-                    var option = $('<button/>')
+                    var option = $('<button type="button"/>')
                         .addClass('ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
