@@ -576,17 +576,19 @@ $.widget('ui.editor',
             // Set the persistant position
             var pos = this.persist('position') || this.options.dialogPosition;
 
-            if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
-                pos[0] = $(window).height() - wrapper.outerHeight();
-            }
-            if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
-                pos[1] = $(window).width() - wrapper.outerWidth();
-            }
+            if (pos) {
+                if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
+                    pos[0] = $(window).height() - wrapper.outerHeight();
+                }
+                if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
+                    pos[1] = $(window).width() - wrapper.outerWidth();
+                }
 
-            wrapper.css({
-                top: Math.abs(parseInt(pos[0])),
-                left: Math.abs(parseInt(pos[1]))
-            });
+                wrapper.css({
+                    top: Math.abs(parseInt(pos[0])),
+                    left: Math.abs(parseInt(pos[1]))
+                });
+            }
         }
 
         $(function() {
@@ -847,7 +849,7 @@ $.widget('ui.editor',
 
             uiGroup.wrap($('<div/>').addClass(this.options.baseClass + '-group'));
         }
-        $('<div/>').addClass('ui-helper-clearfix').appendTo(this.toolbar);
+        $('<div/>').css('clear', 'both').appendTo(this.toolbar);
     },
 
     /**
