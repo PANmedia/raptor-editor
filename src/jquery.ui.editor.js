@@ -550,6 +550,7 @@ $.widget('ui.editor',
             .html(this.getTemplate('root'));
         var wrapper = this.wrapper = $('<div/>')
             .addClass(this.options.baseClass + '-wrapper')
+            .css('display', 'none')
             .append(path)
             .append(toolbar);
 
