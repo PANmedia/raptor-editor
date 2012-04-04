@@ -9,11 +9,12 @@ class DataURI extends Task {
                 $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
                 foreach ($files as $file) {
                     $content = file_get_contents($file);
-                    $content = preg_replace_callback('/url\((.*?)\.(png|jpe?g|gif)\)/i', function($matches) use($file) {
-                        $image = file_get_contents(dirname($file).'/'.$matches[1].'.'.$matches[2]);
-                        $image = base64_encode($image);
-                        return "url(data:image/$matches[2];base64,$image)";
-                    }, $content);
+                    $content = preg_replace('/background\:\s*url\(images.*\)\s*0 0\;/', '', $content);
+//                    $content = preg_replace_callback('/url\((.*?)\.(png|jpe?g|gif)\)/i', function($matches) use($file) {
+//                        $image = file_get_contents(dirname($file).'/'.$matches[1].'.'.$matches[2]);
+//                        $image = base64_encode($image);
+//                        return "url(data:image/$matches[2];base64,$image)";
+//                    }, $content);
                     file_put_contents($file, $content);
                 }
             } catch (BuildException $be) {
