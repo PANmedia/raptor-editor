@@ -5,7 +5,7 @@
  * Intended to prevent horrible 'paste from word' catastophes.
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
-    
+
     /**
      * @see $.ui.editor.defaultPlugin#init
      */
@@ -36,11 +36,11 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     plain: $('<div/>').html(content).text(),
                     markup: plugin.stripAttributes(content)
                 };
-                console.debug(vars);
+                //console.debug(vars);
                 dialog = $(editor.getTemplate('paste.dialog', vars));
 
                 dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
-                    plugin.updateAreas(this, dialog);    
+                    plugin.updateAreas(this, dialog);
                 });
 
 
@@ -54,7 +54,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     show: options.dialogShowAnimation,
                     hide: options.dialogHideAnimation,
                     dialogClass: options.baseClass + ' ' + options.dialogClass,
-                    buttons: 
+                    buttons:
                         [
                             {
                                 text: _('Insert'),
@@ -122,13 +122,13 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     filterAttributes: function(content) {
         // The filters variable is an array of of regular expression & handler pairs.
-        // 
-        // The regular expressions attempt to strip out a lot of style data that 
+        //
+        // The regular expressions attempt to strip out a lot of style data that
         // MS Word likes to insert when pasting into a contentEditable.
-        // Almost all of it is junk and not good html.  
-        // 
-        // The hander is a place to put a function for match handling.  
-        // In most cases, it just handles it as empty string.  But the option is there 
+        // Almost all of it is junk and not good html.
+        //
+        // The hander is a place to put a function for match handling.
+        // In most cases, it just handles it as empty string.  But the option is there
         // for more complex handling.
         var filters = [
             // Meta tags, link tags, and prefixed tags
@@ -137,7 +137,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             {regexp: /(class="Mso[^"]*")|(<!--(.|\s){1,}?-->)/gi, handler: ''},
             // Apple class tags
             {regexp: /(class="Apple-(style|converted)-[a-z]+\s?[^"]+")/, handle: ''},
-            // Google doc attributes 
+            // Google doc attributes
             {regexp: /id="internal-source-marker_[^"]+"|dir="[rtl]{3}"/, handle: ''},
             // blank p tags
             {regexp: /(<p[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/p[^>]*>)|(<p[^>]*>\s*<font[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/\s*font\s*>\s<\/p[^>]*>)/ig, handler: ''},

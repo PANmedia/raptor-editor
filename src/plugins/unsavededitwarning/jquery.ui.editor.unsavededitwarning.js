@@ -1,6 +1,6 @@
 /**
  * @fileOverview UI Component for displaying a warning in a corner of the element when unsaved edits exist
- * @author David Neilson david@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 

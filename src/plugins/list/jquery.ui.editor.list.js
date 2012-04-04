@@ -1,6 +1,6 @@
 /**
  * @fileOverview UI Components for inserting ordered and unordered lists
- * @author David Neilson david@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 

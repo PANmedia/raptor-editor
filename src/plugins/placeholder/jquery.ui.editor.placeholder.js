@@ -1,6 +1,6 @@
 /**
  * @fileOverview Placeholder text component
- * @author David Neilson david@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 

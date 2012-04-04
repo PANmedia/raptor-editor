@@ -1,6 +1,6 @@
 /**
  * @fileOverview Tiptip plugin
- * @author David Neilson david@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
@@ -20,7 +20,7 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      * @type {Object}
      */
     options: {
-        
+
         /**
          * Delay between user hovering the element and the tooltip being displayed
          * @default  300
@@ -59,7 +59,7 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
-        
+
         // <strict>
         // Ensure tipTip has been included
         if (!$.isFunction($.fn.tipTip)) {
@@ -78,13 +78,13 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      */
     rebuildUi: function() {
 
-        // Only apply tiptip to the core elements if it hasn't yet been applied, 
+        // Only apply tiptip to the core elements if it hasn't yet been applied,
         // or the locale has been changed or the editor docked / undocked
         if (this.currentLocale != this.options.locale || this.isDocked() != this.wasDocked) {
 
             var ui = this;
             // Apply tiptip to all children of the relevant elements that either have a title attribute or the required class
-            this.editor.selToolbar('[title], .' + this.options.baseClass + '-tiptip').each(function() {
+            this.editor.toolbar.find('[title], .' + this.options.baseClass + '-tiptip').each(function() {
                 $(this).tipTip(ui.tipTipOptions()).addClass(ui.options.baseClass + '-tiptip');
             });
 
@@ -100,7 +100,7 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      */
     rebuildTagTree: function() {
         var ui = this;
-        this.editor.selTitle('[title], .' + this.options.baseClass + '-tiptip').each(function() {
+        this.editor.path.find('[title], .' + this.options.baseClass + '-tiptip').each(function() {
             $(this).tipTip(ui.tipTipOptions(true)).addClass(ui.options.baseClass + '-tiptip');
         })
     },
@@ -110,8 +110,8 @@ $.ui.editor.registerPlugin('tiptip', /** @lends $.editor.plugin.tiptip.prototype
      */
     rebuildUnsavedEditWarning: function() {
         // Unsaved edit warnings could be added / removed on change, so we should check for them each time
-        $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(this.tipTipOptions(), { 
-            defaultPosition: 'right' 
+        $('body div.ui-editor-unsaved-edit-warning-warning[title]').tipTip($.extend(this.tipTipOptions(), {
+            defaultPosition: 'right'
         }));
     },
 
