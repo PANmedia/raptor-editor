@@ -21,6 +21,9 @@
 <link rel="stylesheet/less" type="text/css" href="/jquery-raptor/jquery.ui.editor.less"/>
 
 <!-- Plugins -->
+<script type="text/javascript" src="/jquery-raptor/plugins/logo/jquery.ui.editor.logo.js"></script>
+<link rel="stylesheet/less" type="text/css" href="/jquery-raptor/plugins/logo/jquery.ui.editor.logo.less"/>
+
 <script type="text/javascript" src="/jquery-raptor/plugins/dock/jquery.ui.editor.dock.js"></script>
 <link rel="stylesheet/less" type="text/css" href="/jquery-raptor/plugins/dock/jquery.ui.editor.dock.less"/>
 
