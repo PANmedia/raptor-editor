@@ -44,6 +44,7 @@
     <target name="dev" depends="properties">
         <phingcall target="clean" />
         <phingcall target="dev-clone" />
+        <phingcall target="datauri" />
     </target>
 
     <target name="dev-clone">
@@ -223,6 +224,8 @@
     <target name="datauri">
         <datauri>
             <fileset dir=".">
+                <include name="${buildpath}/*.less" />
+                <include name="${buildpath}/**/*.less" />
                 <include name="${buildpath}/*.css" />
                 <include name="${buildpath}/**/*.css" />
             </fileset>

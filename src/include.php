@@ -1,9 +1,5 @@
 <!-- Libraries -->
-<script type="text/javascript" src="/jquery-raptor/dependencies/jquery.js"></script>
 <script type="text/javascript" src="/jquery-raptor/dependencies/jquery.cookie.js"></script>
-
-<script type="text/javascript" src="/jquery-raptor/dependencies/jquery-ui.js"></script>
-<link rel="stylesheet" href="/jquery-raptor/dependencies/themes/smoothness/jquery-ui.css"/>
 
 <script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-core.js"></script>
 <script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-cssclassapplier.js"></script>
@@ -18,7 +14,6 @@
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.js"></script>
-<link rel="stylesheet/less" type="text/css" href="/jquery-raptor/jquery.ui.editor.less"/>
 
 <!-- Plugins -->
 <script type="text/javascript" src="/jquery-raptor/plugins/logo/jquery.ui.editor.logo.js"></script>

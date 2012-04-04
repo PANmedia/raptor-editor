@@ -308,9 +308,12 @@ $.widget('ui.editor',
                 this.getElement().attr('contenteditable', true);
             }
 
-            document.execCommand('enableInlineTableEditing', false, false);
-            // document.execCommand('enableObjectResizing', false, false);
-            document.execCommand('styleWithCSS', true, true);
+            try {
+                document.execCommand('enableInlineTableEditing', false, false);
+                // document.execCommand('enableObjectResizing', false, false);
+                document.execCommand('styleWithCSS', true, true);
+            } catch (exception) {
+            }
             this.fire('enabled');
             this.fire('resize');
             this.change();
@@ -388,7 +391,7 @@ $.widget('ui.editor',
         }, null, this);
 
         if (!title) title = this.getTemplate('root');
-        this.selDialog('.ui-dialog-title')
+        this.path
             .html(title)
             .find('a')
             .click(function() {
@@ -446,7 +449,7 @@ $.widget('ui.editor',
      *
      */
     loadMessages: function() {
-        $(this.getTemplate('messages')).appendTo(this.selToolbar());
+        this.messages = $(this.getTemplate('messages')).appendTo(this.wrapper);
     },
 
     /**
@@ -486,7 +489,7 @@ $.widget('ui.editor',
                 message: message
             }))
             .hide()
-            .appendTo(this.selMessages())
+            .appendTo(this.messages)
             .find('.ui-editor-message-close')
                 .click(function() {
                     messageObject.hide();
@@ -540,60 +543,58 @@ $.widget('ui.editor',
      *
      */
     loadToolbar: function() {
-        this.toolbar = $('<div class="' + this.options.baseClass + '-toolbar"/>');
-        this.toolbar.append('<div class="' + this.options.baseClass + '-inner"/>');
+        var toolbar = this.toolbar = $('<div/>')
+            .addClass(this.options.baseClass + '-toolbar');
+        var path = this.path = $('<div/>')
+            .addClass(this.options.baseClass + '-path')
+            .html(this.getTemplate('root'));
+        var wrapper = this.wrapper = $('<div/>')
+            .addClass(this.options.baseClass + '-wrapper')
+            .append(path)
+            .append(toolbar);
 
-        this.toolbar.dialog($.extend({}, {
-            disabled: false,
-            autoOpen: false,
-            closeOnEscape: false,
-            dialogClass: this.options.dialogClass,
-            draggable: true,
-            height: 'auto',
-            maxHeight: 'auto',
-            maxWidth: 'auto',
-            minHeight: 'auto',
-            minWidth: 'auto',
-            modal: false,
-            resizable: false,
-            width: 'auto',
-            resize: 'auto',
-            zIndex: 32000,
-            title: _('Editor loading...'),
-            dragStop: $.proxy(function() {
-                var pos = this.persist('position', [
-                    this.selDialog().css('top'),
-                    this.selDialog().css('left')
-                ]);
-                this.selDialog().css({
-                    top: Math.abs(pos[0]),
-                    left: Math.abs(pos[1])
-                });
-            }, this),
-            open: $.proxy(function(event, ui) {
-                $(this.toolbar).parent()
-                    .css('position', 'fixed')
-                    .find('.ui-dialog-titlebar-close', ui)
-                    .remove();
+        if ($.fn.draggable && this.options.draggable) {
+            wrapper.draggable({
+                cancel: 'a, button',
+                cursor: 'move',
+                stop: $.proxy(function() {
+                    // Save the persistant position
+                    var pos = this.persist('position', [
+                        wrapper.css('top'),
+                        wrapper.css('left')
+                    ]);
+                    wrapper.css({
+                        top: Math.abs(pos[0]),
+                        left: Math.abs(pos[1])
+                    });
+                }, this)
+            });
 
-                var pos = this.persist('position') || this.options.dialogPosition;
+            // Remove the relative position
+            wrapper.css('position', '');
 
-                if (parseInt(pos[0], 10) + this.selDialog().outerHeight() > $(window).height()) {
-                    pos[0] = $(window).height() - this.selDialog().outerHeight();
-                }
-                if (parseInt(pos[1], 10) + this.selDialog().outerWidth() > $(window).width()) {
-                    pos[1] = $(window).width() - this.selDialog().outerWidth();
-                }
+            // Set the persistant position
+            var pos = this.persist('position') || this.options.dialogPosition;
 
-                this.selDialog().css({
-                    top: Math.abs(pos[0]),
-                    left: Math.abs(pos[1])
-                });
-            }, this)
-        }, this.options.dialogOptions));
+            if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
+                pos[0] = $(window).height() - wrapper.outerHeight();
+            }
+            if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
+                pos[1] = $(window).width() - wrapper.outerWidth();
+            }
+
+            wrapper.css({
+                top: Math.abs(parseInt(pos[0])),
+                left: Math.abs(parseInt(pos[1]))
+            });
+        }
+
+        $(function() {
+            wrapper.appendTo('body');
+        });
 
         this.bind('after:destroy', $.proxy(function() {
-            this.toolbar.dialog('destroy').remove();
+            this.wrapper.remove();
         }, this));
     },
 
@@ -617,7 +618,8 @@ $.widget('ui.editor',
                 // }
             }
             this.options.show = true;
-            this.selToolbar().dialog('open');
+
+            this.wrapper.show();
             this.fire('resize');
             if (typeof this.getElement().attr('tabindex') === 'undefined') {
                 this.getElement().attr('tabindex', -1);
@@ -639,15 +641,12 @@ $.widget('ui.editor',
     },
 
     /**
-     * @param {boolean} [instant]
+     *
      */
-    hideToolbar: function(instant) {
+    hideToolbar: function() {
         if (this.options.show) {
             this.options.show = false;
-            if (instant) {
-                this.selDialog().hide();
-            }
-            this.selToolbar().dialog('close');
+            this.wrapper.hide();
             this.fire('hide');
             this.fire('resize');
         }
@@ -660,20 +659,6 @@ $.widget('ui.editor',
         this.unify(function(editor) {
             editor.hideToolbar(instant);
         }, false);
-    },
-
-    /**
-     * @returns {boolean}
-     */
-    isToolbarVisible: function() {
-        return this.options.show;
-    },
-
-    /**
-     * @returns {$.ui.dialog}
-     */
-    dialog: function() {
-        return this.toolbar.dialog.apply(this.toolbar, arguments);
     },
 
     /*========================================================================*\
@@ -792,56 +777,6 @@ $.widget('ui.editor',
     },
 
     /*========================================================================*\
-     * Selectors
-    \*========================================================================*/
-    /**
-     * @param {jQuerySelector|jQuery|Element} [find]
-     * @returns {jQuery}
-     */
-    selToolbar: function(find) {
-        if (find) {
-            return this.toolbar.find(find);
-        }
-        return this.toolbar;
-    },
-
-    /**
-     * @param {jQuerySelector|jQuery|Element} [find]
-     * @returns {jQuery}
-     */
-    selTitle: function(find) {
-        var titlebar = this.selDialog('.ui-dialog-titlebar');
-        if (find) {
-            return titlebar.find(find);
-        }
-        return titlebar;
-    },
-
-    /**
-     * @param {jQuerySelector|jQuery|Element} [find]
-     * @returns {jQuery}
-     */
-    selDialog: function(find) {
-        var dialog = this.selToolbar().parent();
-        if (find) {
-            return dialog.find(find);
-        }
-        return dialog;
-    },
-
-    /**
-     * @param {jQuerySelector|jQuery|Element} [find]
-     * @returns {jQuery}
-     */
-    selMessages: function(find) {
-        var messages = this.selToolbar().find('.' + this.options.baseClass + '-messages');
-        if (find) {
-            return messages.find(find);
-        }
-        return messages;
-    },
-
-    /*========================================================================*\
      * Buttons
     \*========================================================================*/
 
@@ -907,12 +842,12 @@ $.widget('ui.editor',
 
             // Append the UI group to the editor toolbar
             if (uiGroup.children().length > 0) {
-                uiGroup.appendTo(this.selToolbar('.' + this.options.baseClass + '-inner'));
+                uiGroup.appendTo(this.toolbar);
             }
 
             uiGroup.wrap($('<div/>').addClass(this.options.baseClass + '-group'));
         }
-        $('<div/>').addClass('ui-helper-clearfix').appendTo(this.selToolbar('.' + this.options.baseClass + '-inner'));
+        $('<div/>').addClass('ui-helper-clearfix').appendTo(this.toolbar);
     },
 
     /**
@@ -1442,28 +1377,12 @@ $.extend($.ui.editor,
         baseClass: 'ui-editor',
 
         /**
-         *
-         * @type String
-         */
-        dialogClass: 'ui-editor-dialog',
-
-        /**
-         *
-         * @type int[2]
-         */
-        dialogPosition: [5, 47],
-
-        /**
-         * Overrides or extra options to be extended onto the standard toolbar dialog options
-         * @type {Object}
-         */
-        dialogOptions: {},
-
-        /**
          * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
          * @type String
          */
-        cssPrefix: 'cms-'
+        cssPrefix: 'cms-',
+
+        draggable: true
     },
 
     /**

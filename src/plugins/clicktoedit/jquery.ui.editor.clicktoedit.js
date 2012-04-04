@@ -1,6 +1,6 @@
 /**
  * @fileOverview Click to edit plugin
- * @author David Neilson david@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
@@ -11,7 +11,7 @@
   * informing the user that they may click to edit the block contents
   */
 $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit.prototype */ {
-    
+
     /**
      * @see $.ui.editor.defaultPlugin#init
      */
@@ -24,7 +24,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         * @type {Object}
         */
         options = $.extend({}, {
-            
+
             /**
              * @type {Boolean} true if links should be obscured
              */
@@ -79,7 +79,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         this.edit = function() {
             plugin.hide();
             if (!editor.isEditing()) editor.enableEditing();
-            if (!editor.isToolbarVisible()) editor.showToolbar(plugin.selection());
+            if (!editor.toolbar.is(':visible')) editor.showToolbar(plugin.selection());
         };
 
         message.position(options.position);

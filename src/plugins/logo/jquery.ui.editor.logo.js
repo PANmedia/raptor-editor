@@ -1,6 +1,6 @@
 /**
  * @fileOverview Incredible jQuery Raptor logo and usage statistics tracking
- * @author David Neilson david@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 $.ui.editor.registerUi({

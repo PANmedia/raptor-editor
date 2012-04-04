@@ -2,59 +2,31 @@
  * Dialog docked to body
 \******************************************************************************/
 .ui-editor-dock-docked {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border-top: none !important;
-    height: auto !important;
-
-    .ui-editor-inner {
-        padding: 5px 0 0 0;
+    .ui-editor-toolbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
         border-top: none;
-        width: 100%;
 
         display: -webkit-box;
         display: -moz-box;
         display: box;
+
         -webkit-box-pack: center;
         -moz-box-pack: center;
         box-pack: center;
+
         -webkit-box-align: center;
         -moz-box-align: center;
         box-align: center;
-
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
     }
 
-    .ui-editor-toolbar {
-        width: 100% !important;
-        position: fixed !important;
-        padding: 0 !important;
-        top: 0 !important;
-        left: 0 !important;
-        border-top: none !important;
-
-        -moz-box-sizing: border-box !important;
-        -webkit-box-sizing: border-box !important;
-        box-sizing: border-box !important;
-    }
-
-    .ui-dialog-titlebar {
-        position: fixed !important;
+    .ui-editor-path {
+        position: fixed;
         bottom: 0;
         left: 0;
-        width: 100%;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        -moz-border-radius: 0;
-        -webkit-border-radius: 0;
-        border-radius: 0;
+        right: 0;
     }
 }
 
@@ -67,21 +39,21 @@
     font-family: inherit;
 }
 .ui-editor-dock-docked-to-element {
-    position: relative !important;
-    top: auto !important;
-    left: auto !important;
+    position: relative;
+    top: auto;
+    left: auto;
     border: 0 none;
     padding: 0;
     margin: 0;
-    z-index: auto !important;
+    z-index: auto;
     width: 100%;
     font-size: inherit;
     color: inherit;
     font-family: inherit;
 
-    display: -webkit-box !important;
-    display: -moz-box !important;
-    display: box !important;
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
 
     -webkit-box-orient: vertical;
     -moz-box-orient: vertical;
@@ -103,7 +75,7 @@
         border-right: 0;
     }
 
-    .ui-dialog-titlebar {
+    .ui-editor-path {
         border: 0 none;
         margin: 0;
 
@@ -122,20 +94,13 @@
 }
 
 .ui-editor-dock-docked-element {
-    margin: 0 !important;
-    display: block !important;
-    z-index: 1 !important;
+    margin: 0;
+    display: block;
+    z-index: 1;
 
-    -webkit-box-ordinal-group: 2 !important;
-    -moz-box-ordinal-group: 2 !important;
-    box-ordinal-group: 2 !important;
-}
-
-/******************************************************************************\
- * Spacer
-\******************************************************************************/
-.ui-editor-dock-top-spacer, .ui-editor-dock-bottom-spacer {
-    display: none;
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    box-ordinal-group: 2;
 }
 
 
