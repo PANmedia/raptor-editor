@@ -58,9 +58,10 @@ $.ui.editor.registerUi({
 
             var data = {
                 'enableUi': this.options.enableUi,
-                'disabledPlugins': serializeJSON(this.options.disabledPlugins),
                 'enablePlugins': this.options.enablePlugins,
-                'ui': serializeJSON(this.options.ui)
+                'disabledPlugins': serializeJSON(this.options.disabledPlugins),
+                'ui': serializeJSON(this.options.ui),
+                't': new Date().getTime()
             };
 
             var query = [];
