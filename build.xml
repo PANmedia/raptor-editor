@@ -52,7 +52,7 @@
                 <include name="**/*" />
             </fileset>
             <fileset dir=".">
-                <exclude name="dependencies/.git" />
+                <exclude name="**/.git/**" />
                 <include name="dependencies/**/*" />
             </fileset>
         </copy>
@@ -334,12 +334,7 @@
     <!-- =================================================================== -->
     <target name="merge">
         <!-- Append VERSION file in a comment -->
-        <echo file="${buildpath}/merge.js" append="true">/*! VERSION: </echo>
-        <append destFile="${buildpath}/merge.js">
-            <fileset dir=".">
-                <include name="${buildpath}/VERSION" />
-            </fileset>
-        </append>
+        <echo file="${buildpath}/merge.js" append="true">/*! VERSION: ${version} </echo>
         <!-- Append a new line -->
         <echo file="${buildpath}/merge.js" append="true">
         </echo>
@@ -405,19 +400,19 @@
     <!-- Adhoc classes                                                       -->
     <!-- =================================================================== -->
     <adhoc-task name="datauri">
-        require_once 'classes/DataURI.php';
+        require_once '${project.basedir}/classes/DataURI.php';
     </adhoc-task>
 
     <adhoc-task name="sortedfileset">
-        require_once 'classes/SortedFileSet.php';
+        require_once '${project.basedir}/classes/SortedFileSet.php';
     </adhoc-task>
 
     <adhoc-task name="less">
-        require_once 'classes/LessTask.php';
+        require_once '${project.basedir}/classes/LessTask.php';
     </adhoc-task>
 
     <adhoc-task name="template">
-        require_once 'classes/TemplateTask.php';
+        require_once '${project.basedir}/classes/TemplateTask.php';
     </adhoc-task>
 
 </project>
