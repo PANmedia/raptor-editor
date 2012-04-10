@@ -5,6 +5,7 @@
 .ui-editor-wrapper {
     overflow: visible;
     z-index: 10000;
+    position: fixed;
 
     .ui-editor-group {
         float: left;
@@ -59,6 +60,14 @@
                 margin: 0 -1px 0 0;
             }
         }
+    }
+}
+
+.ui-editor-dock-docked-to-element .ui-editor-toolbar {
+    padding: 5px 0 0 5px!important;
+    
+    .ui-editor-group {
+        margin: 0 5px 5px 0;
     }
 }
 
