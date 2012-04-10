@@ -14,6 +14,8 @@
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.js"></script>
+<link rel="stylesheet/less" type="text/css" href="/jquery-raptor/jquery.ui.editor.layout.less"/>
+<link rel="stylesheet/less" type="text/css" href="/jquery-raptor/jquery.ui.editor.style.less"/>
 
 <!-- Plugins -->
 <script type="text/javascript" src="/jquery-raptor/plugins/logo/jquery.ui.editor.logo.js"></script>
