@@ -2,7 +2,7 @@
  * Dialog docked to body
 \******************************************************************************/
 .ui-editor-dock-docked {
-    .ui-editor-toolbar {
+    .ui-editor-toolbar-wrapper {
         position: fixed;
         top: 0;
         left: 0;
@@ -39,9 +39,11 @@
     font-family: inherit;
 }
 .ui-editor-dock-docked-to-element {
-    position: relative;
-    top: auto;
-    left: auto;
+    /* Removed fixed position from the editor */
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+
     border: 0 none;
     padding: 0;
     margin: 0;
@@ -60,7 +62,6 @@
     box-orient: vertical;
 
     .ui-editor-toolbar {
-        padding: 0;
         margin: 0;
         z-index: 2;
 
@@ -94,7 +95,9 @@
 }
 
 .ui-editor-dock-docked-element {
-    margin: 0;
+    /* Override margin so toolbars sit flush next to element */
+    margin: 0 !important;
+
     display: block;
     z-index: 1;
 
