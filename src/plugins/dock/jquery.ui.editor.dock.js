@@ -45,9 +45,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         } else if (this.isDocked()) {
             this.showSpacers();
         }
-
-        this.editor.toolbar
-            .css('width', '100%');
     },
 
     hide: function() {
@@ -57,22 +54,19 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     },
 
     showSpacers: function() {
-        if (!this.editor.toolbar.is(':visible')) {
+        if (this.options.dockToElement || !this.editor.toolbar.is(':visible')) {
             return;
         }
-        
+
         this.topSpacer = $('<div/>')
             .addClass(this.options.baseClass + '-top-spacer')
             .height(this.editor.toolbar.outerHeight())
             .prependTo('body');
 
-        // Show the bottom spacer only when not docked to an element
-        if (!this.options.dockToElement) {
-            this.bottomSpacer = $('<div/>')
-                .addClass(this.options.baseClass + '-bottom-spacer')
-                .height(this.editor.path.outerHeight())
-                .appendTo('body');
-        }
+        this.bottomSpacer = $('<div/>')
+            .addClass(this.options.baseClass + '-bottom-spacer')
+            .height(this.editor.path.outerHeight())
+            .appendTo('body');
 
         // Fire resize event to trigger plugins (like unsaved edit warning) to reposition
         this.editor.fire('resize');
@@ -130,38 +124,44 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      * Dock the toolbar to the editing element
      */
     dockToElement: function() {
-        this.editor.wrapper
-            .insertBefore(this.editor.getElement())
-            .addClass(this.options.baseClass + '-docked-to-element');
-
-        var wrapper = this.editor.wrapper
-            .wrapAll('<div/>')
-            .parent()
-            .addClass(this.options.baseClass + '-docked-to-element-wrapper')
-            .addClass('ui-widget-content');
-
-        this.previousStyle = this.swapStyle(wrapper, this.editor.getElement(), {
-            'display': 'block',
-            'float': 'none',
-            'clear': 'none',
-            'position': 'static',
-            'margin-left': 0,
-            'margin-right': 0,
-            'margin-top': 0,
-            'margin-bottom': 0,
-            'outline': 0,
-            'width': 'auto'
+        var plugin = this;
+        // Needs to be in the ready event because we cant insert to the DOM before ready (if auto enabling, before ready)
+        $(function() {
+            var element = plugin.editor.getElement()
+                .addClass(plugin.options.baseClass + '-docked-element');
+            plugin.editor.wrapper
+                .addClass(plugin.options.baseClass + '-docked-to-element')
+                .insertBefore(plugin.editor.getElement())
+                .append(element);
         });
-
-        wrapper.css('width', wrapper.width() +
-            parseInt(this.editor.getElement().css('padding-left'), 10) +
-            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
-            parseInt(this.editor.getElement().css('border-right-width')) +
-            parseInt(this.editor.getElement().css('border-left-width')));*/
-
-        this.editor.getElement()
-            .appendTo(this.editor.wrapper)
-            .addClass(this.options.baseClass + '-docked-element');
+//        var wrapper = this.editor.wrapper
+//            .wrapAll('<div/>')
+//            .parent()
+//            .addClass(this.options.baseClass + '-docked-to-element-wrapper')
+//            .addClass('ui-widget-content');
+//
+//        this.previousStyle = this.swapStyle(wrapper, this.editor.getElement(), {
+//            'display': 'block',
+//            'float': 'none',
+//            'clear': 'none',
+//            'position': 'static',
+//            'margin-left': 0,
+//            'margin-right': 0,
+//            'margin-top': 0,
+//            'margin-bottom': 0,
+//            'outline': 0,
+//            'width': 'auto'
+//        });
+//
+//        wrapper.css('width', wrapper.width() +
+//            parseInt(this.editor.getElement().css('padding-left'), 10) +
+//            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
+//            parseInt(this.editor.getElement().css('border-right-width')) +
+//            parseInt(this.editor.getElement().css('border-left-width')));*/
+//
+//        this.editor.getElement()
+//            .appendTo(this.editor.wrapper)
+//            .addClass(this.options.baseClass + '-docked-element');
     },
 
     /**
@@ -213,20 +213,21 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      * Undock toolbar from editing element
      */
     undockFromElement: function() {
-        var wrapper = this.editor.wrapper.parent();
+//        var wrapper = this.editor.wrapper.parent();
 
         this.editor.getElement()
-            .insertAfter(wrapper)
+            .insertAfter(this.editor.wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
+
         this.editor.wrapper
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
 
-        this.revertStyle(this.editor.getElement(), this.previousStyle);
+//        this.revertStyle(this.editor.getElement(), this.previousStyle);
 
 //        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
 
-        wrapper.remove();
+//        wrapper.remove();
     },
 
     /**
