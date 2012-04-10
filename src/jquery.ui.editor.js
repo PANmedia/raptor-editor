@@ -96,7 +96,6 @@ $.widget('ui.editor',
 
         this.ready = true;
         this.fire('ready');
-
         if (this.options.autoEnable) {
             this.enableEditing();
             this.showToolbar();
@@ -545,6 +544,9 @@ $.widget('ui.editor',
     loadToolbar: function() {
         var toolbar = this.toolbar = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar');
+        var toolbarWrapper = $('<div/>')
+            .addClass(this.options.baseClass + '-toolbar-wrapper')
+            .append(toolbar);
         var path = this.path = $('<div/>')
             .addClass(this.options.baseClass + '-path')
             .html(this.getTemplate('root'));
@@ -552,7 +554,7 @@ $.widget('ui.editor',
             .addClass(this.options.baseClass + '-wrapper')
             .css('display', 'none')
             .append(path)
-            .append(toolbar);
+            .append(toolbarWrapper);
 
         if ($.fn.draggable && this.options.draggable) {
             wrapper.draggable({
@@ -839,16 +841,16 @@ $.widget('ui.editor',
                 // </strict>
             }
 
-            if (uiGroup.children().length > 1) {
-                uiGroup.addClass(this.options.baseClass + '-buttonset');
-            }
+            uiGroup
+                .addClass('ui-buttonset')
+                .addClass(this.options.baseClass + '-buttonset');
 
             // Append the UI group to the editor toolbar
             if (uiGroup.children().length > 0) {
                 uiGroup.appendTo(this.toolbar);
             }
 
-            uiGroup.wrap($('<div/>').addClass(this.options.baseClass + '-group'));
+//            uiGroup.wrap($('<div/>').addClass(this.options.baseClass + '-group'));
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
     },
@@ -872,7 +874,7 @@ $.widget('ui.editor',
                 if (!this.title) this.title = _('Unnamed Button');
 
                 // Create the HTML button
-                this.button = $('<button type="button" />')
+                this.button = $('<div/>')
                     .html(this.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
@@ -939,13 +941,13 @@ $.widget('ui.editor',
                 // Default title if not set in plugin
                 if (!this.title) this.title = _('Unnamed Select Menu');
 
-                ui.selectMenu = $('<div class="ui-editor-selectmenu"/>');
+                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>');
 
                 ui.selectMenu.append(this.select.hide());
-                ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
+                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
                 ui.select.find('option').each(function() {
-                    var option = $('<button type="button"/>')
-                        .addClass('ui-editor-selectmenu-menu-item')
+                    var option = $('<div/>')
+                        .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
                         .appendTo(ui.menu)
@@ -962,11 +964,22 @@ $.widget('ui.editor',
                         });
                 });
 
-                ui.button = $('<button/>')
-                    .addClass('ui-editor-selectmenu-button')
+
+                var text = $('<div/>')
+                    .addClass('ui-selectmenu-text');
+                var icon = $('<div/>')
+                    .addClass('ui-icon ui-icon-triangle-1-s');
+                ui.button = $('<div/>')
+                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button')
                     .attr('title', this.title)
-                    .button({icons: {secondary: 'ui-icon-triangle-1-s'}})
+                    .append(text)
+                    .append(icon)
                     .prependTo(this.selectMenu);
+//                ui.button = $('<div/>')
+//                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button ui-button')
+//                    .attr('title', this.title)
+//                    .button({icons: {secondary: 'ui-icon-triangle-1-s'}})
+//                    .prependTo(this.selectMenu);
 
                 var click = function() {
                     if (!ui.menu.is(':animated')) {
@@ -987,7 +1000,7 @@ $.widget('ui.editor',
                 ui.button.bind('click.' + editor.widgetName, click);
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
-                ui.button.find('.ui-button-text').html(selected);
+                ui.button.find('.ui-selectmenu-text').html(selected);
 
                 editor.bind('destroy', function() {
                     ui.selectMenu.remove();
@@ -997,7 +1010,7 @@ $.widget('ui.editor',
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
-                this.button.find('.ui-button-text').html(selected);
+                this.button.find('.ui-selectmenu-text').html(selected);
             },
             val: function() {
                 var result = this.select.val.apply(this.select, arguments);
@@ -1069,13 +1082,24 @@ $.widget('ui.editor',
      * @returns {boolean}
      */
     isDirty: function() {
-        return this.getOriginalHtml() !== this.getHtml();
+        return this.getOriginalHtml() !== this.getCleanHtml();
     },
 
     /**
      * @returns {String}
      */
     getHtml: function() {
+        var content = this.getElement().html();
+
+        // Remove saved rangy ranges
+        content = $('<div/>').html(content);
+        content.find('.rangySelectionBoundary').remove();
+        content = content.html();
+
+        return content;
+    },
+
+    getCleanHtml: function() {
         this.fire('clean');
         var content = this.getElement().html();
         this.fire('restore');
@@ -1115,11 +1139,12 @@ $.widget('ui.editor',
      *
      */
     save: function() {
+        var html = this.getCleanHtml();
         this.fire('save');
-        this.setOriginalHtml(this.getHtml());
+        this.setOriginalHtml(html);
         this.fire('saved');
         this.fire('change');
-        return this.getHtml();
+        return html;
     },
 
     /**
