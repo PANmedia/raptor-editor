@@ -4,7 +4,7 @@
 
 .ui-editor-wrapper {
     overflow: visible;
-    z-index: 10000;
+    z-index: 1001;
     position: fixed;
     
     .ui-editor-toolbar {
@@ -69,6 +69,14 @@
     }
 }
 
+.ui-editor-dock-docked-element {
+    display: block !important;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 0 none transparent;
+}
+
 /******************************************************************************\
  * Editor button
 \******************************************************************************/
@@ -90,7 +98,6 @@
     position: relative;
 
     &-button {
-        min-width: 100px;
         display: -webkit-box;
         display: -moz-box;
         display: box;
