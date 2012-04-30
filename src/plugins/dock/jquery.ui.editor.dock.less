@@ -2,6 +2,7 @@
  * Dialog docked to body
 \******************************************************************************/
 .ui-editor-dock-docked {
+    z-index: 10000;
     .ui-editor-toolbar-wrapper {
         position: fixed;
         top: 0;
@@ -28,6 +29,10 @@
         left: 0;
         right: 0;
     }
+}
+
+.ui-editor-ios .ui-editor-dock-docked .ui-editor-path {
+    display: none;
 }
 
 /******************************************************************************\
@@ -90,7 +95,7 @@
     .ui-editor-messages {
         margin: 0;
     }
-    
+
 }
 
 .ui-editor-dock-docked-element {
