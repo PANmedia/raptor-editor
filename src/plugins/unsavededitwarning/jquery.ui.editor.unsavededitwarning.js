@@ -8,10 +8,10 @@
  * @name $.editor.plugin.unsavedEditWarning
  * @augments $.ui.editor.defaultPlugin
  * @see $.editor.plugin.unsavedEditWarning.options
- * @class 
+ * @class
  */
 $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsavedEditWarning.prototype */ {
-    
+
     /**
      * @name $.editor.plugin.unsavedEditWarning.options
      * @namespace Default options
@@ -93,5 +93,5 @@ $.ui.editor.bind('resize', function() {
         if (instances[i].getPlugin('unsavedEditWarning')) {
             instances[i].getPlugin('unsavedEditWarning').reposition();
         }
-    };
+    }
 });
