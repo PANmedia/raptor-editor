@@ -13,7 +13,7 @@
     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element
     */
     quoteBlock: /** @lends $.editor.ui.quoteBlock.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
