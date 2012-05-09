@@ -60,7 +60,13 @@ $.ui.editor.registerUi({
             var charactersRemaining = this.options.length - $('<div/>').html(this.editor.getCleanHtml()).text().length;
 
             var button = this.ui.button;
-            button.button('option', 'label', charactersRemaining + ' characters remaining');
+            var label = null;
+            if (charactersRemaining >= 0) {
+                label = _('{{charactersRemaining}} characters remaining', { charactersRemaining: charactersRemaining });
+            } else {
+                label = _('{{charactersRemaining}} characters over limit', { charactersRemaining: charactersRemaining * -1 });
+            }
+            button.button('option', 'label', label);
             button.button('option', 'text', true);
 
             // Add the error state to the button's text element if appropriate
@@ -138,11 +144,21 @@ $.ui.editor.registerUi({
                 sentences = _('{{sentences}} sentences', { 'sentences': totalSentences });
             }
 
-            return $(this.editor.getTemplate('length.dialog', {
-                'characters': _('{{characters}} characters, {{charactersRemaining}} remaining', {
+            var characters = null;
+            if (charactersRemaining >= 0) {
+                characters = _('{{characters}} characters, {{charactersRemaining}} remaining', {
                     'characters': content.length,
                     'charactersRemaining': charactersRemaining
-                }),
+                });
+            } else {
+                characters = _('{{characters}} characters, {{charactersRemaining}} over the recommended limit', {
+                    'characters': content.length,
+                    'charactersRemaining': charactersRemaining * -1
+                });
+            }
+
+            return $(this.editor.getTemplate('length.dialog', {
+                'characters': characters,
                 'words': words,
                 'sentences': sentences,
                 'truncation': truncation
