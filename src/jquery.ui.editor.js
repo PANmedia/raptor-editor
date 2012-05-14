@@ -38,7 +38,8 @@ $.widget('ui.editor',
             ['link', 'unlink'],
             ['floatLeft', 'floatNone', 'floatRight'],
             ['tagMenu'],
-            ['i18n', 'raptorize']
+            ['i18n'],
+            ['raptorize']
         ];
 
         // Give the element a unique ID
@@ -64,6 +65,10 @@ $.widget('ui.editor',
         this.history = [];
         this.present = 0;
         this.historyEnabled = true;
+
+        if (!isSupported(this)) {
+            return;
+        }
 
         // Clone the DOM tools functions
         this.cloneDomTools();
@@ -544,7 +549,7 @@ $.widget('ui.editor',
     loadToolbar: function() {
         var toolbar = this.toolbar = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar');
-        var toolbarWrapper = $('<div/>')
+        var toolbarWrapper = this.toolbarWrapper = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar-wrapper')
             .append(toolbar);
         var path = this.path = $('<div/>')
@@ -560,6 +565,10 @@ $.widget('ui.editor',
             wrapper.draggable({
                 cancel: 'a, button',
                 cursor: 'move',
+                // @todo Cancel drag when docked
+                // @todo Move draggable into plugin
+                // @todo Move tag menu/list into plugin
+                handle: '.ui-editor-path',
                 stop: $.proxy(function() {
                     // Save the persistant position
                     var pos = this.persist('position', [
@@ -624,7 +633,7 @@ $.widget('ui.editor',
             }
             this.options.show = true;
 
-            this.wrapper.show();
+            this.wrapper.css('display', '');
             this.fire('resize');
             if (typeof this.getElement().attr('tabindex') === 'undefined') {
                 this.getElement().attr('tabindex', -1);
@@ -1042,11 +1051,12 @@ $.widget('ui.editor',
         if (!this.options.plugins) this.options.plugins = {};
         for (var name in $.ui.editor.plugins) {
             // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
-            if (!this.options.enablePlugins &&
-                    !this.options.plugins[name]) {
+            if (this.options.enablePlugins === false &&
+                    typeof this.options.plugins[name] === 'undefined' ||
+                    this.options.plugins[name] === false) {
                 // <debug>
                 if (debugLevel >= MID) {
-                    debug('Plugin with name ' + name + ' does not exist');
+                    debug('Not loading plugin ' + name);
                 }
                 // </debug>
                 continue;
