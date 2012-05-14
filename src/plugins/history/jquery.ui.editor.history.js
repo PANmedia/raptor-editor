@@ -3,22 +3,22 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
-        
+
 $.ui.editor.registerUi({
-    
+
     /**
      * @name $.editor.ui.undo
      * @augments $.ui.editor.defaultUi
      * @class Revert most recent change to element content
      */
     undo: /** @lends $.editor.ui.undo.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
-            
+
             return editor.uiButton({
                 title: _('Step Back'),
                 disabled: true,
@@ -39,13 +39,13 @@ $.ui.editor.registerUi({
      * @class Step forward through the stored history
      */
     redo: /** @lends $.editor.ui.redo.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
-            
+
             return this.ui = editor.uiButton({
                 title: _('Step Forward'),
                 disabled: true,

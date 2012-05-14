@@ -39,7 +39,8 @@ $.widget('ui.editor',
             ['floatLeft', 'floatNone', 'floatRight'],
             ['tagMenu'],
             ['i18n'],
-            ['raptorize']
+            ['raptorize'],
+            ['length']
         ];
 
         // Give the element a unique ID
@@ -884,7 +885,7 @@ $.widget('ui.editor',
 
                 // Create the HTML button
                 this.button = $('<div/>')
-                    .html(this.title)
+                    .html(this.label || this.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
                     .attr('title', this.title)
@@ -901,9 +902,12 @@ $.widget('ui.editor',
 
                 // Create the jQuery UI button
                 this.button.button({
-                    icons: {primary: this.icon || 'ui-icon-' + baseClass},
+                    icons: {
+                        primary: this.icon || 'ui-icon-' + baseClass
+                    },
                     disabled: options.disabled ? true : false,
-                    text: false
+                    text: this.text || false,
+                    label: this.label || null
                 });
 
                 return this.button;
