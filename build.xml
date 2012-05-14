@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="jQuery Raptor" default="build">
+    <property file="build.properties" />
 
     <!-- =================================================================== -->
     <!-- main build targets                                                  -->
     <!-- =================================================================== -->
-    <target name="build" depends="properties">
+    <target name="build">
         <phingcall target="clean" />
         <phingcall target="clone" />
         <phingcall target="strip-blocks" />
@@ -16,7 +17,7 @@
         <phingcall target="package" />
     </target>
 
-    <target name="testbuild" depends="properties">
+    <target name="testbuild">
         <echo>${phing.project.name}</echo>
         <echo>${project.basedir}</echo>
         <echo>${packagepath}</echo>
@@ -24,6 +25,10 @@
         <echo>${strip.blocks}</echo>
         <echo>${theme}</echo>
         <echo>${plugins}</echo>
+    </target>
+
+    <target name="theme">
+
     </target>
 
     <!-- =================================================================== -->
@@ -41,7 +46,7 @@
     <!-- =================================================================== -->
     <!-- Development build                                                   -->
     <!-- =================================================================== -->
-    <target name="dev" depends="properties">
+    <target name="dev">
         <phingcall target="clean" />
         <phingcall target="dev-clone" />
         <phingcall target="datauri" />
@@ -62,10 +67,6 @@
     <!-- =================================================================== -->
     <!-- Prepare for build                                                   -->
     <!-- =================================================================== -->
-    <target name="properties">
-        <property file="build.properties" />
-    </target>
-
     <target name="clean">
         <delete dir="${buildpath}" includeemptydirs="true" failonerror="true" />
         <delete dir="${packagepath}" includeemptydirs="true" failonerror="true" />
