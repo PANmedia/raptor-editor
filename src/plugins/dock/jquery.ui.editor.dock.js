@@ -173,12 +173,20 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             top = $(this.options.dockUnder).outerHeight();
         }
 
-        this.top = this.editor.toolbar.css('top');
-        this.editor.toolbar
-            .css('top', top);
+        this.top = this.editor.toolbarWrapper.css('top');
+        this.editor.toolbarWrapper.css('top', top);
+        this.editor.wrapper.addClass(this.options.baseClass + '-docked');
+    },
 
-        this.editor.wrapper
-            .addClass(this.options.baseClass + '-docked');
+    /**
+     * Undock toolbar from document body
+     */
+    undockFromBody: function() {
+        this.editor.toolbarWrapper.css('top', this.top);
+        // Remove the docked class
+        this.editor.wrapper.removeClass(this.options.baseClass + '-docked');
+
+        this.hideSpacers();
     },
 
     /**
@@ -228,19 +236,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
 //        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
 
 //        wrapper.remove();
-    },
-
-    /**
-     * Undock toolbar from document body
-     */
-    undockFromBody: function() {
-        this.editor.toolbar.css('top', this.top);
-
-        // Remove the docked class
-        this.editor.wrapper
-            .removeClass(this.options.baseClass + '-docked');
-
-        this.hideSpacers();
     },
 
     /**
