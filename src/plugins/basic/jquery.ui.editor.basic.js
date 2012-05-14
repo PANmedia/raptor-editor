@@ -14,7 +14,7 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element
      */
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -57,7 +57,7 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element
      */
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -79,7 +79,7 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element
      */
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -101,7 +101,7 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element
      */
     textSub: /** @lends $.editor.ui.textSub.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */

@@ -100,7 +100,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         for (var name in style) {
             // Apply the style from the 'form' element to the 'to' element
             to.css(name, from.css(name));
-            // Save the orignal style to revert the swap
+            // Save the original style to revert the swap
             result[name] = from.css(name);
             // Apply the reset to the 'from' element'
             from.css(name, style[name]);
