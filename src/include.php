@@ -13,9 +13,12 @@
 <!-- Editor -->
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.domtools.js"></script>
+<script type="text/javascript" src="/jquery-raptor/template.js"></script>
+<script type="text/javascript" src="/jquery-raptor/support.js"></script>
 <script type="text/javascript" src="/jquery-raptor/jquery.ui.editor.js"></script>
 <link rel="stylesheet/less" type="text/css" href="/jquery-raptor/jquery.ui.editor.layout.less"/>
 <link rel="stylesheet/less" type="text/css" href="/jquery-raptor/jquery.ui.editor.style.less"/>
+<link rel="stylesheet/less" type="text/css" href="/jquery-raptor/support.less"/>
 
 <!-- Plugins -->
 <script type="text/javascript" src="/jquery-raptor/plugins/logo/jquery.ui.editor.logo.js"></script>
@@ -90,5 +93,9 @@
 <script type="text/javascript" src="/jquery-raptor/plugins/i18n/locales/zh_CN.js"></script>
 <link rel="stylesheet/less" type="text/css" href="/jquery-raptor/plugins/i18n/jquery.ui.editor.i18n.less"/>
 
-<script>less = { env: 'development' }</script>
+<script type="text/javascript">
+    if (debugLevel >= MID) {
+        less = { env: 'development' }
+    }
+</script>
 <script type="text/javascript" src="/jquery-raptor/dependencies/less.js"></script>
