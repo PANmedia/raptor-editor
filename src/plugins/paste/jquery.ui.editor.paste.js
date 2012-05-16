@@ -36,7 +36,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     plain: $('<div/>').html(content).text(),
                     markup: plugin.stripAttributes(content)
                 };
-                //console.debug(vars);
+
                 dialog = $(editor.getTemplate('paste.dialog', vars));
 
                 dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
