@@ -50,9 +50,7 @@
                 var ui = this;
                 var selection = rangy.saveSelection();
 
-                this.dialog = $(this.editor.getTemplate('embed.dialog', {
-                    'instructions': _('Paste your embed code into the text area below.')
-                }));
+                this.dialog = $(this.editor.getTemplate('embed.dialog'));
                 this.dialog.dialog({
                     modal: false,
                     width: 600,
@@ -81,6 +79,22 @@
                         var buttons = $(this).parent().find('.ui-dialog-buttonpane');
                         buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                         buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
+
+                        // Create fake jQuery UI tabs (to prevent hash changes)
+                        var tabs = $(this).find('.ui-editor-embed-panel-tabs');
+                        console.log(tabs);
+                        tabs.find('ul li').click(function() {
+                            console.log('here');
+                            tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                            $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
+                            tabs.children('div').hide().eq($(this).index()).show();
+                        });
+
+                        var preview = $(this).find('.ui-editor-embed-preview');
+                        $(this).find('textarea').change(function() {
+                            $(preview).html($(this).val());
+                        });
+
                     },
                     close: function() {
                         ui.hide();
