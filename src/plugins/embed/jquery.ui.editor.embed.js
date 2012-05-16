@@ -50,13 +50,15 @@
                 var ui = this;
                 var selection = rangy.saveSelection();
 
-                this.dialog = $(this.editor.getTemplate('embed.dialog'));
+                this.dialog = $(this.editor.getTemplate('embed.dialog', {
+                    'instructions': _('Paste your embed code into the text area below.')
+                }));
                 this.dialog.dialog({
                     modal: false,
                     width: 600,
                     height: 400,
                     resizable: true,
-                    title: _('embed'),
+                    title: _('Paste Embed Code'),
                     autoOpen: true,
                     dialogClass: ui.options.baseClass + ' ' + ui.options.dialogClass,
                     buttons: [
