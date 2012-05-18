@@ -64,27 +64,37 @@
      */  
     clean: function() {
         var i;
+        var editor = this.editor;
         for (i = 0; i < this.options.stripAttrs.length; i++) {
-            this.editor.getElement()
+            editor.getElement()
                 .find('[' + this.options.stripAttrs[i] + ']')
                 .removeAttr(this.options.stripAttrs[i]);
         }
         for (i = 0; i < this.options.stripAttrContent.length; i++) {
-            this.editor.getElement()
+            editor.getElement()
                 .find('[' + i + '="' + this.options.stripAttrs[i] + '"]')
                 .removeAttr(this.options.stripAttrs[i]);
         }
         for (i = 0; i < this.options.stripEmptyTags.length; i++) {
-            this.editor.getElement()
+            editor.getElement()
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
-                    return $.trim($(this).html()) === '';
+                    if ($.trim($(this).html()) !== '') {
+                        return false;
+                    }
+                    if (!$(this).hasClass('rangySelectionBoundary')) {
+                        return true;
+                    }
+                    // Do not clear selection markers if the editor has it in use
+                    if (editor.savedSelection !== false) {
+                        return false;
+                    }
                 })
                 .remove();
         }
         for (i = 0; i < this.options.stripEmptyAttrs.length; i++) {
             var attr = this.options.stripEmptyAttrs[i];
-            this.editor.getElement()
+            editor.getElement()
                 .find('[' + this.options.stripEmptyAttrs[i] + ']')
                 .filter(function() {
                     return $.trim($(this).attr(attr)) === '';
