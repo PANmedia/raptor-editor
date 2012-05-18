@@ -12,6 +12,28 @@
 var domTools = {
 
     /**
+     * @type {Boolean|Object} current saved selection.
+     */
+    savedSelection: false,
+
+    /**
+     * Save selection wrapper, preventing plugins / UI from accessing rangy directly.
+     */
+    saveSelection: function() {
+        this.savedSelection = rangy.saveSelection();
+    },
+
+    /**
+     * Restore selection wrapper, preventing plugins / UI from accessing rangy directly.
+     */
+    restoreSelection: function() {
+        if (this.savedSelection) {
+            rangy.restoreSelection(this.savedSelection);
+            this.savedSelection = false;
+        }
+    },
+
+    /**
      * Iterates over all ranges in a selection and calls the callback for each
      * range. The selection/range offsets is updated in every iteration in in the
      * case that a range was changed or removed by a previous iteration.
