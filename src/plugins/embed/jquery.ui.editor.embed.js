@@ -48,7 +48,8 @@
             if (!this.dialog) {
                 $(this.ui.button).button('option', 'disabled', true);
                 var ui = this;
-                var selection = rangy.saveSelection();
+
+                ui.editor.saveSelection();
 
                 this.dialog = $(this.editor.getTemplate('embed.dialog'));
                 this.dialog.dialog({
@@ -63,7 +64,7 @@
                         {
                             text: _('Embed Object'),
                             click: function() {
-                                rangy.restoreSelection(selection);
+                                ui.editor.restoreSelection();
                                 ui.editor.replaceSelection($(this).find('textarea').val());
                                 $(this).dialog('close');
                             }
@@ -82,7 +83,7 @@
 
                         // Create fake jQuery UI tabs (to prevent hash changes)
                         var tabs = $(this).find('.ui-editor-embed-panel-tabs');
-                        console.log(tabs);
+
                         tabs.find('ul li').click(function() {
                             console.log('here');
                             tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
