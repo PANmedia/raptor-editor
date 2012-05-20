@@ -1,1 +1,1 @@
-$.ui.editor.registerLocale('en', 'English', {});
+registerLocale('en', 'English', {});
