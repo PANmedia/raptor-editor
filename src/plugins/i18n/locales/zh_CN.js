@@ -1,4 +1,4 @@
-$.ui.editor.registerLocale('zh_CN', '简体中文', {
+registerLocale('zh_CN', '简体中文', {
     "Added link: {{link}}": "Added link: {{link}}",
     "All changes will be lost!": "All changes will be lost!",
     "Apply Source": "应用源代码",
