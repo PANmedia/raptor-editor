@@ -303,12 +303,12 @@ var domTools = {
      * @param {String} tag The wrapper tag name
      */
     wrapInner: function(element, tag) {
-        var selection = rangy.saveSelection();
+        this.saveSelection();
         $(element).each(function() {
             var wrapper = $('<' + tag + '/>').html($(this).html());
             element.html(wrapper);
         });
-        rangy.restoreSelection(selection);
+        this.restoreSelection();
     },
 
     wrapRange: function(range, tag) {
@@ -319,7 +319,7 @@ var domTools = {
      *
      */
     inverseWrapWithTagClass: function(tag1, class1, tag2, class2) {
-        var selection = rangy.saveSelection();
+        this.saveSelection();
         // Assign a temporary tag name (to fool rangy)
         var id = 'domTools' + Math.ceil(Math.random() * 10000000);
 
@@ -345,7 +345,7 @@ var domTools = {
             $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
         });
 
-        rangy.restoreSelection(selection);
+        this.restoreSelection();
     },
 
     /**
