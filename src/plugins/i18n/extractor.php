@@ -8,15 +8,15 @@ $opts .= 'm::';
 $options = getopt($opts);
 
 if (!isset($options['b'])) {
-    echo 'Base directory (-b /some/directory) is required'.PHP_EOL; 
+    echo 'Base directory (-b /some/directory) is required'.PHP_EOL;
     die();
 }
 if (!isset($options['l'])) {
-    echo 'Locale name (-l zh_CN) is required'.PHP_EOL; 
+    echo 'Locale name (-l zh_CN) is required'.PHP_EOL;
     die();
 }
 if (!isset($options['n'])) {
-    echo 'Locale native name (-n 简体中文) is required'.PHP_EOL; 
+    echo 'Locale native name (-n 简体中文) is required'.PHP_EOL;
     die();
 }
 $base_directory = rtrim($options['b'], '/').'/';
@@ -73,12 +73,12 @@ if ((!$replace && !$merge) && file_exists($locale_file)) {
 $write = function($locale_file, $strings) use ($locale, $locale_name) {
     $output = array();
     $tab = '    ';
-    $head = "$.ui.editor.registerLocale('$locale', '$locale_name', {\n";
+    $head = "registerLocale('$locale', '$locale_name', {\n";
     $tail = "\n});\n";
     ksort($strings);
-    
+
     $locale_handle = fopen($locale_file, 'w');
-    
+
     fwrite($locale_handle, $head);
 
     foreach ($strings as $key => $value) {
@@ -95,7 +95,7 @@ if ($replace || (!$replace && !$merge)) {
 } else {
     $lines = file($locale_file);
     foreach($lines as $line) {
-        $result= null; 
+        $result= null;
         if(preg_match('/^\s*"(.+)":\s?"(.+)",?$/iU', $line, $result)) {
             $key = $result[1];
             $value = $result[2];
@@ -105,4 +105,4 @@ if ($replace || (!$replace && !$merge)) {
         }
     }
     $write($locale_file, $strings);
-} 
+}
