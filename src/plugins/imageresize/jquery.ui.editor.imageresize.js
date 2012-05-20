@@ -114,7 +114,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
             imageLink = imageLink.html(image.attr('title') || image.attr('src').substr(image.attr('src').lastIndexOf('/') + 1)).
                     attr('href', image.attr('src'));
-            //console.log('resizing', width);
+
             // Resize the image with CSS / attributes
             $(image).css({
                 'width': width,
