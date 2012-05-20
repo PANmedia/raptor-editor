@@ -44,7 +44,7 @@ function info() {
  */
 function debug() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('jQuery UI Editor');
+    args.unshift('Raptor Editor');
     console.debug.apply(console, args);
 }
 
@@ -69,7 +69,6 @@ if (debugLevel >= MAX) {
     info('TODO: dont fire events when editing is disabled');
     info('TODO: use cookies when local storage is not available, or chosen by option');
     info('TODO: make a way to disable all buttons then selectivity enable ones');
-    info('TODO: allow buttons to flow to multiple lines if tool bar is constrained in width');
     info('TODO: locale switches should affect all instances');
     info('FIXME: remove editor instance from instances array on destroy');
     info('FIXME: Check for localStorage or use jQuery cookie');
