@@ -44,7 +44,7 @@ var domTools = {
      * @param {object} [context] The context in which to call the callback, or by default, the domTools object.
      */
     eachRange: function(callback, selection, context) {
-        selection = rangy.getSelection();
+        selection = selection || rangy.getSelection();
         context = context || this;
         var range, i = 0;
         // Create a new range set every time to update range offsets
@@ -163,6 +163,9 @@ var domTools = {
 
     /**
      * FIXME: this function needs reviewing
+     *
+     * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
+     *
      * @public @static
      */
     toggleWrapper: function(tag, options) {
