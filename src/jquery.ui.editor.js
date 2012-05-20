@@ -1768,53 +1768,6 @@ $.extend($.ui.editor,
         }
 
         return value;
-    },
-
-    /*========================================================================*\
-     * Internationalisation
-    \*========================================================================*/
-    /**
-     * @property {String|null} currentLocale
-     */
-    currentLocale: null,
-
-    /**
-     * @property {Object} locales
-     */
-    locales: {},
-
-    /**
-     * @property {Object} localeNames
-     */
-    localeNames: {},
-
-    /**
-     * @param {String} name
-     * @param {String} nativeName
-     * @param {Object} String
-     */
-    registerLocale: function(name, nativeName, strings) {
-        // <strict>
-        if (this.locales[name]) {
-            handleError(_('Locale "{{localeName}}" has already been registered, and will be overwritten', {localeName: name}));
-        }
-        // </strict>
-
-        this.locales[name] = strings;
-        this.localeNames[name] = nativeName;
-        if (!this.currentLocale) this.currentLocale = name;
-    },
-
-    /**
-     * @param {String} string
-     * @returns {String}
-     */
-    translate: function(string) {
-          if (this.currentLocale && this.locales[this.currentLocale] &&
-            this.locales[this.currentLocale][string]) {
-            string = this.locales[this.currentLocale][string];
-        }
-        return string;
     }
 
 });

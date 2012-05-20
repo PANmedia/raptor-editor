@@ -131,32 +131,6 @@ $(function() {
     }
 });
 
-/**
- * Internationalisation function. Translates a string with tagged variable
- * references to the current locale.
- *
- * <p>
- * Variable references should be surrounded with double curly braces {{ }}
- *      e.g. "This string has a variable: {{my.variable}} which will not be translated"
- * </p>
- *
- * @static
- * @param {String} string
- * @param {Object} variables
- */
-var _ = function(string, variables) {
-    string = $.ui.editor.translate(string);
-    if (!variables) {
-        return string;
-    } else {
-        $.each(variables, function(key, value) {
-            string = string.replace('{{' + key + '}}', value);
-        });
-        return string;
-    }
-}
-
-
 // Select menu close event (triggered when clicked off)
 $('html').click(function(event) {
     var parent = $(event.target).parents('.ui-editor-selectmenu');
