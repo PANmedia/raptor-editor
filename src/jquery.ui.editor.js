@@ -187,7 +187,7 @@ $.widget('ui.editor',
             .insertBefore(this.element)
             // Give the div a unique ID
             .attr('id', this.getUniqueId())
-            // Copy the origianl elements class(es) to the replacement div
+            // Copy the original elements class(es) to the replacement div
             .addClass(this.element.attr('class'));
 
         var style = this.options.domTools.getStyles(this.element);
@@ -851,8 +851,6 @@ $.widget('ui.editor',
             if (uiGroup.children().length > 0) {
                 uiGroup.appendTo(this.toolbar);
             }
-
-//            uiGroup.wrap($('<div/>').addClass(this.options.baseClass + '-group'));
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
     },
@@ -980,11 +978,6 @@ $.widget('ui.editor',
                     .append(text)
                     .append(icon)
                     .prependTo(this.selectMenu);
-//                ui.button = $('<div/>')
-//                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button ui-button')
-//                    .attr('title', this.title)
-//                    .button({icons: {secondary: 'ui-icon-triangle-1-s'}})
-//                    .prependTo(this.selectMenu);
 
                 var click = function() {
                     if (!ui.menu.is(':animated')) {
