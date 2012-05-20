@@ -10,7 +10,7 @@
   * @class Strips empty tags and unwanted attributes from editing element
   */
   $.ui.editor.registerPlugin('clean', /** @lends $.editor.plugin.clean.prototype */ {
-    
+
     /**
      * Attributes to be stripped, empty tags to be removed & attributes to be removed if empty
      * @type {Object}
@@ -22,7 +22,7 @@
          * @type {Array}
          */
         stripAttrs: ['_moz_dirty'],
-        
+
         /**
          * Attribute contents to be stripped
          * @type {Object}
@@ -30,7 +30,7 @@
         stripAttrContent: {
             type: '_moz'
         },
-        
+
         /**
          * Tags to be removed if empty
          * @type {Array}
@@ -40,7 +40,7 @@
             'p', 'b', 'i', 'u', 'strong', 'em',
             'big', 'small', 'div', 'span'
         ],
-        
+
 
         /**
          * Attributes to be removed if empty
@@ -50,7 +50,7 @@
             'class', 'id', 'style'
         ]
     },
-    
+
     /**
      * Binds {@link $.editor.plugin.clean#clean} to the change event
      * @see $.ui.editor.defaultPlugin#init
@@ -58,33 +58,43 @@
     init: function(editor, options) {
         editor.bind('change', this.clean, this);
     },
-      
+
     /**
      * Removes empty tags and unwanted attributes from the element
-     */  
+     */
     clean: function() {
         var i;
+        var editor = this.editor;
         for (i = 0; i < this.options.stripAttrs.length; i++) {
-            this.editor.getElement()
+            editor.getElement()
                 .find('[' + this.options.stripAttrs[i] + ']')
                 .removeAttr(this.options.stripAttrs[i]);
         }
         for (i = 0; i < this.options.stripAttrContent.length; i++) {
-            this.editor.getElement()
+            editor.getElement()
                 .find('[' + i + '="' + this.options.stripAttrs[i] + '"]')
                 .removeAttr(this.options.stripAttrs[i]);
         }
         for (i = 0; i < this.options.stripEmptyTags.length; i++) {
-            this.editor.getElement()
+            editor.getElement()
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
-                    return $.trim($(this).html()) === '';
+                    if ($.trim($(this).html()) !== '') {
+                        return false;
+                    }
+                    if (!$(this).hasClass('rangySelectionBoundary')) {
+                        return true;
+                    }
+                    // Do not clear selection markers if the editor has it in use
+                    if (editor.savedSelection !== false) {
+                        return false;
+                    }
                 })
                 .remove();
         }
         for (i = 0; i < this.options.stripEmptyAttrs.length; i++) {
             var attr = this.options.stripEmptyAttrs[i];
-            this.editor.getElement()
+            editor.getElement()
                 .find('[' + this.options.stripEmptyAttrs[i] + ']')
                 .filter(function() {
                     return $.trim($(this).attr(attr)) === '';
@@ -100,7 +110,7 @@ $.ui.editor.registerUi({
       * @class UI component that calls {@link $.editor.plugin.clean#clean} when clicked
       */
     clean: /** @lends $.editor.ui.clean.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
