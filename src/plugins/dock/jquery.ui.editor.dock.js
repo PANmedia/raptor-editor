@@ -125,6 +125,11 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      */
     dockToElement: function() {
         var plugin = this;
+
+        // <debug>
+        if (debugLevel >= MID) debug('Dock to element', plugin.editor.getElement());
+        // </debug>
+
         // Needs to be in the ready event because we cant insert to the DOM before ready (if auto enabling, before ready)
         $(function() {
             var element = plugin.editor.getElement()
@@ -168,6 +173,10 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      * Dock the toolbar to the document body (top of the screen)
      */
     dockToBody: function() {
+        // <debug>
+        if (debugLevel >= MID) debug('Dock to body');
+        // </debug>
+
         var top = 0;
         if ($(this.options.dockUnder).length) {
             top = $(this.options.dockUnder).outerHeight();
@@ -182,6 +191,10 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      * Undock toolbar from document body
      */
     undockFromBody: function() {
+        // <debug>
+        if (debugLevel >= MID) debug('Undock from body');
+        // </debug>
+
         this.editor.toolbarWrapper.css('top', this.top);
         // Remove the docked class
         this.editor.wrapper.removeClass(this.options.baseClass + '-docked');
@@ -221,6 +234,10 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      * Undock toolbar from editing element
      */
     undockFromElement: function() {
+        // <debug>
+        if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
+        // </debug>
+
 //        var wrapper = this.editor.wrapper.parent();
 
         this.editor.getElement()
