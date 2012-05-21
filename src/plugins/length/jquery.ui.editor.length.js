@@ -15,6 +15,8 @@ $.ui.editor.registerUi({
      */
     length: /** @lends $.editor.ui.length.prototype */ {
 
+        ui: null,
+
         /**
          * @name $.editor.ui.length.options
          * @namespace Default options
@@ -30,14 +32,11 @@ $.ui.editor.registerUi({
             length: 150
         },
 
-        ui: null,
-
         /**
          * @see $.ui.editor.length#init
          */
         init: function(editor, options) {
-
-            editor.bind('enable', $.proxy(this.updateCount, this));
+            editor.bind('enabled', $.proxy(this.updateCount, this));
             editor.bind('change', $.proxy(this.updateCount, this));
 
             this.ui = this.editor.uiButton({
@@ -57,6 +56,10 @@ $.ui.editor.registerUi({
          * Update the associated UI element when the content has changed.
          */
         updateCount: function() {
+            // <debug>
+            if (debugLevel >= MID) debug('Updating length count');
+            // </debug>
+
             var charactersRemaining = this.options.length - $('<div/>').html(this.editor.getCleanHtml()).text().length;
 
             var button = this.ui.button;
@@ -83,7 +86,6 @@ $.ui.editor.registerUi({
         },
 
         showStatistics: function() {
-
             var dialog = this.processTemplate();
 
             dialog.dialog({
