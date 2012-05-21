@@ -76,7 +76,6 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         var images = [];
         $(element.find('img')).each(function() {
             if (element.height() < $(this).outerHeight() || element.width() < $(this).outerWidth()) {
-                //console.log('here', element.width(), $(this).outerWidth());
                 images.push($(this));
             }
         });
