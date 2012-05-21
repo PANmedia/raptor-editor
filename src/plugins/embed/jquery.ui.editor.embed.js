@@ -13,7 +13,7 @@
     embed: /** @lends $.editor.ui.embed.prototype */ {
 
         /**
-         * Reference to the embed dialog
+         * Reference to the embed dialog. Only one dialog avalible for all editors.
          * @type {Object}
          */
         dialog: null,
@@ -85,7 +85,6 @@
                         var tabs = $(this).find('.ui-editor-embed-panel-tabs');
 
                         tabs.find('ul li').click(function() {
-                            console.log('here');
                             tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
                             $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
                             tabs.children('div').hide().eq($(this).index()).show();
