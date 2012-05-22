@@ -1,0 +1,6 @@
+Icons by Yusuke Kamiyamane. All rights reserved. Licensed under a Creative Commons Attribution 3.0 License.
+...list here...
+ - edit-image-none.png (modified by David Neilsen)
+
+Images by David Neilsen. All rights reserved. See license file.
+ - tip.png
