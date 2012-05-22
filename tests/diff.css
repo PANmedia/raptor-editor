@@ -1,0 +1,44 @@
+table {
+    border-collapse: collapse;
+    margin-top: 2em;
+    width:100%;
+    font-family: 'Bitstream Vera Sans Mono', Courier, monospace;
+    border: 1px solid #CCC;
+}
+
+thead tr {
+    font-weight: normal;
+    text-aling: left;
+    height: 2em;
+    border-bottom: 1px solid #DDD;
+    background-color: #ECECEC;
+    background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#ECECEC));
+    background: -moz-linear-gradient(top,  #FAFAFA,  #ECECEC);
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#ECECEC');
+}
+
+td {
+    padding: 1px 2px;
+    white-space: pre;
+}
+
+td.bredecode {
+    width: 100%;
+    padding-left: 4px;
+}
+
+td.codekolom {
+    text-align: right;
+    min-width: 3em;
+    background-color: #ECECEC;
+    border-right: 1px solid #DDD;
+    color: #AAA;
+}
+
+tr.add {
+    background: #DFD;
+}
+
+tr.del {
+    background: #FDD;
+}
