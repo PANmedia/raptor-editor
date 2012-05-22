@@ -1,0 +1,8 @@
+.ui-editor-raptorize-button .ui-icon-raptorize {
+    @include opacity(0.85);
+    background: inline-image('raptorize.png') 0 0;
+}
+
+.ui-editor-raptorize-button:hover .ui-icon-raptorize {
+    @include opacity(1);
+}

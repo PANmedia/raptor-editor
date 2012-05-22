@@ -1,0 +1,163 @@
+/**
+ * Dock plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import "compass/css3/opacity";
+
+.ui-editor-dock-button .ui-icon-pin-s {
+    @include opacity(0.85);
+    background: inline-image('pin.png') 0 0;
+}
+
+.ui-editor-dock-button:hover .ui-icon-pin-s {
+    @include opacity(1);
+}
+
+.ui-editor-dock-button .ui-icon-pin-w {
+    @include opacity(0.85);
+    background: inline-image('pin-in.png') 0 0;
+}
+
+.ui-editor-dock-button:hover .ui-icon-pin-w {
+    @include opacity(1);
+}
+
+/**
+ * Dialog docked to body
+ */
+.ui-editor-dock-docked {
+    z-index: 10000;
+    .ui-editor-toolbar-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        border-top: none;
+
+        display: -webkit-box;
+        display: -moz-box;
+        display: box;
+
+        -webkit-box-pack: center;
+        -moz-box-pack: center;
+        box-pack: center;
+
+        -webkit-box-align: center;
+        -moz-box-align: center;
+        box-align: center;
+    }
+
+    .ui-editor-path {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
+.ui-editor-ios .ui-editor-dock-docked .ui-editor-path {
+    display: none;
+}
+
+/**
+ * Dialog docked to element
+ */
+.ui-editor-dock-docked-to-element-wrapper {
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+}
+.ui-editor-dock-docked-to-element {
+    /* Removed fixed position from the editor */
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+
+    border: 0 none;
+    padding: 0;
+    margin: 0;
+    z-index: auto;
+    width: 100%;
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+
+    .ui-editor-toolbar {
+        margin: 0;
+        z-index: 2;
+
+        -webkit-box-ordinal-group: 1;
+        -moz-box-ordinal-group: 1;
+        box-ordinal-group: 1;
+    }
+
+    .ui-editor-toolbar .ui-widget-header {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .ui-editor-path {
+        border: 0 none;
+        margin: 0;
+
+        -webkit-box-ordinal-group: 3;
+        -moz-box-ordinal-group: 3;
+        box-ordinal-group: 3;
+
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
+    }
+
+    .ui-editor-messages {
+        margin: 0;
+    }
+}
+
+.ui-editor-dock-docked-element {
+    /* Override margin so toolbars sit flush next to element */
+    margin: 0 !important;
+
+    display: block;
+    z-index: 1;
+
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    box-ordinal-group: 2;
+}
+
+
+/**
+ * Messages
+ */
+.ui-editor-dock-docked .ui-editor-messages {
+    position: absolute;
+    padding: 0;
+    margin: 0 auto 10px;
+    width: 100%;
+    text-align: left;
+
+    .ui-editor-message-wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+
+    .ui-editor-message-wrapper:first-child {
+        -webkit-border-top-left-radius: 0px;
+        -webkit-border-top-right-radius: 0px;
+        -moz-border-radius-topleft: 0px;
+        -moz-border-radius-topright: 0px;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+}
