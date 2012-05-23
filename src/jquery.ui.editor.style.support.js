@@ -15,11 +15,14 @@ function isSupported(editor) {
                 });
             }
         }
+        if ($.browser.mozilla) {
+            $('html').addClass(editor.options.baseClass + '-ff');
+        }
         if ($.browser.msie) {
             supported = false;
 
             // Create message modal
-            var message = $('<div/>')
+            var message = $('<div></div>')
                 .addClass(editor.options.baseClass + '-unsupported')
                 .html(editor.getTemplate('unsupported'))
                 .appendTo('body');
