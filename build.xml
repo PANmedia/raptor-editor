@@ -28,7 +28,7 @@
     </target>
 
     <target name="theme">
-
+        <exec command="sass --compass theme.scss theme.css" logoutput="true" dir="src/theme" />
     </target>
 
     <!-- =================================================================== -->
@@ -56,10 +56,7 @@
         <copy todir="${buildpath}" >
             <fileset dir="src">
                 <include name="**/*" />
-            </fileset>
-            <fileset dir=".">
-                <exclude name="**/.git/**" />
-                <include name="dependencies/**/*" />
+                <exclude name="dependencies/**" />
             </fileset>
         </copy>
     </target>
@@ -74,13 +71,21 @@
         <mkdir dir="${packagepath}" />
     </target>
 
-    <target name="clone">
+    <target name="clone" depends="theme">
         <!-- Copy all source files excluding plugins -->
         <copy todir="${buildpath}" >
             <fileset dir="src">
-                <exclude name="jquery.ui.editor.loader.js" />
-                <exclude name="plugins/**" />
                 <include name="**/*" />
+                <exclude name="**/*.php" />
+                <exclude name="dependencies/**" />
+                <exclude name="plugins/**" />
+                <exclude name="theme/**" />
+                <exclude name="jquery.ui.editor.loader.js" />
+            </fileset>
+        </copy>
+        <copy todir="${buildpath}" >
+            <fileset dir="src">
+                <include name="theme/theme.css" />
             </fileset>
         </copy>
 
@@ -146,53 +151,33 @@
     <target name="copy-dependencies">
         <!-- Copy all dependencies and prefix a number to enforce load order -->
 
+        <!-- Rangy -->
+        <if><istrue value="${rangy}" /><then>
+            <copy file="${dir.deps}/rangy/rangy-core.js"
+                  tofile="${buildpath}/01-rangy-core.js" />
+            <copy file="${dir.deps}/rangy/rangy-cssclassapplier.js"
+                  tofile="${buildpath}/02-rangy-cssclassapplier.js" />
+            <copy file="${dir.deps}/rangy/rangy-selectionsaverestore.js"
+                  tofile="${buildpath}/03-rangy-selectionsaverestore.js" />
+            <copy file="${dir.deps}/rangy/rangy-serializer.js"
+                  tofile="${buildpath}/04-rangy-serializer.js" />
+        </then></if>
+
         <!-- jQuery -->
         <if><istrue value="${jquery}" /><then>
-            <copy file="dependencies/jquery.js"
-                  tofile="${buildpath}/01-jquery.js" />
+            <copy file="${dir.deps}/jquery.js"
+                  tofile="${buildpath}/05-jquery.js" />
         </then></if>
 
         <!-- jQuery UI -->
         <if><istrue value="${jquery-ui}" /><then>
-            <copy file="dependencies/jquery-ui.js"
-                  tofile="${buildpath}/02-jquery-ui.js" />
-        </then></if>
-
-        <!-- jQuery plugins -->
-        <if><istrue value="${jquery-cookie}" /><then>
-            <copy file="dependencies/jquery.cookie.js"
-                  tofile="${buildpath}/04-jquery-cookie.js" />
-        </then></if>
-
-        <!-- TipTip -->
-        <if><istrue value="${jquery-tiptip}" /><then>
-            <copy file="dependencies/tiptip/jquery.tipTip.js"
-                  tofile="${buildpath}/05-jquery-tipTip.js" />
-            <copy file="dependencies/tiptip/tipTip.css"
-                  tofile="${buildpath}/02-theme/tipTip.css" />
-        </then></if>
-
-        <!-- jQuery Event Drag -->
-        <if><istrue value="${jquery-event-drag}" /><then>
-            <copy file="dependencies/jquery.event.drag-2.0.js"
-                  tofile="${buildpath}/04-jquery-event-drag.js" />
-        </then></if>
-
-        <!-- Rangy -->
-        <if><istrue value="${rangy}" /><then>
-            <copy file="dependencies/rangy/rangy-core.js"
-                  tofile="${buildpath}/06-rangy-core.js" />
-            <copy file="dependencies/rangy/rangy-cssclassapplier.js"
-                  tofile="${buildpath}/07-rangy-cssclassapplier.js" />
-            <copy file="dependencies/rangy/rangy-selectionsaverestore.js"
-                  tofile="${buildpath}/08-rangy-selectionsaverestore.js" />
-            <copy file="dependencies/rangy/rangy-serializer.js"
-                  tofile="${buildpath}/09-rangy-serializer.js" />
+            <copy file="${dir.deps}/jquery-ui.js"
+                  tofile="${buildpath}/06-jquery-ui.js" />
         </then></if>
 
         <!-- Raptorize -->
         <if><istrue value="${raptorize}" /><then>
-            <copy file="dependencies/raptorize/jquery.raptorize.js"
+            <copy file="${dir.deps}/raptorize/jquery.raptorize.js"
                   tofile="${buildpath}/10-raptorize.js" />
         </then></if>
 
@@ -200,23 +185,11 @@
         <if><istrue value="${jquery-ui-theme}" /><then>
             <copy todir="${buildpath}/01-theme">
                 <fileset dir=".">
-                    <include name="dependencies/themes/${theme}/jquery-ui.css" />
-                    <include name="dependencies/themes/${theme}/images/**/*" />
+                    <include name="${dir.deps}/themes/${theme}/jquery-ui.css" />
+                    <include name="${dir.deps}/themes/${theme}/images/**/*" />
                 </fileset>
             </copy>
         </then></if>
-    </target>
-
-    <!-- =================================================================== -->
-    <!-- Convert LESS to CSS                                                 -->
-    <!-- =================================================================== -->
-    <target name="less">
-        <less>
-            <fileset dir=".">
-                <include name="${buildpath}/*.less" />
-                <include name="${buildpath}/**/*.less" />
-            </fileset>
-        </less>
     </target>
 
     <!-- =================================================================== -->
@@ -225,8 +198,6 @@
     <target name="datauri">
         <datauri>
             <fileset dir=".">
-                <include name="${buildpath}/*.less" />
-                <include name="${buildpath}/**/*.less" />
                 <include name="${buildpath}/*.css" />
                 <include name="${buildpath}/**/*.css" />
             </fileset>
@@ -260,7 +231,7 @@
     <!-- =================================================================== -->
     <!-- Combine all files                                                   -->
     <!-- =================================================================== -->
-    <target name="combine" depends="less,datauri,template,open-wrapper">
+    <target name="combine" depends="datauri,template,open-wrapper">
         <sortedfileset name="jsfiles">
             <fileset dir=".">
                 <exclude name="${buildpath}/concat.js" />
@@ -409,10 +380,6 @@
 
     <adhoc-task name="sortedfileset">
         require_once '${project.basedir}/classes/SortedFileSet.php';
-    </adhoc-task>
-
-    <adhoc-task name="less">
-        require_once '${project.basedir}/classes/LessTask.php';
     </adhoc-task>
 
     <adhoc-task name="template">
