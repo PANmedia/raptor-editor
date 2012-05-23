@@ -36,7 +36,7 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.length#init
          */
         init: function(editor, options) {
-            editor.bind('enabled', $.proxy(this.updateCount, this));
+            editor.bind('show', $.proxy(this.updateCount, this));
             editor.bind('change', $.proxy(this.updateCount, this));
 
             this.ui = this.editor.uiButton({
@@ -60,7 +60,7 @@ $.ui.editor.registerUi({
             if (debugLevel >= MID) debug('Updating length count');
             // </debug>
 
-            var charactersRemaining = this.options.length - $('<div/>').html(this.editor.getCleanHtml()).text().length;
+            var charactersRemaining = this.options.length - $('<div></div>').html(this.editor.getCleanHtml()).text().length;
 
             var button = this.ui.button;
             var label = null;
@@ -74,13 +74,13 @@ $.ui.editor.registerUi({
 
             // Add the error state to the button's text element if appropriate
             if (charactersRemaining < 0) {
-                button.find('.ui-button-text').addClass('ui-state-error');
+                button.addClass('ui-state-error');
             } else{
                 // Add the highlight class if the remaining characters are in the "sweet zone"
                 if (charactersRemaining >= 0 && charactersRemaining <= 15) {
-                    button.find('.ui-button-text').addClass('ui-state-highlight').removeClass('ui-state-error');
+                    button.addClass('ui-state-highlight').removeClass('ui-state-error');
                 } else {
-                    button.find('.ui-button-text').removeClass('ui-state-highlight ui-state-error');
+                    button.removeClass('ui-state-highlight ui-state-error');
                 }
             }
         },
@@ -119,7 +119,7 @@ $.ui.editor.registerUi({
          * @return {jQuery} The processed statistics dialog template
          */
         processTemplate: function() {
-            var content = $('<div/>').html(this.editor.getCleanHtml()).text();
+            var content = $('<div></div>').html(this.editor.getCleanHtml()).text();
             var truncation = null;
             var charactersRemaining = this.options.length - content.length;
             if (charactersRemaining < 0) {
