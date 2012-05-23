@@ -5,19 +5,19 @@
  */
 
 $.ui.editor.registerUi({
-     
+
      /**
      * @name $.editor.ui.showGuides
      * @augments $.ui.editor.defaultUi
      * @class Outlines elements contained within the editing element
      */
     showGuides: /** @lends $.editor.ui.showGuides.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
-            
+
             editor.bind('cancel', this.cancel, this);
             editor.bind('destroy', this.cancel, this);
 

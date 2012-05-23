@@ -13,7 +13,7 @@ $.ui.editor.registerUi({
      * Toggles <tt>text-align: left</tt>
      */
     alignLeft: /** @lends $.editor.ui.alignLeft.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -37,7 +37,7 @@ $.ui.editor.registerUi({
      * Toggles <tt>text-align: justify</tt>
      */
     alignJustify: /** @lends $.editor.ui.alignJustify.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -61,7 +61,7 @@ $.ui.editor.registerUi({
      * Toggles: <tt>text-align: center</tt>
      */
     alignCenter: /** @lends $.editor.ui.alignCenter.prototype */  {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -85,10 +85,10 @@ $.ui.editor.registerUi({
      * Toggles <tt>text-align: right</tt>
      */
     alignRight: /** @lends $.editor.ui.alignRight.prototype */  {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
-         */        
+         */
         init: function(editor) {
             return editor.uiButton({
                 title: _('Right Align'),

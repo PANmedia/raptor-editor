@@ -20,6 +20,7 @@
         init: function(editor, options) {
             return editor.uiButton({
                 title: _('Blockquote'),
+                icon: 'ui-icon-quote',
                 click: function() {
                     editor.toggleWrapper('blockquote', { classes: options.classes || options.cssPrefix + 'blockquote' });
                 }
