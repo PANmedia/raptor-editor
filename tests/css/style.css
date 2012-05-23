@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+del {
+    background-color: #FFE6E6;
+}
+
+ins {
+    background-color: #E6FFE6;
+}
+
+hr {
+    margin: 20px;
+}
+
+h2 {
+    font-size: 15px;
+}
+
+p, h2 {
+    padding: 0 5px;
+}
+
+.ui-editor-wrapper,
+.test-templates {
+    display: none;
+}
+
+.test-results:before {
+    content: "Results: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+.test-results {
+    border: 1px solid #587CBF;
+}
+
+.test-input:before {
+    content: "Input: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+.test-input {
+    border: 1px solid #587CBF;
+}
+
+.test-output:before {
+    content: "Output: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+.test-output {
+    border: 1px solid #587CBF;
+}
+
+.test-expected:before {
+    content: "Expected: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+.test-expected {
+    border: 1px solid #587CBF;
+}
+
+.test-diff:before {
+    content: "Differences: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+.test-diff {
+    border: 1px solid #587CBF;
+}
+
+.pass:before {
+    content: "Pass: ";
+    background: #B8DC3C;
+    width: 100%;
+    display: block;
+}
+.pass {
+    margin: 5px;
+    border: 2px solid #B8DC3C;
+}
+.pass .test-input,
+.pass .test-output,
+.pass .test-expected,
+.pass .test-diff {
+    display: none;
+}
+
+.fail:before {
+    content: "Fail: ";
+    background: #CB2402;
+    width: 100%;
+    display: block;
+}
+.fail {
+    margin: 5px;
+    border: 2px solid #CB2402;
+}
