@@ -61,7 +61,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
             editor.getElement().addClass(options.baseClass + '-highlight');
             editor.getElement().addClass(options.baseClass + '-hover');
             message.position(options.position);
-            message.stop().animate({ opacity: 1 });
+            message.addClass(options.baseClass + '-visible');
         };
 
         /**
@@ -70,7 +70,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         this.hide = function() {
             editor.getElement().removeClass(options.baseClass + '-highlight');
             editor.getElement().removeClass(options.baseClass + '-hover');
-            message.stop().animate({ opacity: 0 });
+            message.removeClass(options.baseClass + '-visible');
         };
 
         /**
@@ -79,7 +79,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         this.edit = function() {
             plugin.hide();
             if (!editor.isEditing()) editor.enableEditing();
-            if (!editor.toolbar.is(':visible')) editor.showToolbar(plugin.selection());
+            if (!editor.isVisible()) editor.showToolbar(plugin.selection());
         };
 
         message.position(options.position);
