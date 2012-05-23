@@ -1,0 +1,42 @@
+/**
+ * Unsupported warning styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+
+/* Layout */
+.ui-editor-unsupported {
+    position: relative;
+}
+.ui-editor-unsupported-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: black;
+
+    filter: alpha(opacity=50);
+	opacity: 0.5;
+}
+
+.ui-editor-unsupported-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin: -200px 0 0 -300px;
+    width: 600px;
+    height: 400px;
+}
+
+.ui-editor-unsupported-input {
+    position: absolute;
+    bottom: 10px;
+}
+
+/* Style */
+.ui-editor-unsupported-content {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #777;
+}

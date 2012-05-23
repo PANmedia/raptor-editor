@@ -1,3 +1,11 @@
+/**
+ * Main editor layout
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+
 /******************************************************************************\
  * Editor toolbar
 \******************************************************************************/
@@ -6,64 +14,36 @@
     overflow: visible;
     z-index: 1001;
     position: fixed;
-    
+
     .ui-editor-toolbar {
         padding: 6px 0 0 5px;
         overflow: visible;
+        @include display-box();
     }
-    
+
     .ui-editor-toolbar,
     .ui-editor-toolbar * {
         -webkit-user-select: none;
         -moz-user-select: none;
         user-select: none;
     }
-    
-    .ui-dialog-titlebar { 
+
+    .ui-dialog-titlebar {
         .ui-editor-element-path:first-child {
             margin-left: 5px;
         }
     }
-    
+
     .ui-dialog-titlebar .ui-editor-element-path {
         min-width: 10px;
         min-height: 15px;
         display: inline-block;
     }
-
-    .ui-editor-buttonset {
-        float: left;
-        margin: 0 5px 4px 0;
-        
-        display: -webkit-box;
-        display: -moz-box;
-        display: box;
-        -webkit-box-orient: horizontal;
-        -moz-box-orient: horizontal;
-        box-orient: horizontal;
-        
-        > .ui-button {
-            display: block;
-            margin: 0 -1px 0 0;
-        }
-        
-        .ui-button:hover {
-            z-index: 1;
-        }
-        
-        .ui-editor-selectmenu {
-            display: block;
-            
-            .ui-button {
-                margin: 0 -1px 0 0;
-            }
-        }
-    }
 }
 
 .ui-editor-dock-docked-to-element .ui-editor-toolbar {
     padding: 5px 0 0 5px!important;
-    
+
     .ui-editor-group {
         margin: 0 5px 5px 0;
     }
@@ -75,62 +55,6 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     border: 0 none transparent;
-}
-
-/******************************************************************************\
- * Editor button
-\******************************************************************************/
-.ui-editor-wrapper {
-    .ui-button {
-        height: 32px;
-        margin-bottom: 0;
-        margin-top: 0;
-        padding: 0;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-    .ui-button-icon-only { width: 32px; }
-}
-
-.ui-editor-selectmenu {
-    overflow: visible;
-    position: relative;
-
-    &-button {
-        display: -webkit-box;
-        display: -moz-box;
-        display: box;
-        text-align: left;
-        -webkit-box-align: center;
-        -moz-box-align: center;
-        box-align: center;
-        .ui-button-icon-secondary {
-            right: 8px;
-        }
-    }
-
-    &-button .ui-button-text {
-        padding: 0 25px 0 5px;
-    }
-
-    &-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        margin-top: -1px !important;
-    }
-
-    &-menu-item {
-        padding: 5px;
-        margin: 3px;
-        z-index: 1;
-        text-align: left;
-    }
-}
-
-.ui-editor-path {
-    padding: 5px;
 }
 
 
@@ -149,9 +73,9 @@
 \******************************************************************************/
 .ui-editor-wrapper {
     .ui-dialog-content {
-        font-size: 12px;
+        font-size: $font-size;
     }
-    
+
     textarea {
         -webkit-box-flex: 1;
         -moz-box-flex: 1;
