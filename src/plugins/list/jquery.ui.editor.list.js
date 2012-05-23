@@ -12,7 +12,7 @@ $.ui.editor.registerUi({
      * @class Wraps the selection with a &lt;ul&gt;, then a &lt;li&gt;
      */
     listUnordered: /** @lends $.editor.ui.listUnordered.prototype */ {
- 
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -35,7 +35,7 @@ $.ui.editor.registerUi({
      * @name $.editor.ui.listOrdered
      * @augments $.ui.editor.defaultUi
      * @class Wraps the selection with a &lt;ol&gt;, then a &lt;li&gt;
-     */    
+     */
     listOrdered: /** @lends $.editor.ui.listOrdered.prototype */ {
 
         /**
