@@ -71,7 +71,7 @@
                     }
 
                 }
-                
+
                 return this;
             },
 
@@ -84,26 +84,26 @@
                 };
 
                 if (panel.find('input[name="blank"]').is(':checked')) attributes.target = '_blank';
-                                
+
                 if (!this.options.regexLink.test(attributes.href)) {
                     this.plugin.editor.showWarning(_('The url for the link you inserted doesn\'t look well formed'));
                 }
 
                 return attributes;
             },
-             
+
             /**
              * @return {Boolean} True if the link is valid
              */
             validate: function(panel) {
-                
+
                 var href = panel.find('input[name="location"]').val();
                 var errorMessageSelector = '.' + this.options.baseClass + '-error-message-url';
                 var isValid = true;
-                
+
                 if (!this.options.regexLink.test(href)) {
                     if (!panel.find(errorMessageSelector).size()) {
-                        panel.find('input[name="location"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, { 
+                        panel.find('input[name="location"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, {
                             messageClass: this.options.baseClass + '-error-message-url',
                             message: _('The URL does not look well formed')
                         })));
@@ -113,7 +113,7 @@
                 } else {
                     panel.find(errorMessageSelector).has(':visible').hide();
                 }
-                
+
                 return isValid;
             }
         },
@@ -152,7 +152,7 @@
              * @see $.editor.plugin.link.baseLinkType#show
              */
             show: function(panel, edit) {
-                
+
                 var email = this;
                 panel.find('input[name="email"]').bind('keyup', function(){
                     email.validate(panel);
@@ -181,7 +181,7 @@
 
                 return attributes;
             },
-             
+
             /**
              * @return {Boolean} True if the link is valid
              */
@@ -192,7 +192,7 @@
                 var isValid = true;
                 if (!this.options.regexEmail.test(email)) {
                     if (!panel.find(errorMessageSelector).size()) {
-                        panel.find('input[name="email"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, { 
+                        panel.find('input[name="email"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, {
                             messageClass: this.options.baseClass + '-error-message-email',
                             message: _('The email address does not look well formed')
                         })));
@@ -202,11 +202,11 @@
                 } else {
                     panel.find(errorMessageSelector).has(':visible').hide();
                 }
-                
+
                 return isValid;
             }
         },
-        
+
         /**
          * @name $.editor.plugin.link.defaultLinkTypes.fileUrl
          * @class
@@ -254,7 +254,7 @@
                         panel.find('input[name="blank"]').attr('checked', 'checked');
                     }
                 }
-                
+
                 return this;
             },
 
@@ -274,19 +274,19 @@
 
                 return attributes;
             },
-             
+
             /**
              * @return {Boolean} True if the link is valid
              */
             validate: function(panel) {
-                
+
                 var href = panel.find('input[name="location"]').val();
                 var errorMessageSelector = '.' + this.options.baseClass + '-error-message-file-url';
                 var isValid = true;
-                
+
                 if (!this.options.regexLink.test(href)) {
                     if (!panel.find(errorMessageSelector).size()) {
-                        panel.find('input[name="location"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, { 
+                        panel.find('input[name="location"]').after(this.plugin.editor.getTemplate('link.error', $.extend({}, this.options, {
                             messageClass: this.options.baseClass + '-error-message-file-url',
                             message: _('The URL does not look well formed')
                         })));
@@ -296,11 +296,11 @@
                 } else {
                     panel.find(errorMessageSelector).has(':visible').hide();
                 }
-                
+
                 return isValid;
-            }            
+            }
         }
-        
+
     ],
 
     /**
@@ -449,7 +449,7 @@
             var dialog = this.dialog;
 
             this.initTypes();
-            
+
             // Add link type radio buttons
             var linkTypesFieldset = this.dialog.find('fieldset');
             for (var type in this.types) {
@@ -518,7 +518,7 @@
                     if (!edit || edit && !changedType) {
                         plugin.typeChange(plugin.types[radios.filter(':checked').val()], edit);
                     }
-                    
+
                     // Bind keyup to dialog so we can detect when user presses enter
                     $(this).unbind('keyup.' + plugin.editor.widgetName).bind('keyup.' + plugin.editor.widgetName, function(event) {
                         if (event.keyCode == 13) {
@@ -546,7 +546,7 @@
      */
     apply: function(edit) {
         var linkType = this.types[this.dialog.find('input[type="radio"]:checked').val()];
-        
+
         var attributes = linkType.attributes(this.dialog.find('.' + this.options.baseClass + '-content'), edit);
 
         // No attributes to apply
@@ -571,7 +571,7 @@
         }
 
         this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
-        
+
         return true;
     },
 
@@ -653,7 +653,7 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            editor.bind('change', this.change, this);
+            editor.bind('selectionChange', this.change, this);
 
             return editor.uiButton({
                 title: _('Insert Link'),
@@ -682,7 +682,8 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            editor.bind('change', this.change, this);
+            editor.bind('selectionChange', this.change, this);
+            editor.bind('show', this.change, this);
 
             return editor.uiButton({
                 title: _('Remove Link'),
