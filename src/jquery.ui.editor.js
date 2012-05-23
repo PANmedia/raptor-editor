@@ -18,7 +18,19 @@ $.widget('ui.editor',
      * Constructor
      */
     _init: function() {
-        $.ui.editor.instances.push(this);
+        // Add the editor instance to the global list of instances
+        if ($.inArray(this, $.ui.editor.instances) === -1) {
+            $.ui.editor.instances.push(this);
+        }
+
+        // Check for nested editors
+        var currentInstance = this;
+        $.ui.editor.eachInstance(function(instance) {
+            if (currentInstance != instance &&
+                    currentInstance.element.closest(instance.element).length) {
+                handleError('Nesting editors is unsupported', currentInstance.element, instance.element);
+            }
+        });
 
         this.options = $.extend({}, $.ui.editor.defaults, this.options);
 
@@ -41,7 +53,8 @@ $.widget('ui.editor',
             ['tagMenu'],
             ['i18n'],
             ['raptorize'],
-            ['length']
+            ['length'],
+            ['debugReinit', 'debugDestroy']
         ];
 
         // Give the element a unique ID
@@ -49,14 +62,28 @@ $.widget('ui.editor',
             this.element.attr('id', this.getUniqueId());
         }
 
-        this.reiniting = this.reiniting || false;
+        // Initialise properties
         this.ready = false;
-        this.toolbar = null;
         this.events = {};
         this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
-        this.changeTimer = null;
+//        this.changeTimer = null;
+
+        // jQuery DOM elements
+        this.wrapper = null;
+        this.toolbar = null;
+        this.toolbarWrapper = null;
+        this.path = null;
+
+        // True if editing is enabled
+        this.enabled = false;
+
+        // True if the toolbar has been loaded and displayed
+        this.visible = false;
+
+        // List of UI objects bound to the editor
+        this.uiObjects = {};
 
         // Bind default events
         for (var name in this.options.bind) {
@@ -68,6 +95,7 @@ $.widget('ui.editor',
         this.present = 0;
         this.historyEnabled = true;
 
+        // Check for browser support
         if (!isSupported(this)) {
             return;
         }
@@ -75,6 +103,7 @@ $.widget('ui.editor',
         // Clone the DOM tools functions
         this.cloneDomTools();
 
+        // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
         // Replace the original element with a div (if specified)
@@ -83,26 +112,29 @@ $.widget('ui.editor',
             this.options.replace = false;
         }
 
-        this.loadToolbar();
+        // Load the message display widget
         this.loadMessages();
+
+        // Attach core events
         this.attach();
 
+        // Load plugins
         this.loadPlugins();
-        this.loadUi();
 
-        if (this.options.show) {
-            this.showToolbar();
-        }
+        // Stores if the current state of the content is clean
+        this.dirty = false;
 
-        if (this.options.enabled) {
-            this.enableEditing();
-        }
+        // Stores the previous state of the content
+        this.previousContent = null;
 
-        // Unload warning
-        $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
+        // Stores the previous selection
+        this.previousSelection = null;
 
+        // Fire the ready event
         this.ready = true;
         this.fire('ready');
+
+        // Automaticly enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             this.enableEditing();
             this.showToolbar();
@@ -118,21 +150,19 @@ $.widget('ui.editor',
      */
     attach: function() {
         this.bind('change', this.historyPush);
-        this.bind('change', this.updateTagTree);
+        this.bind('selectionChange', this.updateTagTree);
+        this.bind('show', this.updateTagTree);
 
-        var change = $.proxy(function() {
-            this.change();
-        }, this);
+        var change = $.proxy(this.checkChange, this);
 
         this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
             this.selectOuter(event.target);
         }, this));
-        this.getElement().bind('click.' + this.widgetName, change);
+        this.getElement().bind('mouseup.' + this.widgetName, change);
         this.getElement().bind('keyup.' + this.widgetName, change);
-        this.bind('destroy', function() {
-            this.getElement().unbind('click.' + this.widgetName, change);
-            this.getElement().unbind('keyup.' + this.widgetName, change);
-        });
+
+        // Unload warning
+        $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
     },
 
     /**
@@ -152,13 +182,25 @@ $.widget('ui.editor',
             return;
         }
         // <debug>
-        info('Reinitialising editor');
+        debug('Reinitialising editor', this.getElement());
         // </debug>
+
+        // Store the state of the editor
+        var enabled = this.enabled,
+            visible = this.visible;
+
         // We are ready, so we can run reinit now
-        this.reiniting = true;
-        this.destruct(true);
+        this.destruct();
         this._init();
-        this.reiniting = false;
+
+        // Restore the editor state
+        if (enabled) {
+            this.enableEditing();
+        }
+
+        if (visible) {
+            this.showToolbar();
+        }
     },
 
     /**
@@ -185,7 +227,7 @@ $.widget('ui.editor',
         if (this.target) return;
 
         // Create the replacement div
-        var target = $('<div/>')
+        var target = $('<div></div>')
             // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
             .html(this.element.is(':input') ? this.element.val() : this.element.html())
             // Insert the div before the origianl element
@@ -238,14 +280,48 @@ $.widget('ui.editor',
         }
     },
 
-    change: function() {
-        if (this.changeTimer !== null) {
-            return;
+    checkChange: function() {
+        // Check if the caret has changed position
+        var currentSelection = rangy.serializeSelection();
+        if (this.previousSelection != currentSelection) {
+            this.fire('selectionChange');
         }
-        this.changeTimer = window.setTimeout(function(editor) {
-            editor.fire('change');
-            editor.changeTimer = null;
-        }, 1000, this);
+        this.previousSelection = currentSelection;
+
+        // Get the current content
+        var currentHtml = this.getCleanHtml();
+
+        // Check if the dirty state has changed
+        var wasDirty = this.dirty;
+
+        // Check if the current content is different from the original content
+        this.dirty = this.getOriginalHtml() != currentHtml;
+
+        // If the current content has changed since the last check, fire the change event
+        if (this.previousHtml != currentHtml) {
+            this.previousHtml = currentHtml;
+            this.change();
+
+            // If the content was changed to its original state, fire the cleaned event
+            if (wasDirty != this.dirty) {
+                if (this.dirty) {
+                    this.fire('dirty');
+                } else {
+                    this.fire('cleaned');
+                }
+            }
+        }
+    },
+
+    change: function() {
+        this.fire('change');
+//        if (this.changeTimer !== null) {
+//            return;
+//        }
+//        this.changeTimer = window.setTimeout(function(editor) {
+//            editor.fire('change');
+//            editor.changeTimer = null;
+//        }, 1000, this);
     },
 
     /*========================================================================*\
@@ -253,32 +329,35 @@ $.widget('ui.editor',
     \*========================================================================*/
 
     /**
-     * Hides the toolbar, disables editing, and fires the destroy event.
+     * Hides the toolbar, disables editing, and fires the destroy event, and unbinds any events.
      * @public
-     * @param {boolean} Indicates the the editor is just reinitialising and
-     * should not hide the toolbar, or disable editing.
      */
-    destruct: function(reinit) {
+    destruct: function() {
         // Disable editing unless we are re initialising
-        if (!reinit) {
-            this.hideToolbar();
-            this.disableEditing();
-        }
+        this.hideToolbar();
+        this.disableEditing();
 
-        // Trigger destory event, for plugins to remove them selves
+        // Trigger destroy event, for plugins to remove them selves
         this.fire('destroy', false);
 
         // Remove all event bindings
         this.events = {};
+
+        // Unbind all events
+        this.getElement().unbind('.' + this.widgetName);
+
+        // Remove element
+        if (this.wrapper) {
+            this.wrapper.remove();
+        }
     },
 
     /**
-     * Unbinds all namespaced events from the element then calls the UI widget
-     * destroy function
+     * Runs destruct, then calls the UI widget destroy function.
+     * @see $.
      */
     destroy: function() {
         this.destruct();
-        this.getElement().unbind('.' + this.widgetName);
         $.Widget.prototype.destroy.call(this);
     },
 
@@ -304,8 +383,13 @@ $.widget('ui.editor',
      *
      */
     enableEditing: function() {
-        if (!this.options.enabled || this.reiniting) {
-            this.options.enabled = true;
+        // Check if the toolbar is yet to be loaded
+        if (!this.isToolbarLoaded()) {
+            this.loadToolbar();
+        }
+
+        if (!this.enabled) {
+            this.enabled = true;
             this.getElement().addClass(this.options.baseClass + '-editing');
 
             if (this.options.partialEdit) {
@@ -322,7 +406,7 @@ $.widget('ui.editor',
             }
             this.fire('enabled');
             this.fire('resize');
-            this.change();
+//            this.change();
         }
     },
 
@@ -330,8 +414,8 @@ $.widget('ui.editor',
      *
      */
     disableEditing: function() {
-        if (this.options.enabled) {
-            this.options.enabled = false;
+        if (this.enabled) {
+            this.enabled = false;
             this.getElement().attr('contenteditable', false)
                         .removeClass(this.options.baseClass + '-editing');
             this.fire('disabled');
@@ -343,7 +427,7 @@ $.widget('ui.editor',
      * @returns {boolean}
      */
     isEditing: function() {
-        return this.options.enabled;
+        return this.enabled;
     },
 
     /**
@@ -549,21 +633,38 @@ $.widget('ui.editor',
      *
      */
     loadToolbar: function() {
-        var toolbar = this.toolbar = $('<div/>')
+        // <strict>
+        if (this.isToolbarLoaded()) {
+            handleError('Attempting to reinitialise the toolbar', this.getElement());
+            return;
+        }
+        // </strict>
+
+        // <debug>
+        debug('Loading toolbar', this.getElement());
+        // </debug>
+
+        var toolbar = this.toolbar = $('<div></div>')
             .addClass(this.options.baseClass + '-toolbar');
-        var toolbarWrapper = this.toolbarWrapper = $('<div/>')
+        var toolbarWrapper = this.toolbarWrapper = $('<div></div>')
             .addClass(this.options.baseClass + '-toolbar-wrapper')
             .append(toolbar);
-        var path = this.path = $('<div/>')
+        var path = this.path = $('<div></div>')
             .addClass(this.options.baseClass + '-path')
+            .addClass('ui-widget-header')
             .html(this.getTemplate('root'));
-        var wrapper = this.wrapper = $('<div/>')
+        var wrapper = this.wrapper = $('<div></div>')
             .addClass(this.options.baseClass + '-wrapper')
+            .addClass('ui-widget-content')
             .css('display', 'none')
             .append(path)
             .append(toolbarWrapper);
 
         if ($.fn.draggable && this.options.draggable) {
+            // <debug>
+            debug('Initialising toolbar dragging', this.getElement());
+            // </debug>
+
             wrapper.draggable({
                 cancel: 'a, button',
                 cursor: 'move',
@@ -581,6 +682,10 @@ $.widget('ui.editor',
                         top: Math.abs(pos[0]),
                         left: Math.abs(pos[1])
                     });
+
+                    // <debug>
+                    debug('Saving toolbar position', this.getElement(), pos);
+                    // </debug>
                 }, this)
             });
 
@@ -590,52 +695,62 @@ $.widget('ui.editor',
             // Set the persistant position
             var pos = this.persist('position') || this.options.dialogPosition;
 
-            if (pos) {
-                if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
-                    pos[0] = $(window).height() - wrapper.outerHeight();
-                }
-                if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
-                    pos[1] = $(window).width() - wrapper.outerWidth();
-                }
-
-                wrapper.css({
-                    top: Math.abs(parseInt(pos[0])),
-                    left: Math.abs(parseInt(pos[1]))
-                });
+            if (!pos) {
+                pos = [10, 10];
             }
+
+            // <debug>
+            debug('Restoring toolbar position', this.getElement(), pos);
+            // </debug>
+
+            if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
+                pos[0] = $(window).height() - wrapper.outerHeight();
+            }
+            if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
+                pos[1] = $(window).width() - wrapper.outerWidth();
+            }
+
+            wrapper.css({
+                top: Math.abs(parseInt(pos[0])),
+                left: Math.abs(parseInt(pos[1]))
+            });
         }
 
         $(function() {
             wrapper.appendTo('body');
         });
 
-        this.bind('after:destroy', $.proxy(function() {
-            this.wrapper.remove();
-        }, this));
+        this.loadUi();
+    },
+
+    isToolbarLoaded: function() {
+        return this.wrapper !== null;
     },
 
     /**
-     * Show the toolbar for the current element
+     * Show the toolbar for the current element.
      * @param  {Range} [range] a native range to select after the toolbar has been shown
      */
     showToolbar: function(range) {
-        if (!this.options.show || this.reiniting) {
+        if (!this.isToolbarLoaded()) {
+            this.loadToolbar();
+        }
+
+        if (!this.visible) {
+            // <debug>
+            debug('Displaying toolbar', this.getElement());
+            // </debug>
+
             // If unify option is set, hide all other toolbars first
             if (this.options.unify) {
                 this.hideOtherToolbars(true);
-                // var otherEnabled = false;
-                // this.unify(function(editor) {
-                //     otherEnabled = otherEnabled || editor.options.show;
-                // });
-                // if (otherEnabled) {
-                //     this.unify(function(editor) {
-                //         editor.hideToolbar(true);
-                //     });
-                // }
             }
-            this.options.show = true;
+
+            // Store the visible state
+            this.visible = true;
 
             this.wrapper.css('display', '');
+
             this.fire('resize');
             if (typeof this.getElement().attr('tabindex') === 'undefined') {
                 this.getElement().attr('tabindex', -1);
@@ -660,8 +775,8 @@ $.widget('ui.editor',
      *
      */
     hideToolbar: function() {
-        if (this.options.show) {
-            this.options.show = false;
+        if (this.visible) {
+            this.visible = false;
             this.wrapper.hide();
             this.fire('hide');
             this.fire('resize');
@@ -675,6 +790,14 @@ $.widget('ui.editor',
         this.unify(function(editor) {
             editor.hideToolbar(instant);
         }, false);
+    },
+
+    /**
+     *
+     * @returns {boolean}
+     */
+    isVisible: function() {
+        return this.visible;
     },
 
     /*========================================================================*\
@@ -804,7 +927,7 @@ $.widget('ui.editor',
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiSet = this.options.uiOrder[i];
             // Each element of the UI order should be an array of UI which will be grouped
-            var uiGroup = $('<div/>');
+            var uiGroup = $('<div></div>');
 
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
@@ -844,6 +967,9 @@ $.widget('ui.editor',
 
                     // Append the UI object to the group
                     uiObject.ui.init(uiSet[j], this, options, uiObject).appendTo(uiGroup);
+
+                    // Add the UI object to the editors list
+                    this.uiObjects[uiSet[j]] = uiObject;
                 }
                 // <strict>
                 else {
@@ -861,7 +987,7 @@ $.widget('ui.editor',
                 uiGroup.appendTo(this.toolbar);
             }
         }
-        $('<div/>').css('clear', 'both').appendTo(this.toolbar);
+        $('<div></div>').css('clear', 'both').appendTo(this.toolbar);
     },
 
     /**
@@ -883,7 +1009,7 @@ $.widget('ui.editor',
                 if (!this.title) this.title = _('Unnamed Button');
 
                 // Create the HTML button
-                this.button = $('<div/>')
+                this.button = $('<div></div>')
                     .html(this.label || this.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
@@ -892,11 +1018,22 @@ $.widget('ui.editor',
 
                 if (options.classes) this.button.addClass(options.classes);
 
+                // Prevent losing the selection on the mouse down
+                this.button.bind('mousedown.' + object.editor.widgetName, function(e) {
+                    e.preventDefault();
+                });
+
                 // Bind the click event
-                this.button.bind('click.' + object.editor.widgetName, $.proxy(this.click, object));
+                var button = this;
+                this.button.bind('mouseup.' + object.editor.widgetName, function(e) {
+                    // Prevent losing the selection on the mouse up
+                    e.preventDefault();
+                    // Call the click event function
+                    button.click.apply(object, arguments);
+                });
 
                 editor.bind('destroy', $.proxy(function() {
-                    this.button.button('destory').remove();
+                    this.button.button('destroy').remove();
                 }, this));
 
                 // Create the jQuery UI button
@@ -909,6 +1046,8 @@ $.widget('ui.editor',
                     label: this.label || null
                 });
 
+                this.ready.call(object);
+
                 return this.button;
             },
             disable: function() {
@@ -916,6 +1055,8 @@ $.widget('ui.editor',
             },
             enable: function() {
                 this.button.button('option', 'disabled', false);
+            },
+            ready: function() {
             },
             click: function() {
             }
@@ -953,12 +1094,12 @@ $.widget('ui.editor',
                 // Default title if not set in plugin
                 if (!this.title) this.title = _('Unnamed Select Menu');
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>');
+                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"></div>');
 
                 ui.selectMenu.append(this.select.hide());
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>').hide().appendTo(this.selectMenu);
+                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"></div>').hide().appendTo(this.selectMenu);
                 ui.select.find('option').each(function() {
-                    var option = $('<div/>')
+                    var option = $('<div></div>')
                         .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
@@ -977,12 +1118,12 @@ $.widget('ui.editor',
                 });
 
 
-                var text = $('<div/>')
+                var text = $('<div></div>')
                     .addClass('ui-selectmenu-text');
-                var icon = $('<div/>')
+                var icon = $('<div></div>')
                     .addClass('ui-icon ui-icon-triangle-1-s');
-                ui.button = $('<div/>')
-                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button')
+                ui.button = $('<div></div>')
+                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button ui-button ui-state-default')
                     .attr('title', this.title)
                     .append(text)
                     .append(icon)
@@ -1024,8 +1165,7 @@ $.widget('ui.editor',
                 this.update();
                 return result;
             },
-            change: function(value) {
-
+            change: function() {
             }
         }, options);
     },
@@ -1090,7 +1230,7 @@ $.widget('ui.editor',
      * @returns {boolean}
      */
     isDirty: function() {
-        return this.getOriginalHtml() !== this.getCleanHtml();
+        return this.dirty;
     },
 
     /**
@@ -1100,7 +1240,7 @@ $.widget('ui.editor',
         var content = this.getElement().html();
 
         // Remove saved rangy ranges
-        content = $('<div/>').html(content);
+        content = $('<div></div>').html(content);
         content.find('.rangySelectionBoundary').remove();
         content = content.html();
 
@@ -1113,7 +1253,7 @@ $.widget('ui.editor',
         this.fire('restore');
 
         // Remove saved rangy ranges
-        content = $('<div/>').html(content);
+        content = $('<div></div>').html(content);
         content.find('.rangySelectionBoundary').remove();
         content = content.html();
 
@@ -1174,10 +1314,14 @@ $.widget('ui.editor',
         // <strict>
         if (!$.isFunction(callback)) handleError('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
         // </strict>
-        if (!this.events[name]) this.events[name] = [];
-        this.events[name].push({
-            context: context,
-            callback: callback
+        var events = this.events;
+        $.each(name.split(','), function(i, name) {
+            name = $.trim(name);
+            if (!events[name]) events[name] = [];
+            events[name].push({
+                context: context,
+                callback: callback
+            });
         });
     },
 
@@ -1229,41 +1373,6 @@ $.widget('ui.editor',
 
         // Fire after sub-event
         if (!sub) this.fire('after:' + name, global, true);
-    },
-
-    /*========================================================================*\
-     * Internationalisation
-    \*========================================================================*/
-    /**
-     * @returns {String}
-     */
-    getLocale: function() {
-        return $.ui.editor.currentLocale;
-    },
-
-    /**
-     * @param {String} key
-     */
-    setLocale: function(key) {
-        if ($.ui.editor.currentLocale !== key) {
-            $.ui.editor.currentLocale = key;
-            this.reinit();
-        }
-    },
-
-    /**
-     * @returns {String[]}
-     */
-    getLocales: function() {
-        return $.ui.editor.locales;
-    },
-
-    /**
-     * @param {String} key
-     * @returns {String}
-     */
-    getLocaleName: function(key) {
-        return $.ui.editor.localeNames[key];
     }
 
 });
@@ -1309,12 +1418,6 @@ $.extend($.ui.editor,
          * @type String
          */
         namespace: null,
-
-        /**
-         * The current locale of the editor
-         * @type String
-         */
-        locale: '',
 
         /**
          * Switch to indicated that some events should be automatically applied to all editors that are 'unified'
@@ -1449,6 +1552,12 @@ $.extend($.ui.editor,
      */
     getInstances: function() {
         return this.instances;
+    },
+
+    eachInstance: function(callback) {
+        for (var i = 0; i < this.instances.length; i++) {
+            callback.call(this.instances[i], this.instances[i]);
+        }
     },
 
     /*========================================================================*\
@@ -1763,8 +1872,6 @@ $.extend($.ui.editor,
             if (value === undefined) return storage[key];
             storage[key] = value;
             localStorage.uiWidgetEditor = JSON.stringify(storage);
-        } else if (!$.cookie) {
-            info('FIXME: use cookies');
         }
 
         return value;
