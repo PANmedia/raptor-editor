@@ -1,15 +1,22 @@
 /**
- * @property {String|null} currentLocale
+ * Editor internationalization (i18n) private functions and properties.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+
+/**
+ * @type String|null
  */
 var currentLocale = null;
 
 /**
- * @property {Object} locales
+ * @type Object
  */
 var locales = {};
 
 /**
- * @property {Object} localeNames
+ * @type Object
  */
 var localeNames = {};
 
@@ -30,6 +37,22 @@ function registerLocale(name, nativeName, strings) {
     locales[name] = strings;
     localeNames[name] = nativeName;
     if (!currentLocale) currentLocale = name;
+}
+
+/**
+ * @param {String} key
+ */
+function setLocale(key) {
+    if (currentLocale !== key) {
+        // <debug>
+        debug('Changing locale', key);
+        // </debug>
+
+        currentLocale = key;
+        $.ui.editor.eachInstance(function() {
+            this.reinit();
+        });
+    }
 }
 
 /**
