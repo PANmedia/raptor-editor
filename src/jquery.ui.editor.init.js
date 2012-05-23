@@ -32,7 +32,7 @@ var debugLevel = MIN;
  */
 function info() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('jQuery UI Editor');
+    args.unshift('Raptor Editor');
     console.info.apply(console, args);
 }
 
@@ -67,11 +67,9 @@ if (debugLevel >= MID) {
 
 if (debugLevel >= MAX) {
     info('TODO: dont fire events when editing is disabled');
-    info('TODO: use cookies when local storage is not available, or chosen by option');
     info('TODO: make a way to disable all buttons then selectivity enable ones');
     info('TODO: locale switches should affect all instances');
     info('FIXME: remove editor instance from instances array on destroy');
-    info('FIXME: Check for localStorage or use jQuery cookie');
     info('FIXME: updateTagTree click bindings');
     info('FIXME: updateTagTree should filter out duplicates');
     info('FIXME: Check for duplicate elements in getSelectedElements');
@@ -89,7 +87,8 @@ if (debugLevel >= MAX) {
  */
 function handleError(errorMessage) {
     if (console && console.error) {
-        console.error(errorMessage);
+        var args = Array.prototype.slice.call(arguments);
+        console.error.apply(console, args);
     } else {
         throw errorMessage;
     }
