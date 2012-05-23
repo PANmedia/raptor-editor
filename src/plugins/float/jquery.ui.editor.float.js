@@ -14,7 +14,7 @@
      * Toggles <tt>float: left</tt>
      */
     floatLeft: /** @lends $.editor.ui.floatLeft.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -27,7 +27,7 @@
             });
         }
     },
-    
+
     /**
      * @name $.editor.ui.floatRight
      * @augments $.ui.editor.defaultUi
@@ -36,7 +36,7 @@
      * Toggles <tt>float: right</tt>
      */
     floatRight: /** @lends $.editor.ui.floatRight.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -49,7 +49,7 @@
             });
         }
     },
-    
+
     /**
      * @name $.editor.ui.floatNone
      * @augments $.ui.editor.defaultUi
@@ -58,7 +58,7 @@
      * Toggles <tt>float: right</tt>
      */
     floatNone: /** @lends $.editor.ui.floatNone.prototype */ {
-        
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
