@@ -1,3 +1,8 @@
+/**
+ * Tag menu plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
 .ui-editor-wrapper .ui-editor-tag-select {
     height: 23px;
     top: -8px;
@@ -5,7 +10,7 @@
 }
 
 .ui-editor-wrapper .ui-editor-tag-select .ui-selectmenu-status {
-    font-size: 14px;
+    font-size: $font-size;
     line-height: 10px;
 }
 

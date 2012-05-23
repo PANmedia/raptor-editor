@@ -1,0 +1,13 @@
+/**
+ * Length plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.ui-editor-length-button .ui-icon-dashboard {
+    @include opacity(0.85);
+    background: inline-image('dashboard.png') 0 0;
+}
+
+.ui-editor-length-button:hover .ui-icon-dashboard {
+    @include opacity(1);
+}

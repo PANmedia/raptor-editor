@@ -1,10 +1,10 @@
 /**
- * History plugin
+ * Link plugin
  *
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/opacity";
+@import 'compass/css3/opacity';
 
 .ui-editor-link-button .ui-icon-link {
     @include opacity(0.85);
@@ -47,14 +47,14 @@
     fieldset {
         margin: 2px 4px;
         padding: 7px 4px;
-        font-size: 12px;
+        font-size: $font-size;
         label {
             display: block;
             margin-bottom: 10px;
             span {
                 display: inline-block;
                 width: 150px;
-                font-size: 12px;
+                font-size: $font-size;
                 vertical-align: top;
             }
         }
@@ -73,12 +73,12 @@
     position: relative;
     &.ui-editor-link-loading{
         &:after {
-            content: "Loading...";
+            content: 'Loading...';
             position: absolute;
             top: 60px;
             left: 200px;
             padding-left: 20px;
-            background: url(../../images/loading-small.png) no-repeat left center;
+            background: inline-image('loading-small.png') no-repeat left center;
         }
     }
     h2 {
@@ -87,10 +87,8 @@
     fieldset {
         margin: 2px 4px;
         padding: 7px 4px;
-        font-size: 12px;
-        label {
-        }
-        input[type="text"] {
+        font-size: $font-size;
+        input[type=text] {
             width: 400px;
         }
         &.ui-editor-external-href {

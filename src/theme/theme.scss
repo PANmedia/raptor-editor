@@ -1,21 +1,28 @@
-// Non styles
+/* Non styles */
 @import 'variables';
 @import 'mixins';
 
-// Base style
+/* Base style */
 @import 'layout';
 @import 'style';
+@import 'support';
 
-// Components
+/* Components */
 @import 'components/wrapper';
 @import 'components/path';
+@import 'components/selectmenu';
+@import 'components/button';
+@import 'components/support';
 
-// Plugins
+/* Plugins */
 @import 'plugins/alignment';
 @import 'plugins/basic';
+@import 'plugins/blockquote';
 @import 'plugins/clean';
 @import 'plugins/clicktoedit';
+@import 'plugins/debug';
 @import 'plugins/dock';
+@import 'plugins/embed';
 @import 'plugins/float';
 @import 'plugins/fontsize';
 @import 'plugins/guides';
@@ -23,6 +30,7 @@
 @import 'plugins/hr';
 @import 'plugins/i18n';
 @import 'plugins/imageresize';
+@import 'plugins/length';
 @import 'plugins/link';
 @import 'plugins/list';
 @import 'plugins/logo';
