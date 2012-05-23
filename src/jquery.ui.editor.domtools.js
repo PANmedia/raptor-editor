@@ -276,6 +276,7 @@ var domTools = {
      * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
      * If there is no block level elements before the limit, then the limit content
      * element will be wrapped with a "div"
+
      */
     toggleBlockStyle: function(styles, limit) {
         this.eachRange(function(range) {
@@ -403,7 +404,7 @@ var domTools = {
     },
 
     replaceRange: function(html, range) {
-        var nodes = $('<div/>').append(html)[0].childNodes;
+        var nodes = $('<div></div>').append(html)[0].childNodes;
         range.deleteContents();
         if (nodes.length === undefined || nodes.length === 1) {
             range.insertNode(nodes[0].cloneNode(true));
@@ -450,7 +451,7 @@ var domTools = {
             html = $('<' + tag + '>' + html + '</' + tag + '>');
             html.find('p').wrapInner('<' + tag + '/>');
             html.find('p > *').unwrap();
-            html = $('<div/>').html(html).html();
+            html = $('<div></div>').html(html).html();
         }
         return html;
     },
@@ -515,8 +516,8 @@ var domTools = {
         this.eachRange(function(range) {
             if (this.isEmpty(range)) {
                 // Apply to the whole element
-                this.expandRangeToParent(range);
-                this.changeRangeTag(range, tag);
+                this.expandToParent(range);
+                this.changeTag(range, tag);
             } else {
                 var content = range.extractContents();
                 this.replaceRange(this.domFragmentToHtml(content, tag), range);
@@ -525,6 +526,6 @@ var domTools = {
     },
 
     outerHtml: function(element) {
-        return $(element).clone().wrap('<div/>').parent().html();
+        return $(element).clone().wrap('<div></div>').parent().html();
     }
 };
