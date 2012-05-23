@@ -4,19 +4,20 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 $.ui.editor.registerUi({
-    
+
     /**
      * @name $.editor.plugin.tagMenu
      * @augments $.ui.editor.defaultPlugin
      * @class Select menu allowing users to change the tag for selection
      */
     tagMenu: /** @lends $.editor.plugin.tagMenu.prototype */ {
-    
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            editor.bind('change', this.change, this);
+            editor.bind('selectionChange', this.change, this);
+            editor.bind('show', this.change, this);
 
             return editor.uiSelectMenu({
                 name: 'tagMenu',
