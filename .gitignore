@@ -4,3 +4,4 @@
 /docs/
 /jsdoc.bat
 /dependencies
+*.sass-cache*
