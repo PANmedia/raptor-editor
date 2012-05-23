@@ -4,7 +4,7 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
  $.ui.editor.registerUi({
-    
+
     /**
      * @name $.editor.ui.i18n
      * @augments $.ui.editor.defaultUi
@@ -19,16 +19,17 @@
             var ui = this;
             var locale = this.persist('locale');
             if (locale) {
-                editor.setLocale(locale);
+                // @todo Move this to the global scope
+                setLocale(locale);
             }
 
             var menu = $('<select autocomplete="off" name="i18n"/>');
 
-            for (var key in editor.getLocales()) {
+            for (var key in locales) {
                 var option = $('<option value="' + key + '" class="' + key + '"/>');
-                option.html(editor.getLocaleName(key));
+                option.html(localeNames[key]);
 
-                if (editor.getLocale() === key) {
+                if (currentLocale === key) {
                     option.attr('selected', 'selected');
                 }
 
@@ -39,7 +40,7 @@
                 title: _('Change Language'),
                 select: menu,
                 change: function(value) {
-                    editor.setLocale(ui.persist('locale', value));
+                    setLocale(ui.persist('locale', value));
                 }
             });
         }
