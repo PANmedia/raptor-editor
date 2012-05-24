@@ -5,6 +5,8 @@
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
 @import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+@import 'compass/css3/user-interface';
 
 /******************************************************************************\
  * Editor toolbar
@@ -18,14 +20,11 @@
     .ui-editor-toolbar {
         padding: 6px 0 0 5px;
         overflow: visible;
-        @include display-box();
     }
 
     .ui-editor-toolbar,
     .ui-editor-toolbar * {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
+        @include user-select(none);
     }
 
     .ui-dialog-titlebar {
@@ -51,10 +50,8 @@
 
 .ui-editor-dock-docked-element {
     display: block !important;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
     border: 0 none transparent;
+    @include box-sizing(border-box);
 }
 
 
@@ -77,13 +74,8 @@
     }
 
     textarea {
-        -webkit-box-flex: 1;
-        -moz-box-flex: 1;
-        box-flex: 1;
-
-        display: -moz-box;
-        display: -webkit-box;
-        display: box;
+        @include display-box();
+        @include box-flex(1);
     }
 }
 

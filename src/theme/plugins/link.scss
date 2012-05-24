@@ -4,6 +4,7 @@
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
  */
+@import 'compass/css3/box';
 @import 'compass/css3/opacity';
 
 .ui-editor-link-button .ui-icon-link {
@@ -26,20 +27,15 @@
 
 /* Dialog */
 .ui-editor-link-panel .ui-editor-link-menu {
-
-    display: -moz-box;
-
-    -moz-box-orient: horizontal;
-    -webkit-box-orient: horizontal;
-    box-orient: horizontal;
-    -moz-box-flex: 2;
-    -webkit-box-flex: 2;
-    box-flex: 2;
-
     height: 100%;
     width: 200px;
     float: left;
     border-right: 1px dashed #D4D4D4;
+
+    @include display-box();
+    @include box-orient(horizontal);
+    @include box-flex(2);
+    
     p {
         font-weight: bold;
         margin: 12px 0;

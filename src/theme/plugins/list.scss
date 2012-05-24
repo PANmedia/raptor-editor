@@ -3,7 +3,7 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/opacity";
+@import 'compass/css3/opacity';
 
 .ui-editor-list-unordered-button .ui-icon-list-unordered {
     @include opacity(0.85);

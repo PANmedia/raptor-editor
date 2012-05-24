@@ -3,7 +3,7 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/border-radius";
+@import 'compass/css3/border-radius';
 
 .ui-editor-selectmenu {
     overflow: visible;
@@ -24,16 +24,21 @@
     }
 }
 
-
 .ui-editor-selectmenu-button .ui-button-text {
     padding: 0 25px 0 5px;
 }
 
 .ui-editor-selectmenu-menu {
     position: absolute;
+    display: none;
     top: 100%;
-    left: 0;
+    left: -1px;
     margin-top: -1px !important;
+}
+
+.ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {
+    display: block;
+    z-index: 1;
 }
 
 .ui-editor-selectmenu-menu-item {
@@ -54,19 +59,17 @@
     border: 1px solid transparent;
     cursor: pointer;
     background-color: inherit;
-    -webkit-appearance: normal;
-    -moz-appearance: normal;
-    appearance: normal;
 }
 
-
-.ui-editor-wrapper .ui-editor-buttonset .ui-selectmenu-button {
+.ui-editor-buttonset .ui-selectmenu-button {
     &:first-child {
-        @include border-top-left-radius();
-        @include border-bottom-left-radius();
+        @include border-left-radius();
     }
     &:last-child {
-        @include border-top-right-radius();
-        @include border-bottom-right-radius();
+        @include border-right-radius();
     }
+}
+
+.ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {
+    @include border-bottom-radius(0);
 }

@@ -3,7 +3,7 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/opacity";
+@import 'compass/css3/opacity';
 
 .ui-editor-undo-button .ui-icon-undo {
     @include opacity(0.85);

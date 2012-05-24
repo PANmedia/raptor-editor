@@ -4,6 +4,7 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 @import 'compass/css3/border-radius';
+@import 'compass/css3/box-sizing';
 
 .ui-editor-buttonset {
     float: left;
@@ -37,6 +38,7 @@
 
 .ui-editor-ff .ui-editor-buttonset {
     float: none;
+    vertical-align: top;
 }
 
 .ui-editor-wrapper {
@@ -45,9 +47,7 @@
         margin-bottom: 0;
         margin-top: 0;
         padding: 0;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
+    @include box-sizing(border-box);
     }
     .ui-button-icon-only { width: 32px; }
 }
