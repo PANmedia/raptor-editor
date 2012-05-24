@@ -29,7 +29,7 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - edit-underline.png
  - guide.png
  - image.png
- - pin-in.png
+ - pin-in.png (modified by David Neilsen)
  - pin.png
 
 Icons by Paul Robert Lloyd. Licensed under Creative Commons Attribution-ShareAlike 2.0 UK: England & Wales license. http://www.iconfinder.com/icondetails/43189/16/button_play_red_white_youtube_icon
