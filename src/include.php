@@ -16,7 +16,6 @@
         document.write('<link rel="stylesheet" href="<?php echo $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
     }
 </script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/jquery.cookie.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-core.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-serializer.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
@@ -30,7 +29,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.i18n.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.template.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
 
