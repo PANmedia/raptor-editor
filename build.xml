@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="Raptor" default="build">
-    <property file="build.properties" />
+    <if>
+        <not><equals arg1="${loaded}" arg2="true" /></not>
+        <then>
+            <property file="build.properties" override="false" />
+        </then>
+    </if>
 
     <!-- =================================================================== -->
     <!-- main build targets                                                  -->
@@ -29,7 +34,17 @@
     </target>
 
     <target name="0deps">
-        <property file="build.0deps.properties" />
+        <property file="build.0deps.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="light">
+        <property file="build.light.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="debug">
+        <property file="build.debug.properties" override="true" />
         <phingcall target="build" />
     </target>
 
