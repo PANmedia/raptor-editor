@@ -1,5 +1,5 @@
 /**
- * @fileOverview Incredible jQuery Raptor logo and usage statistics tracking
+ * @fileOverview Incredible Raptor logo and usage statistics tracking
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
@@ -8,9 +8,9 @@ $.ui.editor.registerUi({
     /**
      * @name $.editor.ui.logo
      * @augments $.ui.editor.defaultUi
-     * @class Displays an <em>amazing</em> jQuery Raptor logo, providing your users with both shock and awe.
+     * @class Displays an <em>amazing</em> Raptor logo, providing your users with both shock and awe.
      * <br/>
-     * Links back to the jQuery Raptor home page
+     * Links back to the Raptor home page
      */
     logo: /** @lends $.editor.ui.logo.prototype */ {
 
@@ -21,7 +21,7 @@ $.ui.editor.registerUi({
          */
         init: function(editor, options) {
             this.ui = this.editor.uiButton({
-                title: _('Learn More About the jQuery Raptor WYSIWYG Editor'),
+                title: _('Learn More About the Raptor WYSIWYG Editor'),
                 click: function() {
                     window.open('http://www.jquery-raptor.com/about/editors/', '_blank');
                 },
