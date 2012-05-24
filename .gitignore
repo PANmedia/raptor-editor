@@ -1,7 +1,2 @@
-/vendor/
-/packages/
-/build/
-/docs/
-/jsdoc.bat
-/dependencies
 *.sass-cache*
+/build/
