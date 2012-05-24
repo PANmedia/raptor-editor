@@ -3,7 +3,8 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/opacity";
+@import 'compass/css3/box';
+@import 'compass/css3/opacity';
 
 .ui-editor-dock-button .ui-icon-pin-s {
     @include opacity(0.85);
@@ -35,17 +36,9 @@
         right: 0;
         border-top: none;
 
-        display: -webkit-box;
-        display: -moz-box;
-        display: box;
-
-        -webkit-box-pack: center;
-        -moz-box-pack: center;
-        box-pack: center;
-
-        -webkit-box-align: center;
-        -moz-box-align: center;
-        box-align: center;
+        @include display-box();
+        @include box-pack(center);
+        @include box-align(center);
     }
 
     .ui-editor-path {
@@ -68,7 +61,7 @@
     color: inherit;
     font-family: inherit;
 }
-.ui-editor-dock-docked-to-element {
+.ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper {
     /* Removed fixed position from the editor */
     position: relative !important;
     top: auto !important;
@@ -83,21 +76,14 @@
     color: inherit;
     font-family: inherit;
 
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    box-orient: vertical;
+    @include display-box();
+    @include box-orient(vertical);
 
     .ui-editor-toolbar {
         margin: 0;
         z-index: 2;
 
-        -webkit-box-ordinal-group: 1;
-        -moz-box-ordinal-group: 1;
-        box-ordinal-group: 1;
+        @include box-ordinal-group(1);
     }
 
     .ui-editor-toolbar .ui-widget-header {
@@ -110,13 +96,8 @@
         border: 0 none;
         margin: 0;
 
-        -webkit-box-ordinal-group: 3;
-        -moz-box-ordinal-group: 3;
-        box-ordinal-group: 3;
-
-        -webkit-border-radius: 0px;
-        -moz-border-radius: 0px;
-        border-radius: 0px;
+        @include box-ordinal-group(3);
+        @include border-radius(0);
     }
 
     .ui-editor-messages {
@@ -131,9 +112,7 @@
     display: block;
     z-index: 1;
 
-    -webkit-box-ordinal-group: 2;
-    -moz-box-ordinal-group: 2;
-    box-ordinal-group: 2;
+    @include box-ordinal-group(2);
 }
 
 
@@ -153,11 +132,7 @@
     }
 
     .ui-editor-message-wrapper:first-child {
-        -webkit-border-top-left-radius: 0px;
-        -webkit-border-top-right-radius: 0px;
-        -moz-border-radius-topleft: 0px;
-        -moz-border-radius-topright: 0px;
-        border-top-left-radius: 0px;
-        border-top-right-radius: 0px;
+        @include border-top-right-radius(0);
+        @include border-top-left-radius(0);
     }
 }

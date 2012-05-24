@@ -3,7 +3,7 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/opacity";
+@import 'compass/css3/opacity';
 
 .ui-editor-quote-block-button .ui-icon-quote {
     @include opacity(0.85);

@@ -4,7 +4,9 @@
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/opacity";
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+@import 'compass/css3/opacity';
 
 .ui-editor-view-source-button .ui-icon-view-source {
     @include opacity(0.85);
@@ -17,32 +19,15 @@
 
 .ui-editor-ui-view-source .ui-dialog-content {
     overflow: auto;
-    width: 100%!important;
+    width: 100% !important;
 
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-flex: 1;
-
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    box-orient: vertical;
+    @include display-box();
+    @include box-flex(1);
+    @include box-sizing(border-box);
+    @include box-orient(vertical);
 
     textarea {
-
-        -webkit-box-flex: 1;
-        -moz-box-flex: 1;
-        box-flex: 1;
-
-        display: -moz-box;
-        display: -webkit-box;
-        display: box;
+        @include display-box();
+        @include box-flex(1);
     }
 }
