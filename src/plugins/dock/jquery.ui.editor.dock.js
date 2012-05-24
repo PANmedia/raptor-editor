@@ -131,42 +131,71 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         // </debug>
 
         // Needs to be in the ready event because we cant insert to the DOM before ready (if auto enabling, before ready)
-        $(function() {
-            var element = plugin.editor.getElement()
-                .addClass(plugin.options.baseClass + '-docked-element');
-            plugin.editor.wrapper
-                .addClass(plugin.options.baseClass + '-docked-to-element')
-                .insertBefore(plugin.editor.getElement())
-                .append(element);
-        });
-//        var wrapper = this.editor.wrapper
-//            .wrapAll('<div/>')
-//            .parent()
-//            .addClass(this.options.baseClass + '-docked-to-element-wrapper')
-//            .addClass('ui-widget-content');
-//
-//        this.previousStyle = this.swapStyle(wrapper, this.editor.getElement(), {
-//            'display': 'block',
-//            'float': 'none',
-//            'clear': 'none',
-//            'position': 'static',
-//            'margin-left': 0,
-//            'margin-right': 0,
-//            'margin-top': 0,
-//            'margin-bottom': 0,
-//            'outline': 0,
-//            'width': 'auto'
+//        $(function() {
+//            var element = plugin.editor.getElement()
+//                .addClass(plugin.options.baseClass + '-docked-element');
+//            plugin.editor.wrapper
+//                .addClass(plugin.options.baseClass + '-docked-to-element')
+//                .insertBefore(plugin.editor.getElement())
+//                .append(element);
 //        });
-//
-//        wrapper.css('width', wrapper.width() +
-//            parseInt(this.editor.getElement().css('padding-left'), 10) +
-//            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
-//            parseInt(this.editor.getElement().css('border-right-width')) +
-//            parseInt(this.editor.getElement().css('border-left-width')));*/
-//
-//        this.editor.getElement()
-//            .appendTo(this.editor.wrapper)
-//            .addClass(this.options.baseClass + '-docked-element');
+
+        var wrapper = $('<div/>')
+            .insertBefore(this.editor.getElement())
+            .addClass(this.options.baseClass + '-docked-to-element-wrapper');
+
+        this.editor.wrapper
+            .appendTo(wrapper);
+
+        this.previousStyle = this.swapStyle(wrapper, this.editor.getElement(), {
+            'display': 'block',
+            'float': 'none',
+            'clear': 'none',
+            'position': 'static',
+            'margin-left': 0,
+            'margin-right': 0,
+            'margin-top': 0,
+            'margin-bottom': 0,
+            'outline': 0,
+            'width': 'auto'
+        });
+
+//        plugin.editor.wrapper.css('display', '');
+
+        wrapper.css('width', wrapper.width() +
+            parseInt(this.editor.getElement().css('padding-left'), 10) +
+            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
+            parseInt(this.editor.getElement().css('border-right-width')) +
+            parseInt(this.editor.getElement().css('border-left-width')));*/
+
+        this.editor.getElement()
+            .appendTo(this.editor.wrapper)
+            .addClass(this.options.baseClass + '-docked-element');
+    },
+
+    /**
+     * Undock toolbar from editing element
+     */
+    undockFromElement: function() {
+        // <debug>
+        if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
+        // </debug>
+
+//        var wrapper = this.editor.wrapper.parent();
+
+        this.editor.getElement()
+            .insertAfter(this.editor.wrapper)
+            .removeClass(this.options.baseClass + '-docked-element');
+
+        this.editor.wrapper
+            .appendTo('body')
+            .removeClass(this.options.baseClass + '-docked-to-element');
+
+//        this.revertStyle(this.editor.getElement(), this.previousStyle);
+
+//        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
+
+//        wrapper.remove();
     },
 
     /**
@@ -228,31 +257,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             .addClass('ui-widget-header');
 
         this.showSpacers();
-    },
-
-    /**
-     * Undock toolbar from editing element
-     */
-    undockFromElement: function() {
-        // <debug>
-        if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
-        // </debug>
-
-//        var wrapper = this.editor.wrapper.parent();
-
-        this.editor.getElement()
-            .insertAfter(this.editor.wrapper)
-            .removeClass(this.options.baseClass + '-docked-element');
-
-        this.editor.wrapper
-            .appendTo('body')
-            .removeClass(this.options.baseClass + '-docked-to-element');
-
-//        this.revertStyle(this.editor.getElement(), this.previousStyle);
-
-//        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
-
-//        wrapper.remove();
     },
 
     /**
