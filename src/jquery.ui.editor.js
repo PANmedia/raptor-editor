@@ -136,8 +136,10 @@ $.widget('ui.editor',
 
         // Automaticly enable the editor if autoEnable is true
         if (this.options.autoEnable) {
-            this.enableEditing();
-            this.showToolbar();
+            $(function() {
+                currentInstance.enableEditing();
+                currentInstance.showToolbar();
+            });
         }
     },
 
@@ -227,7 +229,7 @@ $.widget('ui.editor',
         if (this.target) return;
 
         // Create the replacement div
-        var target = $('<div></div>')
+        var target = $('<div/>')
             // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
             .html(this.element.is(':input') ? this.element.val() : this.element.html())
             // Insert the div before the origianl element
@@ -644,16 +646,16 @@ $.widget('ui.editor',
         debug('Loading toolbar', this.getElement());
         // </debug>
 
-        var toolbar = this.toolbar = $('<div></div>')
+        var toolbar = this.toolbar = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar');
-        var toolbarWrapper = this.toolbarWrapper = $('<div></div>')
+        var toolbarWrapper = this.toolbarWrapper = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar-wrapper')
             .append(toolbar);
-        var path = this.path = $('<div></div>')
+        var path = this.path = $('<div/>')
             .addClass(this.options.baseClass + '-path')
             .addClass('ui-widget-header')
             .html(this.getTemplate('root'));
-        var wrapper = this.wrapper = $('<div></div>')
+        var wrapper = this.wrapper = $('<div/>')
             .addClass(this.options.baseClass + '-wrapper')
             .addClass('ui-widget-content')
             .css('display', 'none')
@@ -766,8 +768,11 @@ $.widget('ui.editor',
                 }
             }
 
-            this.fire('show');
-            this.getElement().focus();
+            var editor = this;
+            $(function() {
+                editor.fire('show');
+                editor.getElement().focus();
+            });
         }
     },
 
@@ -927,7 +932,7 @@ $.widget('ui.editor',
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiSet = this.options.uiOrder[i];
             // Each element of the UI order should be an array of UI which will be grouped
-            var uiGroup = $('<div></div>');
+            var uiGroup = $('<div/>');
 
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
@@ -987,7 +992,7 @@ $.widget('ui.editor',
                 uiGroup.appendTo(this.toolbar);
             }
         }
-        $('<div></div>').css('clear', 'both').appendTo(this.toolbar);
+        $('<div/>').css('clear', 'both').appendTo(this.toolbar);
     },
 
     /**
@@ -1009,7 +1014,7 @@ $.widget('ui.editor',
                 if (!this.title) this.title = _('Unnamed Button');
 
                 // Create the HTML button
-                this.button = $('<div></div>')
+                this.button = $('<div/>')
                     .html(this.label || this.title)
                     .addClass(options.baseClass)
                     .attr('name', name)
@@ -1092,14 +1097,14 @@ $.widget('ui.editor',
                 }, ui.options, editor.options.ui[name]);
 
                 // Default title if not set in plugin
-                if (!this.title) this.title = _('Unnamed Select Menu');
+                if (!ui.title) ui.title = _('Unnamed Select Menu');
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"></div>');
+                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>');
 
-                ui.selectMenu.append(this.select.hide());
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"></div>').hide().appendTo(this.selectMenu);
+                ui.selectMenu.append(ui.select.hide());
+                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>');
                 ui.select.find('option').each(function() {
-                    var option = $('<div></div>')
+                    var option = $('<div/>')
                         .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
@@ -1110,51 +1115,39 @@ $.widget('ui.editor',
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
                             ui.update();
-                            ui.menu.stop().hide();
+                            ui.selectMenu.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
                             ui.change(ui.select.val());
+                            return false;
                         });
                 });
 
 
-                var text = $('<div></div>')
+                var text = $('<div/>')
                     .addClass('ui-selectmenu-text');
-                var icon = $('<div></div>')
+                var icon = $('<div/>')
                     .addClass('ui-icon ui-icon-triangle-1-s');
-                ui.button = $('<div></div>')
+                ui.button = $('<div/>')
                     .addClass('ui-selectmenu-button ui-editor-selectmenu-button ui-button ui-state-default')
-                    .attr('title', this.title)
+                    .attr('title', ui.title)
                     .append(text)
                     .append(icon)
-                    .prependTo(this.selectMenu);
+                    .append(ui.select)
+                    .append(ui.menu)
+                    .prependTo(ui.selectMenu);
 
-                var click = function() {
-                    if (!ui.menu.is(':animated')) {
-                        if (ui.menu.is(':visible')) {
-                            ui.menu.stop().slideUp(function() {
-                                ui.button.addClass('ui-corner-all')
-                                         .removeClass('ui-corner-top');
-                            });
-                        } else {
-                            ui.menu.css('min-width', ui.button.width() + 10);
-                            ui.menu.stop().slideDown();
-                            ui.button.removeClass('ui-corner-all')
-                                     .addClass('ui-corner-top');
-                        }
-                    }
-                };
-
-                ui.button.bind('click.' + editor.widgetName, click);
+                ui.button.bind('click.' + editor.widgetName, function() {
+                    ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                    console.log(ui.menu.css('min-width'));
+                    ui.selectMenu.toggleClass('ui-editor-selectmenu-visible');
+                    return false;
+                });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
                 ui.button.find('.ui-selectmenu-text').html(selected);
 
-                editor.bind('destroy', function() {
-                    ui.selectMenu.remove();
-                });
-
-                return this.selectMenu;
+                return ui.selectMenu;
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
@@ -1240,7 +1233,7 @@ $.widget('ui.editor',
         var content = this.getElement().html();
 
         // Remove saved rangy ranges
-        content = $('<div></div>').html(content);
+        content = $('<div/>').html(content);
         content.find('.rangySelectionBoundary').remove();
         content = content.html();
 
@@ -1253,7 +1246,7 @@ $.widget('ui.editor',
         this.fire('restore');
 
         // Remove saved rangy ranges
-        content = $('<div></div>').html(content);
+        content = $('<div/>').html(content);
         content.find('.rangySelectionBoundary').remove();
         content = content.html();
 
