@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="jQuery Raptor" default="build">
+<project name="Raptor" default="build">
     <property file="build.properties" />
 
     <!-- =================================================================== -->
@@ -15,20 +15,22 @@
         <phingcall target="compile" />
         <phingcall target="merge" />
         <phingcall target="package" />
+        <phingcall target="gz" />
     </target>
 
-    <target name="testbuild">
+    <target name="test-build">
         <echo>${phing.project.name}</echo>
         <echo>${project.basedir}</echo>
-        <echo>${packagepath}</echo>
-        <echo>${buildpath}</echo>
+        <echo>${dir.package}</echo>
+        <echo>${dir.build}</echo>
         <echo>${strip.blocks}</echo>
         <echo>${theme}</echo>
         <echo>${plugins}</echo>
     </target>
 
-    <target name="theme">
-        <exec command="sass --compass theme.scss theme.css" logoutput="true" dir="src/theme" />
+    <target name="0deps">
+        <property file="build.0deps.properties" />
+        <phingcall target="build" />
     </target>
 
     <!-- =================================================================== -->
@@ -53,7 +55,7 @@
     </target>
 
     <target name="dev-clone">
-        <copy todir="${buildpath}" >
+        <copy todir="${dir.build}" >
             <fileset dir="src">
                 <include name="**/*" />
                 <exclude name="dependencies/**" />
@@ -65,15 +67,14 @@
     <!-- Prepare for build                                                   -->
     <!-- =================================================================== -->
     <target name="clean">
-        <delete dir="${buildpath}" includeemptydirs="true" failonerror="true" />
-        <delete dir="${packagepath}" includeemptydirs="true" failonerror="true" />
-        <mkdir dir="${buildpath}" />
-        <mkdir dir="${packagepath}" />
+        <delete dir="${dir.build}" includeemptydirs="true" failonerror="true" />
+        <mkdir dir="${dir.build}" />
+        <mkdir dir="${dir.package}" />
     </target>
 
     <target name="clone" depends="theme">
         <!-- Copy all source files excluding plugins -->
-        <copy todir="${buildpath}" >
+        <copy todir="${dir.build}" >
             <fileset dir="src">
                 <include name="**/*" />
                 <exclude name="**/*.php" />
@@ -83,7 +84,7 @@
                 <exclude name="jquery.ui.editor.loader.js" />
             </fileset>
         </copy>
-        <copy todir="${buildpath}" >
+        <copy todir="${dir.build}" >
             <fileset dir="src">
                 <include name="theme/theme.css" />
             </fileset>
@@ -95,7 +96,7 @@
 
     <target name="clone-plugin">
         <echo>${plugin}</echo>
-        <copy todir="${buildpath}" >
+        <copy todir="${dir.build}" >
             <fileset dir="src">
                 <include name="plugins/${plugin}/**" />
             </fileset>
@@ -112,7 +113,7 @@
     <target name="strip-blocks">
         <echo>Stripping blocks ${strip.blocks}</echo>
         <reflexive>
-            <fileset dir="${buildpath}">
+            <fileset dir="${dir.build}">
                 <include pattern="**/*" />
             </fileset>
             <filterchain>
@@ -133,7 +134,7 @@
     <target name="version">
         <echo>Replacing version token ${version}</echo>
         <reflexive>
-            <fileset dir="${buildpath}">
+            <fileset dir="${dir.build}">
                 <include pattern="**/*" />
             </fileset>
             <filterchain>
@@ -154,36 +155,36 @@
         <!-- Rangy -->
         <if><istrue value="${rangy}" /><then>
             <copy file="${dir.deps}/rangy/rangy-core.js"
-                  tofile="${buildpath}/01-rangy-core.js" />
+                  tofile="${dir.build}/01-rangy-core.js" />
             <copy file="${dir.deps}/rangy/rangy-cssclassapplier.js"
-                  tofile="${buildpath}/02-rangy-cssclassapplier.js" />
+                  tofile="${dir.build}/02-rangy-cssclassapplier.js" />
             <copy file="${dir.deps}/rangy/rangy-selectionsaverestore.js"
-                  tofile="${buildpath}/03-rangy-selectionsaverestore.js" />
+                  tofile="${dir.build}/03-rangy-selectionsaverestore.js" />
             <copy file="${dir.deps}/rangy/rangy-serializer.js"
-                  tofile="${buildpath}/04-rangy-serializer.js" />
+                  tofile="${dir.build}/04-rangy-serializer.js" />
         </then></if>
 
         <!-- jQuery -->
         <if><istrue value="${jquery}" /><then>
             <copy file="${dir.deps}/jquery.js"
-                  tofile="${buildpath}/05-jquery.js" />
+                  tofile="${dir.build}/05-jquery.js" />
         </then></if>
 
         <!-- jQuery UI -->
         <if><istrue value="${jquery-ui}" /><then>
             <copy file="${dir.deps}/jquery-ui.js"
-                  tofile="${buildpath}/06-jquery-ui.js" />
+                  tofile="${dir.build}/06-jquery-ui.js" />
         </then></if>
 
         <!-- Raptorize -->
         <if><istrue value="${raptorize}" /><then>
             <copy file="${dir.deps}/raptorize/jquery.raptorize.js"
-                  tofile="${buildpath}/10-raptorize.js" />
+                  tofile="${dir.build}/10-raptorize.js" />
         </then></if>
 
         <!-- CSS -->
         <if><istrue value="${jquery-ui-theme}" /><then>
-            <copy todir="${buildpath}/01-theme">
+            <copy todir="${dir.build}/01-theme">
                 <fileset dir=".">
                     <include name="${dir.deps}/themes/${theme}/jquery-ui.css" />
                     <include name="${dir.deps}/themes/${theme}/images/**/*" />
@@ -193,13 +194,20 @@
     </target>
 
     <!-- =================================================================== -->
+    <!-- Compile theme                                                       -->
+    <!-- =================================================================== -->
+    <target name="theme">
+        <exec command="sass --compass theme.scss theme.css" logoutput="true" dir="src/theme" />
+    </target>
+
+    <!-- =================================================================== -->
     <!-- Convert images to data URIs                                         -->
     <!-- =================================================================== -->
     <target name="datauri">
         <datauri>
             <fileset dir=".">
-                <include name="${buildpath}/*.css" />
-                <include name="${buildpath}/**/*.css" />
+                <include name="${dir.build}/*.css" />
+                <include name="${dir.build}/**/*.css" />
             </fileset>
         </datauri>
     </target>
@@ -210,14 +218,14 @@
     <target name="template">
         <template name="templates">
             <fileset dir=".">
-                <include name="${buildpath}/*.html" />
-                <include name="${buildpath}/**/*.html" />
+                <include name="${dir.build}/*.html" />
+                <include name="${dir.build}/**/*.html" />
             </fileset>
         </template>
 
         <reflexive>
             <fileset dir=".">
-                <include name="${buildpath}/jquery.ui.editor.js" />
+                <include name="${dir.build}/jquery.ui.editor.js" />
             </fileset>
             <filterchain>
                 <!-- Escape quotes -->
@@ -234,12 +242,12 @@
     <target name="combine" depends="datauri,template,open-wrapper">
         <sortedfileset name="jsfiles">
             <fileset dir=".">
-                <exclude name="${buildpath}/concat.js" />
-                <include name="${buildpath}/*.js" />
-                <include name="${buildpath}/**/*.js" />
+                <exclude name="${dir.build}/concat.js" />
+                <include name="${dir.build}/*.js" />
+                <include name="${dir.build}/**/*.js" />
             </fileset>
         </sortedfileset>
-        <append destFile="${buildpath}/concat.js">
+        <append destFile="${dir.build}/concat.js">
             <filelist dir="." files="${jsfiles}" />
         </append>
 
@@ -247,19 +255,19 @@
         <if>
             <istrue value="${wrapper}" />
             <then>
-                <echo file="${buildpath}/concat.js" append="true">})(jQuery, window, rangy);</echo>
+                <echo file="${dir.build}/concat.js" append="true">})(jQuery, window, rangy);</echo>
             </then>
         </if>
 
         <sortedfileset name="cssfiles">
             <fileset dir=".">
-                <exclude name="${buildpath}/concat.css" />
-                <include name="${buildpath}/*.css" />
-                <include name="${buildpath}/**/*.css" />
+                <exclude name="${dir.build}/concat.css" />
+                <include name="${dir.build}/*.css" />
+                <include name="${dir.build}/**/*.css" />
             </fileset>
         </sortedfileset>
         <echo>${cssfiles}</echo>
-        <append destFile="${buildpath}/concat.css">
+        <append destFile="${dir.build}/concat.css">
             <filelist dir="." files="${cssfiles}" />
         </append>
     </target>
@@ -269,7 +277,7 @@
         <if>
             <istrue value="${wrapper}" />
             <then>
-                <echo file="${buildpath}/99-wrapper-open.js">(function($, window, rangy, undefined) {</echo>
+                <echo file="${dir.build}/99-wrapper-open.js">(function($, window, rangy, undefined) {</echo>
             </then>
         </if>
     </target>
@@ -281,25 +289,25 @@
         <if>
             <istrue value="${compile-js}" />
             <then>
-                <echo>closure --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js</echo>
-                <exec command="closure ${closure-options} --js ${buildpath}/concat.js --js_output_file ${buildpath}/concat.min.js"
+                <echo>closure --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js</echo>
+                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js"
                       dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
             </then>
             <else>
-                <move file="${buildpath}/concat.js" tofile="${buildpath}/concat.min.js" />
+                <move file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
             </else>
         </if>
         <if>
             <istrue value="${compile-css}" />
             <then>
-                <echo>yui-compressor --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css</echo>
-                <exec command="yui-compressor --type css -o ${buildpath}/concat.min.css ${buildpath}/concat.css"
+                <echo>yui-compressor --type css -o ${dir.build}/concat.min.css ${dir.build}/concat.css</echo>
+                <exec command="yui-compressor --type css -o ${dir.build}/concat.min.css ${dir.build}/concat.css"
                       dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
             </then>
             <else>
-                <move file="${buildpath}/concat.css" tofile="${buildpath}/concat.min.css" />
+                <move file="${dir.build}/concat.css" tofile="${dir.build}/concat.min.css" />
             </else>
         </if>
     </target>
@@ -309,31 +317,31 @@
     <!-- =================================================================== -->
     <target name="merge">
         <!-- Append VERSION file in a comment -->
-        <echo file="${buildpath}/merge.js" append="true">/*! VERSION: ${version} </echo>
+        <echo file="${dir.build}/merge.js" append="true">/*! VERSION: ${version} </echo>
         <!-- Append a new line -->
-        <echo file="${buildpath}/merge.js" append="true">
+        <echo file="${dir.build}/merge.js" append="true">
         </echo>
         <!-- Append LICENCE file in the same comment -->
-        <append destFile="${buildpath}/merge.js">
+        <append destFile="${dir.build}/merge.js">
             <fileset dir=".">
-                <include name="${buildpath}/LICENCE" />
+                <include name="${dir.build}/LICENCE" />
             </fileset>
         </append>
-        <echo file="${buildpath}/merge.js" append="true">*/</echo>
+        <echo file="${dir.build}/merge.js" append="true">*/</echo>
         <!-- Close the comment -->
 
         <!-- Append the merged JS -->
-        <append destFile="${buildpath}/merge.js">
+        <append destFile="${dir.build}/merge.js">
             <fileset dir=".">
-                <include name="${buildpath}/concat.min.js" />
+                <include name="${dir.build}/concat.min.js" />
             </fileset>
         </append>
 
         <!-- Append the style inserter -->
-        <echo file="${buildpath}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
 
         <reflexive>
-            <fileset dir="${buildpath}">
+            <fileset dir="${dir.build}">
                 <include pattern="concat.min.css" />
             </fileset>
             <filterchain>
@@ -344,31 +352,25 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <append destFile="${buildpath}/merge.js">
+        <append destFile="${dir.build}/merge.js">
             <fileset dir=".">
-                <include name="${buildpath}/concat.min.css" />
+                <include name="${dir.build}/concat.min.css" />
             </fileset>
         </append>
-        <echo file="${buildpath}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
     </target>
 
     <!-- =================================================================== -->
     <!-- Package files                                                       -->
     <!-- =================================================================== -->
     <target name="package">
-        <mkdir dir="${packagepath}" />
-        <copy file="${buildpath}/merge.js" tofile="${packagepath}/${filename}" />
-        <echo>${packagepath}/${filename}</echo>
+        <mkdir dir="${dir.package}" />
+        <copy file="${dir.build}/merge.js" tofile="${dir.package}/${filename}" />
+        <echo>${dir.package}/${filename}</echo>
     </target>
 
-    <target name="targz">
-        <!--
-        <tar destfile="${packagepath}/${filename}.tar.gz" compression="gzip">
-            <fileset dir="${packagepath}">
-                <include name="${filename}" />
-            </fileset>
-        </tar>
-        -->
+    <target name="gz">
+        <exec command="cat ${dir.package}/${filename} | gzip -9 -c > ${dir.package}/${filename}.gz" />
     </target>
 
     <!-- =================================================================== -->
