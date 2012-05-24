@@ -650,6 +650,7 @@ $.widget('ui.editor',
             .addClass(this.options.baseClass + '-toolbar');
         var toolbarWrapper = this.toolbarWrapper = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar-wrapper')
+            .addClass('ui-widget-content')
             .append(toolbar);
         var path = this.path = $('<div/>')
             .addClass(this.options.baseClass + '-path')
@@ -657,7 +658,6 @@ $.widget('ui.editor',
             .html(this.getTemplate('root'));
         var wrapper = this.wrapper = $('<div/>')
             .addClass(this.options.baseClass + '-wrapper')
-            .addClass('ui-widget-content')
             .css('display', 'none')
             .append(path)
             .append(toolbarWrapper);
@@ -1139,7 +1139,6 @@ $.widget('ui.editor',
 
                 ui.button.bind('click.' + editor.widgetName, function() {
                     ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                    console.log(ui.menu.css('min-width'));
                     ui.selectMenu.toggleClass('ui-editor-selectmenu-visible');
                     return false;
                 });
