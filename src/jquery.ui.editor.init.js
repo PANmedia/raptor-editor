@@ -135,10 +135,9 @@ $('html').click(function(event) {
     var parent = $(event.target).parents('.ui-editor-selectmenu');
     $('.ui-editor-selectmenu-menu').each(function() {
         if ($(this).parent()[0] !== parent[0]) {
-            $(this).hide();
-            $(this).parent().find('.ui-editor-selectmenu-button')
-                .removeClass('ui-corner-top')
-                .addClass('ui-corner-all');
+            $(this)
+                .closest('.ui-editor-selectmenu-visible')
+                .removeClass('ui-editor-selectmenu-visible');
         }
     });
 });
