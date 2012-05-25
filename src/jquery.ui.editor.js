@@ -1099,10 +1099,15 @@ $.widget('ui.editor',
                 // Default title if not set in plugin
                 if (!ui.title) ui.title = _('Unnamed Select Menu');
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>');
+                ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
+                    .append(ui.select.hide());
 
-                ui.selectMenu.append(ui.select.hide());
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>');
+                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>')
+                    .appendTo(ui.wrapper);
+
+                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
+                    .appendTo(ui.wrapper);
+
                 ui.select.find('option').each(function() {
                     var option = $('<div/>')
                         .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
@@ -1115,7 +1120,7 @@ $.widget('ui.editor',
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
                             ui.update();
-                            ui.selectMenu.removeClass('ui-editor-selectmenu-visible');
+                            ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
                             ui.change(ui.select.val());
@@ -1133,20 +1138,18 @@ $.widget('ui.editor',
                     .attr('title', ui.title)
                     .append(text)
                     .append(icon)
-                    .append(ui.select)
-                    .append(ui.menu)
                     .prependTo(ui.selectMenu);
 
                 ui.button.bind('click.' + editor.widgetName, function() {
                     ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                    ui.selectMenu.toggleClass('ui-editor-selectmenu-visible');
+                    ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                     return false;
                 });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
                 ui.button.find('.ui-selectmenu-text').html(selected);
 
-                return ui.selectMenu;
+                return ui.wrapper;
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
