@@ -214,12 +214,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-buttonset {
   float: left;
   margin: 0 5px 4px 0;
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  -webkit-box-orient: horizontal;
-  -moz-box-orient: horizontal;
-  box-orient: horizontal; }
+  display: inline-block; }
   .ui-editor-buttonset > .ui-button {
     font-size: 13px;
     display: block;

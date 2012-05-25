@@ -33077,12 +33077,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-buttonset {\n\
   float: left;\n\
   margin: 0 5px 4px 0;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: box;\n\
-  -webkit-box-orient: horizontal;\n\
-  -moz-box-orient: horizontal;\n\
-  box-orient: horizontal; }\n\
+  display: inline-block; }\n\
   .ui-editor-buttonset > .ui-button {\n\
     font-size: 13px;\n\
     display: block;\n\
