@@ -112,9 +112,6 @@ $.widget('ui.editor',
             this.options.replace = false;
         }
 
-        // Load the message display widget
-        this.loadMessages();
-
         // Attach core events
         this.attach();
 
@@ -643,7 +640,7 @@ $.widget('ui.editor',
         // </strict>
 
         // <debug>
-        debug('Loading toolbar', this.getElement());
+        if (debugLevel >= MID) debug('Loading toolbar', this.getElement());
         // </debug>
 
         var toolbar = this.toolbar = $('<div/>')
@@ -664,7 +661,7 @@ $.widget('ui.editor',
 
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
-            debug('Initialising toolbar dragging', this.getElement());
+            if (debugLevel >= MID) debug('Initialising toolbar dragging', this.getElement());
             // </debug>
 
             wrapper.draggable({
@@ -686,7 +683,7 @@ $.widget('ui.editor',
                     });
 
                     // <debug>
-                    debug('Saving toolbar position', this.getElement(), pos);
+                    if (debugLevel >= MID) debug('Saving toolbar position', this.getElement(), pos);
                     // </debug>
                 }, this)
             });
@@ -702,7 +699,7 @@ $.widget('ui.editor',
             }
 
             // <debug>
-            debug('Restoring toolbar position', this.getElement(), pos);
+            if (debugLevel >= MID) debug('Restoring toolbar position', this.getElement(), pos);
             // </debug>
 
             if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
@@ -716,6 +713,9 @@ $.widget('ui.editor',
                 top: Math.abs(parseInt(pos[0])),
                 left: Math.abs(parseInt(pos[1]))
             });
+
+            // Load the message display widget
+            this.loadMessages();
         }
 
         $(function() {
@@ -740,7 +740,7 @@ $.widget('ui.editor',
 
         if (!this.visible) {
             // <debug>
-            debug('Displaying toolbar', this.getElement());
+            if (debugLevel >= MID) debug('Displaying toolbar', this.getElement());
             // </debug>
 
             // If unify option is set, hide all other toolbars first
