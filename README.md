@@ -14,7 +14,7 @@ Instantiating the Raptor editor with no options (zero configuration) results in 
     $('#element-to-edit').editor();
 </script>
 ```
-
+- - -
 To learn more about how to use Raptor, see: [Raptor Editor][^1]. 
 The site also contains extensive [documentation][^2], and some [examples][^5]. 
 
