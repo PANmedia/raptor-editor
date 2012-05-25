@@ -120,10 +120,11 @@
  * Messages
  */
 .ui-editor-dock-docked .ui-editor-messages {
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    margin: 0 -400px 10px;
     padding: 0;
-    margin: 0 auto 10px;
-    width: 100%;
     text-align: left;
 
     .ui-editor-message-wrapper {

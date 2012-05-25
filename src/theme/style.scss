@@ -4,9 +4,6 @@
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
-@import 'compass/css3/border-radius';
-@import 'compass/css3/box-shadow';
-@import 'compass/css3/images';
 
 /******************************************************************************\
  * Inputs
@@ -29,64 +26,4 @@
 
 html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {
     margin-top: 0!important;
-}
-
-/******************************************************************************\
- * Messages
-\******************************************************************************/
-.ui-editor-messages {
-    .ui-editor-message-close {
-        cursor: pointer;
-    }
-
-    .ui-editor-message-wrapper {
-        @include box-shadow(
-            inset 0 -1px 1px rgba(0,0,0,0.35),    /*top internal highlight*/
-            inset 0 1px 2px rgba(255,255,255,0.5) /*bottom internal shadow*/
-        );
-    }
-
-    &:first-child {
-        @include border-top-right-radius();
-        @include border-top-left-radius();
-    }
-
-    &:last-child {
-        @include border-bottom-right-radius();
-        @include border-bottom-left-radius();
-    }
-
-    /* Error */
-    .ui-editor-message-circle-close {
-        /* Red */
-        @include background(linear-gradient(top, #ff5d4b, #fa1c1c));
-    }
-
-    /* Confirm */
-    .ui-editor-message-circle-check {
-        /* Green */
-        @include background(linear-gradient(top, #cdeb8e, #a5c956));
-    }
-
-    /* Information */
-    .ui-editor-message-info {
-        /* Blue */
-        @include background(linear-gradient(top, #a9e4f7, #0fb4e7));
-    }
-
-    /* Warning */
-    .ui-editor-message-alert {
-        /* Yellow */
-        @include background(linear-gradient(top, #ffd65e, #febf04));
-    }
-
-    /* Loading */
-    .ui-editor-message-clock {
-        /* Purple */
-        @include background(linear-gradient(top, #fb83fa, #e93cec));
-    }
-
-    .ui-editor-message-clock .ui-icon.ui-icon-clock {
-        background: transparent inline-image('loading-small.png') no-repeat center center;
-    }
 }
