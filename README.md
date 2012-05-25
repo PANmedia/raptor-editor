@@ -1,9 +1,9 @@
-jQuery Raptor
+Raptor Editor
 ---------------
 
-To learn more about how to use jQuery Raptor, please visit [www.jqueryraptor.com][^1].
+To learn more about how to use Raptor, please visit [www.raptoreditor.com][^1].
 
-Documenation can be found at [www.jqueryraptor.com/docs][^2].
+Documentation can be found at [www.raptoreditor.com/docs][^2].
 
 [^1]: http://jqueryraptor.com/ (Download, usage examples and documentation)
-[^2]: http://jqueryraptor.com/docs (jQuery Raptor documentation)
+[^2]: http://jqueryraptor.com/docs (Raptor documentation)
