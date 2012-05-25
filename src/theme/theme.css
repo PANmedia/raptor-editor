@@ -150,8 +150,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-selectmenu-menu {
   position: absolute;
   display: none;
-  top: 100%;
-  left: -1px;
   margin-top: -1px !important; }
 
 .ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {
@@ -163,17 +161,15 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   margin: 3px;
   z-index: 1;
   text-align: left;
-  font-size: 13px; }
+  font-size: 13px;
+  font-weight: normal !important;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background-color: inherit; }
 
 .ui-selectmenu-button {
   background: #f5f5f5;
   border: 1px solid #ccc; }
-
-.ui-editor-selectmenu-menu-item {
-  font-weight: normal;
-  border: 1px solid transparent;
-  cursor: pointer;
-  background-color: inherit; }
 
 .ui-editor-buttonset .ui-selectmenu-button:first-child {
   -moz-border-radius-topleft: 5px;
@@ -756,6 +752,45 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-embed-button:hover .ui-icon-youtube {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1; }
+
+.ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  height: 100%;
+  width: 100%; }
+  .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-box;
+    display: box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -ms-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-box-flex: 1;
+    box-flex: 1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div > p:first-child {
+      padding-top: 10px; }
+    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div textarea {
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-box;
+      display: box;
+      -webkit-box-flex: 4;
+      -moz-box-flex: 4;
+      -ms-box-flex: 4;
+      box-flex: 4; }
 
 /**
  * Float block plugin
