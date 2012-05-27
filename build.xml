@@ -197,6 +197,22 @@
                   tofile="${dir.build}/10-raptorize.js" />
         </then></if>
 
+        <!-- Rainbow -->
+        <if><istrue value="${rainbow}" /><then>
+            <copy file="dependencies/rainbow/rainbow.js"
+                  tofile="${buildpath}/11-rainbow.js" />
+            <copy file="dependencies/rainbow/language/html.js"
+                  tofile="${buildpath}/12-rainbow-language-html.js" />
+            <copy file="dependencies/rainbow/themes/github.css"
+                  tofile="${buildpath}/02-theme/rainbow.css" />
+        </then></if>
+
+        <!-- HTML Parser -->
+        <if><istrue value="${htmlparser}" /><then>
+            <copy file="dependencies/jquery-html-parser.js"
+                  tofile="${buildpath}/12-jquery-html-parser.js" />
+        </then></if>
+
         <!-- CSS -->
         <if><istrue value="${jquery-ui-theme}" /><then>
             <copy todir="${dir.build}/01-theme">
