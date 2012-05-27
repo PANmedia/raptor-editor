@@ -20,6 +20,13 @@ The site also contains extensive [documentation][^2], and some [examples][^5].
 
 For license information see the  [Raptor Editor license][^3] page.
 
+- - - 
+
+See the following links for information on build & contributing to Raptor:
+
+* [Building Raptor](https://github.com/PANmedia/Raptor/wiki/Building)
+* [Contributing to Raptor](https://github.com/PANmedia/Raptor/wiki/Contributing)
+
 [^1]: http://jqueryraptor.com/ (Download, usage examples and documentation)
 [^2]: http://jqueryraptor.com/docs (Raptor documentation)
 [^3]: http://jqueryraptor.com/license (Raptor license)
