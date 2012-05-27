@@ -214,6 +214,9 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.top = this.editor.toolbarWrapper.css('top');
         this.editor.toolbarWrapper.css('top', top);
         this.editor.wrapper.addClass(this.options.baseClass + '-docked');
+
+        // Position message wrapper below the toolbar
+        this.editor.messages.css('top', top + this.editor.toolbar.outerHeight());
     },
 
     /**
@@ -247,10 +250,15 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         }
 
         // Change the dock button icon & title
-        this.editor.wrapper
+        var button = this.editor.wrapper
             .find('.' + this.options.baseClass + '-button')
-            .button({icons: {primary: 'ui-icon-pin-w'}})
-            .attr('title', this.getTitle());
+            .button({icons: {primary: 'ui-icon-pin-w'}});
+
+        if (button.attr('title')) {
+            button.attr('title', this.getTitle());
+        } else {
+            button.attr('data-title', this.getTitle());
+        }
 
         // Add the header class to the editor toolbar
         this.editor.toolbar.find('.' + this.editor.options.baseClass + '-inner')
@@ -273,10 +281,15 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             .removeClass('ui-widget-header');
 
         // Change the dock button icon & title
-        this.editor.wrapper
+        var button = this.editor.wrapper
             .find('.' + this.options.baseClass + '-button')
-            .button({icons: {primary: 'ui-icon-pin-s'}})
-            .attr('title', this.getTitle());
+            .button({icons: {primary: 'ui-icon-pin-s'}});
+
+        if (button.attr('title')) {
+            button.attr('title', this.getTitle());
+        } else {
+            button.attr('data-title', this.getTitle());
+        }
 
         if (this.options.dockToElement) this.undockFromElement();
         else this.undockFromBody();

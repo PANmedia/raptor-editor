@@ -1,4 +1,4 @@
-phing 0deps
-phing light
-phing debug
-phing 
+call phing 0deps
+call phing light
+call phing debug
+call phing 

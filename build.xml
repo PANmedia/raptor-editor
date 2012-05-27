@@ -12,6 +12,7 @@
     <!-- =================================================================== -->
     <target name="build">
         <phingcall target="clean" />
+        <phingcall target="theme" />
         <phingcall target="clone" />
         <phingcall target="strip-blocks" />
         <phingcall target="version" />

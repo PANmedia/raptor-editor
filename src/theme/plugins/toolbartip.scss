@@ -29,7 +29,7 @@
     );
 }
 
-.ui-editor-wrapper [title]:hover:after {
+.ui-editor-wrapper [data-title]:hover:after {
     opacity: 1;
 }
 
