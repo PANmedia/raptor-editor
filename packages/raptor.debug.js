@@ -26399,9 +26399,6 @@ $.widget('ui.editor',
             this.options.replace = false;
         }
 
-        // Load the message display widget
-        this.loadMessages();
-
         // Attach core events
         this.attach();
 
@@ -26930,13 +26927,14 @@ $.widget('ui.editor',
         // </strict>
 
         // <debug>
-        debug('Loading toolbar', this.getElement());
+        if (debugLevel >= MID) debug('Loading toolbar', this.getElement());
         // </debug>
 
         var toolbar = this.toolbar = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar');
         var toolbarWrapper = this.toolbarWrapper = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar-wrapper')
+            .addClass('ui-widget-content')
             .append(toolbar);
         var path = this.path = $('<div/>')
             .addClass(this.options.baseClass + '-path')
@@ -26944,14 +26942,13 @@ $.widget('ui.editor',
             .html(this.getTemplate('root'));
         var wrapper = this.wrapper = $('<div/>')
             .addClass(this.options.baseClass + '-wrapper')
-            .addClass('ui-widget-content')
             .css('display', 'none')
             .append(path)
             .append(toolbarWrapper);
 
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
-            debug('Initialising toolbar dragging', this.getElement());
+            if (debugLevel >= MID) debug('Initialising toolbar dragging', this.getElement());
             // </debug>
 
             wrapper.draggable({
@@ -26973,7 +26970,7 @@ $.widget('ui.editor',
                     });
 
                     // <debug>
-                    debug('Saving toolbar position', this.getElement(), pos);
+                    if (debugLevel >= MID) debug('Saving toolbar position', this.getElement(), pos);
                     // </debug>
                 }, this)
             });
@@ -26989,7 +26986,7 @@ $.widget('ui.editor',
             }
 
             // <debug>
-            debug('Restoring toolbar position', this.getElement(), pos);
+            if (debugLevel >= MID) debug('Restoring toolbar position', this.getElement(), pos);
             // </debug>
 
             if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
@@ -27003,6 +27000,9 @@ $.widget('ui.editor',
                 top: Math.abs(parseInt(pos[0])),
                 left: Math.abs(parseInt(pos[1]))
             });
+
+            // Load the message display widget
+            this.loadMessages();
         }
 
         $(function() {
@@ -27027,7 +27027,7 @@ $.widget('ui.editor',
 
         if (!this.visible) {
             // <debug>
-            debug('Displaying toolbar', this.getElement());
+            if (debugLevel >= MID) debug('Displaying toolbar', this.getElement());
             // </debug>
 
             // If unify option is set, hide all other toolbars first
@@ -27386,10 +27386,15 @@ $.widget('ui.editor',
                 // Default title if not set in plugin
                 if (!ui.title) ui.title = _('Unnamed Select Menu');
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>');
+                ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
+                    .append(ui.select.hide());
 
-                ui.selectMenu.append(ui.select.hide());
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>');
+                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>')
+                    .appendTo(ui.wrapper);
+
+                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
+                    .appendTo(ui.wrapper);
+
                 ui.select.find('option').each(function() {
                     var option = $('<div/>')
                         .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
@@ -27402,7 +27407,7 @@ $.widget('ui.editor',
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
                             ui.update();
-                            ui.selectMenu.removeClass('ui-editor-selectmenu-visible');
+                            ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
                             ui.change(ui.select.val());
@@ -27420,20 +27425,18 @@ $.widget('ui.editor',
                     .attr('title', ui.title)
                     .append(text)
                     .append(icon)
-                    .append(ui.select)
-                    .append(ui.menu)
                     .prependTo(ui.selectMenu);
 
                 ui.button.bind('click.' + editor.widgetName, function() {
                     ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                    ui.selectMenu.toggleClass('ui-editor-selectmenu-visible');
+                    ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                     return false;
                 });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
                 ui.button.find('.ui-selectmenu-text').html(selected);
 
-                return ui.selectMenu;
+                return ui.wrapper;
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
@@ -29023,6 +29026,9 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.top = this.editor.toolbarWrapper.css('top');
         this.editor.toolbarWrapper.css('top', top);
         this.editor.wrapper.addClass(this.options.baseClass + '-docked');
+
+        // Position message wrapper below the toolbar
+        this.editor.messages.css('top', top + this.editor.toolbar.outerHeight());
     },
 
     /**
@@ -29056,10 +29062,15 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         }
 
         // Change the dock button icon & title
-        this.editor.wrapper
+        var button = this.editor.wrapper
             .find('.' + this.options.baseClass + '-button')
-            .button({icons: {primary: 'ui-icon-pin-w'}})
-            .attr('title', this.getTitle());
+            .button({icons: {primary: 'ui-icon-pin-w'}});
+
+        if (button.attr('title')) {
+            button.attr('title', this.getTitle());
+        } else {
+            button.attr('data-title', this.getTitle());
+        }
 
         // Add the header class to the editor toolbar
         this.editor.toolbar.find('.' + this.editor.options.baseClass + '-inner')
@@ -29082,10 +29093,15 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             .removeClass('ui-widget-header');
 
         // Change the dock button icon & title
-        this.editor.wrapper
+        var button = this.editor.wrapper
             .find('.' + this.options.baseClass + '-button')
-            .button({icons: {primary: 'ui-icon-pin-s'}})
-            .attr('title', this.getTitle());
+            .button({icons: {primary: 'ui-icon-pin-s'}});
+
+        if (button.attr('title')) {
+            button.attr('title', this.getTitle());
+        } else {
+            button.attr('data-title', this.getTitle());
+        }
 
         if (this.options.dockToElement) this.undockFromElement();
         else this.undockFromBody();
@@ -32867,7 +32883,8 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
   position: fixed; }\n\
   .ui-editor-wrapper .ui-editor-toolbar {\n\
     padding: 6px 0 0 5px;\n\
-    overflow: visible; }\n\
+    overflow: visible;\n\
+    text-align: center; }\n\
   .ui-editor-wrapper .ui-editor-toolbar,\n\
   .ui-editor-wrapper .ui-editor-toolbar * {\n\
     -webkit-user-select: none;\n\
@@ -32955,86 +32972,6 @@ html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.u
 html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
   margin-top: 0!important; }\n\
 \n\
-/******************************************************************************\\n\
- * Messages\n\
-\******************************************************************************/\n\
-.ui-editor-messages {\n\
-  /* Error */\n\
-  /* Confirm */\n\
-  /* Information */\n\
-  /* Warning */\n\
-  /* Loading */ }\n\
-  .ui-editor-messages .ui-editor-message-close {\n\
-    cursor: pointer; }\n\
-  .ui-editor-messages .ui-editor-message-wrapper {\n\
-    -webkit-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
-    -moz-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
-    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5); }\n\
-  .ui-editor-messages:first-child {\n\
-    -moz-border-radius-topright: 5px;\n\
-    -webkit-border-top-right-radius: 5px;\n\
-    -ms-border-top-right-radius: 5px;\n\
-    -o-border-top-right-radius: 5px;\n\
-    border-top-right-radius: 5px;\n\
-    -moz-border-radius-topleft: 5px;\n\
-    -webkit-border-top-left-radius: 5px;\n\
-    -ms-border-top-left-radius: 5px;\n\
-    -o-border-top-left-radius: 5px;\n\
-    border-top-left-radius: 5px; }\n\
-  .ui-editor-messages:last-child {\n\
-    -moz-border-radius-bottomright: 5px;\n\
-    -webkit-border-bottom-right-radius: 5px;\n\
-    -ms-border-bottom-right-radius: 5px;\n\
-    -o-border-bottom-right-radius: 5px;\n\
-    border-bottom-right-radius: 5px;\n\
-    -moz-border-radius-bottomleft: 5px;\n\
-    -webkit-border-bottom-left-radius: 5px;\n\
-    -ms-border-bottom-left-radius: 5px;\n\
-    -o-border-bottom-left-radius: 5px;\n\
-    border-bottom-left-radius: 5px; }\n\
-  .ui-editor-messages .ui-editor-message-circle-close {\n\
-    /* Red */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff5d4b), color-stop(100%, #fa1c1c));\n\
-    background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -o-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -ms-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
-  .ui-editor-messages .ui-editor-message-circle-check {\n\
-    /* Green */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cdeb8e), color-stop(100%, #a5c956));\n\
-    background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -o-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -ms-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
-  .ui-editor-messages .ui-editor-message-info {\n\
-    /* Blue */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a9e4f7), color-stop(100%, #0fb4e7));\n\
-    background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -o-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -ms-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
-  .ui-editor-messages .ui-editor-message-alert {\n\
-    /* Yellow */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffd65e), color-stop(100%, #febf04));\n\
-    background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -o-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -ms-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: linear-gradient(top, #ffd65e, #febf04); }\n\
-  .ui-editor-messages .ui-editor-message-clock {\n\
-    /* Purple */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fb83fa), color-stop(100%, #e93cec));\n\
-    background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -o-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -ms-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: linear-gradient(top, #fb83fa, #e93cec); }\n\
-  .ui-editor-messages .ui-editor-message-clock .ui-icon.ui-icon-clock {\n\
-    background: transparent url(\'data:image/png;base64,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\') no-repeat center center; }\n\
-\n\
 /* Components */\n\
 /**\n\
  * Toolbar/path selection bar wrapper\n\
@@ -33076,8 +33013,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-selectmenu-menu {\n\
   position: absolute;\n\
   display: none;\n\
-  top: 100%;\n\
-  left: -1px;\n\
   margin-top: -1px !important; }\n\
 \n\
 .ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {\n\
@@ -33089,17 +33024,15 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   margin: 3px;\n\
   z-index: 1;\n\
   text-align: left;\n\
-  font-size: 13px; }\n\
+  font-size: 13px;\n\
+  font-weight: normal !important;\n\
+  border: 1px solid transparent;\n\
+  cursor: pointer;\n\
+  background-color: inherit; }\n\
 \n\
 .ui-selectmenu-button {\n\
   background: #f5f5f5;\n\
   border: 1px solid #ccc; }\n\
-\n\
-.ui-editor-selectmenu-menu-item {\n\
-  font-weight: normal;\n\
-  border: 1px solid transparent;\n\
-  cursor: pointer;\n\
-  background-color: inherit; }\n\
 \n\
 .ui-editor-buttonset .ui-selectmenu-button:first-child {\n\
   -moz-border-radius-topleft: 5px;\n\
@@ -33244,6 +33177,88 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   padding: 10px;\n\
   background-color: white;\n\
   border: 1px solid #777; }\n\
+\n\
+/**\n\
+ * Message widget styles\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-messages {\n\
+  /* Error */\n\
+  /* Confirm */\n\
+  /* Information */\n\
+  /* Warning */\n\
+  /* Loading */ }\n\
+  .ui-editor-messages .ui-editor-message-close {\n\
+    cursor: pointer; }\n\
+  .ui-editor-messages .ui-editor-message-wrapper {\n\
+    -webkit-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
+    -moz-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
+    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5); }\n\
+  .ui-editor-messages:first-child {\n\
+    -moz-border-radius-topright: 5px;\n\
+    -webkit-border-top-right-radius: 5px;\n\
+    -ms-border-top-right-radius: 5px;\n\
+    -o-border-top-right-radius: 5px;\n\
+    border-top-right-radius: 5px;\n\
+    -moz-border-radius-topleft: 5px;\n\
+    -webkit-border-top-left-radius: 5px;\n\
+    -ms-border-top-left-radius: 5px;\n\
+    -o-border-top-left-radius: 5px;\n\
+    border-top-left-radius: 5px; }\n\
+  .ui-editor-messages:last-child {\n\
+    -moz-border-radius-bottomright: 5px;\n\
+    -webkit-border-bottom-right-radius: 5px;\n\
+    -ms-border-bottom-right-radius: 5px;\n\
+    -o-border-bottom-right-radius: 5px;\n\
+    border-bottom-right-radius: 5px;\n\
+    -moz-border-radius-bottomleft: 5px;\n\
+    -webkit-border-bottom-left-radius: 5px;\n\
+    -ms-border-bottom-left-radius: 5px;\n\
+    -o-border-bottom-left-radius: 5px;\n\
+    border-bottom-left-radius: 5px; }\n\
+  .ui-editor-messages .ui-editor-message-circle-close {\n\
+    /* Red */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff5d4b), color-stop(100%, #fa1c1c));\n\
+    background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: -o-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: -ms-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
+  .ui-editor-messages .ui-editor-message-circle-check {\n\
+    /* Green */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cdeb8e), color-stop(100%, #a5c956));\n\
+    background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: -o-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: -ms-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
+  .ui-editor-messages .ui-editor-message-info {\n\
+    /* Blue */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a9e4f7), color-stop(100%, #0fb4e7));\n\
+    background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: -o-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: -ms-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
+  .ui-editor-messages .ui-editor-message-alert {\n\
+    /* Yellow */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffd65e), color-stop(100%, #febf04));\n\
+    background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: -o-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: -ms-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: linear-gradient(top, #ffd65e, #febf04); }\n\
+  .ui-editor-messages .ui-editor-message-clock {\n\
+    /* Purple */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fb83fa), color-stop(100%, #e93cec));\n\
+    background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: -o-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: -ms-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: linear-gradient(top, #fb83fa, #e93cec); }\n\
+  .ui-editor-messages .ui-editor-message-clock .ui-icon.ui-icon-clock {\n\
+    background: transparent url(\'data:image/png;base64,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\') no-repeat center center; }\n\
 \n\
 /* Plugins */\n\
 /**\n\
@@ -33566,10 +33581,11 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * Messages\n\
  */\n\
 .ui-editor-dock-docked .ui-editor-messages {\n\
-  position: absolute;\n\
+  position: fixed;\n\
+  top: 0;\n\
+  left: 50%;\n\
+  margin: 0 -400px 10px;\n\
   padding: 0;\n\
-  margin: 0 auto 10px;\n\
-  width: 100%;\n\
   text-align: left; }\n\
   .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper {\n\
     width: 800px;\n\
@@ -33599,6 +33615,45 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-embed-button:hover .ui-icon-youtube {\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
   opacity: 1; }\n\
+\n\
+.ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs {\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical;\n\
+  height: 100%;\n\
+  width: 100%; }\n\
+  .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div {\n\
+    display: -webkit-box;\n\
+    display: -moz-box;\n\
+    display: -ms-box;\n\
+    display: box;\n\
+    -webkit-box-orient: vertical;\n\
+    -moz-box-orient: vertical;\n\
+    -ms-box-orient: vertical;\n\
+    box-orient: vertical;\n\
+    -webkit-box-flex: 1;\n\
+    -moz-box-flex: 1;\n\
+    -ms-box-flex: 1;\n\
+    box-flex: 1;\n\
+    -webkit-box-sizing: border-box;\n\
+    -moz-box-sizing: border-box;\n\
+    box-sizing: border-box; }\n\
+    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div > p:first-child {\n\
+      padding-top: 10px; }\n\
+    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div textarea {\n\
+      display: -webkit-box;\n\
+      display: -moz-box;\n\
+      display: -ms-box;\n\
+      display: box;\n\
+      -webkit-box-flex: 4;\n\
+      -moz-box-flex: 4;\n\
+      -ms-box-flex: 4;\n\
+      box-flex: 4; }\n\
 \n\
 /**\n\
  * Float block plugin\n\
@@ -34048,7 +34103,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0; }\n\
 \n\
-.ui-editor-wrapper [title]:hover:after {\n\
+.ui-editor-wrapper [data-title]:hover:after {\n\
   opacity: 1; }\n\
 \n\
 .ui-editor-wrapper .ui-editor-select-element {\n\

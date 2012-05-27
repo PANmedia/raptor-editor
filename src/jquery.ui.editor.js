@@ -112,9 +112,6 @@ $.widget('ui.editor',
             this.options.replace = false;
         }
 
-        // Load the message display widget
-        this.loadMessages();
-
         // Attach core events
         this.attach();
 
@@ -643,7 +640,7 @@ $.widget('ui.editor',
         // </strict>
 
         // <debug>
-        debug('Loading toolbar', this.getElement());
+        if (debugLevel >= MID) debug('Loading toolbar', this.getElement());
         // </debug>
 
         var toolbar = this.toolbar = $('<div/>')
@@ -664,7 +661,7 @@ $.widget('ui.editor',
 
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
-            debug('Initialising toolbar dragging', this.getElement());
+            if (debugLevel >= MID) debug('Initialising toolbar dragging', this.getElement());
             // </debug>
 
             wrapper.draggable({
@@ -686,7 +683,7 @@ $.widget('ui.editor',
                     });
 
                     // <debug>
-                    debug('Saving toolbar position', this.getElement(), pos);
+                    if (debugLevel >= MID) debug('Saving toolbar position', this.getElement(), pos);
                     // </debug>
                 }, this)
             });
@@ -702,7 +699,7 @@ $.widget('ui.editor',
             }
 
             // <debug>
-            debug('Restoring toolbar position', this.getElement(), pos);
+            if (debugLevel >= MID) debug('Restoring toolbar position', this.getElement(), pos);
             // </debug>
 
             if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
@@ -716,6 +713,9 @@ $.widget('ui.editor',
                 top: Math.abs(parseInt(pos[0])),
                 left: Math.abs(parseInt(pos[1]))
             });
+
+            // Load the message display widget
+            this.loadMessages();
         }
 
         $(function() {
@@ -740,7 +740,7 @@ $.widget('ui.editor',
 
         if (!this.visible) {
             // <debug>
-            debug('Displaying toolbar', this.getElement());
+            if (debugLevel >= MID) debug('Displaying toolbar', this.getElement());
             // </debug>
 
             // If unify option is set, hide all other toolbars first
@@ -1099,10 +1099,15 @@ $.widget('ui.editor',
                 // Default title if not set in plugin
                 if (!ui.title) ui.title = _('Unnamed Select Menu');
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>');
+                ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
+                    .append(ui.select.hide());
 
-                ui.selectMenu.append(ui.select.hide());
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>');
+                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>')
+                    .appendTo(ui.wrapper);
+
+                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
+                    .appendTo(ui.wrapper);
+
                 ui.select.find('option').each(function() {
                     var option = $('<div/>')
                         .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
@@ -1115,7 +1120,7 @@ $.widget('ui.editor',
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
                             ui.update();
-                            ui.selectMenu.removeClass('ui-editor-selectmenu-visible');
+                            ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
                             ui.change(ui.select.val());
@@ -1133,20 +1138,18 @@ $.widget('ui.editor',
                     .attr('title', ui.title)
                     .append(text)
                     .append(icon)
-                    .append(ui.select)
-                    .append(ui.menu)
                     .prependTo(ui.selectMenu);
 
                 ui.button.bind('click.' + editor.widgetName, function() {
                     ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                    ui.selectMenu.toggleClass('ui-editor-selectmenu-visible');
+                    ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                     return false;
                 });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
                 ui.button.find('.ui-selectmenu-text').html(selected);
 
-                return ui.selectMenu;
+                return ui.wrapper;
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
