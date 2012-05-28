@@ -1,6 +1,4 @@
-<?php
-    $uri = isset($uri) ? $uri : '/jquery-raptor/';
-?>
+<?php $uri = isset($uri) ? $uri : '/jquery-raptor/'; ?>
 
 <!-- Libraries -->
 <script type="text/javascript">
