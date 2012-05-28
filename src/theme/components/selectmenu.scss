@@ -11,7 +11,6 @@
 }
 
 .ui-editor-selectmenu-button {
-    position: relative;
     text-align: left;
     padding: 3px 18px 5px 5px !important;
     .ui-icon {
@@ -22,6 +21,10 @@
     .ui-selectmenu-text {
         font-size: $font-size;
     }
+}
+
+.ui-editor-selectmenu-wrapper {
+    position: relative;
 }
 
 .ui-editor-selectmenu-button .ui-button-text {
