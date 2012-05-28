@@ -200,18 +200,18 @@
 
         <!-- Rainbow -->
         <if><istrue value="${rainbow}" /><then>
-            <copy file="dependencies/rainbow/rainbow.js"
-                  tofile="${buildpath}/11-rainbow.js" />
-            <copy file="dependencies/rainbow/language/html.js"
-                  tofile="${buildpath}/12-rainbow-language-html.js" />
-            <copy file="dependencies/rainbow/themes/github.css"
-                  tofile="${buildpath}/02-theme/rainbow.css" />
+            <copy file="${dir.deps}/rainbow/rainbow.js"
+                  tofile="${dir.build}/11-rainbow.js" />
+            <copy file="${dir.deps}/rainbow/language/html.js"
+                  tofile="${dir.build}/12-rainbow-language-html.js" />
+            <copy file="${dir.deps}/rainbow/themes/github.css"
+                  tofile="${dir.build}/02-theme/rainbow.css" />
         </then></if>
 
         <!-- HTML Parser -->
         <if><istrue value="${htmlparser}" /><then>
-            <copy file="dependencies/jquery-html-parser.js"
-                  tofile="${buildpath}/12-jquery-html-parser.js" />
+            <copy file="${dir.deps}/html-parser/html-parser.js"
+                  tofile="${dir.build}/12-jquery-html-parser.js" />
         </then></if>
 
         <!-- CSS -->
