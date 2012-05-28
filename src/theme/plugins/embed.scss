@@ -36,6 +36,7 @@
         }
 
         textarea {
+
             @include display-box();
             @include box-flex(4);
         }

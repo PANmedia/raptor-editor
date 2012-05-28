@@ -11,7 +11,6 @@
 }
 
 .ui-editor-selectmenu-button {
-    position: relative;
     text-align: left;
     padding: 3px 18px 5px 5px !important;
     .ui-icon {
@@ -24,12 +23,19 @@
     }
 }
 
+.ui-editor-selectmenu-wrapper {
+    position: relative;
+}
+
 .ui-editor-selectmenu-button .ui-button-text {
     padding: 0 25px 0 5px;
 }
 
 .ui-editor-selectmenu-menu {
     position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
     display: none;
     margin-top: -1px !important;
 }
