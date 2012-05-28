@@ -3,6 +3,8 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
 @import 'compass/css3/opacity';
 
 .ui-editor-embed-button .ui-icon-youtube {
@@ -34,7 +36,6 @@
         }
 
         textarea {
-
             @include display-box();
             @include box-flex(4);
         }
