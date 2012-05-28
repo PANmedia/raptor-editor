@@ -33,6 +33,9 @@
 
 .ui-editor-selectmenu-menu {
     position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
     display: none;
     margin-top: -1px !important;
 }
