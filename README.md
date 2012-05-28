@@ -1,9 +1,34 @@
-jQuery Raptor
+Raptor Editor
 ---------------
+- - -
 
-To learn more about how to use jQuery Raptor, please visit [www.jqueryraptor.com][^1].
+Raptor Editor is a HTML5, WYSIWYG website content editor - check out the [Demo][^4].
 
-Documenation can be found at [www.jqueryraptor.com/docs][^2].
+**It is designed to be user and developer friendly**
+
+Instantiating the Raptor editor with no options (zero configuration) results in all buttons and plugins being enabled. This is the quickest and easiest way to see Raptor in action.
+
+```HTML
+<div id="element-to-edit"></div>
+<script type="text/javascript>
+    $('#element-to-edit').editor();
+</script>
+```
+- - -
+To learn more about how to use Raptor, see: [Raptor Editor][^1]. 
+The site also contains extensive [documentation][^2], and some [examples][^5]. 
+
+For license information see the  [Raptor Editor license][^3] page.
+
+- - - 
+
+See the following links for information on build & contributing to Raptor:
+
+* [Building Raptor](https://github.com/PANmedia/Raptor/wiki/Building)
+* [Contributing to Raptor](https://github.com/PANmedia/Raptor/wiki/Contributing)
 
 [^1]: http://jqueryraptor.com/ (Download, usage examples and documentation)
-[^2]: http://jqueryraptor.com/docs (jQuery Raptor documentation)
+[^2]: http://jqueryraptor.com/docs (Raptor documentation)
+[^3]: http://jqueryraptor.com/license (Raptor license)
+[^4]: http://www.raptor-editor.com/demo (Raptor Editor Demo)
+[^5]: http://www.raptor-editor.com/demo/docking (Raptor Editor Examples)

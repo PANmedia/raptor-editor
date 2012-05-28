@@ -33,14 +33,14 @@
     border-right: 1px dashed #D4D4D4;
 
     @include display-box();
-    @include box-orient(horizontal);
-    @include box-flex(2);
-    
+    @include box-orient(vertical);
+
     p {
         font-weight: bold;
-        margin: 12px 0;
+        margin: 12px 0 8px;
     }
     fieldset {
+        @include box-flex(2);
         margin: 2px 4px;
         padding: 7px 4px;
         font-size: $font-size;

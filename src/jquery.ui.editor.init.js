@@ -132,12 +132,6 @@ $(function() {
 
 // Select menu close event (triggered when clicked off)
 $('html').click(function(event) {
-    var parent = $(event.target).parents('.ui-editor-selectmenu');
-    $('.ui-editor-selectmenu-menu').each(function() {
-        if ($(this).parent()[0] !== parent[0]) {
-            $(this)
-                .closest('.ui-editor-selectmenu-visible')
-                .removeClass('ui-editor-selectmenu-visible');
-        }
-    });
+    $('.ui-editor-selectmenu-visible')
+        .removeClass('ui-editor-selectmenu-visible');
 });
