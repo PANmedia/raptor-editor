@@ -95,7 +95,6 @@
                     tidiedHtml += "<!--" + text + "-->";
                 }
             });
-
             return tidiedHtml;
         },
 
@@ -110,12 +109,11 @@
                     element = $(element);
 
                     var code = element.find('code:first');
-                    console.log(code);
+
                     code.unbind('keydown keyup');
                     code.attr('contenteditable', true);
 
                     Rainbow.color(html, 'html', function(highlightedHtml) {
-
                         code.html(highlightedHtml);
                         element.show();
 
@@ -165,18 +163,28 @@
                             }
                         });
 
+                        var keydown = false;
+                        code.bind('keydown', function() {
+                            keydown = true;
+                        });
+
                         code.bind('keyup', function() {
-                            if (previousContent == code.html()) {
-                                return true;
-                            }
-                            try {
-                                var untidyHtml = ui.untidyHtml(code.html());
-                                if ($('<div/>').html(untidyHtml).html() == untidyHtml) {
-                                    highlight(element, untidyHtml, ui);
+                            keydown = false;
+                            window.setTimeout(function() {
+                                if (!keydown) {
+                                    if (previousContent == code.html()) {
+                                        return true;
+                                    }
+                                    try {
+                                        var untidyHtml = ui.untidyHtml(code.html());
+                                        if ($('<div/>').html(untidyHtml).html() == untidyHtml) {
+                                            highlight(element, untidyHtml, ui);
+                                        }
+                                    } catch (e) {
+                                        console.log('error');
+                                    }
                                 }
-                            } catch (e) {
-                                console.log('error');
-                            }
+                            }, 5000);
                         });
                     });
 

@@ -1306,13 +1306,31 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1; }
 
-.ui-editor-ui-view-source .ui-dialog-content {
-  overflow: auto;
-  width: 100% !important;
+.ui-editor-ui-view-source .ui-editor-ui-view-source-dialog {
+  overflow: auto; }
+
+.ui-editor-ui-view-source-highlighted,
+.ui-editor-ui-view-source-plain-text {
+  height: 100%;
+  width: 100%;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-box;
   display: box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical; }
+
+code, textarea {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -ms-box-flex: 1;
@@ -1320,16 +1338,12 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  -ms-box-orient: vertical;
-  box-orient: vertical; }
-  .ui-editor-ui-view-source .ui-dialog-content textarea {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-box;
-    display: box;
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -ms-box-flex: 1;
-    box-flex: 1; }
+  white-space: normal;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1; }
