@@ -134,7 +134,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   position: relative; }
 
 .ui-editor-selectmenu-button {
-  position: relative;
   text-align: left;
   padding: 3px 18px 5px 5px !important; }
   .ui-editor-selectmenu-button .ui-icon {
@@ -144,11 +143,17 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   .ui-editor-selectmenu-button .ui-selectmenu-text {
     font-size: 13px; }
 
+.ui-editor-selectmenu-wrapper {
+  position: relative; }
+
 .ui-editor-selectmenu-button .ui-button-text {
   padding: 0 25px 0 5px; }
 
 .ui-editor-selectmenu-menu {
   position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
   display: none;
   margin-top: -1px !important; }
 
@@ -214,16 +219,12 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-buttonset {
   float: left;
   margin: 0 5px 4px 0;
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  -webkit-box-orient: horizontal;
-  -moz-box-orient: horizontal;
-  box-orient: horizontal; }
+  display: inline-block; }
   .ui-editor-buttonset > .ui-button {
-    font-size: 13px;
+    float: left;
     display: block;
-    margin: 0 -1px 0 0; }
+    margin: 0 -1px 0 0;
+    font-size: 13px; }
   .ui-editor-buttonset .ui-button:hover {
     z-index: 1; }
   .ui-editor-buttonset .ui-editor-selectmenu {
@@ -988,18 +989,18 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   display: -moz-box;
   display: -ms-box;
   display: box;
-  -webkit-box-orient: horizontal;
-  -moz-box-orient: horizontal;
-  -ms-box-orient: horizontal;
-  box-orient: horizontal;
-  -webkit-box-flex: 2;
-  -moz-box-flex: 2;
-  -ms-box-flex: 2;
-  box-flex: 2; }
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical; }
   .ui-editor-link-panel .ui-editor-link-menu p {
     font-weight: bold;
-    margin: 12px 0; }
+    margin: 12px 0 8px; }
   .ui-editor-link-panel .ui-editor-link-menu fieldset {
+    -webkit-box-flex: 2;
+    -moz-box-flex: 2;
+    -ms-box-flex: 2;
+    box-flex: 2;
     margin: 2px 4px;
     padding: 7px 4px;
     font-size: 13px; }
@@ -1216,7 +1217,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   font-size: 12px;
   font-weight: normal;
   color: white;
-  padding: 7px 16px 1px;
+  padding: 11px 16px 7px;
   white-space: nowrap;
   overflow: visible;
   z-index: 1000;
@@ -1338,12 +1339,4 @@ code, textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  white-space: normal;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-box;
-  display: box;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -ms-box-flex: 1;
-  box-flex: 1; }
+  white-space: pre-line; }
