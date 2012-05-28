@@ -27853,7 +27853,7 @@ $.extend($.ui.editor,
     /**
      * @property {Object} templates
      */
-    templates: { 'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Markup Only')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Rich Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <textarea><\/textarea>\n<\/div>\n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>" },
+    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Markup Only')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Rich Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\" style=\"display:none\">\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-highlighted\" style=\"display:none\">\n        <pre id=\"{{baseClass}}-rainbow\"><code data-language=\"html\"><\/code><\/pre>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
 
     /**
      * @param {String} name
@@ -31898,30 +31898,6 @@ $.ui.editor.registerUi({
     }
 });
 /**
- * @fileOverview Toolbar tips plugin
- * @author David Neilsen david@panmedia.co.nz
- */
-
-/**
- * @name $.editor.plugin.toolbarTip
- * @augments $.ui.editor.defaultPlugin
- * @class Converts native tool tips to styled tool tips
- */
-$.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.prototype */ {
-
-    /**
-     * @see $.ui.editor.defaultPlugin#init
-     */
-    init: function(editor, options) {
-        this.bind('show, tagTreeUpdated', function() {
-            $('.ui-editor-wrapper [title]').each(function() {
-                $(this).attr('data-title', $(this).attr('title'));
-                $(this).removeAttr('title');
-            });
-        });
-    }
-
-});/**
  * @fileOverview UI Component for displaying a warning in a corner of the element when unsaved edits exist
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -32074,6 +32050,170 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
             });
         },
 
+        tab: function() {
+            return '    ';
+        },
+
+        highlightSource: function() {
+            var rainbowPresent = typeof window.Rainbow !== 'undefined';
+            if (!rainbowPresent) {
+                // <strict>
+                handleError(_('jquery.ui.editor.viewsource requires Rainbow'));
+                // </strict>
+            }
+            return rainbowPresent;
+        },
+
+        untidyHtml: function(highlightedSource) {
+            var html = $('<div/>').html(highlightedSource);
+
+            // Unwrap highlighting helpers
+            $(html).find('span.support').each(function() {
+                $(this).contents().unwrap();
+            });
+
+            html = html.html();
+            html = html.replace(/&lt;/g, '<');
+            html = html.replace(/&gt;/g, '>');
+            html = html.replace(/&amp;/g, '&');
+
+            return html;
+        },
+
+        tidyHtml: function(html) {
+            if (typeof HTMLParser === 'undefined') {
+                // <strict>
+                handleError(_('jquery.ui.editor.viewsource requires HTMLParser'));
+                // </strict>
+                return html;
+            }
+            var depth = 0;
+            var tidiedHtml = '';
+            var ui = this;
+            HTMLParser(html, {
+                start: function(tag, attrs, unary) {
+                    for (var i = 0; i < depth; i++) {
+                        tidiedHtml += ui.tab();
+                    }
+                    tidiedHtml += "<" + tag;
+                    for (i = 0; i < attrs.length; i++ ) {
+                        tidiedHtml += " " + attrs[i].name + '="' + attrs[i].escaped + '"';
+                    }
+                    tidiedHtml += (unary ? "/" : "") + ">";
+                    depth++;
+                },
+                end: function(tag) {
+                    tidiedHtml += '</' + tag + '>';
+                    depth--;
+                },
+                chars: function( text ) {
+                    tidiedHtml += text;
+                },
+                comment: function( text ) {
+                    tidiedHtml += "<!--" + text + "-->";
+                }
+            });
+            return tidiedHtml;
+        },
+
+        prepareSource: function(dialog) {
+
+            if (this.highlightSource()) {
+                var html = this.tidyHtml($.trim(this.editor.getHtml()));
+                var highlighted = $(dialog).find('.' + this.options.baseClass + '-highlighted');
+
+                var highlight = function(element, html, ui) {
+
+                    element = $(element);
+
+                    var code = element.find('code:first');
+
+                    code.unbind('keydown keyup');
+                    code.attr('contenteditable', true);
+
+                    Rainbow.color(html, 'html', function(highlightedHtml) {
+                        code.html(highlightedHtml);
+                        element.show();
+
+                        var getFirstRange = function() {
+                            var sel = rangy.getSelection();
+                            return sel.rangeCount ? sel.getRangeAt(0) : null;
+                        };
+
+                        var previousContent = '';
+
+                        code.bind('keydown', function(event) {
+                            previousContent = code.html();
+                            switch(event.keyCode) {
+
+                                // Prevent enter key presses from triggering creation of new <pre> tag
+                                case 13:
+                                    var range = getFirstRange();
+                                    var added = false;
+                                    var newline = document.createTextNode('\r\n');
+
+                                    if (range) {
+                                        range.insertNode(newline);
+                                        range.setEndAfter(newline);
+                                        range.setStartAfter(newline);
+                                        var sel = rangy.getSelection();
+                                        sel.setSingleRange(range);
+                                        added = true;
+                                    }
+
+                                    if (added) {
+                                        event.preventDefault();
+                                    }
+                                    return false;
+
+                                // Insert a tab or indent selection
+                                case 9:
+                                    var range = getFirstRange();
+                                    var tab = document.createTextNode(ui.tab());
+                                    if (range) {
+                                        range.insertNode(tab);
+                                        var sel = rangy.getSelection();
+                                        range.setEndAfter(tab);
+                                        range.setStartAfter(tab);
+                                        sel.setSingleRange(range);
+                                    }
+                                    return false;
+                            }
+                        });
+
+                        var keydown = false;
+                        code.bind('keydown', function() {
+                            keydown = true;
+                        });
+
+                        code.bind('keyup', function() {
+                            keydown = false;
+                            window.setTimeout(function() {
+                                if (!keydown) {
+                                    if (previousContent == code.html()) {
+                                        return true;
+                                    }
+                                    try {
+                                        var untidyHtml = ui.untidyHtml(code.html());
+                                        if ($('<div/>').html(untidyHtml).html() == untidyHtml) {
+                                            highlight(element, untidyHtml, ui);
+                                        }
+                                    } catch (e) {
+                                        console.log('error');
+                                    }
+                                }
+                            }, 5000);
+                        });
+                    });
+
+                };
+                highlight(highlighted, html, this);
+            } else {
+                $(dialog).find('textarea').val($.trim(this.editor.getHtml()));
+                $(dialog).find('.' + this.options.baseClass + '-plain-text').show();
+            }
+        },
+
         /**
          * Hide, destroy & remove the view source dialog. Enable the button.
          */
@@ -32090,7 +32230,8 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
             if (!this.dialog) {
                 $(this.ui.button).button('option', 'disabled', true);
                 var ui = this;
-                this.dialog = $(this.editor.getTemplate('viewsource.dialog'));
+                this.dialog = $(this.editor.getTemplate('viewsource.dialog', { baseClass: ui.options.baseClass }));
+
                 this.dialog.dialog({
                     modal: false,
                     width: 600,
@@ -32103,7 +32244,14 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
                         {
                             text: _('Apply Source'),
                             click: function() {
-                                ui.editor.setHtml($(this).find('textarea').val());
+                                var html;
+                                if (ui.highlightSource()) {
+                                    html = $(this).find('.' + ui.options.baseClass + '-highlighted pre code:first').html();
+                                    html = ui.untidyHtml(html);
+                                } else {
+                                    html = $(this).find('textarea').val();
+                                }
+                                ui.editor.setHtml(html);
                             }
                         },
                         {
@@ -32118,7 +32266,8 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
                         buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
                         buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
 
-                        $(this).find('textarea').val($.trim(ui.editor.getHtml()));
+                        ui.prepareSource.call(ui, this);
+
                     },
                     close: function() {
                         ui.hide();
@@ -32861,1339 +33010,1353 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 	-webkit-box-shadow: 0 2px 3px rgba(161,202,226,0.5) inset, 0 1px 0 rgba(255,255,255,0.2);\n\
 	-moz-box-shadow: 0 2px 3px rgba(161,202,226,0.5) inset, 0 1px 0 rgba(255,255,255,0.2);\n\
 	box-shadow: 0 2px 3px rgba(161,202,226,0.5) inset, 0 1px 0 rgba(255,255,255,0.2);\n\
-}/* Non styles */\n\
-/**\n\
- * Style global variables\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-/* Base style */\n\
-/**\n\
- * Main editor layout\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-/******************************************************************************\\n\
- * Editor toolbar\n\
-\******************************************************************************/\n\
-.ui-editor-wrapper {\n\
-  overflow: visible;\n\
-  z-index: 1001;\n\
-  position: fixed; }\n\
-  .ui-editor-wrapper .ui-editor-toolbar {\n\
-    padding: 6px 0 0 5px;\n\
-    overflow: visible;\n\
-    text-align: center; }\n\
-  .ui-editor-wrapper .ui-editor-toolbar,\n\
-  .ui-editor-wrapper .ui-editor-toolbar * {\n\
-    -webkit-user-select: none;\n\
-    -moz-user-select: none;\n\
-    user-select: none; }\n\
-  .ui-editor-wrapper .ui-dialog-titlebar .ui-editor-element-path:first-child {\n\
-    margin-left: 5px; }\n\
-  .ui-editor-wrapper .ui-dialog-titlebar .ui-editor-element-path {\n\
-    min-width: 10px;\n\
-    min-height: 15px;\n\
-    display: inline-block; }\n\
-\n\
-.ui-editor-dock-docked-to-element .ui-editor-toolbar {\n\
-  padding: 5px 0 0 5px!important; }\n\
-  .ui-editor-dock-docked-to-element .ui-editor-toolbar .ui-editor-group {\n\
-    margin: 0 5px 5px 0; }\n\
-\n\
-.ui-editor-dock-docked-element {\n\
-  display: block !important;\n\
-  border: 0 none transparent;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-\n\
-/******************************************************************************\\n\
- * Inputs\n\
-\******************************************************************************/\n\
-.ui-editor-wrapper textarea,\n\
-.ui-editor-wrapper input {\n\
-  padding: 5px; }\n\
-\n\
-/******************************************************************************\\n\
- * Dialogs\n\
-\******************************************************************************/\n\
-.ui-editor-wrapper .ui-dialog-content {\n\
-  font-size: 13px; }\n\
-.ui-editor-wrapper textarea {\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1; }\n\
-\n\
-html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
-  margin-top: 0!important; }\n\
-\n\
-/******************************************************************************\\n\
- * Messages\n\
-\******************************************************************************/\n\
-.ui-editor-messages {\n\
-  margin: 0; }\n\
-  .ui-editor-messages .ui-editor-message-close {\n\
-    float: right; }\n\
-  .ui-editor-messages .ui-icon,\n\
-  .ui-editor-messages .ui-editor-message {\n\
-    display: inline-block;\n\
-    vertical-align: top; }\n\
-  .ui-editor-messages .ui-icon {\n\
-    margin: 0 0 3px 3px; }\n\
-  .ui-editor-messages .ui-editor-message-wrapper {\n\
-    padding: 3px 3px 3px 1px; }\n\
-\n\
-/**\n\
- * Main editor styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-/******************************************************************************\\n\
- * Inputs\n\
-\******************************************************************************/\n\
-.ui-editor-wrapper textarea,\n\
-.ui-editor-wrapper input {\n\
-  border: 1px solid #D4D4D4; }\n\
-\n\
-/******************************************************************************\\n\
- * Dialogs\n\
-\******************************************************************************/\n\
-.ui-editor-wrapper .ui-dialog-content {\n\
-  font-size: 13px; }\n\
-\n\
-html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
-  margin-top: 0!important; }\n\
-\n\
-/* Components */\n\
-/**\n\
- * Toolbar/path selection bar wrapper\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-/**\n\
- * Path selection bar\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-path {\n\
-  padding: 5px;\n\
-  font-size: 13px; }\n\
-\n\
-/**\n\
- * Select menu UI widget styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-selectmenu {\n\
-  overflow: visible;\n\
-  position: relative; }\n\
-\n\
-.ui-editor-selectmenu-button {\n\
-  position: relative;\n\
-  text-align: left;\n\
-  padding: 3px 18px 5px 5px !important; }\n\
-  .ui-editor-selectmenu-button .ui-icon {\n\
-    position: absolute;\n\
-    right: 1px;\n\
-    top: 8px; }\n\
-  .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
-    font-size: 13px; }\n\
-\n\
-.ui-editor-selectmenu-button .ui-button-text {\n\
-  padding: 0 25px 0 5px; }\n\
-\n\
-.ui-editor-selectmenu-menu {\n\
-  position: absolute;\n\
-  display: none;\n\
-  margin-top: -1px !important; }\n\
-\n\
-.ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {\n\
-  display: block;\n\
-  z-index: 1; }\n\
-\n\
-.ui-editor-selectmenu-menu-item {\n\
-  padding: 5px;\n\
-  margin: 3px;\n\
-  z-index: 1;\n\
-  text-align: left;\n\
-  font-size: 13px;\n\
-  font-weight: normal !important;\n\
-  border: 1px solid transparent;\n\
-  cursor: pointer;\n\
-  background-color: inherit; }\n\
-\n\
-.ui-selectmenu-button {\n\
-  background: #f5f5f5;\n\
-  border: 1px solid #ccc; }\n\
-\n\
-.ui-editor-buttonset .ui-selectmenu-button:first-child {\n\
-  -moz-border-radius-topleft: 5px;\n\
-  -webkit-border-top-left-radius: 5px;\n\
-  -ms-border-top-left-radius: 5px;\n\
-  -o-border-top-left-radius: 5px;\n\
-  border-top-left-radius: 5px;\n\
-  -moz-border-radius-bottomleft: 5px;\n\
-  -webkit-border-bottom-left-radius: 5px;\n\
-  -ms-border-bottom-left-radius: 5px;\n\
-  -o-border-bottom-left-radius: 5px;\n\
-  border-bottom-left-radius: 5px; }\n\
-.ui-editor-buttonset .ui-selectmenu-button:last-child {\n\
-  -moz-border-radius-topright: 5px;\n\
-  -webkit-border-top-right-radius: 5px;\n\
-  -ms-border-top-right-radius: 5px;\n\
-  -o-border-top-right-radius: 5px;\n\
-  border-top-right-radius: 5px;\n\
-  -moz-border-radius-bottomright: 5px;\n\
-  -webkit-border-bottom-right-radius: 5px;\n\
-  -ms-border-bottom-right-radius: 5px;\n\
-  -o-border-bottom-right-radius: 5px;\n\
-  border-bottom-right-radius: 5px; }\n\
-\n\
-.ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {\n\
-  -moz-border-radius-bottomleft: 0;\n\
-  -webkit-border-bottom-left-radius: 0;\n\
-  -ms-border-bottom-left-radius: 0;\n\
-  -o-border-bottom-left-radius: 0;\n\
-  border-bottom-left-radius: 0;\n\
-  -moz-border-radius-bottomright: 0;\n\
-  -webkit-border-bottom-right-radius: 0;\n\
-  -ms-border-bottom-right-radius: 0;\n\
-  -o-border-bottom-right-radius: 0;\n\
-  border-bottom-right-radius: 0; }\n\
-\n\
-/**\n\
- * Button UI widget styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-buttonset {\n\
-  float: left;\n\
-  margin: 0 5px 4px 0;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: box;\n\
-  -webkit-box-orient: horizontal;\n\
-  -moz-box-orient: horizontal;\n\
-  box-orient: horizontal; }\n\
-  .ui-editor-buttonset > .ui-button {\n\
-    font-size: 13px;\n\
-    display: block;\n\
-    margin: 0 -1px 0 0; }\n\
-  .ui-editor-buttonset .ui-button:hover {\n\
-    z-index: 1; }\n\
-  .ui-editor-buttonset .ui-editor-selectmenu {\n\
-    display: block; }\n\
-    .ui-editor-buttonset .ui-editor-selectmenu .ui-button {\n\
-      margin: 0 -1px 0 0; }\n\
-\n\
-.ui-editor-ff .ui-editor-buttonset {\n\
-  float: none;\n\
-  vertical-align: top; }\n\
-\n\
-.ui-editor-wrapper .ui-button {\n\
-  height: 32px;\n\
-  margin-bottom: 0;\n\
-  margin-top: 0;\n\
-  padding: 0;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-.ui-editor-wrapper .ui-button-icon-only {\n\
-  width: 32px; }\n\
-\n\
-.ui-editor-wrapper .ui-editor-buttonset > .ui-button {\n\
-  -webkit-border-radius: 0;\n\
-  -moz-border-radius: 0;\n\
-  -ms-border-radius: 0;\n\
-  -o-border-radius: 0;\n\
-  border-radius: 0; }\n\
-  .ui-editor-wrapper .ui-editor-buttonset > .ui-button:first-child {\n\
-    -moz-border-radius-topleft: 5px;\n\
-    -webkit-border-top-left-radius: 5px;\n\
-    -ms-border-top-left-radius: 5px;\n\
-    -o-border-top-left-radius: 5px;\n\
-    border-top-left-radius: 5px;\n\
-    -moz-border-radius-bottomleft: 5px;\n\
-    -webkit-border-bottom-left-radius: 5px;\n\
-    -ms-border-bottom-left-radius: 5px;\n\
-    -o-border-bottom-left-radius: 5px;\n\
-    border-bottom-left-radius: 5px; }\n\
-  .ui-editor-wrapper .ui-editor-buttonset > .ui-button:last-child {\n\
-    -moz-border-radius-topright: 5px;\n\
-    -webkit-border-top-right-radius: 5px;\n\
-    -ms-border-top-right-radius: 5px;\n\
-    -o-border-top-right-radius: 5px;\n\
-    border-top-right-radius: 5px;\n\
-    -moz-border-radius-bottomright: 5px;\n\
-    -webkit-border-bottom-right-radius: 5px;\n\
-    -ms-border-bottom-right-radius: 5px;\n\
-    -o-border-bottom-right-radius: 5px;\n\
-    border-bottom-right-radius: 5px; }\n\
-\n\
-.ui-button-icon-only .ui-button-text {\n\
-  display: none; }\n\
-\n\
-/**\n\
- * Unsupported warning styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-/* Layout */\n\
-.ui-editor-unsupported {\n\
-  position: relative; }\n\
-\n\
-.ui-editor-unsupported-overlay {\n\
-  position: fixed;\n\
-  top: 0;\n\
-  left: 0;\n\
-  bottom: 0;\n\
-  right: 0;\n\
-  background-color: black;\n\
-  filter: alpha(opacity=50);\n\
-  opacity: 0.5; }\n\
-\n\
-.ui-editor-unsupported-content {\n\
-  position: fixed;\n\
-  top: 50%;\n\
-  left: 50%;\n\
-  margin: -200px 0 0 -300px;\n\
-  width: 600px;\n\
-  height: 400px; }\n\
-\n\
-.ui-editor-unsupported-input {\n\
-  position: absolute;\n\
-  bottom: 10px; }\n\
-\n\
-/* Style */\n\
-.ui-editor-unsupported-content {\n\
-  padding: 10px;\n\
-  background-color: white;\n\
-  border: 1px solid #777; }\n\
-\n\
-/**\n\
- * Message widget styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-messages {\n\
-  /* Error */\n\
-  /* Confirm */\n\
-  /* Information */\n\
-  /* Warning */\n\
-  /* Loading */ }\n\
-  .ui-editor-messages .ui-editor-message-close {\n\
-    cursor: pointer; }\n\
-  .ui-editor-messages .ui-editor-message-wrapper {\n\
-    -webkit-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
-    -moz-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
-    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5); }\n\
-  .ui-editor-messages:first-child {\n\
-    -moz-border-radius-topright: 5px;\n\
-    -webkit-border-top-right-radius: 5px;\n\
-    -ms-border-top-right-radius: 5px;\n\
-    -o-border-top-right-radius: 5px;\n\
-    border-top-right-radius: 5px;\n\
-    -moz-border-radius-topleft: 5px;\n\
-    -webkit-border-top-left-radius: 5px;\n\
-    -ms-border-top-left-radius: 5px;\n\
-    -o-border-top-left-radius: 5px;\n\
-    border-top-left-radius: 5px; }\n\
-  .ui-editor-messages:last-child {\n\
-    -moz-border-radius-bottomright: 5px;\n\
-    -webkit-border-bottom-right-radius: 5px;\n\
-    -ms-border-bottom-right-radius: 5px;\n\
-    -o-border-bottom-right-radius: 5px;\n\
-    border-bottom-right-radius: 5px;\n\
-    -moz-border-radius-bottomleft: 5px;\n\
-    -webkit-border-bottom-left-radius: 5px;\n\
-    -ms-border-bottom-left-radius: 5px;\n\
-    -o-border-bottom-left-radius: 5px;\n\
-    border-bottom-left-radius: 5px; }\n\
-  .ui-editor-messages .ui-editor-message-circle-close {\n\
-    /* Red */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff5d4b), color-stop(100%, #fa1c1c));\n\
-    background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -o-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -ms-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
-  .ui-editor-messages .ui-editor-message-circle-check {\n\
-    /* Green */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cdeb8e), color-stop(100%, #a5c956));\n\
-    background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -o-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -ms-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
-  .ui-editor-messages .ui-editor-message-info {\n\
-    /* Blue */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a9e4f7), color-stop(100%, #0fb4e7));\n\
-    background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -o-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -ms-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
-  .ui-editor-messages .ui-editor-message-alert {\n\
-    /* Yellow */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffd65e), color-stop(100%, #febf04));\n\
-    background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -o-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -ms-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: linear-gradient(top, #ffd65e, #febf04); }\n\
-  .ui-editor-messages .ui-editor-message-clock {\n\
-    /* Purple */\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fb83fa), color-stop(100%, #e93cec));\n\
-    background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -o-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -ms-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: linear-gradient(top, #fb83fa, #e93cec); }\n\
-  .ui-editor-messages .ui-editor-message-clock .ui-icon.ui-icon-clock {\n\
-    background: transparent url(\'data:image/png;base64,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\') no-repeat center center; }\n\
-\n\
-/* Plugins */\n\
-/**\n\
- * Text alignment plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-align-left-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAItJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAjWYrEN2VYPbAZR1QUb0WxEZmPD1lR3wTYCttpSJQxg6mE0sgt2E/AzCLMBMTsQcwCxAskuQE722FwwEYiNsNjKClR8EUjH4w2DActMFBsAEGAAnS84DrgEl1wAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-align-left-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-align-right-button .ui-icon {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIxJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAvYjGYrMhuEHanugo0EbETH1jQPg714bGcGYhOqu2A3AT+DMBvQQnYgzQHECiS7ADnZw9j4wmA61J+sQMUcUFtBtrMC8TEg9kNxwYBlJooNAAgwAJo0OAu5XKT8AAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-align-right-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-align-center-button .ui-icon {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAI1JREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAlswGErjO2KrJiqLtiIw0Zc2JpmYbCTgM2WFIUBTD2MRnbBbgI2gzAbELMDMQcQK5DsAuRkj80FMDAFiI2RbGUFKuaA2noGiEOwhsGAZSaKDQAIMAB/BzgOq8akNwAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-align-center-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-align-justify-button .ui-icon {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJFJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAjWYrEN2VZkNgg7Ut0FGwnYiI6tqe6CbUTYCsPMQGxCdRfsJsJmNqCF7ECaA4gVSHYBcrKHsZFdMBGIjbDYygpUzAG1FWQ7KxAfA2I/FBcMWGai2ACAAAMAvPA4C7ttvJ4AAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-align-justify-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Basic text style plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-text-bold-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKRJREFUeNpi/P//PwMlgImBQjDwBrCgmMbEpA2kGnGofQ3E9UD86t+/fzhdcBWIpwExMxQ3AHEIEK8BYgkgdsLrAih4A8SsaBYwQcWYiDGAEcmAbiwuJBiIIAPYoLgfiMuBeBmUXwHEXIQMYEIy4BUQXwDiy1C+HBBrEPKCDBCzwwwDpVRGRkZksU8ozkVOykCFVkBqOZ5oB3lpAoqe0bzAABBgANfuIyxmXKp/AAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-text-bold-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-text-italic-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAH1JREFUeNpi/P//PwMlgImBQjDwBrBgmMgEN1MbiBvRpOv//ft3FUUEFIjImJGRERnrAPF6IO6BiaGrZyLCi6xAvJDcMLAA4j9AfJlcA/yBeCe5sWAExAJAfIKkWIAFJBAUATE7kM+M143ooQoEVkD8EA1b4Yy10bzAABBgAC7mS5rTXrDAAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-text-italic-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-text-underline-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKZJREFUeNpi/P//PwMlgImBQkCxASwopjExhQGpMCSheijdiCz279+/q3AeKAxgmJGREYSdgHgdlIaJ6SCLIevB5oXXUJe9RhK7gkUMZxgwAjEzlEYG2MRwGsCKRTErKQawYFHMQqwBn6G2qSCJGULFPmPYhpwSgdEIY6YCcTKa2rlAPBvEAEYjdgNAUYRMowOYWmQ9LFjUPSGQP2RwemFoZiaAAAMAlEI7bVBRJkoAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-text-underline-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-text-strike-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAL5JREFUeNpi/P//PwMlgImBQkCxASwopjHBzbMB4nQg5oTyrwKxNhAXAfGjf//+EXRBFhC/BOI0KAapYwZpxusCJPASquEdlD8FiHWwKWREjgUkL4gDcQ0QfwfiXqiBcIDsBXQD9hATcEADXOAckAEwzMjIiI4lgHgiEM8GYkmYOLIeXAZ4I2sA4vlQjGEArkBsAeJzQAUVYH8yMnIAKTmC6QAaHhpALALEPCBDoOJfgFQ5wVgYmnmBYgMAAgwAEGZWNyZpBykAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-text-strike-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-text-sub-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKZJREFUeNpi/P//PwMlgImBQjDwBrDATWJCMWs6lM7Ep/nfv39YXSAPxL+AWALKJtkLLkB8EohZoWySDbAH4uNQQ+xJNUAJiH8DMT8QPwZiWagYDEwA4v1QGgJACQmEGRkZQTgXiI+i4VyoHAy7AfEaEBucCNEM2AzEKkiKu6BiYMuAdAYQLwZiKQwDgGAVED+E0iBgBeUjiy1HErMCWzyaFxgAAgwA5Gw9vTeiCqoAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-text-sub-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-text-super-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALdJREFUeNpi/P//PwMlgImBQjDwBrCgmMaEYt50KJ0JpRuBWBuIrwJx/b9///C6QB6IfwGxBJQNAvVAPAkqRtALLkB8EohZoWwQiAbiICCuI8YAeyA+DjXEHiqmD8SaQLwIysYMAyhQAuLfQMwPxI+B2AkqVkZsLHgDsQYQTwXiVCBmg4phB6CUCMOMjIwgvBmIVaBsEO6CijEgY5geFAOAYBUQP4TSIGAF5SOLoVjMOJoXGAACDACTRz3jjn6PnwAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-text-super-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Blockquote plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-quote-block-button .ui-icon-quote {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGVJREFUeNpi/P//PwMlgImBQjAcDWBhYZEA4r1AHA/EKHxiXQBS+BKIF+LgEzTAG4h3I0UvOh+/AUCFbECcDmROA2lC5mMzgAWLGDuUtsTBJ+iFeUDMC6Wx8VEA42hSptwAgAADAO3wKLgntfGkAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-quote-block-button:hover .ui-icon-quote {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Clean content plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-clean-button .ui-icon-clean {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABNVBMVEUAAAAAAAAgSocgSocgPnAAAABxcXFPT09YWFggSocgSocoToUbPXgSN3kyYZw0ZqT///8iUZkgSoc1Z6UiUJaJrNkwXpZIeLiOvO03a6s4b7JekNUjUpqCp9eNr9pSjeAwX5g2aqquxuV8otPB1euOsNv8/f6gveFgkdVnkMmbuuVfk9lkk9fK3Pbs8vmWtd5Vjs98odCHqNWkv+Jzms6Qt+xnmNuzyudVidS90u6hwe5mmuQtXKCow+OqxepNg82Xtd3C1Ox0m89vl8x3oNl4n9NSjuDi7PqlxO+MtOyWtt2fwO60y+dUjt5zm8/L2+9qneT3+f7g6/qDrelRi95snuWowuSfvOGPr9uwyeqRsdqUs9qat92OrtmDptN5ns9Rh8hqk8uXuehwnt1vl83e6vmZu+gBAK69AAAADXRSTlMbAKM01gogSSmAy7W1OP1GaAAAAM1JREFUeF5VzNN2A1EAQNE7TIrrsSe0Udu2zf//hHZWk672PO6HAySR/UmUwBjT9XyzeJlZuGpe60wE474TxxghhHEcOz4DzLcxRoZhJGT/AOcoiiKEOE9AZEGw291fOcpNdZeD74fEqKZ5lFLP0+YplIDAzBfXrTQKNyW3bEIhgV51QD5fyVv1fQir0zOzcxfW4tLaCGqkHoYWWR/BxubW9k5/7+PgcAjZ8JicnJKz82wC6gRstTu3d/cPj0/PcFIF6ZQMf5NTaaCAfylf1j4ecCeyzckAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-clean-button:hover .ui-icon-clean {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Click to edit plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-click-to-edit-message {\n\
-  padding: 10px;\n\
-  border: 1px solid #D4D4D4;\n\
-  font-size: 13px;\n\
-  z-index: 4000;\n\
-  color: #000;\n\
-  text-shadow: none;\n\
-  -webkit-pointer-events: none;\n\
-  -moz-pointer-events: none;\n\
-  pointer-events: none;\n\
-  -webkit-border-radius: 5px;\n\
-  -moz-border-radius: 5px;\n\
-  -ms-border-radius: 5px;\n\
-  -o-border-radius: 5px;\n\
-  border-radius: 5px;\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2fff2), color-stop(100%, #daf2d7));\n\
-  background: -webkit-linear-gradient(top, #f2fff2, #daf2d7);\n\
-  background: -moz-linear-gradient(top, #f2fff2, #daf2d7);\n\
-  background: -o-linear-gradient(top, #f2fff2, #daf2d7);\n\
-  background: -ms-linear-gradient(top, #f2fff2, #daf2d7);\n\
-  background: linear-gradient(top, #f2fff2, #daf2d7);\n\
-  -webkit-box-shadow: 0px 2px 10px #cccccc;\n\
-  -moz-box-shadow: 0px 2px 10px #cccccc;\n\
-  box-shadow: 0px 2px 10px #cccccc;\n\
-  -webkit-transition: opacity 0.5s 0s;\n\
-  -moz-transition: opacity 0.5s 0s;\n\
-  -ms-transition: opacity 0.5s 0s;\n\
-  -o-transition: opacity 0.5s 0s;\n\
-  transition: opacity 0.5s 0s;\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
-  opacity: 0; }\n\
-\n\
-.ui-editor-click-to-edit-visible {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-click-to-edit-highlight {\n\
-  cursor: pointer;\n\
-  outline: 1px dotted rgba(0, 0, 0, 0.5);\n\
-  -webkit-transition: all 0.5s 0s;\n\
-  -moz-transition: all 0.5s 0s;\n\
-  -ms-transition: all 0.5s 0s;\n\
-  -o-transition: all 0.5s 0s;\n\
-  transition: all 0.5s 0s; }\n\
-\n\
-/**\n\
- * Debug plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-debug-reinit-button .ui-icon-reload {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAqBJREFUeNqkU01PE2EQnrfdtmyLpbRNA/ULGyAhRi+NHkTk5sEEiRyMEi+evHszJh5I/AF613ho9EIwhEiMB4kSjQcWSDxgIAhJoZV26dd2t/v17jqzkoLGG5vM7rvzzPPsfOww13XhOJdAt8vPN0EIBEAQBPD5/UHGWALdnWgW2iO07H+40sL91APhH2ev4HOH+tJiZzoZCia7guXpj8XsnevprGX9yVQMM8i9K0jA2GI7A+9y3Uwo4I6Mj6aijToHzl2nXrNk27bBMDg0FQ7dcQFezeYljH6PlmsLuI4T8zF+e+zqqZ69ggaKZrH13WaxXDcUwm2LQ6xbgOKOCreu9WTfLuQVy3bSCBV8XoBpjmR6xYvFfKNflpuZTyuF1q+y8sHhXLINA7q6g/Byek06ERWgUlJh8EykHzkTxPUETMMYTcWCQ/Wqllnb3hct0/yM01nWVZUwePZiWcLnt0Vpd1NvmZCMBuL4PtwuwdL1S37GMqpuQaFUL+Mk5rllgeM41BuqeZH5/bmNzdJSbzQEiUggjJyBtgCqRVTDjqrc9c6YOjbRhlCHSON9YKMYGQpDrWVDh2F7mR2WoOsbezVdU30CdMXEGNY3abZ0rLcEVVkGpVqlPk0SRjEUS5y2gGUYX7byckURgnB66OxJ7MFD7MHkAQZ0Jh9hFEOxxDkUMM2ZrR/bMo+IsA3hjuzN4fPpvtQUjneJjM7kI4xiKJY4xGW0C9F7bwDrHvNHwk8T4zcutGz0hRjEQp4+1AwHGoYLosBgf3b+O1e1x9iPuUbu7uGfiEJzerUGu6+npwKDA8lm5lx8J54Ie2lWapr7c6tSWd+QwTSfYGPn/lqmoyKOpkn2yuoErKxeQdfgAbSO9hWXbAa/XDjKYcdd598CDAAkzn7JYhVZYAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-debug-reinit-button:hover .ui-icon-reload {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-debug-destroy-button .ui-icon-close {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAtFBMVEX///+nAABhAACnAACjAACCAACgAACHAACjAAByAAB1AAByAACDAACnAACCAACHAACgAACNAACbAACXAACMAACSAABfAACYAACRAACjAACbAAChAACqAACNAACcAACHAACqAADEERGsERHQERG+NjaiERHUTEzYERG4ERGlFBSfFRX/d3f6cnK0JSWoHh7qYmLkXFyvFRXmXl7vZ2fNRUX4cHDXT0/+dnbbU1O3Li7GPT26MTG2f8oMAAAAIXRSTlMASEjMzADMzAAASMxIAMwAAMzMzEjMzEhISABIzABISEg/DPocAAAAj0lEQVR4Xo3PVw6DMBBF0RgXTO+hBYhtILX3sv99RRpvgPcxVzp/M5syb7lYepxDABDeYcQ5wg+MAMhr3JOyJKfxTABqduuvjD37O6sBwjZ+f76/7TFuQw1VnhyGYZPklYagKbKLlDIrmkBDGq1hUaqhM4UQJpwOwFdK+a4LAbCdlWNTCgGwjLlhUQqZ8uofSk8NKY1Fm8EAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-debug-destroy-button:hover .ui-icon-close {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Dock plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-dock-button .ui-icon-pin-s {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbFJREFUeNpi/P//PwMlgAVEPGNiIqTOBojz/zIwTHrPwHD4BZDzGGhxMhAzEWlRvtTy5SE/GRiKge61R5YgyoB/IHVPnzIoTprk/52BoRJoiDNBA5BCxuY3UN2vz58Znu7ZwyAaHOz+8f//RqC8OzEuAPtdcfbsgM937zJ8+fKFgePHDwa3sDBroKGt8EBEAo1ArAV1ARPQucwqs2f7vz14kOHH378MF/buPQ4S+wXEQPkauAG3EFHp7bBihTHDs2cMf4E2ffvwgQGmeeuyZWf+MDA0ATXs+I8eiP+gGBhNNTsjIs7+5+Vl+HTrFsOry5cZXr56xXB02bKjQM21QCU7sKaDRYiA2wE0RPJnamq2VVGR8adr1xi4uLkZPjMwsDJCNf/HagAjI8SA//95gRRb5pEjxnttbM6aeHsb87CwMED9DAZ/0QxAjgVmRkZGj+vXr0+wt7evWc3ENPfI1q1n2djYGP4TSsqMEBfYLV26tExXVzcfyF8NdM17oG33V69e3QKUO0vIAF1PT8+Y2NhYUDRuh7n0PyTEdzAQ4YKYHTt2TAEyz5OaGxkpzc4AAQYAvlOuK2pYar0AAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-dock-button:hover .ui-icon-pin-s {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-dock-button .ui-icon-pin-w {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wFFgA2AnOoAZ4AAAH4SURBVDjLtZNNaxNhFIXPfefNJJlkppFI09Ca1FiRMiDduCjWQltdtILdu1DcSkpx7UL6A1zGH+BKEFy5MkhErRvpwo+NSDEaaYyZSZNJJslkPl43XQQaaUA8u3M5PFwu5wL/KBo1FEC4DJALiN2jjAWIbcA5EVABzotkUu+ZJmvLsmQwJtcHA2oHQc8FXm8D9eE8HzafgThPpS5H19Zux4kmIqbJWL3OT/u+9LNWK1er1V8PgMMdwBsJ8AARtFoD6na1qK7PubFYTOOc9RqNQxEEX1ygswP4Jx6mDNw3Fhc/WVtb4uPy8uAx0YeHwMaoLBs1DBE9kzTtIJLJ4FQ6LQnghZVMFscCCIB8IeKB7/e6lYpjNZs2V1WeNk02FuApwAJA8xwnFHgeSUL4rmVJ3yIRfyzAFWA+Oj29EZqcvODYNveJEloisZnq9++NAkjD5gCY59nsnfjq6iafnT3bNQzJrtWQzeUm+p3OxQXbll8Cb45tYBGRKcucEd2Irq/fDC8tzSm5nKRMTSEUi3lcUXB1ZSV1RlVvPWLs2rEiaUIIDAbee+AtisWMUyqpRhAoiq7rLdtudvf2fsQlqWe02yQDr/7axEvAbml///uTcHjhqyxncjMz5zqO87th28+vu+47GWjfBdyxP61QKFA+nydVVQn/S38ATpHDEx6slP8AAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-dock-button:hover .ui-icon-pin-w {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Dialog docked to body\n\
- */\n\
-.ui-editor-dock-docked {\n\
-  z-index: 10000; }\n\
-  .ui-editor-dock-docked .ui-editor-toolbar-wrapper {\n\
-    position: fixed;\n\
-    top: 0;\n\
-    left: 0;\n\
-    right: 0;\n\
-    border-top: none;\n\
-    display: -webkit-box;\n\
-    display: -moz-box;\n\
-    display: -ms-box;\n\
-    display: box;\n\
-    -webkit-box-pack: center;\n\
-    -moz-box-pack: center;\n\
-    -ms-box-pack: center;\n\
-    box-pack: center;\n\
-    -webkit-box-align: center;\n\
-    -moz-box-align: center;\n\
-    -ms-box-align: center;\n\
-    box-align: center; }\n\
-  .ui-editor-dock-docked .ui-editor-path {\n\
-    position: fixed;\n\
-    bottom: 0;\n\
-    left: 0;\n\
-    right: 0; }\n\
-\n\
-.ui-editor-ios .ui-editor-dock-docked .ui-editor-path {\n\
-  display: none; }\n\
-\n\
-/**\n\
- * Dialog docked to element\n\
- */\n\
-.ui-editor-dock-docked-to-element-wrapper {\n\
-  font-size: inherit;\n\
-  color: inherit;\n\
-  font-family: inherit; }\n\
-\n\
-.ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper {\n\
-  /* Removed fixed position from the editor */\n\
-  position: relative !important;\n\
-  top: auto !important;\n\
-  left: auto !important;\n\
-  border: 0 none;\n\
-  padding: 0;\n\
-  margin: 0;\n\
-  z-index: auto;\n\
-  width: 100%;\n\
-  font-size: inherit;\n\
-  color: inherit;\n\
-  font-family: inherit;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-toolbar {\n\
-    margin: 0;\n\
-    z-index: 2;\n\
-    -webkit-box-ordinal-group: 1;\n\
-    -moz-box-ordinal-group: 1;\n\
-    -ms-box-ordinal-group: 1;\n\
-    box-ordinal-group: 1; }\n\
-  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-toolbar .ui-widget-header {\n\
-    border-top: 0;\n\
-    border-left: 0;\n\
-    border-right: 0; }\n\
-  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-path {\n\
-    border: 0 none;\n\
-    margin: 0;\n\
-    -webkit-box-ordinal-group: 3;\n\
-    -moz-box-ordinal-group: 3;\n\
-    -ms-box-ordinal-group: 3;\n\
-    box-ordinal-group: 3;\n\
-    -webkit-border-radius: 0;\n\
-    -moz-border-radius: 0;\n\
-    -ms-border-radius: 0;\n\
-    -o-border-radius: 0;\n\
-    border-radius: 0; }\n\
-  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-messages {\n\
-    margin: 0; }\n\
-\n\
-.ui-editor-dock-docked-element {\n\
-  /* Override margin so toolbars sit flush next to element */\n\
-  margin: 0 !important;\n\
-  display: block;\n\
-  z-index: 1;\n\
-  -webkit-box-ordinal-group: 2;\n\
-  -moz-box-ordinal-group: 2;\n\
-  -ms-box-ordinal-group: 2;\n\
-  box-ordinal-group: 2; }\n\
-\n\
-/**\n\
- * Messages\n\
- */\n\
-.ui-editor-dock-docked .ui-editor-messages {\n\
-  position: fixed;\n\
-  top: 0;\n\
-  left: 50%;\n\
-  margin: 0 -400px 10px;\n\
-  padding: 0;\n\
-  text-align: left; }\n\
-  .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper {\n\
-    width: 800px;\n\
-    margin: 0 auto; }\n\
-  .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper:first-child {\n\
-    -moz-border-radius-topright: 0;\n\
-    -webkit-border-top-right-radius: 0;\n\
-    -ms-border-top-right-radius: 0;\n\
-    -o-border-top-right-radius: 0;\n\
-    border-top-right-radius: 0;\n\
-    -moz-border-radius-topleft: 0;\n\
-    -webkit-border-top-left-radius: 0;\n\
-    -ms-border-top-left-radius: 0;\n\
-    -o-border-top-left-radius: 0;\n\
-    border-top-left-radius: 0; }\n\
-\n\
-/**\n\
- * Embed plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-embed-button .ui-icon-youtube {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAxlBMVEX////////fNzfaMTHVLCzKISHFGxvvR0flPDzpSEjdMTH4Y2PaKyvtTk7PJibXIyOnLi7lQECkKyvSHR3mPj6eJCSUGhqRFxfqQkL0XFziOTmOFBSBBwehKCiHDQ3PFRWaISGXHR3wVlaECgqqMTGLEBDGHR365eW1ICDaXFz139/LDg7NLi6tNDTSKSnMNzd9AwP1TEy/Fhbwxsbqv7+7EhKzFBS6EBDonZ3akJDkhISxBwf8a2vLIiLPcHD88fH67+/fYGAnLmvBAAAAAXRSTlMAQObYZgAAAJtJREFUeF5Vx0WShFAUBMB631F3afdxd7v/pQaiN5C7BK4mgM3nxAahczfihIgrrfVTqs+qGN2qLMvHwy4tB6sOmWeMIXp7/jI9L8PCYowR0e/3xzVj1gLLiHNOg9OR82iJvBZC0GD/J0Sdo7B93+/78+737AKNK6Uker2UA7fBNlBKPdyos2CLWXI/ksywnr+MzNdoLyZa4HYC/3EAHWTN0A0YAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-embed-button:hover .ui-icon-youtube {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs {\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical;\n\
-  height: 100%;\n\
-  width: 100%; }\n\
-  .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div {\n\
-    display: -webkit-box;\n\
-    display: -moz-box;\n\
-    display: -ms-box;\n\
-    display: box;\n\
-    -webkit-box-orient: vertical;\n\
-    -moz-box-orient: vertical;\n\
-    -ms-box-orient: vertical;\n\
-    box-orient: vertical;\n\
-    -webkit-box-flex: 1;\n\
-    -moz-box-flex: 1;\n\
-    -ms-box-flex: 1;\n\
-    box-flex: 1;\n\
-    -webkit-box-sizing: border-box;\n\
-    -moz-box-sizing: border-box;\n\
-    box-sizing: border-box; }\n\
-    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div > p:first-child {\n\
-      padding-top: 10px; }\n\
-    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div textarea {\n\
-      display: -webkit-box;\n\
-      display: -moz-box;\n\
-      display: -ms-box;\n\
-      display: box;\n\
-      -webkit-box-flex: 4;\n\
-      -moz-box-flex: 4;\n\
-      -ms-box-flex: 4;\n\
-      box-flex: 4; }\n\
-\n\
-/**\n\
- * Float block plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-float-left-button .ui-icon-float-left {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAS5JREFUeNpi/P//PwMlgImBQsACY1zaIH4A6Bp7dAUzV31jnLHy22YgkxFqIQhf/vfvXymKAQ8eidtra35lYAQqY+FgZWBmZ2X49fk7AxvbX6DsN1+CLlgwn5khMECAwcLiL4OogiIDj6QEw9uLZ4AGfAVJ70BzAQg7ohigrnaP4cEDLoY3bzkYzL6/ZVA34ma4ev07w/sPv0HSHgRdoKICUvgR6IWPDK8evWb49+8iw/1bfxhevwYbsBfNdhC2BkkwwqLRxRhuFgM3HyMDrwAjw8vH/xj2nvuH1WZgIDKgGMDExLQNiz9xYWagASboBpAU/zAXsCCJ7SbCZjaghexAmgOIFUh2AXKyh7GRXTARiI2w2MoKVMwBtRVkOysQHwNiPxQXDFhmotgAgAADAKYzbYynfqX2AAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-float-left-button:hover .ui-icon-float-left {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-float-none-button .ui-icon-float-none {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAkFBMVEUAAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAABAQEAAADRrxbRsBYBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAAAAAAAAACcegnCrQ6ffgqukQv+/GixkS3duyLhwyfkyizevSNRMDCigDLauC/y41DcuiLrzTTQrhWCYBiObSDErz3r4VvApCt4Vg6dewnDaH3NAAAAGHRSTlMAycfDxcu9v8HYu+DAwIm3uZnRkdDn7LIyy/h+AAAAWklEQVR4Xp2KRwqFMBQAYzfGXmPtvfx//9spgvAWQcRZzgx6gz6dGEDkQ1FWNRBN2/XZCMRvXtZtB4LSfxon6AHTsjVZUQWR5xz2cWfJxYR9eFf2MQnCCH3hAIfwBUXJe8YuAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-float-none-button:hover .ui-icon-float-none {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-float-right-button .ui-icon-float-right {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAS1JREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzZYRzBaaHcWE4kZGJ8aCe/0sHFAOAoB5d4avXfAwPH4swaGt+ZWAEGsnCwcrAzM7K8Ovzd3sMFwDBWpjNMPrK5b++C94yMwQGCDBYWPxlEFVQZOCRlGB4e/EMAzYDgtFdICr6kUFd7QfDgwdcDG/ecjCYfX/LoG7EzXD1+ncGeyNMAzYiuQDsCmHhf54qKr+BzI9AL3xkePXoNcO/fxcZ7t/6wwDzAyMsGoGBiDWUnQwR4tx8jAy8AowMLx//Y9h95g+GAdvQXIAPM//798+EKBfgAkADMMJgNxE2swEtZAfSHECsQLILkJM9jI3sgolAbITFVlagYg6orSDbWYH4GBD7obhgwDITxQYABBgAdBpg+9sXURwAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-float-right-button:hover .ui-icon-float-right {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Font size plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-font-size-inc-button .ui-icon-font-size-inc {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAOhJREFUeNpi/P//PwMlgImBQkCxASxgU5gwzJkOpTORBZ2ilzO8+MjFwMIixnBhnTlOF8gD8U8gFoey4UBSyZooLzgD8Umo65xhgsYu5USHgS0QHwfiE1A2TtuxGaAIxL+B+AEQnwFiaagYg6Qi2AAHIP4PpbEa4AHEz4HYAIi/QL3hgSS/H4gfQmlELCAHNBBLQGlksenP7x9l4Bc3YMTnBRWogbZIuBOIZUFyW2b5EQwDVyA+giYPcionSA6U5Jc0yTK8vrUcVQU0L1gB8RMotkKSXoMkXgQT5BM3A+sDYcahn5kAAgwArro7Z1GYijsAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-font-size-inc-button:hover .ui-icon-font-size-inc {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-font-size-dec-button .ui-icon-font-size-dec {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKxJREFUeNpi/P//PwMlgImBQjAMDGBBMY0Jbp4JEFcAcQcQnwEJpLa/Zfj27SvD+fPnGVhYxBgurDPH6wI9IP4DpRmMXcpJ9oIZELcBcRiaOCjOH0BpnAYoAbE6EE8EYnYgtjq7pxMm5wjE8lAapwFOQLwFiIuB+AQ0PBi2zvYHUQeAmBFKYxoATJWWQOwLxJJAfA6I5YE4FyT+9O5hBiSXwAHjaFKm3ACAAAMA85o8WKYZErQAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-font-size-dec-button:hover .ui-icon-font-size-dec {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Show guides plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-show-guides-button .ui-icon-pencil {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHZJREFUeNpi/P//PwNFAGQAIyMjDK9BYqNgXHqZ0MSYcFmEyxBGsClMTGS5+t+/fxg2biLGAGTXoBvATGoYkuUFGMDmhd2kGjL4vHCUUi9cIjcpnwPi2UAsBaXPQZPwOXxscD5Cy0xLSbUc3YDnJLue0uwMEGAA2O1APJOrHFQAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-show-guides-button:hover .ui-icon-pencil {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-ui-show-guides-visible * {\n\
-  outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
-\n\
-/**\n\
- * History plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-undo-button .ui-icon-undo {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAe1JREFUeNrEUzFrFEEU/mazu7d3x8U9g0ROwkHEwrSrNmksJBxok1RRwUIEz0awFStZoqQw5B9ok1jYiRDBwl4PSaFJVLCMMfHWS7zb3ZndGd9ssgdXiVzhwGNnH+/75n3vm2FKKQyzDAy5zKmHLRSKRdiOA6tQgGlZDcrPUme3dcFBEPSLlZQQcZyFTFN8WZiGOUCnVCMRws9/4zD8BwkEFpz7N66c8vQJUbeLNEn+LuEQqxo8jv0716e8/f0UPIp0+n1OTbFLsUF1z+n7boAgA0eRf/em521tdeE4BuYunfa0OYehEMUJ3wt6Fza+7s4EkVwh3DJFLyPgYejfa0576+u/MsZe70g/tX8QRujSHDgXtpTpmOvarkjYrZ97Qg/xUTYDOv3B46U3rcnJMqRUUKaBtsXwzWDYJmfax1y0x07gx/FxfLbckd+1Wj0dYddI8vlcwhp1gcUnr/z55mXvbcfA99WXrVwjMwzGHNs0yiWbVSpFXqtVMTFxkrU+zOt55ENc04N7tvTCP9O86mn76D6cIzDSODYRhhUEnXFguy4/bs6gWr1IubN9F3KShHN8Wn6a3QNtZaFU0lvtZXAUm1LK13Jn5z7Vzw0Q9EmE0NvZDNnpoDw6OuC7voFUs0C19Uzif39MQxP8EWAA91//GdkHdYEAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-undo-button:hover .ui-icon-undo {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-redo-button .ui-icon-redo {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAd9JREFUeNrEU89LG0EUfjP7KyvEGsRorRhoySGCuSyht0IPgicFQZCcvXsvHoP/Q8FDKZRCpQityKIHvZT2YI6t6MUfCJqQKpt1d7Ozu7N9O9vWhIIUcvDBt/OY4X3z3vfNkjiOoZ+g0GfIyaf46gtQSQJF0wQIvePN5nJiJYS8xmUzDAIz8H1gnQ74npcS3BeubYOm60lqCKQjm/89QhSG0HEcSG6tzo4bAWM1JJntGaE7UNQKcL6EaQkxknQfcS6Imk0GizOTxrvPx7Xf4pvdBAOc85VBnVTLU6OPhx8NZBVZUjmPIYpStNsMGo0I5l8+NT5sfxckggCFAYrFzyaHlo1yoYDdSs2WD9e2A/atC4wFooMkJBT79EqBF88Lxu7eYU0QMN+v5Eey1enSRKF1y6ULFoKFAFUDntMgwpsiDuAEMbgBhydDKmxtH9TRmdWUwPOWSsXi2Fmr7RyfNG6sa9vzbI+FHT+MI3730hbmjIwEcLTxSRSrup5qgH6Wvn39cd76ae9TSndw6wzRQNiSooQxiohjHij4Pqy379PiTMb86wJalL+6ZB+pLK9RSv+x0XddkQfrb9K2VdXssRHZk4M1mRDc6XXWsaw/aT15ibKimN3n5MF/pr4JfgkwANDA599q/NhJAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-redo-button:hover .ui-icon-redo {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Horizontal rule plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-hr-button .ui-icon-hr {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXhJREFUeNpi/P//PwMTExMDEmgEYi0gZsSCrwJxNUzhv3//GBixGEA0ABnAgkV8LZqtTFDaF6aAX8KCwdBrA4QDckFq+1sGSUVrBkZGRqKwvEEhg2PyS7BeuAv07AsZXjw4BmJuQLIV5gImJLYrv7g53LlwA8TkLRgCi28wXDzQF/Dr10+G379/M/z58wfoz/9gfUxMrAzMzGwMsnr5DBwcvBgGHABiexBDyTiV4cuXTwxfv35j+PHjB9CQ/0BnszCwsHAysLHxIofVQSB2gBlgnxogAqREiI6B+ikf7ZFdcHD2hjf2X79+Zfj8+TNeF7Cz84K9wMrKdRDZAAcQ8fbJaYYndw4zYAsDHlFjBjZxKwyXwAPx1cMTDIdWxoKY+5BCHo7f31tp8VM9iUFQ0oaBQ9YBYQIoLo1dygmmA2QgIGHJoGhUCtaLLSkfweICVqA6diDNAcQKyJYTlRdAanCJY8sL04HYFM3WM0Acgs0QRlymEwsAAgwAwwCYinucCRoAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-hr-button:hover .ui-icon-hr {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Internationalisation plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-wrapper .ui-editor-i18n-select {\n\
-  height: 23px;\n\
-  top: -8px;\n\
-  text-align: left; }\n\
-\n\
-.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-status {\n\
-  font-size: 13px;\n\
-  line-height: 10px; }\n\
-\n\
-.ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
-  line-height: 12px; }\n\
-\n\
-.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-item-icon {\n\
-  height: 24px;\n\
-  width: 24px; }\n\
-\n\
-.ui-selectmenu-menu .ui-icon.ui-editor-i18n-en,\n\
-.ui-editor-wrapper .ui-icon.ui-editor-i18n-en {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAflJREFUeNpinDRzn5qN3uFDt16+YWBg+Pv339+KGN0rbVP+//2rW5tf0Hfy/2+mr99+yKpyOl3Ydt8njEWIn8f9zj639NC7j78eP//8739GVUUhNUNuhl8//ysKeZrJ/v7z10Zb2PTQTIY1XZO2Xmfad+f7XgkXxuUrVB6cjPVXef78JyMjA8PFuwyX7gAZj97+T2e9o3d4BWNp84K1NzubTjAB3fH0+fv6N3qP/ir9bW6ozNQCijB8/8zw/TuQ7r4/ndvN5mZgkpPXiis3Pv34+ZPh5t23//79Rwehof/9/NDEgMrOXHvJcrllgpoRN8PFOwy/fzP8+gUlgZI/f/5xcPj/69e/37//AUX+/mXRkN555gsOG2xt/5hZQMwF4r9///75++f3nz8nr75gSms82jfvQnT6zqvXPjC8e/srJQHo9P9fvwNtAHmG4f8zZ6dDc3bIyM2LTNlsbtfM9OPHH3FhtqUz3eXX9H+cOy9ZMB2o6t/Pn0DHMPz/b+2wXGTvPlPGFxdcD+mZyjP8+8MUE6sa7a/xo6Pykn1s4zdzIZ6///8zMGpKM2pKAB0jqy4UE7/msKat6Jw5mafrsxNtWZ6/fjvNLW29qv25pQd///n+5+/fxDDVbcc//P/zx/36m5Ub9zL8+7t66yEROcHK7q5bldMBAgwADcRBCuVLfoEAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,\n\
-.ui-editor-wrapper .ui-icon.ui-editor-i18n-zh_CN {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFqSURBVHjaYrzOwPAPjJgYQEDAleHVbhADIvgHLPgHiQ0QQCxAlkR9NW8sw+cV/1gV/7Gb/hV4+vfzhj8Mv/78//Pn/+/f/8AkhH1t0yaAAAJp4I37zyz2lDfu79uqv/++/WYz+cuq/vvLxt8gdb+A5K9/v34B2SyyskBLAAII5JAva/7/+/z367a/f3/8ZuT9+//Pr78vQUrB6n4CSSj6/RuoASCAWEDO/fD3ddEfhv9/OE3/sKj8/n7k9/fDQNUIs/+DVf8HawAIIJCT/v38C3Hr95N/GDh/f94AVvT7N8RUBpjxQAVADQABBNLw/y/Ifwy/f/399ufTOpDBEPf8g5sN0QBEDAwAAQTWABEChgOSA9BVA00E2wAQQCANQBbEif/AzoCqgLkbbBYwWP/+//sXqBYggFhAkfL7D7OkJFCOCSj65zfUeFjwg8z++/ffX5AGoGKAAGI8jhSRyIw/SJH9D4aAYQoQYAA6rnMw1jU2vQAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-/**\n\
- * Image resize plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-image-resize-in-progress {\n\
-  outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
-\n\
-/**\n\
- * Length plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-length-button .ui-icon-dashboard {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhFJREFUeNrEk7tv01AUxr/4kcRO7Fh1HghFgSAeYglDlIfUbGEBhaWoUxFiQWJGMDDyhzB2ZmANYmAoIvQPaIHIkVJjKyWkcdzYSR1zbhSGQhFDB47007333PN9V/cVCcMQ5wkO54wIxe+5q8Rt4gaRW+VsYo9oE1/+ZpAktjKZzL1arXatWCzmFEVhOYzH40m327U7nc7nwWDwhlLbxITN8SsDVvisXq9vtVqtuqZp2XK5HDcMg5vNZlylUon7vq+XSqXLi8WiYJqmTvWfiNkvg8e06gMqLDmOI5AIvV4P8/l8CeuzHMHn8/kcmeiWZQWk6zCD67quP280GuXNdlv4qKrwTk6WwpXoFNVqNTKdTtf6/X7C87wPzOAhrX4nCIK195KEp4aBtxyHKRm4roujozGdwQSO49LYx/7+VzIPeVEUOcsyh+wab9Ge0+SKGW3nhSzj5WiEoWlhMvHolKOIRmVIkgpZVhGPKxAEGdlsIc20zOASz/NSs9lkl4IwJuOJH+CVksDi2APPx0iYIgNlCTNYXy8hmdQkpmUGCfag2u134DgJipKGdqGAR6NjbKdVOAMbQRAiRsaCEKMaHru7XdYutRw95R+Hh0NXVTNIpXQy0KDrOVy8chOb34Z4XcjCMvZoO86p12bbBy7Tsv5dYoc4OAtFFM3BxkZ4xtzOSvvPuE98X7V//oX//ht/CjAAagzmsnB4V5cAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-length-button:hover .ui-icon-dashboard {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Link plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-link-button .ui-icon-link {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAilBMVEX///8EBARUVFRUVFQEBARTU1MqKiwfHx5MTEzGxsZNTU1FRUWAgH8SEhJnZ2fd3d06Ojrg4ODIyMgODg4DAwMSEhLCwsGcnKXExNEvLy+ysrh+foMQEBBBQUEEBATJydeenqcDAwPT09OIiIjj4+OZmZl3d3fU1OPCwsHW1tXq6urr6+va2trGxsaRnmwcAAAAI3RSTlMAimdfRTOWgDXbAGXFj339cv3dAHtC3OP8bt+2cnuA/OMA+Akct2IAAABoSURBVHhetcVZFoIgGAbQ7wcVwyEKtBi01OZh/9urw2EJdV8ufkHmnDHG85RE2a7Wp812GGJtiaqvG1rOXws1dV9BzWKi2/3xfL1pErOCdT6YS2SCdxZdsdtfD8ci1UFnIxGNWUrjHz6V6QhqNdQf6wAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-link-button:hover .ui-icon-link {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-unlink-button .ui-icon-unlink {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA2FBMVEX///8WFhYvLy9LS0sEBAQODg4EBARNTU0DAwNVVVVUVFQtLS1nZ2cfHx46OjoSEhLGxsZTU1OAgH/T09NUVFQEBAQ6OjpMTEwvLy+4uMDCwsEQEBCvr7sSEhIEBAR+foMqKixFRUUEBARDQ0MBAQEBAQG5ucQiIiICAgIODg7Z2dlAQEBMTEwsLCxGRkYAAABPT0/e3t4mJiYqKiopKSlUVFQiIiJJSUkjIyNFRUU5OTkBAQEoKCi/v8zCws+qgFWFZkY7MSbc3Nzj4+Pm5ubOztzU1OTQ0N6IE/7FAAAAQ3RSTlMAAAAAigAAAAAAZwB9gACP2zPF+F9ocjVu39xy40KAtpZlRQBrUPx9AIb8AE8AAAAA/AAAAAAAAAAAAAAA/PwAAAD8PWHlxQAAALtJREFUeF5dzsVWxEAQheHqpGPEPeMWGXfcmQHe/42oC+ewmH95F1UfGWFyhZLQUBHlTvBxOp92gZP/DaN25Esp/ag9ukeUxa5p6qbpxpmHqGgNOtWm6gxahaIokwX1ht16ps3q7rAn9utrg7RxX6Z6KvtjbWJZGHTuuLLtw8P2f/CAWd4uGYNBqCpj5s1NM2cMPd3xc2D4EDDkIWCmj1NgSEHAlGUJDAnEmOfPr+8XxtDr27sQwHDA0GU/2RcVwEV78WkAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-unlink-button:hover .ui-icon-unlink {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/* Dialog */\n\
-.ui-editor-link-panel .ui-editor-link-menu {\n\
-  height: 100%;\n\
-  width: 200px;\n\
-  float: left;\n\
-  border-right: 1px dashed #D4D4D4;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: horizontal;\n\
-  -moz-box-orient: horizontal;\n\
-  -ms-box-orient: horizontal;\n\
-  box-orient: horizontal;\n\
-  -webkit-box-flex: 2;\n\
-  -moz-box-flex: 2;\n\
-  -ms-box-flex: 2;\n\
-  box-flex: 2; }\n\
-  .ui-editor-link-panel .ui-editor-link-menu p {\n\
-    font-weight: bold;\n\
-    margin: 12px 0; }\n\
-  .ui-editor-link-panel .ui-editor-link-menu fieldset {\n\
-    margin: 2px 4px;\n\
-    padding: 7px 4px;\n\
-    font-size: 13px; }\n\
-    .ui-editor-link-panel .ui-editor-link-menu fieldset label {\n\
-      display: block;\n\
-      margin-bottom: 10px; }\n\
-      .ui-editor-link-panel .ui-editor-link-menu fieldset label span {\n\
-        display: inline-block;\n\
-        width: 150px;\n\
-        font-size: 13px;\n\
-        vertical-align: top; }\n\
-\n\
-.ui-editor-link-panel .ui-editor-link-menu fieldset,\n\
-.ui-editor-link-panel .ui-editor-link-wrap fieldset {\n\
-  border: none; }\n\
-\n\
-.ui-editor-link-panel .ui-editor-link-wrap {\n\
-  margin-left: 200px;\n\
-  padding-left: 20px;\n\
-  min-height: 200px;\n\
-  position: relative; }\n\
-  .ui-editor-link-panel .ui-editor-link-wrap.ui-editor-link-loading:after {\n\
-    content: \'Loading...\';\n\
-    position: absolute;\n\
-    top: 60px;\n\
-    left: 200px;\n\
-    padding-left: 20px;\n\
-    background: url(\'data:image/png;base64,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\') no-repeat left center; }\n\
-  .ui-editor-link-panel .ui-editor-link-wrap h2 {\n\
-    margin: 10px 0 0; }\n\
-  .ui-editor-link-panel .ui-editor-link-wrap fieldset {\n\
-    margin: 2px 4px;\n\
-    padding: 7px 4px;\n\
-    font-size: 13px; }\n\
-    .ui-editor-link-panel .ui-editor-link-wrap fieldset input[type=text] {\n\
-      width: 400px; }\n\
-    .ui-editor-link-panel .ui-editor-link-wrap fieldset.ui-editor-external-href {\n\
-      width: 365px; }\n\
-    .ui-editor-link-panel .ui-editor-link-wrap fieldset.ui-editor-link-email label {\n\
-      display: inline-block;\n\
-      width: 115px; }\n\
-    .ui-editor-link-panel .ui-editor-link-wrap fieldset.ui-editor-link-email input {\n\
-      width: 340px; }\n\
-  .ui-editor-link-panel .ui-editor-link-wrap ol li {\n\
-    list-style: decimal inside; }\n\
-\n\
-.ui-editor-link-panel .ui-editor-link-wrap\n\
-.ui-editor-link-panel .ui-editor-link-wrap fieldset #ui-editor-link-external-target {\n\
-  vertical-align: middle; }\n\
-\n\
-.ui-editor-link-error-message div {\n\
-  padding: 0 .7em; }\n\
-  .ui-editor-link-error-message div p {\n\
-    margin: 0; }\n\
-    .ui-editor-link-error-message div p .ui-icon {\n\
-      margin-top: 2px;\n\
-      float: left;\n\
-      margin-right: 2px; }\n\
-\n\
-/**\n\
- * List plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-list-unordered-button .ui-icon-list-unordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMlJREFUeNpi/P//PwNFAGQAIyNjGBCvgdIMxGKQXhaoORFlZWWBXV1dTED2KqjYGiBmRMJMaOwrQFwOc0EEEG+A0iS5gBFEMDExkeX9f//+MTAxUAhgBsQC8U4oTRKABWJ8Rkae84wZk5iB7MVQsW1IAYYLW8MCMRGID0Bp+gYiC46EhTPR4QrEdCA+A6VJT8pAcDMsLB3EuAniQP14BIiPAfEJID4FxGehqe8OED8B4vVgvVADioH4GZTGGWhYvUtpbqQ4JQIEGABjeFYu055ToAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-list-unordered-button:hover .ui-icon-list-unordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-list-ordered-button .ui-icon-list-ordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAM1JREFUeNpi/P//PwNFAGQAIyNjIxCvAWJBIGYgFoP0skDNqQfidUDMiGT2GigfhpnQ2FeAuJwFSQMTmuNCiPEBTFMblF1CahAwgvzBxMREVvj9+/cP7oIuIN4Bpcl2gRMQJwFxDFRuG1KAYcVAF1jDojEBiGcAsQSp0QjzgiEQawLxSiibNoGInmqRE9J0IJaEYnNSXAAzYC4QNwJxIJLcEbRAYwZidiDmgOLTYPVIzgJpPgD2F45Aw+olqAFrgfg5EBeTagAjpdkZIMAAg/ZGwsH5qkAAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-list-ordered-button:hover .ui-icon-list-ordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Paste plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-.ui-editor-paste-panel-tabs {\n\
-  height: 100%;\n\
-  width: 100%;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-\n\
-.ui-editor-paste .ui-tabs a {\n\
-  outline: none; }\n\
-\n\
-.ui-editor-paste-panel-tabs {\n\
-  position: relative;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-  .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text {\n\
-    height: 25px;\n\
-    line-height: 25px;\n\
-    position: absolute;\n\
-    right: 35px;\n\
-    top: 15px;\n\
-    width: 100px; }\n\
-    .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text input {\n\
-      margin: 0;\n\
-      padding: 0;\n\
-      vertical-align: text-bottom; }\n\
-\n\
-.ui-editor-paste-panel-tabs > div {\n\
-  overflow: auto;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-\n\
-.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box; }\n\
-\n\
-/**\n\
- * Raptorize plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-raptorize-button .ui-icon-raptorize {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABDlBMVEX///9NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU0Y/iVtAAAAWXRSTlMA/v1mTvW+WQFF+nGpsyPlDhXL1GvZHduk48LslL2a7tadwee772kEfqD8+OGCXWJ2+bQ9pt7xCme4iQU4iNH0mCEPEd82Ocxj4De2HoMaq3MHZJsDeGwCG8H1fioAAAC1SURBVHheNchFlsMwEADRlmRkSDKmMDMMMjMz9P0vkifLrl194F3NW0qtugV5Wt1FHpnloGKRmr3TK96YDjiMxFGCONngcJ1De4GNDJqhvd2VkbzsY+eDw2efMTYsjRFxd4+DZx6ajC1xhXTTB560EyfWASJW2FEG3vGJElZOz4xzH6QLKLqMgpvbu3sxD+4jPBFJe05fBby9ly0S6ADxl4BviGjp5xd0Of0TUqaUEPs/kR1YA96IIUDtx93SAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.ui-editor-raptorize-button:hover .ui-icon-raptorize {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Save plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-save-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVNJREFUeNqkU71ugzAQPowtwdAdqRLK3odg6161a+cukZonoGrElgWWDqhb16oP0AfoytStirows0QRMj/unQsohAQi5aTD5vju4/Pd2VBKwTnG6cEYe8bl6s73P09Jel8ur3H5ruv6CUiBYRgfQRAosnrCyQhLOZTLG1ImpYQSA1VVjf7dNE0gLOV0R6AXlAMSk4uiGCUQ6ITdJzDpz0SQTxAoxlqVZo+gLEuQyDxFwIQAwg4IiPV3vYbL2WyUgDBHFbxG0Um9t237sIIkSeDYYGHbur3neQMCTgqoRWEYDToh8NyLxSO4rgtpmrY14D0CUsA5h80mh/n8QQdXq7CTTN/ILMtqa9AjEDjOGrTdSnAcRwdpr1unzB5BMweiGwY8tx/H8U+WZbmUSoPJlfr3NrZLgDkXujbNXaD9DfoLAt8OFRHPfb8X+sLcW+Pc6/wnwABHMdnKf4KT4gAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-save-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-cancel-button .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAtFBMVEX///+nAABhAACnAACjAACCAACgAACHAACjAAByAAB1AAByAACDAACnAACCAACHAACgAACNAACbAACXAACMAACSAABfAACYAACRAACjAACbAAChAACqAACNAACcAACHAACqAADEERGsERHQERG+NjaiERHUTEzYERG4ERGlFBSfFRX/d3f6cnK0JSWoHh7qYmLkXFyvFRXmXl7vZ2fNRUX4cHDXT0/+dnbbU1O3Li7GPT26MTG2f8oMAAAAIXRSTlMASEjMzADMzAAASMxIAMwAAMzMzEjMzEhISABIzABISEg/DPocAAAAj0lEQVR4Xo3PVw6DMBBF0RgXTO+hBYhtILX3sv99RRpvgPcxVzp/M5syb7lYepxDABDeYcQ5wg+MAMhr3JOyJKfxTABqduuvjD37O6sBwjZ+f76/7TFuQw1VnhyGYZPklYagKbKLlDIrmkBDGq1hUaqhM4UQJpwOwFdK+a4LAbCdlWNTCgGwjLlhUQqZ8uofSk8NKY1Fm8EAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.ui-editor-cancel-button:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Tag menu plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-wrapper .ui-editor-tag-select {\n\
-  height: 23px;\n\
-  top: -8px;\n\
-  text-align: left; }\n\
-\n\
-.ui-editor-wrapper .ui-editor-tag-select .ui-selectmenu-status {\n\
-  font-size: 13px;\n\
-  line-height: 10px; }\n\
-\n\
-.ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
-  line-height: 12px; }\n\
-\n\
-/**\n\
- * Basic text style plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-wrapper [data-title]:after {\n\
-  opacity: 0;\n\
-  content: attr(data-title);\n\
-  display: block;\n\
-  position: absolute;\n\
-  top: 100%;\n\
-  font-size: 12px;\n\
-  font-weight: normal;\n\
-  color: white;\n\
-  padding: 7px 16px 1px;\n\
-  white-space: nowrap;\n\
-  overflow: visible;\n\
-  z-index: 1000;\n\
-  -webkit-pointer-events: none;\n\
-  -moz-pointer-events: none;\n\
-  pointer-events: none;\n\
-  -webkit-border-radius: 9px 9px 2px 2px;\n\
-  -moz-border-radius: 9px 9px 2px 2px;\n\
-  -ms-border-radius: 9px 9px 2px 2px;\n\
-  -o-border-radius: 9px 9px 2px 2px;\n\
-  border-radius: 9px 9px 2px 2px;\n\
-  -webkit-transition: opacity 0.23s 0s;\n\
-  -moz-transition: opacity 0.23s 0s;\n\
-  -ms-transition: opacity 0.23s 0s;\n\
-  -o-transition: opacity 0.23s 0s;\n\
-  transition: opacity 0.23s 0s;\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0; }\n\
-\n\
-.ui-editor-wrapper [data-title]:hover:after {\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-wrapper .ui-editor-select-element {\n\
-  position: relative; }\n\
-\n\
-.ui-editor-wrapper .ui-editor-select-element:after {\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0; }\n\
-\n\
-/**\n\
- * Unsaved edit warning plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-unsaved-edit-warning {\n\
-  position: fixed;\n\
-  bottom: 0;\n\
-  right: 0;\n\
-  height: 30px;\n\
-  line-height: 30px;\n\
-  border-radius: 5px 0 0 0;\n\
-  border: 1px solid #D4D4D4;\n\
-  padding-right: 7px;\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fffff2), color-stop(100%, #edecbd));\n\
-  background: -webkit-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: -moz-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: -o-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: -ms-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: linear-gradient(top, #fffff2, #edecbd);\n\
-  -webkit-transition: opacity 0.5s;\n\
-  -moz-transition: opacity 0.5s;\n\
-  -ms-transition: opacity 0.5s;\n\
-  -o-transition: opacity 0.5s;\n\
-  transition: opacity 0.5s;\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
-  opacity: 0; }\n\
-  .ui-editor-unsaved-edit-warning .ui-icon {\n\
-    display: inline-block;\n\
-    float: left;\n\
-    margin: 8px 5px 0 5px; }\n\
-\n\
-.ui-editor-unsaved-edit-warning-visible {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * View source plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.ui-editor-view-source-button .ui-icon-view-source {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKtJREFUeNpi/P//PwMlgImBQkCxAQwgLzAyMqLjMCCehsSfBhVDUQf2PhYDIoB4JhCLIYmJQcUiCBkQBcRzgFgci6vEoXJRuAyIAeIFODQjG7IAqhbFAAMg3gOlGQhguFp0FyQC8UoglgTx0QFUjSRUTSKuMEgG4nUghVgMkITKJROKhXQg3gbUI42kXxokBpUjGI0gDYVAfBzJABC7EFs6YBz6eYFiAwACDAADJlDtLE22CAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.ui-editor-view-source-button:hover .ui-icon-view-source {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.ui-editor-ui-view-source .ui-dialog-content {\n\
-  overflow: auto;\n\
-  width: 100% !important;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-  .ui-editor-ui-view-source .ui-dialog-content textarea {\n\
-    display: -webkit-box;\n\
-    display: -moz-box;\n\
-    display: -ms-box;\n\
-    display: box;\n\
-    -webkit-box-flex: 1;\n\
-    -moz-box-flex: 1;\n\
-    -ms-box-flex: 1;\n\
-    box-flex: 1; }\n\
+}/* Non styles */\n\
+/**\n\
+ * Style global variables\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+/* Base style */\n\
+/**\n\
+ * Main editor layout\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ */\n\
+/******************************************************************************\\n\
+ * Editor toolbar\n\
+\******************************************************************************/\n\
+.ui-editor-wrapper {\n\
+  overflow: visible;\n\
+  z-index: 1001;\n\
+  position: fixed; }\n\
+  .ui-editor-wrapper .ui-editor-toolbar {\n\
+    padding: 6px 0 0 5px;\n\
+    overflow: visible;\n\
+    text-align: center; }\n\
+  .ui-editor-wrapper .ui-editor-toolbar,\n\
+  .ui-editor-wrapper .ui-editor-toolbar * {\n\
+    -webkit-user-select: none;\n\
+    -moz-user-select: none;\n\
+    user-select: none; }\n\
+  .ui-editor-wrapper .ui-dialog-titlebar .ui-editor-element-path:first-child {\n\
+    margin-left: 5px; }\n\
+  .ui-editor-wrapper .ui-dialog-titlebar .ui-editor-element-path {\n\
+    min-width: 10px;\n\
+    min-height: 15px;\n\
+    display: inline-block; }\n\
+\n\
+.ui-editor-dock-docked-to-element .ui-editor-toolbar {\n\
+  padding: 5px 0 0 5px!important; }\n\
+  .ui-editor-dock-docked-to-element .ui-editor-toolbar .ui-editor-group {\n\
+    margin: 0 5px 5px 0; }\n\
+\n\
+.ui-editor-dock-docked-element {\n\
+  display: block !important;\n\
+  border: 0 none transparent;\n\
+  -webkit-box-sizing: border-box;\n\
+  -moz-box-sizing: border-box;\n\
+  box-sizing: border-box; }\n\
+\n\
+/******************************************************************************\\n\
+ * Inputs\n\
+\******************************************************************************/\n\
+.ui-editor-wrapper textarea,\n\
+.ui-editor-wrapper input {\n\
+  padding: 5px; }\n\
+\n\
+/******************************************************************************\\n\
+ * Dialogs\n\
+\******************************************************************************/\n\
+.ui-editor-wrapper .ui-dialog-content {\n\
+  font-size: 13px; }\n\
+.ui-editor-wrapper textarea {\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-flex: 1;\n\
+  -moz-box-flex: 1;\n\
+  -ms-box-flex: 1;\n\
+  box-flex: 1; }\n\
+\n\
+html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
+  margin-top: 0!important; }\n\
+\n\
+/******************************************************************************\\n\
+ * Messages\n\
+\******************************************************************************/\n\
+.ui-editor-messages {\n\
+  margin: 0; }\n\
+  .ui-editor-messages .ui-editor-message-close {\n\
+    float: right; }\n\
+  .ui-editor-messages .ui-icon,\n\
+  .ui-editor-messages .ui-editor-message {\n\
+    display: inline-block;\n\
+    vertical-align: top; }\n\
+  .ui-editor-messages .ui-icon {\n\
+    margin: 0 0 3px 3px; }\n\
+  .ui-editor-messages .ui-editor-message-wrapper {\n\
+    padding: 3px 3px 3px 1px; }\n\
+\n\
+/**\n\
+ * Main editor styles\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ */\n\
+/******************************************************************************\\n\
+ * Inputs\n\
+\******************************************************************************/\n\
+.ui-editor-wrapper textarea,\n\
+.ui-editor-wrapper input {\n\
+  border: 1px solid #D4D4D4; }\n\
+\n\
+/******************************************************************************\\n\
+ * Dialogs\n\
+\******************************************************************************/\n\
+.ui-editor-wrapper .ui-dialog-content {\n\
+  font-size: 13px; }\n\
+\n\
+html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
+  margin-top: 0!important; }\n\
+\n\
+/* Components */\n\
+/**\n\
+ * Toolbar/path selection bar wrapper\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+/**\n\
+ * Path selection bar\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-path {\n\
+  padding: 5px;\n\
+  font-size: 13px; }\n\
+\n\
+/**\n\
+ * Select menu UI widget styles\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-selectmenu {\n\
+  overflow: visible;\n\
+  position: relative; }\n\
+\n\
+.ui-editor-selectmenu-button {\n\
+  position: relative;\n\
+  text-align: left;\n\
+  padding: 3px 18px 5px 5px !important; }\n\
+  .ui-editor-selectmenu-button .ui-icon {\n\
+    position: absolute;\n\
+    right: 1px;\n\
+    top: 8px; }\n\
+  .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
+    font-size: 13px; }\n\
+\n\
+.ui-editor-selectmenu-button .ui-button-text {\n\
+  padding: 0 25px 0 5px; }\n\
+\n\
+.ui-editor-selectmenu-menu {\n\
+  position: absolute;\n\
+  display: none;\n\
+  margin-top: -1px !important; }\n\
+\n\
+.ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {\n\
+  display: block;\n\
+  z-index: 1; }\n\
+\n\
+.ui-editor-selectmenu-menu-item {\n\
+  padding: 5px;\n\
+  margin: 3px;\n\
+  z-index: 1;\n\
+  text-align: left;\n\
+  font-size: 13px;\n\
+  font-weight: normal !important;\n\
+  border: 1px solid transparent;\n\
+  cursor: pointer;\n\
+  background-color: inherit; }\n\
+\n\
+.ui-selectmenu-button {\n\
+  background: #f5f5f5;\n\
+  border: 1px solid #ccc; }\n\
+\n\
+.ui-editor-buttonset .ui-selectmenu-button:first-child {\n\
+  -moz-border-radius-topleft: 5px;\n\
+  -webkit-border-top-left-radius: 5px;\n\
+  -ms-border-top-left-radius: 5px;\n\
+  -o-border-top-left-radius: 5px;\n\
+  border-top-left-radius: 5px;\n\
+  -moz-border-radius-bottomleft: 5px;\n\
+  -webkit-border-bottom-left-radius: 5px;\n\
+  -ms-border-bottom-left-radius: 5px;\n\
+  -o-border-bottom-left-radius: 5px;\n\
+  border-bottom-left-radius: 5px; }\n\
+.ui-editor-buttonset .ui-selectmenu-button:last-child {\n\
+  -moz-border-radius-topright: 5px;\n\
+  -webkit-border-top-right-radius: 5px;\n\
+  -ms-border-top-right-radius: 5px;\n\
+  -o-border-top-right-radius: 5px;\n\
+  border-top-right-radius: 5px;\n\
+  -moz-border-radius-bottomright: 5px;\n\
+  -webkit-border-bottom-right-radius: 5px;\n\
+  -ms-border-bottom-right-radius: 5px;\n\
+  -o-border-bottom-right-radius: 5px;\n\
+  border-bottom-right-radius: 5px; }\n\
+\n\
+.ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {\n\
+  -moz-border-radius-bottomleft: 0;\n\
+  -webkit-border-bottom-left-radius: 0;\n\
+  -ms-border-bottom-left-radius: 0;\n\
+  -o-border-bottom-left-radius: 0;\n\
+  border-bottom-left-radius: 0;\n\
+  -moz-border-radius-bottomright: 0;\n\
+  -webkit-border-bottom-right-radius: 0;\n\
+  -ms-border-bottom-right-radius: 0;\n\
+  -o-border-bottom-right-radius: 0;\n\
+  border-bottom-right-radius: 0; }\n\
+\n\
+/**\n\
+ * Button UI widget styles\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-buttonset {\n\
+  float: left;\n\
+  margin: 0 5px 4px 0;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: box;\n\
+  -webkit-box-orient: horizontal;\n\
+  -moz-box-orient: horizontal;\n\
+  box-orient: horizontal; }\n\
+  .ui-editor-buttonset > .ui-button {\n\
+    font-size: 13px;\n\
+    display: block;\n\
+    margin: 0 -1px 0 0; }\n\
+  .ui-editor-buttonset .ui-button:hover {\n\
+    z-index: 1; }\n\
+  .ui-editor-buttonset .ui-editor-selectmenu {\n\
+    display: block; }\n\
+    .ui-editor-buttonset .ui-editor-selectmenu .ui-button {\n\
+      margin: 0 -1px 0 0; }\n\
+\n\
+.ui-editor-ff .ui-editor-buttonset {\n\
+  float: none;\n\
+  vertical-align: top; }\n\
+\n\
+.ui-editor-wrapper .ui-button {\n\
+  height: 32px;\n\
+  margin-bottom: 0;\n\
+  margin-top: 0;\n\
+  padding: 0;\n\
+  -webkit-box-sizing: border-box;\n\
+  -moz-box-sizing: border-box;\n\
+  box-sizing: border-box; }\n\
+.ui-editor-wrapper .ui-button-icon-only {\n\
+  width: 32px; }\n\
+\n\
+.ui-editor-wrapper .ui-editor-buttonset > .ui-button {\n\
+  -webkit-border-radius: 0;\n\
+  -moz-border-radius: 0;\n\
+  -ms-border-radius: 0;\n\
+  -o-border-radius: 0;\n\
+  border-radius: 0; }\n\
+  .ui-editor-wrapper .ui-editor-buttonset > .ui-button:first-child {\n\
+    -moz-border-radius-topleft: 5px;\n\
+    -webkit-border-top-left-radius: 5px;\n\
+    -ms-border-top-left-radius: 5px;\n\
+    -o-border-top-left-radius: 5px;\n\
+    border-top-left-radius: 5px;\n\
+    -moz-border-radius-bottomleft: 5px;\n\
+    -webkit-border-bottom-left-radius: 5px;\n\
+    -ms-border-bottom-left-radius: 5px;\n\
+    -o-border-bottom-left-radius: 5px;\n\
+    border-bottom-left-radius: 5px; }\n\
+  .ui-editor-wrapper .ui-editor-buttonset > .ui-button:last-child {\n\
+    -moz-border-radius-topright: 5px;\n\
+    -webkit-border-top-right-radius: 5px;\n\
+    -ms-border-top-right-radius: 5px;\n\
+    -o-border-top-right-radius: 5px;\n\
+    border-top-right-radius: 5px;\n\
+    -moz-border-radius-bottomright: 5px;\n\
+    -webkit-border-bottom-right-radius: 5px;\n\
+    -ms-border-bottom-right-radius: 5px;\n\
+    -o-border-bottom-right-radius: 5px;\n\
+    border-bottom-right-radius: 5px; }\n\
+\n\
+.ui-button-icon-only .ui-button-text {\n\
+  display: none; }\n\
+\n\
+/**\n\
+ * Unsupported warning styles\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+/* Layout */\n\
+.ui-editor-unsupported {\n\
+  position: relative; }\n\
+\n\
+.ui-editor-unsupported-overlay {\n\
+  position: fixed;\n\
+  top: 0;\n\
+  left: 0;\n\
+  bottom: 0;\n\
+  right: 0;\n\
+  background-color: black;\n\
+  filter: alpha(opacity=50);\n\
+  opacity: 0.5; }\n\
+\n\
+.ui-editor-unsupported-content {\n\
+  position: fixed;\n\
+  top: 50%;\n\
+  left: 50%;\n\
+  margin: -200px 0 0 -300px;\n\
+  width: 600px;\n\
+  height: 400px; }\n\
+\n\
+.ui-editor-unsupported-input {\n\
+  position: absolute;\n\
+  bottom: 10px; }\n\
+\n\
+/* Style */\n\
+.ui-editor-unsupported-content {\n\
+  padding: 10px;\n\
+  background-color: white;\n\
+  border: 1px solid #777; }\n\
+\n\
+/**\n\
+ * Message widget styles\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-messages {\n\
+  /* Error */\n\
+  /* Confirm */\n\
+  /* Information */\n\
+  /* Warning */\n\
+  /* Loading */ }\n\
+  .ui-editor-messages .ui-editor-message-close {\n\
+    cursor: pointer; }\n\
+  .ui-editor-messages .ui-editor-message-wrapper {\n\
+    -webkit-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
+    -moz-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
+    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5); }\n\
+  .ui-editor-messages:first-child {\n\
+    -moz-border-radius-topright: 5px;\n\
+    -webkit-border-top-right-radius: 5px;\n\
+    -ms-border-top-right-radius: 5px;\n\
+    -o-border-top-right-radius: 5px;\n\
+    border-top-right-radius: 5px;\n\
+    -moz-border-radius-topleft: 5px;\n\
+    -webkit-border-top-left-radius: 5px;\n\
+    -ms-border-top-left-radius: 5px;\n\
+    -o-border-top-left-radius: 5px;\n\
+    border-top-left-radius: 5px; }\n\
+  .ui-editor-messages:last-child {\n\
+    -moz-border-radius-bottomright: 5px;\n\
+    -webkit-border-bottom-right-radius: 5px;\n\
+    -ms-border-bottom-right-radius: 5px;\n\
+    -o-border-bottom-right-radius: 5px;\n\
+    border-bottom-right-radius: 5px;\n\
+    -moz-border-radius-bottomleft: 5px;\n\
+    -webkit-border-bottom-left-radius: 5px;\n\
+    -ms-border-bottom-left-radius: 5px;\n\
+    -o-border-bottom-left-radius: 5px;\n\
+    border-bottom-left-radius: 5px; }\n\
+  .ui-editor-messages .ui-editor-message-circle-close {\n\
+    /* Red */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff5d4b), color-stop(100%, #fa1c1c));\n\
+    background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: -o-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: -ms-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
+    background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
+  .ui-editor-messages .ui-editor-message-circle-check {\n\
+    /* Green */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cdeb8e), color-stop(100%, #a5c956));\n\
+    background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: -o-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: -ms-linear-gradient(top, #cdeb8e, #a5c956);\n\
+    background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
+  .ui-editor-messages .ui-editor-message-info {\n\
+    /* Blue */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a9e4f7), color-stop(100%, #0fb4e7));\n\
+    background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: -o-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: -ms-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
+    background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
+  .ui-editor-messages .ui-editor-message-alert {\n\
+    /* Yellow */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffd65e), color-stop(100%, #febf04));\n\
+    background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: -o-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: -ms-linear-gradient(top, #ffd65e, #febf04);\n\
+    background: linear-gradient(top, #ffd65e, #febf04); }\n\
+  .ui-editor-messages .ui-editor-message-clock {\n\
+    /* Purple */\n\
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fb83fa), color-stop(100%, #e93cec));\n\
+    background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: -o-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: -ms-linear-gradient(top, #fb83fa, #e93cec);\n\
+    background: linear-gradient(top, #fb83fa, #e93cec); }\n\
+  .ui-editor-messages .ui-editor-message-clock .ui-icon.ui-icon-clock {\n\
+    background: transparent url(\'data:image/png;base64,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\') no-repeat center center; }\n\
+\n\
+/* Plugins */\n\
+/**\n\
+ * Text alignment plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-align-left-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAItJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAjWYrEN2VYPbAZR1QUb0WxEZmPD1lR3wTYCttpSJQxg6mE0sgt2E/AzCLMBMTsQcwCxAskuQE722FwwEYiNsNjKClR8EUjH4w2DActMFBsAEGAAnS84DrgEl1wAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-align-left-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-align-right-button .ui-icon {\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIxJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAvYjGYrMhuEHanugo0EbETH1jQPg714bGcGYhOqu2A3AT+DMBvQQnYgzQHECiS7ADnZw9j4wmA61J+sQMUcUFtBtrMC8TEg9kNxwYBlJooNAAgwAJo0OAu5XKT8AAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-align-right-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-align-center-button .ui-icon {\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAI1JREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAlswGErjO2KrJiqLtiIw0Zc2JpmYbCTgM2WFIUBTD2MRnbBbgI2gzAbELMDMQcQK5DsAuRkj80FMDAFiI2RbGUFKuaA2noGiEOwhsGAZSaKDQAIMAB/BzgOq8akNwAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-align-center-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-align-justify-button .ui-icon {\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJFJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAjWYrEN2VZkNgg7Ut0FGwnYiI6tqe6CbUTYCsPMQGxCdRfsJsJmNqCF7ECaA4gVSHYBcrKHsZFdMBGIjbDYygpUzAG1FWQ7KxAfA2I/FBcMWGai2ACAAAMAvPA4C7ttvJ4AAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-align-justify-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Basic text style plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-text-bold-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKRJREFUeNpi/P//PwMlgImBQjDwBrCgmMbEpA2kGnGofQ3E9UD86t+/fzhdcBWIpwExMxQ3AHEIEK8BYgkgdsLrAih4A8SsaBYwQcWYiDGAEcmAbiwuJBiIIAPYoLgfiMuBeBmUXwHEXIQMYEIy4BUQXwDiy1C+HBBrEPKCDBCzwwwDpVRGRkZksU8ozkVOykCFVkBqOZ5oB3lpAoqe0bzAABBgANfuIyxmXKp/AAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-text-bold-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-text-italic-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAH1JREFUeNpi/P//PwMlgImBQjDwBrBgmMgEN1MbiBvRpOv//ft3FUUEFIjImJGRERnrAPF6IO6BiaGrZyLCi6xAvJDcMLAA4j9AfJlcA/yBeCe5sWAExAJAfIKkWIAFJBAUATE7kM+M143ooQoEVkD8EA1b4Yy10bzAABBgAC7mS5rTXrDAAAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-text-italic-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-text-underline-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKZJREFUeNpi/P//PwMlgImBQkCxASwopjExhQGpMCSheijdiCz279+/q3AeKAxgmJGREYSdgHgdlIaJ6SCLIevB5oXXUJe9RhK7gkUMZxgwAjEzlEYG2MRwGsCKRTErKQawYFHMQqwBn6G2qSCJGULFPmPYhpwSgdEIY6YCcTKa2rlAPBvEAEYjdgNAUYRMowOYWmQ9LFjUPSGQP2RwemFoZiaAAAMAlEI7bVBRJkoAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-text-underline-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-text-strike-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAL5JREFUeNpi/P//PwMlgImBQkCxASwopjHBzbMB4nQg5oTyrwKxNhAXAfGjf//+EXRBFhC/BOI0KAapYwZpxusCJPASquEdlD8FiHWwKWREjgUkL4gDcQ0QfwfiXqiBcIDsBXQD9hATcEADXOAckAEwzMjIiI4lgHgiEM8GYkmYOLIeXAZ4I2sA4vlQjGEArkBsAeJzQAUVYH8yMnIAKTmC6QAaHhpALALEPCBDoOJfgFQ5wVgYmnmBYgMAAgwAEGZWNyZpBykAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-text-strike-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-text-sub-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKZJREFUeNpi/P//PwMlgImBQjDwBrDATWJCMWs6lM7Ep/nfv39YXSAPxL+AWALKJtkLLkB8EohZoWySDbAH4uNQQ+xJNUAJiH8DMT8QPwZiWagYDEwA4v1QGgJACQmEGRkZQTgXiI+i4VyoHAy7AfEaEBucCNEM2AzEKkiKu6BiYMuAdAYQLwZiKQwDgGAVED+E0iBgBeUjiy1HErMCWzyaFxgAAgwA5Gw9vTeiCqoAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-text-sub-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-text-super-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALdJREFUeNpi/P//PwMlgImBQjDwBrCgmMaEYt50KJ0JpRuBWBuIrwJx/b9///C6QB6IfwGxBJQNAvVAPAkqRtALLkB8EohZoWwQiAbiICCuI8YAeyA+DjXEHiqmD8SaQLwIysYMAyhQAuLfQMwPxI+B2AkqVkZsLHgDsQYQTwXiVCBmg4phB6CUCMOMjIwgvBmIVaBsEO6CijEgY5geFAOAYBUQP4TSIGAF5SOLoVjMOJoXGAACDACTRz3jjn6PnwAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-text-super-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Blockquote plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-quote-block-button .ui-icon-quote {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGVJREFUeNpi/P//PwMlgImBQjAcDWBhYZEA4r1AHA/EKHxiXQBS+BKIF+LgEzTAG4h3I0UvOh+/AUCFbECcDmROA2lC5mMzgAWLGDuUtsTBJ+iFeUDMC6Wx8VEA42hSptwAgAADAO3wKLgntfGkAAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-quote-block-button:hover .ui-icon-quote {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Clean content plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-clean-button .ui-icon-clean {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABNVBMVEUAAAAAAAAgSocgSocgPnAAAABxcXFPT09YWFggSocgSocoToUbPXgSN3kyYZw0ZqT///8iUZkgSoc1Z6UiUJaJrNkwXpZIeLiOvO03a6s4b7JekNUjUpqCp9eNr9pSjeAwX5g2aqquxuV8otPB1euOsNv8/f6gveFgkdVnkMmbuuVfk9lkk9fK3Pbs8vmWtd5Vjs98odCHqNWkv+Jzms6Qt+xnmNuzyudVidS90u6hwe5mmuQtXKCow+OqxepNg82Xtd3C1Ox0m89vl8x3oNl4n9NSjuDi7PqlxO+MtOyWtt2fwO60y+dUjt5zm8/L2+9qneT3+f7g6/qDrelRi95snuWowuSfvOGPr9uwyeqRsdqUs9qat92OrtmDptN5ns9Rh8hqk8uXuehwnt1vl83e6vmZu+gBAK69AAAADXRSTlMbAKM01gogSSmAy7W1OP1GaAAAAM1JREFUeF5VzNN2A1EAQNE7TIrrsSe0Udu2zf//hHZWk672PO6HAySR/UmUwBjT9XyzeJlZuGpe60wE474TxxghhHEcOz4DzLcxRoZhJGT/AOcoiiKEOE9AZEGw291fOcpNdZeD74fEqKZ5lFLP0+YplIDAzBfXrTQKNyW3bEIhgV51QD5fyVv1fQir0zOzcxfW4tLaCGqkHoYWWR/BxubW9k5/7+PgcAjZ8JicnJKz82wC6gRstTu3d/cPj0/PcFIF6ZQMf5NTaaCAfylf1j4ecCeyzckAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-clean-button:hover .ui-icon-clean {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Click to edit plugin\n\
+ *\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-click-to-edit-message {\n\
+  padding: 10px;\n\
+  border: 1px solid #D4D4D4;\n\
+  font-size: 13px;\n\
+  z-index: 4000;\n\
+  color: #000;\n\
+  text-shadow: none;\n\
+  -webkit-pointer-events: none;\n\
+  -moz-pointer-events: none;\n\
+  pointer-events: none;\n\
+  -webkit-border-radius: 5px;\n\
+  -moz-border-radius: 5px;\n\
+  -ms-border-radius: 5px;\n\
+  -o-border-radius: 5px;\n\
+  border-radius: 5px;\n\
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2fff2), color-stop(100%, #daf2d7));\n\
+  background: -webkit-linear-gradient(top, #f2fff2, #daf2d7);\n\
+  background: -moz-linear-gradient(top, #f2fff2, #daf2d7);\n\
+  background: -o-linear-gradient(top, #f2fff2, #daf2d7);\n\
+  background: -ms-linear-gradient(top, #f2fff2, #daf2d7);\n\
+  background: linear-gradient(top, #f2fff2, #daf2d7);\n\
+  -webkit-box-shadow: 0px 2px 10px #cccccc;\n\
+  -moz-box-shadow: 0px 2px 10px #cccccc;\n\
+  box-shadow: 0px 2px 10px #cccccc;\n\
+  -webkit-transition: opacity 0.5s 0s;\n\
+  -moz-transition: opacity 0.5s 0s;\n\
+  -ms-transition: opacity 0.5s 0s;\n\
+  -o-transition: opacity 0.5s 0s;\n\
+  transition: opacity 0.5s 0s;\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
+  opacity: 0; }\n\
+\n\
+.ui-editor-click-to-edit-visible {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-click-to-edit-highlight {\n\
+  cursor: pointer;\n\
+  outline: 1px dotted rgba(0, 0, 0, 0.5);\n\
+  -webkit-transition: all 0.5s 0s;\n\
+  -moz-transition: all 0.5s 0s;\n\
+  -ms-transition: all 0.5s 0s;\n\
+  -o-transition: all 0.5s 0s;\n\
+  transition: all 0.5s 0s; }\n\
+\n\
+/**\n\
+ * Debug plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-debug-reinit-button .ui-icon-reload {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAqBJREFUeNqkU01PE2EQnrfdtmyLpbRNA/ULGyAhRi+NHkTk5sEEiRyMEi+evHszJh5I/AF613ho9EIwhEiMB4kSjQcWSDxgIAhJoZV26dd2t/v17jqzkoLGG5vM7rvzzPPsfOww13XhOJdAt8vPN0EIBEAQBPD5/UHGWALdnWgW2iO07H+40sL91APhH2ev4HOH+tJiZzoZCia7guXpj8XsnevprGX9yVQMM8i9K0jA2GI7A+9y3Uwo4I6Mj6aijToHzl2nXrNk27bBMDg0FQ7dcQFezeYljH6PlmsLuI4T8zF+e+zqqZ69ggaKZrH13WaxXDcUwm2LQ6xbgOKOCreu9WTfLuQVy3bSCBV8XoBpjmR6xYvFfKNflpuZTyuF1q+y8sHhXLINA7q6g/Byek06ERWgUlJh8EykHzkTxPUETMMYTcWCQ/Wqllnb3hct0/yM01nWVZUwePZiWcLnt0Vpd1NvmZCMBuL4PtwuwdL1S37GMqpuQaFUL+Mk5rllgeM41BuqeZH5/bmNzdJSbzQEiUggjJyBtgCqRVTDjqrc9c6YOjbRhlCHSON9YKMYGQpDrWVDh2F7mR2WoOsbezVdU30CdMXEGNY3abZ0rLcEVVkGpVqlPk0SRjEUS5y2gGUYX7byckURgnB66OxJ7MFD7MHkAQZ0Jh9hFEOxxDkUMM2ZrR/bMo+IsA3hjuzN4fPpvtQUjneJjM7kI4xiKJY4xGW0C9F7bwDrHvNHwk8T4zcutGz0hRjEQp4+1AwHGoYLosBgf3b+O1e1x9iPuUbu7uGfiEJzerUGu6+npwKDA8lm5lx8J54Ie2lWapr7c6tSWd+QwTSfYGPn/lqmoyKOpkn2yuoErKxeQdfgAbSO9hWXbAa/XDjKYcdd598CDAAkzn7JYhVZYAAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-debug-reinit-button:hover .ui-icon-reload {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-debug-destroy-button .ui-icon-close {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAtFBMVEX///+nAABhAACnAACjAACCAACgAACHAACjAAByAAB1AAByAACDAACnAACCAACHAACgAACNAACbAACXAACMAACSAABfAACYAACRAACjAACbAAChAACqAACNAACcAACHAACqAADEERGsERHQERG+NjaiERHUTEzYERG4ERGlFBSfFRX/d3f6cnK0JSWoHh7qYmLkXFyvFRXmXl7vZ2fNRUX4cHDXT0/+dnbbU1O3Li7GPT26MTG2f8oMAAAAIXRSTlMASEjMzADMzAAASMxIAMwAAMzMzEjMzEhISABIzABISEg/DPocAAAAj0lEQVR4Xo3PVw6DMBBF0RgXTO+hBYhtILX3sv99RRpvgPcxVzp/M5syb7lYepxDABDeYcQ5wg+MAMhr3JOyJKfxTABqduuvjD37O6sBwjZ+f76/7TFuQw1VnhyGYZPklYagKbKLlDIrmkBDGq1hUaqhM4UQJpwOwFdK+a4LAbCdlWNTCgGwjLlhUQqZ8uofSk8NKY1Fm8EAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-debug-destroy-button:hover .ui-icon-close {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Dock plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-dock-button .ui-icon-pin-s {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbFJREFUeNpi/P//PwMlgAVEPGNiIqTOBojz/zIwTHrPwHD4BZDzGGhxMhAzEWlRvtTy5SE/GRiKge61R5YgyoB/IHVPnzIoTprk/52BoRJoiDNBA5BCxuY3UN2vz58Znu7ZwyAaHOz+8f//RqC8OzEuAPtdcfbsgM937zJ8+fKFgePHDwa3sDBroKGt8EBEAo1ArAV1ARPQucwqs2f7vz14kOHH378MF/buPQ4S+wXEQPkauAG3EFHp7bBihTHDs2cMf4E2ffvwgQGmeeuyZWf+MDA0ATXs+I8eiP+gGBhNNTsjIs7+5+Vl+HTrFsOry5cZXr56xXB02bKjQM21QCU7sKaDRYiA2wE0RPJnamq2VVGR8adr1xi4uLkZPjMwsDJCNf/HagAjI8SA//95gRRb5pEjxnttbM6aeHsb87CwMED9DAZ/0QxAjgVmRkZGj+vXr0+wt7evWc3ENPfI1q1n2djYGP4TSsqMEBfYLV26tExXVzcfyF8NdM17oG33V69e3QKUO0vIAF1PT8+Y2NhYUDRuh7n0PyTEdzAQ4YKYHTt2TAEyz5OaGxkpzc4AAQYAvlOuK2pYar0AAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-dock-button:hover .ui-icon-pin-s {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-dock-button .ui-icon-pin-w {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wFFgA2AnOoAZ4AAAH4SURBVDjLtZNNaxNhFIXPfefNJJlkppFI09Ca1FiRMiDduCjWQltdtILdu1DcSkpx7UL6A1zGH+BKEFy5MkhErRvpwo+NSDEaaYyZSZNJJslkPl43XQQaaUA8u3M5PFwu5wL/KBo1FEC4DJALiN2jjAWIbcA5EVABzotkUu+ZJmvLsmQwJtcHA2oHQc8FXm8D9eE8HzafgThPpS5H19Zux4kmIqbJWL3OT/u+9LNWK1er1V8PgMMdwBsJ8AARtFoD6na1qK7PubFYTOOc9RqNQxEEX1ygswP4Jx6mDNw3Fhc/WVtb4uPy8uAx0YeHwMaoLBs1DBE9kzTtIJLJ4FQ6LQnghZVMFscCCIB8IeKB7/e6lYpjNZs2V1WeNk02FuApwAJA8xwnFHgeSUL4rmVJ3yIRfyzAFWA+Oj29EZqcvODYNveJEloisZnq9++NAkjD5gCY59nsnfjq6iafnT3bNQzJrtWQzeUm+p3OxQXbll8Cb45tYBGRKcucEd2Irq/fDC8tzSm5nKRMTSEUi3lcUXB1ZSV1RlVvPWLs2rEiaUIIDAbee+AtisWMUyqpRhAoiq7rLdtudvf2fsQlqWe02yQDr/7axEvAbml///uTcHjhqyxncjMz5zqO87th28+vu+47GWjfBdyxP61QKFA+nydVVQn/S38ATpHDEx6slP8AAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-dock-button:hover .ui-icon-pin-w {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Dialog docked to body\n\
+ */\n\
+.ui-editor-dock-docked {\n\
+  z-index: 10000; }\n\
+  .ui-editor-dock-docked .ui-editor-toolbar-wrapper {\n\
+    position: fixed;\n\
+    top: 0;\n\
+    left: 0;\n\
+    right: 0;\n\
+    border-top: none;\n\
+    display: -webkit-box;\n\
+    display: -moz-box;\n\
+    display: -ms-box;\n\
+    display: box;\n\
+    -webkit-box-pack: center;\n\
+    -moz-box-pack: center;\n\
+    -ms-box-pack: center;\n\
+    box-pack: center;\n\
+    -webkit-box-align: center;\n\
+    -moz-box-align: center;\n\
+    -ms-box-align: center;\n\
+    box-align: center; }\n\
+  .ui-editor-dock-docked .ui-editor-path {\n\
+    position: fixed;\n\
+    bottom: 0;\n\
+    left: 0;\n\
+    right: 0; }\n\
+\n\
+.ui-editor-ios .ui-editor-dock-docked .ui-editor-path {\n\
+  display: none; }\n\
+\n\
+/**\n\
+ * Dialog docked to element\n\
+ */\n\
+.ui-editor-dock-docked-to-element-wrapper {\n\
+  font-size: inherit;\n\
+  color: inherit;\n\
+  font-family: inherit; }\n\
+\n\
+.ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper {\n\
+  /* Removed fixed position from the editor */\n\
+  position: relative !important;\n\
+  top: auto !important;\n\
+  left: auto !important;\n\
+  border: 0 none;\n\
+  padding: 0;\n\
+  margin: 0;\n\
+  z-index: auto;\n\
+  width: 100%;\n\
+  font-size: inherit;\n\
+  color: inherit;\n\
+  font-family: inherit;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical; }\n\
+  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-toolbar {\n\
+    margin: 0;\n\
+    z-index: 2;\n\
+    -webkit-box-ordinal-group: 1;\n\
+    -moz-box-ordinal-group: 1;\n\
+    -ms-box-ordinal-group: 1;\n\
+    box-ordinal-group: 1; }\n\
+  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-toolbar .ui-widget-header {\n\
+    border-top: 0;\n\
+    border-left: 0;\n\
+    border-right: 0; }\n\
+  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-path {\n\
+    border: 0 none;\n\
+    margin: 0;\n\
+    -webkit-box-ordinal-group: 3;\n\
+    -moz-box-ordinal-group: 3;\n\
+    -ms-box-ordinal-group: 3;\n\
+    box-ordinal-group: 3;\n\
+    -webkit-border-radius: 0;\n\
+    -moz-border-radius: 0;\n\
+    -ms-border-radius: 0;\n\
+    -o-border-radius: 0;\n\
+    border-radius: 0; }\n\
+  .ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper .ui-editor-messages {\n\
+    margin: 0; }\n\
+\n\
+.ui-editor-dock-docked-element {\n\
+  /* Override margin so toolbars sit flush next to element */\n\
+  margin: 0 !important;\n\
+  display: block;\n\
+  z-index: 1;\n\
+  -webkit-box-ordinal-group: 2;\n\
+  -moz-box-ordinal-group: 2;\n\
+  -ms-box-ordinal-group: 2;\n\
+  box-ordinal-group: 2; }\n\
+\n\
+/**\n\
+ * Messages\n\
+ */\n\
+.ui-editor-dock-docked .ui-editor-messages {\n\
+  position: fixed;\n\
+  top: 0;\n\
+  left: 50%;\n\
+  margin: 0 -400px 10px;\n\
+  padding: 0;\n\
+  text-align: left; }\n\
+  .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper {\n\
+    width: 800px;\n\
+    margin: 0 auto; }\n\
+  .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper:first-child {\n\
+    -moz-border-radius-topright: 0;\n\
+    -webkit-border-top-right-radius: 0;\n\
+    -ms-border-top-right-radius: 0;\n\
+    -o-border-top-right-radius: 0;\n\
+    border-top-right-radius: 0;\n\
+    -moz-border-radius-topleft: 0;\n\
+    -webkit-border-top-left-radius: 0;\n\
+    -ms-border-top-left-radius: 0;\n\
+    -o-border-top-left-radius: 0;\n\
+    border-top-left-radius: 0; }\n\
+\n\
+/**\n\
+ * Embed plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-embed-button .ui-icon-youtube {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAxlBMVEX////////fNzfaMTHVLCzKISHFGxvvR0flPDzpSEjdMTH4Y2PaKyvtTk7PJibXIyOnLi7lQECkKyvSHR3mPj6eJCSUGhqRFxfqQkL0XFziOTmOFBSBBwehKCiHDQ3PFRWaISGXHR3wVlaECgqqMTGLEBDGHR365eW1ICDaXFz139/LDg7NLi6tNDTSKSnMNzd9AwP1TEy/Fhbwxsbqv7+7EhKzFBS6EBDonZ3akJDkhISxBwf8a2vLIiLPcHD88fH67+/fYGAnLmvBAAAAAXRSTlMAQObYZgAAAJtJREFUeF5Vx0WShFAUBMB631F3afdxd7v/pQaiN5C7BK4mgM3nxAahczfihIgrrfVTqs+qGN2qLMvHwy4tB6sOmWeMIXp7/jI9L8PCYowR0e/3xzVj1gLLiHNOg9OR82iJvBZC0GD/J0Sdo7B93+/78+737AKNK6Uker2UA7fBNlBKPdyos2CLWXI/ksywnr+MzNdoLyZa4HYC/3EAHWTN0A0YAAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-embed-button:hover .ui-icon-youtube {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs {\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical;\n\
+  height: 100%;\n\
+  width: 100%; }\n\
+  .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div {\n\
+    display: -webkit-box;\n\
+    display: -moz-box;\n\
+    display: -ms-box;\n\
+    display: box;\n\
+    -webkit-box-orient: vertical;\n\
+    -moz-box-orient: vertical;\n\
+    -ms-box-orient: vertical;\n\
+    box-orient: vertical;\n\
+    -webkit-box-flex: 1;\n\
+    -moz-box-flex: 1;\n\
+    -ms-box-flex: 1;\n\
+    box-flex: 1;\n\
+    -webkit-box-sizing: border-box;\n\
+    -moz-box-sizing: border-box;\n\
+    box-sizing: border-box; }\n\
+    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div > p:first-child {\n\
+      padding-top: 10px; }\n\
+    .ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs > div textarea {\n\
+      display: -webkit-box;\n\
+      display: -moz-box;\n\
+      display: -ms-box;\n\
+      display: box;\n\
+      -webkit-box-flex: 4;\n\
+      -moz-box-flex: 4;\n\
+      -ms-box-flex: 4;\n\
+      box-flex: 4; }\n\
+\n\
+/**\n\
+ * Float block plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-float-left-button .ui-icon-float-left {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAS5JREFUeNpi/P//PwMlgImBQsACY1zaIH4A6Bp7dAUzV31jnLHy22YgkxFqIQhf/vfvXymKAQ8eidtra35lYAQqY+FgZWBmZ2X49fk7AxvbX6DsN1+CLlgwn5khMECAwcLiL4OogiIDj6QEw9uLZ4AGfAVJ70BzAQg7ohigrnaP4cEDLoY3bzkYzL6/ZVA34ma4ev07w/sPv0HSHgRdoKICUvgR6IWPDK8evWb49+8iw/1bfxhevwYbsBfNdhC2BkkwwqLRxRhuFgM3HyMDrwAjw8vH/xj2nvuH1WZgIDKgGMDExLQNiz9xYWagASboBpAU/zAXsCCJ7SbCZjaghexAmgOIFUh2AXKyh7GRXTARiI2w2MoKVMwBtRVkOysQHwNiPxQXDFhmotgAgAADAKYzbYynfqX2AAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-float-left-button:hover .ui-icon-float-left {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-float-none-button .ui-icon-float-none {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAkFBMVEUAAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAABAQEAAADRrxbRsBYBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAAAAAAAAACcegnCrQ6ffgqukQv+/GixkS3duyLhwyfkyizevSNRMDCigDLauC/y41DcuiLrzTTQrhWCYBiObSDErz3r4VvApCt4Vg6dewnDaH3NAAAAGHRSTlMAycfDxcu9v8HYu+DAwIm3uZnRkdDn7LIyy/h+AAAAWklEQVR4Xp2KRwqFMBQAYzfGXmPtvfx//9spgvAWQcRZzgx6gz6dGEDkQ1FWNRBN2/XZCMRvXtZtB4LSfxon6AHTsjVZUQWR5xz2cWfJxYR9eFf2MQnCCH3hAIfwBUXJe8YuAAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-float-none-button:hover .ui-icon-float-none {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-float-right-button .ui-icon-float-right {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAS1JREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzZYRzBaaHcWE4kZGJ8aCe/0sHFAOAoB5d4avXfAwPH4swaGt+ZWAEGsnCwcrAzM7K8Ovzd3sMFwDBWpjNMPrK5b++C94yMwQGCDBYWPxlEFVQZOCRlGB4e/EMAzYDgtFdICr6kUFd7QfDgwdcDG/ecjCYfX/LoG7EzXD1+ncGeyNMAzYiuQDsCmHhf54qKr+BzI9AL3xkePXoNcO/fxcZ7t/6wwDzAyMsGoGBiDWUnQwR4tx8jAy8AowMLx//Y9h95g+GAdvQXIAPM//798+EKBfgAkADMMJgNxE2swEtZAfSHECsQLILkJM9jI3sgolAbITFVlagYg6orSDbWYH4GBD7obhgwDITxQYABBgAdBpg+9sXURwAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-float-right-button:hover .ui-icon-float-right {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Font size plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-font-size-inc-button .ui-icon-font-size-inc {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAOhJREFUeNpi/P//PwMlgImBQkCxASxgU5gwzJkOpTORBZ2ilzO8+MjFwMIixnBhnTlOF8gD8U8gFoey4UBSyZooLzgD8Umo65xhgsYu5USHgS0QHwfiE1A2TtuxGaAIxL+B+AEQnwFiaagYg6Qi2AAHIP4PpbEa4AHEz4HYAIi/QL3hgSS/H4gfQmlELCAHNBBLQGlksenP7x9l4Bc3YMTnBRWogbZIuBOIZUFyW2b5EQwDVyA+giYPcionSA6U5Jc0yTK8vrUcVQU0L1gB8RMotkKSXoMkXgQT5BM3A+sDYcahn5kAAgwArro7Z1GYijsAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-font-size-inc-button:hover .ui-icon-font-size-inc {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-font-size-dec-button .ui-icon-font-size-dec {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKxJREFUeNpi/P//PwMlgImBQjAMDGBBMY0Jbp4JEFcAcQcQnwEJpLa/Zfj27SvD+fPnGVhYxBgurDPH6wI9IP4DpRmMXcpJ9oIZELcBcRiaOCjOH0BpnAYoAbE6EE8EYnYgtjq7pxMm5wjE8lAapwFOQLwFiIuB+AQ0PBi2zvYHUQeAmBFKYxoATJWWQOwLxJJAfA6I5YE4FyT+9O5hBiSXwAHjaFKm3ACAAAMA85o8WKYZErQAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-font-size-dec-button:hover .ui-icon-font-size-dec {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Show guides plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-show-guides-button .ui-icon-pencil {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHZJREFUeNpi/P//PwNFAGQAIyMjDK9BYqNgXHqZ0MSYcFmEyxBGsClMTGS5+t+/fxg2biLGAGTXoBvATGoYkuUFGMDmhd2kGjL4vHCUUi9cIjcpnwPi2UAsBaXPQZPwOXxscD5Cy0xLSbUc3YDnJLue0uwMEGAA2O1APJOrHFQAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-show-guides-button:hover .ui-icon-pencil {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-ui-show-guides-visible * {\n\
+  outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
+\n\
+/**\n\
+ * History plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-undo-button .ui-icon-undo {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAe1JREFUeNrEUzFrFEEU/mazu7d3x8U9g0ROwkHEwrSrNmksJBxok1RRwUIEz0awFStZoqQw5B9ok1jYiRDBwl4PSaFJVLCMMfHWS7zb3ZndGd9ssgdXiVzhwGNnH+/75n3vm2FKKQyzDAy5zKmHLRSKRdiOA6tQgGlZDcrPUme3dcFBEPSLlZQQcZyFTFN8WZiGOUCnVCMRws9/4zD8BwkEFpz7N66c8vQJUbeLNEn+LuEQqxo8jv0716e8/f0UPIp0+n1OTbFLsUF1z+n7boAgA0eRf/em521tdeE4BuYunfa0OYehEMUJ3wt6Fza+7s4EkVwh3DJFLyPgYejfa0576+u/MsZe70g/tX8QRujSHDgXtpTpmOvarkjYrZ97Qg/xUTYDOv3B46U3rcnJMqRUUKaBtsXwzWDYJmfax1y0x07gx/FxfLbckd+1Wj0dYddI8vlcwhp1gcUnr/z55mXvbcfA99WXrVwjMwzGHNs0yiWbVSpFXqtVMTFxkrU+zOt55ENc04N7tvTCP9O86mn76D6cIzDSODYRhhUEnXFguy4/bs6gWr1IubN9F3KShHN8Wn6a3QNtZaFU0lvtZXAUm1LK13Jn5z7Vzw0Q9EmE0NvZDNnpoDw6OuC7voFUs0C19Uzif39MQxP8EWAA91//GdkHdYEAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-undo-button:hover .ui-icon-undo {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-redo-button .ui-icon-redo {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAd9JREFUeNrEU89LG0EUfjP7KyvEGsRorRhoySGCuSyht0IPgicFQZCcvXsvHoP/Q8FDKZRCpQityKIHvZT2YI6t6MUfCJqQKpt1d7Ozu7N9O9vWhIIUcvDBt/OY4X3z3vfNkjiOoZ+g0GfIyaf46gtQSQJF0wQIvePN5nJiJYS8xmUzDAIz8H1gnQ74npcS3BeubYOm60lqCKQjm/89QhSG0HEcSG6tzo4bAWM1JJntGaE7UNQKcL6EaQkxknQfcS6Imk0GizOTxrvPx7Xf4pvdBAOc85VBnVTLU6OPhx8NZBVZUjmPIYpStNsMGo0I5l8+NT5sfxckggCFAYrFzyaHlo1yoYDdSs2WD9e2A/atC4wFooMkJBT79EqBF88Lxu7eYU0QMN+v5Eey1enSRKF1y6ULFoKFAFUDntMgwpsiDuAEMbgBhydDKmxtH9TRmdWUwPOWSsXi2Fmr7RyfNG6sa9vzbI+FHT+MI3730hbmjIwEcLTxSRSrup5qgH6Wvn39cd76ae9TSndw6wzRQNiSooQxiohjHij4Pqy379PiTMb86wJalL+6ZB+pLK9RSv+x0XddkQfrb9K2VdXssRHZk4M1mRDc6XXWsaw/aT15ibKimN3n5MF/pr4JfgkwANDA599q/NhJAAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-redo-button:hover .ui-icon-redo {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Horizontal rule plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-hr-button .ui-icon-hr {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXhJREFUeNpi/P//PwMTExMDEmgEYi0gZsSCrwJxNUzhv3//GBixGEA0ABnAgkV8LZqtTFDaF6aAX8KCwdBrA4QDckFq+1sGSUVrBkZGRqKwvEEhg2PyS7BeuAv07AsZXjw4BmJuQLIV5gImJLYrv7g53LlwA8TkLRgCi28wXDzQF/Dr10+G379/M/z58wfoz/9gfUxMrAzMzGwMsnr5DBwcvBgGHABiexBDyTiV4cuXTwxfv35j+PHjB9CQ/0BnszCwsHAysLHxIofVQSB2gBlgnxogAqREiI6B+ikf7ZFdcHD2hjf2X79+Zfj8+TNeF7Cz84K9wMrKdRDZAAcQ8fbJaYYndw4zYAsDHlFjBjZxKwyXwAPx1cMTDIdWxoKY+5BCHo7f31tp8VM9iUFQ0oaBQ9YBYQIoLo1dygmmA2QgIGHJoGhUCtaLLSkfweICVqA6diDNAcQKyJYTlRdAanCJY8sL04HYFM3WM0Acgs0QRlymEwsAAgwAwwCYinucCRoAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-hr-button:hover .ui-icon-hr {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Internationalisation plugin\n\
+ *\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-wrapper .ui-editor-i18n-select {\n\
+  height: 23px;\n\
+  top: -8px;\n\
+  text-align: left; }\n\
+\n\
+.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-status {\n\
+  font-size: 13px;\n\
+  line-height: 10px; }\n\
+\n\
+.ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
+  line-height: 12px; }\n\
+\n\
+.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-item-icon {\n\
+  height: 24px;\n\
+  width: 24px; }\n\
+\n\
+.ui-selectmenu-menu .ui-icon.ui-editor-i18n-en,\n\
+.ui-editor-wrapper .ui-icon.ui-editor-i18n-en {\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAflJREFUeNpinDRzn5qN3uFDt16+YWBg+Pv339+KGN0rbVP+//2rW5tf0Hfy/2+mr99+yKpyOl3Ydt8njEWIn8f9zj639NC7j78eP//8739GVUUhNUNuhl8//ysKeZrJ/v7z10Zb2PTQTIY1XZO2Xmfad+f7XgkXxuUrVB6cjPVXef78JyMjA8PFuwyX7gAZj97+T2e9o3d4BWNp84K1NzubTjAB3fH0+fv6N3qP/ir9bW6ozNQCijB8/8zw/TuQ7r4/ndvN5mZgkpPXiis3Pv34+ZPh5t23//79Rwehof/9/NDEgMrOXHvJcrllgpoRN8PFOwy/fzP8+gUlgZI/f/5xcPj/69e/37//AUX+/mXRkN555gsOG2xt/5hZQMwF4r9///75++f3nz8nr75gSms82jfvQnT6zqvXPjC8e/srJQHo9P9fvwNtAHmG4f8zZ6dDc3bIyM2LTNlsbtfM9OPHH3FhtqUz3eXX9H+cOy9ZMB2o6t/Pn0DHMPz/b+2wXGTvPlPGFxdcD+mZyjP8+8MUE6sa7a/xo6Pykn1s4zdzIZ6///8zMGpKM2pKAB0jqy4UE7/msKat6Jw5mafrsxNtWZ6/fjvNLW29qv25pQd///n+5+/fxDDVbcc//P/zx/36m5Ub9zL8+7t66yEROcHK7q5bldMBAgwADcRBCuVLfoEAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,\n\
+.ui-editor-wrapper .ui-icon.ui-editor-i18n-zh_CN {\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFqSURBVHjaYrzOwPAPjJgYQEDAleHVbhADIvgHLPgHiQ0QQCxAlkR9NW8sw+cV/1gV/7Gb/hV4+vfzhj8Mv/78//Pn/+/f/8AkhH1t0yaAAAJp4I37zyz2lDfu79uqv/++/WYz+cuq/vvLxt8gdb+A5K9/v34B2SyyskBLAAII5JAva/7/+/z367a/f3/8ZuT9+//Pr78vQUrB6n4CSSj6/RuoASCAWEDO/fD3ddEfhv9/OE3/sKj8/n7k9/fDQNUIs/+DVf8HawAIIJCT/v38C3Hr95N/GDh/f94AVvT7N8RUBpjxQAVADQABBNLw/y/Ifwy/f/399ufTOpDBEPf8g5sN0QBEDAwAAQTWABEChgOSA9BVA00E2wAQQCANQBbEif/AzoCqgLkbbBYwWP/+//sXqBYggFhAkfL7D7OkJFCOCSj65zfUeFjwg8z++/ffX5AGoGKAAGI8jhSRyIw/SJH9D4aAYQoQYAA6rnMw1jU2vQAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+/**\n\
+ * Image resize plugin\n\
+ *\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-image-resize-in-progress {\n\
+  outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
+\n\
+/**\n\
+ * Length plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-length-button .ui-icon-dashboard {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhFJREFUeNrEk7tv01AUxr/4kcRO7Fh1HghFgSAeYglDlIfUbGEBhaWoUxFiQWJGMDDyhzB2ZmANYmAoIvQPaIHIkVJjKyWkcdzYSR1zbhSGQhFDB47007333PN9V/cVCcMQ5wkO54wIxe+5q8Rt4gaRW+VsYo9oE1/+ZpAktjKZzL1arXatWCzmFEVhOYzH40m327U7nc7nwWDwhlLbxITN8SsDVvisXq9vtVqtuqZp2XK5HDcMg5vNZlylUon7vq+XSqXLi8WiYJqmTvWfiNkvg8e06gMqLDmOI5AIvV4P8/l8CeuzHMHn8/kcmeiWZQWk6zCD67quP280GuXNdlv4qKrwTk6WwpXoFNVqNTKdTtf6/X7C87wPzOAhrX4nCIK195KEp4aBtxyHKRm4roujozGdwQSO49LYx/7+VzIPeVEUOcsyh+wab9Ge0+SKGW3nhSzj5WiEoWlhMvHolKOIRmVIkgpZVhGPKxAEGdlsIc20zOASz/NSs9lkl4IwJuOJH+CVksDi2APPx0iYIgNlCTNYXy8hmdQkpmUGCfag2u134DgJipKGdqGAR6NjbKdVOAMbQRAiRsaCEKMaHru7XdYutRw95R+Hh0NXVTNIpXQy0KDrOVy8chOb34Z4XcjCMvZoO86p12bbBy7Tsv5dYoc4OAtFFM3BxkZ4xtzOSvvPuE98X7V//oX//ht/CjAAagzmsnB4V5cAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-length-button:hover .ui-icon-dashboard {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Link plugin\n\
+ *\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-link-button .ui-icon-link {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAilBMVEX///8EBARUVFRUVFQEBARTU1MqKiwfHx5MTEzGxsZNTU1FRUWAgH8SEhJnZ2fd3d06Ojrg4ODIyMgODg4DAwMSEhLCwsGcnKXExNEvLy+ysrh+foMQEBBBQUEEBATJydeenqcDAwPT09OIiIjj4+OZmZl3d3fU1OPCwsHW1tXq6urr6+va2trGxsaRnmwcAAAAI3RSTlMAimdfRTOWgDXbAGXFj339cv3dAHtC3OP8bt+2cnuA/OMA+Akct2IAAABoSURBVHhetcVZFoIgGAbQ7wcVwyEKtBi01OZh/9urw2EJdV8ufkHmnDHG85RE2a7Wp812GGJtiaqvG1rOXws1dV9BzWKi2/3xfL1pErOCdT6YS2SCdxZdsdtfD8ci1UFnIxGNWUrjHz6V6QhqNdQf6wAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-link-button:hover .ui-icon-link {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-unlink-button .ui-icon-unlink {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA2FBMVEX///8WFhYvLy9LS0sEBAQODg4EBARNTU0DAwNVVVVUVFQtLS1nZ2cfHx46OjoSEhLGxsZTU1OAgH/T09NUVFQEBAQ6OjpMTEwvLy+4uMDCwsEQEBCvr7sSEhIEBAR+foMqKixFRUUEBARDQ0MBAQEBAQG5ucQiIiICAgIODg7Z2dlAQEBMTEwsLCxGRkYAAABPT0/e3t4mJiYqKiopKSlUVFQiIiJJSUkjIyNFRUU5OTkBAQEoKCi/v8zCws+qgFWFZkY7MSbc3Nzj4+Pm5ubOztzU1OTQ0N6IE/7FAAAAQ3RSTlMAAAAAigAAAAAAZwB9gACP2zPF+F9ocjVu39xy40KAtpZlRQBrUPx9AIb8AE8AAAAA/AAAAAAAAAAAAAAA/PwAAAD8PWHlxQAAALtJREFUeF5dzsVWxEAQheHqpGPEPeMWGXfcmQHe/42oC+ewmH95F1UfGWFyhZLQUBHlTvBxOp92gZP/DaN25Esp/ag9ukeUxa5p6qbpxpmHqGgNOtWm6gxahaIokwX1ht16ps3q7rAn9utrg7RxX6Z6KvtjbWJZGHTuuLLtw8P2f/CAWd4uGYNBqCpj5s1NM2cMPd3xc2D4EDDkIWCmj1NgSEHAlGUJDAnEmOfPr+8XxtDr27sQwHDA0GU/2RcVwEV78WkAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-unlink-button:hover .ui-icon-unlink {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/* Dialog */\n\
+.ui-editor-link-panel .ui-editor-link-menu {\n\
+  height: 100%;\n\
+  width: 200px;\n\
+  float: left;\n\
+  border-right: 1px dashed #D4D4D4;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: horizontal;\n\
+  -moz-box-orient: horizontal;\n\
+  -ms-box-orient: horizontal;\n\
+  box-orient: horizontal;\n\
+  -webkit-box-flex: 2;\n\
+  -moz-box-flex: 2;\n\
+  -ms-box-flex: 2;\n\
+  box-flex: 2; }\n\
+  .ui-editor-link-panel .ui-editor-link-menu p {\n\
+    font-weight: bold;\n\
+    margin: 12px 0; }\n\
+  .ui-editor-link-panel .ui-editor-link-menu fieldset {\n\
+    margin: 2px 4px;\n\
+    padding: 7px 4px;\n\
+    font-size: 13px; }\n\
+    .ui-editor-link-panel .ui-editor-link-menu fieldset label {\n\
+      display: block;\n\
+      margin-bottom: 10px; }\n\
+      .ui-editor-link-panel .ui-editor-link-menu fieldset label span {\n\
+        display: inline-block;\n\
+        width: 150px;\n\
+        font-size: 13px;\n\
+        vertical-align: top; }\n\
+\n\
+.ui-editor-link-panel .ui-editor-link-menu fieldset,\n\
+.ui-editor-link-panel .ui-editor-link-wrap fieldset {\n\
+  border: none; }\n\
+\n\
+.ui-editor-link-panel .ui-editor-link-wrap {\n\
+  margin-left: 200px;\n\
+  padding-left: 20px;\n\
+  min-height: 200px;\n\
+  position: relative; }\n\
+  .ui-editor-link-panel .ui-editor-link-wrap.ui-editor-link-loading:after {\n\
+    content: \'Loading...\';\n\
+    position: absolute;\n\
+    top: 60px;\n\
+    left: 200px;\n\
+    padding-left: 20px;\n\
+    background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOXRFWHRTb2Z0d2FyZQBBbmltYXRlZCBQTkcgQ3JlYXRvciB2MS42LjIgKHd3dy5waHBjbGFzc2VzLm9yZyl0zchKAAAAOnRFWHRUZWNobmljYWwgaW5mb3JtYXRpb25zADUuMi4xNzsgYnVuZGxlZCAoMi4wLjM0IGNvbXBhdGlibGUpCBSqhQAAAAhhY1RMAAAACAAAAAC5PYvRAAAAGmZjVEwAAAAAAAAAEAAAABAAAAAAAAAAAAA8A+gAAIIkGDIAAACsSURBVDiNtZLBCcMwDEUfJgOUjhAyQsmp9FA8TgfISj6F4gl66jSdIIf00G9wnLjYKf3w0Qch6Us2fMdVLMYx0haYRZsrMJEegZdiDj3gFFeT54jBiU2mO+XdVvdRyV0OYidVMEAH3AEPHGoboMKwuy+seYqLV9iNTpM90P7S6AQMitXogYnPHSbyz2SAC9HqQVigkW7If90z8FAsctCyvMvKQdpkSOzfxP/hDd++JCi8XmbFAAAAGmZjVEwAAAABAAAAEAAAABAAAAAAAAAAAAA8A+gAABlX8uYAAAC3ZmRBVAAAAAI4jaWQsQ3CQBAEB4cECFGCI1fiAlyFKwARWgSIeqjCNTh0gIjIkBw9gffFSfz74VlpdX/W3Xr3YBmlmIUSmMSoSGHee+CmGsMGaFU/cAecqnVh/95qpg0J/O0gCytgDRzUX4DnryIn5lwO6L7c6fxskRhMwkc4qj+TEcFjC9SqWcsj8x3GhMgu9LHmfUinvgKuYmWWp5BIyEFvBPuUAy9ibzAYgWEhUhQN8BCb2NALKY4q8wCrG7AAAAAaZmNUTAAAAAMAAAAQAAAAEAAAAAAAAAAAADwD6AAA9MEhDwAAAKhmZEFUAAAABDiNY2CgMTgNxTgBExLbh4GB4SCUxgeMcEkcZmBg+A+lcQETqBoTbJI+UM1ku4AiEATFZIEQBoi//kPZxIAAKEaJBYpACAm24wUSBORVGBgYUqA0BtjKAAmHrXg0f4aq+YxuiAQDIiD/Q/k8DAwMdVDMw8DAkIamJo2QCyYjKZ4MtfErlP8VlzeQw2AlkgErkbyBMwzQgRoDA8N+KMapAQDdvyovpG6D8gAAABpmY1RMAAAABQAAABAAAAAQAAAAAAAAAAAAPAPoAAAZC1N1AAAAsWZkQVQAAAAGOI21kkEOgjAURF9YGBbGtYcwLowrwxk8BMcg3XACD9djGJaujKmLTkMRCiXEl0ympYX8+Xz4M62UpIjWR8DI59inDgzg5CkOwEs+YnMFmzhJOdwAK1UAZ+ANfLRewuJ75QAb/kKRvp/HmggVPxHWsAMu8hEN8JRPUdLnt9oP6HTYRc/uEsCVvnlO+wFGFYRJrKPLdU4FU5HCB0KsEt+DxZfBj+xDSo7vF9AbJ9PxYV81AAAAGmZjVEwAAAAHAAAAEAAAABAAAAAAAAAAAAA8A+gAAPSdgJwAAADDZmRBVAAAAAg4jaWSTQrCMBCFP6NIT5AjCF6gJ6jbUnoCL1biDTyF5AAueoZu3LkSrAtHTEJiIn3wmCTz92YILMQ64++BPTDKXQMH4AbcAZQTvAEasTFo4AqcxeowoAFmsSk1s8M+DChRMEnyFFNQAg10sWSFv49cESPUn+RRWFLE8N2DKe2axaIR/sU25eiAi9gUBt6zDzGnFad13nZCgAr/I1UxBdZRUAMPYV2iIETrdGudd28Hqx8FFHCU8wl4xoJeZnUrSRiyCSsAAAAaZmNUTAAAAAkAAAAQAAAAEAAAAAAAAAAAADwD6AAAGe6xwAAAALtmZEFUAAAACjiNpZJBCsIwEEWfpUsPULoSl55Beh4J7nqCHkDceR3pIaSr4Ak8Qq2L/khomlrig+FPhszwJy3EqYCHolq4F6UDBkWnWgbspN+CT7EwMAPuwFM67aUAem/IdIW952jQOeCXg1bN7ZyDNQRvsEkYkgNG+S1XcpHWKwacgatzlLLH2z/8vUJCf5wSaKQxToCVBjSM37jxaluFw+qOXeOgBF4KVzNqNkH3DAfGX7tXnsRREeUD4f8lQGjw+ycAAAAaZmNUTAAAAAsAAAAQAAAAEAAAAAAAAAAAADwD6AAA9HhiKQAAAJ9mZEFUAAAADDiNtZDLCcMwEEQfIUcXoDpCKgg6qIRUEtKB6wg6poDgalyFTj7YBw+2QyRlCc6DYVm0n9FCGQc8JFepWzgBN0WACIxS/NZ8BgYVD8pzA1ogKb5x3xSPyp0a4+YLSe/J4iBH0QF83uCvXKSFq2TBs97KH/Y1ZsdL+3IEgmJt86u0PTAfJlQGdKrprA6ekslBjl76mUYqMgFhpStJaQVr0gAAABpmY1RMAAAADQAAABAAAAAQAAAAAAAAAAAAPAPoAAAZshBTAAAAu2ZkQVQAAAAOOI21kCEOwkAQRR8rKkkFCtmjkJ4ARTgBArViT4LjLJwBgUZUr8NBQlrR38Am3XYEvOTnT7PzuzO7IE8BHFWfgNdELwBLYCMH8EAr+VzIyUvgBlzkZaZ/D1zlCfXXba2+C93sVaNwK08ogUaHzcQEu9wE0O9e83kDEw7YAhG4K/ww5CoJFB52j8bwU6rcTLOJYYWo2kKywk9Zz5yvgCAfDb9nfhLoHztYJzhIpgnGOEv/owMnkSfarUXVlAAAAABJRU5ErkJggg==\') no-repeat left center; }\n\
+  .ui-editor-link-panel .ui-editor-link-wrap h2 {\n\
+    margin: 10px 0 0; }\n\
+  .ui-editor-link-panel .ui-editor-link-wrap fieldset {\n\
+    margin: 2px 4px;\n\
+    padding: 7px 4px;\n\
+    font-size: 13px; }\n\
+    .ui-editor-link-panel .ui-editor-link-wrap fieldset input[type=text] {\n\
+      width: 400px; }\n\
+    .ui-editor-link-panel .ui-editor-link-wrap fieldset.ui-editor-external-href {\n\
+      width: 365px; }\n\
+    .ui-editor-link-panel .ui-editor-link-wrap fieldset.ui-editor-link-email label {\n\
+      display: inline-block;\n\
+      width: 115px; }\n\
+    .ui-editor-link-panel .ui-editor-link-wrap fieldset.ui-editor-link-email input {\n\
+      width: 340px; }\n\
+  .ui-editor-link-panel .ui-editor-link-wrap ol li {\n\
+    list-style: decimal inside; }\n\
+\n\
+.ui-editor-link-panel .ui-editor-link-wrap\n\
+.ui-editor-link-panel .ui-editor-link-wrap fieldset #ui-editor-link-external-target {\n\
+  vertical-align: middle; }\n\
+\n\
+.ui-editor-link-error-message div {\n\
+  padding: 0 .7em; }\n\
+  .ui-editor-link-error-message div p {\n\
+    margin: 0; }\n\
+    .ui-editor-link-error-message div p .ui-icon {\n\
+      margin-top: 2px;\n\
+      float: left;\n\
+      margin-right: 2px; }\n\
+\n\
+/**\n\
+ * List plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-list-unordered-button .ui-icon-list-unordered {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMlJREFUeNpi/P//PwNFAGQAIyNjGBCvgdIMxGKQXhaoORFlZWWBXV1dTED2KqjYGiBmRMJMaOwrQFwOc0EEEG+A0iS5gBFEMDExkeX9f//+MTAxUAhgBsQC8U4oTRKABWJ8Rkae84wZk5iB7MVQsW1IAYYLW8MCMRGID0Bp+gYiC46EhTPR4QrEdCA+A6VJT8pAcDMsLB3EuAniQP14BIiPAfEJID4FxGehqe8OED8B4vVgvVADioH4GZTGGWhYvUtpbqQ4JQIEGABjeFYu055ToAAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-list-unordered-button:hover .ui-icon-list-unordered {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-list-ordered-button .ui-icon-list-ordered {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAM1JREFUeNpi/P//PwNFAGQAIyNjIxCvAWJBIGYgFoP0skDNqQfidUDMiGT2GigfhpnQ2FeAuJwFSQMTmuNCiPEBTFMblF1CahAwgvzBxMREVvj9+/cP7oIuIN4Bpcl2gRMQJwFxDFRuG1KAYcVAF1jDojEBiGcAsQSp0QjzgiEQawLxSiibNoGInmqRE9J0IJaEYnNSXAAzYC4QNwJxIJLcEbRAYwZidiDmgOLTYPVIzgJpPgD2F45Aw+olqAFrgfg5EBeTagAjpdkZIMAAg/ZGwsH5qkAAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-list-ordered-button:hover .ui-icon-list-ordered {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Paste plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-paste-panel-tabs {\n\
+  height: 100%;\n\
+  width: 100%;\n\
+  -webkit-box-sizing: border-box;\n\
+  -moz-box-sizing: border-box;\n\
+  box-sizing: border-box; }\n\
+\n\
+.ui-editor-paste .ui-tabs a {\n\
+  outline: none; }\n\
+\n\
+.ui-editor-paste-panel-tabs {\n\
+  position: relative;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical; }\n\
+  .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text {\n\
+    height: 25px;\n\
+    line-height: 25px;\n\
+    position: absolute;\n\
+    right: 35px;\n\
+    top: 15px;\n\
+    width: 100px; }\n\
+    .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text input {\n\
+      margin: 0;\n\
+      padding: 0;\n\
+      vertical-align: text-bottom; }\n\
+\n\
+.ui-editor-paste-panel-tabs > div {\n\
+  overflow: auto;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-flex: 1;\n\
+  -moz-box-flex: 1;\n\
+  -ms-box-flex: 1;\n\
+  box-flex: 1;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical;\n\
+  -webkit-box-sizing: border-box;\n\
+  -moz-box-sizing: border-box;\n\
+  box-sizing: border-box; }\n\
+\n\
+.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {\n\
+  -webkit-box-flex: 1;\n\
+  -moz-box-flex: 1;\n\
+  -ms-box-flex: 1;\n\
+  box-flex: 1;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box; }\n\
+\n\
+/**\n\
+ * Raptorize plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-raptorize-button .ui-icon-raptorize {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABDlBMVEX///9NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU0Y/iVtAAAAWXRSTlMA/v1mTvW+WQFF+nGpsyPlDhXL1GvZHduk48LslL2a7tadwee772kEfqD8+OGCXWJ2+bQ9pt7xCme4iQU4iNH0mCEPEd82Ocxj4De2HoMaq3MHZJsDeGwCG8H1fioAAAC1SURBVHheNchFlsMwEADRlmRkSDKmMDMMMjMz9P0vkifLrl194F3NW0qtugV5Wt1FHpnloGKRmr3TK96YDjiMxFGCONngcJ1De4GNDJqhvd2VkbzsY+eDw2efMTYsjRFxd4+DZx6ajC1xhXTTB560EyfWASJW2FEG3vGJElZOz4xzH6QLKLqMgpvbu3sxD+4jPBFJe05fBby9ly0S6ADxl4BviGjp5xd0Of0TUqaUEPs/kR1YA96IIUDtx93SAAAAAElFTkSuQmCC\') 0 0; }\n\
+\n\
+.ui-editor-raptorize-button:hover .ui-icon-raptorize {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Save plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-save-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVNJREFUeNqkU71ugzAQPowtwdAdqRLK3odg6161a+cukZonoGrElgWWDqhb16oP0AfoytStirows0QRMj/unQsohAQi5aTD5vju4/Pd2VBKwTnG6cEYe8bl6s73P09Jel8ur3H5ruv6CUiBYRgfQRAosnrCyQhLOZTLG1ImpYQSA1VVjf7dNE0gLOV0R6AXlAMSk4uiGCUQ6ITdJzDpz0SQTxAoxlqVZo+gLEuQyDxFwIQAwg4IiPV3vYbL2WyUgDBHFbxG0Um9t237sIIkSeDYYGHbur3neQMCTgqoRWEYDToh8NyLxSO4rgtpmrY14D0CUsA5h80mh/n8QQdXq7CTTN/ILMtqa9AjEDjOGrTdSnAcRwdpr1unzB5BMweiGwY8tx/H8U+WZbmUSoPJlfr3NrZLgDkXujbNXaD9DfoLAt8OFRHPfb8X+sLcW+Pc6/wnwABHMdnKf4KT4gAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-save-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-cancel-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAtFBMVEX///+nAABhAACnAACjAACCAACgAACHAACjAAByAAB1AAByAACDAACnAACCAACHAACgAACNAACbAACXAACMAACSAABfAACYAACRAACjAACbAAChAACqAACNAACcAACHAACqAADEERGsERHQERG+NjaiERHUTEzYERG4ERGlFBSfFRX/d3f6cnK0JSWoHh7qYmLkXFyvFRXmXl7vZ2fNRUX4cHDXT0/+dnbbU1O3Li7GPT26MTG2f8oMAAAAIXRSTlMASEjMzADMzAAASMxIAMwAAMzMzEjMzEhISABIzABISEg/DPocAAAAj0lEQVR4Xo3PVw6DMBBF0RgXTO+hBYhtILX3sv99RRpvgPcxVzp/M5syb7lYepxDABDeYcQ5wg+MAMhr3JOyJKfxTABqduuvjD37O6sBwjZ+f76/7TFuQw1VnhyGYZPklYagKbKLlDIrmkBDGq1hUaqhM4UQJpwOwFdK+a4LAbCdlWNTCgGwjLlhUQqZ8uofSk8NKY1Fm8EAAAAASUVORK5CYII=\') 0 0; }\n\
+\n\
+.ui-editor-cancel-button:hover .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Tag menu plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-wrapper .ui-editor-tag-select {\n\
+  height: 23px;\n\
+  top: -8px;\n\
+  text-align: left; }\n\
+\n\
+.ui-editor-wrapper .ui-editor-tag-select .ui-selectmenu-status {\n\
+  font-size: 13px;\n\
+  line-height: 10px; }\n\
+\n\
+.ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
+  line-height: 12px; }\n\
+\n\
+/**\n\
+ * Basic text style plugin\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-wrapper [data-title]:after {\n\
+  opacity: 0;\n\
+  content: attr(data-title);\n\
+  display: block;\n\
+  position: absolute;\n\
+  top: 100%;\n\
+  font-size: 12px;\n\
+  font-weight: normal;\n\
+  color: white;\n\
+  padding: 7px 16px 1px;\n\
+  white-space: nowrap;\n\
+  overflow: visible;\n\
+  z-index: 1000;\n\
+  -webkit-pointer-events: none;\n\
+  -moz-pointer-events: none;\n\
+  pointer-events: none;\n\
+  -webkit-border-radius: 9px 9px 2px 2px;\n\
+  -moz-border-radius: 9px 9px 2px 2px;\n\
+  -ms-border-radius: 9px 9px 2px 2px;\n\
+  -o-border-radius: 9px 9px 2px 2px;\n\
+  border-radius: 9px 9px 2px 2px;\n\
+  -webkit-transition: opacity 0.23s 0s;\n\
+  -moz-transition: opacity 0.23s 0s;\n\
+  -ms-transition: opacity 0.23s 0s;\n\
+  -o-transition: opacity 0.23s 0s;\n\
+  transition: opacity 0.23s 0s;\n\
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
+  background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
+  background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
+  background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
+  background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
+  background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0; }\n\
+\n\
+.ui-editor-wrapper [data-title]:hover:after {\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-wrapper .ui-editor-select-element {\n\
+  position: relative; }\n\
+\n\
+.ui-editor-wrapper .ui-editor-select-element:after {\n\
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
+  background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
+  background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
+  background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
+  background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
+  background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0; }\n\
+\n\
+/**\n\
+ * Unsaved edit warning plugin\n\
+ *\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-unsaved-edit-warning {\n\
+  position: fixed;\n\
+  bottom: 0;\n\
+  right: 0;\n\
+  height: 30px;\n\
+  line-height: 30px;\n\
+  border-radius: 5px 0 0 0;\n\
+  border: 1px solid #D4D4D4;\n\
+  padding-right: 7px;\n\
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fffff2), color-stop(100%, #edecbd));\n\
+  background: -webkit-linear-gradient(top, #fffff2, #edecbd);\n\
+  background: -moz-linear-gradient(top, #fffff2, #edecbd);\n\
+  background: -o-linear-gradient(top, #fffff2, #edecbd);\n\
+  background: -ms-linear-gradient(top, #fffff2, #edecbd);\n\
+  background: linear-gradient(top, #fffff2, #edecbd);\n\
+  -webkit-transition: opacity 0.5s;\n\
+  -moz-transition: opacity 0.5s;\n\
+  -ms-transition: opacity 0.5s;\n\
+  -o-transition: opacity 0.5s;\n\
+  transition: opacity 0.5s;\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
+  opacity: 0; }\n\
+  .ui-editor-unsaved-edit-warning .ui-icon {\n\
+    display: inline-block;\n\
+    float: left;\n\
+    margin: 8px 5px 0 5px; }\n\
+\n\
+.ui-editor-unsaved-edit-warning-visible {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * View source plugin\n\
+ *\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-view-source-button .ui-icon-view-source {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKtJREFUeNpi/P//PwMlgImBQkCxAQwgLzAyMqLjMCCehsSfBhVDUQf2PhYDIoB4JhCLIYmJQcUiCBkQBcRzgFgci6vEoXJRuAyIAeIFODQjG7IAqhbFAAMg3gOlGQhguFp0FyQC8UoglgTx0QFUjSRUTSKuMEgG4nUghVgMkITKJROKhXQg3gbUI42kXxokBpUjGI0gDYVAfBzJABC7EFs6YBz6eYFiAwACDAADJlDtLE22CAAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-view-source-button:hover .ui-icon-view-source {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+.ui-editor-ui-view-source .ui-editor-ui-view-source-dialog {\n\
+  overflow: auto; }\n\
+\n\
+.ui-editor-ui-view-source-highlighted,\n\
+.ui-editor-ui-view-source-plain-text {\n\
+  height: 100%;\n\
+  width: 100%;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical; }\n\
+\n\
+code, textarea {\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical;\n\
+  -webkit-box-flex: 1;\n\
+  -moz-box-flex: 1;\n\
+  -ms-box-flex: 1;\n\
+  box-flex: 1;\n\
+  -webkit-box-sizing: border-box;\n\
+  -moz-box-sizing: border-box;\n\
+  box-sizing: border-box;\n\
+  white-space: normal;\n\
+  display: -webkit-box;\n\
+  display: -moz-box;\n\
+  display: -ms-box;\n\
+  display: box;\n\
+  -webkit-box-flex: 1;\n\
+  -moz-box-flex: 1;\n\
+  -ms-box-flex: 1;\n\
+  box-flex: 1; }\n\
 </style>').appendTo('head');
