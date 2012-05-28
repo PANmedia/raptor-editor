@@ -12,9 +12,10 @@
     display: inline-block;
 
     > .ui-button {
-        font-size: $font-size;
+        float: left;
         display: block;
         margin: 0 -1px 0 0;
+        font-size: $font-size;
     }
 
     .ui-button:hover {
