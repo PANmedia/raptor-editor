@@ -1117,6 +1117,10 @@ $.widget('ui.editor',
                         .appendTo(ui.menu)
                         .bind('mouseenter.' + editor.widgetName, function() {$(this).addClass('ui-state-focus'); })
                         .bind('mouseleave.' + editor.widgetName, function() {$(this).removeClass('ui-state-focus'); })
+                        .bind('mousedown.' + editor.widgetName, function() {
+                            // Prevent losing focus on editable region
+                            return false;
+                        })
                         .bind('click.' + editor.widgetName, function() {
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
@@ -1141,12 +1145,17 @@ $.widget('ui.editor',
                     .append(icon)
                     .prependTo(ui.selectMenu);
 
-                ui.button.bind('click.' + editor.widgetName, function() {
-                    $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
-                    ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                    ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
-                    return false;
-                });
+                ui.button
+                    .bind('mousedown.' + editor.widgetName, function() {
+                        // Prevent losing focus on editable region
+                        return false;
+                    })
+                    .bind('click.' + editor.widgetName, function() {
+                        $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
+                        ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                        ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
+                        return false;
+                    });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
                 ui.button.find('.ui-selectmenu-text').html(selected);
