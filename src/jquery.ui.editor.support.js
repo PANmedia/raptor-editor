@@ -2,6 +2,9 @@ var supported, ios;
 
 function isSupported(editor) {
     if (supported === undefined) {
+        supported = true;
+
+        // <ios>
         ios = /(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent);
         if (ios) {
             $('html').addClass(editor.options.baseClass + '-ios');
@@ -15,10 +18,14 @@ function isSupported(editor) {
                 });
             }
         }
+        // </ios>
+
         if ($.browser.mozilla) {
             $('html').addClass(editor.options.baseClass + '-ff');
         }
-        if ($.browser.msie) {
+
+        // <ie>
+        if ($.browser.msie && $.browser.version < 9) {
             supported = false;
 
             // Create message modal
@@ -41,9 +48,8 @@ function isSupported(editor) {
             message.find('.' + editor.options.baseClass + '-unsupported-close').click(function() {
                 message.remove();
             });
-        } else {
-            supported = true;
         }
+        // </ie>
     }
     return supported;
 }
