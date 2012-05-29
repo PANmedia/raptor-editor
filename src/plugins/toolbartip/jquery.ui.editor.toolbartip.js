@@ -14,6 +14,9 @@ $.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.p
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
+        if ($.browser.msie) {
+            return;
+        }
         this.bind('show, tagTreeUpdated', function() {
             $('.ui-editor-wrapper [title]').each(function() {
                 $(this).attr('data-title', $(this).attr('title'));

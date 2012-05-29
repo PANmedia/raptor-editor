@@ -33,6 +33,16 @@ var debugLevel = MIN;
 function info() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Raptor Editor');
+
+    // <ie>
+    if (!console.error.apply) {
+        for (var i = 0, l = args.length;i < l; i++) {
+            console.error(args[i]);
+        }
+        return;
+    }
+    // </ie>
+
     console.info.apply(console, args);
 }
 
@@ -45,6 +55,16 @@ function info() {
 function debug() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Raptor Editor');
+
+    // <ie>
+    if (!console.error.apply) {
+        for (var i = 0, l = args.length;i < l; i++) {
+            console.error(args[i]);
+        }
+        return;
+    }
+    // </ie>
+
     console.debug.apply(console, args);
 }
 
@@ -88,6 +108,16 @@ if (debugLevel >= MAX) {
 function handleError(errorMessage) {
     if (console && console.error) {
         var args = Array.prototype.slice.call(arguments);
+        
+        // <ie>
+        if (!console.error.apply) {
+            for (var i = 0, l = args.length;i < l; i++) {
+                console.error(args[i]);
+            }
+            return;
+        }
+        // </ie>
+
         console.error.apply(console, args);
     } else {
         throw errorMessage;

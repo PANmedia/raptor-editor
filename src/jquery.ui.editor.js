@@ -548,12 +548,13 @@ $.widget('ui.editor',
     showMessage: function(type, message, options) {
         options = $.extend({}, this.options.message, options);
 
-        var messageObject = {
+        var messageObject;
+        messageObject = {
             timer: null,
             editor: this,
             show: function() {
                 this.element.slideDown();
-                this.timer = window.setTimeout(function(messageObject) {
+                this.timer = window.setTimeout(function() {
                     this.timer = null;
                     messageObject.hide();
                 }, options.delay, this);
@@ -1141,6 +1142,7 @@ $.widget('ui.editor',
                     .prependTo(ui.selectMenu);
 
                 ui.button.bind('click.' + editor.widgetName, function() {
+                    $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
                     ui.menu.css('min-width', ui.button.outerWidth() + 10);
                     ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                     return false;

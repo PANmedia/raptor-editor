@@ -83,28 +83,3 @@
 html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {
     margin-top: 0!important;
 }
-
-/******************************************************************************\
- * Messages
-\******************************************************************************/
-.ui-editor-messages {
-    margin: 0;
-
-    .ui-editor-message-close {
-        float: right;
-    }
-
-    .ui-icon,
-    .ui-editor-message {
-        display: inline-block;
-        vertical-align: top;
-    }
-
-    .ui-icon {
-        margin: 0 0 3px 3px;
-    }
-
-    .ui-editor-message-wrapper {
-        padding: 3px 3px 3px 1px;
-    }
-}
