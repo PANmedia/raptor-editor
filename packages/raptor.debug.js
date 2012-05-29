@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.2 *//**
+/*! VERSION: 0.0.3 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -26177,6 +26177,16 @@ var debugLevel = MIN;
 function info() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Raptor Editor');
+
+    // <ie>
+    if (!console.error.apply) {
+        for (var i = 0, l = args.length;i < l; i++) {
+            console.error(args[i]);
+        }
+        return;
+    }
+    // </ie>
+
     console.info.apply(console, args);
 }
 
@@ -26189,6 +26199,16 @@ function info() {
 function debug() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Raptor Editor');
+
+    // <ie>
+    if (!console.error.apply) {
+        for (var i = 0, l = args.length;i < l; i++) {
+            console.error(args[i]);
+        }
+        return;
+    }
+    // </ie>
+
     console.debug.apply(console, args);
 }
 
@@ -26232,6 +26252,16 @@ if (debugLevel >= MAX) {
 function handleError(errorMessage) {
     if (console && console.error) {
         var args = Array.prototype.slice.call(arguments);
+        
+        // <ie>
+        if (!console.error.apply) {
+            for (var i = 0, l = args.length;i < l; i++) {
+                console.error(args[i]);
+            }
+            return;
+        }
+        // </ie>
+
         console.error.apply(console, args);
     } else {
         throw errorMessage;
@@ -26829,12 +26859,13 @@ $.widget('ui.editor',
     showMessage: function(type, message, options) {
         options = $.extend({}, this.options.message, options);
 
-        var messageObject = {
+        var messageObject;
+        messageObject = {
             timer: null,
             editor: this,
             show: function() {
                 this.element.slideDown();
-                this.timer = window.setTimeout(function(messageObject) {
+                this.timer = window.setTimeout(function() {
                     this.timer = null;
                     messageObject.hide();
                 }, options.delay, this);
@@ -27422,6 +27453,7 @@ $.widget('ui.editor',
                     .prependTo(ui.selectMenu);
 
                 ui.button.bind('click.' + editor.widgetName, function() {
+                    $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
                     ui.menu.css('min-width', ui.button.outerWidth() + 10);
                     ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                     return false;
@@ -28157,6 +28189,9 @@ $.extend($.ui.editor,
 
 function isSupported(editor) {
     if (supported === undefined) {
+        supported = true;
+
+        // <ios>
         ios = /(iPhone|iPod|iPad).*AppleWebKit/i.test(navigator.userAgent);
         if (ios) {
             $('html').addClass(editor.options.baseClass + '-ios');
@@ -28170,10 +28205,14 @@ function isSupported(editor) {
                 });
             }
         }
+        // </ios>
+
         if ($.browser.mozilla) {
             $('html').addClass(editor.options.baseClass + '-ff');
         }
-        if ($.browser.msie) {
+
+        // <ie>
+        if ($.browser.msie && $.browser.version < 9) {
             supported = false;
 
             // Create message modal
@@ -28196,9 +28235,8 @@ function isSupported(editor) {
             message.find('.' + editor.options.baseClass + '-unsupported-close').click(function() {
                 message.remove();
             });
-        } else {
-            supported = true;
         }
+        // </ie>
     }
     return supported;
 }/**
@@ -30925,7 +30963,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.2?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.3?' + query.join('&') + ')'
                     });
                 }
             });
@@ -31907,6 +31945,9 @@ $.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.p
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
+        if ($.browser.msie) {
+            return;
+        }
         this.bind('show, tagTreeUpdated', function() {
             $('.ui-editor-wrapper [title]').each(function() {
                 $(this).attr('data-title', $(this).attr('title'));
@@ -33101,22 +33142,6 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
   margin-top: 0!important; }\n\
 \n\
-/******************************************************************************\\n\
- * Messages\n\
-\******************************************************************************/\n\
-.ui-editor-messages {\n\
-  margin: 0; }\n\
-  .ui-editor-messages .ui-editor-message-close {\n\
-    float: right; }\n\
-  .ui-editor-messages .ui-icon,\n\
-  .ui-editor-messages .ui-editor-message {\n\
-    display: inline-block;\n\
-    vertical-align: top; }\n\
-  .ui-editor-messages .ui-icon {\n\
-    margin: 0 0 3px 3px; }\n\
-  .ui-editor-messages .ui-editor-message-wrapper {\n\
-    padding: 3px 3px 3px 1px; }\n\
-\n\
 /**\n\
  * Main editor styles\n\
  *\n\
@@ -33351,19 +33376,31 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  *\n\
  * @author David Neilsen <david@panmedia.co.nz>\n\
  */\n\
+/******************************************************************************\\n\
+ * Messages\n\
+\******************************************************************************/\n\
 .ui-editor-messages {\n\
+  margin: 0;\n\
   /* Error */\n\
   /* Confirm */\n\
   /* Information */\n\
   /* Warning */\n\
   /* Loading */ }\n\
   .ui-editor-messages .ui-editor-message-close {\n\
-    cursor: pointer; }\n\
+    cursor: pointer;\n\
+    float: right; }\n\
+  .ui-editor-messages .ui-icon {\n\
+    margin: 0 0 3px 3px; }\n\
+  .ui-editor-messages .ui-icon,\n\
+  .ui-editor-messages .ui-editor-message {\n\
+    display: inline-block;\n\
+    vertical-align: top; }\n\
   .ui-editor-messages .ui-editor-message-wrapper {\n\
+    padding: 3px 3px 3px 1px;\n\
     -webkit-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
     -moz-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
     box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5); }\n\
-  .ui-editor-messages:first-child {\n\
+  .ui-editor-messages .ui-editor-message-wrapper:first-child {\n\
     -moz-border-radius-topright: 5px;\n\
     -webkit-border-top-right-radius: 5px;\n\
     -ms-border-top-right-radius: 5px;\n\
@@ -33374,7 +33411,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     -ms-border-top-left-radius: 5px;\n\
     -o-border-top-left-radius: 5px;\n\
     border-top-left-radius: 5px; }\n\
-  .ui-editor-messages:last-child {\n\
+  .ui-editor-messages .ui-editor-message-wrapper:last-child {\n\
     -moz-border-radius-bottomright: 5px;\n\
     -webkit-border-bottom-right-radius: 5px;\n\
     -ms-border-bottom-right-radius: 5px;\n\
@@ -33387,6 +33424,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     border-bottom-left-radius: 5px; }\n\
   .ui-editor-messages .ui-editor-message-circle-close {\n\
     /* Red */\n\
+    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNWQ0YiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZhMWMxYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff5d4b), color-stop(100%, #fa1c1c));\n\
     background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
     background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
@@ -33395,6 +33433,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
   .ui-editor-messages .ui-editor-message-circle-check {\n\
     /* Green */\n\
+    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NkZWI4ZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2E1Yzk1NiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cdeb8e), color-stop(100%, #a5c956));\n\
     background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
     background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
@@ -33403,6 +33442,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
   .ui-editor-messages .ui-editor-message-info {\n\
     /* Blue */\n\
+    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E5ZTRmNyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBmYjRlNyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a9e4f7), color-stop(100%, #0fb4e7));\n\
     background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
     background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
@@ -33411,6 +33451,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
   .ui-editor-messages .ui-editor-message-alert {\n\
     /* Yellow */\n\
+    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZDY1ZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZlYmYwNCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffd65e), color-stop(100%, #febf04));\n\
     background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
     background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
@@ -33419,6 +33460,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: linear-gradient(top, #ffd65e, #febf04); }\n\
   .ui-editor-messages .ui-editor-message-clock {\n\
     /* Purple */\n\
+    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZiODNmYSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2U5M2NlYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
     background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fb83fa), color-stop(100%, #e93cec));\n\
     background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
     background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
@@ -33572,6 +33614,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-border-radius: 5px;\n\
   -o-border-radius: 5px;\n\
   border-radius: 5px;\n\
+  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2YyZmZmMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2RhZjJkNyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f2fff2), color-stop(100%, #daf2d7));\n\
   background: -webkit-linear-gradient(top, #f2fff2, #daf2d7);\n\
   background: -moz-linear-gradient(top, #f2fff2, #daf2d7);\n\
@@ -33756,8 +33799,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   padding: 0;\n\
   text-align: left; }\n\
   .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper {\n\
-    width: 800px;\n\
-    margin: 0 auto; }\n\
+    width: 800px; }\n\
   .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper:first-child {\n\
     -moz-border-radius-topright: 0;\n\
     -webkit-border-top-right-radius: 0;\n\
@@ -34264,6 +34306,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-transition: opacity 0.23s 0s;\n\
   -o-transition: opacity 0.23s 0s;\n\
   transition: opacity 0.23s 0s;\n\
+  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSI1cHgiIHN0b3AtY29sb3I9InJnYmEoNDAsIDQwLCA0MCwgMCkiLz48c3RvcCBvZmZzZXQ9IjZweCIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\'), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
@@ -34278,6 +34321,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   position: relative; }\n\
 \n\
 .ui-editor-wrapper .ui-editor-select-element:after {\n\
+  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSI1cHgiIHN0b3AtY29sb3I9InJnYmEoNDAsIDQwLCA0MCwgMCkiLz48c3RvcCBvZmZzZXQ9IjZweCIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\'), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
   background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
   background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
@@ -34300,6 +34344,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   border-radius: 5px 0 0 0;\n\
   border: 1px solid #D4D4D4;\n\
   padding-right: 7px;\n\
+  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2VkZWNiZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fffff2), color-stop(100%, #edecbd));\n\
   background: -webkit-linear-gradient(top, #fffff2, #edecbd);\n\
   background: -moz-linear-gradient(top, #fffff2, #edecbd);\n\
@@ -34353,7 +34398,11 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-box-orient: vertical;\n\
   box-orient: vertical; }\n\
 \n\
-code, textarea {\n\
+.ui-editor-ui-view-source-dialog code,\n\
+.ui-editor-ui-view-source-dialog textarea {\n\
+  white-space: pre-line;\n\
+  width: 100%;\n\
+  height: 100%;\n\
   display: -webkit-box;\n\
   display: -moz-box;\n\
   display: -ms-box;\n\
@@ -34368,6 +34417,5 @@ code, textarea {\n\
   box-flex: 1;\n\
   -webkit-box-sizing: border-box;\n\
   -moz-box-sizing: border-box;\n\
-  box-sizing: border-box;\n\
-  white-space: pre-line; }\n\
+  box-sizing: border-box; }\n\
 </style>').appendTo('head');
