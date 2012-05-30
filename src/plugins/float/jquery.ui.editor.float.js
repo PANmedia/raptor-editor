@@ -22,7 +22,9 @@
             return editor.uiButton({
                 title: _('Float Left'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'left' });
+                    editor.toggleBlockStyle({
+                        'float': 'left'
+                    }, editor.getElement());
                 }
             });
         }
@@ -44,7 +46,9 @@
             return editor.uiButton({
                 title: _('Float Right'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'right' });
+                    editor.toggleBlockStyle({
+                        'float': 'right'
+                    }, editor.getElement());
                 }
             });
         }
@@ -66,7 +70,9 @@
             return editor.uiButton({
                 title: _('Float None'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'none' });
+                    editor.toggleBlockStyle({
+                        'float': 'none'
+                    }, editor.getElement());
                 }
             });
         }
