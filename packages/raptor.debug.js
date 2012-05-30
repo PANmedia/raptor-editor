@@ -26276,14 +26276,8 @@ $(function() {
 
 // Select menu close event (triggered when clicked off)
 $('html').click(function(event) {
-    var parent = $(event.target).parents('.ui-editor-selectmenu');
-    $('.ui-editor-selectmenu-menu').each(function() {
-        if ($(this).parent()[0] !== parent[0]) {
-            $(this)
-                .closest('.ui-editor-selectmenu-visible')
-                .removeClass('ui-editor-selectmenu-visible');
-        }
-    });
+    $('.ui-editor-selectmenu-visible')
+        .removeClass('ui-editor-selectmenu-visible');
 });
 /**
  *
@@ -29324,7 +29318,9 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Float Left'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'left' });
+                    editor.toggleBlockStyle({
+                        'float': 'left'
+                    }, editor.getElement());
                 }
             });
         }
@@ -29346,7 +29342,9 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Float Right'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'right' });
+                    editor.toggleBlockStyle({
+                        'float': 'right'
+                    }, editor.getElement());
                 }
             });
         }
@@ -29368,7 +29366,9 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Float None'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'none' });
+                    editor.toggleBlockStyle({
+                        'float': 'none'
+                    }, editor.getElement());
                 }
             });
         }
@@ -31898,6 +31898,30 @@ $.ui.editor.registerUi({
     }
 });
 /**
+ * @fileOverview Toolbar tips plugin
+ * @author David Neilsen david@panmedia.co.nz
+ */
+
+/**
+ * @name $.editor.plugin.toolbarTip
+ * @augments $.ui.editor.defaultPlugin
+ * @class Converts native tool tips to styled tool tips
+ */
+$.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.prototype */ {
+
+    /**
+     * @see $.ui.editor.defaultPlugin#init
+     */
+    init: function(editor, options) {
+        this.bind('show, tagTreeUpdated', function() {
+            $('.ui-editor-wrapper [title]').each(function() {
+                $(this).attr('data-title', $(this).attr('title'));
+                $(this).removeAttr('title');
+            });
+        });
+    }
+
+});/**
  * @fileOverview UI Component for displaying a warning in a corner of the element when unsaved edits exist
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -33146,7 +33170,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   position: relative; }\n\
 \n\
 .ui-editor-selectmenu-button {\n\
-  position: relative;\n\
   text-align: left;\n\
   padding: 3px 18px 5px 5px !important; }\n\
   .ui-editor-selectmenu-button .ui-icon {\n\
@@ -33156,11 +33179,17 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
     font-size: 13px; }\n\
 \n\
+.ui-editor-selectmenu-wrapper {\n\
+  position: relative; }\n\
+\n\
 .ui-editor-selectmenu-button .ui-button-text {\n\
   padding: 0 25px 0 5px; }\n\
 \n\
 .ui-editor-selectmenu-menu {\n\
   position: absolute;\n\
+  top: 100%;\n\
+  left: 0;\n\
+  right: auto;\n\
   display: none;\n\
   margin-top: -1px !important; }\n\
 \n\
@@ -33226,16 +33255,12 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-buttonset {\n\
   float: left;\n\
   margin: 0 5px 4px 0;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: box;\n\
-  -webkit-box-orient: horizontal;\n\
-  -moz-box-orient: horizontal;\n\
-  box-orient: horizontal; }\n\
+  display: inline-block; }\n\
   .ui-editor-buttonset > .ui-button {\n\
-    font-size: 13px;\n\
+    float: left;\n\
     display: block;\n\
-    margin: 0 -1px 0 0; }\n\
+    margin: 0 -1px 0 0;\n\
+    font-size: 13px; }\n\
   .ui-editor-buttonset .ui-button:hover {\n\
     z-index: 1; }\n\
   .ui-editor-buttonset .ui-editor-selectmenu {\n\
@@ -34000,18 +34025,18 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   display: -moz-box;\n\
   display: -ms-box;\n\
   display: box;\n\
-  -webkit-box-orient: horizontal;\n\
-  -moz-box-orient: horizontal;\n\
-  -ms-box-orient: horizontal;\n\
-  box-orient: horizontal;\n\
-  -webkit-box-flex: 2;\n\
-  -moz-box-flex: 2;\n\
-  -ms-box-flex: 2;\n\
-  box-flex: 2; }\n\
+  -webkit-box-orient: vertical;\n\
+  -moz-box-orient: vertical;\n\
+  -ms-box-orient: vertical;\n\
+  box-orient: vertical; }\n\
   .ui-editor-link-panel .ui-editor-link-menu p {\n\
     font-weight: bold;\n\
-    margin: 12px 0; }\n\
+    margin: 12px 0 8px; }\n\
   .ui-editor-link-panel .ui-editor-link-menu fieldset {\n\
+    -webkit-box-flex: 2;\n\
+    -moz-box-flex: 2;\n\
+    -ms-box-flex: 2;\n\
+    box-flex: 2;\n\
     margin: 2px 4px;\n\
     padding: 7px 4px;\n\
     font-size: 13px; }\n\
@@ -34228,7 +34253,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   font-size: 12px;\n\
   font-weight: normal;\n\
   color: white;\n\
-  padding: 7px 16px 1px;\n\
+  padding: 11px 16px 7px;\n\
   white-space: nowrap;\n\
   overflow: visible;\n\
   z-index: 1000;\n\
@@ -34350,13 +34375,5 @@ code, textarea {\n\
   -webkit-box-sizing: border-box;\n\
   -moz-box-sizing: border-box;\n\
   box-sizing: border-box;\n\
-  white-space: normal;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1; }\n\
+  white-space: pre-line; }\n\
 </style>').appendTo('head');
