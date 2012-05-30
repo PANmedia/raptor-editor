@@ -41,6 +41,10 @@
         @include box-align(center);
     }
 
+    .ui-editor-toolbar {
+        text-align: center;
+    }
+
     .ui-editor-path {
         position: fixed;
         bottom: 0;
