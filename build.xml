@@ -32,10 +32,16 @@
         <echo>${strip.blocks}</echo>
         <echo>${theme}</echo>
         <echo>${plugins}</echo>
+        <echo>${jquery-no-conflict}</echo>
     </target>
 
     <target name="0deps">
         <property file="build.0deps.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="nc">
+        <property file="build.0deps.nc.properties" override="true" />
         <phingcall target="build" />
     </target>
 
@@ -180,16 +186,32 @@
                   tofile="${dir.build}/04-rangy-serializer.js" />
         </then></if>
 
+        <!-- jQuery no conflict open wrapper -->
+        <if><not><isfalse value="${jquery-no-conflict}" /></not><then>
+            <echo file="${dir.build}/05-jquery-no-conflict-open.js">
+                (function(window, undefined) {
+            </echo>
+        </then></if>
+
         <!-- jQuery -->
         <if><istrue value="${jquery}" /><then>
             <copy file="${dir.deps}/jquery.js"
-                  tofile="${dir.build}/05-jquery.js" />
+                  tofile="${dir.build}/06-jquery.js" />
+        </then></if>
+
+        <!-- jQuery no conflict -->
+        <if><not><isfalse value="${jquery-no-conflict}" /></not><then>
+            <echo file="${dir.build}/07-jquery-no-conflict.js">
+                var jQuery = window.jQuery.noConflict(true);
+                var $ = jQuery;
+                window['${jquery-no-conflict}'] = jQuery;
+            </echo>
         </then></if>
 
         <!-- jQuery UI -->
         <if><istrue value="${jquery-ui}" /><then>
             <copy file="${dir.deps}/jquery-ui.js"
-                  tofile="${dir.build}/06-jquery-ui.js" />
+                  tofile="${dir.build}/08-jquery-ui.js" />
         </then></if>
 
         <!-- Raptorize -->
@@ -284,12 +306,18 @@
         </append>
 
         <!-- Append global wrapper close -->
-        <if>
-            <istrue value="${wrapper}" />
-            <then>
-                <echo file="${dir.build}/concat.js" append="true">})(jQuery, window, rangy);</echo>
-            </then>
-        </if>
+        <if><istrue value="${wrapper}" /><then>
+            <echo file="${dir.build}/concat.js" append="true">
+                })(jQuery, window, rangy);
+            </echo>
+        </then></if>
+
+        <!-- jQuery no conflict wrapper close -->
+        <if><not><isfalse value="${jquery-no-conflict}" /></not><then>
+            <echo file="${dir.build}/concat.js" append="true">
+                })(window);
+            </echo>
+        </then></if>
 
         <sortedfileset name="cssfiles">
             <fileset dir=".">
