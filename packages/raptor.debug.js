@@ -34340,7 +34340,8 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * @author Michael Robinson <michael@panmedia.co.nz>\n\
  */\n\
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {\n\
-  margin-top: 3px; }\n\
+  height: 24px;\n\
+  text-align: left; }\n\
 \n\
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
   font-size: 13px;\n\
