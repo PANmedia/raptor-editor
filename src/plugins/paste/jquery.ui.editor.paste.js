@@ -50,7 +50,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
-                content = plugin.stripTags(content, plugin.options.allowedTags);
+                content = plugin.stripTags(content);
                 var vars = {
                     html: content,
                     plain: $('<div/>').html(content).text(),
@@ -234,11 +234,16 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
         return content.html();
     },
 
-    stripTags: function(input, allowed) {
-        allowed = (((allowed || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+    /**
+     * Clone of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+     * @param  {String} content HTML containing tags to be stripped
+     * @return {String} HTML with all tags not present in the $.editor.plugin.paste.options.allowedTags array
+     */
+    stripTags: function(content) {
+        allowed = (((this.options.allowedTags || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-        return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
             return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
         });
     },
