@@ -206,9 +206,9 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             });
 
             // now use jQuery to remove the attributes
-            var img = $(this);
+            var element = $(this);
             $.each(attributes, function(i, item) {
-                img.removeAttr(item);
+                element.removeAttr(item);
             });
         });
         return content.html();
