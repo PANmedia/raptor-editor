@@ -50,7 +50,6 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
-                content = plugin.stripAttributes(content);
                 content = plugin.stripTags(content);
                 content = plugin.stripEmpty(content);
                 var vars = {
