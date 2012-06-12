@@ -6,6 +6,25 @@
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
+    options: {
+        allowedTags: [
+            '<h1>',
+            '<h2>',
+            '<h3>',
+            '<h4>',
+            '<h5>',
+            '<h6>',
+            '<div>',
+            '<ul>',
+            '<ol>',
+            '<li>',
+            '<blockquote>',
+            '<p>',
+            '<a>',
+            '<span',
+        ]
+    },
+
     /**
      * @see $.ui.editor.defaultPlugin#init
      */
@@ -31,6 +50,9 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
+                content = plugin.stripAttributes(content);
+                content = plugin.stripTags(content);
+                content = plugin.stripEmpty(content);
                 var vars = {
                     html: content,
                     plain: $('<div/>').html(content).text(),
@@ -206,12 +228,39 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             });
 
             // now use jQuery to remove the attributes
-            var img = $(this);
+            var element = $(this);
             $.each(attributes, function(i, item) {
-                img.removeAttr(item);
+                element.removeAttr(item);
             });
         });
         return content.html();
+    },
+
+    /**
+     * Clone of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+     * @param  {String} content HTML containing tags to be stripped
+     * @return {String} HTML with all tags not present in the $.editor.plugin.paste.options.allowedTags array
+     */
+    stripTags: function(content) {
+        allowed = (((this.options.allowedTags || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
+    },
+
+    /**
+     * Remove empty tags.
+     * @param  {String} content The HTML containing empty elements to be removed
+     * @return {String} The cleaned HTML
+     */
+    stripEmpty: function(content) {
+        var wrapper = $('<div/>').html(content);
+        wrapper.find('*').filter(function() {
+            return $.trim($(this).text()) === ''
+        }).remove();
+        return wrapper.html();
     },
 
     /**

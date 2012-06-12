@@ -19,11 +19,17 @@ $.ui.editor.registerUi({
             editor.bind('selectionChange', this.change, this);
             editor.bind('show', this.change, this);
 
+            var ui = this;
+
             return editor.uiSelectMenu({
                 name: 'tagMenu',
                 title: _('Change HTML tag of selected element'),
                 select: $(editor.getTemplate('tagmenu.menu')),
                 change: function(value) {
+                    if (typeof value === 'undefined' || value === 'na') {
+                        ui.change();
+                        return;
+                    }
                     editor.tagSelection(value);
                 }
             });
@@ -36,7 +42,7 @@ $.ui.editor.registerUi({
             var tag = this.editor.getSelectedElements()[0];
             if (!tag) return;
             tag = tag.tagName.toLowerCase();
-            if (this.ui.selectMenu.find('option[value=' + tag + ']').length) {
+            if (this.ui.select.find('option[value=' + tag + ']').length) {
                 this.ui.val(tag);
             } else {
                 this.ui.val('na');
