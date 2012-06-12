@@ -229,7 +229,10 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             // now use jQuery to remove the attributes
             var element = $(this);
             $.each(attributes, function(i, item) {
-                element.removeAttr(item);
+                // Avoid DOM node type exceptions in Chrome
+                try {
+                    element.removeAttr(item);
+                } catch (e) {}
             });
         });
         return content.html();
