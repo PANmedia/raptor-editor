@@ -50,7 +50,9 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
+                content = plugin.stripAttributes(content);
                 content = plugin.stripTags(content);
+                content = plugin.stripEmpty(content);
                 var vars = {
                     html: content,
                     plain: $('<div/>').html(content).text(),
@@ -246,6 +248,19 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
         return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
             return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
         });
+    },
+
+    /**
+     * Remove empty tags.
+     * @param  {String} content The HTML containing empty elements to be removed
+     * @return {String} The cleaned HTML
+     */
+    stripEmpty: function(content) {
+        var wrapper = $('<div/>').html(content);
+        wrapper.find('*').filter(function() {
+            return $.trim($(this).text()) === ''
+        }).remove();
+        return wrapper.html();
     },
 
     /**
