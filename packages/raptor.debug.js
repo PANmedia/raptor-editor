@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.3 *//**
+/*! VERSION: 0.0.4 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -27479,6 +27479,12 @@ $.widget('ui.editor',
                     })
                     .bind('click.' + editor.widgetName, function() {
                         var menu = ui.menu;
+                        // Hide any other open select menus
+                        $('.ui-selectmenu-menu').each(function() {
+                            if (this !== menu) {
+                                $(this).hide();
+                            }
+                        })
                         if (!menu.is(':animated')) {
                             if (menu.is(':visible')) {
                                 menu.stop().slideUp(250, function() {
@@ -31005,7 +31011,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.3?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.4?' + query.join('&') + ')'
                     });
                 }
             });
@@ -31037,7 +31043,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             '<blockquote>',
             '<p>',
             '<a>',
-            '<span',
+            '<span>'
         ]
     },
 
@@ -33304,6 +33310,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 \n\
 .ui-editor-selectmenu-button .ui-button-text {\n\
   padding: 0 25px 0 5px; }\n\
+\n\
+.ui-editor-selectmenu-button .ui-icon {\n\
+  background-repeat: no-repeat; }\n\
 \n\
 .ui-editor-selectmenu-menu {\n\
   position: absolute;\n\
