@@ -39,7 +39,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             if (inProgress) return false;
             inProgress = true;
 
-            var selection = rangy.saveSelection();
+            editor.saveSelection();
 
             // Make a contentEditable div to capture pasted text
             if ($(selector).length) $(selector).remove();
@@ -92,7 +92,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                     html = plugin.filterAttributes(html);
                                     html = plugin.filterChars(html);
 
-                                    rangy.restoreSelection(selection);
+                                    editor.restoreSelection();
                                     editor.replaceSelection(html);
 
                                     inProgress = false;
