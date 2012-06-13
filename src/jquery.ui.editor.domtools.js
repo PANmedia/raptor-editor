@@ -7,6 +7,11 @@
  */
 
 /**
+ * Functions attached to the editor object during editor initialisation. Usage example:
+ * <pre>editor.saveSelection();
+// Perform actions that could remove focus from editing element
+editor.restoreSelection();
+editor.replaceSelection('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  * @namespace
  */
 var domTools = {
@@ -315,10 +320,6 @@ var domTools = {
         this.restoreSelection();
     },
 
-    wrapRange: function(range, tag) {
-        range.replaceContents();
-    },
-
     /**
      *
      */
@@ -495,12 +496,6 @@ var domTools = {
         range.setEndAfter(range.endContainer);
     },
 
-    /**
-     *
-     * @public @static
-     * @param {RangyRange} range
-     * @param {String} tag
-     */
     changeTag: function(range, tag) {
         var contents = range.extractContents();
         this.insertDomFragmentBefore(contents, range.startContainer, tag);
@@ -533,7 +528,6 @@ var domTools = {
                     this.wrapInner($(within), tag);
                 } else {
                     // Apply to the whole element
-                this.expandToParent(range);
                     this.changeTag(range, tag);
                 }
             } else {
@@ -543,6 +537,10 @@ var domTools = {
         }, selection);
     },
 
+    /**
+     * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
     }
