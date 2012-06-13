@@ -26,6 +26,7 @@ $.ui.editor.registerUi({
                 title: _('Change HTML tag of selected element'),
                 select: $(editor.getTemplate('tagmenu.menu')),
                 change: function(value) {
+                    // Prevent injection of illegal tags
                     if (typeof value === 'undefined' || value === 'na') {
                         ui.change();
                         return;
