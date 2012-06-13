@@ -1152,6 +1152,12 @@ $.widget('ui.editor',
                     })
                     .bind('click.' + editor.widgetName, function() {
                         var menu = ui.menu;
+                        // Hide any other open select menus
+                        $('.ui-selectmenu-menu').each(function() {
+                            if (this !== menu) {
+                                $(this).hide();
+                            }
+                        })
                         if (!menu.is(':animated')) {
                             if (menu.is(':visible')) {
                                 menu.stop().slideUp(250, function() {
