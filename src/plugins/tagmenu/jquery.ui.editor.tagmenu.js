@@ -30,7 +30,7 @@ $.ui.editor.registerUi({
                         ui.change();
                         return;
                     }
-                    editor.tagSelection(value);
+                    editor.tagSelectionWithin(value, editor.getElement());
                 }
             });
         },
