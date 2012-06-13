@@ -27436,10 +27436,10 @@ $.widget('ui.editor',
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
                             ui.update();
-                            ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
                             ui.change(ui.select.val());
+                            ui.menu.hide();
                             return false;
                         });
                 });
@@ -27462,9 +27462,20 @@ $.widget('ui.editor',
                         return false;
                     })
                     .bind('click.' + editor.widgetName, function() {
-                        $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
-                        ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                        ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
+                        var menu = ui.menu;
+                        if (!menu.is(':animated')) {
+                            if (menu.is(':visible')) {
+                                menu.stop().slideUp(250, function() {
+                                    ui.button.addClass('ui-corner-all')
+                                            .removeClass('ui-corner-top');
+                                });
+                            } else {
+                                menu.css('min-width', ui.button.width() + 10);
+                                menu.stop().slideDown(250);
+                                ui.button.removeClass('ui-corner-all')
+                                        .addClass('ui-corner-top');
+                            }
+                        }
                         return false;
                     });
 
@@ -34340,7 +34351,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * @author Michael Robinson <michael@panmedia.co.nz>\n\
  */\n\
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {\n\
-  height: 24px;\n\
   text-align: left; }\n\
 \n\
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
