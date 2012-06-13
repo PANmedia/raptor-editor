@@ -21,7 +21,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             '<blockquote>',
             '<p>',
             '<a>',
-            '<span',
+            '<span>'
         ]
     },
 
