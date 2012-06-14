@@ -10,7 +10,18 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
 
     ui: [],
 
-    options: {
+    /**
+     * @name $.editor.plugin.hotkeys.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.hotkeys
+     */
+    options: /** @lends $.editor.plugin.hotkeys.options */  {
+        /**
+         * @type {Array}
+         * For a hotkey triggering a UI action:
+         * @example <tt>{ ui: 'ui-name' }</tt>
+         */
         actions: [
             {
                 ui: 'textBold',
