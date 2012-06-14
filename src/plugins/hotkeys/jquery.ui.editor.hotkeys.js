@@ -1,14 +1,11 @@
 /**
  * @name $.editor.plugin.hotkeys
  * @extends $.editor.plugin
- * @class Plugin that captures hotkeys events on the element and shows a modal dialog containing different versions of what was hotkeysd.
- * Intended to prevent horrible 'hotkeys from word' catastophes.
+ * @class Plugin that allows users to edit content using hotkeys. Extensible with custom hotkey actions.
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
  */
 $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototype */ {
-
-    ui: [],
 
     /**
      * @name $.editor.plugin.hotkeys.options
@@ -20,7 +17,18 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
         /**
          * @type {Array}
          * For a hotkey triggering a UI action:
-         * @example <tt>{ ui: 'ui-name' }</tt>
+         * <pre>{
+            ui: 'textBold',
+            key: 'b',
+            label: 'ctrl + b'
+            }</pre>
+         *
+         * For a hotkey triggering a custom action:
+         * <pre>{
+            callback: function() { alert('triggered!'); },
+            key: 't',
+            label: 'ctrl + t'
+            }</pre>
          */
         actions: [
             {
@@ -58,37 +66,46 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
                 ui: 'save',
                 key: 's',
                 label: _('ctrl + s')
-            },
-            // Example of hotkey that uses a custom callback
-            {
-                callback: function() {
-                    alert('Pressed!');
-                },
-                key: 'm'
             }
         ]
     },
 
+    /**
+     * @type {Object} Populated with actions indexed by character codes, to make retrieving an action from a given character code more straight-forward.
+     */
     indexedActions: {},
+
+    /**
+     * @type {String} Event to be bound to window.
+     */
+    keyUpEventSignature: null,
+    keyDownEventSignature: null,
 
     /**
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
+        this.keyUpEventSignature = 'keyup.' + this.options.baseClass;
+        this.keyDownEventSignature = 'keydown.' + this.options.baseClass;
+        editor.bind('enabled', this.enabled, this);
+        editor.bind('disabled', this.disabled, this);
+    },
 
-        editor.bind('enabled', this.bind, this);
+    disabled: function() {
+        $(window).unbind(this.keyUpEventSignature);
+        $(window).undbind(this.keyDownEventSignature);
+        this.indexedActions = {};
     },
 
     /**
-     * Bind hotkeys to present plugins.
+     * Prepare actions & bind key events.
      */
-    bind: function() {
+    enabled: function() {
         // Add actions to char code indexed array, for easier retrieval within the keyup event
         var action;
         for (var actionsIndex = 0; actionsIndex < this.options.actions.length; actionsIndex++) {
             action = this.options.actions[actionsIndex];
             this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
-
             if (typeof action.ui !== 'undefined') {
                 var uiObject = this.editor.getUi(action.ui);
                 uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
@@ -96,29 +113,18 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
         }
 
         var ui = this;
-        $(window).bind('keydown.hotkey', function(event) {
 
-            // Translate event keycode to lower case if necessary & appropriate
-            var pressedKey = event.which;
-            if (pressedKey >= 65 && pressedKey <= 90) {
-                var pressedKey = pressedKey + 32;
+        $(window).bind(this.keyDownEventSignature, function(event) {
+            var action = ui.actionForKeyCombination.call(ui, event);
+            if(action) {
+                event.preventDefault();
             }
+        });
 
-            var action = ui.indexedActions[pressedKey];
-            if (typeof action === 'undefined') {
-                return true;
-            }
-
-            var keyOk = false;
-            if (ui.isNumeric(action.key)) {
-                keyOk = pressedKey === action.key;
-            } else {
-                keyOk = String.fromCharCode(pressedKey).toLowerCase() === action.key;
-            }
-
-            var metaOk = action.meta === false || (event.ctrlKey || event.metaKey);
-            if(metaOk && keyOk) {
-                var callback = $.isFunction(action.callback) ? action.callback : function() { ui.process(action.ui); };
+        $(window).bind(this.keyUpEventSignature, function(event) {
+            var action = ui.actionForKeyCombination.call(ui, event);
+            if(action) {
+                var callback = $.isFunction(action.callback) ? action.callback : function() { ui.triggerUiAction(action.ui); };
                 callback.call(ui, event);
                 event.preventDefault();
             }
@@ -126,12 +132,45 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
     },
 
     /**
-     * [process description]
-     * @param  {[type]} action [description]
-     * @param  {[type]} event  [description]
-     * @return {[type]}        [description]
+     * Determine whether the current key combination is valid & return action if so.
+     * @param  {Event} event The event object.
+     * @return {Object|Boolean} The action for the key combination or false if the combination is not valid.
      */
-    process: function(action, event) {
+    actionForKeyCombination: function(event) {
+
+        // Translate event keycode to lower case if necessary & appropriate
+        var pressedKey = event.which;
+        if (pressedKey >= 65 && pressedKey <= 90) {
+            var pressedKey = pressedKey + 32;
+        }
+
+        var action = this.indexedActions[pressedKey];
+        if (typeof action === 'undefined') {
+            return false;
+        }
+
+        var metaOk = action.meta === false || (event.ctrlKey || event.metaKey);
+        if (!metaOk) {
+            // Meta key is required but was not pressed
+            return false;
+        }
+
+        var keyOk = false;
+        if (this.isNumeric(action.key)) {
+            keyOk = pressedKey === action.key;
+        } else {
+            keyOk = String.fromCharCode(pressedKey).toLowerCase() === action.key;
+        }
+
+        return (keyOk) ? action : false;
+    },
+
+    /**
+     * Trigger the click action for the UI element identified by action.
+     * @param  {String} action Name of a UI element.
+     * @param  {Event} event The event triggering this function call.
+     */
+    triggerUiAction: function(action, event) {
         var uiObject = this.editor.getUi(action);
         if (typeof uiObject === 'undefined') {
             return;
