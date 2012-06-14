@@ -7,6 +7,11 @@
  */
 
 /**
+ * Functions attached to the editor object during editor initialisation. Usage example:
+ * <pre>editor.saveSelection();
+// Perform actions that could remove focus from editing element
+editor.restoreSelection();
+editor.replaceSelection('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  * @namespace
  */
 var domTools = {
@@ -315,10 +320,6 @@ var domTools = {
         this.restoreSelection();
     },
 
-    wrapRange: function(range, tag) {
-        range.replaceContents();
-    },
-
     /**
      *
      */
@@ -495,12 +496,6 @@ var domTools = {
         range.setEndAfter(range.endContainer);
     },
 
-    /**
-     *
-     * @public @static
-     * @param {RangyRange} range
-     * @param {String} tag
-     */
     changeTag: function(range, tag) {
         var contents = range.extractContents();
         this.insertDomFragmentBefore(contents, range.startContainer, tag);
@@ -508,16 +503,35 @@ var domTools = {
     },
 
     /**
-     *
-     * @public @static
-     * @param {String} tag
+     * Behaviour similar to {@link domTools.tagSelectionWithin}, only in cases where the selection or cursor acts on text nodes only, the wrapping element will be modified.
+     * @param  {String} tag Name of tag to change to or wrap selection with.
+     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
      */
     tagSelection: function(tag, selection) {
+        this.tagSelectionWithin(tag, null, selection);
+    },
+
+    /**
+     * If selection is empty, change the tag for the element the cursor is currently within, else wrap the selection with tag.
+     * @param  {String} tag Name of tag to change to or wrap selection with.
+     * @param  {jQuery|null} within The element to perform changes within. If The cursor is within, or the selection contains text nodes only, the text will be wrapped with tag. If null, changes will be applied to the wrapping tag.
+     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
+     */
+    tagSelectionWithin: function(tag, within, selection) {
         this.eachRange(function(range) {
+
             if (this.isEmpty(range)) {
-                // Apply to the whole element
                 this.expandToParent(range);
-                this.changeTag(range, tag);
+                within = $(within)[0];
+                if (typeof within !== 'undefined'
+                    && range.startContainer === within
+                    && range.endContainer === within) {
+                    // Apply to the content of the 'within' element
+                    this.wrapInner($(within), tag);
+                } else {
+                    // Apply to the whole element
+                    this.changeTag(range, tag);
+                }
             } else {
                 var content = range.extractContents();
                 this.replaceRange(this.domFragmentToHtml(content, tag), range);
@@ -525,6 +539,10 @@ var domTools = {
         }, selection);
     },
 
+    /**
+     * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
     }

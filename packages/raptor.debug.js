@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.3 *//**
+/*! VERSION: 0.0.4 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25533,6 +25533,11 @@ $.extend( $.ui.tabs.prototype, {
  */
 
 /**
+ * Functions attached to the editor object during editor initialisation. Usage example:
+ * <pre>editor.saveSelection();
+// Perform actions that could remove focus from editing element
+editor.restoreSelection();
+editor.replaceSelection('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  * @namespace
  */
 var domTools = {
@@ -25841,10 +25846,6 @@ var domTools = {
         this.restoreSelection();
     },
 
-    wrapRange: function(range, tag) {
-        range.replaceContents();
-    },
-
     /**
      *
      */
@@ -26021,12 +26022,6 @@ var domTools = {
         range.setEndAfter(range.endContainer);
     },
 
-    /**
-     *
-     * @public @static
-     * @param {RangyRange} range
-     * @param {String} tag
-     */
     changeTag: function(range, tag) {
         var contents = range.extractContents();
         this.insertDomFragmentBefore(contents, range.startContainer, tag);
@@ -26034,16 +26029,35 @@ var domTools = {
     },
 
     /**
-     *
-     * @public @static
-     * @param {String} tag
+     * Behaviour similar to {@link domTools.tagSelectionWithin}, only in cases where the selection or cursor acts on text nodes only, the wrapping element will be modified.
+     * @param  {String} tag Name of tag to change to or wrap selection with.
+     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
      */
     tagSelection: function(tag, selection) {
+        this.tagSelectionWithin(tag, null, selection);
+    },
+
+    /**
+     * If selection is empty, change the tag for the element the cursor is currently within, else wrap the selection with tag.
+     * @param  {String} tag Name of tag to change to or wrap selection with.
+     * @param  {jQuery|null} within The element to perform changes within. If The cursor is within, or the selection contains text nodes only, the text will be wrapped with tag. If null, changes will be applied to the wrapping tag.
+     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
+     */
+    tagSelectionWithin: function(tag, within, selection) {
         this.eachRange(function(range) {
+
             if (this.isEmpty(range)) {
-                // Apply to the whole element
                 this.expandToParent(range);
-                this.changeTag(range, tag);
+                within = $(within)[0];
+                if (typeof within !== 'undefined'
+                    && range.startContainer === within
+                    && range.endContainer === within) {
+                    // Apply to the content of the 'within' element
+                    this.wrapInner($(within), tag);
+                } else {
+                    // Apply to the whole element
+                    this.changeTag(range, tag);
+                }
             } else {
                 var content = range.extractContents();
                 this.replaceRange(this.domFragmentToHtml(content, tag), range);
@@ -26051,6 +26065,10 @@ var domTools = {
         }, selection);
     },
 
+    /**
+     * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
     }
@@ -27436,10 +27454,10 @@ $.widget('ui.editor',
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
                             ui.update();
-                            ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
                             ui.change(ui.select.val());
+                            ui.menu.hide();
                             return false;
                         });
                 });
@@ -27462,9 +27480,26 @@ $.widget('ui.editor',
                         return false;
                     })
                     .bind('click.' + editor.widgetName, function() {
-                        $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
-                        ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                        ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
+                        var menu = ui.menu;
+                        // Hide any other open select menus
+                        $('.ui-selectmenu-menu').each(function() {
+                            if (this !== menu) {
+                                $(this).hide();
+                            }
+                        })
+                        if (!menu.is(':animated')) {
+                            if (menu.is(':visible')) {
+                                menu.stop().slideUp(250, function() {
+                                    ui.button.addClass('ui-corner-all')
+                                            .removeClass('ui-corner-top');
+                                });
+                            } else {
+                                menu.css('min-width', ui.button.width() + 10);
+                                menu.stop().slideDown(250);
+                                ui.button.removeClass('ui-corner-all')
+                                        .addClass('ui-corner-top');
+                            }
+                        }
                         return false;
                     });
 
@@ -30978,7 +31013,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.3?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.4?' + query.join('&') + ')'
                     });
                 }
             });
@@ -31010,7 +31045,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             '<blockquote>',
             '<p>',
             '<a>',
-            '<span',
+            '<span>'
         ]
     },
 
@@ -31028,7 +31063,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             if (inProgress) return false;
             inProgress = true;
 
-            var selection = rangy.saveSelection();
+            editor.saveSelection();
 
             // Make a contentEditable div to capture pasted text
             if ($(selector).length) $(selector).remove();
@@ -31081,7 +31116,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                     html = plugin.filterAttributes(html);
                                     html = plugin.filterChars(html);
 
-                                    rangy.restoreSelection(selection);
+                                    editor.restoreSelection();
                                     editor.replaceSelection(html);
 
                                     inProgress = false;
@@ -31977,11 +32012,12 @@ $.ui.editor.registerUi({
                 title: _('Change HTML tag of selected element'),
                 select: $(editor.getTemplate('tagmenu.menu')),
                 change: function(value) {
+                    // Prevent injection of illegal tags
                     if (typeof value === 'undefined' || value === 'na') {
                         ui.change();
                         return;
                     }
-                    editor.tagSelection(value);
+                    editor.tagSelectionWithin(value, editor.getElement());
                 }
             });
         },
@@ -33277,6 +33313,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-selectmenu-button .ui-button-text {\n\
   padding: 0 25px 0 5px; }\n\
 \n\
+.ui-editor-selectmenu-button .ui-icon {\n\
+  background-repeat: no-repeat; }\n\
+\n\
 .ui-editor-selectmenu-menu {\n\
   position: absolute;\n\
   top: 100%;\n\
@@ -34340,7 +34379,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * @author Michael Robinson <michael@panmedia.co.nz>\n\
  */\n\
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {\n\
-  height: 24px;\n\
   text-align: left; }\n\
 \n\
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
