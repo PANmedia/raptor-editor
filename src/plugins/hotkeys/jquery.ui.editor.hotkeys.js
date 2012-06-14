@@ -1,7 +1,7 @@
 /**
  * @name $.editor.plugin.hotkeys
  * @extends $.editor.plugin
- * @see $.editor.plugins.hotkeys.options
+ * @see $.editor.plugin.hotkeys.options
  * @class Plugin that allows users to edit content using hotkeys. Extensible with custom hotkey actions.
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
@@ -16,21 +16,24 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
      */
     options: /** @lends $.editor.plugin.hotkeys.options */  {
         /**
-         * @type {Array}
+         * Array of action objects.
          * For a hotkey triggering a UI action:
-         * <pre>{
-            ui: 'textBold', // Name of UI element to be triggered by this hotkey
-            key: 'b', // Key triggering this action
-            label: 'ctrl + b', // Label to be appended to the UI element's title attribute
-            meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
-            }</pre>
+         *
+ <pre>{
+    ui: 'textBold', // Name of UI element to be triggered by this hotkey
+    key: 'b', // Key triggering this action
+    label: 'ctrl + b', // Label to be appended to the UI element's title attribute
+    meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
+}</pre>
          *
          * For a hotkey triggering a custom action:
-         * <pre>{
-            callback: function() { alert('triggered!'); },
-            key: 't',
-            label: 'ctrl + t'
-            }</pre>
+         *
+<pre>{
+    callback: function() { alert('triggered!'); },
+    key: 't',
+    label: 'ctrl + t'
+}</pre>
+         * @type {Array}
          */
         actions: [
             {
@@ -73,14 +76,21 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
     },
 
     /**
-     * @type {Object} Populated with actions indexed by character codes, to make retrieving an action from a given character code more straight-forward.
+     * Populated with actions indexed by character codes, to make retrieving an action from a given character code more straight-forward.
+     * @type {Object}
      */
     indexedActions: {},
 
     /**
-     * @type {String} Event to be bound to window.
+     * Keyup event signature to be bound to window.
+     * @type {String}
      */
     keyUpEventSignature: null,
+
+    /**
+     * Keydown event signature to be bound to window.
+     * @type {String}
+     */
     keyDownEventSignature: null,
 
     /**
