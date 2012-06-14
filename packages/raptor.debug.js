@@ -26045,11 +26045,13 @@ var domTools = {
      */
     tagSelectionWithin: function(tag, within, selection) {
         this.eachRange(function(range) {
+
             if (this.isEmpty(range)) {
                 this.expandToParent(range);
+                within = $(within)[0];
                 if (typeof within !== 'undefined'
-                    && $(range.startContainer) === within
-                    && $(range.endContainer) === within) {
+                    && range.startContainer === within
+                    && range.endContainer === within) {
                     // Apply to the content of the 'within' element
                     this.wrapInner($(within), tag);
                 } else {
