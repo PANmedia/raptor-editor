@@ -1,6 +1,7 @@
 /**
  * @name $.editor.plugin.hotkeys
  * @extends $.editor.plugin
+ * @see $.editor.plugins.hotkeys.options
  * @class Plugin that allows users to edit content using hotkeys. Extensible with custom hotkey actions.
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
@@ -18,9 +19,10 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
          * @type {Array}
          * For a hotkey triggering a UI action:
          * <pre>{
-            ui: 'textBold',
-            key: 'b',
-            label: 'ctrl + b'
+            ui: 'textBold', // Name of UI element to be triggered by this hotkey
+            key: 'b', // Key triggering this action
+            label: 'ctrl + b', // Label to be appended to the UI element's title attribute
+            meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
             }</pre>
          *
          * For a hotkey triggering a custom action:
