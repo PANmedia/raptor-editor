@@ -27254,6 +27254,37 @@ $.widget('ui.editor',
      * Buttons
     \*========================================================================*/
 
+    uiEnabled: function(ui) {
+        // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
+        if (this.options.enableUi === false &&
+                typeof this.options.ui[ui] === 'undefined' ||
+                this.options.ui[ui] === false) {
+            // <debug>
+            if (debugLevel >= MID) {
+                debug('UI with name ' + ui + ' has been disabled ' + (
+                    this.options.enableUi === false ? 'by default' : 'manually'
+                ) + $.inArray(ui, this.options.ui));
+            }
+            // </debug>
+            return false;
+        }
+
+        // Check if we have explicitly disabled UI
+        if ($.inArray(ui, this.options.disabledUi) !== -1) {
+            return false;
+        }
+
+        return true;
+    },
+
+    /**
+     * @param  {String} ui Name of the UI object to be returned.
+     * @return {Object|null} UI object referenced by the given name.
+     */
+    getUi: function(ui) {
+        return this.uiObjects[ui];
+    },
+
     /**
      *
      */
@@ -27266,22 +27297,8 @@ $.widget('ui.editor',
 
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
-                // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
-                if (this.options.enableUi === false &&
-                        typeof this.options.ui[uiSet[j]] === 'undefined' ||
-                        this.options.ui[uiSet[j]] === false) {
-                    // <debug>
-                    if (debugLevel >= MID) {
-                        debug('UI with name ' + uiSet[j] + ' has been disabled ' + (
-                            this.options.enableUi === false ? 'by default' : 'manually'
-                        ) + $.inArray(uiSet[j], this.options.ui));
-                    }
-                    // </debug>
-                    continue;
-                }
 
-                // Check if we have explicitly disabled UI
-                if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
+                if (!this.uiEnabled(uiSet[j])) continue;
 
                 var baseClass = uiSet[j].replace(/([A-Z])/g, function(match) {
                     return '-' + match.toLowerCase();
@@ -29603,6 +29620,193 @@ $.ui.editor.registerUi({
     }
 });
 /**
+ * @name $.editor.plugin.hotkeys
+ * @extends $.editor.plugin
+ * @class Plugin that allows users to edit content using hotkeys. Extensible with custom hotkey actions.
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+$.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototype */ {
+
+    /**
+     * @name $.editor.plugin.hotkeys.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.hotkeys
+     */
+    options: /** @lends $.editor.plugin.hotkeys.options */  {
+        /**
+         * @type {Array}
+         * For a hotkey triggering a UI action:
+         * <pre>{
+            ui: 'textBold',
+            key: 'b',
+            label: 'ctrl + b'
+            }</pre>
+         *
+         * For a hotkey triggering a custom action:
+         * <pre>{
+            callback: function() { alert('triggered!'); },
+            key: 't',
+            label: 'ctrl + t'
+            }</pre>
+         */
+        actions: [
+            {
+                ui: 'textBold',
+                key: 'b',
+                label: _('ctrl + b')
+            },
+            {
+                ui: 'textItalic',
+                key: 'i',
+                label: _('ctrl + i')
+            },
+            {
+                ui: 'textUnderline',
+                key: 'u',
+                label: _('ctrl + u')
+            },
+            {
+                ui: 'undo',
+                key: 'z',
+                label: _('ctrl + z')
+            },
+            {
+                ui: 'redo',
+                key: 'y',
+                label: _('ctrl + y')
+            },
+            {
+                ui: 'cancel',
+                meta: false,
+                key: 27, // Escape key code
+                label: _('esc')
+            },
+            {
+                ui: 'save',
+                key: 's',
+                label: _('ctrl + s')
+            }
+        ]
+    },
+
+    /**
+     * @type {Object} Populated with actions indexed by character codes, to make retrieving an action from a given character code more straight-forward.
+     */
+    indexedActions: {},
+
+    /**
+     * @type {String} Event to be bound to window.
+     */
+    keyUpEventSignature: null,
+    keyDownEventSignature: null,
+
+    /**
+     * @see $.ui.editor.defaultPlugin#init
+     */
+    init: function(editor, options) {
+        this.keyUpEventSignature = 'keyup.' + this.options.baseClass;
+        this.keyDownEventSignature = 'keydown.' + this.options.baseClass;
+        editor.bind('enabled', this.enabled, this);
+        editor.bind('disabled', this.disabled, this);
+    },
+
+    disabled: function() {
+        $(window).unbind(this.keyUpEventSignature);
+        $(window).undbind(this.keyDownEventSignature);
+        this.indexedActions = {};
+    },
+
+    /**
+     * Prepare actions & bind key events.
+     */
+    enabled: function() {
+        // Add actions to char code indexed array, for easier retrieval within the keyup event
+        var action;
+        for (var actionsIndex = 0; actionsIndex < this.options.actions.length; actionsIndex++) {
+            action = this.options.actions[actionsIndex];
+            this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
+            if (typeof action.ui !== 'undefined') {
+                var uiObject = this.editor.getUi(action.ui);
+                uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
+            }
+        }
+
+        var ui = this;
+
+        $(window).bind(this.keyDownEventSignature, function(event) {
+            var action = ui.actionForKeyCombination.call(ui, event);
+            if(action) {
+                event.preventDefault();
+            }
+        });
+
+        $(window).bind(this.keyUpEventSignature, function(event) {
+            var action = ui.actionForKeyCombination.call(ui, event);
+            if(action) {
+                var callback = $.isFunction(action.callback) ? action.callback : function() { ui.triggerUiAction(action.ui); };
+                callback.call(ui, event);
+                event.preventDefault();
+            }
+        });
+    },
+
+    /**
+     * Determine whether the current key combination is valid & return action if so.
+     * @param  {Event} event The event object.
+     * @return {Object|Boolean} The action for the key combination or false if the combination is not valid.
+     */
+    actionForKeyCombination: function(event) {
+
+        // Translate event keycode to lower case if necessary & appropriate
+        var pressedKey = event.which;
+        if (pressedKey >= 65 && pressedKey <= 90) {
+            var pressedKey = pressedKey + 32;
+        }
+
+        var action = this.indexedActions[pressedKey];
+        if (typeof action === 'undefined') {
+            return false;
+        }
+
+        var metaOk = action.meta === false || (event.ctrlKey || event.metaKey);
+        if (!metaOk) {
+            // Meta key is required but was not pressed
+            return false;
+        }
+
+        var keyOk = false;
+        if (this.isNumeric(action.key)) {
+            keyOk = pressedKey === action.key;
+        } else {
+            keyOk = String.fromCharCode(pressedKey).toLowerCase() === action.key;
+        }
+
+        return (keyOk) ? action : false;
+    },
+
+    /**
+     * Trigger the click action for the UI element identified by action.
+     * @param  {String} action Name of a UI element.
+     * @param  {Event} event The event triggering this function call.
+     */
+    triggerUiAction: function(action, event) {
+        var uiObject = this.editor.getUi(action);
+        if (typeof uiObject === 'undefined') {
+            return;
+        }
+        uiObject.ui.click.apply(uiObject, event);
+    },
+
+    /**
+     * @param  {mixed}  value Value to be tested
+     * @return {Boolean} True if the value is numeric
+     */
+    isNumeric: function(value) {
+        return !isNaN(value - 0);
+    }
+});/**
  * @fileOverview Insert hr ui component
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -31026,7 +31230,7 @@ $.ui.editor.registerUi({
  * @name $.editor.plugin.paste
  * @extends $.editor.plugin
  * @class Plugin that captures paste events on the element and shows a modal dialog containing different versions of what was pasted.
- * Intended to prevent horrible 'paste from word' catastophes.
+ * Intended to prevent horrible 'paste from word' catastrophes.
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
