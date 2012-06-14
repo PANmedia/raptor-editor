@@ -2,7 +2,7 @@
  * @name $.editor.plugin.paste
  * @extends $.editor.plugin
  * @class Plugin that captures paste events on the element and shows a modal dialog containing different versions of what was pasted.
- * Intended to prevent horrible 'paste from word' catastophes.
+ * Intended to prevent horrible 'paste from word' catastrophes.
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
