@@ -105,7 +105,7 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
 
     disabled: function() {
         $(window).unbind(this.keyUpEventSignature);
-        $(window).undbind(this.keyDownEventSignature);
+        $(window).unbind(this.keyDownEventSignature);
         this.indexedActions = {};
     },
 
