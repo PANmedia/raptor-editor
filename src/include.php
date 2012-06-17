@@ -62,3 +62,4 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/en.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh_CN.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
