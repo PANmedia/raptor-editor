@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.3 *//**
+/*! VERSION: 0.0.5 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25533,6 +25533,11 @@ $.extend( $.ui.tabs.prototype, {
  */
 
 /**
+ * Functions attached to the editor object during editor initialisation. Usage example:
+ * <pre>editor.saveSelection();
+// Perform actions that could remove focus from editing element
+editor.restoreSelection();
+editor.replaceSelection('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  * @namespace
  */
 var domTools = {
@@ -25802,7 +25807,6 @@ var domTools = {
      * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
      * If there is no block level elements before the limit, then the limit content
      * element will be wrapped with a "div"
-
      */
     toggleBlockStyle: function(styles, limit) {
         this.eachRange(function(range) {
@@ -25839,10 +25843,6 @@ var domTools = {
             element.html(wrapper);
         });
         this.restoreSelection();
-    },
-
-    wrapRange: function(range, tag) {
-        range.replaceContents();
     },
 
     /**
@@ -26021,12 +26021,6 @@ var domTools = {
         range.setEndAfter(range.endContainer);
     },
 
-    /**
-     *
-     * @public @static
-     * @param {RangyRange} range
-     * @param {String} tag
-     */
     changeTag: function(range, tag) {
         var contents = range.extractContents();
         this.insertDomFragmentBefore(contents, range.startContainer, tag);
@@ -26034,16 +26028,35 @@ var domTools = {
     },
 
     /**
-     *
-     * @public @static
-     * @param {String} tag
+     * Behaviour similar to {@link domTools.tagSelectionWithin}, only in cases where the selection or cursor acts on text nodes only, the wrapping element will be modified.
+     * @param  {String} tag Name of tag to change to or wrap selection with.
+     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
      */
     tagSelection: function(tag, selection) {
+        this.tagSelectionWithin(tag, null, selection);
+    },
+
+    /**
+     * If selection is empty, change the tag for the element the cursor is currently within, else wrap the selection with tag.
+     * @param  {String} tag Name of tag to change to or wrap selection with.
+     * @param  {jQuery|null} within The element to perform changes within. If The cursor is within, or the selection contains text nodes only, the text will be wrapped with tag. If null, changes will be applied to the wrapping tag.
+     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
+     */
+    tagSelectionWithin: function(tag, within, selection) {
         this.eachRange(function(range) {
+
             if (this.isEmpty(range)) {
-                // Apply to the whole element
                 this.expandToParent(range);
-                this.changeTag(range, tag);
+                within = $(within)[0];
+                if (typeof within !== 'undefined'
+                    && range.startContainer === within
+                    && range.endContainer === within) {
+                    // Apply to the content of the 'within' element
+                    this.wrapInner($(within), tag);
+                } else {
+                    // Apply to the whole element
+                    this.changeTag(range, tag);
+                }
             } else {
                 var content = range.extractContents();
                 this.replaceRange(this.domFragmentToHtml(content, tag), range);
@@ -26051,6 +26064,10 @@ var domTools = {
         }, selection);
     },
 
+    /**
+     * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
     }
@@ -27236,6 +27253,37 @@ $.widget('ui.editor',
      * Buttons
     \*========================================================================*/
 
+    uiEnabled: function(ui) {
+        // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
+        if (this.options.enableUi === false &&
+                typeof this.options.ui[ui] === 'undefined' ||
+                this.options.ui[ui] === false) {
+            // <debug>
+            if (debugLevel >= MID) {
+                debug('UI with name ' + ui + ' has been disabled ' + (
+                    this.options.enableUi === false ? 'by default' : 'manually'
+                ) + $.inArray(ui, this.options.ui));
+            }
+            // </debug>
+            return false;
+        }
+
+        // Check if we have explicitly disabled UI
+        if ($.inArray(ui, this.options.disabledUi) !== -1) {
+            return false;
+        }
+
+        return true;
+    },
+
+    /**
+     * @param  {String} ui Name of the UI object to be returned.
+     * @return {Object|null} UI object referenced by the given name.
+     */
+    getUi: function(ui) {
+        return this.uiObjects[ui];
+    },
+
     /**
      *
      */
@@ -27248,22 +27296,8 @@ $.widget('ui.editor',
 
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
-                // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
-                if (this.options.enableUi === false &&
-                        typeof this.options.ui[uiSet[j]] === 'undefined' ||
-                        this.options.ui[uiSet[j]] === false) {
-                    // <debug>
-                    if (debugLevel >= MID) {
-                        debug('UI with name ' + uiSet[j] + ' has been disabled ' + (
-                            this.options.enableUi === false ? 'by default' : 'manually'
-                        ) + $.inArray(uiSet[j], this.options.ui));
-                    }
-                    // </debug>
-                    continue;
-                }
 
-                // Check if we have explicitly disabled UI
-                if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
+                if (!this.uiEnabled(uiSet[j])) continue;
 
                 var baseClass = uiSet[j].replace(/([A-Z])/g, function(match) {
                     return '-' + match.toLowerCase();
@@ -27428,6 +27462,10 @@ $.widget('ui.editor',
                         .appendTo(ui.menu)
                         .bind('mouseenter.' + editor.widgetName, function() {$(this).addClass('ui-state-focus'); })
                         .bind('mouseleave.' + editor.widgetName, function() {$(this).removeClass('ui-state-focus'); })
+                        .bind('mousedown.' + editor.widgetName, function() {
+                            // Prevent losing focus on editable region
+                            return false;
+                        })
                         .bind('click.' + editor.widgetName, function() {
                             var option = ui.select.find('option').eq($(this).index());
                             ui.select.val(option.val());
@@ -27452,12 +27490,17 @@ $.widget('ui.editor',
                     .append(icon)
                     .prependTo(ui.selectMenu);
 
-                ui.button.bind('click.' + editor.widgetName, function() {
-                    $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
-                    ui.menu.css('min-width', ui.button.outerWidth() + 10);
-                    ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
-                    return false;
-                });
+                ui.button
+                    .bind('mousedown.' + editor.widgetName, function() {
+                        // Prevent losing focus on editable region
+                        return false;
+                    })
+                    .bind('click.' + editor.widgetName, function() {
+                        $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
+                        ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                        ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
+                        return false;
+                    });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
                 ui.button.find('.ui-selectmenu-text').html(selected);
@@ -27879,7 +27922,7 @@ $.extend($.ui.editor,
     /**
      * @property {Object} templates
      */
-    templates: { 'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Markup Only')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Rich Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\" style=\"display:none\">\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-highlighted\" style=\"display:none\">\n        <pre id=\"{{baseClass}}-rainbow\"><code data-language=\"html\"><\/code><\/pre>\n    <\/div>\n<\/div>\n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>" },
+    templates: { 'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\" style=\"display:none\">\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-highlighted\" style=\"display:none\">\n        <pre id=\"{{baseClass}}-rainbow\"><code data-language=\"html\"><\/code><\/pre>\n    <\/div>\n<\/div>\n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>" },
 
     /**
      * @param {String} name
@@ -29333,6 +29376,45 @@ $.ui.editor.registerUi({
         }
     }
 });/**
+ * @name $.editor.plugin.emptyElement
+ * @augments $.ui.editor.defaultPlugin
+ * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
+ */
+$.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
+
+    options: {
+        tag: '<p/>'
+    },
+
+    /**
+     * @see $.ui.editor.defaultPlugin#init
+     */
+    init: function(editor, options) {
+        this.bind('change', this.change)
+    },
+
+    change: function() {
+        var plugin = this;
+        this.textNodes(this.editor.getElement()).each(function() {
+            $(this).wrap($(plugin.options.tag));
+        });
+    },
+
+    /**
+     * Returns the text nodes of an element (not including child elements), filtering
+     * out blank (white space only) nodes.
+     *
+     * @param {jQuerySelector|jQuery|Element} element
+     * @returns {jQuery}
+     */
+    textNodes: function(element) {
+        return $(element).contents().filter(function() {
+            return this.nodeType == 3 && $.trim(this.nodeValue).length;
+        });
+    }
+
+});
+/**
  * @fileOverview Float ui components
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -29356,7 +29438,9 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Float Left'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'left' });
+                    editor.toggleBlockStyle({
+                        'float': 'left'
+                    }, editor.getElement());
                 }
             });
         }
@@ -29378,7 +29462,9 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Float Right'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'right' });
+                    editor.toggleBlockStyle({
+                        'float': 'right'
+                    }, editor.getElement());
                 }
             });
         }
@@ -29400,7 +29486,9 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Float None'),
                 click: function() {
-                    editor.applyStyle({ 'float': 'none' });
+                    editor.toggleBlockStyle({
+                        'float': 'none'
+                    }, editor.getElement());
                 }
             });
         }
@@ -29553,6 +29641,205 @@ $.ui.editor.registerUi({
     }
 });
 /**
+ * @name $.editor.plugin.hotkeys
+ * @extends $.editor.plugin
+ * @see $.editor.plugin.hotkeys.options
+ * @class Plugin that allows users to edit content using hotkeys. Extensible with custom hotkey actions.
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+$.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototype */ {
+
+    /**
+     * @name $.editor.plugin.hotkeys.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.hotkeys
+     */
+    options: /** @lends $.editor.plugin.hotkeys.options */  {
+        /**
+         * Array of action objects.
+         * For a hotkey triggering a UI action:
+         *
+ <pre>{
+    ui: 'textBold', // Name of UI element to be triggered by this hotkey
+    key: 'b', // Key triggering this action
+    label: 'ctrl + b', // Label to be appended to the UI element's title attribute
+    meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
+}</pre>
+         *
+         * For a hotkey triggering a custom action:
+         *
+<pre>{
+    callback: function() { alert('triggered!'); },
+    key: 't',
+    label: 'ctrl + t'
+}</pre>
+         * @type {Array}
+         */
+        actions: [
+            {
+                ui: 'textBold',
+                key: 'b',
+                label: _('ctrl + b')
+            },
+            {
+                ui: 'textItalic',
+                key: 'i',
+                label: _('ctrl + i')
+            },
+            {
+                ui: 'textUnderline',
+                key: 'u',
+                label: _('ctrl + u')
+            },
+            {
+                ui: 'undo',
+                key: 'z',
+                label: _('ctrl + z')
+            },
+            {
+                ui: 'redo',
+                key: 'y',
+                label: _('ctrl + y')
+            },
+            {
+                ui: 'cancel',
+                meta: false,
+                key: 27, // Escape key code
+                label: _('esc')
+            },
+            {
+                ui: 'save',
+                key: 's',
+                label: _('ctrl + s')
+            }
+        ]
+    },
+
+    /**
+     * Populated with actions indexed by character codes, to make retrieving an action from a given character code more straight-forward.
+     * @type {Object}
+     */
+    indexedActions: {},
+
+    /**
+     * Keyup event signature to be bound to window.
+     * @type {String}
+     */
+    keyUpEventSignature: null,
+
+    /**
+     * Keydown event signature to be bound to window.
+     * @type {String}
+     */
+    keyDownEventSignature: null,
+
+    /**
+     * @see $.ui.editor.defaultPlugin#init
+     */
+    init: function(editor, options) {
+        this.keyUpEventSignature = 'keyup.' + this.options.baseClass;
+        this.keyDownEventSignature = 'keydown.' + this.options.baseClass;
+        editor.bind('enabled', this.enabled, this);
+        editor.bind('disabled', this.disabled, this);
+    },
+
+    disabled: function() {
+        $(window).unbind(this.keyUpEventSignature);
+        $(window).unbind(this.keyDownEventSignature);
+        this.indexedActions = {};
+    },
+
+    /**
+     * Prepare actions & bind key events.
+     */
+    enabled: function() {
+        // Add actions to char code indexed array, for easier retrieval within the keyup event
+        var action;
+        for (var actionsIndex = 0; actionsIndex < this.options.actions.length; actionsIndex++) {
+            action = this.options.actions[actionsIndex];
+            this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
+            if (typeof action.ui !== 'undefined') {
+                var uiObject = this.editor.getUi(action.ui);
+                uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
+            }
+        }
+
+        var ui = this;
+
+        $(window).bind(this.keyDownEventSignature, function(event) {
+            var action = ui.actionForKeyCombination.call(ui, event);
+            if(action) {
+                event.preventDefault();
+            }
+        });
+
+        $(window).bind(this.keyUpEventSignature, function(event) {
+            var action = ui.actionForKeyCombination.call(ui, event);
+            if(action) {
+                var callback = $.isFunction(action.callback) ? action.callback : function() { ui.triggerUiAction(action.ui); };
+                callback.call(ui, event);
+                event.preventDefault();
+            }
+        });
+    },
+
+    /**
+     * Determine whether the current key combination is valid & return action if so.
+     * @param  {Event} event The event object.
+     * @return {Object|Boolean} The action for the key combination or false if the combination is not valid.
+     */
+    actionForKeyCombination: function(event) {
+
+        // Translate event keycode to lower case if necessary & appropriate
+        var pressedKey = event.which;
+        if (pressedKey >= 65 && pressedKey <= 90) {
+            var pressedKey = pressedKey + 32;
+        }
+
+        var action = this.indexedActions[pressedKey];
+        if (typeof action === 'undefined') {
+            return false;
+        }
+
+        var metaOk = action.meta === false || (event.ctrlKey || event.metaKey);
+        if (!metaOk) {
+            // Meta key is required but was not pressed
+            return false;
+        }
+
+        var keyOk = false;
+        if (this.isNumeric(action.key)) {
+            keyOk = pressedKey === action.key;
+        } else {
+            keyOk = String.fromCharCode(pressedKey).toLowerCase() === action.key;
+        }
+
+        return (keyOk) ? action : false;
+    },
+
+    /**
+     * Trigger the click action for the UI element identified by action.
+     * @param  {String} action Name of a UI element.
+     * @param  {Event} event The event triggering this function call.
+     */
+    triggerUiAction: function(action, event) {
+        var uiObject = this.editor.getUi(action);
+        if (typeof uiObject === 'undefined') {
+            return;
+        }
+        uiObject.ui.click.apply(uiObject, event);
+    },
+
+    /**
+     * @param  {mixed}  value Value to be tested
+     * @return {Boolean} True if the value is numeric
+     */
+    isNumeric: function(value) {
+        return !isNaN(value - 0);
+    }
+});/**
  * @fileOverview Insert hr ui component
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -30963,7 +31250,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.3?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.5?' + query.join('&') + ')'
                     });
                 }
             });
@@ -30976,9 +31263,28 @@ $.ui.editor.registerUi({
  * @name $.editor.plugin.paste
  * @extends $.editor.plugin
  * @class Plugin that captures paste events on the element and shows a modal dialog containing different versions of what was pasted.
- * Intended to prevent horrible 'paste from word' catastophes.
+ * Intended to prevent horrible 'paste from word' catastrophes.
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
+
+    options: {
+        allowedTags: [
+            '<h1>',
+            '<h2>',
+            '<h3>',
+            '<h4>',
+            '<h5>',
+            '<h6>',
+            '<div>',
+            '<ul>',
+            '<ol>',
+            '<li>',
+            '<blockquote>',
+            '<p>',
+            '<a>',
+            '<span>'
+        ]
+    },
 
     /**
      * @see $.ui.editor.defaultPlugin#init
@@ -30994,7 +31300,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             if (inProgress) return false;
             inProgress = true;
 
-            var selection = rangy.saveSelection();
+            editor.saveSelection();
 
             // Make a contentEditable div to capture pasted text
             if ($(selector).length) $(selector).remove();
@@ -31005,6 +31311,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
+                content = plugin.stripTags(content);
+                content = plugin.stripEmpty(content);
                 var vars = {
                     html: content,
                     plain: $('<div/>').html(content).text(),
@@ -31045,7 +31353,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                     html = plugin.filterAttributes(html);
                                     html = plugin.filterChars(html);
 
-                                    rangy.restoreSelection(selection);
+                                    editor.restoreSelection();
                                     editor.replaceSelection(html);
 
                                     inProgress = false;
@@ -31180,12 +31488,42 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             });
 
             // now use jQuery to remove the attributes
-            var img = $(this);
+            var element = $(this);
             $.each(attributes, function(i, item) {
-                img.removeAttr(item);
+                // Avoid DOM node type exceptions in Chrome
+                try {
+                    element.removeAttr(item);
+                } catch (e) {}
             });
         });
         return content.html();
+    },
+
+    /**
+     * Clone of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+     * @param  {String} content HTML containing tags to be stripped
+     * @return {String} HTML with all tags not present in the $.editor.plugin.paste.options.allowedTags array
+     */
+    stripTags: function(content) {
+        allowed = (((this.options.allowedTags || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
+    },
+
+    /**
+     * Remove empty tags.
+     * @param  {String} content The HTML containing empty elements to be removed
+     * @return {String} The cleaned HTML
+     */
+    stripEmpty: function(content) {
+        var wrapper = $('<div/>').html(content);
+        wrapper.find('*').filter(function() {
+            return $.trim($(this).text()) === ''
+        }).remove();
+        return wrapper.html();
     },
 
     /**
@@ -31904,12 +32242,19 @@ $.ui.editor.registerUi({
             editor.bind('selectionChange', this.change, this);
             editor.bind('show', this.change, this);
 
+            var ui = this;
+
             return editor.uiSelectMenu({
                 name: 'tagMenu',
                 title: _('Change HTML tag of selected element'),
                 select: $(editor.getTemplate('tagmenu.menu')),
                 change: function(value) {
-                    editor.tagSelection(value);
+                    // Prevent injection of illegal tags
+                    if (typeof value === 'undefined' || value === 'na') {
+                        ui.change();
+                        return;
+                    }
+                    editor.tagSelectionWithin(value, editor.getElement());
                 }
             });
         },
@@ -31921,7 +32266,7 @@ $.ui.editor.registerUi({
             var tag = this.editor.getSelectedElements()[0];
             if (!tag) return;
             tag = tag.tagName.toLowerCase();
-            if (this.ui.selectMenu.find('option[value=' + tag + ']').length) {
+            if (this.ui.select.find('option[value=' + tag + ']').length) {
                 this.ui.val(tag);
             } else {
                 this.ui.val('na');
@@ -32311,6 +32656,7 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
                                     html = $(this).find('textarea').val();
                                 }
                                 ui.editor.setHtml(html);
+                                $(this).find('textarea').val(ui.editor.getHtml());
                             }
                         },
                         {
@@ -32335,7 +32681,9 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
             }
         }
     }
-});})(jQuery, window, rangy);jQuery('<style type="text/css">/*\n\
+});
+                })(jQuery, window, rangy);
+            jQuery('<style type="text/css">/*\n\
  * jQuery UI CSS Framework 1.8.7\n\
  *\n\
  * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)\n\
@@ -33091,8 +33439,7 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
   position: fixed; }\n\
   .ui-editor-wrapper .ui-editor-toolbar {\n\
     padding: 6px 0 0 5px;\n\
-    overflow: visible;\n\
-    text-align: center; }\n\
+    overflow: visible; }\n\
   .ui-editor-wrapper .ui-editor-toolbar,\n\
   .ui-editor-wrapper .ui-editor-toolbar * {\n\
     -webkit-user-select: none;\n\
@@ -33203,6 +33550,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 \n\
 .ui-editor-selectmenu-button .ui-button-text {\n\
   padding: 0 25px 0 5px; }\n\
+\n\
+.ui-editor-selectmenu-button .ui-icon {\n\
+  background-repeat: no-repeat; }\n\
 \n\
 .ui-editor-selectmenu-menu {\n\
   position: absolute;\n\
@@ -33714,6 +34064,8 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     -moz-box-align: center;\n\
     -ms-box-align: center;\n\
     box-align: center; }\n\
+  .ui-editor-dock-docked .ui-editor-toolbar {\n\
+    text-align: center; }\n\
   .ui-editor-dock-docked .ui-editor-path {\n\
     position: fixed;\n\
     bottom: 0;\n\
@@ -34185,8 +34537,8 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     height: 25px;\n\
     line-height: 25px;\n\
     position: absolute;\n\
-    right: 35px;\n\
-    top: 15px;\n\
+    right: 0;\n\
+    top: 0;\n\
     width: 100px; }\n\
     .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text input {\n\
       margin: 0;\n\
@@ -34262,15 +34614,14 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * Tag menu plugin\n\
  *\n\
  * @author David Neilsen <david@panmedia.co.nz>\n\
+ * @author Michael Robinson <michael@panmedia.co.nz>\n\
  */\n\
-.ui-editor-wrapper .ui-editor-tag-select {\n\
-  height: 23px;\n\
-  top: -8px;\n\
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {\n\
   text-align: left; }\n\
 \n\
-.ui-editor-wrapper .ui-editor-tag-select .ui-selectmenu-status {\n\
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
   font-size: 13px;\n\
-  line-height: 10px; }\n\
+  line-height: 22px; }\n\
 \n\
 .ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
   line-height: 12px; }\n\
