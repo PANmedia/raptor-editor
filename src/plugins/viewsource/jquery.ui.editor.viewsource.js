@@ -234,6 +234,7 @@
                                     html = $(this).find('textarea').val();
                                 }
                                 ui.editor.setHtml(html);
+                                $(this).find('textarea').val(ui.editor.getHtml());
                             }
                         },
                         {
