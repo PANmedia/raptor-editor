@@ -925,6 +925,37 @@ $.widget('ui.editor',
      * Buttons
     \*========================================================================*/
 
+    uiEnabled: function(ui) {
+        // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
+        if (this.options.enableUi === false &&
+                typeof this.options.ui[ui] === 'undefined' ||
+                this.options.ui[ui] === false) {
+            // <debug>
+            if (debugLevel >= MID) {
+                debug('UI with name ' + ui + ' has been disabled ' + (
+                    this.options.enableUi === false ? 'by default' : 'manually'
+                ) + $.inArray(ui, this.options.ui));
+            }
+            // </debug>
+            return false;
+        }
+
+        // Check if we have explicitly disabled UI
+        if ($.inArray(ui, this.options.disabledUi) !== -1) {
+            return false;
+        }
+
+        return true;
+    },
+
+    /**
+     * @param  {String} ui Name of the UI object to be returned.
+     * @return {Object|null} UI object referenced by the given name.
+     */
+    getUi: function(ui) {
+        return this.uiObjects[ui];
+    },
+
     /**
      *
      */
@@ -937,22 +968,8 @@ $.widget('ui.editor',
 
             // Loop each UI in the array
             for (var j = 0, ll = uiSet.length; j < ll; j++) {
-                // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
-                if (this.options.enableUi === false &&
-                        typeof this.options.ui[uiSet[j]] === 'undefined' ||
-                        this.options.ui[uiSet[j]] === false) {
-                    // <debug>
-                    if (debugLevel >= MID) {
-                        debug('UI with name ' + uiSet[j] + ' has been disabled ' + (
-                            this.options.enableUi === false ? 'by default' : 'manually'
-                        ) + $.inArray(uiSet[j], this.options.ui));
-                    }
-                    // </debug>
-                    continue;
-                }
 
-                // Check if we have explicitly disabled UI
-                if ($.inArray(uiSet[j], this.options.disabledUi) !== -1) continue;
+                if (!this.uiEnabled(uiSet[j])) continue;
 
                 var baseClass = uiSet[j].replace(/([A-Z])/g, function(match) {
                     return '-' + match.toLowerCase();

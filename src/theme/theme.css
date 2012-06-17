@@ -20,8 +20,7 @@
   position: fixed; }
   .ui-editor-wrapper .ui-editor-toolbar {
     padding: 6px 0 0 5px;
-    overflow: visible;
-    text-align: center; }
+    overflow: visible; }
   .ui-editor-wrapper .ui-editor-toolbar,
   .ui-editor-wrapper .ui-editor-toolbar * {
     -webkit-user-select: none;
@@ -132,6 +131,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 
 .ui-editor-selectmenu-button .ui-button-text {
   padding: 0 25px 0 5px; }
+
+.ui-editor-selectmenu-button .ui-icon {
+  background-repeat: no-repeat; }
 
 .ui-editor-selectmenu-menu {
   position: absolute;
@@ -643,6 +645,8 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     -moz-box-align: center;
     -ms-box-align: center;
     box-align: center; }
+  .ui-editor-dock-docked .ui-editor-toolbar {
+    text-align: center; }
   .ui-editor-dock-docked .ui-editor-path {
     position: fixed;
     bottom: 0;
@@ -1114,8 +1118,8 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     height: 25px;
     line-height: 25px;
     position: absolute;
-    right: 35px;
-    top: 15px;
+    right: 0;
+    top: 0;
     width: 100px; }
     .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text input {
       margin: 0;
@@ -1191,15 +1195,14 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * Tag menu plugin
  *
  * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  */
-.ui-editor-wrapper .ui-editor-tag-select {
-  height: 23px;
-  top: -8px;
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {
   text-align: left; }
 
-.ui-editor-wrapper .ui-editor-tag-select .ui-selectmenu-status {
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {
   font-size: 13px;
-  line-height: 10px; }
+  line-height: 22px; }
 
 .ui-selectmenu-menu li a, .ui-selectmenu-status {
   line-height: 12px; }

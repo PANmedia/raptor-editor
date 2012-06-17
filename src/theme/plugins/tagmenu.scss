@@ -2,16 +2,15 @@
  * Tag menu plugin
  *
  * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  */
-.ui-editor-wrapper .ui-editor-tag-select {
-    height: 23px;
-    top: -8px;
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {
     text-align: left;
 }
 
-.ui-editor-wrapper .ui-editor-tag-select .ui-selectmenu-status {
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {
     font-size: $font-size;
-    line-height: 10px;
+    line-height: 22px;
 }
 
 .ui-selectmenu-menu li a, .ui-selectmenu-status {
