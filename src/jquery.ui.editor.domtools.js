@@ -276,7 +276,6 @@ var domTools = {
      * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
      * If there is no block level elements before the limit, then the limit content
      * element will be wrapped with a "div"
-
      */
     toggleBlockStyle: function(styles, limit) {
         this.eachRange(function(range) {
