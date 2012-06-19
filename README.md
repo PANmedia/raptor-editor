@@ -26,6 +26,7 @@ See the following links for information on build & contributing to Raptor:
 
 * [Building Raptor](https://github.com/PANmedia/Raptor/wiki/Building)
 * [Contributing to Raptor](https://github.com/PANmedia/Raptor/wiki/Contributing)
+* [Translating Raptor]((https://github.com/PANmedia/Raptor/wiki/Translating-Raptor)
 
 [^1]: http://jqueryraptor.com/ (Download, usage examples and documentation)
 [^2]: http://jqueryraptor.com/docs (Raptor documentation)
