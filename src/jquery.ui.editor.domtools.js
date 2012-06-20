@@ -154,7 +154,7 @@ var domTools = {
      *
      * @public @static
      * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
      */
     selectOuter: function(element, selection) {
         selection = selection || rangy.getSelection();
