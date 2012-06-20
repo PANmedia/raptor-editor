@@ -167,6 +167,24 @@ var domTools = {
     },
 
     /**
+     * Move selection to the end of element.
+     *
+     * @param  {jQuerySelector|jQuery|Element} element The subject element.
+     * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+     */
+    selectEnd: function(element, selection) {
+        selection = selection || rangy.getSelection();
+        selection.removeAllRanges();
+
+        $(element).each(function() {
+            var range = rangy.createRange();
+            range.selectNodeContents(this);
+            range.collapse();
+            selection.addRange(range);
+        });
+    },
+
+    /**
      * FIXME: this function needs reviewing
      *
      * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
