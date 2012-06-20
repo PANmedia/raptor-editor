@@ -11,7 +11,8 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
      * @namespace Default options
      * @see $.editor.plugin.emptyElement
      */
-    options: {
+    options: /** @lends $.editor.plugin.emptyElement.options */  {
+
         /**
          * The tag to wrap bare text nodes with.
          * @type {String}
