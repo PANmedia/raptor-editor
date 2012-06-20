@@ -1,5 +1,5 @@
 /* French translation by SebCorbin (contact: seb.corbin@gmail.com) */
-registerLocale('en', 'English', {
+registerLocale('fr', 'Français', {
     "A preview of your embedded object is displayed below.": "Un aperçu de votre objet intégré est affiché ci-dessous.",
     "Added link: {{link}}": "Lien ajouté : {{link}}",
     "All changes will be lost!": "Toutes les modifications seront perdues !",
