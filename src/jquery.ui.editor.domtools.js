@@ -100,6 +100,9 @@ var domTools = {
 
     getSelectedElement: function (range) {
         var commonAncestor;
+
+        range = range || rangy.getSelection().getRangeAt(0);
+
         // Check if the common ancestor container is a text node
         if (range.commonAncestorContainer.nodeType === 3) {
             // Use the parent instead
@@ -108,6 +111,49 @@ var domTools = {
             commonAncestor = range.commonAncestorContainer;
         }
         return $(commonAncestor);
+    },
+
+    // getSelectedHtml: function(selection) {
+    //     selection = selection || rangy.getSelection();
+    //     return selection.toHtml();
+    // },
+
+    getSelectionStartElement: function() {
+        var selection = rangy.getSelection();
+        if (selection.isBackwards()) {
+            return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+        }
+        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    },
+
+    getSelectionEndElement: function() {
+        var selection = rangy.getSelection();
+        if (selection.isBackwards()) {
+            return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+        }
+        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+    },
+
+    /**
+     * [getValidParent description]
+     * @param  {[type]} element             [description]
+     * @param  {[type]} validParents        [description]
+     * @param  {[type]} constrainingElement [description]
+     * @return {[type]}                     [description]
+     */
+    getValidParent: function(element, validParents, constrainingElement) {
+
+        // Get parent of text node
+        element = (element.nodeType === 3) ? element.parentElement : element;
+
+        // if ($(element)[0] === $(constrainingElement)[0]) {
+        //     return false;
+        // }
+        console.log(element, $(element)[0]);
+        if ($.inArray(element.tagName.toLowerCase(), validParents)) {
+            return element;
+        }
+        return this.getValidParent($(element).parent(), validParents);
     },
 
     unwrapParentTag: function(tag) {
