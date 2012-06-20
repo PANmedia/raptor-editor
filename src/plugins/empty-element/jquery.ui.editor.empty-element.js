@@ -20,6 +20,8 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
         var plugin = this;
         this.textNodes(this.editor.getElement()).each(function() {
             $(this).wrap($(plugin.options.tag));
+            // Set caret position to the end of the current text node
+            plugin.editor.selectEnd(this);
         });
     },
 
