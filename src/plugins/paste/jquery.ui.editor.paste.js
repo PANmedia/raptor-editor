@@ -6,7 +6,18 @@
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
-    options: {
+    /**
+     * @name $.editor.plugin.paste.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.paste
+     */
+    options: /** @lends $.editor.plugin.paste.options */  {
+
+        /**
+         * Tags that will not be stripped from pasted content.
+         * @type {Array}
+         */
         allowedTags: [
             '<h1>',
             '<h2>',
