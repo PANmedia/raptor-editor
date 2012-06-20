@@ -120,7 +120,9 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
             this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
             if (typeof action.ui !== 'undefined') {
                 var uiObject = this.editor.getUi(action.ui);
-                uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
+                if (typeof uiObject !== 'undefined') {
+                    uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
+                }
             }
         }
 
