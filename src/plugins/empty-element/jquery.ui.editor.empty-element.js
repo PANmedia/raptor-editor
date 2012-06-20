@@ -5,7 +5,17 @@
  */
 $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
 
+    /**
+     * @name $.editor.plugin.emptyElement.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.emptyElement
+     */
     options: {
+        /**
+         * The tag to wrap bare text nodes with.
+         * @type {String}
+         */
         tag: '<p/>'
     },
 
