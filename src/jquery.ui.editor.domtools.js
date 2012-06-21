@@ -138,28 +138,6 @@ var domTools = {
         return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
     },
 
-    /**
-     * [getValidParent description]
-     * @param  {[type]} element             [description]
-     * @param  {[type]} validParents        [description]
-     * @param  {[type]} constrainingElement [description]
-     * @return {[type]}                     [description]
-     */
-    getValidParent: function(element, validParents, constrainingElement) {
-
-        // Get parent of text node
-        element = (element.nodeType === 3) ? element.parentElement : element;
-
-        // if ($(element)[0] === $(constrainingElement)[0]) {
-        //     return false;
-        // }
-        console.log(element, $(element)[0]);
-        if ($.inArray(element.tagName.toLowerCase(), validParents)) {
-            return element;
-        }
-        return this.getValidParent($(element).parent(), validParents);
-    },
-
     unwrapParentTag: function(tag) {
         this.getSelectedElements().each(function(){
             if ($(this).is(tag)) {
