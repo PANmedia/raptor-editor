@@ -13,22 +13,23 @@ $.ui.editor.registerUi({
      */
     listUnordered: /** @lends $.editor.ui.listUnordered.prototype */ {
 
+        /**
+         * Tag names for elements that are allowed to contain ul/ol elements.
+         * @type {Array}
+         */
         validParents: [
-            'blockquote',
-            'body',
-            'button',
-            'center',
-            'dd',
-            'div',
-            'fieldset',
-            'form',
-            'iframe',
-            'li',
-            'noframes',
-            'noscript',
-            'object',
-            'td',
-            'th'
+            'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li',
+            'noframes', 'noscript', 'object', 'td', 'th'
+        ],
+
+        /**
+         * Tag names for elements that may be contained by li elements.
+         * @type {Array}
+         */
+        validChildren: [
+            'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn',
+            'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd', 'label', 'map', 'object', 'p', 'q', 's',  'samp',
+            'script', 'select', 'small', 'span', 'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
         ],
 
         /**
