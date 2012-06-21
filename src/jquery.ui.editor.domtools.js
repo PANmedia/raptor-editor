@@ -459,7 +459,6 @@ var domTools = {
 
         // The html may be inserted within the selected element & selection start / end.
         if (selectedElementValid && startElementValid && endElementValid) {
-            console.log('replace selection');
             this.replaceSelection(html);
             return;
         }
