@@ -459,15 +459,14 @@ var domTools = {
 
         // The html may be inserted within the selected element & selection start / end.
         if (selectedElementValid && startElementValid && endElementValid) {
+            console.log('replace selection');
             this.replaceSelection(html);
             return;
         }
 
-        // Start or end element is valid. Split start & end and insert list in between.
-        if (selectedElementValid && !(startElementValid && endElementValid)) {
-            this.replaceSelectionSplittingSelectedElement(html, selection);
-            return;
-        }
+        // Context is invalid. Split containing element and insert list in between.
+        this.replaceSelectionSplittingSelectedElement(html, selection);
+        return;
     },
 
     /**
@@ -494,9 +493,11 @@ var domTools = {
         var endFragment = endRange.cloneContents();
 
         // Replace the start element's html with the content that was not selected, append html & end element's html
-        $(startElement).html($(this.domFragmentToHtml(startFragment)))
-            .append($(html))
-            .append(this.domFragmentToHtml(endFragment));
+        var replacement = this.outerHtml($(this.domFragmentToHtml(startFragment)));
+        replacement += this.outerHtml($(html));
+        replacement += this.outerHtml($(this.domFragmentToHtml(endFragment)));
+
+        $(selectedElement).replaceWith($(replacement));
     },
 
     /**
