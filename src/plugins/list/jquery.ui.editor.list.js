@@ -203,9 +203,7 @@ $.ui.editor.registerUi({
                     editor.getPlugin('list').toggleList('ul');
                 }
             });
-        },
-
-
+        }
     },
 
     /**
