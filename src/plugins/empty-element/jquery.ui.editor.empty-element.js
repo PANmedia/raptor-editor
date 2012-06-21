@@ -5,7 +5,18 @@
  */
 $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
 
-    options: {
+    /**
+     * @name $.editor.plugin.emptyElement.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.emptyElement
+     */
+    options: /** @lends $.editor.plugin.emptyElement.options */  {
+
+        /**
+         * The tag to wrap bare text nodes with.
+         * @type {String}
+         */
         tag: '<p/>'
     },
 
@@ -20,6 +31,8 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
         var plugin = this;
         this.textNodes(this.editor.getElement()).each(function() {
             $(this).wrap($(plugin.options.tag));
+            // Set caret position to the end of the current text node
+            plugin.editor.selectEnd(this);
         });
     },
 

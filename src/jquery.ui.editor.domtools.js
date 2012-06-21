@@ -100,6 +100,9 @@ var domTools = {
 
     getSelectedElement: function (range) {
         var commonAncestor;
+
+        range = range || rangy.getSelection().getRangeAt(0);
+
         // Check if the common ancestor container is a text node
         if (range.commonAncestorContainer.nodeType === 3) {
             // Use the parent instead
@@ -108,6 +111,31 @@ var domTools = {
             commonAncestor = range.commonAncestorContainer;
         }
         return $(commonAncestor);
+    },
+
+    /**
+     * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
+     * @return {string} The html content of the selection.
+     */
+    getSelectedHtml: function(selection) {
+        selection = selection || rangy.getSelection();
+        return selection.toHtml();
+    },
+
+    getSelectionStartElement: function() {
+        var selection = rangy.getSelection();
+        if (selection.isBackwards()) {
+            return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+        }
+        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    },
+
+    getSelectionEndElement: function() {
+        var selection = rangy.getSelection();
+        if (selection.isBackwards()) {
+            return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+        }
+        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
     },
 
     unwrapParentTag: function(tag) {
@@ -154,7 +182,7 @@ var domTools = {
      *
      * @public @static
      * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
      */
     selectOuter: function(element, selection) {
         selection = selection || rangy.getSelection();
@@ -164,6 +192,24 @@ var domTools = {
             range.selectNode(this);
             selection.addRange(range);
         }).focus();
+    },
+
+    /**
+     * Move selection to the end of element.
+     *
+     * @param  {jQuerySelector|jQuery|Element} element The subject element.
+     * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+     */
+    selectEnd: function(element, selection) {
+        selection = selection || rangy.getSelection();
+        selection.removeAllRanges();
+
+        $(element).each(function() {
+            var range = rangy.createRange();
+            range.selectNodeContents(this);
+            range.collapse();
+            selection.addRange(range);
+        });
     },
 
     /**
@@ -394,6 +440,66 @@ var domTools = {
     },
 
     /**
+     * Replace current selection with given html, ensuring that selection container is split at
+     * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+     * @param  {jQuery|Element|string} html The html to replace current selection with.
+     * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
+     * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
+     */
+    replaceSelectionWithinValidTags: function(html, validTagNames, selection) {
+        selection = selection || rangy.getSelection();
+
+        var startElement = this.getSelectionStartElement()[0];
+        var endElement = this.getSelectionEndElement()[0];
+        var selectedElement = this.getSelectedElements()[0];
+
+        var selectedElementValid = this.isElementValid(selectedElement, validTagNames);
+        var startElementValid = this.isElementValid(startElement, validTagNames);
+        var endElementValid = this.isElementValid(endElement, validTagNames);
+
+        // The html may be inserted within the selected element & selection start / end.
+        if (selectedElementValid && startElementValid && endElementValid) {
+            this.replaceSelection(html);
+            return;
+        }
+
+        // Context is invalid. Split containing element and insert list in between.
+        this.replaceSelectionSplittingSelectedElement(html, selection);
+        return;
+    },
+
+    /**
+     * Split the selection container and insert the given html between the two elements created.
+     * @param  {jQuery|Element|string} html The html to replace selection with.
+     * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
+     */
+    replaceSelectionSplittingSelectedElement: function(html, selection) {
+        selection = selection || rangy.getSelection();
+
+        var selectionRange = selection.getRangeAt(0);
+        var selectedElement = this.getSelectedElements()[0];
+
+        // Select from start of selected element to start of selection
+        var startRange = rangy.createRange();
+        startRange.setStartBefore(selectedElement);
+        startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+        var startFragment = startRange.cloneContents();
+
+        // Select from end of selected element to end of selection
+        var endRange = rangy.createRange();
+        endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
+        endRange.setEndAfter(selectedElement);
+        var endFragment = endRange.cloneContents();
+
+        // Replace the start element's html with the content that was not selected, append html & end element's html
+        var replacement = this.outerHtml($(this.domFragmentToHtml(startFragment)));
+        replacement += this.outerHtml($(html));
+        replacement += this.outerHtml($(this.domFragmentToHtml(endFragment)));
+
+        $(selectedElement).replaceWith($(replacement));
+    },
+
+    /**
      * FIXME: this function needs reviewing
      * @public @static
      */
@@ -539,10 +645,44 @@ var domTools = {
     },
 
     /**
+     * Check that the given element is one of the the given tags
+     * @param  {jQuery|Element} element The element to be tested.
+     * @param  {Array}  validTagNames An array of valid tag names.
+     * @return {Boolean} True if the given element is one of the give valid tags.
+     */
+    isElementValid: function(element, validTags) {
+        return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
+    },
+
+    /**
      * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
      * @return {String} The outer HTML.
      */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
+    },
+
+    /**
+     * Modification of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+     * @param  {string} content HTML containing tags to be stripped
+     * @param {Array} allowedTags Array of tags that should not be stripped
+     * @return {string} HTML with all tags not present allowedTags array.
+     */
+    stripTags: function(content, allowedTags) {
+        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        allowed = [];
+        for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
+            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]+/g)) {
+                allowed.push('<' + allowedTags[allowedTagsIndex] + '>');
+            }
+        }
+
+        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+
+        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
     }
 };

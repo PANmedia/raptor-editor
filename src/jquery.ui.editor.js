@@ -68,7 +68,6 @@ $.widget('ui.editor',
         this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
-//        this.changeTimer = null;
 
         // jQuery DOM elements
         this.wrapper = null;
@@ -314,13 +313,6 @@ $.widget('ui.editor',
 
     change: function() {
         this.fire('change');
-//        if (this.changeTimer !== null) {
-//            return;
-//        }
-//        this.changeTimer = window.setTimeout(function(editor) {
-//            editor.fire('change');
-//            editor.changeTimer = null;
-//        }, 1000, this);
     },
 
     /*========================================================================*\
@@ -405,7 +397,6 @@ $.widget('ui.editor',
             }
             this.fire('enabled');
             this.fire('resize');
-//            this.change();
         }
     },
 

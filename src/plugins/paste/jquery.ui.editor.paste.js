@@ -6,22 +6,20 @@
  */
 $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
-    options: {
+    /**
+     * @name $.editor.plugin.paste.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.paste
+     */
+    options: /** @lends $.editor.plugin.paste.options */  {
+
+        /**
+         * Tags that will not be stripped from pasted content.
+         * @type {Array}
+         */
         allowedTags: [
-            '<h1>',
-            '<h2>',
-            '<h3>',
-            '<h4>',
-            '<h5>',
-            '<h6>',
-            '<div>',
-            '<ul>',
-            '<ol>',
-            '<li>',
-            '<blockquote>',
-            '<p>',
-            '<a>',
-            '<span>'
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote', 'p', 'a', 'span'
         ]
     },
 
@@ -50,7 +48,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
-                content = plugin.stripTags(content);
+                content = plugin.editor.stripTags(content, plugin.options.allowedTags);
                 content = plugin.stripEmpty(content);
                 var vars = {
                     html: content,
@@ -63,7 +61,6 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
                     plugin.updateAreas(this, dialog);
                 });
-
 
                 $(dialog).dialog({
                     modal: true,
@@ -102,7 +99,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                             {
                                 text: _('Cancel'),
                                 click: function() {
-                                    rangy.restoreSelection(selection);
+                                    editor.restoreSelection();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
@@ -236,20 +233,6 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             });
         });
         return content.html();
-    },
-
-    /**
-     * Clone of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
-     * @param  {String} content HTML containing tags to be stripped
-     * @return {String} HTML with all tags not present in the $.editor.plugin.paste.options.allowedTags array
-     */
-    stripTags: function(content) {
-        allowed = (((this.options.allowedTags || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
-            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-        });
     },
 
     /**
