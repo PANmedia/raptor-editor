@@ -493,6 +493,35 @@ var domTools = {
     },
 
     /**
+     * Split the selection container and insert the given html between the two elements created.
+     * @param  {jQuery|Element|string} html The html to replace selection with.
+     * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
+     */
+    replaceSelectionSplittingSelectedElement: function(html, selection) {
+        selection = selection || rangy.getSelection();
+
+        var selectionRange = selection.getRangeAt(0);
+        var selectedElement = this.getSelectedElements()[0];
+
+        // Select from start of selected element to start of selection
+        var startRange = rangy.createRange();
+        startRange.setStartBefore(selectedElement);
+        startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+        var startFragment = startRange.cloneContents();
+
+        // Select from end of selected element to end of selection
+        var endRange = rangy.createRange();
+        endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
+        endRange.setEndAfter(selectedElement);
+        var endFragment = endRange.cloneContents();
+
+        // Replace the start element's html with the content that was not selected, append html & end element's html
+        $(startElement).html($(this.domFragmentToHtml(startFragment)))
+            .append($(html))
+            .append(this.domFragmentToHtml(endFragment));
+    },
+
+    /**
      * FIXME: this function needs reviewing
      * @public @static
      */
