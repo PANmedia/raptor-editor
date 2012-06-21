@@ -19,20 +19,21 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
          * Array of action objects.
          * For a hotkey triggering a UI action:
          *
- <pre>{
-    ui: 'textBold', // Name of UI element to be triggered by this hotkey
-    key: 'b', // Key triggering this action
-    label: 'ctrl + b', // Label to be appended to the UI element's title attribute
-    meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
-}</pre>
+         * <pre>{
+         *     ui: 'textBold', // Name of UI element to be triggered by this hotkey
+         *     key: 'b', // Key triggering this action
+         *     label: 'ctrl + b', // Label to be appended to the UI element's title attribute
+         *     meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
+         * }</pre>
          *
          * For a hotkey triggering a custom action:
          *
-<pre>{
-    callback: function() { alert('triggered!'); },
-    key: 't',
-    label: 'ctrl + t'
-}</pre>
+         * <pre>{
+         *     callback: function() { alert('triggered!'); },
+         *     key: 't',
+         *     label: 'ctrl + t'
+         * }</pre>
+         *
          * @type {Array}
          */
         actions: [
@@ -120,6 +121,7 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
             this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
             if (typeof action.ui !== 'undefined') {
                 var uiObject = this.editor.getUi(action.ui);
+                // Only trigger if the UI object is enabled
                 if (typeof uiObject !== 'undefined') {
                     uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
                 }
