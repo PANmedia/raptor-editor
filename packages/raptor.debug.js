@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.5 *//**
+/*! VERSION: 0.0.6 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25626,6 +25626,9 @@ var domTools = {
 
     getSelectedElement: function (range) {
         var commonAncestor;
+
+        range = range || rangy.getSelection().getRangeAt(0);
+
         // Check if the common ancestor container is a text node
         if (range.commonAncestorContainer.nodeType === 3) {
             // Use the parent instead
@@ -25634,6 +25637,31 @@ var domTools = {
             commonAncestor = range.commonAncestorContainer;
         }
         return $(commonAncestor);
+    },
+
+    /**
+     * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
+     * @return {string} The html content of the selection.
+     */
+    getSelectedHtml: function(selection) {
+        selection = selection || rangy.getSelection();
+        return selection.toHtml();
+    },
+
+    getSelectionStartElement: function() {
+        var selection = rangy.getSelection();
+        if (selection.isBackwards()) {
+            return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+        }
+        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    },
+
+    getSelectionEndElement: function() {
+        var selection = rangy.getSelection();
+        if (selection.isBackwards()) {
+            return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+        }
+        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
     },
 
     unwrapParentTag: function(tag) {
@@ -25938,6 +25966,66 @@ var domTools = {
     },
 
     /**
+     * Replace current selection with given html, ensuring that selection container is split at
+     * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+     * @param  {jQuery|Element|string} html The html to replace current selection with.
+     * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
+     * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
+     */
+    replaceSelectionWithinValidTags: function(html, validTagNames, selection) {
+        selection = selection || rangy.getSelection();
+
+        var startElement = this.getSelectionStartElement()[0];
+        var endElement = this.getSelectionEndElement()[0];
+        var selectedElement = this.getSelectedElements()[0];
+
+        var selectedElementValid = this.isElementValid(selectedElement, validTagNames);
+        var startElementValid = this.isElementValid(startElement, validTagNames);
+        var endElementValid = this.isElementValid(endElement, validTagNames);
+
+        // The html may be inserted within the selected element & selection start / end.
+        if (selectedElementValid && startElementValid && endElementValid) {
+            this.replaceSelection(html);
+            return;
+        }
+
+        // Context is invalid. Split containing element and insert list in between.
+        this.replaceSelectionSplittingSelectedElement(html, selection);
+        return;
+    },
+
+    /**
+     * Split the selection container and insert the given html between the two elements created.
+     * @param  {jQuery|Element|string} html The html to replace selection with.
+     * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
+     */
+    replaceSelectionSplittingSelectedElement: function(html, selection) {
+        selection = selection || rangy.getSelection();
+
+        var selectionRange = selection.getRangeAt(0);
+        var selectedElement = this.getSelectedElements()[0];
+
+        // Select from start of selected element to start of selection
+        var startRange = rangy.createRange();
+        startRange.setStartBefore(selectedElement);
+        startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+        var startFragment = startRange.cloneContents();
+
+        // Select from end of selected element to end of selection
+        var endRange = rangy.createRange();
+        endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
+        endRange.setEndAfter(selectedElement);
+        var endFragment = endRange.cloneContents();
+
+        // Replace the start element's html with the content that was not selected, append html & end element's html
+        var replacement = this.outerHtml($(this.domFragmentToHtml(startFragment)));
+        replacement += this.outerHtml($(html));
+        replacement += this.outerHtml($(this.domFragmentToHtml(endFragment)));
+
+        $(selectedElement).replaceWith($(replacement));
+    },
+
+    /**
      * FIXME: this function needs reviewing
      * @public @static
      */
@@ -26083,11 +26171,45 @@ var domTools = {
     },
 
     /**
+     * Check that the given element is one of the the given tags
+     * @param  {jQuery|Element} element The element to be tested.
+     * @param  {Array}  validTagNames An array of valid tag names.
+     * @return {Boolean} True if the given element is one of the give valid tags.
+     */
+    isElementValid: function(element, validTags) {
+        return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
+    },
+
+    /**
      * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
      * @return {String} The outer HTML.
      */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
+    },
+
+    /**
+     * Modification of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+     * @param  {string} content HTML containing tags to be stripped
+     * @param {Array} allowedTags Array of tags that should not be stripped
+     * @return {string} HTML with all tags not present allowedTags array.
+     */
+    stripTags: function(content, allowedTags) {
+        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        allowed = [];
+        for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
+            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]+/g)) {
+                allowed.push('<' + allowedTags[allowedTagsIndex] + '>');
+            }
+        }
+
+        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+
+        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
     }
 };/**
  * Editor internationalization (i18n) private functions and properties.
@@ -26414,7 +26536,6 @@ $.widget('ui.editor',
         this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
-//        this.changeTimer = null;
 
         // jQuery DOM elements
         this.wrapper = null;
@@ -26660,13 +26781,6 @@ $.widget('ui.editor',
 
     change: function() {
         this.fire('change');
-//        if (this.changeTimer !== null) {
-//            return;
-//        }
-//        this.changeTimer = window.setTimeout(function(editor) {
-//            editor.fire('change');
-//            editor.changeTimer = null;
-//        }, 1000, this);
     },
 
     /*========================================================================*\
@@ -26751,7 +26865,6 @@ $.widget('ui.editor',
             }
             this.fire('enabled');
             this.fire('resize');
-//            this.change();
         }
     },
 
@@ -29793,7 +29906,9 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
             this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
             if (typeof action.ui !== 'undefined') {
                 var uiObject = this.editor.getUi(action.ui);
-                uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
+                if (typeof uiObject !== 'undefined') {
+                    uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
+                }
             }
         }
 
@@ -31465,10 +31580,189 @@ $.ui.editor.registerUi({
     }
 });
 /**
- * @fileOverview UI Components for inserting ordered and unordered lists
+ * @fileOverview UI components & plugin for inserting ordered and unordered lists
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
+$.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ {
+
+    /**
+     * @name $.editor.plugin.list.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.list
+     */
+    options: /** @lends $.editor.plugin.list.options */  { },
+
+    /**
+     * Tag names for elements that are allowed to contain ul/ol elements.
+     * @type {Array}
+     */
+    validParents: [
+        'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li',
+        'noframes', 'noscript', 'object', 'td', 'th'
+    ],
+
+    /**
+     * Tag names for elements that may be contained by li elements.
+     * @type {Array}
+     */
+    validChildren: [
+        'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn',
+        'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd', 'label', 'map', 'object', 'p', 'q', 's',  'samp',
+        'select', 'small', 'span', 'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
+    ],
+
+    /**
+     * Toggle listType depending on the current selection.
+     * This function fires both the selectionChange & change events when the action is complete.
+     * @param  {string} listType One of ul or ol.
+     */
+    toggleList: function(listType) {
+
+        // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
+        if ($(this.editor.getSelectedElements()).is('li')
+            && $(this.editor.getSelectedElements()).parent().is(listType)) {
+            this.unwrapList();
+        } else {
+            this.wrapList(listType);
+        }
+
+        this.editor.fire('selectionChange');
+        this.editor.fire('change');
+    },
+
+    /**
+     * Extract the contents of all selected li elements.
+     * If the list element's parent is not a li, then wrap the content of each li in a p, else leave them unwrapped.
+     */
+    unwrapList: function() {
+        this.editor.saveSelection();
+
+        // Array containing the html contents of each of the selected li elements.
+        var listElementsContent = [];
+        // Array containing the selected li elements themselves.
+        var listElements = [];
+
+        // The element within which selection begins.
+        var startElement = this.editor.getSelectionStartElement();
+        // The element within which ends.
+        var endElement = this.editor.getSelectionEndElement();
+
+        // Collect the first selected list element's content
+        listElementsContent.push($(startElement).html());
+        listElements.push(startElement);
+
+        // Collect the remaining list elements' content
+        if ($(startElement)[0] !== $(endElement)[0]) {
+            var currentElement = startElement;
+            do  {
+                currentElement = $(currentElement).next();
+                listElementsContent.push($(currentElement).html());
+                listElements.push(currentElement);
+            } while($(currentElement)[0] !== $(endElement)[0]);
+        }
+
+        // Boolean values used to determine whether first / last list element of the parent is selected.
+        var firstLiSelected = $(startElement).prev().length === 0;
+        var lastLiSelected = $(endElement).next().length === 0;
+
+        // The parent list container, e.g. the parent ul / ol
+        var parentListContainer = $(startElement).parent();
+
+        // Remove the list elements from the DOM.
+        for (listElementsIndex = 0; listElementsIndex < listElements.length; listElementsIndex++) {
+            $(listElements[listElementsIndex]).remove();
+        }
+
+        // Wrap list element content in p tags if the list element parent's parent is not a li.
+        for (var listElementsContentIndex = 0; listElementsContentIndex < listElementsContent.length; listElementsContentIndex++) {
+            if (!parentListContainer.parent().is('li')) {
+                listElementsContent[listElementsContentIndex] = '<p>' + listElementsContent[listElementsContentIndex] + '</p>';
+            }
+        }
+
+        // Every li of the list has been selected, replace the entire list
+        if (firstLiSelected && lastLiSelected) {
+            this.editor.selectOuter(parentListContainer);
+            this.editor.replaceSelection(listElementsContent.join(''));
+            return;
+        }
+
+        if (firstLiSelected) {
+            $(parentListContainer).before(listElementsContent.join(''));
+        } else if (lastLiSelected) {
+            $(parentListContainer).after(listElementsContent.join(''));
+        } else {
+            this.editor.replaceSelectionSplittingSelectedElement(listElementsContent.join(''));
+        }
+
+        this.editor.restoreSelection();
+    },
+
+    /**
+     * Wrap the selection with the given listType.
+     * @param  {string} listType One of ul or ol.
+     */
+    wrapList: function(listType) {
+
+        var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
+
+        var listElements = [];
+        var plugin = this;
+
+        // Convert child block elements to list elements
+        $(selectedHtml).contents().each(function() {
+            var liContent;
+            // Use only content of block elements
+            if ('block' === plugin.getElementDefaultDisplay(this.tagName)) {
+                liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
+            } else {
+                liContent = plugin.editor.stripTags(plugin.editor.outerHtml($(this)), plugin.validChildren);
+            }
+
+            // Avoid inserting blank lists
+            var listElement = $('<li>' + liContent + '</li>');
+            if ($.trim(listElement.text()) !== '') {
+                listElements.push(plugin.editor.outerHtml(listElement));
+            }
+        });
+
+        // When selection is empty, insert a placeholder list
+        if (!listElements.length) {
+            listElements.push('<li>List element content</li>');
+        }
+
+        var replacementClass = this.options.baseClass + '-selection';
+        var replacementHtml = '<' + listType + ' class="' + replacementClass + '">' + listElements.join('') + '</' + listType + '>';
+
+        // Selection must be restored before it may be replaced.
+        this.editor.restoreSelection();
+        this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+
+        // Select the first list element of the inserted list
+        var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
+        this.editor.selectInner(selectedElement.find('li:first')[0]);
+    },
+
+    /**
+     * Determine whether element is inline or block.
+     * @see http://stackoverflow.com/a/2881008/187954
+     * @param  {string} tag Lower case tag name, e.g. 'a'.
+     * @return {string} Default display style for tag.
+     */
+    getElementDefaultDisplay: function(tag) {
+        var cStyle,
+            t = document.createElement(tag),
+            gcs = "getComputedStyle" in window;
+
+        document.body.appendChild(t);
+        cStyle = (gcs ? window.getComputedStyle(t, "") : t.currentStyle).display;
+        document.body.removeChild(t);
+
+        return cStyle;
+    }
+});
 
 $.ui.editor.registerUi({
 
@@ -31479,6 +31773,7 @@ $.ui.editor.registerUi({
      */
     listUnordered: /** @lends $.editor.ui.listUnordered.prototype */ {
 
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -31486,12 +31781,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Unordered List'),
                 click: function() {
-                    if (!editor.selectionExists(rangy.getSelection())) {
-                        editor.insertElement('<ul><li>First list item</li></ul>');
-                    } else {
-                        editor.toggleWrapper('ul');
-                        editor.toggleWrapper('li');
-                    }
+                    editor.getPlugin('list').toggleList('ul');
                 }
             });
         }
@@ -31511,12 +31801,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Ordered List'),
                 click: function() {
-                    if (!editor.selectionExists(rangy.getSelection())) {
-                        editor.insertElement('<ol><li>First list item</li></ol>');
-                    } else {
-                        editor.toggleWrapper('ol');
-                        editor.toggleWrapper('li');
-                    }
+                    editor.getPlugin('list').toggleList('ol');
                 }
             });
         }
@@ -31587,7 +31872,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.5?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.6?' + query.join('&') + ')'
                     });
                 }
             });
@@ -31617,20 +31902,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
          * @type {Array}
          */
         allowedTags: [
-            '<h1>',
-            '<h2>',
-            '<h3>',
-            '<h4>',
-            '<h5>',
-            '<h6>',
-            '<div>',
-            '<ul>',
-            '<ol>',
-            '<li>',
-            '<blockquote>',
-            '<p>',
-            '<a>',
-            '<span>'
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote', 'p', 'a', 'span'
         ]
     },
 
@@ -31659,7 +31931,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 var content = $(selector).html();
                 content = plugin.filterAttributes(content);
                 content = plugin.filterChars(content);
-                content = plugin.stripTags(content);
+                content = plugin.editor.stripTags(content, plugin.options.allowedTags);
                 content = plugin.stripEmpty(content);
                 var vars = {
                     html: content,
@@ -31672,7 +31944,6 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
                     plugin.updateAreas(this, dialog);
                 });
-
 
                 $(dialog).dialog({
                     modal: true,
@@ -31711,7 +31982,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                             {
                                 text: _('Cancel'),
                                 click: function() {
-                                    rangy.restoreSelection(selection);
+                                    editor.restoreSelection();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
@@ -31845,20 +32116,6 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             });
         });
         return content.html();
-    },
-
-    /**
-     * Clone of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
-     * @param  {String} content HTML containing tags to be stripped
-     * @return {String} HTML with all tags not present in the $.editor.plugin.paste.options.allowedTags array
-     */
-    stripTags: function(content) {
-        allowed = (((this.options.allowedTags || "") + "").toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
-            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
-        });
     },
 
     /**
