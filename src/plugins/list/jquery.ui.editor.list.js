@@ -39,37 +39,25 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Unordered List'),
                 click: function() {
+                    editor.saveSelection();
+                    // Check whether selection is fully contained by a ul. If so, unwrap parent ul
+                    if ($(editor.getSelectedElements()).is('ul,li')) {
+                        if ($(editor.getSelectedElements()).is('li')) {
+                            editor.unwrapParentTag('li');
+                        }
+                        editor.unwrapParentTag('ul');
+                        editor.restoreSelection();
+                    } else {
+                        var html = editor.stripTags(editor.getSelectedHtml(), this.validChildren);
+                        editor.replaceSelectionWithinValidTags('<ul><li>' + html + '</li></ul>', this.validParents);
 
-                    var startElement = editor.getSelectionStartElement()[0];
-                    var endElement = editor.getSelectionEndElement()[0];
-                    var startElement = editor.getSelectedElements()[0];
-
-                    // If common ancestor & anchor & focus are allowed, replace selection
-                    var selectedElementValid = this.isValid(selectedElement);
-                    var startElementValid = this.isValid(startElement);
-                    var endElementValid = this.isValid(endElement);
-
-                    if (selectedElementValid && startElementValid && endElementValid) {
-                        editor.toggleWrapper('ul');
-                        editor.toggleWrapper('li');
-                        return;
+                        editor.restoreSelection();
+                        var selectedElement = $(editor.getSelectedElements());
+                        editor.selectInner(selectedElement.find('li:first')[0]);
+                        editor.fire('selectionChange');
                     }
-
-                    // Else
-                    // Find nearest allowed element for anchor & focus
-                    // var validStart = editor.
-                    //  Clone it.
-                    //  Original: Select from start of selection to end of allowed element
-                    //  Original: delete contents
-                    //  Clone: Select from end of seleciton to start of allowed element
-                    //  Clone: delete contents
-                    //  Insert list after original, insert clone after list
                 }
             });
-        },
-
-        isValid: function(element) {
-            return -1 !== $.inArray(element, this.validParents);
         }
     },
 
