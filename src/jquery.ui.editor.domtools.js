@@ -113,10 +113,14 @@ var domTools = {
         return $(commonAncestor);
     },
 
-    // getSelectedHtml: function(selection) {
-    //     selection = selection || rangy.getSelection();
-    //     return selection.toHtml();
-    // },
+    /**
+     * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
+     * @return {string} The html content of the selection.
+     */
+    getSelectedHtml: function(selection) {
+        selection = selection || rangy.getSelection();
+        return selection.toHtml();
+    },
 
     getSelectionStartElement: function() {
         var selection = rangy.getSelection();
