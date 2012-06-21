@@ -75,7 +75,6 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     plugin.updateAreas(this, dialog);
                 });
 
-
                 $(dialog).dialog({
                     modal: true,
                     width: 650,
@@ -113,7 +112,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                             {
                                 text: _('Cancel'),
                                 click: function() {
-                                    rangy.restoreSelection(selection);
+                                    editor.restoreSelection();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
