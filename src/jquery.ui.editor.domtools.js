@@ -682,5 +682,29 @@ var domTools = {
      */
     outerHtml: function(element) {
         return $(element).clone().wrap('<div></div>').parent().html();
+    },
+
+    /**
+     * Modification of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+     * @param  {string} content HTML containing tags to be stripped
+     * @param {Array} allowedTags Array of tags that should not be stripped
+     * @return {string} HTML with all tags not present allowedTags array.
+     */
+    stripTags: function(content, allowedTags) {
+        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        allowed = [];
+        for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
+            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]+/g)) {
+                allowed.push('<' + allowedTags[allowedTagsIndex] + '>');
+            }
+        }
+
+        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+
+        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+        });
     }
 };
