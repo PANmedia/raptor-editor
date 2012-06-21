@@ -617,6 +617,16 @@ var domTools = {
     },
 
     /**
+     * Check that the given element is one of the the given tags
+     * @param  {jQuery|Element} element The element to be tested.
+     * @param  {Array}  validTagNames An array of valid tag names.
+     * @return {Boolean} True if the given element is one of the give valid tags.
+     */
+    isElementValid: function(element, validTags) {
+        return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
+    },
+
+    /**
      * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
      * @return {String} The outer HTML.
      */
