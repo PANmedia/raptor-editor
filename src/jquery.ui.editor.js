@@ -417,6 +417,7 @@ $.widget('ui.editor',
             this.enabled = false;
             this.getElement().attr('contenteditable', false)
                         .removeClass(this.options.baseClass + '-editing');
+            rangy.getSelection().removeAllRanges();
             this.fire('disabled');
         }
     },
