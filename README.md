@@ -25,7 +25,7 @@ For license information see the  [Raptor Editor license][^3] page.
 See the following links for information on build & contributing to Raptor:
 
 * [Building Raptor](https://github.com/PANmedia/Raptor/wiki/Building)
-* [Contributing to Raptor](https://github.com/PANmedia/Raptor/wiki/Contributing)
+* [Contributing to Raptor](https://github.com/PANmedia/Raptor/wiki/Contributing-to-Raptor)
 * [Translating Raptor](https://github.com/PANmedia/Raptor/wiki/Translating-Raptor)
 
 [^1]: http://jqueryraptor.com/ (Download, usage examples and documentation)
