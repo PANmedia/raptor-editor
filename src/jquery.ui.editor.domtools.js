@@ -462,13 +462,34 @@ var domTools = {
     },
 
     /**
-     * Check that the given element is one of the the given tags
-     * @param  {jQuery|Element} element The element to be tested.
-     * @param  {Array}  validTagNames An array of valid tag names.
-     * @return {Boolean} True if the given element is one of the give valid tags.
+     * Replace current selection with given html, ensuring that selection container is split at
+     * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+     * @param  {jQuery|Element|string} html The html to replace current selection with.
+     * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
+     * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
      */
-    isElementValid: function(element, validTags) {
-        return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
+    replaceSelectionWithinValidTags: function(html, validTagNames, selection) {
+        selection = selection || rangy.getSelection();
+
+        var startElement = this.getSelectionStartElement()[0];
+        var endElement = this.getSelectionEndElement()[0];
+        var selectedElement = this.getSelectedElements()[0];
+
+        var selectedElementValid = this.isElementValid(selectedElement, validTagNames);
+        var startElementValid = this.isElementValid(startElement, validTagNames);
+        var endElementValid = this.isElementValid(endElement, validTagNames);
+
+        // The html may be inserted within the selected element & selection start / end.
+        if (selectedElementValid && startElementValid && endElementValid) {
+            this.replaceSelection(html);
+            return;
+        }
+
+        // Start or end element is valid. Split start & end and insert list in between.
+        if (selectedElementValid && !(startElementValid && endElementValid)) {
+            this.replaceSelectionSplittingSelectedElement(html, selection);
+            return;
+        }
     },
 
     /**
