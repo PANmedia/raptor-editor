@@ -408,6 +408,7 @@ $.widget('ui.editor',
             this.enabled = false;
             this.getElement().attr('contenteditable', false)
                         .removeClass(this.options.baseClass + '-editing');
+            rangy.getSelection().removeAllRanges();
             this.fire('disabled');
         }
     },
@@ -1111,15 +1112,15 @@ $.widget('ui.editor',
                 ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
                     .append(ui.select.hide());
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>')
+                ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
                     .appendTo(ui.wrapper);
 
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
+                ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
                     .appendTo(ui.wrapper);
 
                 ui.select.find('option').each(function() {
                     var option = $('<div/>')
-                        .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
+                        .addClass('ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
                         .appendTo(ui.menu)
@@ -1143,11 +1144,11 @@ $.widget('ui.editor',
 
 
                 var text = $('<div/>')
-                    .addClass('ui-selectmenu-text');
+                    .addClass('ui-editor-selectmenu-text');
                 var icon = $('<div/>')
                     .addClass('ui-icon ui-icon-triangle-1-s');
                 ui.button = $('<div/>')
-                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button ui-button ui-state-default')
+                    .addClass('ui-editor-selectmenu-button ui-editor-selectmenu-button ui-button ui-state-default')
                     .attr('title', ui.title)
                     .append(text)
                     .append(icon)
@@ -1159,20 +1160,19 @@ $.widget('ui.editor',
                         return false;
                     })
                     .bind('click.' + editor.widgetName, function() {
-                        $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
                         ui.menu.css('min-width', ui.button.outerWidth() + 10);
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
                     });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
-                ui.button.find('.ui-selectmenu-text').html(selected);
+                ui.button.find('.ui-editor-selectmenu-text').html(selected);
 
                 return ui.wrapper;
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
-                this.button.find('.ui-selectmenu-text').html(selected);
+                this.button.find('.ui-editor-selectmenu-text').html(selected);
             },
             val: function() {
                 var result = this.select.val.apply(this.select, arguments);

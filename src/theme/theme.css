@@ -118,12 +118,13 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 
 .ui-editor-selectmenu-button {
   text-align: left;
-  padding: 3px 18px 5px 5px !important; }
+  padding: 3px 18px 5px 5px !important;
+  float: none !important; }
   .ui-editor-selectmenu-button .ui-icon {
     position: absolute;
     right: 1px;
     top: 8px; }
-  .ui-editor-selectmenu-button .ui-selectmenu-text {
+  .ui-editor-selectmenu-button .ui-editor-selectmenu-text {
     font-size: 13px; }
 
 .ui-editor-selectmenu-wrapper {
@@ -158,11 +159,11 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   cursor: pointer;
   background-color: inherit; }
 
-.ui-selectmenu-button {
+.ui-editor-selectmenu-button {
   background: #f5f5f5;
   border: 1px solid #ccc; }
 
-.ui-editor-buttonset .ui-selectmenu-button:first-child {
+.ui-editor-buttonset .ui-editor-selectmenu-button:first-child {
   -moz-border-radius-topleft: 5px;
   -webkit-border-top-left-radius: 5px;
   -ms-border-top-left-radius: 5px;
@@ -173,7 +174,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-border-bottom-left-radius: 5px;
   -o-border-bottom-left-radius: 5px;
   border-bottom-left-radius: 5px; }
-.ui-editor-buttonset .ui-selectmenu-button:last-child {
+.ui-editor-buttonset .ui-editor-selectmenu-button:last-child {
   -moz-border-radius-topright: 5px;
   -webkit-border-top-right-radius: 5px;
   -ms-border-top-right-radius: 5px;
@@ -918,22 +919,22 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   top: -8px;
   text-align: left; }
 
-.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-status {
+.ui-editor-wrapper .ui-editor-i18n-select .ui-editor-selectmenu-status {
   font-size: 13px;
   line-height: 10px; }
 
-.ui-selectmenu-menu li a, .ui-selectmenu-status {
+.ui-editor-selectmenu-menu li a, .ui-editor-selectmenu-status {
   line-height: 12px; }
 
-.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-item-icon {
+.ui-editor-wrapper .ui-editor-i18n-select .ui-editor-selectmenu-item-icon {
   height: 24px;
   width: 24px; }
 
-.ui-selectmenu-menu .ui-icon.ui-editor-i18n-en,
+.ui-editor-selectmenu-menu .ui-icon.ui-editor-i18n-en,
 .ui-editor-wrapper .ui-icon.ui-editor-i18n-en {
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAflJREFUeNpinDRzn5qN3uFDt16+YWBg+Pv339+KGN0rbVP+//2rW5tf0Hfy/2+mr99+yKpyOl3Ydt8njEWIn8f9zj639NC7j78eP//8739GVUUhNUNuhl8//ysKeZrJ/v7z10Zb2PTQTIY1XZO2Xmfad+f7XgkXxuUrVB6cjPVXef78JyMjA8PFuwyX7gAZj97+T2e9o3d4BWNp84K1NzubTjAB3fH0+fv6N3qP/ir9bW6ozNQCijB8/8zw/TuQ7r4/ndvN5mZgkpPXiis3Pv34+ZPh5t23//79Rwehof/9/NDEgMrOXHvJcrllgpoRN8PFOwy/fzP8+gUlgZI/f/5xcPj/69e/37//AUX+/mXRkN555gsOG2xt/5hZQMwF4r9///75++f3nz8nr75gSms82jfvQnT6zqvXPjC8e/srJQHo9P9fvwNtAHmG4f8zZ6dDc3bIyM2LTNlsbtfM9OPHH3FhtqUz3eXX9H+cOy9ZMB2o6t/Pn0DHMPz/b+2wXGTvPlPGFxdcD+mZyjP8+8MUE6sa7a/xo6Pykn1s4zdzIZ6///8zMGpKM2pKAB0jqy4UE7/msKat6Jw5mafrsxNtWZ6/fjvNLW29qv25pQd///n+5+/fxDDVbcc//P/zx/36m5Ub9zL8+7t66yEROcHK7q5bldMBAgwADcRBCuVLfoEAAAAASUVORK5CYII=') 0 0; }
 
-.ui-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,
+.ui-editor-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,
 .ui-editor-wrapper .ui-icon.ui-editor-i18n-zh_CN {
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFqSURBVHjaYrzOwPAPjJgYQEDAleHVbhADIvgHLPgHiQ0QQCxAlkR9NW8sw+cV/1gV/7Gb/hV4+vfzhj8Mv/78//Pn/+/f/8AkhH1t0yaAAAJp4I37zyz2lDfu79uqv/++/WYz+cuq/vvLxt8gdb+A5K9/v34B2SyyskBLAAII5JAva/7/+/z367a/f3/8ZuT9+//Pr78vQUrB6n4CSSj6/RuoASCAWEDO/fD3ddEfhv9/OE3/sKj8/n7k9/fDQNUIs/+DVf8HawAIIJCT/v38C3Hr95N/GDh/f94AVvT7N8RUBpjxQAVADQABBNLw/y/Ifwy/f/399ufTOpDBEPf8g5sN0QBEDAwAAQTWABEChgOSA9BVA00E2wAQQCANQBbEif/AzoCqgLkbbBYwWP/+//sXqBYggFhAkfL7D7OkJFCOCSj65zfUeFjwg8z++/ffX5AGoGKAAGI8jhSRyIw/SJH9D4aAYQoQYAA6rnMw1jU2vQAAAABJRU5ErkJggg==') 0 0; }
 
@@ -1200,11 +1201,11 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {
   text-align: left; }
 
-.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-editor-selectmenu-text {
   font-size: 13px;
   line-height: 22px; }
 
-.ui-selectmenu-menu li a, .ui-selectmenu-status {
+.ui-editor-selectmenu-menu li a, .ui-editor-selectmenu-status {
   line-height: 12px; }
 
 /**
