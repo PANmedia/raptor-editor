@@ -13,12 +13,16 @@
 .ui-editor-selectmenu-button {
     text-align: left;
     padding: 3px 18px 5px 5px !important;
+
+    // Pervent floated buttons breaking menu position
+    float: none !important;
+    
     .ui-icon {
         position: absolute;
         right: 1px;
         top: 8px;
     }
-    .ui-selectmenu-text {
+    .ui-editor-selectmenu-text {
         font-size: $font-size;
     }
 }
@@ -60,12 +64,12 @@
     background-color: inherit;
 }
 
-.ui-selectmenu-button {
+.ui-editor-selectmenu-button {
     background: #f5f5f5;
     border: 1px solid #ccc;
 }
 
-.ui-editor-buttonset .ui-selectmenu-button {
+.ui-editor-buttonset .ui-editor-selectmenu-button {
     &:first-child {
         @include border-left-radius();
     }
