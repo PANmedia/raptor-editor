@@ -49,15 +49,17 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             $(selector).focus();
 
             window.setTimeout(function() {
-                var content = $(selector).html();
-                content = plugin.filterAttributes(content);
-                content = plugin.filterChars(content);
-                content = plugin.editor.stripTags(content, plugin.options.allowedTags);
-                content = plugin.stripEmpty(content);
+                var markup = $(selector).html();
+                markup = plugin.filterAttributes(markup);
+                markup = plugin.filterChars(markup);
+                markup = plugin.stripEmpty(markup);
+                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
+                markup = plugin.stripAttributes(markup);
+
                 var vars = {
-                    html: content,
-                    plain: $('<div/>').html(content).text(),
-                    markup: plugin.stripAttributes(content)
+                    html: $(selector).html(),
+                    plain: $('<div/>').html($(selector).html()).text(),
+                    markup: markup
                 };
 
                 dialog = $(editor.getTemplate('paste.dialog', vars));
