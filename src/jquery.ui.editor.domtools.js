@@ -677,7 +677,7 @@ var domTools = {
             }
         }
         // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*\/?>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
 
         return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
