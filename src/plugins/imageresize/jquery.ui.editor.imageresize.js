@@ -363,8 +363,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
         resizeButton.css({
                 position: 'absolute',
-                left: ($(image).innerWidth() - $(resizeButton).outerWidth() - 20) + 'px',
-                marginTop: '20px'
+                left: ($(image).position().left + $(image).innerWidth() - $(resizeButton).outerWidth() - 10) + 'px',
+                marginTop: '10px'
             })
             .click($.proxy(this.manuallyResizeImage, this))
 
