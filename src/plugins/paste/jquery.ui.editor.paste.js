@@ -54,13 +54,13 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 markup = plugin.filterAttributes(markup);
                 markup = plugin.filterChars(markup);
                 markup = plugin.stripEmpty(markup);
-                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
                 markup = plugin.stripAttributes(markup);
+                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
 
                 var vars = {
-                    html: $(selector).html(),
                     plain: $('<div/>').html($(selector).html()).text(),
-                    markup: markup
+                    markup: markup,
+                    html: $(selector).html()
                 };
 
                 dialog = $(editor.getTemplate('paste.dialog', vars));
