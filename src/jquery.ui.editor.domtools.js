@@ -254,7 +254,9 @@ var domTools = {
      * @public @static
      */
     execCommand: function(command, arg1, arg2) {
-        document.execCommand(command, arg1, arg2);
+        try {
+            document.execCommand(command, arg1, arg2);
+        } catch (exception) { }
     },
 
     /**
