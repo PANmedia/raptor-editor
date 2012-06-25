@@ -55,7 +55,6 @@
                             var html = $(this).find('textarea').val();
                             ui.editor.setHtml(html);
                             $(this).find('textarea').val(ui.editor.getHtml());
-                            $(this).dialog('close');
                         }
                     },
                     {
@@ -73,7 +72,7 @@
                 close: function() {
                     $(this).dialog('destroy').remove();
                     $(button).button('option', 'disabled', false);
-                    ui.editor.fire('change');
+                    ui.editor.checkChange();
                 }
             });
         }
