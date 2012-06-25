@@ -20,6 +20,10 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
          */
         allowedTags: [
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote', 'p', 'a', 'span'
+        ],
+
+        allowedAttributes: [
+            'href', 'title', 'class'
         ]
     },
 
@@ -217,9 +221,16 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     stripAttributes: function(content) {
         content = $('<div/>').html(content);
+        var allowedAttributes = this.options.allowedAttributes;
+
         $(content.find('*')).each(function() {
-            // First copy the attributes to remove if we don't do this it causes problems iterating over the array we're removing elements from
+            // First copy the attributes to remove if we don't do this it causes problems iterating over the array
+            // we're removing elements from
             var attributes = $.map(this.attributes, function(item) {
+                // Do not remove allowed attributes
+                if (-1 === $.inArray(allowedAttributes, item.name)) {
+                    return null;
+                }
                 return item.name;
             });
 
