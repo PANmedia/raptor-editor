@@ -233,22 +233,19 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
         $(content.find('*')).each(function() {
             // First copy the attributes to remove if we don't do this it causes problems iterating over the array
             // we're removing elements from
-            var attributes = $.map(this.attributes, function(item) {
+            var attributes = [];
+            $.each(this.attributes, function(index, attribute) {
                 // Do not remove allowed attributes
-                if (-1 === $.inArray(allowedAttributes, item.name)) {
-                    return null;
+                if (-1 !== $.inArray(attribute.nodeName, allowedAttributes)) {
+                    return;
                 }
-                return item.name;
+                attributes.push(attribute.nodeName);
             });
 
-            // now use jQuery to remove the attributes
-            var element = $(this);
-            $.each(attributes, function(i, item) {
-                // Avoid DOM node type exceptions in Chrome
-                try {
-                    element.removeAttr(item);
-                } catch (e) {}
-            });
+            // now remove the attributes
+            for (var attributeIndex = 0; attributeIndex < attributes.length; attributeIndex++) {
+                $(this).attr(attributes[attributeIndex], null);
+            }
         });
         return content.html();
     },
