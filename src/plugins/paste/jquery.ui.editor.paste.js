@@ -20,15 +20,15 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
          */
         allowedTags: [
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
-            'p', 'a', 'span', 'img', 'hr', 'br'
+            'p', 'a', 'span', 'hr', 'br'
         ],
 
         allowedAttributes: [
-            'href', 'title', 'class', 'src'
+            'href', 'title'
         ],
 
         allowedEmptyTags: [
-            'img', 'hr', 'br'
+            'hr', 'br'
         ]
     },
 
