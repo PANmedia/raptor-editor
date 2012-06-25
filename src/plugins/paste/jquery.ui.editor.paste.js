@@ -25,6 +25,10 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
         allowedAttributes: [
             'href', 'title', 'class', 'src'
+        ],
+
+        allowedEmptyTags: [
+            'img', 'hr', 'br'
         ]
     },
 
@@ -256,8 +260,17 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     stripEmpty: function(content) {
         var wrapper = $('<div/>').html(content);
+        var allowedEmptyTags = this.options.allowedEmptyTags;
         wrapper.find('*').filter(function() {
-            return $.trim($(this).text()) === ''
+            // Do not strip elements in allowedEmptyTags
+            if (-1 !== $.inArray(this.tagName.toLowerCase(), allowedEmptyTags)) {
+                return false;
+            }
+            // If the element has at least one child element that exists in allowedEmptyTags, do not strip it
+            if ($(this).find(allowedEmptyTags.join(',')).length) {
+                return false;
+            }
+            return $.trim($(this).text()) === '';
         }).remove();
         return wrapper.html();
     },
