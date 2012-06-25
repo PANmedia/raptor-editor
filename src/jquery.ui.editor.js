@@ -1378,7 +1378,9 @@ $.widget('ui.editor',
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
-                event.callback.call(event.context || this);
+                if (typeof event.callback !== 'undefined') {
+                    event.callback.call(event.context || this);
+                }
             }
         }
         // Also trigger the global editor event, unless specified not to
