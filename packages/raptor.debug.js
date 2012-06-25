@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.6 *//**
+/*! VERSION: 0.0.7 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -28053,7 +28053,7 @@ $.extend($.ui.editor,
     /**
      * @property {Object} templates
      */
-    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\" style=\"display:none\">\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-highlighted\" style=\"display:none\">\n        <pre id=\"{{baseClass}}-rainbow\"><code data-language=\"html\"><\/code><\/pre>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
+    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\" style=\"display:none\">\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-highlighted\" style=\"display:none\">\n        <pre id=\"{{baseClass}}-rainbow\"><code data-language=\"html\"><\/code><\/pre>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
 
     /**
      * @param {String} name
@@ -30469,7 +30469,16 @@ registerLocale('zh_CN', '简体中文', {
  */
 $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize.prototype */ {
 
-    options: {
+    /**
+     * @name $.editor.plugin.imageResize.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.imageResize
+     */
+    options: /** @lends $.editor.plugin.imageResize.options */  {
+        allowOversizeImages: false,
+        manuallyResizingClass: '',
+        resizeButtonClass: '',
         resizeAjax: false,
         resizingClass: '',
         resizeAjaxClass: '',
@@ -30486,16 +30495,53 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     init: function(editor, options) {
 
         this.options = $.extend(this.options, {
+            manuallyResizingClass: this.options.baseClass + '-manually-resize',
+            resizeButtonClass: this.options.baseClass + '-resize-button',
             resizingClass: this.options.baseClass + '-in-progress',
             resizeAjaxClass: this.options.baseClass + '-on-save'
         });
 
         editor.bind('enabled', this.bind, this);
+    },
 
+    /**
+     * Bind events
+     */
+    bind: function() {
+
+        if (!this.options.allowOversizeImages) {
+            this.addImageListeners();
+            this.editor.bind('change', this.scanForOversizedImages, this);
+            this.editor.bind('save', this.save, this);
+        }
+
+        this.editor.bind('destroy', this.cancel, this);
+        this.editor.bind('cancel', this.cancel, this);
+
+        this.editor.getElement().on('mouseenter.' + this.options.baseClass, 'img', $.proxy(this.imageMouseEnter, this));
+        this.editor.getElement().on('mouseleave.' + this.options.baseClass, 'img', $.proxy(this.imageMouseLeave, this));
+    },
+
+    /**
+     * Remove bindings from editing element.
+     */
+    unbind: function() {
+        if (!this.options.allowOversizeImages) {
+            this.removeImageListeners();
+            this.editor.unbind('change', this.scanForOversizedImages, this);
+        }
+        this.editor.getElement().off('mouseenter.' + this.options.baseClass, 'img');
+        this.editor.getElement().off('mouseleave.' + this.options.baseClass, 'img');
+    },
+
+    /**
+     * Add custom image change listeners to editing element's image elements.
+     */
+    addImageListeners: function() {
         // If the function addEventListener exists, bind our custom image resized event
-        this.resized = $.proxy(this.imageResized, this);
+        this.resized = $.proxy(this.imageResizedByUser, this);
         var plugin = this;
-        editor.getElement().find('img').each(function(){
+        this.editor.getElement().find('img').each(function(){
             if (this.addEventListener) {
                 this.addEventListener('DOMAttrModified', plugin.resized, false);
             }
@@ -30506,20 +30552,25 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * Bind events
+     * Remove custom image change listeners to editing element's image elements.
      */
-    bind: function() {
-        this.editor.bind('change', this.scanImages, this);
-        this.editor.bind('destroy', this.destroy, this);
-        this.editor.bind('save', this.save, this);
-        this.editor.bind('cancel', this.cancel, this);
+    removeImageListeners: function() {
+        var plugin = this;
+        this.editor.getElement().find('img').each(function(){
+            if (this.removeEventListener) {
+                this.addEventListener('DOMAttrModified', plugin.resized, false);
+            }
+            if (this.detachEvent) {
+                this.detachEvent('onpropertychange', plugin.resized);
+            }
+        });
     },
 
     /**
      * Handler simulating a 'resize' event for image elements
      * @param {Object} event
      */
-    imageResized: function(event) {
+    imageResizedByUser: function(event) {
         var target = $(event.target);
         if(target.is('img') &&
             target.attr('_moz_resizing') &&
@@ -30533,7 +30584,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     /**
      * Check for oversize images within the editing element
      */
-    scanImages: function() {
+    scanForOversizedImages: function() {
         var element = this.editor.getElement();
         var plugin = this;
         var images = [];
@@ -30544,7 +30595,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         });
 
         if (images.length) {
-            plugin.resizeImageElements(images, element.width(), element.height());
+            plugin.resizeOversizedImages(images, element.width(), element.height());
         }
     },
 
@@ -30554,7 +30605,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {int} maxWidth The editing element's maximum width
      * @param  {int} maxHeight The editing element's maximum height
      */
-    resizeImageElements: function(images, maxWidth, maxHeight) {
+    resizeOversizedImages: function(images, maxWidth, maxHeight) {
 
         // Prepare a link to be included in any messages
         var imageLink = $('<a>', {
@@ -30579,10 +30630,11 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
             // Resize the image with CSS / attributes
             $(image).css({
-                'width': width,
-                'height': height
-            }).attr('height', height).
-                attr('width', width);
+                    'width': width,
+                    'height': height
+                })
+                .attr('height', height)
+                .attr('width', width);
 
             if (this.options.resizeAjax) {
                 image.addClass(this.options.resizeAjaxClass);
@@ -30599,23 +30651,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
     cancel: function() {
         this.removeClasses();
-        this.editor.unbind('change', this.scanImages, this);
-        var plugin = this;
-        this.editor.getElement().find('img').each(function(){
-            if (this.removeEventListener) {
-                this.addEventListener('DOMAttrModified', plugin.resized, false);
-            }
-            if (this.detachEvent) {
-                this.detachEvent('onpropertychange', plugin.resized);
-            }
-        });
-    },
-
-    /**
-     * Remove any left over classes, remove event listener
-     */
-    destroy: function() {
-        this.cancel();
+        this.removeToolsButtons();
+        this.unbind();
     },
 
     /**
@@ -30623,7 +30660,11 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      */
     save: function() {
         this.removeClasses(this.options.resizingClass);
-        if (this.options.resizeAjax) this.resizeImagesAjax();
+        if (this.options.resizeAjax) {
+            this.resizeImagesAjax();
+        }
+        this.removeToolsButtons();
+        this.unbind();
     },
 
     /**
@@ -30695,14 +30736,131 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * Remove the given classes from any of the element's images
+     * Remove any temporary classes from the editing element's images.
      * @param  {array} classNames to be removed
      */
     removeClasses: function(classNames) {
-        if (!classNames) classNames = [this.options.resizingClass, this.options.resizeAjaxClass];
+        if (!classNames) classNames = [this.options.resizingClass, this.options.resizeAjaxClass, this.options.manuallyResizingClass];
         if (!$.isArray(classNames)) classNames = [classNames];
         for (var i = 0; i < classNames.length; i++) {
             this.editor.getElement().find('img.' + classNames[i]).removeClass(classNames[i]);
+        }
+    },
+
+    /**
+     * Display a dialog containing width / height text inputs allowing the user to manually resize the selected image.
+     */
+    manuallyResizeImage: function() {
+        this.removeToolsButtons();
+        var image = this.editor.getElement().find('img.' + this.options.manuallyResizingClass);
+        var width = $(image).innerWidth(), height = $(image).innerHeight(),
+            widthInputSelector = '#' + this.options.baseClass + '-width',
+            heightInputSelector = '#' + this.options.baseClass + '-height',
+            plugin = this;
+
+        var updateImageSize = function() {
+            $(image).css({
+                width: Math.round($(widthInputSelector).val()) + 'px',
+                height: Math.round($(heightInputSelector).val()) + 'px'
+            });
+        };
+
+        var dialog = $(this.editor.getTemplate('imageresize.manually-resize-image', {
+            width: width,
+            height: height,
+            baseClass: this.options.baseClass
+        }));
+        dialog.dialog({
+            modal: true,
+            resizable: false,
+            title: _('Modify Image Size'),
+            buttons: [
+                {
+                    text: _('Resize Image'),
+                    click: function() {
+                        updateImageSize();
+                        $(this).dialog('close');
+                    }
+                },
+                {
+                    text: _('Cancel'),
+                    click: function() {
+                        $(this).dialog('close');
+                    }
+                }
+            ],
+            close: function() {
+                plugin.editor.fire('change');
+            },
+            open: function() {
+                var widthInput = $(this).find(widthInputSelector);
+                var heightInput = $(this).find(heightInputSelector);
+                widthInput.keyup(function() {
+                    heightInput.val(Math.round(Math.abs((height / width) * $(this).val())));
+                    updateImageSize();
+                });
+                heightInput.keyup(function() {
+                    widthInput.val(Math.round(Math.abs((width / height) * $(this).val())));
+                    updateImageSize();
+                });
+
+            }
+        }).dialog('open');
+    },
+
+    /**
+     * Create & display a 'tools' button in the top right corner of the image.
+     * @param  {jQuery|Element} image The image element to display the button relative to.
+     */
+    displayToolsButtonRelativeToImage: function(image) {
+
+        var resizeButton = $('<button/>')
+            .appendTo('body')
+            .addClass(this.options.resizeButtonClass)
+            .button({
+                text: false,
+                icons: {
+                    primary: 'ui-icon-tools'
+                }
+            });
+
+        resizeButton.css({
+                position: 'absolute',
+                left: ($(image).innerWidth() - $(resizeButton).outerWidth() - 20) + 'px',
+                marginTop: '20px'
+            })
+            .click($.proxy(this.manuallyResizeImage, this))
+
+        $(image).before(resizeButton);
+    },
+
+    /**
+     * Remove any tools buttons inside the editing element.
+     */
+    removeToolsButtons: function() {
+        this.editor.getElement().find('.' + this.options.resizeButtonClass).each(function() {
+            $(this).remove();
+        })
+    },
+
+    /**
+     * Handle the mouse enter event.
+     * @param  {Event} event The event.
+     */
+    imageMouseEnter: function(event) {
+        $(event.target).addClass(this.options.manuallyResizingClass);
+        this.displayToolsButtonRelativeToImage(event.target);
+    },
+
+    /**
+     * Handle the mouse leave event. If the mouse has left but the related target is a resize button,
+     * do not remove the button or the manually resizing class from the image.
+     * @param  {Event} event The event.
+     */
+    imageMouseLeave: function(event) {
+        if (!$(event.relatedTarget).hasClass(this.options.resizeButtonClass)) {
+            $(event.target).removeClass(this.options.manuallyResizingClass);
+            this.removeToolsButtons();
         }
     }
 });/**
@@ -31872,7 +32030,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.6?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.7?' + query.join('&') + ')'
                     });
                 }
             });

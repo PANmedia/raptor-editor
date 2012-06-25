@@ -19,7 +19,16 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
          * @type {Array}
          */
         allowedTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote', 'p', 'a', 'span'
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
+            'p', 'a', 'span', 'img', 'hr', 'br'
+        ],
+
+        allowedAttributes: [
+            'href', 'title', 'class', 'src'
+        ],
+
+        allowedEmptyTags: [
+            'img', 'hr', 'br'
         ]
     },
 
@@ -45,15 +54,17 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             $(selector).focus();
 
             window.setTimeout(function() {
-                var content = $(selector).html();
-                content = plugin.filterAttributes(content);
-                content = plugin.filterChars(content);
-                content = plugin.editor.stripTags(content, plugin.options.allowedTags);
-                content = plugin.stripEmpty(content);
+                var markup = $(selector).html();
+                markup = plugin.filterAttributes(markup);
+                markup = plugin.filterChars(markup);
+                markup = plugin.stripEmpty(markup);
+                markup = plugin.stripAttributes(markup);
+                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
+
                 var vars = {
-                    html: content,
-                    plain: $('<div/>').html(content).text(),
-                    markup: plugin.stripAttributes(content)
+                    plain: $('<div/>').html($(selector).html()).text(),
+                    markup: markup,
+                    html: $(selector).html()
                 };
 
                 dialog = $(editor.getTemplate('paste.dialog', vars));
@@ -108,8 +119,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     open: function() {
                         // Create fake jQuery UI tabs (to prevent hash changes)
                         var tabs = $(this).find('.ui-editor-paste-panel-tabs');
-                        tabs.find('ul li').click(function() {
-                            tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                        tabs.find('ul.ui-tabs-nav li').click(function() {
+                            tabs.find('ul.ui-tabs-nav li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
                             $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
                             tabs.children('div').hide().eq($(this).index()).show();
                         });
@@ -217,20 +228,24 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     stripAttributes: function(content) {
         content = $('<div/>').html(content);
+        var allowedAttributes = this.options.allowedAttributes;
+
         $(content.find('*')).each(function() {
-            // First copy the attributes to remove if we don't do this it causes problems iterating over the array we're removing elements from
-            var attributes = $.map(this.attributes, function(item) {
-                return item.name;
+            // First copy the attributes to remove if we don't do this it causes problems iterating over the array
+            // we're removing elements from
+            var attributes = [];
+            $.each(this.attributes, function(index, attribute) {
+                // Do not remove allowed attributes
+                if (-1 !== $.inArray(attribute.nodeName, allowedAttributes)) {
+                    return;
+                }
+                attributes.push(attribute.nodeName);
             });
 
-            // now use jQuery to remove the attributes
-            var element = $(this);
-            $.each(attributes, function(i, item) {
-                // Avoid DOM node type exceptions in Chrome
-                try {
-                    element.removeAttr(item);
-                } catch (e) {}
-            });
+            // now remove the attributes
+            for (var attributeIndex = 0; attributeIndex < attributes.length; attributeIndex++) {
+                $(this).attr(attributes[attributeIndex], null);
+            }
         });
         return content.html();
     },
@@ -242,8 +257,17 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     stripEmpty: function(content) {
         var wrapper = $('<div/>').html(content);
+        var allowedEmptyTags = this.options.allowedEmptyTags;
         wrapper.find('*').filter(function() {
-            return $.trim($(this).text()) === ''
+            // Do not strip elements in allowedEmptyTags
+            if (-1 !== $.inArray(this.tagName.toLowerCase(), allowedEmptyTags)) {
+                return false;
+            }
+            // If the element has at least one child element that exists in allowedEmptyTags, do not strip it
+            if ($(this).find(allowedEmptyTags.join(',')).length) {
+                return false;
+            }
+            return $.trim($(this).text()) === '';
         }).remove();
         return wrapper.html();
     },
