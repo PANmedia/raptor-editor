@@ -193,11 +193,6 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
      * @param  {String} id Editing element's identfier
      */
     ajax: function(contentData, id) {
-        // Create POST data
-        //var data = {};
-
-        // Content is serialized to a JSON object, and sent as 1 post parameter
-        //data[this.options.postName] = JSON.stringify(contentData);
 
         // Create the JSON request
         var ajax = $.extend(true, {}, this.options.ajax);
