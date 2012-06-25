@@ -21,14 +21,12 @@
     overflow: auto;
 }
 
-.ui-editor-ui-view-source-highlighted,
 .ui-editor-ui-view-source-plain-text {
     height: 100%;
     width: 100%;
     @include display-box();
     @include box-orient(vertical);
 }
-.ui-editor-ui-view-source-dialog code,
 .ui-editor-ui-view-source-dialog textarea {
     white-space: pre-line;
     width: 100%;
