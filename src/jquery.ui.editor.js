@@ -393,12 +393,9 @@ $.widget('ui.editor',
                 this.getElement().attr('contenteditable', true);
             }
 
-            try {
-                document.execCommand('enableInlineTableEditing', false, false);
-                // document.execCommand('enableObjectResizing', false, false);
-                document.execCommand('styleWithCSS', true, true);
-            } catch (exception) {
-            }
+            this.execCommand('enableInlineTableEditing', false, false);
+            this.execCommand('styleWithCSS', true, true);
+
             this.fire('enabled');
             this.fire('resize');
         }
