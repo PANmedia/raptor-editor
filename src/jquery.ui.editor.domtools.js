@@ -672,11 +672,10 @@ var domTools = {
         // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         allowed = [];
         for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
-            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]+/g)) {
+            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]{0,}/g)) {
                 allowed.push('<' + allowedTags[allowedTagsIndex] + '>');
             }
         }
-
         // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
