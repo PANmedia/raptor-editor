@@ -19,7 +19,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
          * @type {Array}
          */
         allowedTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote', 'p', 'a', 'span', 'img'
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
+            'p', 'a', 'span', 'img', 'hr', 'br'
         ],
 
         allowedAttributes: [
