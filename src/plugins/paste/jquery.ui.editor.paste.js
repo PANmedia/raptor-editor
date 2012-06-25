@@ -112,8 +112,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     open: function() {
                         // Create fake jQuery UI tabs (to prevent hash changes)
                         var tabs = $(this).find('.ui-editor-paste-panel-tabs');
-                        tabs.find('ul li').click(function() {
-                            tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                        tabs.find('ul.ui-tabs-nav li').click(function() {
+                            tabs.find('ul.ui-tabs-nav li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
                             $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
                             tabs.children('div').hide().eq($(this).index()).show();
                         });
