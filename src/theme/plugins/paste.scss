@@ -48,7 +48,7 @@
     @include box-sizing(border-box);
 }
 
-.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
+.ui-editor-paste-panel-tabs > div > textarea.ui-editor-paste-area {
     @include box-flex(1);
     @include display-box();
 }
