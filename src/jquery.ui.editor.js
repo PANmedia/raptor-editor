@@ -279,10 +279,13 @@ $.widget('ui.editor',
         }
     },
 
+    /**
+     * Determine whether the editing element's content has been changed.
+     */
     checkChange: function() {
         // Check if the caret has changed position
         var currentSelection = rangy.serializeSelection();
-        if (this.previousSelection != currentSelection) {
+        if (this.previousSelection !== currentSelection) {
             this.fire('selectionChange');
         }
         this.previousSelection = currentSelection;
@@ -294,15 +297,15 @@ $.widget('ui.editor',
         var wasDirty = this.dirty;
 
         // Check if the current content is different from the original content
-        this.dirty = this.getOriginalHtml() != currentHtml;
+        this.dirty = this.getOriginalHtml() !== currentHtml;
 
         // If the current content has changed since the last check, fire the change event
-        if (this.previousHtml != currentHtml) {
+        if (this.previousHtml !== currentHtml) {
             this.previousHtml = currentHtml;
             this.change();
 
             // If the content was changed to its original state, fire the cleaned event
-            if (wasDirty != this.dirty) {
+            if (wasDirty !== this.dirty) {
                 if (this.dirty) {
                     this.fire('dirty');
                 } else {
