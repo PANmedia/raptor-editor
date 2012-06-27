@@ -169,6 +169,7 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
                 } else if (this.failed > 0) {
                     this.editor.showError(_('Saved {{saved}} out of {{dirty}} content blocks.', this));
                 } else {
+                    this.editor.fire('cleaned');
                     this.editor.showConfirm(_('Successfully saved {{saved}} content block(s).', this), {
                         delay: 1000,
                         hide: function() {
