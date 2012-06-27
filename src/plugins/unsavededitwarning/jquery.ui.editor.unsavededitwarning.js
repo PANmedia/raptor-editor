@@ -49,6 +49,7 @@
             editor.bind('dirty', function() {
                 dirty++;
                 if (dirty > 0) {
+                    element.bringToTop(warning);
                     warning.addClass(plugin.options.baseClass + '-visible');
                 }
             });
