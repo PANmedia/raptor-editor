@@ -76,6 +76,9 @@ html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.u
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
+.ui-editor-editing {
+  outline: none; }
+
 /******************************************************************************\
  * Inputs
 \******************************************************************************/
@@ -162,29 +165,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-selectmenu-button {
   background: #f5f5f5;
   border: 1px solid #ccc; }
-
-.ui-editor-buttonset .ui-editor-selectmenu-button:first-child {
-  -moz-border-radius-topleft: 5px;
-  -webkit-border-top-left-radius: 5px;
-  -ms-border-top-left-radius: 5px;
-  -o-border-top-left-radius: 5px;
-  border-top-left-radius: 5px;
-  -moz-border-radius-bottomleft: 5px;
-  -webkit-border-bottom-left-radius: 5px;
-  -ms-border-bottom-left-radius: 5px;
-  -o-border-bottom-left-radius: 5px;
-  border-bottom-left-radius: 5px; }
-.ui-editor-buttonset .ui-editor-selectmenu-button:last-child {
-  -moz-border-radius-topright: 5px;
-  -webkit-border-top-right-radius: 5px;
-  -ms-border-top-right-radius: 5px;
-  -o-border-top-right-radius: 5px;
-  border-top-right-radius: 5px;
-  -moz-border-radius-bottomright: 5px;
-  -webkit-border-bottom-right-radius: 5px;
-  -ms-border-bottom-right-radius: 5px;
-  -o-border-bottom-right-radius: 5px;
-  border-bottom-right-radius: 5px; }
 
 .ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {
   -moz-border-radius-bottomleft: 0;
@@ -1145,7 +1125,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
+.ui-editor-paste-panel-tabs > div > textarea.ui-editor-paste-area {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -ms-box-flex: 1;
@@ -1224,6 +1204,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   color: white;
   padding: 11px 16px 7px;
   white-space: nowrap;
+  text-shadow: none;
   overflow: visible;
   z-index: 1000;
   -webkit-pointer-events: none;
@@ -1300,6 +1281,10 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
   opacity: 1; }
 
+.ui-editor-unsaved-edit-warning-dirty {
+  outline: 1px dotted #aaa;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oDHBcYJmthr08AAACTSURBVFjD7dexDcAgDETRc9ZgOibzdNkjHRKCJEQp+MV5APTkxvzQZDKz6GVqracW5897QcYNQBquAxJxDUjFSVKQcZJ0kHGZWQ4y7nGDBNwtkIKbAkm4AUjDdUAirgGpuOlngYT7BNx1cYKMW9rg7lsdZNwjkPLLCTeJm8RN4iZxk7hJ3CRuEjeJm8RN4ibZeA4v/3U8OMJCHo4AAAAASUVORK5CYII=') !important; }
+
 /**
  * View source plugin
  *
@@ -1318,7 +1303,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-ui-view-source .ui-editor-ui-view-source-dialog {
   overflow: auto; }
 
-.ui-editor-ui-view-source-highlighted,
 .ui-editor-ui-view-source-plain-text {
   height: 100%;
   width: 100%;
@@ -1331,7 +1315,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-box-orient: vertical;
   box-orient: vertical; }
 
-.ui-editor-ui-view-source-dialog code,
 .ui-editor-ui-view-source-dialog textarea {
   white-space: pre-line;
   width: 100%;
