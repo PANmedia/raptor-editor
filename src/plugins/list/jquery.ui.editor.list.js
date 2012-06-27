@@ -119,6 +119,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         }
 
         this.editor.restoreSelection();
+        this.editor.checkChange();
     },
 
     /**
@@ -176,6 +177,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
         this.editor.selectInner(selectedElement.find('li:first')[0]);
+        this.editor.checkChange();
     },
 
     /**
