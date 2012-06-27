@@ -16,7 +16,7 @@
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
-            editor.bind('hide', this.hide, this);
+//            editor.bind('hide', this.hide, this);
 
             return editor.uiButton({
                 title: _('View / Edit Source'),
