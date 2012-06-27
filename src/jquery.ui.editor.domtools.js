@@ -494,9 +494,9 @@ var domTools = {
         var endFragment = endRange.cloneContents();
 
         // Replace the start element's html with the content that was not selected, append html & end element's html
-        var replacement = this.outerHtml($(this.domFragmentToHtml(startFragment)));
-        replacement += this.outerHtml($(html));
-        replacement += this.outerHtml($(this.domFragmentToHtml(endFragment)));
+        var replacement = element.outerHtml($(this.domFragmentToHtml(startFragment)));
+        replacement += element.outerHtml($(html));
+        replacement += element.outerHtml($(this.domFragmentToHtml(endFragment)));
 
         $(selectedElement).replaceWith($(replacement));
     },
@@ -550,7 +550,7 @@ var domTools = {
         // Get all nodes in the extracted content
         for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
             var node = domFragment.childNodes.item(j);
-            var content = node.nodeType === 3 ? node.nodeValue : this.outerHtml(node);
+            var content = node.nodeType === 3 ? node.nodeValue : element.outerHtml($(node));
             if (content) {
                 html += content;
             }
@@ -654,14 +654,6 @@ var domTools = {
      */
     isElementValid: function(element, validTags) {
         return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
-    },
-
-    /**
-     * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
-     * @return {String} The outer HTML.
-     */
-    outerHtml: function(element) {
-        return $(element).clone().wrap('<div></div>').parent().html();
     },
 
     /**

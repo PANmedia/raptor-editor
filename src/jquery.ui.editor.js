@@ -1289,6 +1289,7 @@ $.widget('ui.editor',
      */
     resetHtml: function() {
         this.setHtml(this.getOriginalHtml());
+        this.fire('cleaned');
     },
 
     /**
@@ -1306,7 +1307,7 @@ $.widget('ui.editor',
         this.fire('save');
         this.setOriginalHtml(html);
         this.fire('saved');
-        this.fire('change');
+        this.fire('cleaned');
         return html;
     },
 

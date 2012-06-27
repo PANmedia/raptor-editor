@@ -29,6 +29,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.element.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?php echo $uri ?>plugins/toolbartip/jquery.ui.editor.toolbartip.js"></script>
