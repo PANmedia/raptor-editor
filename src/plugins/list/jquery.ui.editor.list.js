@@ -126,9 +126,19 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * @param  {string} listType One of ul or ol.
      */
     wrapList: function(listType) {
-
+        this.editor.constrainSelection(this.editor.getElement());
         if ($.trim(this.editor.getSelectedHtml()) === '') {
-            this.editor.selectOuter(this.editor.getSelectedElements());
+            this.editor.selectInner(this.editor.getSelectedElements());
+        }
+
+        var editingElement = this.editor.getElement()[0];
+        if (this.editor.getSelectedElements()[0] === this.editor.getElement()[0]) {
+
+            if (this.editor.getSelectionStartElement()[0] === editingElement) {
+                this.editor.selectInner(this.editor.getSelectionEndElement());
+            } else {
+                this.editor.selectInner(this.editor.getSelectionStartElement());
+            }
         }
 
         var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
