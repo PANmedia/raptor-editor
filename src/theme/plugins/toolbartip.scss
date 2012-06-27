@@ -18,6 +18,7 @@
     color: white;
     padding: 11px 16px 7px;
     white-space: nowrap;
+    text-shadow: none;
     overflow: visible;
     z-index: 1000;
     @include pointer-events(none);
