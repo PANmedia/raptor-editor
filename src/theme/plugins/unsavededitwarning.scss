@@ -32,3 +32,8 @@
 .ui-editor-unsaved-edit-warning-visible {
     @include opacity(1);
 }
+
+.ui-editor-unsaved-edit-warning-dirty {
+    outline: 1px dotted #aaa;
+    background-image: inline-image('diagonal-lines.png') !important;
+}
