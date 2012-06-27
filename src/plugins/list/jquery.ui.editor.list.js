@@ -125,6 +125,10 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      */
     wrapList: function(listType) {
 
+        if ($.trim(this.editor.getSelectedHtml()) === '') {
+            this.editor.selectOuter(this.editor.getSelectedElements());
+        }
+
         var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
 
         var listElements = [];
@@ -146,11 +150,6 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
                 listElements.push(plugin.editor.outerHtml(listElement));
             }
         });
-
-        // When selection is empty, insert a placeholder list
-        if (!listElements.length) {
-            listElements.push('<li>List element content</li>');
-        }
 
         var replacementClass = this.options.baseClass + '-selection';
         var replacementHtml = '<' + listType + ' class="' + replacementClass + '">' + listElements.join('') + '</' + listType + '>';
