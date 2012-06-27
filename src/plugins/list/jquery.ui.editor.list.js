@@ -103,8 +103,10 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
 
         // Every li of the list has been selected, replace the entire list
         if (firstLiSelected && lastLiSelected) {
-            this.editor.selectOuter(parentListContainer);
-            this.editor.replaceSelection(listElementsContent.join(''));
+            parentListContainer.replaceWith(listElementsContent.join(''));
+            this.editor.restoreSelection();
+            var selectedElement = this.editor.getSelectedElements()[0];
+            this.editor.selectOuter(selectedElement);
             return;
         }
 
