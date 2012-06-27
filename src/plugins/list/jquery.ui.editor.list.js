@@ -168,7 +168,20 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
 
         // Selection must be restored before it may be replaced.
         this.editor.restoreSelection();
-        this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+
+        var selectedElementParent = $(this.editor.getSelectedElements()[0]).parent();
+        var editingElement = this.editor.getElement()[0];
+
+        /*
+         * Replace selection if the selected element parent or the selected element is the editing element,
+         * instead of splitting the editing element.
+         */
+        if (selectedElementParent === editingElement
+            || this.editor.getSelectedElements()[0] === editingElement) {
+            this.editor.replaceSelection(replacementHtml);
+        } else {
+            this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+        }
 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
