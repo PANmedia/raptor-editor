@@ -34,6 +34,7 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
             // Set caret position to the end of the current text node
             plugin.editor.selectEnd(this);
         });
+        this.editor.checkChange();
     },
 
     /**
