@@ -131,16 +131,6 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             this.editor.selectInner(this.editor.getSelectedElements());
         }
 
-        var editingElement = this.editor.getElement()[0];
-        if (this.editor.getSelectedElements()[0] === this.editor.getElement()[0]) {
-
-            if (this.editor.getSelectionStartElement()[0] === editingElement) {
-                this.editor.selectInner(this.editor.getSelectionEndElement());
-            } else {
-                this.editor.selectInner(this.editor.getSelectionStartElement());
-            }
-        }
-
         var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
 
         var listElements = [];
