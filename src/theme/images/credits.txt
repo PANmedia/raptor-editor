@@ -4,6 +4,7 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - arrow-curve.png
  - chain-unchain.png
  - chain.png
+ - clear-formatting.png (modified by David Neilsen)
  - cross.png
  - dashboard.png
  - disk-black.png
