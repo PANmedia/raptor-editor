@@ -28,6 +28,6 @@ function rangeExpandTo(range, elements) {
     } while (range.commonAncestorContainer)
 }
 
-function rangeIsWholeElement(range) {
-
-}
+//function rangeIsWholeElement(range) {
+//    return range.toString() ==
+//}
