@@ -20,11 +20,11 @@
          */
         init: function(editor) {
             return editor.uiButton({
-                title: _('Float Left'),
+                title: _('Float Image Left'),
                 click: function() {
-                    editor.toggleBlockStyle({
-                        'float': 'left'
-                    }, editor.getElement());
+                    selectionEachRange(function(range) {
+                        $(range.commonAncestorContainer).find('img').css('float', 'left');
+                    });
                 }
             });
         }
@@ -44,11 +44,11 @@
          */
         init: function(editor) {
             return editor.uiButton({
-                title: _('Float Right'),
+                title: _('Float Image Right'),
                 click: function() {
-                    editor.toggleBlockStyle({
-                        'float': 'right'
-                    }, editor.getElement());
+                    selectionEachRange(function(range) {
+                        $(range.commonAncestorContainer).find('img').css('float', 'right');
+                    });
                 }
             });
         }
@@ -68,11 +68,11 @@
          */
         init: function(editor) {
             return editor.uiButton({
-                title: _('Float None'),
+                title: _('Remove Image Float'),
                 click: function() {
-                    editor.toggleBlockStyle({
-                        'float': 'none'
-                    }, editor.getElement());
+                    selectionEachRange(function(range) {
+                        $(range.commonAncestorContainer).find('img').css('float', 'none');
+                    });
                 }
             });
         }
