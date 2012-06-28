@@ -103,8 +103,10 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
 
         // Every li of the list has been selected, replace the entire list
         if (firstLiSelected && lastLiSelected) {
-            this.editor.selectOuter(parentListContainer);
-            this.editor.replaceSelection(listElementsContent.join(''));
+            parentListContainer.replaceWith(listElementsContent.join(''));
+            this.editor.restoreSelection();
+            var selectedElement = this.editor.getSelectedElements()[0];
+            this.editor.selectOuter(selectedElement);
             return;
         }
 
@@ -117,6 +119,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         }
 
         this.editor.restoreSelection();
+        this.editor.checkChange();
     },
 
     /**
@@ -124,9 +127,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * @param  {string} listType One of ul or ol.
      */
     wrapList: function(listType) {
-
+        this.editor.constrainSelection(this.editor.getElement());
         if ($.trim(this.editor.getSelectedHtml()) === '') {
-            this.editor.selectOuter(this.editor.getSelectedElements());
+            this.editor.selectInner(this.editor.getSelectedElements());
         }
 
         var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
@@ -156,11 +159,25 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
 
         // Selection must be restored before it may be replaced.
         this.editor.restoreSelection();
-        this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+
+        var selectedElementParent = $(this.editor.getSelectedElements()[0]).parent();
+        var editingElement = this.editor.getElement()[0];
+
+        /*
+         * Replace selection if the selected element parent or the selected element is the editing element,
+         * instead of splitting the editing element.
+         */
+        if (selectedElementParent === editingElement
+            || this.editor.getSelectedElements()[0] === editingElement) {
+            this.editor.replaceSelection(replacementHtml);
+        } else {
+            this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+        }
 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
         this.editor.selectInner(selectedElement.find('li:first')[0]);
+        this.editor.checkChange();
     },
 
     /**
