@@ -30,6 +30,9 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.element.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.fragment.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.selection.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.range.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?php echo $uri ?>plugins/toolbartip/jquery.ui.editor.toolbartip.js"></script>
@@ -37,6 +40,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/dock/jquery.ui.editor.dock.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clicktoedit/jquery.ui.editor.clicktoedit.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/jquery.ui.editor.float.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/alignment/jquery.ui.editor.alignment.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/basic/jquery.ui.editor.basic.js"></script>

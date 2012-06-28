@@ -555,7 +555,7 @@
         }
 
         // Prepare link to be shown in any confirm message
-        var link = element.outerHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
+        var link = elementOuterHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
                 attr($.extend({}, attributes, { target: '_blank' })));
 
         if (!edit) {

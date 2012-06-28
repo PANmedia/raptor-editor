@@ -49,7 +49,7 @@
             editor.bind('dirty', function() {
                 dirty++;
                 if (dirty > 0) {
-                    element.bringToTop(warning);
+                    elementBringToTop(warning);
                     warning.addClass(plugin.options.baseClass + '-visible');
                 }
             });

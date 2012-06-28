@@ -26,6 +26,12 @@
  * </dl>
  * </p>
  *
+ * Naming Conventions:
+ * In function names and parameters the following keywords mean:
+ *  - node: A DOM node
+ *  - tag: The tag name, e.g. h1, h2, p, a, etc
+ *  - element: A jQuery element, selector, not HTML string (use $.parseHTML instead)
+ *
  * @name $.editor
  * @class
  */

@@ -60,7 +60,7 @@ $.ui.editor.registerUi({
             if (debugLevel >= MID) debug('Updating length count');
             // </debug>
 
-            var charactersRemaining = this.options.length - $('<div></div>').html(this.editor.getCleanHtml()).text().length;
+            var charactersRemaining = this.options.length - $('<div/>').html(this.editor.getCleanHtml()).text().length;
 
             var button = this.ui.button;
             var label = null;
@@ -119,7 +119,7 @@ $.ui.editor.registerUi({
          * @return {jQuery} The processed statistics dialog template
          */
         processTemplate: function() {
-            var content = $('<div></div>').html(this.editor.getCleanHtml()).text();
+            var content = $('<div/>').html(this.editor.getCleanHtml()).text();
             var truncation = null;
             var charactersRemaining = this.options.length - content.length;
             if (charactersRemaining < 0) {

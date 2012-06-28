@@ -39,26 +39,6 @@ var domTools = {
     },
 
     /**
-     * Iterates over all ranges in a selection and calls the callback for each
-     * range. The selection/range offsets is updated in every iteration in in the
-     * case that a range was changed or removed by a previous iteration.
-     *
-     * @public @static
-     * @param {function} callback The function to call for each range. The first and only parameter will be the current range.
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
-     * @param {object} [context] The context in which to call the callback, or by default, the domTools object.
-     */
-    eachRange: function(callback, selection, context) {
-        selection = selection || rangy.getSelection();
-        context = context || this;
-        var range, i = 0;
-        // Create a new range set every time to update range offsets
-        while (range = selection.getAllRanges()[i++]) {
-            callback.call(context, range);
-        }
-    },
-
-    /**
      * Removes all ranges from a selection that are not contained within the
      * supplied element.
      *
@@ -88,13 +68,13 @@ var domTools = {
      * returns them as a jQuery array.
      *
      * @public @static
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    getSelectedElements: function(selection) {
+    getSelectedElements: function(sel) {
         var result = new jQuery();
-        this.eachRange(function(range, selection) {
+        selectionEachRange(function(range) {
             result.push(this.getSelectedElement(range)[0]);
-        });
+        }, sel, this);
         return result;
     },
 
@@ -147,7 +127,7 @@ var domTools = {
     },
 
     wrapTagWithAttribute: function(tag, attributes, classes) {
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             var element = this.getSelectedElement(range);
             if (element.is(tag)) {
                 element.attr(attributes);
@@ -157,7 +137,7 @@ var domTools = {
                     attributes: attributes
                 });
             }
-        });
+        }, null, this);
     },
 
     /**
@@ -226,22 +206,22 @@ var domTools = {
             elementTagName: tag,
             elementProperties: options.attributes || {}
         });
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             if (this.rangeEmptyTag(range)) {
                 var element = $('<' + tag + '/>')
                     .addClass(options.classes)
                     .attr(options.attributes || {})
-                    .append(this.domFragmentToHtml(range.cloneContents()));
+                    .append(fragmentToHtml(range.cloneContents()));
                 this.replaceRange(element, range);
             } else {
                 applier.toggleRange(range);
             }
-        });
+        }, null, this);
     },
 
     rangeEmptyTag: function(range) {
         var contents = range.cloneContents();
-        var html = this.domFragmentToHtml(contents);
+        var html = fragmentToHtml(contents);
         if (typeof html === 'string') {
             html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
         }
@@ -264,12 +244,12 @@ var domTools = {
      *
      * @public @static
      * @param {String} tagName
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    insertTag: function(tagName, selection) {
-        this.eachRange(function(range) {
+    insertTag: function(tagName, sel) {
+        selectionEachRange(function(range) {
             range.insertNode($('<' + tagName + '/>')[0]);
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -277,12 +257,12 @@ var domTools = {
      *
      * @public @static
      * @param {String} tagName
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    insertTagAtEnd: function(tagName, selection) {
-        this.eachRange(function(range) {
+    insertTagAtEnd: function(tagName, sel) {
+        selectionEachRange(function(range) {
             range.insertNodeAtEnd($('<' + tagName + '/>')[0]);
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -293,14 +273,14 @@ var domTools = {
      * @public @static
      * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
      * @param {boolean} [clone] Switch to indicate if the nodes chould be cloned
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    insertElement: function(element, clone, selection) {
-        this.eachRange(function(range) {
+    insertElement: function(element, clone, sel) {
+        selectionEachRange(function(range) {
             $(element).each(function() {
                 range.insertNode(clone === false ? this : this.cloneNode(true));
             });
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -313,12 +293,12 @@ var domTools = {
      * @param {boolean} [clone] Switch to indicate if the nodes chould be cloned
      * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
      */
-    insertElementAtEnd: function(element, clone, selection) {
-        this.eachRange(function(range) {
+    insertElementAtEnd: function(element, clone, sel) {
+        selectionEachRange(function(range) {
             $(element).each(function() {
                 range.insertNodeAtEnd(clone === false ? this : this.cloneNode(true));
             });
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -331,7 +311,7 @@ var domTools = {
      * element will be wrapped with a "div"
      */
     toggleBlockStyle: function(styles, limit) {
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             var parent = $(range.commonAncestorContainer);
             while (parent.length && parent[0] !== limit[0] && (
                     parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
@@ -348,7 +328,7 @@ var domTools = {
             }
             // Apply the style to the parent
             this.toggleStyle(parent, styles);
-        });
+        }, null, this);
     },
 
     /**
@@ -375,7 +355,7 @@ var domTools = {
         // Assign a temporary tag name (to fool rangy)
         var id = 'domTools' + Math.ceil(Math.random() * 10000000);
 
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             var applier2 = rangy.createCssClassApplier(class2, {
                 elementTagName: tag2
             });
@@ -390,7 +370,7 @@ var domTools = {
                     elementTagName: id
                 }).toggleSelection();
             }
-        });
+        }, null, this);
 
         // Replace the temparay tag with the correct tag
         $(id).each(function() {
@@ -494,9 +474,9 @@ var domTools = {
         var endFragment = endRange.cloneContents();
 
         // Replace the start element's html with the content that was not selected, append html & end element's html
-        var replacement = element.outerHtml($(this.domFragmentToHtml(startFragment)));
-        replacement += element.outerHtml($(html));
-        replacement += element.outerHtml($(this.domFragmentToHtml(endFragment)));
+        var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
+        replacement += elementOuterHtml($(html));
+        replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
 
         $(selectedElement).replaceWith($(replacement));
     },
@@ -505,14 +485,14 @@ var domTools = {
      * FIXME: this function needs reviewing
      * @public @static
      */
-    replaceSelection: function(html, selection) {
-        this.eachRange(function(range) {
+    replaceSelection: function(html, sel) {
+        selectionEachRange(function(range) {
             this.replaceRange(html, range);
-        }, selection);
+        }, sel, this);
     },
 
     replaceRange: function(html, range) {
-        var nodes = $('<div></div>').append(html)[0].childNodes;
+        var nodes = $('<div/>').append(html)[0].childNodes;
         range.deleteContents();
         if (nodes.length === undefined || nodes.length === 1) {
             range.insertNode(nodes[0].cloneNode(true));
@@ -545,25 +525,6 @@ var domTools = {
         }
     },
 
-    domFragmentToHtml: function(domFragment, tag) {
-        var html = '';
-        // Get all nodes in the extracted content
-        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
-            var node = domFragment.childNodes.item(j);
-            var content = node.nodeType === 3 ? node.nodeValue : element.outerHtml($(node));
-            if (content) {
-                html += content;
-            }
-        }
-        if (tag) {
-            html = $('<' + tag + '>' + html + '</' + tag + '>');
-            html.find('p').wrapInner('<' + tag + '/>');
-            html.find('p > *').unwrap();
-            html = $('<div></div>').html(html).html();
-        }
-        return html;
-    },
-
     /**
      * Returns true if there is at least one range selected and the range is not
      * empty.
@@ -572,11 +533,11 @@ var domTools = {
      * @public @static
      * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
      */
-    selectionExists: function(selection) {
+    selectionExists: function(sel) {
         var selectionExists = false;
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             if (!this.isEmpty(range)) selectionExists = true;
-        }, selection);
+        }, sel, this);
         return selectionExists;
     },
 
@@ -589,18 +550,6 @@ var domTools = {
     isEmpty: function(range) {
         return range.startOffset === range.endOffset &&
                range.startContainer === range.endContainer;
-    },
-
-    /**
-     * Expands a range to to surround all of the content from its start container
-     * to its end container.
-     *
-     * @public @static
-     * @param {RangyRange} range The range to expand
-     */
-    expandToParent: function(range) {
-        range.setStartBefore(range.startContainer);
-        range.setEndAfter(range.endContainer);
     },
 
     changeTag: function(range, tag) {
@@ -624,11 +573,10 @@ var domTools = {
      * @param  {jQuery|null} within The element to perform changes within. If The cursor is within, or the selection contains text nodes only, the text will be wrapped with tag. If null, changes will be applied to the wrapping tag.
      * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
      */
-    tagSelectionWithin: function(tag, within, selection) {
-        this.eachRange(function(range) {
-
+    tagSelectionWithin: function(tag, within, sel) {
+        selectionEachRange(function(range) {
             if (this.isEmpty(range)) {
-                this.expandToParent(range);
+                rangeExpandToParent(range);
                 within = $(within)[0];
                 if (typeof within !== 'undefined'
                     && range.startContainer === within
@@ -641,9 +589,9 @@ var domTools = {
                 }
             } else {
                 var content = range.extractContents();
-                this.replaceRange(this.domFragmentToHtml(content, tag), range);
+                this.replaceRange(fragmentToHtml(content, tag), range);
             }
-        }, selection);
+        }, sel, this);
     },
 
     /**

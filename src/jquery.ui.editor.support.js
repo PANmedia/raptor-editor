@@ -29,20 +29,12 @@ function isSupported(editor) {
             supported = false;
 
             // Create message modal
-            var message = $('<div></div>')
+            var message = $('<div/>')
                 .addClass(editor.options.baseClass + '-unsupported')
                 .html(editor.getTemplate('unsupported'))
                 .appendTo('body');
 
-            // Place ontop
-            var zIndex = 1;
-            message.siblings().each(function() {
-                var z = $(this).css('z-index');
-                if (!isNaN(z) && z > zIndex) {
-                    zIndex = z + 1;
-                }
-            });
-            message.css('z-index', zIndex);
+            elementBringToTop(message);
 
             // Close event
             message.find('.' + editor.options.baseClass + '-unsupported-close').click(function() {

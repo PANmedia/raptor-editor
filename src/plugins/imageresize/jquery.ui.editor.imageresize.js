@@ -178,7 +178,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             }
 
             var plugin = this;
-            this.showOversizeWarning(element.outerHtml($(imageLink)), {
+            this.showOversizeWarning(elementOuterHtml($(imageLink)), {
                 hide: function() {
                     image.removeClass(plugin.options.resizingClass);
                 }

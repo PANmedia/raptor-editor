@@ -47,6 +47,7 @@ $.widget('ui.editor',
             ['listUnordered', 'listOrdered'],
             ['hr', 'quoteBlock'],
             ['fontSizeInc', 'fontSizeDec'],
+            ['clearFormatting'],
             ['link', 'unlink'],
             ['embed'],
             ['floatLeft', 'floatNone', 'floatRight'],
@@ -436,7 +437,7 @@ $.widget('ui.editor',
         var i = 0;
 
         // Loop all selected ranges
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             // Get the selected nodes common parent
             var node = range.commonAncestorContainer;
 

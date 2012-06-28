@@ -141,13 +141,13 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             if ('block' === plugin.getElementDefaultDisplay(this.tagName)) {
                 liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
             } else {
-                liContent = plugin.editor.stripTags(element.outerHtml($(this)), plugin.validChildren);
+                liContent = plugin.editor.stripTags(elementOuterHtml($(this)), plugin.validChildren);
             }
 
             // Avoid inserting blank lists
             var listElement = $('<li>' + liContent + '</li>');
             if ($.trim(listElement.text()) !== '') {
-                listElements.push(element.outerHtml(listElement));
+                listElements.push(elementOuterHtml(listElement));
             }
         });
 
