@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.7 *//**
+/*! VERSION: 0.0.8 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25432,6 +25432,12 @@ $.extend( $.ui.tabs.prototype, {
  * </dl>
  * </p>
  *
+ * Naming Conventions:
+ * In function names and parameters the following keywords mean:
+ *  - node: A DOM node
+ *  - tag: The tag name, e.g. h1, h2, p, a, etc
+ *  - element: A jQuery element, selector, not HTML string (use $.parseHTML instead)
+ *
  * @name $.editor
  * @class
  */
@@ -25565,26 +25571,6 @@ var domTools = {
     },
 
     /**
-     * Iterates over all ranges in a selection and calls the callback for each
-     * range. The selection/range offsets is updated in every iteration in in the
-     * case that a range was changed or removed by a previous iteration.
-     *
-     * @public @static
-     * @param {function} callback The function to call for each range. The first and only parameter will be the current range.
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
-     * @param {object} [context] The context in which to call the callback, or by default, the domTools object.
-     */
-    eachRange: function(callback, selection, context) {
-        selection = selection || rangy.getSelection();
-        context = context || this;
-        var range, i = 0;
-        // Create a new range set every time to update range offsets
-        while (range = selection.getAllRanges()[i++]) {
-            callback.call(context, range);
-        }
-    },
-
-    /**
      * Removes all ranges from a selection that are not contained within the
      * supplied element.
      *
@@ -25614,13 +25600,13 @@ var domTools = {
      * returns them as a jQuery array.
      *
      * @public @static
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    getSelectedElements: function(selection) {
+    getSelectedElements: function(sel) {
         var result = new jQuery();
-        this.eachRange(function(range, selection) {
+        selectionEachRange(function(range) {
             result.push(this.getSelectedElement(range)[0]);
-        });
+        }, sel, this);
         return result;
     },
 
@@ -25673,7 +25659,7 @@ var domTools = {
     },
 
     wrapTagWithAttribute: function(tag, attributes, classes) {
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             var element = this.getSelectedElement(range);
             if (element.is(tag)) {
                 element.attr(attributes);
@@ -25683,7 +25669,7 @@ var domTools = {
                     attributes: attributes
                 });
             }
-        });
+        }, null, this);
     },
 
     /**
@@ -25752,22 +25738,22 @@ var domTools = {
             elementTagName: tag,
             elementProperties: options.attributes || {}
         });
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             if (this.rangeEmptyTag(range)) {
                 var element = $('<' + tag + '/>')
                     .addClass(options.classes)
                     .attr(options.attributes || {})
-                    .append(this.domFragmentToHtml(range.cloneContents()));
+                    .append(fragmentToHtml(range.cloneContents()));
                 this.replaceRange(element, range);
             } else {
                 applier.toggleRange(range);
             }
-        });
+        }, null, this);
     },
 
     rangeEmptyTag: function(range) {
         var contents = range.cloneContents();
-        var html = this.domFragmentToHtml(contents);
+        var html = fragmentToHtml(contents);
         if (typeof html === 'string') {
             html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
         }
@@ -25780,7 +25766,9 @@ var domTools = {
      * @public @static
      */
     execCommand: function(command, arg1, arg2) {
-        document.execCommand(command, arg1, arg2);
+        try {
+            document.execCommand(command, arg1, arg2);
+        } catch (exception) { }
     },
 
     /**
@@ -25788,12 +25776,12 @@ var domTools = {
      *
      * @public @static
      * @param {String} tagName
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    insertTag: function(tagName, selection) {
-        this.eachRange(function(range) {
+    insertTag: function(tagName, sel) {
+        selectionEachRange(function(range) {
             range.insertNode($('<' + tagName + '/>')[0]);
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -25801,12 +25789,12 @@ var domTools = {
      *
      * @public @static
      * @param {String} tagName
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    insertTagAtEnd: function(tagName, selection) {
-        this.eachRange(function(range) {
+    insertTagAtEnd: function(tagName, sel) {
+        selectionEachRange(function(range) {
             range.insertNodeAtEnd($('<' + tagName + '/>')[0]);
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -25817,14 +25805,14 @@ var domTools = {
      * @public @static
      * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
      * @param {boolean} [clone] Switch to indicate if the nodes chould be cloned
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
      */
-    insertElement: function(element, clone, selection) {
-        this.eachRange(function(range) {
+    insertElement: function(element, clone, sel) {
+        selectionEachRange(function(range) {
             $(element).each(function() {
                 range.insertNode(clone === false ? this : this.cloneNode(true));
             });
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -25837,12 +25825,12 @@ var domTools = {
      * @param {boolean} [clone] Switch to indicate if the nodes chould be cloned
      * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
      */
-    insertElementAtEnd: function(element, clone, selection) {
-        this.eachRange(function(range) {
+    insertElementAtEnd: function(element, clone, sel) {
+        selectionEachRange(function(range) {
             $(element).each(function() {
                 range.insertNodeAtEnd(clone === false ? this : this.cloneNode(true));
             });
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -25855,7 +25843,7 @@ var domTools = {
      * element will be wrapped with a "div"
      */
     toggleBlockStyle: function(styles, limit) {
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             var parent = $(range.commonAncestorContainer);
             while (parent.length && parent[0] !== limit[0] && (
                     parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
@@ -25872,7 +25860,7 @@ var domTools = {
             }
             // Apply the style to the parent
             this.toggleStyle(parent, styles);
-        });
+        }, null, this);
     },
 
     /**
@@ -25899,7 +25887,7 @@ var domTools = {
         // Assign a temporary tag name (to fool rangy)
         var id = 'domTools' + Math.ceil(Math.random() * 10000000);
 
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             var applier2 = rangy.createCssClassApplier(class2, {
                 elementTagName: tag2
             });
@@ -25914,7 +25902,7 @@ var domTools = {
                     elementTagName: id
                 }).toggleSelection();
             }
-        });
+        }, null, this);
 
         // Replace the temparay tag with the correct tag
         $(id).each(function() {
@@ -26018,9 +26006,9 @@ var domTools = {
         var endFragment = endRange.cloneContents();
 
         // Replace the start element's html with the content that was not selected, append html & end element's html
-        var replacement = this.outerHtml($(this.domFragmentToHtml(startFragment)));
-        replacement += this.outerHtml($(html));
-        replacement += this.outerHtml($(this.domFragmentToHtml(endFragment)));
+        var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
+        replacement += elementOuterHtml($(html));
+        replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
 
         $(selectedElement).replaceWith($(replacement));
     },
@@ -26029,14 +26017,14 @@ var domTools = {
      * FIXME: this function needs reviewing
      * @public @static
      */
-    replaceSelection: function(html, selection) {
-        this.eachRange(function(range) {
+    replaceSelection: function(html, sel) {
+        selectionEachRange(function(range) {
             this.replaceRange(html, range);
-        }, selection);
+        }, sel, this);
     },
 
     replaceRange: function(html, range) {
-        var nodes = $('<div></div>').append(html)[0].childNodes;
+        var nodes = $('<div/>').append(html)[0].childNodes;
         range.deleteContents();
         if (nodes.length === undefined || nodes.length === 1) {
             range.insertNode(nodes[0].cloneNode(true));
@@ -26069,25 +26057,6 @@ var domTools = {
         }
     },
 
-    domFragmentToHtml: function(domFragment, tag) {
-        var html = '';
-        // Get all nodes in the extracted content
-        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
-            var node = domFragment.childNodes.item(j);
-            var content = node.nodeType === 3 ? node.nodeValue : this.outerHtml(node);
-            if (content) {
-                html += content;
-            }
-        }
-        if (tag) {
-            html = $('<' + tag + '>' + html + '</' + tag + '>');
-            html.find('p').wrapInner('<' + tag + '/>');
-            html.find('p > *').unwrap();
-            html = $('<div></div>').html(html).html();
-        }
-        return html;
-    },
-
     /**
      * Returns true if there is at least one range selected and the range is not
      * empty.
@@ -26096,11 +26065,11 @@ var domTools = {
      * @public @static
      * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
      */
-    selectionExists: function(selection) {
+    selectionExists: function(sel) {
         var selectionExists = false;
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             if (!this.isEmpty(range)) selectionExists = true;
-        }, selection);
+        }, sel, this);
         return selectionExists;
     },
 
@@ -26113,18 +26082,6 @@ var domTools = {
     isEmpty: function(range) {
         return range.startOffset === range.endOffset &&
                range.startContainer === range.endContainer;
-    },
-
-    /**
-     * Expands a range to to surround all of the content from its start container
-     * to its end container.
-     *
-     * @public @static
-     * @param {RangyRange} range The range to expand
-     */
-    expandToParent: function(range) {
-        range.setStartBefore(range.startContainer);
-        range.setEndAfter(range.endContainer);
     },
 
     changeTag: function(range, tag) {
@@ -26148,11 +26105,10 @@ var domTools = {
      * @param  {jQuery|null} within The element to perform changes within. If The cursor is within, or the selection contains text nodes only, the text will be wrapped with tag. If null, changes will be applied to the wrapping tag.
      * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
      */
-    tagSelectionWithin: function(tag, within, selection) {
-        this.eachRange(function(range) {
-
+    tagSelectionWithin: function(tag, within, sel) {
+        selectionEachRange(function(range) {
             if (this.isEmpty(range)) {
-                this.expandToParent(range);
+                rangeExpandToParent(range);
                 within = $(within)[0];
                 if (typeof within !== 'undefined'
                     && range.startContainer === within
@@ -26165,9 +26121,9 @@ var domTools = {
                 }
             } else {
                 var content = range.extractContents();
-                this.replaceRange(this.domFragmentToHtml(content, tag), range);
+                this.replaceRange(fragmentToHtml(content, tag), range);
             }
-        }, selection);
+        }, sel, this);
     },
 
     /**
@@ -26181,14 +26137,6 @@ var domTools = {
     },
 
     /**
-     * @param  {Element|jQuery} element The element to retrieve the outer HTML from.
-     * @return {String} The outer HTML.
-     */
-    outerHtml: function(element) {
-        return $(element).clone().wrap('<div></div>').parent().html();
-    },
-
-    /**
      * Modification of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
      * @param  {string} content HTML containing tags to be stripped
      * @param {Array} allowedTags Array of tags that should not be stripped
@@ -26198,17 +26146,16 @@ var domTools = {
         // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
         allowed = [];
         for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
-            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]+/g)) {
-                allowed.push('<' + allowedTags[allowedTagsIndex] + '>');
+            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]{0,}/g)) {
+                allowed.push(allowedTags[allowedTagsIndex]);
             }
         }
-
         // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi,
+        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*\/?>/gi,
             commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
 
         return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-            return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+            return allowed.indexOf($1.toLowerCase()) > -1 ? $0 : '';
         });
     }
 };/**
@@ -26515,6 +26462,7 @@ $.widget('ui.editor',
             ['listUnordered', 'listOrdered'],
             ['hr', 'quoteBlock'],
             ['fontSizeInc', 'fontSizeDec'],
+            ['clearFormatting'],
             ['link', 'unlink'],
             ['embed'],
             ['floatLeft', 'floatNone', 'floatRight'],
@@ -26624,6 +26572,7 @@ $.widget('ui.editor',
         this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
             this.selectOuter(event.target);
         }, this));
+        // this.bind('change', change);
         this.getElement().bind('mouseup.' + this.widgetName, change);
         this.getElement().bind('keyup.' + this.widgetName, change);
 
@@ -26746,10 +26695,13 @@ $.widget('ui.editor',
         }
     },
 
+    /**
+     * Determine whether the editing element's content has been changed.
+     */
     checkChange: function() {
         // Check if the caret has changed position
         var currentSelection = rangy.serializeSelection();
-        if (this.previousSelection != currentSelection) {
+        if (this.previousSelection !== currentSelection) {
             this.fire('selectionChange');
         }
         this.previousSelection = currentSelection;
@@ -26761,15 +26713,15 @@ $.widget('ui.editor',
         var wasDirty = this.dirty;
 
         // Check if the current content is different from the original content
-        this.dirty = this.getOriginalHtml() != currentHtml;
+        this.dirty = this.getOriginalHtml() !== currentHtml;
 
         // If the current content has changed since the last check, fire the change event
-        if (this.previousHtml != currentHtml) {
+        if (this.previousHtml !== currentHtml) {
             this.previousHtml = currentHtml;
             this.change();
 
             // If the content was changed to its original state, fire the cleaned event
-            if (wasDirty != this.dirty) {
+            if (wasDirty !== this.dirty) {
                 if (this.dirty) {
                     this.fire('dirty');
                 } else {
@@ -26857,12 +26809,9 @@ $.widget('ui.editor',
                 this.getElement().attr('contenteditable', true);
             }
 
-            try {
-                document.execCommand('enableInlineTableEditing', false, false);
-                // document.execCommand('enableObjectResizing', false, false);
-                document.execCommand('styleWithCSS', true, true);
-            } catch (exception) {
-            }
+            this.execCommand('enableInlineTableEditing', false, false);
+            this.execCommand('styleWithCSS', true, true);
+
             this.fire('enabled');
             this.fire('resize');
         }
@@ -26876,6 +26825,7 @@ $.widget('ui.editor',
             this.enabled = false;
             this.getElement().attr('contenteditable', false)
                         .removeClass(this.options.baseClass + '-editing');
+            rangy.getSelection().removeAllRanges();
             this.fire('disabled');
         }
     },
@@ -26902,7 +26852,7 @@ $.widget('ui.editor',
         var i = 0;
 
         // Loop all selected ranges
-        this.eachRange(function(range) {
+        selectionEachRange(function(range) {
             // Get the selected nodes common parent
             var node = range.commonAncestorContainer;
 
@@ -27579,15 +27529,15 @@ $.widget('ui.editor',
                 ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
                     .append(ui.select.hide());
 
-                ui.selectMenu = $('<div class="ui-selectmenu ui-editor-selectmenu"/>')
+                ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
                     .appendTo(ui.wrapper);
 
-                ui.menu = $('<div class="ui-selectmenu-menu ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
+                ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
                     .appendTo(ui.wrapper);
 
                 ui.select.find('option').each(function() {
                     var option = $('<div/>')
-                        .addClass('ui-selectmenu-menu-item ui-editor-selectmenu-menu-item')
+                        .addClass('ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
                         .appendTo(ui.menu)
@@ -27611,11 +27561,11 @@ $.widget('ui.editor',
 
 
                 var text = $('<div/>')
-                    .addClass('ui-selectmenu-text');
+                    .addClass('ui-editor-selectmenu-text');
                 var icon = $('<div/>')
                     .addClass('ui-icon ui-icon-triangle-1-s');
                 ui.button = $('<div/>')
-                    .addClass('ui-selectmenu-button ui-editor-selectmenu-button ui-button ui-state-default')
+                    .addClass('ui-editor-selectmenu-button ui-editor-selectmenu-button ui-button ui-state-default')
                     .attr('title', ui.title)
                     .append(text)
                     .append(icon)
@@ -27627,20 +27577,19 @@ $.widget('ui.editor',
                         return false;
                     })
                     .bind('click.' + editor.widgetName, function() {
-                        $('.ui-editor-selectmenu-visible').removeClass('ui-editor-selectmenu-visible');
                         ui.menu.css('min-width', ui.button.outerWidth() + 10);
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
                     });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
-                ui.button.find('.ui-selectmenu-text').html(selected);
+                ui.button.find('.ui-editor-selectmenu-text').html(selected);
 
                 return ui.wrapper;
             },
             update: function() {
                 var selected = this.select.find('option[value=' + this.select.val() + ']').html();
-                this.button.find('.ui-selectmenu-text').html(selected);
+                this.button.find('.ui-editor-selectmenu-text').html(selected);
             },
             val: function() {
                 var result = this.select.val.apply(this.select, arguments);
@@ -27756,6 +27705,7 @@ $.widget('ui.editor',
      */
     resetHtml: function() {
         this.setHtml(this.getOriginalHtml());
+        this.fire('cleaned');
     },
 
     /**
@@ -27773,7 +27723,7 @@ $.widget('ui.editor',
         this.fire('save');
         this.setOriginalHtml(html);
         this.fire('saved');
-        this.fire('change');
+        this.fire('cleaned');
         return html;
     },
 
@@ -27845,7 +27795,9 @@ $.widget('ui.editor',
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
-                event.callback.call(event.context || this);
+                if (typeof event.callback !== 'undefined') {
+                    event.callback.call(event.context || this);
+                }
             }
         }
         // Also trigger the global editor event, unless specified not to
@@ -28053,7 +28005,7 @@ $.extend($.ui.editor,
     /**
      * @property {Object} templates
      */
-    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\" style=\"display:none\">\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-highlighted\" style=\"display:none\">\n        <pre id=\"{{baseClass}}-rainbow\"><code data-language=\"html\"><\/code><\/pre>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\" style=\"display: none2\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
+    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\">\n        <textarea>{{source}}<\/textarea>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
 
     /**
      * @param {String} name
@@ -28390,20 +28342,12 @@ function isSupported(editor) {
             supported = false;
 
             // Create message modal
-            var message = $('<div></div>')
+            var message = $('<div/>')
                 .addClass(editor.options.baseClass + '-unsupported')
                 .html(editor.getTemplate('unsupported'))
                 .appendTo('body');
 
-            // Place ontop
-            var zIndex = 1;
-            message.siblings().each(function() {
-                var z = $(this).css('z-index');
-                if (!isNaN(z) && z > zIndex) {
-                    zIndex = z + 1;
-                }
-            });
-            message.css('z-index', zIndex);
+            elementBringToTop(message);
 
             // Close event
             message.find('.' + editor.options.baseClass + '-unsupported-close').click(function() {
@@ -28819,7 +28763,7 @@ $.ui.editor.registerPlugin({
 
         /**
          * Tags to be removed if empty
-         * @type {Array}
+         * @type {String[]}
          */
         stripEmptyTags: [
             'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
@@ -28830,10 +28774,19 @@ $.ui.editor.registerPlugin({
 
         /**
          * Attributes to be removed if empty
-         * @type {Array}
+         * @type {String[]}
          */
         stripEmptyAttrs: [
             'class', 'id', 'style'
+        ],
+
+        /**
+         * Tag attributes to remove the domain part of a URL from.
+         * @type {Object[]}
+         */
+        stripDomains: [
+            {selector: 'a', attributes: ['href']},
+            {selector: 'img', attributes: ['src']}
         ]
     },
 
@@ -28886,6 +28839,29 @@ $.ui.editor.registerPlugin({
                     return $.trim($(this).attr(attr)) === '';
                 }).removeAttr(this.options.stripEmptyAttrs[i]);
         }
+
+        // Strip domains
+        var origin = window.location.protocol + '//' + window.location.host,
+            protocolDomain = '//' + window.location.host;
+        for (i = 0; i < this.options.stripDomains.length; i++) {
+            var def = this.options.stripDomains[i];
+
+            // Clean only elements within the editing element
+            this.editor.getElement().find(def.selector).each(function() {
+                for (var j = 0; j < def.attributes.length; j++) {
+                    var attr = $(this).attr(def.attributes[j]);
+                    // Do not continue if there are no attributes
+                    if (typeof attr === 'undefined') {
+                        continue;
+                    }
+                    if (attr.indexOf(origin) === 0) {
+                        $(this).attr(def.attributes[j], attr.substr(origin.length));
+                    } else if (attr.indexOf(protocolDomain) === 0) {
+                        $(this).attr(def.attributes[j], attr.substr(protocolDomain.length));
+                    }
+                }
+            });
+        }
     }
 });
 
@@ -28909,6 +28885,123 @@ $.ui.editor.registerUi({
             });
         }
     }
+});
+/**
+ * @fileOverview
+ * @author David Neilsen david@panmedia.co.nz
+ */
+
+$.ui.editor.registerUi({
+
+    /**
+     * @name $.editor.ui.clearFormatting
+     * @augments $.ui.editor.defaultUi
+     * @class Removes all formatting (wrapping tags) from the selected text.
+     */
+    clearFormatting: /** @lends $.editor.ui.clearFormatting.prototype */ {
+
+        /**
+         * @see $.ui.editor.defaultUi#init
+         */
+        init: function(editor, options) {
+            return this.editor.uiButton({
+                title: _('Clear Formatting'),
+                click: function() {
+                    var sel = rangy.getSelection();
+                    if (sel.rangeCount > 0) {
+                        // Create a copy of the selection range to work with
+                        var range = sel.getRangeAt(0).cloneRange();
+
+                        // Get the selected content
+                        var content = range.extractContents();
+
+                        // Expand the range to the parent if there is no selected content
+                        if (fragmentToHtml(content) == '') {
+                            editor.expandToParent(range);
+                            sel.setSingleRange(range);
+                            content = range.extractContents();
+                        }
+
+                        content = $('<div/>').append(fragmentToHtml(content)).text();
+
+                        // Get the containing element
+                        var parent = range.commonAncestorContainer;
+                        while (parent && parent.parentNode != editor.getElement().get(0)) {
+                            parent = parent.parentNode;
+                        }
+
+                        if (parent) {
+                            // Place the end of the range after the paragraph
+                            range.setEndAfter(parent);
+
+                            // Extract the contents of the paragraph after the caret into a fragment
+                            var contentAfterRangeStart = range.extractContents();
+
+                            // Collapse the range immediately after the paragraph
+                            range.collapseAfter(parent);
+
+                            // Insert the content
+                            range.insertNode(contentAfterRangeStart);
+
+                            // Move the caret to the insertion point
+                            range.collapseAfter(parent);
+                            range.insertNode(document.createTextNode(content));
+                        } else {
+                            range.insertNode(document.createTextNode(content));
+                        }
+                    }
+
+
+/**
+ * If a entire heading is selected, replace it with a p
+ *
+ * If part of a heading is selected, remove all inline styles, and disallowed tags from the selection.
+ *
+ * If content inside a p remove all inline styles, and disallowed tags from the selection.
+ *
+ * If the selection starts in a heading, then ends in another element, convert all headings to a p.
+ *
+ */
+
+//                    selectionEachRange(function(range) {
+//                        if (range.collapsed) {
+//                            // Expand to parent
+//                            rangeExpandTo(range, [editor.getElement(), 'p, h1, h2, h3, h4, h5, h6']);
+//                        }
+//
+//                        if (rangeIsWholeElement(range)) {
+//
+//                        }
+//
+//                        if (range.endOffset === 0) {
+//                            range.setEndBefore(range.endContainer);
+//                            console.log(range.endContainer);
+//                        }
+//                        range.refresh();
+//                        console.log(range);
+//
+////                        console.log(range);
+////                        console.log(range.toHtml(), range.toString());
+////                        console.log($(range.commonAncestorContainer).html(), $(range.commonAncestorContainer).text());
+////                        console.log($(range.toHtml()));
+////                        range.splitBoundaries();
+////                        console.log(range);
+////                        var nodes = range.getNodes([3]);
+////                        console.log(nodes);
+////                        for (var i = nodes.length - 1; i >= 0; i--) {
+////                            console.log(nodes[i]);
+////                            console.log($.trim(nodes[i].nodeValue) === '');
+////                            //console.log(nodes[i].nodeValue, $.trim(nodes[i].nodeValue));
+////                        }
+//                        selectionSet(range);
+//                    });
+
+                    editor.checkChange();
+                }
+            });
+        }
+    }
+
 });
 /**
  * @fileOverview Click to edit plugin
@@ -29542,6 +29635,7 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
             // Set caret position to the end of the current text node
             plugin.editor.selectEnd(this);
         });
+        this.editor.checkChange();
     },
 
     /**
@@ -29580,11 +29674,11 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
          */
         init: function(editor) {
             return editor.uiButton({
-                title: _('Float Left'),
+                title: _('Float Image Left'),
                 click: function() {
-                    editor.toggleBlockStyle({
-                        'float': 'left'
-                    }, editor.getElement());
+                    selectionEachRange(function(range) {
+                        $(range.commonAncestorContainer).find('img').css('float', 'left');
+                    });
                 }
             });
         }
@@ -29604,11 +29698,11 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
          */
         init: function(editor) {
             return editor.uiButton({
-                title: _('Float Right'),
+                title: _('Float Image Right'),
                 click: function() {
-                    editor.toggleBlockStyle({
-                        'float': 'right'
-                    }, editor.getElement());
+                    selectionEachRange(function(range) {
+                        $(range.commonAncestorContainer).find('img').css('float', 'right');
+                    });
                 }
             });
         }
@@ -29628,11 +29722,11 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
          */
         init: function(editor) {
             return editor.uiButton({
-                title: _('Float None'),
+                title: _('Remove Image Float'),
                 click: function() {
-                    editor.toggleBlockStyle({
-                        'float': 'none'
-                    }, editor.getElement());
+                    selectionEachRange(function(range) {
+                        $(range.commonAncestorContainer).find('img').css('float', 'none');
+                    });
                 }
             });
         }
@@ -29805,20 +29899,21 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
          * Array of action objects.
          * For a hotkey triggering a UI action:
          *
- <pre>{
-    ui: 'textBold', // Name of UI element to be triggered by this hotkey
-    key: 'b', // Key triggering this action
-    label: 'ctrl + b', // Label to be appended to the UI element's title attribute
-    meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
-}</pre>
+         * <pre>{
+         *     ui: 'textBold', // Name of UI element to be triggered by this hotkey
+         *     key: 'b', // Key triggering this action
+         *     label: 'ctrl + b', // Label to be appended to the UI element's title attribute
+         *     meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
+         * }</pre>
          *
          * For a hotkey triggering a custom action:
          *
-<pre>{
-    callback: function() { alert('triggered!'); },
-    key: 't',
-    label: 'ctrl + t'
-}</pre>
+         * <pre>{
+         *     callback: function() { alert('triggered!'); },
+         *     key: 't',
+         *     label: 'ctrl + t'
+         * }</pre>
+         *
          * @type {Array}
          */
         actions: [
@@ -29906,6 +30001,7 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
             this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
             if (typeof action.ui !== 'undefined') {
                 var uiObject = this.editor.getUi(action.ui);
+                // Only trigger if the UI object is enabled
                 if (typeof uiObject !== 'undefined') {
                     uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
                 }
@@ -30641,7 +30737,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             }
 
             var plugin = this;
-            this.showOversizeWarning(this.editor.outerHtml(imageLink), {
+            this.showOversizeWarning(elementOuterHtml($(imageLink)), {
                 hide: function() {
                     image.removeClass(plugin.options.resizingClass);
                 }
@@ -30758,10 +30854,10 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             heightInputSelector = '#' + this.options.baseClass + '-height',
             plugin = this;
 
-        var updateImageSize = function() {
+        var updateImageSize = function(width, height) {
             $(image).css({
-                width: Math.round($(widthInputSelector).val()) + 'px',
-                height: Math.round($(heightInputSelector).val()) + 'px'
+                width: width || Math.round($(widthInputSelector).val()) + 'px',
+                height: height || Math.round($(heightInputSelector).val()) + 'px'
             });
         };
 
@@ -30770,10 +30866,12 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             height: height,
             baseClass: this.options.baseClass
         }));
+
         dialog.dialog({
             modal: true,
             resizable: false,
             title: _('Modify Image Size'),
+            autoOpen: true,
             buttons: [
                 {
                     text: _('Resize Image'),
@@ -30785,12 +30883,14 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 {
                     text: _('Cancel'),
                     click: function() {
+                        updateImageSize(width, height);
                         $(this).dialog('close');
                     }
                 }
             ],
             close: function() {
-                plugin.editor.fire('change');
+                plugin.editor.checkChange();
+                $(dialog).remove();
             },
             open: function() {
                 var widthInput = $(this).find(widthInputSelector);
@@ -30803,9 +30903,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                     widthInput.val(Math.round(Math.abs((width / height) * $(this).val())));
                     updateImageSize();
                 });
-
             }
-        }).dialog('open');
+        });
     },
 
     /**
@@ -30826,8 +30925,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
         resizeButton.css({
                 position: 'absolute',
-                left: ($(image).innerWidth() - $(resizeButton).outerWidth() - 20) + 'px',
-                marginTop: '20px'
+                left: ($(image).position().left + $(image).innerWidth() - $(resizeButton).outerWidth() - 10) + 'px',
+                marginTop: '10px'
             })
             .click($.proxy(this.manuallyResizeImage, this))
 
@@ -30925,7 +31024,7 @@ $.ui.editor.registerUi({
             if (debugLevel >= MID) debug('Updating length count');
             // </debug>
 
-            var charactersRemaining = this.options.length - $('<div></div>').html(this.editor.getCleanHtml()).text().length;
+            var charactersRemaining = this.options.length - $('<div/>').html(this.editor.getCleanHtml()).text().length;
 
             var button = this.ui.button;
             var label = null;
@@ -30984,7 +31083,7 @@ $.ui.editor.registerUi({
          * @return {jQuery} The processed statistics dialog template
          */
         processTemplate: function() {
-            var content = $('<div></div>').html(this.editor.getCleanHtml()).text();
+            var content = $('<div/>').html(this.editor.getCleanHtml()).text();
             var truncation = null;
             var charactersRemaining = this.options.length - content.length;
             if (charactersRemaining < 0) {
@@ -31590,7 +31689,7 @@ $.ui.editor.registerUi({
         }
 
         // Prepare link to be shown in any confirm message
-        var link = this.editor.outerHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
+        var link = elementOuterHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
                 attr($.extend({}, attributes, { target: '_blank' })));
 
         if (!edit) {
@@ -31842,8 +31941,10 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
 
         // Every li of the list has been selected, replace the entire list
         if (firstLiSelected && lastLiSelected) {
-            this.editor.selectOuter(parentListContainer);
-            this.editor.replaceSelection(listElementsContent.join(''));
+            parentListContainer.replaceWith(listElementsContent.join(''));
+            this.editor.restoreSelection();
+            var selectedElement = this.editor.getSelectedElements()[0];
+            this.editor.selectOuter(selectedElement);
             return;
         }
 
@@ -31856,6 +31957,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         }
 
         this.editor.restoreSelection();
+        this.editor.checkChange();
     },
 
     /**
@@ -31863,6 +31965,10 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * @param  {string} listType One of ul or ol.
      */
     wrapList: function(listType) {
+        this.editor.constrainSelection(this.editor.getElement());
+        if ($.trim(this.editor.getSelectedHtml()) === '') {
+            this.editor.selectInner(this.editor.getSelectedElements());
+        }
 
         var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
 
@@ -31876,31 +31982,40 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             if ('block' === plugin.getElementDefaultDisplay(this.tagName)) {
                 liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
             } else {
-                liContent = plugin.editor.stripTags(plugin.editor.outerHtml($(this)), plugin.validChildren);
+                liContent = plugin.editor.stripTags(elementOuterHtml($(this)), plugin.validChildren);
             }
 
             // Avoid inserting blank lists
             var listElement = $('<li>' + liContent + '</li>');
             if ($.trim(listElement.text()) !== '') {
-                listElements.push(plugin.editor.outerHtml(listElement));
+                listElements.push(elementOuterHtml(listElement));
             }
         });
-
-        // When selection is empty, insert a placeholder list
-        if (!listElements.length) {
-            listElements.push('<li>List element content</li>');
-        }
 
         var replacementClass = this.options.baseClass + '-selection';
         var replacementHtml = '<' + listType + ' class="' + replacementClass + '">' + listElements.join('') + '</' + listType + '>';
 
         // Selection must be restored before it may be replaced.
         this.editor.restoreSelection();
-        this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+
+        var selectedElementParent = $(this.editor.getSelectedElements()[0]).parent();
+        var editingElement = this.editor.getElement()[0];
+
+        /*
+         * Replace selection if the selected element parent or the selected element is the editing element,
+         * instead of splitting the editing element.
+         */
+        if (selectedElementParent === editingElement
+            || this.editor.getSelectedElements()[0] === editingElement) {
+            this.editor.replaceSelection(replacementHtml);
+        } else {
+            this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+        }
 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
         this.editor.selectInner(selectedElement.find('li:first')[0]);
+        this.editor.checkChange();
     },
 
     /**
@@ -32030,7 +32145,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.7?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.8?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32060,7 +32175,16 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
          * @type {Array}
          */
         allowedTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote', 'p', 'a', 'span'
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
+            'p', 'a', 'span', 'hr', 'br'
+        ],
+
+        allowedAttributes: [
+            'href', 'title'
+        ],
+
+        allowedEmptyTags: [
+            'hr', 'br'
         ]
     },
 
@@ -32086,15 +32210,17 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             $(selector).focus();
 
             window.setTimeout(function() {
-                var content = $(selector).html();
-                content = plugin.filterAttributes(content);
-                content = plugin.filterChars(content);
-                content = plugin.editor.stripTags(content, plugin.options.allowedTags);
-                content = plugin.stripEmpty(content);
+                var markup = $(selector).html();
+                markup = plugin.filterAttributes(markup);
+                markup = plugin.filterChars(markup);
+                markup = plugin.stripEmpty(markup);
+                markup = plugin.stripAttributes(markup);
+                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
+
                 var vars = {
-                    html: content,
-                    plain: $('<div/>').html(content).text(),
-                    markup: plugin.stripAttributes(content)
+                    plain: $('<div/>').html($(selector).html()).text(),
+                    markup: markup,
+                    html: $(selector).html()
                 };
 
                 dialog = $(editor.getTemplate('paste.dialog', vars));
@@ -32149,8 +32275,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                     open: function() {
                         // Create fake jQuery UI tabs (to prevent hash changes)
                         var tabs = $(this).find('.ui-editor-paste-panel-tabs');
-                        tabs.find('ul li').click(function() {
-                            tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                        tabs.find('ul.ui-tabs-nav li').click(function() {
+                            tabs.find('ul.ui-tabs-nav li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
                             $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
                             tabs.children('div').hide().eq($(this).index()).show();
                         });
@@ -32258,20 +32384,24 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     stripAttributes: function(content) {
         content = $('<div/>').html(content);
+        var allowedAttributes = this.options.allowedAttributes;
+
         $(content.find('*')).each(function() {
-            // First copy the attributes to remove if we don't do this it causes problems iterating over the array we're removing elements from
-            var attributes = $.map(this.attributes, function(item) {
-                return item.name;
+            // First copy the attributes to remove if we don't do this it causes problems iterating over the array
+            // we're removing elements from
+            var attributes = [];
+            $.each(this.attributes, function(index, attribute) {
+                // Do not remove allowed attributes
+                if (-1 !== $.inArray(attribute.nodeName, allowedAttributes)) {
+                    return;
+                }
+                attributes.push(attribute.nodeName);
             });
 
-            // now use jQuery to remove the attributes
-            var element = $(this);
-            $.each(attributes, function(i, item) {
-                // Avoid DOM node type exceptions in Chrome
-                try {
-                    element.removeAttr(item);
-                } catch (e) {}
-            });
+            // now remove the attributes
+            for (var attributeIndex = 0; attributeIndex < attributes.length; attributeIndex++) {
+                $(this).attr(attributes[attributeIndex], null);
+            }
         });
         return content.html();
     },
@@ -32283,8 +32413,17 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      */
     stripEmpty: function(content) {
         var wrapper = $('<div/>').html(content);
+        var allowedEmptyTags = this.options.allowedEmptyTags;
         wrapper.find('*').filter(function() {
-            return $.trim($(this).text()) === ''
+            // Do not strip elements in allowedEmptyTags
+            if (-1 !== $.inArray(this.tagName.toLowerCase(), allowedEmptyTags)) {
+                return false;
+            }
+            // If the element has at least one child element that exists in allowedEmptyTags, do not strip it
+            if ($(this).find(allowedEmptyTags.join(',')).length) {
+                return false;
+            }
+            return $.trim($(this).text()) === '';
         }).remove();
         return wrapper.html();
     },
@@ -32594,11 +32733,6 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
      * @param  {String} id Editing element's identfier
      */
     ajax: function(contentData, id) {
-        // Create POST data
-        //var data = {};
-
-        // Content is serialized to a JSON object, and sent as 1 post parameter
-        //data[this.options.postName] = JSON.stringify(contentData);
 
         // Create the JSON request
         var ajax = $.extend(true, {}, this.options.ajax);
@@ -32861,6 +32995,7 @@ $.ui.editor.registerUi({
                 title: _('Save'),
                 icon: 'ui-icon-save',
                 click: function() {
+                    editor.checkChange();
                     editor.getPlugin(this.options.plugin).save();
                 }
             });
@@ -33069,7 +33204,6 @@ $.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.p
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
-
 (function() {
     /**
      * The warning message node.
@@ -33083,105 +33217,53 @@ $.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.p
      */
     var dirty = 0;
 
-/**
- * @name $.editor.plugin.unsavedEditWarning
- * @augments $.ui.editor.defaultPlugin
- * @see $.editor.plugin.unsavedEditWarning.options
- * @class
- */
-$.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsavedEditWarning.prototype */ {
-
     /**
-     * @name $.editor.plugin.unsavedEditWarning.options
-     * @namespace Default options
-     * @see $.editor.plugin.unsavedEditWarning
-     * @type {Object}
+     * @name $.editor.plugin.unsavedEditWarning
+     * @augments $.ui.editor.defaultPlugin
+     * @see $.editor.plugin.unsavedEditWarning.options
+     * @class
      */
-    options: /** @lends $.editor.plugin.unsavedEditWarning.options.prototype */  {
+    $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsavedEditWarning.prototype */ {
 
         /**
-         * @see $.editor.plugin.unsavedEditWarning.options
-         * @type {Object}
+         * @see $.ui.editor.defaultPlugin#init
          */
-//        position: {
-//            collision: 'right bottom',
-//            at: 'right bottom',
-//            my: 'right bottom',
-//            using: function(position) {
-//                $(this).css({
-//                    position: 'absolute',
-//                    top: position.top,
-//                    left: position.left
-//                });
-//            }
-//        }
-    },
+        init: function(editor, options) {
+            var plugin = this;
 
-    /**
-     * @see $.ui.editor.defaultPlugin#init
-     */
-    init: function(editor, options) {
-        if (!warning) {
-            warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))
-                .attr('id', editor.getUniqueId())
-                .appendTo('body');
+            if (!warning) {
+                warning = $(editor.getTemplate('unsavededitwarning.warning', this.options))
+                    .attr('id', editor.getUniqueId())
+                    .appendTo('body')
+                    .bind('mouseenter.' + editor.widgetName, function() {
+                        $.ui.editor.eachInstance(function(editor) {
+                            if (editor.isDirty()) {
+                                editor.getElement().addClass(plugin.options.baseClass + '-dirty');
+                            }
+                        });
+                    })
+                    .bind('mouseleave.' + editor.widgetName, function() {
+                        $('.' + plugin.options.baseClass + '-dirty').removeClass(plugin.options.baseClass + '-dirty');
+                    });
+            }
+
+            editor.bind('dirty', function() {
+                dirty++;
+                if (dirty > 0) {
+                    elementBringToTop(warning);
+                    warning.addClass(plugin.options.baseClass + '-visible');
+                }
+            });
+
+            editor.bind('cleaned', function() {
+                dirty--;
+                if (dirty === 0) {
+                    warning.removeClass(plugin.options.baseClass + '-visible');
+                }
+            });
         }
 
-        var plugin = this;
-        editor.bind('dirty', function() {
-            dirty++;
-            if (dirty > 0) {
-                warning.addClass(plugin.options.baseClass + '-visible');
-            }
-        });
-
-        editor.bind('cleaned', function() {
-            dirty--;
-            if (dirty === 0) {
-                warning.removeClass(plugin.options.baseClass + '-visible');
-            }
-        });
-
-//        editor.bind('change', function() {
-//            if (editor.isDirty() && editor.isEditing()) this.show();
-//            else this.hide();
-//        }, this);
-//
-//        editor.bind('destroy', function() {
-//            this.warning.remove();
-//            this.warning = null;
-//        }, this);
-    },
-
-    /**
-     * Show the warning
-     */
-    show: function() {
-//        this.reposition();
-//        this.warning.addClass(this.options.baseClass + '-visible').show();
-    },
-
-    /**
-     * Hide the warning
-     */
-    hide: function() {
-//        this.warning.removeClass(this.options.baseClass + '-visible');
-    },
-
-    /**
-     * Reposition the warning according to the element's dimensions
-     */
-    reposition: function() {
-//        // Have to use the ID because if given the element, the browser will memory leak and crash
-//        this.options.position.of = '#' + this.editor.getElement().attr('id');
-//        // <strict>
-//        if (!$(this.options.position.of).length) {
-//            handleError(_('Editor element has been removed, unsaved edit warning plugin cannot reposition'));
-//        }
-//        // </strict>
-//        this.warning.position(this.options.position);
-    }
-});
+    });
 
 })();/**
  * @fileOverview View source UI component
@@ -33198,16 +33280,10 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
     viewSource: /** @lends $.editor.ui.viewSource.prototype */ {
 
         /**
-         * Reference to the view source dialog
-         * @type {Object}
-         */
-        dialog: null,
-
-        /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
-            editor.bind('hide', this.hide, this);
+//            editor.bind('hide', this.hide, this);
 
             return editor.uiButton({
                 title: _('View / Edit Source'),
@@ -33217,234 +33293,226 @@ $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsa
             });
         },
 
-        tab: function() {
-            return '    ';
-        },
-
-        highlightSource: function() {
-            var rainbowPresent = typeof window.Rainbow !== 'undefined';
-            if (!rainbowPresent) {
-                // <strict>
-                handleError(_('jquery.ui.editor.viewsource requires Rainbow'));
-                // </strict>
-            }
-            return rainbowPresent;
-        },
-
-        untidyHtml: function(highlightedSource) {
-            var html = $('<div/>').html(highlightedSource);
-
-            // Unwrap highlighting helpers
-            $(html).find('span.support').each(function() {
-                $(this).contents().unwrap();
-            });
-
-            html = html.html();
-            html = html.replace(/&lt;/g, '<');
-            html = html.replace(/&gt;/g, '>');
-            html = html.replace(/&amp;/g, '&');
-
-            return html;
-        },
-
-        tidyHtml: function(html) {
-            if (typeof HTMLParser === 'undefined') {
-                // <strict>
-                handleError(_('jquery.ui.editor.viewsource requires HTMLParser'));
-                // </strict>
-                return html;
-            }
-            var depth = 0;
-            var tidiedHtml = '';
-            var ui = this;
-            HTMLParser(html, {
-                start: function(tag, attrs, unary) {
-                    for (var i = 0; i < depth; i++) {
-                        tidiedHtml += ui.tab();
-                    }
-                    tidiedHtml += "<" + tag;
-                    for (i = 0; i < attrs.length; i++ ) {
-                        tidiedHtml += " " + attrs[i].name + '="' + attrs[i].escaped + '"';
-                    }
-                    tidiedHtml += (unary ? "/" : "") + ">";
-                    depth++;
-                },
-                end: function(tag) {
-                    tidiedHtml += '</' + tag + '>';
-                    depth--;
-                },
-                chars: function( text ) {
-                    tidiedHtml += text;
-                },
-                comment: function( text ) {
-                    tidiedHtml += "<!--" + text + "-->";
-                }
-            });
-            return tidiedHtml;
-        },
-
-        prepareSource: function(dialog) {
-
-            if (this.highlightSource()) {
-                var html = this.tidyHtml($.trim(this.editor.getHtml()));
-                var highlighted = $(dialog).find('.' + this.options.baseClass + '-highlighted');
-
-                var highlight = function(element, html, ui) {
-
-                    element = $(element);
-
-                    var code = element.find('code:first');
-
-                    code.unbind('keydown keyup');
-                    code.attr('contenteditable', true);
-
-                    Rainbow.color(html, 'html', function(highlightedHtml) {
-                        code.html(highlightedHtml);
-                        element.show();
-
-                        var getFirstRange = function() {
-                            var sel = rangy.getSelection();
-                            return sel.rangeCount ? sel.getRangeAt(0) : null;
-                        };
-
-                        var previousContent = '';
-
-                        code.bind('keydown', function(event) {
-                            previousContent = code.html();
-                            switch(event.keyCode) {
-
-                                // Prevent enter key presses from triggering creation of new <pre> tag
-                                case 13:
-                                    var range = getFirstRange();
-                                    var added = false;
-                                    var newline = document.createTextNode('\r\n');
-
-                                    if (range) {
-                                        range.insertNode(newline);
-                                        range.setEndAfter(newline);
-                                        range.setStartAfter(newline);
-                                        var sel = rangy.getSelection();
-                                        sel.setSingleRange(range);
-                                        added = true;
-                                    }
-
-                                    if (added) {
-                                        event.preventDefault();
-                                    }
-                                    return false;
-
-                                // Insert a tab or indent selection
-                                case 9:
-                                    var range = getFirstRange();
-                                    var tab = document.createTextNode(ui.tab());
-                                    if (range) {
-                                        range.insertNode(tab);
-                                        var sel = rangy.getSelection();
-                                        range.setEndAfter(tab);
-                                        range.setStartAfter(tab);
-                                        sel.setSingleRange(range);
-                                    }
-                                    return false;
-                            }
-                        });
-
-                        var keydown = false;
-                        code.bind('keydown', function() {
-                            keydown = true;
-                        });
-
-                        code.bind('keyup', function() {
-                            keydown = false;
-                            window.setTimeout(function() {
-                                if (!keydown) {
-                                    if (previousContent == code.html()) {
-                                        return true;
-                                    }
-                                    try {
-                                        var untidyHtml = ui.untidyHtml(code.html());
-                                        if ($('<div/>').html(untidyHtml).html() == untidyHtml) {
-                                            highlight(element, untidyHtml, ui);
-                                        }
-                                    } catch (e) {
-                                        console.log('error');
-                                    }
-                                }
-                            }, 5000);
-                        });
-                    });
-
-                };
-                highlight(highlighted, html, this);
-            } else {
-                $(dialog).find('textarea').val($.trim(this.editor.getHtml()));
-                $(dialog).find('.' + this.options.baseClass + '-plain-text').show();
-            }
-        },
-
-        /**
-         * Hide, destroy & remove the view source dialog. Enable the button.
-         */
-        hide: function() {
-            if (this.dialog) $(this.dialog).dialog('destroy').remove();
-            this.dialog = null;
-            $(this.ui.button).button('option', 'disabled', false);
-        },
-
         /**
          * Show the view source dialog. Disable the button.
          */
         show: function() {
-            if (!this.dialog) {
-                $(this.ui.button).button('option', 'disabled', true);
-                var ui = this;
-                this.dialog = $(this.editor.getTemplate('viewsource.dialog', { baseClass: ui.options.baseClass }));
+            var ui = this;
 
-                this.dialog.dialog({
-                    modal: false,
-                    width: 600,
-                    height: 400,
-                    resizable: true,
-                    title: _('View Source'),
-                    autoOpen: true,
-                    dialogClass: ui.options.baseClass + ' ' + ui.options.dialogClass,
-                    buttons: [
-                        {
-                            text: _('Apply Source'),
-                            click: function() {
-                                var html;
-                                if (ui.highlightSource()) {
-                                    html = $(this).find('.' + ui.options.baseClass + '-highlighted pre code:first').html();
-                                    html = ui.untidyHtml(html);
-                                } else {
-                                    html = $(this).find('textarea').val();
-                                }
-                                ui.editor.setHtml(html);
-                                $(this).find('textarea').val(ui.editor.getHtml());
-                            }
-                        },
-                        {
-                            text: _('Close'),
-                            click: function() {
-                                ui.hide();
-                            }
+            var dialog = $(this.editor.getTemplate('viewsource.dialog', {
+                baseClass: ui.options.baseClass,
+                source: ui.editor.getHtml()
+            }));
+
+            var button = this.ui.button;
+            $(button).button('option', 'disabled', true);
+
+            dialog.dialog({
+                modal: false,
+                width: 600,
+                height: 400,
+                resizable: true,
+                title: _('View Source'),
+                autoOpen: true,
+                dialogClass: ui.options.baseClass + ' ' + ui.options.dialogClass,
+                buttons: [
+                    {
+                        text: _('Apply Source'),
+                        click: function() {
+                            var html = $(this).find('textarea').val();
+                            ui.editor.setHtml(html);
+                            $(this).find('textarea').val(ui.editor.getHtml());
                         }
-                    ],
-                    open: function() {
-                        var buttons = $(this).parent().find('.ui-dialog-buttonpane');
-                        buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
-                        buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
-
-                        ui.prepareSource.call(ui, this);
-
                     },
-                    close: function() {
-                        ui.hide();
+                    {
+                        text: _('Close'),
+                        click: function() {
+                            $(this).dialog('close');
+                        }
                     }
-                });
-            }
+                ],
+                open: function() {
+                    var buttons = $(this).parent().find('.ui-dialog-buttonpane');
+                    buttons.find('button:eq(0)').button({ icons: { primary: 'ui-icon-circle-check' }});
+                    buttons.find('button:eq(1)').button({ icons: { primary: 'ui-icon-circle-close' }});
+                },
+                close: function() {
+                    $(this).dialog('destroy').remove();
+                    $(button).button('option', 'disabled', false);
+                    ui.editor.checkChange();
+                }
+            });
         }
     }
-});
+});/**
+ * @fileOverview
+ * @author David Neilsen - david@panmedia.co.nz
+ * @author Michael Robinson - michael@panmedia.co.nz
+ * @version 0.1
+ */
+
+/**
+ * Remove comments from element.
+ *
+ * @param  {jQuery} parent The jQuery element to have comments removed from.
+ * @return {jQuery} The modified parent.
+ */
+function elementRemoveComments(parent) {
+    parent.contents().each(function() {
+        if (this.nodeType == 8) {
+            $(this).remove()
+        }
+    });
+    parent.children().each(function() {
+        element.removeComments($(this));
+    });
+    return parent;
+}
+
+/**
+ * Remove all but the allowed attributes from the parent.
+ *
+ * @param {jQuery} parent The jQuery element to cleanse of attributes.
+ * @param {String[]|null} allowedAttributes An array of allowed attributes.
+ * @return {jQuery} The modified parent.
+ */
+function elementRemoveAttributes(parent, allowedAttributes) {
+    parent.children().each(function() {
+        var stripAttributes = $.map(this.attributes, function(item) {
+            if ($.inArray(item.name, allowedAttributes) === -1) {
+                return item.name;
+            }
+        });
+        var child = $(this);
+        $.each(stripAttributes, function(i, attributeName) {
+            child.removeAttr(attributeName);
+        });
+        element.removeAttributes($(this), allowedAttributes);
+    });
+    return parent;
+}
+
+/**
+ * Sets the z-index CSS property on an element to 1 above all its sibling elements.
+ *
+ * @param {jQuery} element The jQuery element to cleanse of attributes.
+ */
+function elementBringToTop(element) {
+    var zIndex = 1;
+    element.siblings().each(function() {
+        var z = $(this).css('z-index');
+        if (!isNaN(z) && z > zIndex) {
+            zIndex = z + 1;
+        }
+    });
+    element.css('z-index', zIndex);
+}
+
+/**
+ * @param  {jQuery} element The jQuery element to retrieve the outer HTML from.
+ * @return {String} The outer HTML.
+ */
+function elementOuterHtml(element) {
+    return element.clone().wrap('<div/>').parent().html();
+}
+
+/**
+ * @param  {jQuery} element The jQuery element to retrieve the outer text from.
+ * @return {String} The outer text.
+ */
+function elementOuterText(element) {
+    return element.clone().wrap('<div/>').parent().text();
+}
+/**
+ * @fileOverview
+ * @author David Neilsen david@panmedia.co.nz
+ * @version 0.1
+ */
+
+/**
+ * Convert a DOMFragment to an HTML string. Optinally wraps the tring in a tag.
+ *
+ */
+function fragmentToHtml(domFragment, tag) {
+    var html = '';
+    // Get all nodes in the extracted content
+    for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+        var node = domFragment.childNodes.item(j);
+        var content = node.nodeType === 3 ? node.nodeValue : elementOuterHtml($(node));
+        if (content) {
+            html += content;
+        }
+    }
+    if (tag) {
+        html = $('<' + tag + '>' + html + '</' + tag + '>');
+        html.find('p').wrapInner('<' + tag + '/>');
+        html.find('p > *').unwrap();
+        html = $('<div/>').html(html).html();
+    }
+    return html;
+}
+/**
+ * @fileOverview
+ * @author David Neilsen david@panmedia.co.nz
+ * @version 0.1
+ */
+
+/**
+ * Expands a range to to surround all of the content from its start container
+ * to its end container.
+ *
+ * @public @static
+ * @param {RangyRange} range The range to expand
+ */
+function rangeExpandToParent(range) {
+    range.setStartBefore(range.startContainer);
+    range.setEndAfter(range.endContainer);
+}
+
+function rangeExpandTo(range, elements) {
+    do {
+        rangeExpandToParent(range);
+        console.log(range.commonAncestorContainer);
+        for (var i = 0, l = elements.length; i < l; i++) {
+            if ($(range.commonAncestorContainer).is(elements[i])) {
+                return;
+            }
+        }
+    } while (range.commonAncestorContainer)
+}
+
+//function rangeIsWholeElement(range) {
+//    return range.toString() ==
+//}
+/**
+ * @fileOverview
+ * @author David Neilsen david@panmedia.co.nz
+ * @version 0.1
+ */
+
+/**
+ * Iterates over all ranges in a selection and calls the callback for each
+ * range. The selection/range offsets is updated in every iteration in in the
+ * case that a range was changed or removed by a previous iteration.
+ *
+ * @public @static
+ * @param {function} callback The function to call for each range. The first and only parameter will be the current range.
+ * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ * @param {object} [context] The context in which to call the callback.
+ */
+function selectionEachRange(callback, selection, context) {
+    selection = selection || rangy.getSelection();
+    var range, i = 0;
+    // Create a new range set every time to update range offsets
+    while (range = selection.getAllRanges()[i++]) {
+        callback.call(context, range);
+    }
+}
+
+function selectionSet(mixed) {
+    rangy.getSelection().setSingleRange(mixed);
+}
+
                 })(jQuery, window, rangy);
             jQuery('<style type="text/css">/*\n\
  * jQuery UI CSS Framework 1.8.7\n\
@@ -34258,6 +34326,9 @@ html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.u
  * @author David Neilsen <david@panmedia.co.nz>\n\
  * @author Michael Robinson <michael@panmedia.co.nz>\n\
  */\n\
+.ui-editor-editing {\n\
+  outline: none; }\n\
+\n\
 /******************************************************************************\\n\
  * Inputs\n\
 \******************************************************************************/\n\
@@ -34300,12 +34371,13 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 \n\
 .ui-editor-selectmenu-button {\n\
   text-align: left;\n\
-  padding: 3px 18px 5px 5px !important; }\n\
+  padding: 3px 18px 5px 5px !important;\n\
+  float: none !important; }\n\
   .ui-editor-selectmenu-button .ui-icon {\n\
     position: absolute;\n\
     right: 1px;\n\
     top: 8px; }\n\
-  .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
+  .ui-editor-selectmenu-button .ui-editor-selectmenu-text {\n\
     font-size: 13px; }\n\
 \n\
 .ui-editor-selectmenu-wrapper {\n\
@@ -34340,32 +34412,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   cursor: pointer;\n\
   background-color: inherit; }\n\
 \n\
-.ui-selectmenu-button {\n\
+.ui-editor-selectmenu-button {\n\
   background: #f5f5f5;\n\
   border: 1px solid #ccc; }\n\
-\n\
-.ui-editor-buttonset .ui-selectmenu-button:first-child {\n\
-  -moz-border-radius-topleft: 5px;\n\
-  -webkit-border-top-left-radius: 5px;\n\
-  -ms-border-top-left-radius: 5px;\n\
-  -o-border-top-left-radius: 5px;\n\
-  border-top-left-radius: 5px;\n\
-  -moz-border-radius-bottomleft: 5px;\n\
-  -webkit-border-bottom-left-radius: 5px;\n\
-  -ms-border-bottom-left-radius: 5px;\n\
-  -o-border-bottom-left-radius: 5px;\n\
-  border-bottom-left-radius: 5px; }\n\
-.ui-editor-buttonset .ui-selectmenu-button:last-child {\n\
-  -moz-border-radius-topright: 5px;\n\
-  -webkit-border-top-right-radius: 5px;\n\
-  -ms-border-top-right-radius: 5px;\n\
-  -o-border-top-right-radius: 5px;\n\
-  border-top-right-radius: 5px;\n\
-  -moz-border-radius-bottomright: 5px;\n\
-  -webkit-border-bottom-right-radius: 5px;\n\
-  -ms-border-bottom-right-radius: 5px;\n\
-  -o-border-bottom-right-radius: 5px;\n\
-  border-bottom-right-radius: 5px; }\n\
 \n\
 .ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {\n\
   -moz-border-radius-bottomleft: 0;\n\
@@ -34703,6 +34752,20 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABNVBMVEUAAAAAAAAgSocgSocgPnAAAABxcXFPT09YWFggSocgSocoToUbPXgSN3kyYZw0ZqT///8iUZkgSoc1Z6UiUJaJrNkwXpZIeLiOvO03a6s4b7JekNUjUpqCp9eNr9pSjeAwX5g2aqquxuV8otPB1euOsNv8/f6gveFgkdVnkMmbuuVfk9lkk9fK3Pbs8vmWtd5Vjs98odCHqNWkv+Jzms6Qt+xnmNuzyudVidS90u6hwe5mmuQtXKCow+OqxepNg82Xtd3C1Ox0m89vl8x3oNl4n9NSjuDi7PqlxO+MtOyWtt2fwO60y+dUjt5zm8/L2+9qneT3+f7g6/qDrelRi95snuWowuSfvOGPr9uwyeqRsdqUs9qat92OrtmDptN5ns9Rh8hqk8uXuehwnt1vl83e6vmZu+gBAK69AAAADXRSTlMbAKM01gogSSmAy7W1OP1GaAAAAM1JREFUeF5VzNN2A1EAQNE7TIrrsSe0Udu2zf//hHZWk672PO6HAySR/UmUwBjT9XyzeJlZuGpe60wE474TxxghhHEcOz4DzLcxRoZhJGT/AOcoiiKEOE9AZEGw291fOcpNdZeD74fEqKZ5lFLP0+YplIDAzBfXrTQKNyW3bEIhgV51QD5fyVv1fQir0zOzcxfW4tLaCGqkHoYWWR/BxubW9k5/7+PgcAjZ8JicnJKz82wC6gRstTu3d/cPj0/PcFIF6ZQMf5NTaaCAfylf1j4ecCeyzckAAAAASUVORK5CYII=\') 0 0; }\n\
 \n\
 .ui-editor-clean-button:hover .ui-icon-clean {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
+  opacity: 1; }\n\
+\n\
+/**\n\
+ * Clear formatting style plugin.\n\
+ *\n\
+ * @author David Neilsen <david@panmedia.co.nz>\n\
+ */\n\
+.ui-editor-clear-formatting-button .ui-icon {\n\
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
+  opacity: 0.85;\n\
+  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wGGxcPH7KJ9wUAAAEKSURBVDjL3ZG9SgNBFIW/I76D1RIEazEIFitWNguxUPANUkUIKG4jYiEBC7WwUFJZiNssFvoOFipMFx/AoIVVEAvxB7w2MyBhV5Iq4IHLPecy9zBzBv4nJLUltQc5O1awXAE+gAnPhzMAFoE7YNzzoQ0WgBvg1vPBDSRNAl9m9gC4ebPpc+jkkADkkOTggi4KryFpV9KMpHgfXr/T1DJwGWxn4IIuM7iQdB1qDu73oPder9spuNDPYLZoeUrSZd9saQUej6DzUqvZCbhj2Pjr+pu/ZzuwnMLbc7Vqh+BCPyjIIAaefMVhuA69bhTZGnyuwlULXDeKrFWWQT+akDTAbfk3B90s+4WR4Acs5VZuyM1J1wAAAABJRU5ErkJggg==\') 0 0; }\n\
+\n\
+.ui-editor-clear-formatting-button:hover .ui-icon {\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
   opacity: 1; }\n\
 \n\
@@ -35100,22 +35163,22 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   top: -8px;\n\
   text-align: left; }\n\
 \n\
-.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-status {\n\
+.ui-editor-wrapper .ui-editor-i18n-select .ui-editor-selectmenu-status {\n\
   font-size: 13px;\n\
   line-height: 10px; }\n\
 \n\
-.ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
+.ui-editor-selectmenu-menu li a, .ui-editor-selectmenu-status {\n\
   line-height: 12px; }\n\
 \n\
-.ui-editor-wrapper .ui-editor-i18n-select .ui-selectmenu-item-icon {\n\
+.ui-editor-wrapper .ui-editor-i18n-select .ui-editor-selectmenu-item-icon {\n\
   height: 24px;\n\
   width: 24px; }\n\
 \n\
-.ui-selectmenu-menu .ui-icon.ui-editor-i18n-en,\n\
+.ui-editor-selectmenu-menu .ui-icon.ui-editor-i18n-en,\n\
 .ui-editor-wrapper .ui-icon.ui-editor-i18n-en {\n\
   background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAflJREFUeNpinDRzn5qN3uFDt16+YWBg+Pv339+KGN0rbVP+//2rW5tf0Hfy/2+mr99+yKpyOl3Ydt8njEWIn8f9zj639NC7j78eP//8739GVUUhNUNuhl8//ysKeZrJ/v7z10Zb2PTQTIY1XZO2Xmfad+f7XgkXxuUrVB6cjPVXef78JyMjA8PFuwyX7gAZj97+T2e9o3d4BWNp84K1NzubTjAB3fH0+fv6N3qP/ir9bW6ozNQCijB8/8zw/TuQ7r4/ndvN5mZgkpPXiis3Pv34+ZPh5t23//79Rwehof/9/NDEgMrOXHvJcrllgpoRN8PFOwy/fzP8+gUlgZI/f/5xcPj/69e/37//AUX+/mXRkN555gsOG2xt/5hZQMwF4r9///75++f3nz8nr75gSms82jfvQnT6zqvXPjC8e/srJQHo9P9fvwNtAHmG4f8zZ6dDc3bIyM2LTNlsbtfM9OPHH3FhtqUz3eXX9H+cOy9ZMB2o6t/Pn0DHMPz/b+2wXGTvPlPGFxdcD+mZyjP8+8MUE6sa7a/xo6Pykn1s4zdzIZ6///8zMGpKM2pKAB0jqy4UE7/msKat6Jw5mafrsxNtWZ6/fjvNLW29qv25pQd///n+5+/fxDDVbcc//P/zx/36m5Ub9zL8+7t66yEROcHK7q5bldMBAgwADcRBCuVLfoEAAAAASUVORK5CYII=\') 0 0; }\n\
 \n\
-.ui-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,\n\
+.ui-editor-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,\n\
 .ui-editor-wrapper .ui-icon.ui-editor-i18n-zh_CN {\n\
   background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFqSURBVHjaYrzOwPAPjJgYQEDAleHVbhADIvgHLPgHiQ0QQCxAlkR9NW8sw+cV/1gV/7Gb/hV4+vfzhj8Mv/78//Pn/+/f/8AkhH1t0yaAAAJp4I37zyz2lDfu79uqv/++/WYz+cuq/vvLxt8gdb+A5K9/v34B2SyyskBLAAII5JAva/7/+/z367a/f3/8ZuT9+//Pr78vQUrB6n4CSSj6/RuoASCAWEDO/fD3ddEfhv9/OE3/sKj8/n7k9/fDQNUIs/+DVf8HawAIIJCT/v38C3Hr95N/GDh/f94AVvT7N8RUBpjxQAVADQABBNLw/y/Ifwy/f/399ufTOpDBEPf8g5sN0QBEDAwAAQTWABEChgOSA9BVA00E2wAQQCANQBbEif/AzoCqgLkbbBYwWP/+//sXqBYggFhAkfL7D7OkJFCOCSj65zfUeFjwg8z++/ffX5AGoGKAAGI8jhSRyIw/SJH9D4aAYQoQYAA6rnMw1jU2vQAAAABJRU5ErkJggg==\') 0 0; }\n\
 \n\
@@ -35326,7 +35389,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -moz-box-sizing: border-box;\n\
   box-sizing: border-box; }\n\
 \n\
-.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {\n\
+.ui-editor-paste-panel-tabs > div > textarea.ui-editor-paste-area {\n\
   -webkit-box-flex: 1;\n\
   -moz-box-flex: 1;\n\
   -ms-box-flex: 1;\n\
@@ -35382,11 +35445,11 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {\n\
   text-align: left; }\n\
 \n\
-.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-selectmenu-text {\n\
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-editor-selectmenu-text {\n\
   font-size: 13px;\n\
   line-height: 22px; }\n\
 \n\
-.ui-selectmenu-menu li a, .ui-selectmenu-status {\n\
+.ui-editor-selectmenu-menu li a, .ui-editor-selectmenu-status {\n\
   line-height: 12px; }\n\
 \n\
 /**\n\
@@ -35405,6 +35468,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   color: white;\n\
   padding: 11px 16px 7px;\n\
   white-space: nowrap;\n\
+  text-shadow: none;\n\
   overflow: visible;\n\
   z-index: 1000;\n\
   -webkit-pointer-events: none;\n\
@@ -35481,6 +35545,10 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
   opacity: 1; }\n\
 \n\
+.ui-editor-unsaved-edit-warning-dirty {\n\
+  outline: 1px dotted #aaa;\n\
+  background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEUAAACfn5/FQV4CAAAAAnRSTlMAG/z2BNQAAABPSURBVHhexc2xEYAgEAXRdQwILYFSKA1LsxRKIDRwOG8LMDb9++aO8tAvjps4qXMLaGNf5JglxyyEhWVBXpAfyCvyhrwjD74OySfy8dffFyMcWadc9txXAAAAAElFTkSuQmCC\') !important; }\n\
+\n\
 /**\n\
  * View source plugin\n\
  *\n\
@@ -35499,7 +35567,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-ui-view-source .ui-editor-ui-view-source-dialog {\n\
   overflow: auto; }\n\
 \n\
-.ui-editor-ui-view-source-highlighted,\n\
 .ui-editor-ui-view-source-plain-text {\n\
   height: 100%;\n\
   width: 100%;\n\
@@ -35512,7 +35579,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-box-orient: vertical;\n\
   box-orient: vertical; }\n\
 \n\
-.ui-editor-ui-view-source-dialog code,\n\
 .ui-editor-ui-view-source-dialog textarea {\n\
   white-space: pre-line;\n\
   width: 100%;\n\
