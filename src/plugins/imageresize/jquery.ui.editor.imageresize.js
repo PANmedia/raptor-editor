@@ -128,7 +128,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * Proportionately resizes the image, applying width & height attributes and CSS styles
+     * Proportionately resizes the image, applying width CSS style.
      * @param  {String[]} image The images to be resized
      * @param  {int} maxWidth The editing element's maximum width
      * @param  {int} maxHeight The editing element's maximum height
