@@ -1,8 +1,7 @@
 /**
  * @name $.editor.plugin.imageResize
  * @augments $.ui.editor.defaultPlugin
- * @class Automatically resize oversized images with CSS and height / width attributes. If {@link $.editor.plugin.options#resizeAjax} is true,
- * the plugin will make a request to the server for resized image paths.
+ * @class Automatically resize oversized images with CSS and height / width attributes.
  */
 $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize.prototype */ {
 
@@ -16,14 +15,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         allowOversizeImages: false,
         manuallyResizingClass: '',
         resizeButtonClass: '',
-        resizeAjax: false,
-        resizingClass: '',
-        resizeAjaxClass: '',
-        ajax: {
-            url: '/',
-            type: 'post',
-            cache: false
-        }
+        resizingClass: ''
     },
 
     /**
@@ -34,8 +26,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         this.options = $.extend(this.options, {
             manuallyResizingClass: this.options.baseClass + '-manually-resize',
             resizeButtonClass: this.options.baseClass + '-resize-button',
-            resizingClass: this.options.baseClass + '-in-progress',
-            resizeAjaxClass: this.options.baseClass + '-on-save'
+            resizingClass: this.options.baseClass + '-in-progress'
         });
 
         editor.bind('enabled', this.bind, this);
@@ -113,7 +104,6 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             target.attr('_moz_resizing') &&
             event.attrName == 'style' &&
             event.newValue.match(/width|height/)) {
-            if (this.options.resizeAjax) target.addClass(this.options.resizeAjaxClass);
             this.editor.fire('change');
         }
     },
@@ -173,10 +163,6 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 .attr('height', height)
                 .attr('width', width);
 
-            if (this.options.resizeAjax) {
-                image.addClass(this.options.resizeAjaxClass);
-            }
-
             var plugin = this;
             this.showOversizeWarning(elementOuterHtml($(imageLink)), {
                 hide: function() {
@@ -193,66 +179,12 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * Remove resizingClass, call resizeImagesAjax if applicable
+     * Remove resizingClass.
      */
     save: function() {
         this.removeClasses(this.options.resizingClass);
-        if (this.options.resizeAjax) {
-            this.resizeImagesAjax();
-        }
         this.removeToolsButtons();
         this.unbind();
-    },
-
-    /**
-     * Send array of images to be resized to server & update the related image elements' src with that of the resized images
-     */
-    resizeImagesAjax: function() {
-        var plugin = this;
-        var images = [];
-
-        $('.' + this.options.resizeAjaxClass).each(function(){
-            if (!$(this).attr('id')) $(this).attr('id', plugin.editor.getUniqueId());
-            images.push({
-                id: $(this).attr('id'),
-                src: this.src,
-                width: $(this).width(),
-                height: $(this).height()
-            });
-        });
-
-        if (!images.length) return;
-
-        var loading = this.editor.showLoading(_('Resizing image(s)'));
-
-        // Create the JSON request
-        var ajax = this.options.ajax;
-
-        ajax.data = { images: images };
-        ajax.async = false;
-
-        $.ajax(ajax)
-            .done(function(data) {
-                $(data).each(function(){
-                    $('#' + this.id).attr('src', this.src).removeAttr('id');
-                });
-                plugin.editor.fire('change');
-                loading.hide();
-                plugin.editor.showConfirm(_('{{images}} image(s) have been replaced with resized versions', {
-                    images: images.length
-                }));
-            })
-            .fail(function(data) {
-                loading.hide();
-                plugin.editor.showError(_('Failed to resize images (error {{error}})', {
-                    error: data.status
-                }));
-            })
-            .always(function(data) {
-                plugin.removeClasses([
-                    plugin.options.resizeAjaxClass
-                ]);
-            });
     },
 
     /**
@@ -261,15 +193,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {map} options options to be passed to editor.showInfo
      */
     showOversizeWarning: function(imageLink, options) {
-        if (!this.options.resizeAjax) {
-            this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It has been resized with CSS.', {
-                image: imageLink
-            }), options);
-        } else {
-            this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
-                image: imageLink
-            }), options);
-        }
+        this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
+            image: imageLink
+        }), options);
     },
 
     /**
@@ -277,7 +203,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {array} classNames to be removed
      */
     removeClasses: function(classNames) {
-        if (!classNames) classNames = [this.options.resizingClass, this.options.resizeAjaxClass, this.options.manuallyResizingClass];
+        if (!classNames) classNames = [this.options.resizingClass, this.options.manuallyResizingClass];
         if (!$.isArray(classNames)) classNames = [classNames];
         for (var i = 0; i < classNames.length; i++) {
             this.editor.getElement().find('img.' + classNames[i]).removeClass(classNames[i]);
