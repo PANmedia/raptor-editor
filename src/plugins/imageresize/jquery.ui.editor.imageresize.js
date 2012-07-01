@@ -116,13 +116,14 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         var plugin = this;
         var images = [];
         $(element.find('img')).each(function() {
-            if (element.height() < $(this).outerHeight() || element.width() < $(this).outerWidth()) {
+            // Only resize images automatically if they're too wide
+            if (element.width() < $(this).outerWidth()) {
                 images.push($(this));
             }
         });
 
         if (images.length) {
-            plugin.resizeOversizedImages(images, element.width(), element.height());
+            plugin.resizeOversizedImages(images, element.width());
         }
     },
 
@@ -132,7 +133,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {int} maxWidth The editing element's maximum width
      * @param  {int} maxHeight The editing element's maximum height
      */
-    resizeOversizedImages: function(images, maxWidth, maxHeight) {
+    resizeOversizedImages: function(images, maxWidth) {
 
         // Prepare a link to be included in any messages
         var imageLink = $('<a>', {
@@ -145,10 +146,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             var image = images[i];
             var width = image.outerWidth();
             var height = image.outerHeight();
-            var ratio = Math.min(maxWidth / width, maxHeight / height);
+            var ratio = Math.min(maxWidth / width);
 
-            width = Math.abs(ratio * (width - (image.outerWidth() - image.width())));
-            height = Math.abs(ratio * (height - (image.outerHeight() - image.height())));
+            width = Math.round(Math.abs(ratio * (width - (image.outerWidth() - image.width()))));
 
             image.addClass(this.options.resizingClass);
 
@@ -156,12 +156,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                     attr('href', image.attr('src'));
 
             // Resize the image with CSS / attributes
-            $(image).css({
-                    'width': width,
-                    'height': height
-                })
-                .attr('height', height)
-                .attr('width', width);
+            $(image).css({ width: width });
 
             var plugin = this;
             this.showOversizeWarning(elementOuterHtml($(imageLink)), {
