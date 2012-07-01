@@ -216,11 +216,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             heightInputSelector = '#' + this.options.baseClass + '-height',
             plugin = this;
 
-        var updateImageSize = function(width, height) {
-            $(image).css({
-                width: width || Math.round($(widthInputSelector).val()) + 'px',
-                height: height || Math.round($(heightInputSelector).val()) + 'px'
-            });
+        var updateImageSize = function(width) {
+            width = Math.round((width || $(widthInputSelector).val())) + 'px';
+            $(image).css({ width: width });
         };
 
         var dialog = $(this.editor.getTemplate('imageresize.manually-resize-image', {
@@ -245,12 +243,12 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 {
                     text: _('Cancel'),
                     click: function() {
-                        updateImageSize(width, height);
                         $(this).dialog('close');
                     }
                 }
             ],
             close: function() {
+                updateImageSize(width);
                 plugin.editor.checkChange();
                 $(dialog).remove();
             },
