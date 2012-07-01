@@ -29,6 +29,7 @@ $.ui.editor.registerUi({
                 title: _('Save'),
                 icon: 'ui-icon-save',
                 click: function() {
+                    editor.checkChange();
                     editor.getPlugin(this.options.plugin).save();
                 }
             });
