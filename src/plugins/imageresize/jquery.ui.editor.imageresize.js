@@ -295,10 +295,10 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             heightInputSelector = '#' + this.options.baseClass + '-height',
             plugin = this;
 
-        var updateImageSize = function() {
+        var updateImageSize = function(width, height) {
             $(image).css({
-                width: Math.round($(widthInputSelector).val()) + 'px',
-                height: Math.round($(heightInputSelector).val()) + 'px'
+                width: width || Math.round($(widthInputSelector).val()) + 'px',
+                height: height || Math.round($(heightInputSelector).val()) + 'px'
             });
         };
 
@@ -324,6 +324,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 {
                     text: _('Cancel'),
                     click: function() {
+                        updateImageSize(width, height);
                         $(this).dialog('close');
                     }
                 }
