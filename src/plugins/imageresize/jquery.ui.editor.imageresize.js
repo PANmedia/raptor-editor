@@ -307,10 +307,12 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             height: height,
             baseClass: this.options.baseClass
         }));
+
         dialog.dialog({
             modal: true,
             resizable: false,
             title: _('Modify Image Size'),
+            autoOpen: true,
             buttons: [
                 {
                     text: _('Resize Image'),
@@ -327,7 +329,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 }
             ],
             close: function() {
-                plugin.editor.fire('change');
+                plugin.editor.checkChange();
+                $(dialog).remove();
             },
             open: function() {
                 var widthInput = $(this).find(widthInputSelector);
@@ -340,9 +343,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                     widthInput.val(Math.round(Math.abs((width / height) * $(this).val())));
                     updateImageSize();
                 });
-
             }
-        }).dialog('open');
+        });
     },
 
     /**
