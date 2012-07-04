@@ -28598,6 +28598,24 @@ $.ui.editor.registerUi({
         }
     }
 });
+// $.ui.editor.registerUi('textBold', new Button({
+//     options: {
+//         title: _('Bold'),
+//         tag: 'strong',
+//         classes: null
+//     },
+//     init: function() {
+//         this.parent.init.apply(this, arguments);
+//         if (this.options.classes === null) {
+//             this.options.classes = this.options.cssPrefix + 'bold';
+//         }
+//     },
+//     action: function() {
+//         selectionToggleWrapper('strong', { 
+//             classes: this.options.classes
+//         });
+//     }
+// }));
 /**
  * @fileOverview Blockquote ui component
  * @author David Neilsen david@panmedia.co.nz
@@ -30560,8 +30578,7 @@ registerLocale('zh_CN', '简体中文', {
 /**
  * @name $.editor.plugin.imageResize
  * @augments $.ui.editor.defaultPlugin
- * @class Automatically resize oversized images with CSS and height / width attributes. If {@link $.editor.plugin.options#resizeAjax} is true,
- * the plugin will make a request to the server for resized image paths.
+ * @class Automatically resize oversized images with CSS and height / width attributes.
  */
 $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize.prototype */ {
 
@@ -30575,14 +30592,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         allowOversizeImages: false,
         manuallyResizingClass: '',
         resizeButtonClass: '',
-        resizeAjax: false,
-        resizingClass: '',
-        resizeAjaxClass: '',
-        ajax: {
-            url: '/',
-            type: 'post',
-            cache: false
-        }
+        resizingClass: ''
     },
 
     /**
@@ -30593,8 +30603,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         this.options = $.extend(this.options, {
             manuallyResizingClass: this.options.baseClass + '-manually-resize',
             resizeButtonClass: this.options.baseClass + '-resize-button',
-            resizingClass: this.options.baseClass + '-in-progress',
-            resizeAjaxClass: this.options.baseClass + '-on-save'
+            resizingClass: this.options.baseClass + '-in-progress'
         });
 
         editor.bind('enabled', this.bind, this);
@@ -30672,7 +30681,6 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             target.attr('_moz_resizing') &&
             event.attrName == 'style' &&
             event.newValue.match(/width|height/)) {
-            if (this.options.resizeAjax) target.addClass(this.options.resizeAjaxClass);
             this.editor.fire('change');
         }
     },
@@ -30685,23 +30693,24 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         var plugin = this;
         var images = [];
         $(element.find('img')).each(function() {
-            if (element.height() < $(this).outerHeight() || element.width() < $(this).outerWidth()) {
+            // Only resize images automatically if they're too wide
+            if (element.width() < $(this).outerWidth()) {
                 images.push($(this));
             }
         });
 
         if (images.length) {
-            plugin.resizeOversizedImages(images, element.width(), element.height());
+            plugin.resizeOversizedImages(images, element.width());
         }
     },
 
     /**
-     * Proportionately resizes the image, applying width & height attributes and CSS styles
+     * Proportionately resizes the image, applying width CSS style.
      * @param  {String[]} image The images to be resized
      * @param  {int} maxWidth The editing element's maximum width
      * @param  {int} maxHeight The editing element's maximum height
      */
-    resizeOversizedImages: function(images, maxWidth, maxHeight) {
+    resizeOversizedImages: function(images, maxWidth) {
 
         // Prepare a link to be included in any messages
         var imageLink = $('<a>', {
@@ -30714,10 +30723,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             var image = images[i];
             var width = image.outerWidth();
             var height = image.outerHeight();
-            var ratio = Math.min(maxWidth / width, maxHeight / height);
+            var ratio = Math.min(maxWidth / width);
 
-            width = Math.abs(ratio * (width - (image.outerWidth() - image.width())));
-            height = Math.abs(ratio * (height - (image.outerHeight() - image.height())));
+            width = Math.round(Math.abs(ratio * (width - (image.outerWidth() - image.width()))));
 
             image.addClass(this.options.resizingClass);
 
@@ -30725,16 +30733,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                     attr('href', image.attr('src'));
 
             // Resize the image with CSS / attributes
-            $(image).css({
-                    'width': width,
-                    'height': height
-                })
-                .attr('height', height)
-                .attr('width', width);
-
-            if (this.options.resizeAjax) {
-                image.addClass(this.options.resizeAjaxClass);
-            }
+            $(image).css({ width: width });
 
             var plugin = this;
             this.showOversizeWarning(elementOuterHtml($(imageLink)), {
@@ -30752,66 +30751,12 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * Remove resizingClass, call resizeImagesAjax if applicable
+     * Remove resizingClass.
      */
     save: function() {
         this.removeClasses(this.options.resizingClass);
-        if (this.options.resizeAjax) {
-            this.resizeImagesAjax();
-        }
         this.removeToolsButtons();
         this.unbind();
-    },
-
-    /**
-     * Send array of images to be resized to server & update the related image elements' src with that of the resized images
-     */
-    resizeImagesAjax: function() {
-        var plugin = this;
-        var images = [];
-
-        $('.' + this.options.resizeAjaxClass).each(function(){
-            if (!$(this).attr('id')) $(this).attr('id', plugin.editor.getUniqueId());
-            images.push({
-                id: $(this).attr('id'),
-                src: this.src,
-                width: $(this).width(),
-                height: $(this).height()
-            });
-        });
-
-        if (!images.length) return;
-
-        var loading = this.editor.showLoading(_('Resizing image(s)'));
-
-        // Create the JSON request
-        var ajax = this.options.ajax;
-
-        ajax.data = { images: images };
-        ajax.async = false;
-
-        $.ajax(ajax)
-            .done(function(data) {
-                $(data).each(function(){
-                    $('#' + this.id).attr('src', this.src).removeAttr('id');
-                });
-                plugin.editor.fire('change');
-                loading.hide();
-                plugin.editor.showConfirm(_('{{images}} image(s) have been replaced with resized versions', {
-                    images: images.length
-                }));
-            })
-            .fail(function(data) {
-                loading.hide();
-                plugin.editor.showError(_('Failed to resize images (error {{error}})', {
-                    error: data.status
-                }));
-            })
-            .always(function(data) {
-                plugin.removeClasses([
-                    plugin.options.resizeAjaxClass
-                ]);
-            });
     },
 
     /**
@@ -30820,15 +30765,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {map} options options to be passed to editor.showInfo
      */
     showOversizeWarning: function(imageLink, options) {
-        if (!this.options.resizeAjax) {
-            this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It has been resized with CSS.', {
-                image: imageLink
-            }), options);
-        } else {
-            this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
-                image: imageLink
-            }), options);
-        }
+        this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
+            image: imageLink
+        }), options);
     },
 
     /**
@@ -30836,7 +30775,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {array} classNames to be removed
      */
     removeClasses: function(classNames) {
-        if (!classNames) classNames = [this.options.resizingClass, this.options.resizeAjaxClass, this.options.manuallyResizingClass];
+        if (!classNames) classNames = [this.options.resizingClass, this.options.manuallyResizingClass];
         if (!$.isArray(classNames)) classNames = [classNames];
         for (var i = 0; i < classNames.length; i++) {
             this.editor.getElement().find('img.' + classNames[i]).removeClass(classNames[i]);
@@ -30854,11 +30793,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             heightInputSelector = '#' + this.options.baseClass + '-height',
             plugin = this;
 
-        var updateImageSize = function(width, height) {
-            $(image).css({
-                width: width || Math.round($(widthInputSelector).val()) + 'px',
-                height: height || Math.round($(heightInputSelector).val()) + 'px'
-            });
+        var updateImageSize = function(width) {
+            width = Math.round((width || $(widthInputSelector).val())) + 'px';
+            $(image).css({ width: width });
         };
 
         var dialog = $(this.editor.getTemplate('imageresize.manually-resize-image', {
@@ -30883,12 +30820,12 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 {
                     text: _('Cancel'),
                     click: function() {
-                        updateImageSize(width, height);
                         $(this).dialog('close');
                     }
                 }
             ],
             close: function() {
+                updateImageSize(width);
                 plugin.editor.checkChange();
                 $(dialog).remove();
             },
@@ -33512,6 +33449,13 @@ function selectionEachRange(callback, selection, context) {
 function selectionSet(mixed) {
     rangy.getSelection().setSingleRange(mixed);
 }
+function Button() {
+    return {
+        init: function() {
+            console.log(this);
+        }
+    };
+};
 
                 })(jQuery, window, rangy);
             jQuery('<style type="text/css">/*\n\
@@ -34419,13 +34363,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {\n\
   -moz-border-radius-bottomleft: 0;\n\
   -webkit-border-bottom-left-radius: 0;\n\
-  -ms-border-bottom-left-radius: 0;\n\
-  -o-border-bottom-left-radius: 0;\n\
   border-bottom-left-radius: 0;\n\
   -moz-border-radius-bottomright: 0;\n\
   -webkit-border-bottom-right-radius: 0;\n\
-  -ms-border-bottom-right-radius: 0;\n\
-  -o-border-bottom-right-radius: 0;\n\
   border-bottom-right-radius: 0; }\n\
 \n\
 /**\n\
@@ -34473,24 +34413,16 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   .ui-editor-wrapper .ui-editor-buttonset > .ui-button:first-child {\n\
     -moz-border-radius-topleft: 5px;\n\
     -webkit-border-top-left-radius: 5px;\n\
-    -ms-border-top-left-radius: 5px;\n\
-    -o-border-top-left-radius: 5px;\n\
     border-top-left-radius: 5px;\n\
     -moz-border-radius-bottomleft: 5px;\n\
     -webkit-border-bottom-left-radius: 5px;\n\
-    -ms-border-bottom-left-radius: 5px;\n\
-    -o-border-bottom-left-radius: 5px;\n\
     border-bottom-left-radius: 5px; }\n\
   .ui-editor-wrapper .ui-editor-buttonset > .ui-button:last-child {\n\
     -moz-border-radius-topright: 5px;\n\
     -webkit-border-top-right-radius: 5px;\n\
-    -ms-border-top-right-radius: 5px;\n\
-    -o-border-top-right-radius: 5px;\n\
     border-top-right-radius: 5px;\n\
     -moz-border-radius-bottomright: 5px;\n\
     -webkit-border-bottom-right-radius: 5px;\n\
-    -ms-border-bottom-right-radius: 5px;\n\
-    -o-border-bottom-right-radius: 5px;\n\
     border-bottom-right-radius: 5px; }\n\
 \n\
 .ui-button-icon-only .ui-button-text {\n\
@@ -34565,24 +34497,16 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   .ui-editor-messages .ui-editor-message-wrapper:first-child {\n\
     -moz-border-radius-topright: 5px;\n\
     -webkit-border-top-right-radius: 5px;\n\
-    -ms-border-top-right-radius: 5px;\n\
-    -o-border-top-right-radius: 5px;\n\
     border-top-right-radius: 5px;\n\
     -moz-border-radius-topleft: 5px;\n\
     -webkit-border-top-left-radius: 5px;\n\
-    -ms-border-top-left-radius: 5px;\n\
-    -o-border-top-left-radius: 5px;\n\
     border-top-left-radius: 5px; }\n\
   .ui-editor-messages .ui-editor-message-wrapper:last-child {\n\
     -moz-border-radius-bottomright: 5px;\n\
     -webkit-border-bottom-right-radius: 5px;\n\
-    -ms-border-bottom-right-radius: 5px;\n\
-    -o-border-bottom-right-radius: 5px;\n\
     border-bottom-right-radius: 5px;\n\
     -moz-border-radius-bottomleft: 5px;\n\
     -webkit-border-bottom-left-radius: 5px;\n\
-    -ms-border-bottom-left-radius: 5px;\n\
-    -o-border-bottom-left-radius: 5px;\n\
     border-bottom-left-radius: 5px; }\n\
   .ui-editor-messages .ui-editor-message-circle-close {\n\
     /* Red */\n\
@@ -34591,7 +34515,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
     background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
     background: -o-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -ms-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
     background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
   .ui-editor-messages .ui-editor-message-circle-check {\n\
     /* Green */\n\
@@ -34600,7 +34523,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
     background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
     background: -o-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -ms-linear-gradient(top, #cdeb8e, #a5c956);\n\
     background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
   .ui-editor-messages .ui-editor-message-info {\n\
     /* Blue */\n\
@@ -34609,7 +34531,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
     background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
     background: -o-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -ms-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
     background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
   .ui-editor-messages .ui-editor-message-alert {\n\
     /* Yellow */\n\
@@ -34618,7 +34539,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
     background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
     background: -o-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -ms-linear-gradient(top, #ffd65e, #febf04);\n\
     background: linear-gradient(top, #ffd65e, #febf04); }\n\
   .ui-editor-messages .ui-editor-message-clock {\n\
     /* Purple */\n\
@@ -34627,7 +34547,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
     background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
     background: -o-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -ms-linear-gradient(top, #fb83fa, #e93cec);\n\
     background: linear-gradient(top, #fb83fa, #e93cec); }\n\
   .ui-editor-messages .ui-editor-message-clock .ui-icon.ui-icon-clock {\n\
     background: transparent url(\'data:image/png;base64,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\') no-repeat center center; }\n\
@@ -34795,14 +34714,13 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   background: -webkit-linear-gradient(top, #f2fff2, #daf2d7);\n\
   background: -moz-linear-gradient(top, #f2fff2, #daf2d7);\n\
   background: -o-linear-gradient(top, #f2fff2, #daf2d7);\n\
-  background: -ms-linear-gradient(top, #f2fff2, #daf2d7);\n\
   background: linear-gradient(top, #f2fff2, #daf2d7);\n\
   -webkit-box-shadow: 0px 2px 10px #cccccc;\n\
   -moz-box-shadow: 0px 2px 10px #cccccc;\n\
   box-shadow: 0px 2px 10px #cccccc;\n\
-  -webkit-transition: opacity 0.5s 0s;\n\
+  -webkit-transition: opacity 0.5s;\n\
+  -webkit-transition-delay: 0s;\n\
   -moz-transition: opacity 0.5s 0s;\n\
-  -ms-transition: opacity 0.5s 0s;\n\
   -o-transition: opacity 0.5s 0s;\n\
   transition: opacity 0.5s 0s;\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
@@ -34815,9 +34733,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-click-to-edit-highlight {\n\
   cursor: pointer;\n\
   outline: 1px dotted rgba(0, 0, 0, 0.5);\n\
-  -webkit-transition: all 0.5s 0s;\n\
+  -webkit-transition: all 0.5s;\n\
+  -webkit-transition-delay: 0s;\n\
   -moz-transition: all 0.5s 0s;\n\
-  -ms-transition: all 0.5s 0s;\n\
   -o-transition: all 0.5s 0s;\n\
   transition: all 0.5s 0s; }\n\
 \n\
@@ -34981,13 +34899,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   .ui-editor-dock-docked .ui-editor-messages .ui-editor-message-wrapper:first-child {\n\
     -moz-border-radius-topright: 0;\n\
     -webkit-border-top-right-radius: 0;\n\
-    -ms-border-top-right-radius: 0;\n\
-    -o-border-top-right-radius: 0;\n\
     border-top-right-radius: 0;\n\
     -moz-border-radius-topleft: 0;\n\
     -webkit-border-top-left-radius: 0;\n\
-    -ms-border-top-left-radius: 0;\n\
-    -o-border-top-left-radius: 0;\n\
     border-top-left-radius: 0; }\n\
 \n\
 /**\n\
@@ -35479,9 +35393,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -ms-border-radius: 9px 9px 2px 2px;\n\
   -o-border-radius: 9px 9px 2px 2px;\n\
   border-radius: 9px 9px 2px 2px;\n\
-  -webkit-transition: opacity 0.23s 0s;\n\
+  -webkit-transition: opacity 0.23s;\n\
+  -webkit-transition-delay: 0s;\n\
   -moz-transition: opacity 0.23s 0s;\n\
-  -ms-transition: opacity 0.23s 0s;\n\
   -o-transition: opacity 0.23s 0s;\n\
   transition: opacity 0.23s 0s;\n\
   background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSI1cHgiIHN0b3AtY29sb3I9InJnYmEoNDAsIDQwLCA0MCwgMCkiLz48c3RvcCBvZmZzZXQ9IjZweCIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\'), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
@@ -35489,7 +35403,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
   background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0; }\n\
 \n\
 .ui-editor-wrapper [data-title]:hover:after {\n\
@@ -35504,7 +35417,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
   background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
   background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -ms-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
   background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0; }\n\
 \n\
 /**\n\
@@ -35527,11 +35439,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   background: -webkit-linear-gradient(top, #fffff2, #edecbd);\n\
   background: -moz-linear-gradient(top, #fffff2, #edecbd);\n\
   background: -o-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: -ms-linear-gradient(top, #fffff2, #edecbd);\n\
   background: linear-gradient(top, #fffff2, #edecbd);\n\
   -webkit-transition: opacity 0.5s;\n\
   -moz-transition: opacity 0.5s;\n\
-  -ms-transition: opacity 0.5s;\n\
   -o-transition: opacity 0.5s;\n\
   transition: opacity 0.5s;\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
