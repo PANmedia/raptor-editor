@@ -114,10 +114,16 @@
         var origin = window.location.protocol + '//' + window.location.host,
             protocolDomain = '//' + window.location.host;
         for (i = 0; i < this.options.stripDomains.length; i++) {
-            var def = this.options.stripDomains[i]
-            $(def.selector).each(function() {
+            var def = this.options.stripDomains[i];
+
+            // Clean only elements within the editing element
+            this.editor.getElement().find(def.selector).each(function() {
                 for (var j = 0; j < def.attributes.length; j++) {
                     var attr = $(this).attr(def.attributes[j]);
+                    // Do not continue if there are no attributes
+                    if (typeof attr === 'undefined') {
+                        continue;
+                    }
                     if (attr.indexOf(origin) === 0) {
                         $(this).attr(def.attributes[j], attr.substr(origin.length));
                     } else if (attr.indexOf(protocolDomain) === 0) {

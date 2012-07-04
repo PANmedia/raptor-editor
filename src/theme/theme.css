@@ -506,6 +506,20 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   opacity: 1; }
 
 /**
+ * Clear formatting style plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.ui-editor-clear-formatting-button .ui-icon {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);
+  opacity: 0.85;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wGGxcPH7KJ9wUAAAEKSURBVDjL3ZG9SgNBFIW/I76D1RIEazEIFitWNguxUPANUkUIKG4jYiEBC7WwUFJZiNssFvoOFipMFx/AoIVVEAvxB7w2MyBhV5Iq4IHLPecy9zBzBv4nJLUltQc5O1awXAE+gAnPhzMAFoE7YNzzoQ0WgBvg1vPBDSRNAl9m9gC4ebPpc+jkkADkkOTggi4KryFpV9KMpHgfXr/T1DJwGWxn4IIuM7iQdB1qDu73oPder9spuNDPYLZoeUrSZd9saQUej6DzUqvZCbhj2Pjr+pu/ZzuwnMLbc7Vqh+BCPyjIIAaefMVhuA69bhTZGnyuwlULXDeKrFWWQT+akDTAbfk3B90s+4WR4Acs5VZuyM1J1wAAAABJRU5ErkJggg==') 0 0; }
+
+.ui-editor-clear-formatting-button:hover .ui-icon {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1; }
+
+/**
  * Click to edit plugin
  *
  * @author Michael Robinson <michael@panmedia.co.nz>
@@ -1283,7 +1297,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 
 .ui-editor-unsaved-edit-warning-dirty {
   outline: 1px dotted #aaa;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oDHBcYJmthr08AAACTSURBVFjD7dexDcAgDETRc9ZgOibzdNkjHRKCJEQp+MV5APTkxvzQZDKz6GVqracW5897QcYNQBquAxJxDUjFSVKQcZJ0kHGZWQ4y7nGDBNwtkIKbAkm4AUjDdUAirgGpuOlngYT7BNx1cYKMW9rg7lsdZNwjkPLLCTeJm8RN4iZxk7hJ3CRuEjeJm8RN4ibZeA4v/3U8OMJCHo4AAAAASUVORK5CYII=') !important; }
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEUAAACfn5/FQV4CAAAAAnRSTlMAG/z2BNQAAABPSURBVHhexc2xEYAgEAXRdQwILYFSKA1LsxRKIDRwOG8LMDb9++aO8tAvjps4qXMLaGNf5JglxyyEhWVBXpAfyCvyhrwjD74OySfy8dffFyMcWadc9txXAAAAAElFTkSuQmCC') !important; }
 
 /**
  * View source plugin
