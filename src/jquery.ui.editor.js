@@ -1162,9 +1162,19 @@ $.widget('ui.editor',
                         return false;
                     })
                     .bind('click.' + editor.widgetName, function() {
+                        // Do not fire click event when disabled
+                        if ($(this).hasClass('ui-state-disabled')) return;
                         ui.menu.css('min-width', ui.button.outerWidth() + 10);
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
+                    })
+                    .bind('mouseenter.' + editor.widgetName, function() {
+                        if (!$(this).hasClass('ui-state-disabled')) {
+                            $(this).addClass('ui-state-hover', $(this).hasClass('ui-state-disabled'));
+                        }
+                    })
+                    .bind('mouseleave.' + editor.widgetName, function() {
+                        $(this).removeClass('ui-state-hover');
                     });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
