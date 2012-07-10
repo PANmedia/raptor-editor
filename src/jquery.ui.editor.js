@@ -1164,6 +1164,8 @@ $.widget('ui.editor',
                     .bind('click.' + editor.widgetName, function() {
                         // Do not fire click event when disabled
                         if ($(this).hasClass('ui-state-disabled')) return;
+                        // Close other menus
+                        editor.toolbarWrapper.find('.ui-editor-selectmenu-wrapper').removeClass('ui-editor-selectmenu-visible');
                         ui.menu.css('min-width', ui.button.outerWidth() + 10);
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
