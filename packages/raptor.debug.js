@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.8 *//**
+/*! VERSION: 0.0.9 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -26084,48 +26084,6 @@ var domTools = {
                range.startContainer === range.endContainer;
     },
 
-    changeTag: function(range, tag) {
-        var contents = range.extractContents();
-        this.insertDomFragmentBefore(contents, range.startContainer, tag);
-        $(range.startContainer).remove();
-    },
-
-    /**
-     * Behaviour similar to {@link domTools.tagSelectionWithin}, only in cases where the selection or cursor acts on text nodes only, the wrapping element will be modified.
-     * @param  {String} tag Name of tag to change to or wrap selection with.
-     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
-     */
-    tagSelection: function(tag, selection) {
-        this.tagSelectionWithin(tag, null, selection);
-    },
-
-    /**
-     * If selection is empty, change the tag for the element the cursor is currently within, else wrap the selection with tag.
-     * @param  {String} tag Name of tag to change to or wrap selection with.
-     * @param  {jQuery|null} within The element to perform changes within. If The cursor is within, or the selection contains text nodes only, the text will be wrapped with tag. If null, changes will be applied to the wrapping tag.
-     * @param  {RangySelection} selection A RangySelection, or by default, the current selection.
-     */
-    tagSelectionWithin: function(tag, within, sel) {
-        selectionEachRange(function(range) {
-            if (this.isEmpty(range)) {
-                rangeExpandToParent(range);
-                within = $(within)[0];
-                if (typeof within !== 'undefined'
-                    && range.startContainer === within
-                    && range.endContainer === within) {
-                    // Apply to the content of the 'within' element
-                    this.wrapInner($(within), tag);
-                } else {
-                    // Apply to the whole element
-                    this.changeTag(range, tag);
-                }
-            } else {
-                var content = range.extractContents();
-                this.replaceRange(fragmentToHtml(content, tag), range);
-            }
-        }, sel, this);
-    },
-
     /**
      * Check that the given element is one of the the given tags
      * @param  {jQuery|Element} element The element to be tested.
@@ -27577,9 +27535,19 @@ $.widget('ui.editor',
                         return false;
                     })
                     .bind('click.' + editor.widgetName, function() {
+                        // Do not fire click event when disabled
+                        if ($(this).hasClass('ui-state-disabled')) return;
                         ui.menu.css('min-width', ui.button.outerWidth() + 10);
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
+                    })
+                    .bind('mouseenter.' + editor.widgetName, function() {
+                        if (!$(this).hasClass('ui-state-disabled')) {
+                            $(this).addClass('ui-state-hover', $(this).hasClass('ui-state-disabled'));
+                        }
+                    })
+                    .bind('mouseleave.' + editor.widgetName, function() {
+                        $(this).removeClass('ui-state-hover');
                     });
 
                 var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
@@ -32082,7 +32050,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.8?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.9?' + query.join('&') + ')'
                     });
                 }
             });
@@ -33070,6 +33038,11 @@ $.ui.editor.registerUi({
      */
     tagMenu: /** @lends $.editor.plugin.tagMenu.prototype */ {
 
+        validParents: [
+            'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li',
+            'noframes', 'noscript', 'object', 'td', 'th'
+        ],
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -33086,10 +33059,40 @@ $.ui.editor.registerUi({
                 change: function(value) {
                     // Prevent injection of illegal tags
                     if (typeof value === 'undefined' || value === 'na') {
-                        ui.change();
                         return;
                     }
-                    editor.tagSelectionWithin(value, editor.getElement());
+
+                    var editingElement = editor.getElement()[0];
+                    var selectedElement = editor.getSelectedElements();
+                    if (!editor.getSelectedHtml() || editor.getSelectedHtml() === '') {
+                        // Do not attempt to modify editing element's tag
+                        if ($(selectedElement)[0] === $(editingElement)[0]) {
+                            return;
+                        }
+                        editor.saveSelection();
+                        var replacementElement = $('<' + value + '>').html(selectedElement.html());
+                        selectedElement.replaceWith(replacementElement);
+                        editor.restoreSelection();
+                    } else {
+                        var selectedElementParent = $(editor.getSelectedElements()[0]).parent();
+                        var temporaryClass = this.options.baseClass + '-selection';
+                        var replacementHtml = $('<' + value + '>').html(editor.getSelectedHtml()).addClass(temporaryClass);
+
+                        /*
+                         * Replace selection if the selected element parent or the selected element is the editing element,
+                         * instead of splitting the editing element.
+                         */
+                        if (selectedElementParent === editingElement
+                            || editor.getSelectedElements()[0] === editingElement) {
+                            editor.replaceSelection(replacementHtml);
+                        } else {
+                            editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+                        }
+
+                        editor.selectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
+                    }
+
+                    editor.checkChange();
                 }
             });
         },
@@ -33099,13 +33102,17 @@ $.ui.editor.registerUi({
          */
         change: function() {
             var tag = this.editor.getSelectedElements()[0];
-            if (!tag) return;
+            if (!tag) {
+                $(this.ui.button).toggleClass('ui-state-disabled', true);
+                return;
+            }
             tag = tag.tagName.toLowerCase();
             if (this.ui.select.find('option[value=' + tag + ']').length) {
                 this.ui.val(tag);
             } else {
                 this.ui.val('na');
             }
+            $(this.ui.button).toggleClass('ui-state-disabled', this.editor.getElement()[0] === this.editor.getSelectedElements()[0]);
         }
     }
 });
@@ -33449,13 +33456,13 @@ function selectionEachRange(callback, selection, context) {
 function selectionSet(mixed) {
     rangy.getSelection().setSingleRange(mixed);
 }
-function Button() {
-    return {
-        init: function() {
-            console.log(this);
-        }
-    };
-};
+// function Button() {
+//     return {
+//         init: function() {
+//             console.log(this);
+//         }
+//     };
+// };
 
                 })(jQuery, window, rangy);
             jQuery('<style type="text/css">/*\n\
