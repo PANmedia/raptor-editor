@@ -4,7 +4,7 @@ Raptor Editor
 
 Raptor Editor is a HTML5, WYSIWYG website content editor - check out the [Demo][^4].
 
-**It is designed to be user friendly and flexible for developers.**
+**Raptor is designed to be user friendly and flexible for developers.**
 
 Instantiating the Raptor editor with no options (zero configuration) results in all buttons and plugins being enabled. This is the quickest and easiest way to see Raptor in action.
 
