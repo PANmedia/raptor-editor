@@ -2,7 +2,7 @@ Raptor Editor
 ---------------
 - - -
 
-Raptor Editor is a WYSIWYG website content editor - check out the [Demo][^4].
+Raptor Editor is a user-focused extensible WYSIWYG website content editor - check out the [Demo][^4].
 
 **It is designed to be user and developer friendly**
 
@@ -10,7 +10,7 @@ Instantiating the Raptor editor with no options (zero configuration) results in 
 
 ```HTML
 <div id="element-to-edit"></div>
-<script type="text/javascript>
+<script type="text/javascript">
     $('#element-to-edit').editor();
 </script>
 ```
