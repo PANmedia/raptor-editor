@@ -196,6 +196,55 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         document.body.removeChild(t);
 
         return cStyle;
+    },
+
+    /**
+     * Toggle the givent ui's button state depending on whether the current selection is within the context of listType.
+     * @param  {string} listType A tagname for a list type.
+     * @param  {object} ui The ui owning the button whose state is to be toggled.
+     */
+    toggleButtonState: function(listType, ui) {
+
+        var toggleState = function(on) {
+            ui.button.toggleClass('ui-state-highlight', on).toggleClass('ui-state-default', !on);
+        };
+
+        var start = this.editor.getSelectionStartElement()[0];
+        var end = this.editor.getSelectionEndElement()[0];
+
+        // If the start & end are a UL or OL, and they're the same node:
+        if ($(start).is(listType) && $(end).is(listType) && start === end) {
+            return toggleState(true);
+        }
+
+        var shareParentListType = $(start).parentsUntil(elementSelector, listType).first()
+                                    && $(end).parentsUntil(elementSelector, listType).first();
+
+        var elementSelector = '#' + this.editor.getElement().attr('id');
+        var startIsLiOrInside = $(start).is(listType + ' > li') || $(start).parentsUntil(elementSelector, listType + ' > li').length;
+        var endIsLiOrInside = $(end).is(listType + ' > li') || $(end).parentsUntil(elementSelector, listType + ' > li').length;
+
+        // If the start & end elements are LI's or inside LI's, and they are enclosed by the same UL:
+        if (startIsLiOrInside && endIsLiOrInside && shareParentListType) {
+
+            var sharedParentList = $(this.editor.getCommonAncestor());
+            if (!sharedParentList.is(listType)) {
+                sharedParentList = $(sharedParentList).parentsUntil(elementSelector, listType).first();
+            }
+            var childLists = sharedParentList.find('ul, ol');
+            if (!childLists.length) {
+                return toggleState(true);
+            }
+            for (var childListIndex = 0; childListIndex < childLists.length; childListIndex++) {
+                if ($.contains(childLists[childListIndex], start) && $.contains(childLists[childListIndex], end)) {
+                    return toggleState(false);
+                }
+            }
+
+            return toggleState(true);
+        }
+
+        return toggleState(false);
     }
 });
 
@@ -208,17 +257,22 @@ $.ui.editor.registerUi({
      */
     listUnordered: /** @lends $.editor.ui.listUnordered.prototype */ {
 
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            return editor.uiButton({
+            var ui = editor.uiButton({
                 title: _('Unordered List'),
                 click: function() {
                     editor.getPlugin('list').toggleList('ul');
                 }
             });
+
+            editor.bind('selectionChange', function() {
+                editor.getPlugin('list').toggleButtonState('ul', ui);
+            });
+
+            return ui;
         }
     },
 
@@ -233,12 +287,18 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            return editor.uiButton({
+            var ui = editor.uiButton({
                 title: _('Ordered List'),
                 click: function() {
                     editor.getPlugin('list').toggleList('ol');
                 }
             });
+
+            editor.bind('selectionChange', function() {
+                editor.getPlugin('list').toggleButtonState('ol', ui);
+            });
+
+            return ui;
         }
     }
 });
