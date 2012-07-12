@@ -94,6 +94,25 @@ var domTools = {
     },
 
     /**
+     * Works for single ranges only.
+     * @return {Element} The selected range's common ancestor.
+     */
+    getCommonAncestor: function(selection) {
+        selection = selection || rangy.getSelection();
+
+        var commonAncestor;
+        $(selection.getAllRanges()).each(function(i, range){
+            if (this.commonAncestorContainer.nodeType === 3) {
+                commonAncestor = $(range.commonAncestorContainer).parent()[0];
+            } else {
+                commonAncestor = range.commonAncestorContainer;
+            }
+        });
+
+        return commonAncestor;
+    },
+
+    /**
      * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
      * @return {string} The html content of the selection.
      */
