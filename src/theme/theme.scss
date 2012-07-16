@@ -21,6 +21,7 @@
 @import 'plugins/clean';
 @import 'plugins/clear-formatting';
 @import 'plugins/clicktoedit';
+@import 'plugins/color-picker-basic';
 @import 'plugins/debug';
 @import 'plugins/dock';
 @import 'plugins/embed';
@@ -43,3 +44,5 @@
 @import 'plugins/toolbartip';
 @import 'plugins/unsavededitwarning';
 @import 'plugins/viewsource';
+
+@import 'defaults/color-picker-basic';
