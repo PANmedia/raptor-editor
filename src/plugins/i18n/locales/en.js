@@ -1,3 +1,6 @@
+/**
+ * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ */
 registerLocale('en', 'English', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
     "Added link: {{link}}": "Added link: {{link}}",
@@ -100,8 +103,8 @@ registerLocale('en', 'English', {
     "Super script": "Super script",
     "The URL does not look well formed": "The URL does not look well formed",
     "The email address does not look well formed": "The email address does not look well formed",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.": "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image '{{image}}' is too large for the element being edited.<br/>It has been resized with CSS.": "The image '{{image}}' is too large for the element being edited.<br/>It has been resized with CSS.",
+    "The image '{{image}}' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image '{{image}}' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
     "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
     "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "This block contains unsaved changes",

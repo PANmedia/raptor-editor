@@ -1,4 +1,6 @@
-/* French translation by SebCorbin (contact: seb.corbin@gmail.com) */
+/**
+ * @contributor SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
+ */
 registerLocale('fr', 'Français', {
     "A preview of your embedded object is displayed below.": "Un aperçu de votre objet intégré est affiché ci-dessous.",
     "Added link: {{link}}": "Lien ajouté : {{link}}",
@@ -101,8 +103,8 @@ registerLocale('fr', 'Français', {
     "Super script": "Exposant",
     "The URL does not look well formed": "L'URL paraît malformée",
     "The email address does not look well formed": "L'adresse e-mail paraît malformée",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.": "L'image \"{{image}}\" est trop grande pour l'élément en cours de modification.<br/>Elle a été redimensionnée en CSS.",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "L'image \"{{image}}\" est trop grande pour l'élément en cours de modification.<br/>Elle sera remplacée par une copie redimensionnée quand vos modifications seront enregistrées.",
+    "The image '{{image}}' is too large for the element being edited.<br/>It has been resized with CSS.": "L'image '{{image}}' est trop grande pour l'élément en cours de modification.<br/>Elle a été redimensionnée en CSS.",
+    "The image '{{image}}' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "L'image '{{image}}' est trop grande pour l'élément en cours de modification.<br/>Elle sera remplacée par une copie redimensionnée quand vos modifications seront enregistrées.",
     "The url for the file you inserted doesn\'t look well formed": "L'url du fichier que vous avez inséré paraît malformée",
     "The url for the link you inserted doesn\'t look well formed": "L'url du lien que vous avez inséré paraît malformée",
     "This block contains unsaved changes": "Ce bloc contient des modifications non enregistrées",
