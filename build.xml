@@ -55,6 +55,14 @@
         <phingcall target="build" />
     </target>
 
+    <target name="translationcheck">
+        <translationcheck>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationcheck>
+    </target>
+
     <!-- =================================================================== -->
     <!-- Compress PNG images                                                 -->
     <!-- =================================================================== -->
@@ -431,5 +439,10 @@
     <adhoc-task name="template">
         require_once '${project.basedir}/classes/TemplateTask.php';
     </adhoc-task>
+
+    <adhoc-task name="translationcheck">
+        require_once '${project.basedir}/classes/TranslationCheckTask.php';
+    </adhoc-task>
+
 
 </project>
