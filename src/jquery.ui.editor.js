@@ -47,6 +47,7 @@ $.widget('ui.editor',
             ['listUnordered', 'listOrdered'],
             ['hr', 'quoteBlock'],
             ['fontSizeInc', 'fontSizeDec'],
+            ['colorPickerBasic'],
             ['clearFormatting'],
             ['link', 'unlink'],
             ['embed'],
@@ -1112,7 +1113,8 @@ $.widget('ui.editor',
                 if (!ui.title) ui.title = _('Unnamed Select Menu');
 
                 ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
-                    .append(ui.select.hide());
+                    .append(ui.select.hide())
+                    .addClass(ui.select.attr('class'));
 
                 ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
                     .appendTo(ui.wrapper);
@@ -1120,26 +1122,31 @@ $.widget('ui.editor',
                 ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
                     .appendTo(ui.wrapper);
 
-                ui.select.find('option').each(function() {
+                ui.select.find('option, .ui-editor-selectmenu-option').each(function() {
                     var option = $('<div/>')
                         .addClass('ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
                         .appendTo(ui.menu)
-                        .bind('mouseenter.' + editor.widgetName, function() {$(this).addClass('ui-state-focus'); })
-                        .bind('mouseleave.' + editor.widgetName, function() {$(this).removeClass('ui-state-focus'); })
+                        .bind('mouseenter.' + editor.widgetName, function() {
+                            $(this).addClass('ui-state-focus');
+                        })
+                        .bind('mouseleave.' + editor.widgetName, function() {
+                            $(this).removeClass('ui-state-focus');
+                        })
                         .bind('mousedown.' + editor.widgetName, function() {
                             // Prevent losing focus on editable region
                             return false;
                         })
                         .bind('click.' + editor.widgetName, function() {
-                            var option = ui.select.find('option').eq($(this).index());
-                            ui.select.val(option.val());
+                            var option = ui.select.find('option, .ui-editor-selectmenu-option').eq($(this).index());
+                            var value = option.attr('value') || option.val();
+                            ui.select.val(value);
                             ui.update();
                             ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
-                            ui.change(ui.select.val());
+                            ui.change(value);
                             return false;
                         });
                 });
@@ -1155,7 +1162,6 @@ $.widget('ui.editor',
                     .append(text)
                     .append(icon)
                     .prependTo(ui.selectMenu);
-
                 ui.button
                     .bind('mousedown.' + editor.widgetName, function() {
                         // Prevent losing focus on editable region
@@ -1163,10 +1169,12 @@ $.widget('ui.editor',
                     })
                     .bind('click.' + editor.widgetName, function() {
                         // Do not fire click event when disabled
-                        if ($(this).hasClass('ui-state-disabled')) return;
-                        // Close other menus
-                        editor.toolbarWrapper.find('.ui-editor-selectmenu-wrapper').removeClass('ui-editor-selectmenu-visible');
-                        ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                        if ($(this).hasClass('ui-state-disabled')) {
+                        	return;
+                        }
+                        if (parseInt(ui.menu.css('min-width'), 10) < ui.button.outerWidth() + 10) {
+                            ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                        }
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
                     })
@@ -1179,13 +1187,14 @@ $.widget('ui.editor',
                         $(this).removeClass('ui-state-hover');
                     });
 
-                var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
+                var selected = ui.select.find('option[value=' + this.select.val() + '], .ui-editor-selectmenu-option[value=' + this.select.val() + ']').html() ||
+                    ui.select.find('option, .ui-editor-selectmenu-option').first().html();
                 ui.button.find('.ui-editor-selectmenu-text').html(selected);
 
                 return ui.wrapper;
             },
-            update: function() {
-                var selected = this.select.find('option[value=' + this.select.val() + ']').html();
+            update: function(value) {
+                var selected = this.select.find('option[value=' + this.select.val() + '], .ui-editor-selectmenu-option[value=' + this.select.val() + ']').html();
                 this.button.find('.ui-editor-selectmenu-text').html(selected);
             },
             val: function() {
