@@ -15,12 +15,12 @@ Instantiating the Raptor editor with no options (zero configuration) results in 
 </script>
 ```
 - - -
-To learn more about how to use Raptor, see: [Raptor Editor][^1]. 
-The site also contains extensive [documentation][^2], and some [examples][^5]. 
+To learn more about how to use Raptor, see: [Raptor Editor][^1].
+The site also contains extensive [documentation][^2], and some [examples][^5].
 
 For license information see the  [Raptor Editor license][^3] page.
 
-- - - 
+- - -
 
 See the following links for information on build & contributing to Raptor:
 
