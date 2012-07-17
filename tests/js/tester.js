@@ -43,4 +43,5 @@ $(function() {
         urlPrefix: '/jquery-raptor.com/private/jquery-raptor/src/'
     });
     runTest('toggle-wrapper-1');
+    runTest('color-picker');
 });
