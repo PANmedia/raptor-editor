@@ -28,6 +28,47 @@ function rangeExpandTo(range, elements) {
     } while (range.commonAncestorContainer)
 }
 
+function rangeReplace(html, range) {
+    var nodes = $('<div/>').append(html)[0].childNodes;
+    range.deleteContents();
+    if (nodes.length === undefined || nodes.length === 1) {
+        range.insertNode(nodes[0].cloneNode(true));
+    } else {
+        $.each(nodes, function(i, node) {
+            range.insertNodeAtEnd(node.cloneNode(true));
+        });
+    }
+}
+
+function rangeEmptyTag(range) {
+    var contents = range.cloneContents();
+    var html = fragmentToHtml(contents);
+    if (typeof html === 'string') {
+        html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+    }
+    if ($(html).is(':empty')) return true;
+    return false;
+}
+
+/**
+ * Works for single ranges only.
+ * @return {Element} The selected range's common ancestor.
+ */
+function rangeGetCommonAncestor(selection) {
+    selection = selection || rangy.getSelection();
+
+    var commonAncestor;
+    $(selection.getAllRanges()).each(function(i, range){
+        if (this.commonAncestorContainer.nodeType === 3) {
+            commonAncestor = $(range.commonAncestorContainer).parent()[0];
+        } else {
+            commonAncestor = range.commonAncestorContainer;
+        }
+    });
+
+    return commonAncestor;
+}
+
 //function rangeIsWholeElement(range) {
 //    return range.toString() ==
 //}

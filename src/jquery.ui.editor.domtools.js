@@ -8,35 +8,13 @@
 
 /**
  * Functions attached to the editor object during editor initialisation. Usage example:
- * <pre>editor.saveSelection();
+ * <pre>selectionSave();
 // Perform actions that could remove focus from editing element
-editor.restoreSelection();
-editor.replaceSelection('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
+selectionRestore();
+selectionReplace('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  * @namespace
  */
 var domTools = {
-
-    /**
-     * @type {Boolean|Object} current saved selection.
-     */
-    savedSelection: false,
-
-    /**
-     * Save selection wrapper, preventing plugins / UI from accessing rangy directly.
-     */
-    saveSelection: function() {
-        this.savedSelection = rangy.saveSelection();
-    },
-
-    /**
-     * Restore selection wrapper, preventing plugins / UI from accessing rangy directly.
-     */
-    restoreSelection: function() {
-        if (this.savedSelection) {
-            rangy.restoreSelection(this.savedSelection);
-            this.savedSelection = false;
-        }
-    },
 
     /**
      * Removes all ranges from a selection that are not contained within the
@@ -63,82 +41,8 @@ var domTools = {
         });
     },
 
-    /**
-     * Gets all elements that contain a selection (excluding text nodes) and
-     * returns them as a jQuery array.
-     *
-     * @public @static
-     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
-     */
-    getSelectedElements: function(sel) {
-        var result = new jQuery();
-        selectionEachRange(function(range) {
-            result.push(this.getSelectedElement(range)[0]);
-        }, sel, this);
-        return result;
-    },
-
-    getSelectedElement: function (range) {
-        var commonAncestor;
-
-        range = range || rangy.getSelection().getRangeAt(0);
-
-        // Check if the common ancestor container is a text node
-        if (range.commonAncestorContainer.nodeType === 3) {
-            // Use the parent instead
-            commonAncestor = range.commonAncestorContainer.parentNode;
-        } else {
-            commonAncestor = range.commonAncestorContainer;
-        }
-        return $(commonAncestor);
-    },
-
-    /**
-     * Works for single ranges only.
-     * @return {Element} The selected range's common ancestor.
-     */
-    getCommonAncestor: function(selection) {
-        selection = selection || rangy.getSelection();
-
-        var commonAncestor;
-        $(selection.getAllRanges()).each(function(i, range){
-            if (this.commonAncestorContainer.nodeType === 3) {
-                commonAncestor = $(range.commonAncestorContainer).parent()[0];
-            } else {
-                commonAncestor = range.commonAncestorContainer;
-            }
-        });
-
-        return commonAncestor;
-    },
-
-    /**
-     * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
-     * @return {string} The html content of the selection.
-     */
-    getSelectedHtml: function(selection) {
-        selection = selection || rangy.getSelection();
-        return selection.toHtml();
-    },
-
-    getSelectionStartElement: function() {
-        var selection = rangy.getSelection();
-        if (selection.isBackwards()) {
-            return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
-        }
-        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
-    },
-
-    getSelectionEndElement: function() {
-        var selection = rangy.getSelection();
-        if (selection.isBackwards()) {
-            return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
-        }
-        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
-    },
-
     unwrapParentTag: function(tag) {
-        this.getSelectedElements().each(function(){
+        selectionGetElements().each(function(){
             if ($(this).is(tag)) {
                 $(this).replaceWith($(this).html());
             }
@@ -147,7 +51,7 @@ var domTools = {
 
     wrapTagWithAttribute: function(tag, attributes, classes) {
         selectionEachRange(function(range) {
-            var element = this.getSelectedElement(range);
+            var element = selectionGetElement(range);
             if (element.is(tag)) {
                 element.attr(attributes);
             } else {
@@ -157,23 +61,6 @@ var domTools = {
                 });
             }
         }, null, this);
-    },
-
-    /**
-     * Selects all the contents of the supplied element, excluding the element itself.
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
-     */
-    selectInner: function(element, selection) {
-        selection = selection || rangy.getSelection();
-        selection.removeAllRanges();
-        $(element).focus().contents().each(function() {
-            var range = rangy.createRange();
-            range.selectNodeContents(this);
-            selection.addRange(range);
-        });
     },
 
     /**
@@ -226,26 +113,16 @@ var domTools = {
             elementProperties: options.attributes || {}
         });
         selectionEachRange(function(range) {
-            if (this.rangeEmptyTag(range)) {
+            if (rangeEmptyTag(range)) {
                 var element = $('<' + tag + '/>')
                     .addClass(options.classes)
                     .attr(options.attributes || {})
                     .append(fragmentToHtml(range.cloneContents()));
-                this.replaceRange(element, range);
+                rangeReplace(element, range);
             } else {
                 applier.toggleRange(range);
             }
         }, null, this);
-    },
-
-    rangeEmptyTag: function(range) {
-        var contents = range.cloneContents();
-        var html = fragmentToHtml(contents);
-        if (typeof html === 'string') {
-            html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
-        }
-        if ($(html).is(':empty')) return true;
-        return false;
     },
 
     /**
@@ -358,19 +235,19 @@ var domTools = {
      * @param {String} tag The wrapper tag name
      */
     wrapInner: function(element, tag) {
-        this.saveSelection();
+        selectionSave();
         $(element).each(function() {
             var wrapper = $('<' + tag + '/>').html($(this).html());
             element.html(wrapper);
         });
-        this.restoreSelection();
+        selectionRestore();
     },
 
     /**
      *
      */
     inverseWrapWithTagClass: function(tag1, class1, tag2, class2) {
-        this.saveSelection();
+        selectionSave();
         // Assign a temporary tag name (to fool rangy)
         var id = 'domTools' + Math.ceil(Math.random() * 10000000);
 
@@ -396,7 +273,7 @@ var domTools = {
             $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
         });
 
-        this.restoreSelection();
+        selectionRestore();
     },
 
     /**
@@ -450,9 +327,9 @@ var domTools = {
     replaceSelectionWithinValidTags: function(html, validTagNames, selection) {
         selection = selection || rangy.getSelection();
 
-        var startElement = this.getSelectionStartElement()[0];
-        var endElement = this.getSelectionEndElement()[0];
-        var selectedElement = this.getSelectedElements()[0];
+        var startElement = selectionGetStartElement()[0];
+        var endElement = selectionGetEndElement()[0];
+        var selectedElement = selectionGetElements()[0];
 
         var selectedElementValid = this.isElementValid(selectedElement, validTagNames);
         var startElementValid = this.isElementValid(startElement, validTagNames);
@@ -460,7 +337,7 @@ var domTools = {
 
         // The html may be inserted within the selected element & selection start / end.
         if (selectedElementValid && startElementValid && endElementValid) {
-            this.replaceSelection(html);
+            selectionReplace(html);
             return;
         }
 
@@ -478,7 +355,7 @@ var domTools = {
         selection = selection || rangy.getSelection();
 
         var selectionRange = selection.getRangeAt(0);
-        var selectedElement = this.getSelectedElements()[0];
+        var selectedElement = selectionGetElements()[0];
 
         // Select from start of selected element to start of selection
         var startRange = rangy.createRange();
@@ -498,28 +375,6 @@ var domTools = {
         replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
 
         $(selectedElement).replaceWith($(replacement));
-    },
-
-    /**
-     * FIXME: this function needs reviewing
-     * @public @static
-     */
-    replaceSelection: function(html, sel) {
-        selectionEachRange(function(range) {
-            this.replaceRange(html, range);
-        }, sel, this);
-    },
-
-    replaceRange: function(html, range) {
-        var nodes = $('<div/>').append(html)[0].childNodes;
-        range.deleteContents();
-        if (nodes.length === undefined || nodes.length === 1) {
-            range.insertNode(nodes[0].cloneNode(true));
-        } else {
-            $.each(nodes, function(i, node) {
-                range.insertNodeAtEnd(node.cloneNode(true));
-            });
-        }
     },
 
     /**
