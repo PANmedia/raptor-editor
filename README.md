@@ -10,7 +10,7 @@ Instantiating the Raptor editor with no options (zero configuration) results in 
 
 ```HTML
 <div id="element-to-edit"></div>
-<script type="text/javascript>
+<script type="text/javascript">
     $('#element-to-edit').editor();
 </script>
 ```
@@ -22,7 +22,7 @@ For license information see the  [Raptor Editor license][^3] page.
 
 - - -
 
-See the following links for information on build & contributing to Raptor:
+See the following links for information on build &amp; contributing to Raptor:
 
 * [Building Raptor](https://github.com/PANmedia/Raptor/wiki/Building)
 * [Contributing to Raptor](https://github.com/PANmedia/Raptor/wiki/Contributing-to-Raptor)
