@@ -41,7 +41,6 @@
             'big', 'small', 'div', 'span'
         ],
 
-
         /**
          * Attributes to be removed if empty
          * @type {String[]}
@@ -132,6 +131,17 @@
                 }
             });
         }
+
+        // Ensure ul, ol content is wrapped in li's
+        this.editor.getElement().find('ul, ol').each(function() {
+            $(this).find(' > :not(li)').each(function() {
+                if (elementDefaultDisplay($(this).attr('tag'))) {
+                    $(this).replaceWith($('<li>' + $(this).html() + '</li>').appendTo('body'));
+                } else {
+                    $(this).wrap($('<li>'));
+                }
+            });
+        });
     }
 });
 
