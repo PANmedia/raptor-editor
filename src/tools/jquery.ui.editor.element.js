@@ -77,3 +77,21 @@ function elementOuterHtml(element) {
 function elementOuterText(element) {
     return element.clone().wrap('<div/>').parent().text();
 }
+
+/**
+ * Determine whether element is inline or block.
+ * @see http://stackoverflow.com/a/2881008/187954
+ * @param  {string} tag Lower case tag name, e.g. 'a'.
+ * @return {string} Default display style for tag.
+ */
+function elementDefaultDisplay(tag) {
+    var cStyle,
+        t = document.createElement(tag),
+        gcs = "getComputedStyle" in window;
+
+    document.body.appendChild(t);
+    cStyle = (gcs ? window.getComputedStyle(t, "") : t.currentStyle).display;
+    document.body.removeChild(t);
+
+    return cStyle;
+}

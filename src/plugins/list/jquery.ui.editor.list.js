@@ -141,7 +141,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         $(selectedHtml).contents().each(function() {
             var liContent;
             // Use only content of block elements
-            if ('block' === plugin.getElementDefaultDisplay(this.tagName)) {
+            if ('block' === elementDefaultDisplay(this.tagName)) {
                 liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
             } else {
                 liContent = plugin.editor.stripTags(elementOuterHtml($(this)), plugin.validChildren);
@@ -178,24 +178,6 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
         selectInner(selectedElement.find('li:first')[0]);
         this.editor.checkChange();
-    },
-
-    /**
-     * Determine whether element is inline or block.
-     * @see http://stackoverflow.com/a/2881008/187954
-     * @param  {string} tag Lower case tag name, e.g. 'a'.
-     * @return {string} Default display style for tag.
-     */
-    getElementDefaultDisplay: function(tag) {
-        var cStyle,
-            t = document.createElement(tag),
-            gcs = "getComputedStyle" in window;
-
-        document.body.appendChild(t);
-        cStyle = (gcs ? window.getComputedStyle(t, "") : t.currentStyle).display;
-        document.body.removeChild(t);
-
-        return cStyle;
     },
 
     /**
