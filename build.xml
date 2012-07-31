@@ -121,16 +121,11 @@
         </copy>
 
         <!-- Copy specified plugins -->
-        <foreach list="${plugins}" param="plugin" target="clone-plugin" />
+        <phingcall target="clone-plugins" />
     </target>
 
-    <target name="clone-plugin">
-        <echo>${plugin}</echo>
-        <copy todir="${dir.build}" >
-            <fileset dir="src">
-                <include name="plugins/${plugin}/**" />
-            </fileset>
-        </copy>
+    <target name="clone-plugins">
+        <plugins file="${plugins.manifest}" builddir="${dir.build}"></plugins>
     </target>
 
     <target name="pngout-exec">
@@ -444,5 +439,8 @@
         require_once '${project.basedir}/classes/TranslationCheckTask.php';
     </adhoc-task>
 
+    <adhoc-task name="plugins">
+        require_once '${project.basedir}/classes/PluginsTask.php';
+    </adhoc-task>
 
 </project>
