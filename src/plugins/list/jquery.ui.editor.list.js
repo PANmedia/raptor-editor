@@ -40,8 +40,8 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
     toggleList: function(listType) {
 
         // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
-        if ($(this.editor.getSelectedElements()).is('li')
-            && $(this.editor.getSelectedElements()).parent().is(listType)) {
+        if ($(selectionGetElements()).is('li')
+            && $(selectionGetElements()).parent().is(listType)) {
             this.unwrapList();
         } else {
             this.wrapList(listType);
@@ -56,7 +56,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * If the list element's parent is not a li, then wrap the content of each li in a p, else leave them unwrapped.
      */
     unwrapList: function() {
-        this.editor.saveSelection();
+        selectionSave();
 
         // Array containing the html contents of each of the selected li elements.
         var listElementsContent = [];
@@ -64,9 +64,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         var listElements = [];
 
         // The element within which selection begins.
-        var startElement = this.editor.getSelectionStartElement();
+        var startElement = selectionGetStartElement();
         // The element within which ends.
-        var endElement = this.editor.getSelectionEndElement();
+        var endElement = selectionGetEndElement();
 
         // Collect the first selected list element's content
         listElementsContent.push($(startElement).html());
@@ -104,8 +104,8 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         // Every li of the list has been selected, replace the entire list
         if (firstLiSelected && lastLiSelected) {
             parentListContainer.replaceWith(listElementsContent.join(''));
-            this.editor.restoreSelection();
-            var selectedElement = this.editor.getSelectedElements()[0];
+            selectionRestore();
+            var selectedElement = selectionGetElements()[0];
             this.editor.selectOuter(selectedElement);
             return;
         }
@@ -118,7 +118,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             this.editor.replaceSelectionSplittingSelectedElement(listElementsContent.join(''));
         }
 
-        this.editor.restoreSelection();
+        selectionRestore();
         this.editor.checkChange();
     },
 
@@ -128,11 +128,11 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      */
     wrapList: function(listType) {
         this.editor.constrainSelection(this.editor.getElement());
-        if ($.trim(this.editor.getSelectedHtml()) === '') {
-            this.editor.selectInner(this.editor.getSelectedElements());
+        if ($.trim(selectionGetHtml()) === '') {
+            selectInner(selectionGetElements());
         }
 
-        var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
+        var selectedHtml = $('<div>').html(selectionGetHtml());
 
         var listElements = [];
         var plugin = this;
@@ -158,9 +158,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         var replacementHtml = '<' + listType + ' class="' + replacementClass + '">' + listElements.join('') + '</' + listType + '>';
 
         // Selection must be restored before it may be replaced.
-        this.editor.restoreSelection();
+        selectionRestore();
 
-        var selectedElementParent = $(this.editor.getSelectedElements()[0]).parent();
+        var selectedElementParent = $(selectionGetElements()[0]).parent();
         var editingElement = this.editor.getElement()[0];
 
         /*
@@ -168,15 +168,15 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
          * instead of splitting the editing element.
          */
         if (selectedElementParent === editingElement
-            || this.editor.getSelectedElements()[0] === editingElement) {
-            this.editor.replaceSelection(replacementHtml);
+            || selectionGetElements()[0] === editingElement) {
+            selectionReplace(replacementHtml);
         } else {
             this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
         }
 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
-        this.editor.selectInner(selectedElement.find('li:first')[0]);
+        selectInner(selectedElement.find('li:first')[0]);
         this.editor.checkChange();
     },
 
@@ -209,8 +209,18 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             ui.button.toggleClass('ui-state-highlight', on).toggleClass('ui-state-default', !on);
         };
 
-        var start = this.editor.getSelectionStartElement()[0];
-        var end = this.editor.getSelectionEndElement()[0];
+        var selectionStart = selectionGetStartElement();
+        if (selectionStart === null || !selectionStart.length) {
+            selectionStart = this.editor.getElement();
+        }
+
+        var selectionEnd = selectionGetEndElement();
+        if (selectionEnd === null || !selectionEnd.length) {
+            selectionEnd = this.editor.getElement();
+        }
+
+        var start = selectionStart[0];
+        var end = selectionEnd[0];
 
         // If the start & end are a UL or OL, and they're the same node:
         if ($(start).is(listType) && $(end).is(listType) && start === end) {
@@ -227,7 +237,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         // If the start & end elements are LI's or inside LI's, and they are enclosed by the same UL:
         if (startIsLiOrInside && endIsLiOrInside && shareParentListType) {
 
-            var sharedParentList = $(this.editor.getCommonAncestor());
+            var sharedParentList = $(rangeGetCommonAncestor());
             if (!sharedParentList.is(listType)) {
                 sharedParentList = $(sharedParentList).parentsUntil(elementSelector, listType).first();
             }

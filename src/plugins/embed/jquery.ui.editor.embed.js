@@ -49,7 +49,7 @@
                 $(this.ui.button).button('option', 'disabled', true);
                 var ui = this;
 
-                ui.editor.saveSelection();
+                selectionSave();
 
                 this.dialog = $(this.editor.getTemplate('embed.dialog'));
                 this.dialog.dialog({
@@ -64,8 +64,8 @@
                         {
                             text: _('Embed Object'),
                             click: function() {
-                                ui.editor.restoreSelection();
-                                ui.editor.replaceSelection($(this).find('textarea').val());
+                                selectionRestore();
+                                selectionReplace($(this).find('textarea').val());
                                 $(this).dialog('close');
                             }
                         },

@@ -46,7 +46,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             if (inProgress) return false;
             inProgress = true;
 
-            editor.saveSelection();
+            selectionSave();
 
             // Make a contentEditable div to capture pasted text
             if ($(selector).length) $(selector).remove();
@@ -100,8 +100,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                     html = plugin.filterAttributes(html);
                                     html = plugin.filterChars(html);
 
-                                    editor.restoreSelection();
-                                    editor.replaceSelection(html);
+                                    selectionRestore();
+                                    selectionReplace(html);
 
                                     inProgress = false;
                                     $(this).dialog('close');
@@ -110,7 +110,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                             {
                                 text: _('Cancel'),
                                 click: function() {
-                                    editor.restoreSelection();
+                                    selectionRestore();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }

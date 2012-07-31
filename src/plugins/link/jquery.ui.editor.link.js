@@ -438,10 +438,10 @@
     show: function() {
         if (!this.visible) {
 
-            this.selectedElement = this.editor.getSelectedElements().first();
+            this.selectedElement = selectionGetElements().first();
             var edit = this.selectedElement.is('a');
             var options = this.options;
-            var selection = rangy.saveSelection();
+            var selection = selectionSave();
             var plugin = this;
 
             this.dialog = $(this.editor.getTemplate('link.dialog', options)).appendTo('body');
@@ -473,10 +473,10 @@
                     {
                         text: edit ? _('Update Link') : _('Insert Link'),
                         click: function() {
-                            rangy.restoreSelection(selection);
+                            selectionRestore();
 
                             if (!plugin.apply(edit)) {
-                                selection = rangy.saveSelection();
+                                selectionSave();
                             } else {
                                 $(this).dialog('close');
                             }
@@ -485,7 +485,7 @@
                     {
                         text: _('Cancel'),
                         click: function() {
-                            rangy.restoreSelection(selection);
+                            selectionRestore();
                             $(this).dialog('close');
                         }
                     }
@@ -664,7 +664,7 @@ $.ui.editor.registerUi({
         },
 
         change: function() {
-            if (!this.editor.getSelectedElements().length) this.ui.disable();
+            if (!selectionGetElements().length) this.ui.disable();
             else this.ui.enable();
         }
     },
@@ -697,7 +697,7 @@ $.ui.editor.registerUi({
          * Enable UI component only when an anchor is selected
          */
         change: function() {
-            if (!this.editor.getSelectedElements().is('a')) this.ui.disable();
+            if (!selectionGetElements().is('a')) this.ui.disable();
             else this.ui.enable();
         }
     }
