@@ -245,7 +245,7 @@ $.widget('ui.editor',
 
         this.element.hide();
         this.bind('change', function() {
-            if (this.element.is('input')) {
+            if (this.element.is('input, textarea')) {
                 this.element.val(this.getHtml());
             } else {
                 this.element.html(this.getHtml());
@@ -1074,10 +1074,8 @@ $.widget('ui.editor',
             enable: function() {
                 this.button.button('option', 'disabled', false);
             },
-            ready: function() {
-            },
-            click: function() {
-            }
+            ready: function() {},
+            click: function() {}
         }, options);
     },
 
