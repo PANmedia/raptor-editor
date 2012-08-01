@@ -4,6 +4,10 @@ class TranslationCheckTask extends Task {
     private $filesets = array();
     private $name = null;
 
+    private $untranslatable = [
+        'N/A', 'OK', 'ctrl + b', 'ctrl + i', 'ctrl + s', 'ctrl + u', 'ctrl + y', 'ctrl + z', 'esc'
+    ];
+
     public function jsonError($error) {
         $output = "{$error}: ";
 
@@ -74,16 +78,14 @@ class TranslationCheckTask extends Task {
                     array_push($fileContentArray, '}');
 
                     $fileContent = implode('', $fileContentArray);
-                    $fileContent = str_replace('{{', '', $fileContent);
-                    $fileContent = str_replace('}}', '', $fileContent);
-                    $fileContent = str_replace('\\', '', $fileContent);
+                    $fileContent = preg_replace('/"(?<!.")([^"])+"[^:,]/', "\'$1\'", $fileContent);
                     $filePairs = json_decode($fileContent, true);
 
                     if (!$filePairs) {
+                        var_dump($file);
                         echo PHP_EOL.$this->jsonError(json_last_error());
                         die();
                     }
-
 
                     if ($name === 'en.js') {
                         $result[$name]['percent'] = 100;
@@ -91,9 +93,11 @@ class TranslationCheckTask extends Task {
                     }
 
                     $translated = 0;
+                    $result[$name]['untranslated'] = [];
 
                     foreach ($filePairs as $key => $value) {
-                        if ($key !== $value) $translated++;
+                        if ($key !== $value || in_array($key, $this->untranslatable)) $translated++;
+                        else $result[$name]['untranslated'][] = $value;
                     }
 
                     $percentDone = $translated == 0 ? 0 : round(($translated / count($filePairs)) * 100);
