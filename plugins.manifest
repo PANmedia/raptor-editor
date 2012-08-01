@@ -28,4 +28,4 @@ unsavededitwarning=src/plugins/unsavededitwarning
 viewsource=src/plugins/viewsource
 placeholder=src/plugins/placeholder
 toolbartip=src/plugins/toolbartip
-clear-formatting=src/plugins/toolbartip
+clear-formatting=src/plugins/clear-formatting
