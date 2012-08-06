@@ -163,7 +163,7 @@ $.widget('ui.editor',
         var change = $.proxy(this.checkChange, this);
 
         this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
-            this.selectOuter(event.target);
+            selectionSelectOuter(event.target);
         }, this));
         // this.bind('change', change);
         this.getElement().bind('mouseup.' + this.widgetName, change);
