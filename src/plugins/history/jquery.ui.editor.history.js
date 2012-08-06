@@ -15,6 +15,15 @@ $.ui.editor.registerUi({
         options: {
             disabled: true
         },
+
+        hotkeys: {
+            'ctrl+z': {
+                'action': function() {
+                    this.editor.historyBack();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -43,6 +52,19 @@ $.ui.editor.registerUi({
 
         options: {
             disabled: true
+        },
+
+        hotkeys: {
+            'ctrl+shift+z': {
+                'action': function() {
+                    this.editor.historyForward();
+                }
+            },
+            'ctrl+y': {
+                'action': function() {
+                    this.editor.historyForward();
+                }
+            }
         },
 
         /**
