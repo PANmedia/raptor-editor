@@ -217,6 +217,12 @@
                   tofile="${dir.build}/08-jquery-ui.js" />
         </then></if>
 
+        <!-- jQuery Hotkeys -->
+        <if><istrue value="${jquery-hotkeys}" /><then>
+            <copy file="${dir.deps}/jquery-hotkeys.js"
+                  tofile="${dir.build}/09-jquery-hotkeys.js" />
+        </then></if>
+
         <!-- Raptorize -->
         <if><istrue value="${raptorize}" /><then>
             <copy file="${dir.deps}/raptorize/jquery.raptorize.js"
