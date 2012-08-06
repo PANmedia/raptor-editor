@@ -40,7 +40,6 @@
 
 <script type="text/javascript">
     function rpToggle(a, id) {
-        console.log(a);
         var div = document.getElementById(id);
         a.innerText = div.style.display == 'none' ? 'Hide untranslated' : 'View untranslated';
         div.style.display = div.style.display == 'none' ? 'block' : 'none';
