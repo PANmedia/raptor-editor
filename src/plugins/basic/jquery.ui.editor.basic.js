@@ -15,6 +15,14 @@ $.ui.editor.registerUi({
      */
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
 
+        hotkeys: {
+            'ctrl+b': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -36,6 +44,15 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element
      */
     textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
+
+        hotkeys: {
+            'ctrl+i': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -58,6 +75,14 @@ $.ui.editor.registerUi({
      */
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
 
+        hotkeys: {
+            'ctrl+u': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -79,6 +104,14 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element
      */
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
+
+        hotkeys: {
+            'ctrl+k': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
 
         /**
          * @see $.ui.editor.defaultUi#init
