@@ -438,6 +438,8 @@
     show: function() {
         if (!this.visible) {
 
+            selectionSave();
+
             this.selectedElement = selectionGetElements().first();
             var edit = this.selectedElement.is('a');
             var options = this.options;
@@ -473,10 +475,7 @@
                         text: edit ? _('Update Link') : _('Insert Link'),
                         click: function() {
                             selectionRestore();
-
-                            if (!plugin.apply(edit)) {
-                                selectionSave();
-                            } else {
+                            if (plugin.apply(edit)) {
                                 $(this).dialog('close');
                             }
                         }
@@ -484,7 +483,6 @@
                     {
                         text: _('Cancel'),
                         click: function() {
-                            selectionRestore();
                             $(this).dialog('close');
                         }
                     }
@@ -654,6 +652,15 @@ $.ui.editor.registerUi({
      */
     link: /** @lends $.editor.ui.link.prototype */ {
 
+        hotkeys: {
+            'ctrl+l': {
+                'action': function() {
+                    this.editor.getPlugin('link').show();
+                },
+                restoreSelection: false
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -682,6 +689,15 @@ $.ui.editor.registerUi({
      * @class Button allowing the user to unlink text
      */
     unlink: /** @lends $.editor.ui.unlink.prototype */ {
+
+        hotkeys: {
+            'ctrl+shift+l': {
+                'action': function() {
+                    this.ui.click();
+                }
+            },
+            restoreSelection: false
+        },
 
         /**
          * @see $.ui.editor.defaultUi#init
