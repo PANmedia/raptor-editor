@@ -1,5 +1,4 @@
 empty-element=src/plugins/empty-element
-hotkeys=src/plugins/hotkeys
 embed=src/plugins/embed
 length=src/plugins/length
 logo=src/plugins/logo
