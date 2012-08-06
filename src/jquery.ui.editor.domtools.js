@@ -49,37 +49,6 @@ var domTools = {
         });
     },
 
-    wrapTagWithAttribute: function(tag, attributes, classes) {
-        selectionEachRange(function(range) {
-            var element = selectionGetElement(range);
-            if (element.is(tag)) {
-                element.attr(attributes);
-            } else {
-                this.toggleWrapper(tag, {
-                    classes: classes,
-                    attributes: attributes
-                });
-            }
-        }, null, this);
-    },
-
-    /**
-     * Selects all the contents of the supplied element, including the element itself.
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
-     */
-    selectOuter: function(element, selection) {
-        selection = selection || rangy.getSelection();
-        selection.removeAllRanges();
-        $(element).each(function() {
-            var range = rangy.createRange();
-            range.selectNode(this);
-            selection.addRange(range);
-        }).focus();
-    },
-
     /**
      * Move selection to the end of element.
      *
@@ -96,33 +65,6 @@ var domTools = {
             range.collapse();
             selection.addRange(range);
         });
-    },
-
-    /**
-     * FIXME: this function needs reviewing
-     *
-     * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
-     *
-     * @public @static
-     */
-    toggleWrapper: function(tag, options) {
-        options = options || {};
-        var applier = rangy.createCssClassApplier(options.classes || '', {
-            normalize: true,
-            elementTagName: tag,
-            elementProperties: options.attributes || {}
-        });
-        selectionEachRange(function(range) {
-            if (rangeEmptyTag(range)) {
-                var element = $('<' + tag + '/>')
-                    .addClass(options.classes)
-                    .attr(options.attributes || {})
-                    .append(fragmentToHtml(range.cloneContents()));
-                rangeReplace(element, range);
-            } else {
-                applier.toggleRange(range);
-            }
-        }, null, this);
     },
 
     /**
