@@ -441,7 +441,6 @@
             this.selectedElement = selectionGetElements().first();
             var edit = this.selectedElement.is('a');
             var options = this.options;
-            var selection = selectionSave();
             var plugin = this;
 
             this.dialog = $(this.editor.getTemplate('link.dialog', options)).appendTo('body');
@@ -531,6 +530,7 @@
                     });
                 },
                 close: function() {
+                    selectionRestore();
                     plugin.visible = false;
                     dialog.find('.' + options.baseClass + '-content').hide();
                     $(this).dialog('destroy');
@@ -554,12 +554,14 @@
             return true;
         }
 
+        selectionRestore();
+
         // Prepare link to be shown in any confirm message
         var link = elementOuterHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
                 attr($.extend({}, attributes, { target: '_blank' })));
 
         if (!edit) {
-            this.editor.wrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
+            selectionWrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
             this.editor.showConfirm(_('Added link: {{link}}', { link: link }));
             this.selectedElement = $('#' + attributes.id).removeAttr('id');
         } else {
@@ -571,6 +573,9 @@
         }
 
         this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
+
+        selectionSelectOuter(this.selectedElement);
+        selectionSave();
 
         return true;
     },

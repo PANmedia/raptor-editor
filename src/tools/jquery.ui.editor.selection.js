@@ -11,7 +11,8 @@ var savedSelection = false;
 /**
  * Save selection wrapper, preventing plugins / UI from accessing rangy directly.
  */
-function selectionSave() {
+function selectionSave(overwrite) {
+    if (savedSelection && !overwrite) return;
     savedSelection = rangy.saveSelection();
 }
 
@@ -65,7 +66,7 @@ function selectionReplace(html, sel) {
  * @param {jQuerySelector|jQuery|Element} element
  * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
  */
-function selectInner(element, selection) {
+function selectionSelectInner(element, selection) {
     selection = selection || rangy.getSelection();
     selection.removeAllRanges();
     $(element).focus().contents().each(function() {
@@ -73,6 +74,23 @@ function selectInner(element, selection) {
         range.selectNodeContents(this);
         selection.addRange(range);
     });
+}
+
+/**
+ * Selects all the contents of the supplied element, including the element itself.
+ *
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element
+ * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
+ */
+function selectionSelectOuter(element, selection) {
+    selection = selection || rangy.getSelection();
+    selection.removeAllRanges();
+    $(element).each(function() {
+        var range = rangy.createRange();
+        range.selectNode(this);
+        selection.addRange(range);
+    }).focus();
 }
 
 /**
@@ -135,4 +153,45 @@ function selectionGetEndElement() {
         return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
     }
     return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+}
+
+/**
+ * FIXME: this function needs reviewing
+ *
+ * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
+ *
+ * @public @static
+ */
+function selectionToggleWrapper(tag, options) {
+    options = options || {};
+    var applier = rangy.createCssClassApplier(options.classes || '', {
+        normalize: true,
+        elementTagName: tag,
+        elementProperties: options.attributes || {}
+    });
+    selectionEachRange(function(range) {
+        if (rangeEmptyTag(range)) {
+            var element = $('<' + tag + '/>')
+                .addClass(options.classes)
+                .attr(options.attributes || {})
+                .append(fragmentToHtml(range.cloneContents()));
+            rangeReplace(element, range);
+        } else {
+            applier.toggleRange(range);
+        }
+    }, null, this);
+}
+
+function selectionWrapTagWithAttribute(tag, attributes, classes) {
+    selectionEachRange(function(range) {
+        var element = selectionGetElement(range);
+        if (element.is(tag)) {
+            element.attr(attributes);
+        } else {
+            selectionToggleWrapper(tag, {
+                classes: classes,
+                attributes: attributes
+            });
+        }
+    }, null, this);
 }

@@ -106,7 +106,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             parentListContainer.replaceWith(listElementsContent.join(''));
             selectionRestore();
             var selectedElement = selectionGetElements()[0];
-            this.editor.selectOuter(selectedElement);
+            selectionSelectOuter(selectedElement);
             return;
         }
 
@@ -129,7 +129,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
     wrapList: function(listType) {
         this.editor.constrainSelection(this.editor.getElement());
         if ($.trim(selectionGetHtml()) === '') {
-            selectInner(selectionGetElements());
+            selectionSelectInner(selectionGetElements());
         }
 
         var selectedHtml = $('<div>').html(selectionGetHtml());
@@ -176,7 +176,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
-        selectInner(selectedElement.find('li:first')[0]);
+        selectionSelectInner(selectedElement.find('li:first')[0]);
         this.editor.checkChange();
     },
 
