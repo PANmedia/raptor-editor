@@ -86,6 +86,13 @@ $.widget('ui.editor',
         // List of UI objects bound to the editor
         this.uiObjects = {};
 
+        // List of hotkeys bound to the editor
+        this.hotkeys = {};
+        // If hotkeys are enabled, register any custom hotkeys provided by the user
+        if (this.options.enableHotkeys) {
+            this.registerHotkey(this.hotkeys);
+        }
+
         // Bind default events
         for (var name in this.options.bind) {
             this.bind(name, this.options.bind[name]);
@@ -397,6 +404,8 @@ $.widget('ui.editor',
 
             this.execCommand('enableInlineTableEditing', false, false);
             this.execCommand('styleWithCSS', true, true);
+
+            this.bindHotkeys();
 
             this.fire('enabled');
             this.fire('resize');
@@ -917,6 +926,60 @@ $.widget('ui.editor',
     },
 
     /*========================================================================*\
+     * Hotkeys
+    \*========================================================================*/
+
+    /**
+     * @param {Array|String} mixed The hotkey name or an array of hotkeys
+     * @param {Object} The hotkey object or null
+     */
+    registerHotkey: function(mixed, actionData, context) {
+        // Allow array objects, and single plugins
+        if (typeof(mixed) === 'string') {
+
+            // <strict>
+            if (this.hotkeys[mixed]) {
+                handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {hotkey: mixed}));
+            }
+            // </strict>
+
+            this.hotkeys[mixed] = $.extend({}, {
+                context: context,
+                restoreSelection: true
+            }, actionData);
+
+        } else {
+            for (var name in mixed) {
+                this.registerHotkey(name, mixed[name], context);
+            }
+        }
+    },
+
+    bindHotkeys: function() {
+        for (keyCombination in this.hotkeys) {
+            var editor = this,
+                force = this.hotkeys[keyCombination].force || false;
+
+            if (!this.options.enableHotkeys && !force) {
+                continue;
+            }
+
+            this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
+                selectionSave();
+                var object = editor.hotkeys[event.data];
+                // Returning true from action will allow event bubbling
+                if (object.action.call(object.context) !== true) {
+                    event.preventDefault();
+                }
+                if (object.restoreSelection) {
+                    selectionRestore();
+                }
+                editor.checkChange();
+            });
+        }
+    },
+
+    /*========================================================================*\
      * Buttons
     \*========================================================================*/
 
@@ -982,6 +1045,14 @@ $.widget('ui.editor',
                     uiObject.editor = this;
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(this, options);
+
+                    if (uiObject.hotkeys) {
+                        this.registerHotkey(uiObject.hotkeys, null, uiObject);
+                        // Add hotkeys to title
+                        uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
+                                return index;
+                            })[0] + ')';
+                    }
 
                     // Append the UI object to the group
                     uiObject.ui.init(uiSet[j], this, options, uiObject).appendTo(uiGroup);
@@ -1252,6 +1323,10 @@ $.widget('ui.editor',
             pluginObject.editor = editor;
             pluginObject.options = options;
             pluginObject.init(editor, options);
+
+            if (pluginObject.hotkeys) {
+                this.registerHotkey(pluginObject.hotkeys, null, pluginObject);
+            }
 
             editor.plugins[name] = pluginObject;
         }
@@ -1559,7 +1634,17 @@ $.extend($.ui.editor,
          */
         cssPrefix: 'cms-',
 
-        draggable: true
+        draggable: true,
+
+        /**
+         * @type {Boolean} True to enable hotkeys
+         */
+        enableHotkeys: true,
+
+        /**
+         * @type {Object} Custom hotkeys
+         */
+        hotkeys: {},
     },
 
     /**
