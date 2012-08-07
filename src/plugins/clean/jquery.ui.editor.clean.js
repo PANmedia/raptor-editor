@@ -36,9 +36,9 @@
          * @type {String[]}
          */
         stripEmptyTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
+            'span', 'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
             'p', 'b', 'i', 'u', 'strong', 'em',
-            'big', 'small', 'div', 'span'
+            'big', 'small', 'div'
         ],
 
         /**
@@ -87,15 +87,12 @@
             editor.getElement()
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
-                    if ($.trim($(this).html()) !== '') {
-                        return false;
-                    }
-                    if (!$(this).hasClass('rangySelectionBoundary')) {
+                    if ($.trim($(this).html()) === '') {
                         return true;
                     }
                     // Do not clear selection markers if the editor has it in use
-                    if (editor.savedSelection !== false) {
-                        return false;
+                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved() === false) {
+                        return true;
                     }
                 })
                 .remove();
