@@ -59,7 +59,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 markup = plugin.filterChars(markup);
                 markup = plugin.stripEmpty(markup);
                 markup = plugin.stripAttributes(markup);
-                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
+                markup = stringStripTags(markup, plugin.options.allowedTags);
 
                 var vars = {
                     plain: $('<div/>').html($(selector).html()).text(),

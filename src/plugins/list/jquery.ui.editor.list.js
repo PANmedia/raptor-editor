@@ -115,7 +115,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         } else if (lastLiSelected) {
             $(parentListContainer).after(listElementsContent.join(''));
         } else {
-            this.editor.replaceSelectionSplittingSelectedElement(listElementsContent.join(''));
+            selectionReplaceSplittingSelectedElement(listElementsContent.join(''));
         }
 
         selectionRestore();
@@ -142,9 +142,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             var liContent;
             // Use only content of block elements
             if ('block' === elementDefaultDisplay(this.tagName)) {
-                liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
+                liContent = stringStripTags($(this).html(), plugin.validChildren);
             } else {
-                liContent = plugin.editor.stripTags(elementOuterHtml($(this)), plugin.validChildren);
+                liContent = stringStripTags(elementOuterHtml($(this)), plugin.validChildren);
             }
 
             // Avoid inserting blank lists
@@ -171,7 +171,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             || selectionGetElements()[0] === editingElement) {
             selectionReplace(replacementHtml);
         } else {
-            this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+            selectionReplaceWithinValidTags(replacementHtml, this.validParents);
         }
 
         // Select the first list element of the inserted list

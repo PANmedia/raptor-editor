@@ -60,7 +60,7 @@ $.ui.editor.registerUi({
                             || selectionGetElements()[0] === editingElement) {
                             selectionReplace(replacementHtml);
                         } else {
-                            editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+                            selectionReplaceWithinValidTags(replacementHtml, this.validParents);
                         }
 
                         selectionSelectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
