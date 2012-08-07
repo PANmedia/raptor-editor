@@ -492,10 +492,10 @@ $.widget('ui.editor',
                 var i = $(this).data('ui-editor-selection');
                 if (i) {
                     // Get the element from the list array
-                    editor.selectOuter(lists[i[0]][i[1]]);
+                    selectionSelectOuter(lists[i[0]][i[1]]);
                     editor.updateTagTree();
                 } else {
-                    editor.selectOuter(editor.getElement());
+                    selectionSelectOuter(editor.getElement());
                 }
             });
 
