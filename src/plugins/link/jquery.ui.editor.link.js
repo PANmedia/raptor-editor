@@ -694,9 +694,9 @@ $.ui.editor.registerUi({
             'ctrl+shift+l': {
                 'action': function() {
                     this.ui.click();
-                }
-            },
-            restoreSelection: false
+                },
+                restoreSelection: false
+            }
         },
 
         /**
