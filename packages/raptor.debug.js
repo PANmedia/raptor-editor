@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.10 *//**
+/*! VERSION: 0.0.11 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25680,24 +25680,6 @@ var domTools = {
     },
 
     /**
-     * Move selection to the end of element.
-     *
-     * @param  {jQuerySelector|jQuery|Element} element The subject element.
-     * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
-     */
-    selectEnd: function(element, selection) {
-        selection = selection || rangy.getSelection();
-        selection.removeAllRanges();
-
-        $(element).each(function() {
-            var range = rangy.createRange();
-            range.selectNodeContents(this);
-            range.collapse();
-            selection.addRange(range);
-        });
-    },
-
-    /**
      * Wrapper function for document.execCommand().
      * @public @static
      */
@@ -25887,149 +25869,8 @@ var domTools = {
             element1.css(name, element2.css(name));
             element2.css(name, style[name]);
         }
-    },
-
-    /**
-     * Replace current selection with given html, ensuring that selection container is split at
-     * the start & end of the selection in cases where the selection starts / ends within an invalid element.
-     * @param  {jQuery|Element|string} html The html to replace current selection with.
-     * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
-     * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
-     */
-    replaceSelectionWithinValidTags: function(html, validTagNames, selection) {
-        selection = selection || rangy.getSelection();
-
-        var startElement = selectionGetStartElement()[0];
-        var endElement = selectionGetEndElement()[0];
-        var selectedElement = selectionGetElements()[0];
-
-        var selectedElementValid = this.isElementValid(selectedElement, validTagNames);
-        var startElementValid = this.isElementValid(startElement, validTagNames);
-        var endElementValid = this.isElementValid(endElement, validTagNames);
-
-        // The html may be inserted within the selected element & selection start / end.
-        if (selectedElementValid && startElementValid && endElementValid) {
-            selectionReplace(html);
-            return;
-        }
-
-        // Context is invalid. Split containing element and insert list in between.
-        this.replaceSelectionSplittingSelectedElement(html, selection);
-        return;
-    },
-
-    /**
-     * Split the selection container and insert the given html between the two elements created.
-     * @param  {jQuery|Element|string} html The html to replace selection with.
-     * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
-     */
-    replaceSelectionSplittingSelectedElement: function(html, selection) {
-        selection = selection || rangy.getSelection();
-
-        var selectionRange = selection.getRangeAt(0);
-        var selectedElement = selectionGetElements()[0];
-
-        // Select from start of selected element to start of selection
-        var startRange = rangy.createRange();
-        startRange.setStartBefore(selectedElement);
-        startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
-        var startFragment = startRange.cloneContents();
-
-        // Select from end of selected element to end of selection
-        var endRange = rangy.createRange();
-        endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
-        endRange.setEndAfter(selectedElement);
-        var endFragment = endRange.cloneContents();
-
-        // Replace the start element's html with the content that was not selected, append html & end element's html
-        var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
-        replacement += elementOuterHtml($(html));
-        replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
-
-        $(selectedElement).replaceWith($(replacement));
-    },
-
-    /**
-     *
-     *
-     * @public @static
-     * @param {DOMFragment} domFragment
-     * @param {jQuerySelector|jQuery|Element} beforeElement
-     * @param {String} wrapperTag
-     */
-    insertDomFragmentBefore: function(domFragment, beforeElement, wrapperTag) {
-        // Get all nodes in the extracted content
-        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
-            var node = domFragment.childNodes.item(j);
-            // Prepend the node before the current node
-            var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
-            if (content) {
-                $('<' + wrapperTag + '/>')
-                    .html($.trim(content))
-                    .insertBefore(beforeElement);
-            }
-        }
-    },
-
-    /**
-     * Returns true if there is at least one range selected and the range is not
-     * empty.
-     *
-     * @see isEmpty
-     * @public @static
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
-     */
-    selectionExists: function(sel) {
-        var selectionExists = false;
-        selectionEachRange(function(range) {
-            if (!this.isEmpty(range)) selectionExists = true;
-        }, sel, this);
-        return selectionExists;
-    },
-
-    /**
-     * Returns true if the supplied range is empty (has a length of 0)
-     *
-     * @public @static
-     * @param {RangyRange} range The range to check if it is empty
-     */
-    isEmpty: function(range) {
-        return range.startOffset === range.endOffset &&
-               range.startContainer === range.endContainer;
-    },
-
-    /**
-     * Check that the given element is one of the the given tags
-     * @param  {jQuery|Element} element The element to be tested.
-     * @param  {Array}  validTagNames An array of valid tag names.
-     * @return {Boolean} True if the given element is one of the give valid tags.
-     */
-    isElementValid: function(element, validTags) {
-        return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
-    },
-
-    /**
-     * Modification of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
-     * @param  {string} content HTML containing tags to be stripped
-     * @param {Array} allowedTags Array of tags that should not be stripped
-     * @return {string} HTML with all tags not present allowedTags array.
-     */
-    stripTags: function(content, allowedTags) {
-        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-        allowed = [];
-        for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
-            if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]{0,}/g)) {
-                allowed.push(allowedTags[allowedTagsIndex]);
-            }
-        }
-        // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
-        var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*\/?>/gi,
-            commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-
-        return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-            return allowed.indexOf($1.toLowerCase()) > -1 ? $0 : '';
-        });
     }
+
 };/**
  * Editor internationalization (i18n) private functions and properties.
  *
@@ -29668,7 +29509,7 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
         this.textNodes(this.editor.getElement()).each(function() {
             $(this).wrap($(plugin.options.tag));
             // Set caret position to the end of the current text node
-            plugin.editor.selectEnd(this);
+            selectionSelectEnd(this);
         });
         this.editor.checkChange();
     },
@@ -31725,9 +31566,9 @@ $.ui.editor.registerUi({
             'ctrl+shift+l': {
                 'action': function() {
                     this.ui.click();
-                }
-            },
-            restoreSelection: false
+                },
+                restoreSelection: false
+            }
         },
 
         /**
@@ -31871,7 +31712,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         } else if (lastLiSelected) {
             $(parentListContainer).after(listElementsContent.join(''));
         } else {
-            this.editor.replaceSelectionSplittingSelectedElement(listElementsContent.join(''));
+            selectionReplaceSplittingSelectedElement(listElementsContent.join(''));
         }
 
         selectionRestore();
@@ -31898,9 +31739,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             var liContent;
             // Use only content of block elements
             if ('block' === elementDefaultDisplay(this.tagName)) {
-                liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
+                liContent = stringStripTags($(this).html(), plugin.validChildren);
             } else {
-                liContent = plugin.editor.stripTags(elementOuterHtml($(this)), plugin.validChildren);
+                liContent = stringStripTags(elementOuterHtml($(this)), plugin.validChildren);
             }
 
             // Avoid inserting blank lists
@@ -31927,7 +31768,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             || selectionGetElements()[0] === editingElement) {
             selectionReplace(replacementHtml);
         } else {
-            this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+            selectionReplaceWithinValidTags(replacementHtml, this.validParents);
         }
 
         // Select the first list element of the inserted list
@@ -32115,7 +31956,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.10?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.11?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32123,6 +31964,84 @@ $.ui.editor.registerUi({
             return this.ui;
         }
     }
+});
+/**
+ * @name $.editor.plugin.normaliseLineBreaks
+ * @augments $.ui.editor.defaultPlugin
+ * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
+ */
+$.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.normaliseLineBreaks.prototype */ {
+
+    /**
+     * @name $.editor.plugin.normaliseLineBreaks.options
+     * @type {Object}
+     * @namespace Default options
+     * @see $.editor.plugin.normaliseLineBreaks
+     */
+    options: /** @lends $.editor.plugin.normaliseLineBreaks.options */  {
+
+        /**
+         * @type {String} The tag to insert when user presses enter
+         */
+        return: '<p><br/></p>',
+
+        /**
+         * @type {Array} Array of tag names within which the return HTML is valid.
+         */
+        returnValidTags: [
+            'address', 'blockquote', 'body', 'button', 'center', 'dd',
+            'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
+            'noscript', 'object', 'td', 'th'
+        ],
+
+
+        /**
+         * @type {String} The tag to insert when user presses shift enter.
+         */
+        shiftReturn: '<br/>',
+
+        /**
+         * @type {Array} Array of tag names within which the shiftReturn HTML is valid.
+         */
+        shiftReturnValidTags: [
+            'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo',
+            'big', 'blockquote', 'body', 'button', 'caption', 'center',
+            'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em',
+            'fieldset', 'font', 'form', 'h1', 'h2', 'h3', 'h4', 'h5',
+            'h6', 'i', 'iframe', 'ins', 'kbd', 'label', 'legend', 'li',
+            'noframes', 'noscript', 'object', 'p', 'pres', 'q', 's',
+            'samp', 'small', 'span', 'strike', 'strong', 'sub', 'sup',
+            'td', 'th', 'tt', 'u', 'var'
+        ]
+    },
+
+    hotkeys: {
+        'return': {
+            'action': function() {
+                this.insertBreak(this.options.return, this.options.returnValidTags);
+            },
+            restoreSelection: false
+        },
+        'return+shift': {
+            'action': function() {
+                this.insertBreak(this.options.shiftReturn, this.options.shiftReturnValidTags);
+            },
+            restoreSelection: false
+        }
+    },
+
+    /**
+     * Replace selection with given breakHtml
+     * @param  {String} breakHtml The HTML to replace selection with.
+     * @param  {Array} breakValidTags Array of tag names within which the replaceHtml is valid.
+     */
+    insertBreak: function(breakHtml, breakValidTags) {
+        var breakId = this.options.widgetName + '-return-break';
+        var returnHtml = $(breakHtml).attr('id', breakId);
+        selectionReplaceWithinValidTags(returnHtml, breakValidTags);
+        selectionSelectEnd($('#' + breakId).removeAttr('id'));
+    }
+
 });
 /**
  * @name $.editor.plugin.paste
@@ -32185,7 +32104,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 markup = plugin.filterChars(markup);
                 markup = plugin.stripEmpty(markup);
                 markup = plugin.stripAttributes(markup);
-                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
+                markup = stringStripTags(markup, plugin.options.allowedTags);
 
                 var vars = {
                     plain: $('<div/>').html($(selector).html()).text(),
@@ -33151,7 +33070,7 @@ $.ui.editor.registerUi({
                             || selectionGetElements()[0] === editingElement) {
                             selectionReplace(replacementHtml);
                         } else {
-                            editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
+                            selectionReplaceWithinValidTags(replacementHtml, this.validParents);
                         }
 
                         selectionSelectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
@@ -33449,6 +33368,16 @@ function elementDefaultDisplay(tag) {
     document.body.removeChild(t);
 
     return cStyle;
+}
+
+/**
+ * Check that the given element is one of the the given tags
+ * @param  {jQuery|Element} element The element to be tested.
+ * @param  {Array}  validTagNames An array of valid tag names.
+ * @return {Boolean} True if the given element is one of the give valid tags.
+ */
+function elementIsValid(element, validTags) {
+    return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
 }/**
  * @fileOverview
  * @author David Neilsen david@panmedia.co.nz
@@ -33477,7 +33406,28 @@ function fragmentToHtml(domFragment, tag) {
     }
     return html;
 }
+
 /**
+ *
+ *
+ * @public @static
+ * @param {DOMFragment} domFragment
+ * @param {jQuerySelector|jQuery|Element} beforeElement
+ * @param {String} wrapperTag
+ */
+function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
+    // Get all nodes in the extracted content
+    for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+        var node = domFragment.childNodes.item(j);
+        // Prepend the node before the current node
+        var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
+        if (content) {
+            $('<' + wrapperTag + '/>')
+                .html($.trim(content))
+                .insertBefore(beforeElement);
+        }
+    }
+}/**
  * @fileOverview
  * @author David Neilsen david@panmedia.co.nz
  * @version 0.1
@@ -33548,10 +33498,16 @@ function rangeGetCommonAncestor(selection) {
     return commonAncestor;
 }
 
-//function rangeIsWholeElement(range) {
-//    return range.toString() ==
-//}
 /**
+ * Returns true if the supplied range is empty (has a length of 0)
+ *
+ * @public @static
+ * @param {RangyRange} range The range to check if it is empty
+ */
+function rangeIsEmpty(range) {
+    return range.startOffset === range.endOffset &&
+           range.startContainer === range.endContainer;
+}/**
  * @fileOverview
  * @author David Neilsen david@panmedia.co.nz
  * @version 0.1
@@ -33644,6 +33600,24 @@ function selectionSelectOuter(element, selection) {
         range.selectNode(this);
         selection.addRange(range);
     }).focus();
+}
+
+/**
+ * Move selection to the end of element.
+ *
+ * @param  {jQuerySelector|jQuery|Element} element The subject element.
+ * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ */
+function selectionSelectEnd(element, selection) {
+    selection = selection || rangy.getSelection();
+    selection.removeAllRanges();
+
+    $(element).each(function() {
+        var range = rangy.createRange();
+        range.selectNodeContents(this);
+        range.collapse();
+        selection.addRange(range);
+    });
 }
 
 /**
@@ -33747,6 +33721,110 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
             });
         }
     }, null, this);
+}
+
+/**
+ * Returns true if there is at least one range selected and the range is not
+ * empty.
+ *
+ * @see rangeIsEmpty
+ * @public @static
+ * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ */
+function selectionExists(sel) {
+    var selectionExists = false;
+    selectionEachRange(function(range) {
+        if (!rangeIsEmpty(range)) selectionExists = true;
+    }, sel, this);
+    return selectionExists;
+}
+
+/**
+ * Split the selection container and insert the given html between the two elements created.
+ * @param  {jQuery|Element|string} html The html to replace selection with.
+ * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
+ */
+function selectionReplaceSplittingSelectedElement(html, selection) {
+    selection = selection || rangy.getSelection();
+
+    var selectionRange = selection.getRangeAt(0);
+    var selectedElement = selectionGetElements()[0];
+
+    // Select from start of selected element to start of selection
+    var startRange = rangy.createRange();
+    startRange.setStartBefore(selectedElement);
+    startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+    var startFragment = startRange.cloneContents();
+
+    // Select from end of selected element to end of selection
+    var endRange = rangy.createRange();
+    endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
+    endRange.setEndAfter(selectedElement);
+    var endFragment = endRange.cloneContents();
+
+    // Replace the start element's html with the content that was not selected, append html & end element's html
+    var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
+    replacement += elementOuterHtml($(html));
+    replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
+
+    $(selectedElement).replaceWith($(replacement));
+}
+
+/**
+ * Replace current selection with given html, ensuring that selection container is split at
+ * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+ * @param  {jQuery|Element|string} html The html to replace current selection with.
+ * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
+ * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
+ */
+function selectionReplaceWithinValidTags(html, validTagNames, selection) {
+    selection = selection || rangy.getSelection();
+
+    var startElement = selectionGetStartElement()[0];
+    var endElement = selectionGetEndElement()[0];
+    var selectedElement = selectionGetElements()[0];
+
+    var selectedElementValid = elementIsValid(selectedElement, validTagNames);
+    var startElementValid = elementIsValid(startElement, validTagNames);
+    var endElementValid = elementIsValid(endElement, validTagNames);
+
+    // The html may be inserted within the selected element & selection start / end.
+    if (selectedElementValid && startElementValid && endElementValid) {
+        selectionReplace(html);
+        return;
+    }
+
+    // Context is invalid. Split containing element and insert list in between.
+    selectionReplaceSplittingSelectedElement(html, selection);
+    return;
+}/**
+ * @fileOverview
+ * @author David Neilsen - david@panmedia.co.nz
+ * @author Michael Robinson - michael@panmedia.co.nz
+ * @version 0.1
+ */
+
+/**
+ * Modification of strip_tags from PHP JS - http://phpjs.org/functions/strip_tags:535.
+ * @param  {string} content HTML containing tags to be stripped
+ * @param {Array} allowedTags Array of tags that should not be stripped
+ * @return {string} HTML with all tags not present allowedTags array.
+ */
+function stringStripTags(content, allowedTags) {
+    // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+    allowed = [];
+    for (var allowedTagsIndex = 0; allowedTagsIndex < allowedTags.length; allowedTagsIndex++) {
+        if (allowedTags[allowedTagsIndex].match(/[a-z][a-z0-9]{0,}/g)) {
+            allowed.push(allowedTags[allowedTagsIndex]);
+        }
+    }
+    // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+    var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*\/?>/gi,
+        commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+
+    return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+        return allowed.indexOf($1.toLowerCase()) > -1 ? $0 : '';
+    });
 }
                 })(jQuery, window, rangy);
             jQuery('<style type="text/css">/*\n\
