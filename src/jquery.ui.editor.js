@@ -1644,7 +1644,7 @@ $.extend($.ui.editor,
         /**
          * @type {Object} Custom hotkeys
          */
-        hotkeys: {},
+        hotkeys: {}
     },
 
     /**
