@@ -27,6 +27,17 @@ function selectionRestore() {
 }
 
 /**
+ * Reset saved selection.
+ */
+function selectionDestroy() {
+    savedSelection = false;
+}
+
+function selectionSaved() {
+    return savedSelection !== false;
+}
+
+/**
  * Iterates over all ranges in a selection and calls the callback for each
  * range. The selection/range offsets is updated in every iteration in in the
  * case that a range was changed or removed by a previous iteration.
