@@ -16,7 +16,7 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
         /**
          * @type {String} The tag to insert when user presses enter
          */
-        return: '<p><br/></p>',
+        'return': '<p><br/></p>',
 
         /**
          * @type {Array} Array of tag names within which the return HTML is valid.
@@ -51,7 +51,7 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
     hotkeys: {
         'return': {
             'action': function() {
-                this.insertBreak(this.options.return, this.options.returnValidTags);
+                this.insertBreak(this.options['return'], this.options.returnValidTags);
             },
             restoreSelection: false
         },
