@@ -28,3 +28,4 @@ viewsource=src/plugins/viewsource
 placeholder=src/plugins/placeholder
 toolbartip=src/plugins/toolbartip
 clear-formatting=src/plugins/clear-formatting
+normalise-line-breaks=src/plugins/normalise-line-breaks
