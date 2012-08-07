@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.9 *//**
+/*! VERSION: 0.0.10 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25299,6 +25299,104 @@ $.extend( $.ui.tabs.prototype, {
 
 })( jQuery );
 /*
+ * jQuery Hotkeys Plugin
+ * Copyright 2010, John Resig
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * Based upon the plugin by Tzury Bar Yochay:
+ * http://github.com/tzuryby/hotkeys
+ *
+ * Original idea by:
+ * Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
+*/
+
+(function(jQuery){
+
+    jQuery.hotkeys = {
+        version: "0.8",
+
+        specialKeys: {
+            8: "backspace", 9: "tab", 13: "return", 16: "shift", 17: "ctrl", 18: "alt", 19: "pause",
+            20: "capslock", 27: "esc", 32: "space", 33: "pageup", 34: "pagedown", 35: "end", 36: "home",
+            37: "left", 38: "up", 39: "right", 40: "down", 45: "insert", 46: "del",
+            96: "0", 97: "1", 98: "2", 99: "3", 100: "4", 101: "5", 102: "6", 103: "7",
+            104: "8", 105: "9", 106: "*", 107: "+", 109: "-", 110: ".", 111 : "/",
+            112: "f1", 113: "f2", 114: "f3", 115: "f4", 116: "f5", 117: "f6", 118: "f7", 119: "f8",
+            120: "f9", 121: "f10", 122: "f11", 123: "f12", 144: "numlock", 145: "scroll", 191: "/", 224: "meta"
+        },
+
+        shiftNums: {
+            "`": "~", "1": "!", "2": "@", "3": "#", "4": "$", "5": "%", "6": "^", "7": "&",
+            "8": "*", "9": "(", "0": ")", "-": "_", "=": "+", ";": ": ", "'": "\"", ",": "<",
+            ".": ">",  "/": "?",  "\\": "|"
+        }
+    };
+
+    function keyHandler( handleObj ) {
+        // Only care when a possible input has been specified
+        if ( typeof handleObj.data !== "string" ) {
+            return;
+        }
+
+        var origHandler = handleObj.handler,
+            keys = handleObj.data.toLowerCase().split(" ");
+
+        handleObj.handler = function( event ) {
+            // Don't fire in text-accepting inputs that we didn't directly bind to
+            if ( this !== event.target && (/textarea|select/i.test( event.target.nodeName ) ||
+                 event.target.type === "text") ) {
+                return;
+            }
+
+            // Keypress represents characters, not special keys
+            var special = event.type !== "keypress" && jQuery.hotkeys.specialKeys[ event.which ],
+                character = String.fromCharCode( event.which ).toLowerCase(),
+                key, modif = "", possible = {};
+
+            // check combinations (alt|ctrl|shift+anything)
+            if ( event.altKey && special !== "alt" ) {
+                modif += "alt+";
+            }
+
+            if ( event.ctrlKey && special !== "ctrl" ) {
+                modif += "ctrl+";
+            }
+
+            // TODO: Need to make sure this works consistently across platforms
+            if ( event.metaKey && !event.ctrlKey && special !== "meta" ) {
+                modif += "meta+";
+            }
+
+            if ( event.shiftKey && special !== "shift" ) {
+                modif += "shift+";
+            }
+
+            if ( special ) {
+                possible[ modif + special ] = true;
+
+            } else {
+                possible[ modif + character ] = true;
+                possible[ modif + jQuery.hotkeys.shiftNums[ character ] ] = true;
+
+                // "$" can be triggered as "Shift+4" or "Shift+$" or just "$"
+                if ( modif === "shift+" ) {
+                    possible[ jQuery.hotkeys.shiftNums[ character ] ] = true;
+                }
+            }
+
+            for ( var i = 0, l = keys.length; i < l; i++ ) {
+                if ( possible[ keys[i] ] ) {
+                    return origHandler.apply(this, arguments);
+                }
+            }
+        };
+    }
+
+    jQuery.each([ "keydown", "keyup", "keypress" ], function() {
+        jQuery.event.special[this] = { add: keyHandler };
+    });
+
+})( jQuery );/*
  * jQuery Raptorize Plugin 1.0
  * www.ZURB.com/playground
  * Copyright 2010, ZURB
@@ -25540,35 +25638,13 @@ $.extend( $.ui.tabs.prototype, {
 
 /**
  * Functions attached to the editor object during editor initialisation. Usage example:
- * <pre>editor.saveSelection();
+ * <pre>selectionSave();
 // Perform actions that could remove focus from editing element
-editor.restoreSelection();
-editor.replaceSelection('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
+selectionRestore();
+selectionReplace('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  * @namespace
  */
 var domTools = {
-
-    /**
-     * @type {Boolean|Object} current saved selection.
-     */
-    savedSelection: false,
-
-    /**
-     * Save selection wrapper, preventing plugins / UI from accessing rangy directly.
-     */
-    saveSelection: function() {
-        this.savedSelection = rangy.saveSelection();
-    },
-
-    /**
-     * Restore selection wrapper, preventing plugins / UI from accessing rangy directly.
-     */
-    restoreSelection: function() {
-        if (this.savedSelection) {
-            rangy.restoreSelection(this.savedSelection);
-            this.savedSelection = false;
-        }
-    },
 
     /**
      * Removes all ranges from a selection that are not contained within the
@@ -25595,115 +25671,12 @@ var domTools = {
         });
     },
 
-    /**
-     * Gets all elements that contain a selection (excluding text nodes) and
-     * returns them as a jQuery array.
-     *
-     * @public @static
-     * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
-     */
-    getSelectedElements: function(sel) {
-        var result = new jQuery();
-        selectionEachRange(function(range) {
-            result.push(this.getSelectedElement(range)[0]);
-        }, sel, this);
-        return result;
-    },
-
-    getSelectedElement: function (range) {
-        var commonAncestor;
-
-        range = range || rangy.getSelection().getRangeAt(0);
-
-        // Check if the common ancestor container is a text node
-        if (range.commonAncestorContainer.nodeType === 3) {
-            // Use the parent instead
-            commonAncestor = range.commonAncestorContainer.parentNode;
-        } else {
-            commonAncestor = range.commonAncestorContainer;
-        }
-        return $(commonAncestor);
-    },
-
-    /**
-     * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
-     * @return {string} The html content of the selection.
-     */
-    getSelectedHtml: function(selection) {
-        selection = selection || rangy.getSelection();
-        return selection.toHtml();
-    },
-
-    getSelectionStartElement: function() {
-        var selection = rangy.getSelection();
-        if (selection.isBackwards()) {
-            return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
-        }
-        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
-    },
-
-    getSelectionEndElement: function() {
-        var selection = rangy.getSelection();
-        if (selection.isBackwards()) {
-            return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
-        }
-        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
-    },
-
     unwrapParentTag: function(tag) {
-        this.getSelectedElements().each(function(){
+        selectionGetElements().each(function(){
             if ($(this).is(tag)) {
                 $(this).replaceWith($(this).html());
             }
         });
-    },
-
-    wrapTagWithAttribute: function(tag, attributes, classes) {
-        selectionEachRange(function(range) {
-            var element = this.getSelectedElement(range);
-            if (element.is(tag)) {
-                element.attr(attributes);
-            } else {
-                this.toggleWrapper(tag, {
-                    classes: classes,
-                    attributes: attributes
-                });
-            }
-        }, null, this);
-    },
-
-    /**
-     * Selects all the contents of the supplied element, excluding the element itself.
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
-     */
-    selectInner: function(element, selection) {
-        selection = selection || rangy.getSelection();
-        selection.removeAllRanges();
-        $(element).focus().contents().each(function() {
-            var range = rangy.createRange();
-            range.selectNodeContents(this);
-            selection.addRange(range);
-        });
-    },
-
-    /**
-     * Selects all the contents of the supplied element, including the element itself.
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
-     */
-    selectOuter: function(element, selection) {
-        selection = selection || rangy.getSelection();
-        selection.removeAllRanges();
-        $(element).each(function() {
-            var range = rangy.createRange();
-            range.selectNode(this);
-            selection.addRange(range);
-        }).focus();
     },
 
     /**
@@ -25722,43 +25695,6 @@ var domTools = {
             range.collapse();
             selection.addRange(range);
         });
-    },
-
-    /**
-     * FIXME: this function needs reviewing
-     *
-     * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
-     *
-     * @public @static
-     */
-    toggleWrapper: function(tag, options) {
-        options = options || {};
-        var applier = rangy.createCssClassApplier(options.classes || '', {
-            normalize: true,
-            elementTagName: tag,
-            elementProperties: options.attributes || {}
-        });
-        selectionEachRange(function(range) {
-            if (this.rangeEmptyTag(range)) {
-                var element = $('<' + tag + '/>')
-                    .addClass(options.classes)
-                    .attr(options.attributes || {})
-                    .append(fragmentToHtml(range.cloneContents()));
-                this.replaceRange(element, range);
-            } else {
-                applier.toggleRange(range);
-            }
-        }, null, this);
-    },
-
-    rangeEmptyTag: function(range) {
-        var contents = range.cloneContents();
-        var html = fragmentToHtml(contents);
-        if (typeof html === 'string') {
-            html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
-        }
-        if ($(html).is(':empty')) return true;
-        return false;
     },
 
     /**
@@ -25871,19 +25807,19 @@ var domTools = {
      * @param {String} tag The wrapper tag name
      */
     wrapInner: function(element, tag) {
-        this.saveSelection();
+        selectionSave();
         $(element).each(function() {
             var wrapper = $('<' + tag + '/>').html($(this).html());
             element.html(wrapper);
         });
-        this.restoreSelection();
+        selectionRestore();
     },
 
     /**
      *
      */
     inverseWrapWithTagClass: function(tag1, class1, tag2, class2) {
-        this.saveSelection();
+        selectionSave();
         // Assign a temporary tag name (to fool rangy)
         var id = 'domTools' + Math.ceil(Math.random() * 10000000);
 
@@ -25909,7 +25845,7 @@ var domTools = {
             $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
         });
 
-        this.restoreSelection();
+        selectionRestore();
     },
 
     /**
@@ -25963,9 +25899,9 @@ var domTools = {
     replaceSelectionWithinValidTags: function(html, validTagNames, selection) {
         selection = selection || rangy.getSelection();
 
-        var startElement = this.getSelectionStartElement()[0];
-        var endElement = this.getSelectionEndElement()[0];
-        var selectedElement = this.getSelectedElements()[0];
+        var startElement = selectionGetStartElement()[0];
+        var endElement = selectionGetEndElement()[0];
+        var selectedElement = selectionGetElements()[0];
 
         var selectedElementValid = this.isElementValid(selectedElement, validTagNames);
         var startElementValid = this.isElementValid(startElement, validTagNames);
@@ -25973,7 +25909,7 @@ var domTools = {
 
         // The html may be inserted within the selected element & selection start / end.
         if (selectedElementValid && startElementValid && endElementValid) {
-            this.replaceSelection(html);
+            selectionReplace(html);
             return;
         }
 
@@ -25991,7 +25927,7 @@ var domTools = {
         selection = selection || rangy.getSelection();
 
         var selectionRange = selection.getRangeAt(0);
-        var selectedElement = this.getSelectedElements()[0];
+        var selectedElement = selectionGetElements()[0];
 
         // Select from start of selected element to start of selection
         var startRange = rangy.createRange();
@@ -26011,28 +25947,6 @@ var domTools = {
         replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
 
         $(selectedElement).replaceWith($(replacement));
-    },
-
-    /**
-     * FIXME: this function needs reviewing
-     * @public @static
-     */
-    replaceSelection: function(html, sel) {
-        selectionEachRange(function(range) {
-            this.replaceRange(html, range);
-        }, sel, this);
-    },
-
-    replaceRange: function(html, range) {
-        var nodes = $('<div/>').append(html)[0].childNodes;
-        range.deleteContents();
-        if (nodes.length === undefined || nodes.length === 1) {
-            range.insertNode(nodes[0].cloneNode(true));
-        } else {
-            $.each(nodes, function(i, node) {
-                range.insertNodeAtEnd(node.cloneNode(true));
-            });
-        }
     },
 
     /**
@@ -26298,7 +26212,7 @@ if (debugLevel >= MAX) {
     info('FIXME: remove editor instance from instances array on destroy');
     info('FIXME: updateTagTree click bindings');
     info('FIXME: updateTagTree should filter out duplicates');
-    info('FIXME: Check for duplicate elements in getSelectedElements');
+    info('FIXME: Check for duplicate elements in selectionGetElements');
 }
 // </debug>
 
@@ -26314,7 +26228,7 @@ if (debugLevel >= MAX) {
 function handleError(errorMessage) {
     if (console && console.error) {
         var args = Array.prototype.slice.call(arguments);
-        
+
         // <ie>
         if (!console.error.apply) {
             for (var i = 0, l = args.length;i < l; i++) {
@@ -26420,6 +26334,7 @@ $.widget('ui.editor',
             ['listUnordered', 'listOrdered'],
             ['hr', 'quoteBlock'],
             ['fontSizeInc', 'fontSizeDec'],
+            ['colorPickerBasic'],
             ['clearFormatting'],
             ['link', 'unlink'],
             ['embed'],
@@ -26457,6 +26372,13 @@ $.widget('ui.editor',
 
         // List of UI objects bound to the editor
         this.uiObjects = {};
+
+        // List of hotkeys bound to the editor
+        this.hotkeys = {};
+        // If hotkeys are enabled, register any custom hotkeys provided by the user
+        if (this.options.enableHotkeys) {
+            this.registerHotkey(this.hotkeys);
+        }
 
         // Bind default events
         for (var name in this.options.bind) {
@@ -26528,7 +26450,7 @@ $.widget('ui.editor',
         var change = $.proxy(this.checkChange, this);
 
         this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
-            this.selectOuter(event.target);
+            selectionSelectOuter(event.target);
         }, this));
         // this.bind('change', change);
         this.getElement().bind('mouseup.' + this.widgetName, change);
@@ -26617,7 +26539,7 @@ $.widget('ui.editor',
 
         this.element.hide();
         this.bind('change', function() {
-            if (this.element.is('input')) {
+            if (this.element.is('input, textarea')) {
                 this.element.val(this.getHtml());
             } else {
                 this.element.html(this.getHtml());
@@ -26770,6 +26692,8 @@ $.widget('ui.editor',
             this.execCommand('enableInlineTableEditing', false, false);
             this.execCommand('styleWithCSS', true, true);
 
+            this.bindHotkeys();
+
             this.fire('enabled');
             this.fire('resize');
         }
@@ -26855,10 +26779,10 @@ $.widget('ui.editor',
                 var i = $(this).data('ui-editor-selection');
                 if (i) {
                     // Get the element from the list array
-                    editor.selectOuter(lists[i[0]][i[1]]);
+                    selectionSelectOuter(lists[i[0]][i[1]]);
                     editor.updateTagTree();
                 } else {
-                    editor.selectOuter(editor.getElement());
+                    selectionSelectOuter(editor.getElement());
                 }
             });
 
@@ -27289,6 +27213,60 @@ $.widget('ui.editor',
     },
 
     /*========================================================================*\
+     * Hotkeys
+    \*========================================================================*/
+
+    /**
+     * @param {Array|String} mixed The hotkey name or an array of hotkeys
+     * @param {Object} The hotkey object or null
+     */
+    registerHotkey: function(mixed, actionData, context) {
+        // Allow array objects, and single plugins
+        if (typeof(mixed) === 'string') {
+
+            // <strict>
+            if (this.hotkeys[mixed]) {
+                handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {hotkey: mixed}));
+            }
+            // </strict>
+
+            this.hotkeys[mixed] = $.extend({}, {
+                context: context,
+                restoreSelection: true
+            }, actionData);
+
+        } else {
+            for (var name in mixed) {
+                this.registerHotkey(name, mixed[name], context);
+            }
+        }
+    },
+
+    bindHotkeys: function() {
+        for (keyCombination in this.hotkeys) {
+            var editor = this,
+                force = this.hotkeys[keyCombination].force || false;
+
+            if (!this.options.enableHotkeys && !force) {
+                continue;
+            }
+
+            this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
+                selectionSave();
+                var object = editor.hotkeys[event.data];
+                // Returning true from action will allow event bubbling
+                if (object.action.call(object.context) !== true) {
+                    event.preventDefault();
+                }
+                if (object.restoreSelection) {
+                    selectionRestore();
+                }
+                editor.checkChange();
+            });
+        }
+    },
+
+    /*========================================================================*\
      * Buttons
     \*========================================================================*/
 
@@ -27354,6 +27332,14 @@ $.widget('ui.editor',
                     uiObject.editor = this;
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(this, options);
+
+                    if (uiObject.hotkeys) {
+                        this.registerHotkey(uiObject.hotkeys, null, uiObject);
+                        // Add hotkeys to title
+                        uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
+                                return index;
+                            })[0] + ')';
+                    }
 
                     // Append the UI object to the group
                     uiObject.ui.init(uiSet[j], this, options, uiObject).appendTo(uiGroup);
@@ -27446,10 +27432,8 @@ $.widget('ui.editor',
             enable: function() {
                 this.button.button('option', 'disabled', false);
             },
-            ready: function() {
-            },
-            click: function() {
-            }
+            ready: function() {},
+            click: function() {}
         }, options);
     },
 
@@ -27485,7 +27469,8 @@ $.widget('ui.editor',
                 if (!ui.title) ui.title = _('Unnamed Select Menu');
 
                 ui.wrapper =  $('<div class="ui-editor-selectmenu-wrapper"/>')
-                    .append(ui.select.hide());
+                    .append(ui.select.hide())
+                    .addClass(ui.select.attr('class'));
 
                 ui.selectMenu = $('<div class="ui-editor-selectmenu"/>')
                     .appendTo(ui.wrapper);
@@ -27493,26 +27478,31 @@ $.widget('ui.editor',
                 ui.menu = $('<div class="ui-editor-selectmenu-menu ui-widget-content ui-corner-bottom ui-corner-tr"/>')
                     .appendTo(ui.wrapper);
 
-                ui.select.find('option').each(function() {
+                ui.select.find('option, .ui-editor-selectmenu-option').each(function() {
                     var option = $('<div/>')
                         .addClass('ui-editor-selectmenu-menu-item')
                         .addClass('ui-corner-all')
                         .html($(this).html())
                         .appendTo(ui.menu)
-                        .bind('mouseenter.' + editor.widgetName, function() {$(this).addClass('ui-state-focus'); })
-                        .bind('mouseleave.' + editor.widgetName, function() {$(this).removeClass('ui-state-focus'); })
+                        .bind('mouseenter.' + editor.widgetName, function() {
+                            $(this).addClass('ui-state-focus');
+                        })
+                        .bind('mouseleave.' + editor.widgetName, function() {
+                            $(this).removeClass('ui-state-focus');
+                        })
                         .bind('mousedown.' + editor.widgetName, function() {
                             // Prevent losing focus on editable region
                             return false;
                         })
                         .bind('click.' + editor.widgetName, function() {
-                            var option = ui.select.find('option').eq($(this).index());
-                            ui.select.val(option.val());
+                            var option = ui.select.find('option, .ui-editor-selectmenu-option').eq($(this).index());
+                            var value = option.attr('value') || option.val();
+                            ui.select.val(value);
                             ui.update();
                             ui.wrapper.removeClass('ui-editor-selectmenu-visible');
                             ui.button.addClass('ui-corner-all')
                                   .removeClass('ui-corner-top');
-                            ui.change(ui.select.val());
+                            ui.change(value);
                             return false;
                         });
                 });
@@ -27528,7 +27518,6 @@ $.widget('ui.editor',
                     .append(text)
                     .append(icon)
                     .prependTo(ui.selectMenu);
-
                 ui.button
                     .bind('mousedown.' + editor.widgetName, function() {
                         // Prevent losing focus on editable region
@@ -27536,8 +27525,12 @@ $.widget('ui.editor',
                     })
                     .bind('click.' + editor.widgetName, function() {
                         // Do not fire click event when disabled
-                        if ($(this).hasClass('ui-state-disabled')) return;
-                        ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                        if ($(this).hasClass('ui-state-disabled')) {
+                        	return;
+                        }
+                        if (parseInt(ui.menu.css('min-width'), 10) < ui.button.outerWidth() + 10) {
+                            ui.menu.css('min-width', ui.button.outerWidth() + 10);
+                        }
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
                         return false;
                     })
@@ -27550,13 +27543,14 @@ $.widget('ui.editor',
                         $(this).removeClass('ui-state-hover');
                     });
 
-                var selected = ui.select.find('option[value=' + ui.select.val() + ']').html();
+                var selected = ui.select.find('option[value=' + this.select.val() + '], .ui-editor-selectmenu-option[value=' + this.select.val() + ']').html() ||
+                    ui.select.find('option, .ui-editor-selectmenu-option').first().html();
                 ui.button.find('.ui-editor-selectmenu-text').html(selected);
 
                 return ui.wrapper;
             },
-            update: function() {
-                var selected = this.select.find('option[value=' + this.select.val() + ']').html();
+            update: function(value) {
+                var selected = this.select.find('option[value=' + this.select.val() + '], .ui-editor-selectmenu-option[value=' + this.select.val() + ']').html();
                 this.button.find('.ui-editor-selectmenu-text').html(selected);
             },
             val: function() {
@@ -27616,6 +27610,10 @@ $.widget('ui.editor',
             pluginObject.editor = editor;
             pluginObject.options = options;
             pluginObject.init(editor, options);
+
+            if (pluginObject.hotkeys) {
+                this.registerHotkey(pluginObject.hotkeys, null, pluginObject);
+            }
 
             editor.plugins[name] = pluginObject;
         }
@@ -27923,7 +27921,17 @@ $.extend($.ui.editor,
          */
         cssPrefix: 'cms-',
 
-        draggable: true
+        draggable: true,
+
+        /**
+         * @type {Boolean} True to enable hotkeys
+         */
+        enableHotkeys: true,
+
+        /**
+         * @type {Object} Custom hotkeys
+         */
+        hotkeys: {}
     },
 
     /**
@@ -28444,6 +28452,14 @@ $.ui.editor.registerUi({
      */
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
 
+        hotkeys: {
+            'ctrl+b': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -28451,7 +28467,7 @@ $.ui.editor.registerUi({
             return this.editor.uiButton({
                 title: _('Bold'),
                 click: function() {
-                    editor.toggleWrapper('strong', { classes: options.classes || options.cssPrefix + 'bold' });
+                    selectionToggleWrapper('strong', { classes: options.classes || options.cssPrefix + 'bold' });
                 }
             });
         }
@@ -28465,6 +28481,15 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element
      */
     textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
+
+        hotkeys: {
+            'ctrl+i': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -28472,7 +28497,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Italic'),
                 click: function() {
-                    editor.toggleWrapper('em', { classes: options.classes || options.cssPrefix + 'italic' });
+                    selectionToggleWrapper('em', { classes: options.classes || options.cssPrefix + 'italic' });
                 }
             });
         }
@@ -28487,6 +28512,14 @@ $.ui.editor.registerUi({
      */
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
 
+        hotkeys: {
+            'ctrl+u': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -28494,7 +28527,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Underline'),
                 click: function() {
-                    editor.toggleWrapper('u', { classes: options.classes || options.cssPrefix + 'underline' });
+                    selectionToggleWrapper('u', { classes: options.classes || options.cssPrefix + 'underline' });
                 }
             });
         }
@@ -28509,6 +28542,14 @@ $.ui.editor.registerUi({
      */
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
 
+        hotkeys: {
+            'ctrl+k': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -28516,7 +28557,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Strikethrough'),
                 click: function() {
-                    editor.toggleWrapper('del', { classes: options.classes || options.cssPrefix + 'strike' });
+                    selectionToggleWrapper('del', { classes: options.classes || options.cssPrefix + 'strike' });
                 }
             });
         }
@@ -28538,7 +28579,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Sub script'),
                 click: function() {
-                    editor.toggleWrapper('sub', { classes: options.classes || options.cssPrefix + 'sub' });
+                    selectionToggleWrapper('sub', { classes: options.classes || options.cssPrefix + 'sub' });
                 }
             });
         }
@@ -28560,30 +28601,12 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Super script'),
                 click: function() {
-                    editor.toggleWrapper('sup', { classes: options.classes || options.cssPrefix + 'super' });
+                    selectionToggleWrapper('sup', { classes: options.classes || options.cssPrefix + 'super' });
                 }
             });
         }
     }
 });
-// $.ui.editor.registerUi('textBold', new Button({
-//     options: {
-//         title: _('Bold'),
-//         tag: 'strong',
-//         classes: null
-//     },
-//     init: function() {
-//         this.parent.init.apply(this, arguments);
-//         if (this.options.classes === null) {
-//             this.options.classes = this.options.cssPrefix + 'bold';
-//         }
-//     },
-//     action: function() {
-//         selectionToggleWrapper('strong', { 
-//             classes: this.options.classes
-//         });
-//     }
-// }));
 /**
  * @fileOverview Blockquote ui component
  * @author David Neilsen david@panmedia.co.nz
@@ -28608,7 +28631,7 @@ $.ui.editor.registerUi({
                 title: _('Blockquote'),
                 icon: 'ui-icon-quote',
                 click: function() {
-                    editor.toggleWrapper('blockquote', { classes: options.classes || options.cssPrefix + 'blockquote' });
+                    selectionToggleWrapper('blockquote', { classes: options.classes || options.cssPrefix + 'blockquote' });
                 }
             });
         }
@@ -28627,6 +28650,14 @@ $.ui.editor.registerUi({
   */
 $.ui.editor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
+
+        hotkeys: {
+            'ctrl+k': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
 
         /**
          * @see $.ui.editor.defaultUi#init
@@ -28757,7 +28788,6 @@ $.ui.editor.registerPlugin({
             'big', 'small', 'div', 'span'
         ],
 
-
         /**
          * Attributes to be removed if empty
          * @type {String[]}
@@ -28848,6 +28878,17 @@ $.ui.editor.registerPlugin({
                 }
             });
         }
+
+        // Ensure ul, ol content is wrapped in li's
+        this.editor.getElement().find('ul, ol').each(function() {
+            $(this).find(' > :not(li)').each(function() {
+                if (elementDefaultDisplay($(this).attr('tag'))) {
+                    $(this).replaceWith($('<li>' + $(this).html() + '</li>').appendTo('body'));
+                } else {
+                    $(this).wrap($('<li>'));
+                }
+            });
+        });
     }
 });
 
@@ -29457,6 +29498,14 @@ $.ui.editor.registerUi({
      */
     dock: /** @lends $.editor.ui.dock.prototype */ {
 
+        hotkeys: {
+            'ctrl+d': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -29531,7 +29580,7 @@ $.ui.editor.registerUi({
                 $(this.ui.button).button('option', 'disabled', true);
                 var ui = this;
 
-                ui.editor.saveSelection();
+                selectionSave();
 
                 this.dialog = $(this.editor.getTemplate('embed.dialog'));
                 this.dialog.dialog({
@@ -29546,8 +29595,8 @@ $.ui.editor.registerUi({
                         {
                             text: _('Embed Object'),
                             click: function() {
-                                ui.editor.restoreSelection();
-                                ui.editor.replaceSelection($(this).find('textarea').val());
+                                selectionRestore();
+                                selectionReplace($(this).find('textarea').val());
                                 $(this).dialog('close');
                             }
                         },
@@ -29816,6 +29865,17 @@ $.ui.editor.registerUi({
      * @class Revert most recent change to element content
      */
     undo: /** @lends $.editor.ui.undo.prototype */ {
+        options: {
+            disabled: true
+        },
+
+        hotkeys: {
+            'ctrl+z': {
+                'action': function() {
+                    this.editor.historyBack();
+                }
+            }
+        },
 
         /**
          * @see $.ui.editor.defaultUi#init
@@ -29825,7 +29885,6 @@ $.ui.editor.registerUi({
 
             return editor.uiButton({
                 title: _('Step Back'),
-                disabled: true,
                 click: function() {
                     editor.historyBack();
                 }
@@ -29844,6 +29903,23 @@ $.ui.editor.registerUi({
      */
     redo: /** @lends $.editor.ui.redo.prototype */ {
 
+        options: {
+            disabled: true
+        },
+
+        hotkeys: {
+            'ctrl+shift+z': {
+                'action': function() {
+                    this.editor.historyForward();
+                }
+            },
+            'ctrl+y': {
+                'action': function() {
+                    this.editor.historyForward();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -29852,7 +29928,6 @@ $.ui.editor.registerUi({
 
             return this.ui = editor.uiButton({
                 title: _('Step Forward'),
-                disabled: true,
                 click: function() {
                     editor.historyForward();
                 }
@@ -29865,209 +29940,6 @@ $.ui.editor.registerUi({
     }
 });
 /**
- * @name $.editor.plugin.hotkeys
- * @extends $.editor.plugin
- * @see $.editor.plugin.hotkeys.options
- * @class Plugin that allows users to edit content using hotkeys. Extensible with custom hotkey actions.
- * @author Michael Robinson <michael@panmedia.co.nz>
- * @author David Neilsen <david@panmedia.co.nz>
- */
-$.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototype */ {
-
-    /**
-     * @name $.editor.plugin.hotkeys.options
-     * @type {Object}
-     * @namespace Default options
-     * @see $.editor.plugin.hotkeys
-     */
-    options: /** @lends $.editor.plugin.hotkeys.options */  {
-        /**
-         * Array of action objects.
-         * For a hotkey triggering a UI action:
-         *
-         * <pre>{
-         *     ui: 'textBold', // Name of UI element to be triggered by this hotkey
-         *     key: 'b', // Key triggering this action
-         *     label: 'ctrl + b', // Label to be appended to the UI element's title attribute
-         *     meta: true // True if this hotkey should be combined with CTRL / Command. Default true.
-         * }</pre>
-         *
-         * For a hotkey triggering a custom action:
-         *
-         * <pre>{
-         *     callback: function() { alert('triggered!'); },
-         *     key: 't',
-         *     label: 'ctrl + t'
-         * }</pre>
-         *
-         * @type {Array}
-         */
-        actions: [
-            {
-                ui: 'textBold',
-                key: 'b',
-                label: _('ctrl + b')
-            },
-            {
-                ui: 'textItalic',
-                key: 'i',
-                label: _('ctrl + i')
-            },
-            {
-                ui: 'textUnderline',
-                key: 'u',
-                label: _('ctrl + u')
-            },
-            {
-                ui: 'undo',
-                key: 'z',
-                label: _('ctrl + z')
-            },
-            {
-                ui: 'redo',
-                key: 'y',
-                label: _('ctrl + y')
-            },
-            {
-                ui: 'cancel',
-                meta: false,
-                key: 27, // Escape key code
-                label: _('esc')
-            },
-            {
-                ui: 'save',
-                key: 's',
-                label: _('ctrl + s')
-            }
-        ]
-    },
-
-    /**
-     * Populated with actions indexed by character codes, to make retrieving an action from a given character code more straight-forward.
-     * @type {Object}
-     */
-    indexedActions: {},
-
-    /**
-     * Keyup event signature to be bound to window.
-     * @type {String}
-     */
-    keyUpEventSignature: null,
-
-    /**
-     * Keydown event signature to be bound to window.
-     * @type {String}
-     */
-    keyDownEventSignature: null,
-
-    /**
-     * @see $.ui.editor.defaultPlugin#init
-     */
-    init: function(editor, options) {
-        this.keyUpEventSignature = 'keyup.' + this.options.baseClass;
-        this.keyDownEventSignature = 'keydown.' + this.options.baseClass;
-        editor.bind('enabled', this.enabled, this);
-        editor.bind('disabled', this.disabled, this);
-    },
-
-    disabled: function() {
-        $(window).unbind(this.keyUpEventSignature);
-        $(window).unbind(this.keyDownEventSignature);
-        this.indexedActions = {};
-    },
-
-    /**
-     * Prepare actions & bind key events.
-     */
-    enabled: function() {
-        // Add actions to char code indexed array, for easier retrieval within the keyup event
-        var action;
-        for (var actionsIndex = 0; actionsIndex < this.options.actions.length; actionsIndex++) {
-            action = this.options.actions[actionsIndex];
-            this.indexedActions[this.isNumeric(action.key) ? action.key : action.key.charCodeAt(0)] = action;
-            if (typeof action.ui !== 'undefined') {
-                var uiObject = this.editor.getUi(action.ui);
-                // Only trigger if the UI object is enabled
-                if (typeof uiObject !== 'undefined') {
-                    uiObject.ui.button.attr('title', uiObject.ui.title + ' (' + action.label + ')');
-                }
-            }
-        }
-
-        var ui = this;
-
-        $(window).bind(this.keyDownEventSignature, function(event) {
-            var action = ui.actionForKeyCombination.call(ui, event);
-            if(action) {
-                event.preventDefault();
-            }
-        });
-
-        $(window).bind(this.keyUpEventSignature, function(event) {
-            var action = ui.actionForKeyCombination.call(ui, event);
-            if(action) {
-                var callback = $.isFunction(action.callback) ? action.callback : function() { ui.triggerUiAction(action.ui); };
-                callback.call(ui, event);
-                event.preventDefault();
-            }
-        });
-    },
-
-    /**
-     * Determine whether the current key combination is valid & return action if so.
-     * @param  {Event} event The event object.
-     * @return {Object|Boolean} The action for the key combination or false if the combination is not valid.
-     */
-    actionForKeyCombination: function(event) {
-
-        // Translate event keycode to lower case if necessary & appropriate
-        var pressedKey = event.which;
-        if (pressedKey >= 65 && pressedKey <= 90) {
-            var pressedKey = pressedKey + 32;
-        }
-
-        var action = this.indexedActions[pressedKey];
-        if (typeof action === 'undefined') {
-            return false;
-        }
-
-        var metaOk = action.meta === false || (event.ctrlKey || event.metaKey);
-        if (!metaOk) {
-            // Meta key is required but was not pressed
-            return false;
-        }
-
-        var keyOk = false;
-        if (this.isNumeric(action.key)) {
-            keyOk = pressedKey === action.key;
-        } else {
-            keyOk = String.fromCharCode(pressedKey).toLowerCase() === action.key;
-        }
-
-        return (keyOk) ? action : false;
-    },
-
-    /**
-     * Trigger the click action for the UI element identified by action.
-     * @param  {String} action Name of a UI element.
-     * @param  {Event} event The event triggering this function call.
-     */
-    triggerUiAction: function(action, event) {
-        var uiObject = this.editor.getUi(action);
-        if (typeof uiObject === 'undefined') {
-            return;
-        }
-        uiObject.ui.click.apply(uiObject, event);
-    },
-
-    /**
-     * @param  {mixed}  value Value to be tested
-     * @return {Boolean} True if the value is numeric
-     */
-    isNumeric: function(value) {
-        return !isNaN(value - 0);
-    }
-});/**
  * @fileOverview Insert hr ui component
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -30089,7 +29961,7 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
             return editor.uiButton({
                 title: _('Insert Horizontal Rule'),
                 click: function() {
-                    editor.replaceSelection('<hr/>');
+                    selectionReplace('<hr/>');
                 }
             });
         }
@@ -30143,6 +30015,9 @@ $.ui.editor.registerPlugin('hotkeys', /** @lends $.editor.plugin.hotkeys.prototy
         }
     }
 });
+/**
+ * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ */
 registerLocale('en', 'English', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
     "Added link: {{link}}": "Added link: {{link}}",
@@ -30158,6 +30033,7 @@ registerLocale('en', 'English', {
     "Check this box to have the file open in a new browser window": "Check this box to have the file open in a new browser window",
     "Check this box to have the link open in a new browser window": "Check this box to have the link open in a new browser window",
     "Choose a link type:": "Choose a link type:",
+    "Clear Formatting": "Clear Formatting",
     "Click to begin editing": "Click to begin editing",
     "Click to detach the toolbar": "Click to detach the toolbar",
     "Click to dock the toolbar": "Click to dock the toolbar",
@@ -30184,17 +30060,17 @@ registerLocale('en', 'English', {
     "Enter email address": "Enter email address",
     "Enter subject": "Enter subject",
     "Enter your URL": "Enter your URL",
-    "Failed to resize images (error {{error}})": "Failed to resize images (error {{error}})",
     "Failed to save {{failed}} content block(s).": "Failed to save {{failed}} content block(s).",
     "Find the page on the web you want to link to": "Find the page on the web you want to link to",
-    "Float Left": "Float Left",
-    "Float None": "Float None",
-    "Float Right": "Float Right",
+    "Float Image Left": "Float Image Left",
+    "Float Image Right": "Float Image Right",
     "Formatted &amp; Cleaned": "Formatted &amp; Cleaned",
     "Formatted Unclean": "Formatted Unclean",
     "Heading&nbsp;1": "Heading&nbsp;1",
     "Heading&nbsp;2": "Heading&nbsp;2",
     "Heading&nbsp;3": "Heading&nbsp;3",
+    "Image height": "Image height",
+    "Image width": "Image width",
     "Increase Font Size": "Increase Font Size",
     "Initializing": "Initializing",
     "Insert": "Insert",
@@ -30209,6 +30085,7 @@ registerLocale('en', 'English', {
     "Link to a page on this or another website": "Link to a page on this or another website",
     "Link to an email address": "Link to an email address",
     "Location": "Location",
+    "Modify Image Size": "Modify Image Size",
     "N/A": "N/A",
     "New window": "New window",
     "No changes detected to save...": "No changes detected to save...",
@@ -30225,9 +30102,10 @@ registerLocale('en', 'English', {
     "Raptorize": "Raptorize",
     "Reinitialise": "Reinitialise",
     "Remaining characters before the recommended character limit is reached": "Remaining characters before the recommended character limit is reached",
+    "Remove Image Float": "Remove Image Float",
     "Remove Link": "Remove Link",
     "Remove unnecessary markup from editor content": "Remove unnecessary markup from editor content",
-    "Resizing image(s)": "Resizing image(s)",
+    "Resize Image": "Resize Image",
     "Right Align": "Right Align",
     "Save": "Save",
     "Saved {{saved}} out of {{dirty}} content blocks.": "Saved {{saved}} out of {{dirty}} content blocks.",
@@ -30245,8 +30123,7 @@ registerLocale('en', 'English', {
     "Super script": "Super script",
     "The URL does not look well formed": "The URL does not look well formed",
     "The email address does not look well formed": "The email address does not look well formed",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.": "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
     "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
     "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "This block contains unsaved changes",
@@ -30259,24 +30136,148 @@ registerLocale('en', 'English', {
     "View / Edit Source": "View / Edit Source",
     "View Source": "View Source",
     "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes",
-    "ctrl + b": "ctrl + b",
-    "ctrl + i": "ctrl + i",
-    "ctrl + s": "ctrl + s",
-    "ctrl + u": "ctrl + u",
-    "ctrl + y": "ctrl + y",
-    "ctrl + z": "ctrl + z",
-    "esc": "esc",
     "root": "root",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} characters over limit",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} characters remaining",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} characters, {{charactersRemaining}} over the recommended limit",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} characters, {{charactersRemaining}} remaining",
-    "{{images}} image(s) have been replaced with resized versions": "{{images}} image(s) have been replaced with resized versions",
     "{{sentences}} sentences": "{{sentences}} sentences",
     "{{words}} word": "{{words}} word",
     "{{words}} words": "{{words}} words"
 });
-/* French translation by SebCorbin (contact: seb.corbin@gmail.com) */
+/**
+ * @contributor Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
+ */
+registerLocale('es', 'Español', {
+    "A preview of your embedded object is displayed below.": "A continuación se muestra una vista previa de su objeto incrustado.",
+    "Added link: {{link}}": "Enlace añadido: {{link}}",
+    "All changes will be lost!": "¡Todos los cambios serán perdidos!",
+    "Apply Source": "Aplicar Fuente",
+    "Are you sure you want to stop editing?": "¿Está seguro de que desea detener la edición?",
+    "Blockquote": "Cita en bloque",
+    "Bold": "Negrita",
+    "Cancel": "Cancelar",
+    "Center Align": "Centrar",
+    "Change HTML tag of selected element": "Cambiar la etiqueta HTML del elemento seleccionado",
+    "Change Language": "Cambiar Idioma",
+    "Check this box to have the file open in a new browser window": "Marque esta casilla para que el archivo se abra en una nueva ventana",
+    "Check this box to have the link open in a new browser window": "Marque esta casilla para que el enlace se abra en una nueva ventana",
+    "Choose a link type:": "Escoja un tipo de enlace:",
+    "Clear Formatting": "Clear Formatting",
+    "Click to begin editing": "Haga clic para empezar a editar",
+    "Click to detach the toolbar": "Haga clic para desanclar la barra de herramientas",
+    "Click to dock the toolbar": "Haga clic para anclar la barra de herramientas",
+    "Click to select all editable content": "Haga clic para seleccionar todo el contenido editable",
+    "Click to select the contents of the '{{element}}' element": "Haga clic para selecionar el contenido del elemento '{{element}}'",
+    "Close": "Cerrar",
+    "Confirm Cancel Editing": "Confirme Cancelar la Edición ",
+    "Content Statistics": "Contenidos Estadísticos",
+    "Content contains more than {{limit}} characters and may be truncated": "El contenido contiene más de {{limit}} carácteres y debe ser truncado",
+    "Content will not be truncated": "El contenido no será truncado",
+    "Copy the file\'s URL from your browser\'s address bar and paste it into the box above": "Copie la URL de su archivo desde la barra de dirección de su navegador y péguela en la caja superior",
+    "Copy the web address from your browser\'s address bar and paste it into the box above": "Copie la dirección web desde la barra de dirección de su navegador y péguela en la caja superior",
+    "Decrease Font Size": "Disminuir Tamaño de Fuente",
+    "Destroy": "Destruir",
+    "Divider": "Divisor",
+    "Document or other file": "Documento u otro archivo",
+    "Edit Link": "Editar Enlace",
+    "Email": "Correo electrónico",
+    "Email address": "Dirección de correo electrónico",
+    "Embed Code": "Código Incrustado",
+    "Embed Object": "Objeto Incrustado",
+    "Embed object": "Objeto incrustado",
+    "Ensure the file has been uploaded to your website": "Asegúrese de que el archivo ha sido subido a su sitio web",
+    "Enter email address": "Introduzca una dirección de correo electrónico",
+    "Enter subject": "Introduzca un sujeto",
+    "Enter your URL": "Introduzca su URL",
+    "Failed to save {{failed}} content block(s).": "Falló al guardar los bloques del cotenido de {{failed}}.",
+    "Find the page on the web you want to link to": "Busque la página web a la que desee enlazar",
+    "Float Image Left": "Float Image Left",
+    "Float Image Right": "Float Image Right",
+    "Formatted &amp; Cleaned": "Formateado y Limpiado",
+    "Formatted Unclean": "Formateado Sucio",
+    "Heading&nbsp;1": "Encabezado&nbsp;1",
+    "Heading&nbsp;2": "Encabezado&nbsp;2",
+    "Heading&nbsp;3": "Encabezado&nbsp;3",
+    "Image height": "Image height",
+    "Image width": "Image width",
+    "Increase Font Size": "Incrementar Tamaño de Fuente",
+    "Initializing": "Inicializando",
+    "Insert": "Insertar",
+    "Insert Horizontal Rule": "Insertar Línea Horizontal",
+    "Insert Link": "Insertar Enlace",
+    "Insert Snippet": "Insertar Snippet",
+    "Italic": "Cursiva",
+    "Justify": "Justificar",
+    "Learn More About the Raptor WYSIWYG Editor": "Saber más sobre el editor WYSIWYG Raptor",
+    "Left Align": "Alinear a la Izquierda",
+    "Link to a document or other file": "Enlazar a un documento o a otro archivo",
+    "Link to a page on this or another website": "Enlazar a una página en esta u otra página web",
+    "Link to an email address": "Enlazar a una dirección de correo electrónico",
+    "Location": "Localización",
+    "Modify Image Size": "Modify Image Size",
+    "N/A": "N/A",
+    "New window": "Nueva ventana",
+    "No changes detected to save...": "No se detectaron cambios para guardar...",
+    "Not sure what to put in the box above?": "¿No está seguro de qué poner en la caja anterior?",
+    "OK": "Aceptar",
+    "Open the uploaded file in your browser": "Abra el archivo cargado en su navegador",
+    "Ordered List": "Lista Ordenada",
+    "Page on this or another website": "Página en ésta u otra página web",
+    "Paragraph": "Párrafo",
+    "Paste Embed Code": "Pegar Código Incrustado",
+    "Paste your embed code into the text area below.": "Pegue su código incrustado en la caja de texto posterior.",
+    "Plain Text": "Texto Llano",
+    "Preview": "Previsualizar",
+    "Raptorize": "Raptorizar",
+    "Reinitialise": "Reinicializar",
+    "Remaining characters before the recommended character limit is reached": "Carácteres restantes antes de que se alcance el límite de cáracteres recomendado",
+    "Remove Image Float": "Remove Image Float",
+    "Remove Link": "Eliminar enlace",
+    "Remove unnecessary markup from editor content": "Eliminar marcado innecesario del editor de contenido",
+    "Resize Image": "Resize Image",
+    "Right Align": "Alinear a la Derecha",
+    "Save": "Guardar",
+    "Saved {{saved}} out of {{dirty}} content blocks.": "Guardados {{saved}} de {{dirty}} bloques de contenido.",
+    "Saving changes...": "Guardando cambios...",
+    "Select all editable content": "Seleccionar todo el contenido editable",
+    "Select {{element}} element": "Seleccionar el elemento {{element}}",
+    "Show Guides": "Mostrar Guías",
+    "Source Code": "Código Fuente",
+    "Step Back": "Deshacer",
+    "Step Forward": "Rehacer",
+    "Strikethrough": "Tachado",
+    "Sub script": "Subíndice",
+    "Subject (optional)": "Sujeto (opcional)",
+    "Successfully saved {{saved}} content block(s).": "Guardado exitosamente {{saved}} bloque(s) de contenido.",
+    "Super script": "Superíndice",
+    "The URL does not look well formed": "La URL no parece bien formada",
+    "The email address does not look well formed": "El enlace de correo electrónico no parece bien formado",
+    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The url for the file you inserted doesn\'t look well formed": "La URL del archivo que ha introducido no parece bien formada",
+    "The url for the link you inserted doesn\'t look well formed": "La URL del enlace que ha introducido no parece bien formada",
+    "This block contains unsaved changes": "Este bloque tiene cambios sin guardar",
+    "Underline": "Subrayar",
+    "Unnamed Button": "Botón sin Nombre",
+    "Unnamed Select Menu": "Menú de Selección sin Nombre",
+    "Unordered List": "Lista Desordenada",
+    "Update Link": "Actualizar Enlace",
+    "Updated link: {{link}}": "Enlace actualizado: {{link}}",
+    "View / Edit Source": "Ver / Editar Código Fuente",
+    "View Source": "Ver Código Fuente",
+    "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nHay cambios sin guardar en esta página. \nSi sale de esta página, perderá todos los cambios sin guardar",
+    "root": "orígen",
+    "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} carácter(es) sobre el límite",
+    "{{charactersRemaining}} characters remaining": "Queda(n) {{charactersRemaining}} carácter(es)",
+    "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} carácter(es), {{charactersRemaining}} sobre el límite recomendado",
+    "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} carácter(es), queda(n) {{charactersRemaining}}",
+    "{{sentences}} sentences": "{{sentences}} oraciones",
+    "{{words}} word": "{{words}} palabra",
+    "{{words}} words": "{{words}} palabras"
+});
+/**
+ * @contributor SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
+ */
 registerLocale('fr', 'Français', {
     "A preview of your embedded object is displayed below.": "Un aperçu de votre objet intégré est affiché ci-dessous.",
     "Added link: {{link}}": "Lien ajouté : {{link}}",
@@ -30292,6 +30293,7 @@ registerLocale('fr', 'Français', {
     "Check this box to have the file open in a new browser window": "Cochez cette case pour ouvrir le fichier dans une nouvelle fenêtre de navigateur",
     "Check this box to have the link open in a new browser window": "Cochez cette case pour ouvrir le lien dans une nouvelle fenêtre de navigateur",
     "Choose a link type:": "Choisissez un type de lien :",
+    "Clear Formatting": "Clear Formatting",
     "Click to begin editing": "Cliquer pour commencer la modification",
     "Click to detach the toolbar": "Cliquer pour détacher la barre d'outils",
     "Click to dock the toolbar": "Cliquer pour ancrer la barre d'outils",
@@ -30302,8 +30304,8 @@ registerLocale('fr', 'Français', {
     "Content Statistics": "Statistiques de contenu",
     "Content contains more than {{limit}} characters and may be truncated": "Le contenu contient plus de {{limit}} caractères et peut être tronqué",
     "Content will not be truncated": "Le contenu ne sera pas tronqué",
-    "Copy the file\'s URL from your browser\'s address bar and paste it into the box above": "Copiez l'URL du fichier depuis la barre d'adresse de votre navigateur et collez-la dans le champ ci-dessus",
-    "Copy the web address from your browser\'s address bar and paste it into the box above": "Copiez l'adresse web depuis la barre d'adresse de votre navigateur et collez-la dans le champ ci-dessus",
+    "Copy the file\'s URL from your browser\'s address bar and paste it into the box above": "Copy the file\'s URL from your browser\'s address bar and paste it into the box above",
+    "Copy the web address from your browser\'s address bar and paste it into the box above": "Copy the web address from your browser\'s address bar and paste it into the box above",
     "Decrease Font Size": "Diminuer la taille de la police",
     "Destroy": "Détruire",
     "Divider": "Div",
@@ -30318,17 +30320,17 @@ registerLocale('fr', 'Français', {
     "Enter email address": "Saisir l'adresse e-mail",
     "Enter subject": "Saisir le sujet",
     "Enter your URL": "Saisir l'URL",
-    "Failed to resize images (error {{error}})": "Échec de redimensionnement des images (erreur {{error}})",
     "Failed to save {{failed}} content block(s).": "Échec d'enregistrement du(des) bloc(s) de contenu {{failed}}.",
     "Find the page on the web you want to link to": "Trouvez la page web que vous voulez lier",
-    "Float Left": "Flotter à gauche",
-    "Float None": "Ne pas flotter",
-    "Float Right": "Flotter à droite",
+    "Float Image Left": "Float Image Left",
+    "Float Image Right": "Float Image Right",
     "Formatted &amp; Cleaned": "Formatté &amp; Nettoyé",
     "Formatted Unclean": "Formatté non nettoyé",
     "Heading&nbsp;1": "Titre&nbsp;1",
     "Heading&nbsp;2": "Titre&nbsp;2",
     "Heading&nbsp;3": "Titre&nbsp;3",
+    "Image height": "Image height",
+    "Image width": "Image width",
     "Increase Font Size": "Augmenter la taille de la police",
     "Initializing": "Initialisation",
     "Insert": "Insérer",
@@ -30343,6 +30345,7 @@ registerLocale('fr', 'Français', {
     "Link to a page on this or another website": "Lier une page ou un autre site",
     "Link to an email address": "Lier une adresse e-mail",
     "Location": "Emplacement",
+    "Modify Image Size": "Modify Image Size",
     "N/A": "N/A",
     "New window": "Nouvelle fenêtre",
     "No changes detected to save...": "Aucune modification détectée à enregistrer...",
@@ -30359,9 +30362,10 @@ registerLocale('fr', 'Français', {
     "Raptorize": "Raptoriser",
     "Reinitialise": "Réinitialiser",
     "Remaining characters before the recommended character limit is reached": "Caractères restants avant que la limite de caractère recommandée ne soit atteinte",
+    "Remove Image Float": "Remove Image Float",
     "Remove Link": "Retirer le lien",
     "Remove unnecessary markup from editor content": "Retirer le balisage non nécessaire du contenu de l'éditeur",
-    "Resizing image(s)": "Redimensionnement de(s) image(s)",
+    "Resize Image": "Resize Image",
     "Right Align": "Aligner à droite",
     "Save": "Enregistrer",
     "Saved {{saved}} out of {{dirty}} content blocks.": "{{saved}} enregistré sur {{dirty}} blocs de contenu.",
@@ -30379,10 +30383,9 @@ registerLocale('fr', 'Français', {
     "Super script": "Exposant",
     "The URL does not look well formed": "L'URL paraît malformée",
     "The email address does not look well formed": "L'adresse e-mail paraît malformée",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.": "L'image \"{{image}}\" est trop grande pour l'élément en cours de modification.<br/>Elle a été redimensionnée en CSS.",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "L'image \"{{image}}\" est trop grande pour l'élément en cours de modification.<br/>Elle sera remplacée par une copie redimensionnée quand vos modifications seront enregistrées.",
-    "The url for the file you inserted doesn\'t look well formed": "L'url du fichier que vous avez inséré paraît malformée",
-    "The url for the link you inserted doesn\'t look well formed": "L'url du lien que vous avez inséré paraît malformée",
+    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
+    "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "Ce bloc contient des modifications non enregistrées",
     "Underline": "Souligné",
     "Unnamed Button": "Boutton sans nom",
@@ -30393,23 +30396,18 @@ registerLocale('fr', 'Français', {
     "View / Edit Source": "Voir / Modifier la source",
     "View Source": "Voir la source",
     "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nIl y a des modifications non enregistrées sur cette page. \nSi vous quittez cette page, vous perdrez vos modifications non enregistrées",
-    "ctrl + b": "ctrl + b",
-    "ctrl + i": "ctrl + i",
-    "ctrl + s": "ctrl + s",
-    "ctrl + u": "ctrl + u",
-    "ctrl + y": "ctrl + y",
-    "ctrl + z": "ctrl + z",
-    "esc": "esc",
     "root": "racine",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} caractères au-dessus de la limite",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} caractères restants",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} caractères, {{charactersRemaining}} au-dessus de la limite",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} caractères, {{charactersRemaining}} restants",
-    "{{images}} image(s) have been replaced with resized versions": "{{images}} image(s) a(ont) été remplacée(s) par une version redimensionnée",
     "{{sentences}} sentences": "{{sentences}} phrases",
     "{{words}} word": "{{words}} mot",
     "{{words}} words": "{{words}} mots"
 });
+/**
+ * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ */
 registerLocale('zh_CN', '简体中文', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
     "Added link: {{link}}": "Added link: {{link}}",
@@ -30425,6 +30423,7 @@ registerLocale('zh_CN', '简体中文', {
     "Check this box to have the file open in a new browser window": "Check this box to have the file open in a new browser window",
     "Check this box to have the link open in a new browser window": "Check this box to have the link open in a new browser window",
     "Choose a link type:": "Choose a link type:",
+    "Clear Formatting": "Clear Formatting",
     "Click to begin editing": "Click to begin editing",
     "Click to detach the toolbar": "Click to detach the toolbar",
     "Click to dock the toolbar": "Click to dock the toolbar",
@@ -30451,17 +30450,17 @@ registerLocale('zh_CN', '简体中文', {
     "Enter email address": "Enter email address",
     "Enter subject": "Enter subject",
     "Enter your URL": "Enter your URL",
-    "Failed to resize images (error {{error}})": "Failed to resize images (error {{error}})",
     "Failed to save {{failed}} content block(s).": "Failed to save {{failed}} content block(s).",
     "Find the page on the web you want to link to": "Find the page on the web you want to link to",
-    "Float Left": "Float Left",
-    "Float None": "Float None",
-    "Float Right": "Float Right",
+    "Float Image Left": "Float Image Left",
+    "Float Image Right": "Float Image Right",
     "Formatted &amp; Cleaned": "Formatted &amp; Cleaned",
     "Formatted Unclean": "Formatted Unclean",
     "Heading&nbsp;1": "Heading&nbsp;1",
     "Heading&nbsp;2": "Heading&nbsp;2",
     "Heading&nbsp;3": "Heading&nbsp;3",
+    "Image height": "Image height",
+    "Image width": "Image width",
     "Increase Font Size": "Increase Font Size",
     "Initializing": "Initializing",
     "Insert": "Insert",
@@ -30476,6 +30475,7 @@ registerLocale('zh_CN', '简体中文', {
     "Link to a page on this or another website": "Link to a page on this or another website",
     "Link to an email address": "Link to an email address",
     "Location": "Location",
+    "Modify Image Size": "Modify Image Size",
     "N/A": "N/A",
     "New window": "New window",
     "No changes detected to save...": "No changes detected to save...",
@@ -30492,9 +30492,10 @@ registerLocale('zh_CN', '简体中文', {
     "Raptorize": "Raptorize",
     "Reinitialise": "Reinitialise",
     "Remaining characters before the recommended character limit is reached": "Remaining characters before the recommended character limit is reached",
+    "Remove Image Float": "Remove Image Float",
     "Remove Link": "Remove Link",
     "Remove unnecessary markup from editor content": "Remove unnecessary markup from editor content",
-    "Resizing image(s)": "Resizing image(s)",
+    "Resize Image": "Resize Image",
     "Right Align": "右对齐文本",
     "Save": "存储",
     "Saved {{saved}} out of {{dirty}} content blocks.": "Saved {{saved}} out of {{dirty}} content blocks.",
@@ -30512,8 +30513,7 @@ registerLocale('zh_CN', '简体中文', {
     "Super script": "Super script",
     "The URL does not look well formed": "The URL does not look well formed",
     "The email address does not look well formed": "The email address does not look well formed",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.": "The image \"{{image}}\" is too large for the element being edited.<br/>It has been resized with CSS.",
-    "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \"{{image}}\" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
     "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
     "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "This block contains unsaved changes",
@@ -30526,19 +30526,11 @@ registerLocale('zh_CN', '简体中文', {
     "View / Edit Source": "View / Edit Source",
     "View Source": "View Source",
     "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes",
-    "ctrl + b": "ctrl + b",
-    "ctrl + i": "ctrl + i",
-    "ctrl + s": "ctrl + s",
-    "ctrl + u": "ctrl + u",
-    "ctrl + y": "ctrl + y",
-    "ctrl + z": "ctrl + z",
-    "esc": "esc",
     "root": "本",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} characters over limit",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} characters remaining",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} characters, {{charactersRemaining}} over the recommended limit",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} characters, {{charactersRemaining}} remaining",
-    "{{images}} image(s) have been replaced with resized versions": "{{images}} image(s) have been replaced with resized versions",
     "{{sentences}} sentences": "{{sentences}} sentences",
     "{{words}} word": "{{words}} word",
     "{{words}} words": "{{words}} words"
@@ -30733,7 +30725,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {map} options options to be passed to editor.showInfo
      */
     showOversizeWarning: function(imageLink, options) {
-        this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
+        this.editor.showInfo(_('The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
             image: imageLink
         }), options);
     },
@@ -31477,10 +31469,11 @@ $.ui.editor.registerUi({
     show: function() {
         if (!this.visible) {
 
-            this.selectedElement = this.editor.getSelectedElements().first();
+            selectionSave();
+
+            this.selectedElement = selectionGetElements().first();
             var edit = this.selectedElement.is('a');
             var options = this.options;
-            var selection = rangy.saveSelection();
             var plugin = this;
 
             this.dialog = $(this.editor.getTemplate('link.dialog', options)).appendTo('body');
@@ -31512,11 +31505,8 @@ $.ui.editor.registerUi({
                     {
                         text: edit ? _('Update Link') : _('Insert Link'),
                         click: function() {
-                            rangy.restoreSelection(selection);
-
-                            if (!plugin.apply(edit)) {
-                                selection = rangy.saveSelection();
-                            } else {
+                            selectionRestore();
+                            if (plugin.apply(edit)) {
                                 $(this).dialog('close');
                             }
                         }
@@ -31524,7 +31514,6 @@ $.ui.editor.registerUi({
                     {
                         text: _('Cancel'),
                         click: function() {
-                            rangy.restoreSelection(selection);
                             $(this).dialog('close');
                         }
                     }
@@ -31570,6 +31559,7 @@ $.ui.editor.registerUi({
                     });
                 },
                 close: function() {
+                    selectionRestore();
                     plugin.visible = false;
                     dialog.find('.' + options.baseClass + '-content').hide();
                     $(this).dialog('destroy');
@@ -31593,12 +31583,14 @@ $.ui.editor.registerUi({
             return true;
         }
 
+        selectionRestore();
+
         // Prepare link to be shown in any confirm message
         var link = elementOuterHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
                 attr($.extend({}, attributes, { target: '_blank' })));
 
         if (!edit) {
-            this.editor.wrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
+            selectionWrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
             this.editor.showConfirm(_('Added link: {{link}}', { link: link }));
             this.selectedElement = $('#' + attributes.id).removeAttr('id');
         } else {
@@ -31610,6 +31602,9 @@ $.ui.editor.registerUi({
         }
 
         this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
+
+        selectionSelectOuter(this.selectedElement);
+        selectionSave();
 
         return true;
     },
@@ -31688,6 +31683,15 @@ $.ui.editor.registerUi({
      */
     link: /** @lends $.editor.ui.link.prototype */ {
 
+        hotkeys: {
+            'ctrl+l': {
+                'action': function() {
+                    this.editor.getPlugin('link').show();
+                },
+                restoreSelection: false
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -31703,7 +31707,7 @@ $.ui.editor.registerUi({
         },
 
         change: function() {
-            if (!this.editor.getSelectedElements().length) this.ui.disable();
+            if (!selectionGetElements().length) this.ui.disable();
             else this.ui.enable();
         }
     },
@@ -31716,6 +31720,15 @@ $.ui.editor.registerUi({
      * @class Button allowing the user to unlink text
      */
     unlink: /** @lends $.editor.ui.unlink.prototype */ {
+
+        hotkeys: {
+            'ctrl+shift+l': {
+                'action': function() {
+                    this.ui.click();
+                }
+            },
+            restoreSelection: false
+        },
 
         /**
          * @see $.ui.editor.defaultUi#init
@@ -31736,7 +31749,7 @@ $.ui.editor.registerUi({
          * Enable UI component only when an anchor is selected
          */
         change: function() {
-            if (!this.editor.getSelectedElements().is('a')) this.ui.disable();
+            if (!selectionGetElements().is('a')) this.ui.disable();
             else this.ui.enable();
         }
     }
@@ -31783,8 +31796,8 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
     toggleList: function(listType) {
 
         // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
-        if ($(this.editor.getSelectedElements()).is('li')
-            && $(this.editor.getSelectedElements()).parent().is(listType)) {
+        if ($(selectionGetElements()).is('li')
+            && $(selectionGetElements()).parent().is(listType)) {
             this.unwrapList();
         } else {
             this.wrapList(listType);
@@ -31799,7 +31812,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * If the list element's parent is not a li, then wrap the content of each li in a p, else leave them unwrapped.
      */
     unwrapList: function() {
-        this.editor.saveSelection();
+        selectionSave();
 
         // Array containing the html contents of each of the selected li elements.
         var listElementsContent = [];
@@ -31807,9 +31820,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         var listElements = [];
 
         // The element within which selection begins.
-        var startElement = this.editor.getSelectionStartElement();
+        var startElement = selectionGetStartElement();
         // The element within which ends.
-        var endElement = this.editor.getSelectionEndElement();
+        var endElement = selectionGetEndElement();
 
         // Collect the first selected list element's content
         listElementsContent.push($(startElement).html());
@@ -31847,9 +31860,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         // Every li of the list has been selected, replace the entire list
         if (firstLiSelected && lastLiSelected) {
             parentListContainer.replaceWith(listElementsContent.join(''));
-            this.editor.restoreSelection();
-            var selectedElement = this.editor.getSelectedElements()[0];
-            this.editor.selectOuter(selectedElement);
+            selectionRestore();
+            var selectedElement = selectionGetElements()[0];
+            selectionSelectOuter(selectedElement);
             return;
         }
 
@@ -31861,7 +31874,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
             this.editor.replaceSelectionSplittingSelectedElement(listElementsContent.join(''));
         }
 
-        this.editor.restoreSelection();
+        selectionRestore();
         this.editor.checkChange();
     },
 
@@ -31871,11 +31884,11 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      */
     wrapList: function(listType) {
         this.editor.constrainSelection(this.editor.getElement());
-        if ($.trim(this.editor.getSelectedHtml()) === '') {
-            this.editor.selectInner(this.editor.getSelectedElements());
+        if ($.trim(selectionGetHtml()) === '') {
+            selectionSelectInner(selectionGetElements());
         }
 
-        var selectedHtml = $('<div>').html(this.editor.getSelectedHtml());
+        var selectedHtml = $('<div>').html(selectionGetHtml());
 
         var listElements = [];
         var plugin = this;
@@ -31884,7 +31897,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         $(selectedHtml).contents().each(function() {
             var liContent;
             // Use only content of block elements
-            if ('block' === plugin.getElementDefaultDisplay(this.tagName)) {
+            if ('block' === elementDefaultDisplay(this.tagName)) {
                 liContent = plugin.editor.stripTags($(this).html(), plugin.validChildren);
             } else {
                 liContent = plugin.editor.stripTags(elementOuterHtml($(this)), plugin.validChildren);
@@ -31901,9 +31914,9 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
         var replacementHtml = '<' + listType + ' class="' + replacementClass + '">' + listElements.join('') + '</' + listType + '>';
 
         // Selection must be restored before it may be replaced.
-        this.editor.restoreSelection();
+        selectionRestore();
 
-        var selectedElementParent = $(this.editor.getSelectedElements()[0]).parent();
+        var selectedElementParent = $(selectionGetElements()[0]).parent();
         var editingElement = this.editor.getElement()[0];
 
         /*
@@ -31911,34 +31924,75 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
          * instead of splitting the editing element.
          */
         if (selectedElementParent === editingElement
-            || this.editor.getSelectedElements()[0] === editingElement) {
-            this.editor.replaceSelection(replacementHtml);
+            || selectionGetElements()[0] === editingElement) {
+            selectionReplace(replacementHtml);
         } else {
             this.editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
         }
 
         // Select the first list element of the inserted list
         var selectedElement = $(this.editor.getElement().find('.' + replacementClass).removeClass(replacementClass));
-        this.editor.selectInner(selectedElement.find('li:first')[0]);
+        selectionSelectInner(selectedElement.find('li:first')[0]);
         this.editor.checkChange();
     },
 
     /**
-     * Determine whether element is inline or block.
-     * @see http://stackoverflow.com/a/2881008/187954
-     * @param  {string} tag Lower case tag name, e.g. 'a'.
-     * @return {string} Default display style for tag.
+     * Toggle the givent ui's button state depending on whether the current selection is within the context of listType.
+     * @param  {string} listType A tagname for a list type.
+     * @param  {object} ui The ui owning the button whose state is to be toggled.
      */
-    getElementDefaultDisplay: function(tag) {
-        var cStyle,
-            t = document.createElement(tag),
-            gcs = "getComputedStyle" in window;
+    toggleButtonState: function(listType, ui) {
 
-        document.body.appendChild(t);
-        cStyle = (gcs ? window.getComputedStyle(t, "") : t.currentStyle).display;
-        document.body.removeChild(t);
+        var toggleState = function(on) {
+            ui.button.toggleClass('ui-state-highlight', on).toggleClass('ui-state-default', !on);
+        };
 
-        return cStyle;
+        var selectionStart = selectionGetStartElement();
+        if (selectionStart === null || !selectionStart.length) {
+            selectionStart = this.editor.getElement();
+        }
+
+        var selectionEnd = selectionGetEndElement();
+        if (selectionEnd === null || !selectionEnd.length) {
+            selectionEnd = this.editor.getElement();
+        }
+
+        var start = selectionStart[0];
+        var end = selectionEnd[0];
+
+        // If the start & end are a UL or OL, and they're the same node:
+        if ($(start).is(listType) && $(end).is(listType) && start === end) {
+            return toggleState(true);
+        }
+
+        var shareParentListType = $(start).parentsUntil(elementSelector, listType).first()
+                                    && $(end).parentsUntil(elementSelector, listType).first();
+
+        var elementSelector = '#' + this.editor.getElement().attr('id');
+        var startIsLiOrInside = $(start).is(listType + ' > li') || $(start).parentsUntil(elementSelector, listType + ' > li').length;
+        var endIsLiOrInside = $(end).is(listType + ' > li') || $(end).parentsUntil(elementSelector, listType + ' > li').length;
+
+        // If the start & end elements are LI's or inside LI's, and they are enclosed by the same UL:
+        if (startIsLiOrInside && endIsLiOrInside && shareParentListType) {
+
+            var sharedParentList = $(rangeGetCommonAncestor());
+            if (!sharedParentList.is(listType)) {
+                sharedParentList = $(sharedParentList).parentsUntil(elementSelector, listType).first();
+            }
+            var childLists = sharedParentList.find('ul, ol');
+            if (!childLists.length) {
+                return toggleState(true);
+            }
+            for (var childListIndex = 0; childListIndex < childLists.length; childListIndex++) {
+                if ($.contains(childLists[childListIndex], start) && $.contains(childLists[childListIndex], end)) {
+                    return toggleState(false);
+                }
+            }
+
+            return toggleState(true);
+        }
+
+        return toggleState(false);
     }
 });
 
@@ -31951,17 +32005,22 @@ $.ui.editor.registerUi({
      */
     listUnordered: /** @lends $.editor.ui.listUnordered.prototype */ {
 
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            return editor.uiButton({
+            var ui = editor.uiButton({
                 title: _('Unordered List'),
                 click: function() {
                     editor.getPlugin('list').toggleList('ul');
                 }
             });
+
+            editor.bind('selectionChange', function() {
+                editor.getPlugin('list').toggleButtonState('ul', ui);
+            });
+
+            return ui;
         }
     },
 
@@ -31976,12 +32035,18 @@ $.ui.editor.registerUi({
          * @see $.ui.editor.defaultUi#init
          */
         init: function(editor) {
-            return editor.uiButton({
+            var ui = editor.uiButton({
                 title: _('Ordered List'),
                 click: function() {
                     editor.getPlugin('list').toggleList('ol');
                 }
             });
+
+            editor.bind('selectionChange', function() {
+                editor.getPlugin('list').toggleButtonState('ol', ui);
+            });
+
+            return ui;
         }
     }
 });
@@ -32050,7 +32115,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.9?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.10?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32107,7 +32172,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             if (inProgress) return false;
             inProgress = true;
 
-            editor.saveSelection();
+            selectionSave();
 
             // Make a contentEditable div to capture pasted text
             if ($(selector).length) $(selector).remove();
@@ -32161,8 +32226,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                     html = plugin.filterAttributes(html);
                                     html = plugin.filterChars(html);
 
-                                    editor.restoreSelection();
-                                    editor.replaceSelection(html);
+                                    selectionRestore();
+                                    selectionReplace(html);
 
                                     inProgress = false;
                                     $(this).dialog('close');
@@ -32171,7 +32236,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                             {
                                 text: _('Cancel'),
                                 click: function() {
-                                    editor.restoreSelection();
+                                    selectionRestore();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
@@ -32400,7 +32465,7 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
                 editor.getElement().html(content);
 
                 if (options.select) {
-                    editor.selectInner(content);
+                    selectionSelectInner(content);
                 }
             }
         };
@@ -33063,33 +33128,33 @@ $.ui.editor.registerUi({
                     }
 
                     var editingElement = editor.getElement()[0];
-                    var selectedElement = editor.getSelectedElements();
-                    if (!editor.getSelectedHtml() || editor.getSelectedHtml() === '') {
+                    var selectedElement = selectionGetElements();
+                    if (!selectionGetHtml() || selectionGetHtml() === '') {
                         // Do not attempt to modify editing element's tag
                         if ($(selectedElement)[0] === $(editingElement)[0]) {
                             return;
                         }
-                        editor.saveSelection();
+                        selectionSave();
                         var replacementElement = $('<' + value + '>').html(selectedElement.html());
                         selectedElement.replaceWith(replacementElement);
-                        editor.restoreSelection();
+                        selectionRestore();
                     } else {
-                        var selectedElementParent = $(editor.getSelectedElements()[0]).parent();
+                        var selectedElementParent = $(selectionGetElements()[0]).parent();
                         var temporaryClass = this.options.baseClass + '-selection';
-                        var replacementHtml = $('<' + value + '>').html(editor.getSelectedHtml()).addClass(temporaryClass);
+                        var replacementHtml = $('<' + value + '>').html(selectionGetHtml()).addClass(temporaryClass);
 
                         /*
                          * Replace selection if the selected element parent or the selected element is the editing element,
                          * instead of splitting the editing element.
                          */
                         if (selectedElementParent === editingElement
-                            || editor.getSelectedElements()[0] === editingElement) {
-                            editor.replaceSelection(replacementHtml);
+                            || selectionGetElements()[0] === editingElement) {
+                            selectionReplace(replacementHtml);
                         } else {
                             editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
                         }
 
-                        editor.selectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
+                        selectionSelectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
                     }
 
                     editor.checkChange();
@@ -33101,7 +33166,7 @@ $.ui.editor.registerUi({
          * Content changed event
          */
         change: function() {
-            var tag = this.editor.getSelectedElements()[0];
+            var tag = selectionGetElements()[0];
             if (!tag) {
                 $(this.ui.button).toggleClass('ui-state-disabled', true);
                 return;
@@ -33112,7 +33177,7 @@ $.ui.editor.registerUi({
             } else {
                 this.ui.val('na');
             }
-            $(this.ui.button).toggleClass('ui-state-disabled', this.editor.getElement()[0] === this.editor.getSelectedElements()[0]);
+            $(this.ui.button).toggleClass('ui-state-disabled', this.editor.getElement()[0] === selectionGetElements()[0]);
         }
     }
 });
@@ -33367,7 +33432,24 @@ function elementOuterHtml(element) {
 function elementOuterText(element) {
     return element.clone().wrap('<div/>').parent().text();
 }
+
 /**
+ * Determine whether element is inline or block.
+ * @see http://stackoverflow.com/a/2881008/187954
+ * @param  {string} tag Lower case tag name, e.g. 'a'.
+ * @return {string} Default display style for tag.
+ */
+function elementDefaultDisplay(tag) {
+    var cStyle,
+        t = document.createElement(tag),
+        gcs = "getComputedStyle" in window;
+
+    document.body.appendChild(t);
+    cStyle = (gcs ? window.getComputedStyle(t, "") : t.currentStyle).display;
+    document.body.removeChild(t);
+
+    return cStyle;
+}/**
  * @fileOverview
  * @author David Neilsen david@panmedia.co.nz
  * @version 0.1
@@ -33425,6 +33507,47 @@ function rangeExpandTo(range, elements) {
     } while (range.commonAncestorContainer)
 }
 
+function rangeReplace(html, range) {
+    var nodes = $('<div/>').append(html)[0].childNodes;
+    range.deleteContents();
+    if (nodes.length === undefined || nodes.length === 1) {
+        range.insertNode(nodes[0].cloneNode(true));
+    } else {
+        $.each(nodes, function(i, node) {
+            range.insertNodeAtEnd(node.cloneNode(true));
+        });
+    }
+}
+
+function rangeEmptyTag(range) {
+    var contents = range.cloneContents();
+    var html = fragmentToHtml(contents);
+    if (typeof html === 'string') {
+        html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
+    }
+    if ($(html).is(':empty')) return true;
+    return false;
+}
+
+/**
+ * Works for single ranges only.
+ * @return {Element} The selected range's common ancestor.
+ */
+function rangeGetCommonAncestor(selection) {
+    selection = selection || rangy.getSelection();
+
+    var commonAncestor;
+    $(selection.getAllRanges()).each(function(i, range){
+        if (this.commonAncestorContainer.nodeType === 3) {
+            commonAncestor = $(range.commonAncestorContainer).parent()[0];
+        } else {
+            commonAncestor = range.commonAncestorContainer;
+        }
+    });
+
+    return commonAncestor;
+}
+
 //function rangeIsWholeElement(range) {
 //    return range.toString() ==
 //}
@@ -33433,6 +33556,28 @@ function rangeExpandTo(range, elements) {
  * @author David Neilsen david@panmedia.co.nz
  * @version 0.1
  */
+/**
+ * @type {Boolean|Object} current saved selection.
+ */
+var savedSelection = false;
+
+/**
+ * Save selection wrapper, preventing plugins / UI from accessing rangy directly.
+ */
+function selectionSave(overwrite) {
+    if (savedSelection && !overwrite) return;
+    savedSelection = rangy.saveSelection();
+}
+
+/**
+ * Restore selection wrapper, preventing plugins / UI from accessing rangy directly.
+ */
+function selectionRestore() {
+    if (savedSelection) {
+        rangy.restoreSelection(savedSelection);
+        savedSelection = false;
+    }
+}
 
 /**
  * Iterates over all ranges in a selection and calls the callback for each
@@ -33456,14 +33601,153 @@ function selectionEachRange(callback, selection, context) {
 function selectionSet(mixed) {
     rangy.getSelection().setSingleRange(mixed);
 }
-// function Button() {
-//     return {
-//         init: function() {
-//             console.log(this);
-//         }
-//     };
-// };
 
+/**
+ * FIXME: this function needs reviewing
+ * @public @static
+ */
+function selectionReplace(html, sel) {
+    selectionEachRange(function(range) {
+        rangeReplace(html, range);
+    }, sel, this);
+}
+
+/**
+ * Selects all the contents of the supplied element, excluding the element itself.
+ *
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element
+ * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ */
+function selectionSelectInner(element, selection) {
+    selection = selection || rangy.getSelection();
+    selection.removeAllRanges();
+    $(element).focus().contents().each(function() {
+        var range = rangy.createRange();
+        range.selectNodeContents(this);
+        selection.addRange(range);
+    });
+}
+
+/**
+ * Selects all the contents of the supplied element, including the element itself.
+ *
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element
+ * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
+ */
+function selectionSelectOuter(element, selection) {
+    selection = selection || rangy.getSelection();
+    selection.removeAllRanges();
+    $(element).each(function() {
+        var range = rangy.createRange();
+        range.selectNode(this);
+        selection.addRange(range);
+    }).focus();
+}
+
+/**
+ * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
+ * @return {string} The html content of the selection.
+ */
+function selectionGetHtml(selection) {
+    selection = selection || rangy.getSelection();
+    return selection.toHtml();
+}
+
+function selectionGetElement(range) {
+    var commonAncestor;
+
+    range = range || rangy.getSelection().getRangeAt(0);
+
+    // Check if the common ancestor container is a text node
+    if (range.commonAncestorContainer.nodeType === 3) {
+        // Use the parent instead
+        commonAncestor = range.commonAncestorContainer.parentNode;
+    } else {
+        commonAncestor = range.commonAncestorContainer;
+    }
+    return $(commonAncestor);
+}
+
+/**
+ * Gets all elements that contain a selection (excluding text nodes) and
+ * returns them as a jQuery array.
+ *
+ * @public @static
+ * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
+ */
+function selectionGetElements(selection) {
+    var result = new jQuery();
+    selectionEachRange(function(range) {
+        result.push(selectionGetElement(range)[0]);
+    }, selection, this);
+    return result;
+}
+
+function selectionGetStartElement() {
+    var selection = rangy.getSelection();
+    if (selection.anchorNode === null) {
+        return null;
+    }
+    if (selection.isBackwards()) {
+        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+    }
+    if (!selection.anchorNode) console.trace();
+    return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+}
+
+function selectionGetEndElement() {
+    var selection = rangy.getSelection();
+    if (selection.anchorNode === null) {
+        return null;
+    }
+    if (selection.isBackwards()) {
+        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    }
+    return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+}
+
+/**
+ * FIXME: this function needs reviewing
+ *
+ * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
+ *
+ * @public @static
+ */
+function selectionToggleWrapper(tag, options) {
+    options = options || {};
+    var applier = rangy.createCssClassApplier(options.classes || '', {
+        normalize: true,
+        elementTagName: tag,
+        elementProperties: options.attributes || {}
+    });
+    selectionEachRange(function(range) {
+        if (rangeEmptyTag(range)) {
+            var element = $('<' + tag + '/>')
+                .addClass(options.classes)
+                .attr(options.attributes || {})
+                .append(fragmentToHtml(range.cloneContents()));
+            rangeReplace(element, range);
+        } else {
+            applier.toggleRange(range);
+        }
+    }, null, this);
+}
+
+function selectionWrapTagWithAttribute(tag, attributes, classes) {
+    selectionEachRange(function(range) {
+        var element = selectionGetElement(range);
+        if (element.is(tag)) {
+            element.attr(attributes);
+        } else {
+            selectionToggleWrapper(tag, {
+                classes: classes,
+                attributes: attributes
+            });
+        }
+    }, null, this);
+}
                 })(jQuery, window, rangy);
             jQuery('<style type="text/css">/*\n\
  * jQuery UI CSS Framework 1.8.7\n\
