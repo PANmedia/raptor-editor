@@ -116,7 +116,6 @@ class TranslationCheckTask extends Task {
                 $html = ob_get_clean();
 
                 file_put_contents('translation-status.html', $html);
-                echo $html.PHP_EOL;
                 echo 'Written to: '.realpath(__DIR__.'/../translation-status.html');
 
             } catch (BuildException $be) {

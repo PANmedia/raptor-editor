@@ -1,6 +1,8 @@
+<?= "<?php ob_start(); ?>" ?>
 <h1>Translation Status</h1>
-<table>
-     <thead>
+<?= "<?= (new XMod\CMS\Block('translation-status-content'))->owner(__NAMESPACE__)->content(ob_get_clean()); ?>"; ?>
+<table class="ui-widget ui-state-default">
+     <thead  class="ui-widget ui-state-active">
         <tr>
             <th>Name</th>
             <th>Filename</th>
@@ -11,24 +13,24 @@
 <tbody>
 <?php foreach ($result as $name => $data): ?>
     <tr>
-        <td><?php echo $data['nativeName']; ?></td>
-        <td><?php echo $name; ?></td>
+        <td><?= $data['nativeName']; ?></td>
+        <td><?= $name; ?></td>
         <td>
             <?php if (isset($data['contributors'])): ?>
                 <?php foreach ($data['contributors'] as $contributor): ?>
-                <strong><?php echo $contributor['name']; ?></strong> <em><?php echo $contributor['email']; ?></em> <a href="<?php echo $contributor['link']; ?>" title="<?php echo $contributor['name']; ?>"><?php echo $contributor['link']; ?></a>
+                <strong><?= $contributor['name']; ?></strong> <em><?= $contributor['email']; ?></em> <a href="<?= $contributor['link']; ?>" title="<?= $contributor['name']; ?>"><?= $contributor['link']; ?></a>
                 <?php endforeach; ?>
             <?php else: ?>
             <em>Not specified</em>
             <?php endif; ?>
         </td>
         <td>
-            <?php echo $data['percent']; ?>%
+            <?= $data['percent']; ?>%
             <?php if ($data['untranslated']): ?>
-            <a onclick="rpToggle(this, '<?php echo $name; ?>-untranslated')" href="#<?php echo $name; ?>-untranslated">View untranslated</a>
-            <div id="<?php echo $name; ?>-untranslated" style="display:none">
+            <a class="toggle-untranslated" href="#<?= $name; ?>-untranslated">View untranslated</a>
+            <div name="<?= $name; ?>-untranslated" class="untranslated-content" style="display:none">
                 <?php foreach ($data['untranslated'] as $untranslated): ?>
-                <p><?php echo $untranslated; ?></p>
+                <p><?= $untranslated; ?></p>
                 <?php endforeach; ?>
             </div>
             <?php endif; ?>
@@ -39,9 +41,19 @@
 </table>
 
 <script type="text/javascript">
-    function rpToggle(a, id) {
-        var div = document.getElementById(id);
-        a.innerText = div.style.display == 'none' ? 'Hide untranslated' : 'View untranslated';
-        div.style.display = div.style.display == 'none' ? 'block' : 'none';
-    }
+    $('.toggle-untranslated').click(function(event) {
+        event.preventDefault();
+        var div = $(this).closest('tr').find('.untranslated-content').clone();
+        div.css({
+            maxHeight: 400,
+            overflowY: 'scroll'
+        });
+        div.dialog({
+            title: 'Untranslated ' + $(this).closest('tr').find('td').html() + ' content',
+            modal: true,
+            close: function() {
+                $(this).dialog('destroy').remove();
+            }
+        });
+    });
 </script>
