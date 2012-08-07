@@ -68,6 +68,9 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
      * @param  {Array} breakValidTags Array of tag names within which the replaceHtml is valid.
      */
     insertBreak: function(breakHtml, breakValidTags) {
+
+        selectionDestroy();
+
         var breakId = this.options.baseClass + '-enter-break';
 
         var breakElement = $(breakHtml)
@@ -83,8 +86,6 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
         var select = $('#' + breakId).removeAttr('id').next();
 
         selectionSelectStart(select);
-
-        this.editor.checkChange();
     }
 
 });
