@@ -69,6 +69,13 @@ function rangeGetCommonAncestor(selection) {
     return commonAncestor;
 }
 
-//function rangeIsWholeElement(range) {
-//    return range.toString() ==
-//}
+/**
+ * Returns true if the supplied range is empty (has a length of 0)
+ *
+ * @public @static
+ * @param {RangyRange} range The range to check if it is empty
+ */
+function rangeIsEmpty(range) {
+    return range.startOffset === range.endOffset &&
+           range.startContainer === range.endContainer;
+}

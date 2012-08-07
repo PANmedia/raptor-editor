@@ -94,6 +94,24 @@ function selectionSelectOuter(element, selection) {
 }
 
 /**
+ * Move selection to the end of element.
+ *
+ * @param  {jQuerySelector|jQuery|Element} element The subject element.
+ * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ */
+function selectionSelectEnd(element, selection) {
+    selection = selection || rangy.getSelection();
+    selection.removeAllRanges();
+
+    $(element).each(function() {
+        var range = rangy.createRange();
+        range.selectNodeContents(this);
+        range.collapse();
+        selection.addRange(range);
+    });
+}
+
+/**
  * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
  * @return {string} The html content of the selection.
  */
@@ -194,4 +212,80 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
             });
         }
     }, null, this);
+}
+
+/**
+ * Returns true if there is at least one range selected and the range is not
+ * empty.
+ *
+ * @see rangeIsEmpty
+ * @public @static
+ * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ */
+function selectionExists(sel) {
+    var selectionExists = false;
+    selectionEachRange(function(range) {
+        if (!rangeIsEmpty(range)) selectionExists = true;
+    }, sel, this);
+    return selectionExists;
+}
+
+/**
+ * Split the selection container and insert the given html between the two elements created.
+ * @param  {jQuery|Element|string} html The html to replace selection with.
+ * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
+ */
+function selectionReplaceSplittingSelectedElement(html, selection) {
+    selection = selection || rangy.getSelection();
+
+    var selectionRange = selection.getRangeAt(0);
+    var selectedElement = selectionGetElements()[0];
+
+    // Select from start of selected element to start of selection
+    var startRange = rangy.createRange();
+    startRange.setStartBefore(selectedElement);
+    startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+    var startFragment = startRange.cloneContents();
+
+    // Select from end of selected element to end of selection
+    var endRange = rangy.createRange();
+    endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
+    endRange.setEndAfter(selectedElement);
+    var endFragment = endRange.cloneContents();
+
+    // Replace the start element's html with the content that was not selected, append html & end element's html
+    var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
+    replacement += elementOuterHtml($(html));
+    replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
+
+    $(selectedElement).replaceWith($(replacement));
+}
+
+/**
+ * Replace current selection with given html, ensuring that selection container is split at
+ * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+ * @param  {jQuery|Element|string} html The html to replace current selection with.
+ * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
+ * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
+ */
+function selectionReplaceWithinValidTags(html, validTagNames, selection) {
+    selection = selection || rangy.getSelection();
+
+    var startElement = selectionGetStartElement()[0];
+    var endElement = selectionGetEndElement()[0];
+    var selectedElement = selectionGetElements()[0];
+
+    var selectedElementValid = elementIsValid(selectedElement, validTagNames);
+    var startElementValid = elementIsValid(startElement, validTagNames);
+    var endElementValid = elementIsValid(endElement, validTagNames);
+
+    // The html may be inserted within the selected element & selection start / end.
+    if (selectedElementValid && startElementValid && endElementValid) {
+        selectionReplace(html);
+        return;
+    }
+
+    // Context is invalid. Split containing element and insert list in between.
+    selectionReplaceSplittingSelectedElement(html, selection);
+    return;
 }
