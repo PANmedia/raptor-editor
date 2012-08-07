@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.11 *//**
+/*! VERSION: 0.0.12 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -28624,9 +28624,9 @@ $.ui.editor.registerPlugin({
          * @type {String[]}
          */
         stripEmptyTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
+            'span', 'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
             'p', 'b', 'i', 'u', 'strong', 'em',
-            'big', 'small', 'div', 'span'
+            'big', 'small', 'div'
         ],
 
         /**
@@ -28675,15 +28675,12 @@ $.ui.editor.registerPlugin({
             editor.getElement()
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
-                    if ($.trim($(this).html()) !== '') {
-                        return false;
-                    }
-                    if (!$(this).hasClass('rangySelectionBoundary')) {
+                    if ($.trim($(this).html()) === '') {
                         return true;
                     }
                     // Do not clear selection markers if the editor has it in use
-                    if (editor.savedSelection !== false) {
-                        return false;
+                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved() === false) {
+                        return true;
                     }
                 })
                 .remove();
@@ -31956,7 +31953,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.11?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.12?' + query.join('&') + ')'
                     });
                 }
             });
@@ -31983,27 +31980,26 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
         /**
          * @type {String} The tag to insert when user presses enter
          */
-        'return': '<p><br/></p>',
+        enter: '<p><br/></p>',
 
         /**
          * @type {Array} Array of tag names within which the return HTML is valid.
          */
-        returnValidTags: [
+        enterValidTags: [
             'address', 'blockquote', 'body', 'button', 'center', 'dd',
             'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
             'noscript', 'object', 'td', 'th'
         ],
 
-
         /**
          * @type {String} The tag to insert when user presses shift enter.
          */
-        shiftReturn: '<br/>',
+        shiftEnter: '<br/>',
 
         /**
          * @type {Array} Array of tag names within which the shiftReturn HTML is valid.
          */
-        shiftReturnValidTags: [
+        shiftEnterValidTags: [
             'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo',
             'big', 'blockquote', 'body', 'button', 'caption', 'center',
             'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em',
@@ -32018,13 +32014,13 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
     hotkeys: {
         'return': {
             'action': function() {
-                this.insertBreak(this.options['return'], this.options.returnValidTags);
+                this.insertBreak(this.options.enter, this.options.enterValidTags);
             },
             restoreSelection: false
         },
         'return+shift': {
             'action': function() {
-                this.insertBreak(this.options.shiftReturn, this.options.shiftReturnValidTags);
+                this.insertBreak(this.options.shiftEnter, this.options.shiftEnterValidTags);
             },
             restoreSelection: false
         }
@@ -32036,10 +32032,24 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
      * @param  {Array} breakValidTags Array of tag names within which the replaceHtml is valid.
      */
     insertBreak: function(breakHtml, breakValidTags) {
-        var breakId = this.options.widgetName + '-return-break';
-        var returnHtml = $(breakHtml).attr('id', breakId);
-        selectionReplaceWithinValidTags(returnHtml, breakValidTags);
-        selectionSelectEnd($('#' + breakId).removeAttr('id'));
+
+        selectionDestroy();
+
+        var breakId = this.options.baseClass + '-enter-break';
+
+        var breakElement = $(breakHtml)
+                        .attr('id', breakId)
+                        .appendTo('body');
+
+        if (breakValidTags) {
+            selectionReplaceWithinValidTags(breakElement, breakValidTags);
+        } else {
+            selectionReplace(breakElement);
+        }
+
+        var select = $('#' + breakId).removeAttr('id').next();
+
+        selectionSelectStart(select);
     }
 
 });
@@ -33536,6 +33546,17 @@ function selectionRestore() {
 }
 
 /**
+ * Reset saved selection.
+ */
+function selectionDestroy() {
+    savedSelection = false;
+}
+
+function selectionSaved() {
+    return savedSelection !== false;
+}
+
+/**
  * Iterates over all ranges in a selection and calls the callback for each
  * range. The selection/range offsets is updated in every iteration in in the
  * case that a range was changed or removed by a previous iteration.
@@ -33603,21 +33624,42 @@ function selectionSelectOuter(element, selection) {
 }
 
 /**
- * Move selection to the end of element.
+ * Move selection to the start or end of element.
  *
  * @param  {jQuerySelector|jQuery|Element} element The subject element.
  * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ * @param {Boolean} start True to select the start of the element.
  */
-function selectionSelectEnd(element, selection) {
+function selectionSelectEdge(element, selection, start) {
     selection = selection || rangy.getSelection();
     selection.removeAllRanges();
 
     $(element).each(function() {
         var range = rangy.createRange();
         range.selectNodeContents(this);
-        range.collapse();
+        range.collapse(start);
         selection.addRange(range);
     });
+}
+
+/**
+ * Move selection to the end of element.
+ *
+ * @param  {jQuerySelector|jQuery|Element} element The subject element.
+ * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ */
+function selectionSelectEnd(element, selection) {
+    selectionSelectEdge(element, selection, false);
+}
+
+/**
+ * Move selection to the start of element.
+ *
+ * @param  {jQuerySelector|jQuery|Element} element The subject element.
+ * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ */
+function selectionSelectStart(element, selection) {
+    selectionSelectEdge(element, selection, true);
 }
 
 /**
