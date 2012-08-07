@@ -5,7 +5,7 @@ class TranslationCheckTask extends Task {
     private $name = null;
 
     private $untranslatable = [
-        'N/A', 'OK', 'ctrl + b', 'ctrl + i', 'ctrl + s', 'ctrl + u', 'ctrl + y', 'ctrl + z', 'esc'
+
     ];
 
     public function jsonError($error) {
@@ -78,7 +78,7 @@ class TranslationCheckTask extends Task {
                     array_push($fileContentArray, '}');
 
                     $fileContent = implode('', $fileContentArray);
-                    $fileContent = preg_replace('/"(?<!.")([^"])+"[^:,]/', "\'$1\'", $fileContent);
+                    $fileContent = str_replace("\\'", "'", $fileContent);
                     $filePairs = json_decode($fileContent, true);
 
                     if (!$filePairs) {
