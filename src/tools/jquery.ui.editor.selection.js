@@ -94,21 +94,42 @@ function selectionSelectOuter(element, selection) {
 }
 
 /**
- * Move selection to the end of element.
+ * Move selection to the start or end of element.
  *
  * @param  {jQuerySelector|jQuery|Element} element The subject element.
  * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ * @param {Boolean} start True to select the start of the element.
  */
-function selectionSelectEnd(element, selection) {
+function selectionSelectEdge(element, selection, start) {
     selection = selection || rangy.getSelection();
     selection.removeAllRanges();
 
     $(element).each(function() {
         var range = rangy.createRange();
         range.selectNodeContents(this);
-        range.collapse();
+        range.collapse(start);
         selection.addRange(range);
     });
+}
+
+/**
+ * Move selection to the end of element.
+ *
+ * @param  {jQuerySelector|jQuery|Element} element The subject element.
+ * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ */
+function selectionSelectEnd(element, selection) {
+    selectionSelectEdge(element, selection, false);
+}
+
+/**
+ * Move selection to the start of element.
+ *
+ * @param  {jQuerySelector|jQuery|Element} element The subject element.
+ * @param  {RangySelection|null} selection A RangySelection, or null to use the current selection.
+ */
+function selectionSelectStart(element, selection) {
+    selectionSelectEdge(element, selection, true);
 }
 
 /**

@@ -16,27 +16,26 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
         /**
          * @type {String} The tag to insert when user presses enter
          */
-        'return': '<p><br/></p>',
+        enter: '<p><br/></p>',
 
         /**
          * @type {Array} Array of tag names within which the return HTML is valid.
          */
-        returnValidTags: [
+        enterValidTags: [
             'address', 'blockquote', 'body', 'button', 'center', 'dd',
             'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
             'noscript', 'object', 'td', 'th'
         ],
 
-
         /**
          * @type {String} The tag to insert when user presses shift enter.
          */
-        shiftReturn: '<br/>',
+        shiftEnter: '<br/>',
 
         /**
          * @type {Array} Array of tag names within which the shiftReturn HTML is valid.
          */
-        shiftReturnValidTags: [
+        shiftEnterValidTags: [
             'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo',
             'big', 'blockquote', 'body', 'button', 'caption', 'center',
             'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em',
@@ -51,13 +50,13 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
     hotkeys: {
         'return': {
             'action': function() {
-                this.insertBreak(this.options['return'], this.options.returnValidTags);
+                this.insertBreak(this.options.enter, this.options.enterValidTags);
             },
             restoreSelection: false
         },
         'return+shift': {
             'action': function() {
-                this.insertBreak(this.options.shiftReturn, this.options.shiftReturnValidTags);
+                this.insertBreak(this.options.shiftEnter, this.options.shiftEnterValidTags);
             },
             restoreSelection: false
         }
@@ -69,10 +68,23 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
      * @param  {Array} breakValidTags Array of tag names within which the replaceHtml is valid.
      */
     insertBreak: function(breakHtml, breakValidTags) {
-        var breakId = this.options.widgetName + '-return-break';
-        var returnHtml = $(breakHtml).attr('id', breakId);
-        selectionReplaceWithinValidTags(returnHtml, breakValidTags);
-        selectionSelectEnd($('#' + breakId).removeAttr('id'));
+        var breakId = this.options.baseClass + '-enter-break';
+
+        var breakElement = $(breakHtml)
+                        .attr('id', breakId)
+                        .appendTo('body');
+
+        if (breakValidTags) {
+            selectionReplaceWithinValidTags(breakElement, breakValidTags);
+        } else {
+            selectionReplace(breakElement);
+        }
+
+        var select = $('#' + breakId).removeAttr('id').next();
+
+        selectionSelectStart(select);
+
+        this.editor.checkChange();
     }
 
 });
