@@ -27,7 +27,7 @@
         <td>
             <?= $data['percent']; ?>%
             <?php if ($data['untranslated']): ?>
-            <a class="toggle-untranslated" href="#<?= $name; ?>-untranslated">View untranslated</a>
+            - <a class="toggle-untranslated" href="#<?= $name; ?>-untranslated">View untranslated</a>
             <div name="<?= $name; ?>-untranslated" class="untranslated-content" style="display:none">
                 <?php foreach ($data['untranslated'] as $untranslated): ?>
                 <p><?= $untranslated; ?></p>
