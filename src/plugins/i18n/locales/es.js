@@ -1,5 +1,6 @@
 /**
- * @contributor Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
+ * @fileOverview Spanish strings file.
+ * @author Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
  */
 registerLocale('es', 'Español', {
     "A preview of your embedded object is displayed below.": "A continuación se muestra una vista previa de su objeto incrustado.",

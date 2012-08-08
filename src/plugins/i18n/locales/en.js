@@ -1,5 +1,6 @@
 /**
- * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ * @fileOverview English strings file.
+ * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
 registerLocale('en', 'English', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",

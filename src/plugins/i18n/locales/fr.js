@@ -1,5 +1,6 @@
 /**
- * @contributor SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
+ * @fileOverview French strings file.
+ * @author SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
  */
 registerLocale('fr', 'Français', {
     "A preview of your embedded object is displayed below.": "Un aperçu de votre objet intégré est affiché ci-dessous.",
