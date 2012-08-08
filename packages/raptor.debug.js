@@ -1,4 +1,4 @@
-/*! VERSION: 0.0.12 *//**
+/*! VERSION: 0.0.13 *//**
  * @license Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
  *
@@ -25872,7 +25872,7 @@ var domTools = {
     }
 
 };/**
- * Editor internationalization (i18n) private functions and properties.
+ * @fileOverview Editor internationalization (i18n) private functions and properties.
  *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
@@ -29473,6 +29473,12 @@ $.ui.editor.registerUi({
         }
     }
 });/**
+ * @fileOverview Plugin that wraps naked content.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
+/**
  * @name $.editor.plugin.emptyElement
  * @augments $.ui.editor.defaultPlugin
  * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
@@ -29524,6 +29530,137 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
         });
     }
 
+});
+/**
+ * @fileOverview File Manager ui component
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+$(function() {
+
+     $.ui.editor.registerUi({
+
+       /**
+        * @name $.editor.ui.insertFile
+        * @augments $.ui.editor.defaultUi
+        */
+        insertFile: /** @lends $.editor.ui.insertFile.prototype */ {
+
+            fileManager: null,
+
+            imageTypes: [
+                'jpg',
+                'jpeg',
+                'png',
+                'gif'
+            ],
+
+            /**
+             * @see $.ui.editor.defaultUi#init
+             */
+            init: function(editor, options) {
+                return editor.uiButton({
+                    title: 'Insert image or uploaded file',
+                    icon: 'ui-icon-image',
+                    click: function() {
+
+                        var ui = this;
+                        selectionSave();
+
+                        if (this.fileManager === null) {
+                            this.fileManager = $.ui.filemanager.create({
+                                enablePlugins: false,
+                                plugins: {
+                                    datatables: !XMod.FileManager.Permissions.insert ? false : {
+                                        ajaxSource: '/filemanager/admin/datatables',
+                                        insertionCallback: function(files) {
+
+                                            selectionRestore();
+
+                                            if (!files.length) {
+                                                return true;
+                                            }
+
+                                            var completeInsertion = function() {
+                                                ui.editor.fire('change');
+                                                return true;
+                                            };
+
+                                            var anchorClassNames = function(file, options) {
+                                                return options.cssPrefix + 'file ' + options.cssPrefix + file.type;
+                                            };
+
+                                            if (files.length === 1) {
+                                                var file = files[0];
+
+                                                if (ui.isImage(file)) {
+                                                    selectionReplace(ui.createImage(file, options.cssPrefix + file.type));
+                                                    return completeInsertion();
+                                                }
+
+                                                if (ui.editor.selectionExists()) {
+                                                    selectionWrapTagWithAttribute('a', {
+                                                        href: file.url,
+                                                        className: anchorClassNames(file, ui.options)
+                                                    });
+                                                    return completeInsertion();
+                                                }
+                                                selectionReplace(ui.createAnchor(file, anchorClassNames(file, ui.options)));
+                                                return completeInsertion();
+
+                                            }
+
+                                            var elements = [];
+                                            var file;
+                                            for (var filesIndex = 0; filesIndex < files.length; filesIndex++) {
+                                                file = files[filesIndex];
+                                                if (ui.isImage(file)) {
+                                                    elements.push($('<div/>').html(ui.createImage(file, options.cssPrefix + file.type)).html());
+                                                } else {
+                                                    elements.push($('<div/>').html(ui.createAnchor(file, anchorClassNames(file, ui.options))).html());
+                                                }
+                                            }
+                                            selectionReplace(elements.join(', '));
+                                            return completeInsertion();
+                                        }
+                                    },
+                                    plupload: !XMod.FileManager.Permissions.upload ? false : {
+                                        url: '/filemanager/admin/plupload'
+                                    }
+                                }
+                            });
+                        }
+
+                        $(this.fileManager).filemanager('show');
+                    }
+                });
+            },
+
+            isImage: function(file) {
+                if (-1 !== $.inArray(file.type.toLowerCase(), this.imageTypes)) {
+                    return true;
+                }
+                return false;
+            },
+
+            createImage: function(file, classNames) {
+                return $('<img/>').attr({
+                    src: file.url,
+                    title: file.name,
+                    'class': classNames
+                });
+            },
+
+            createAnchor: function(file, classNames) {
+                return $('<a/>').attr({
+                    href: file.url,
+                    title: file.name,
+                    'class': classNames
+                }).html(file.name);
+            }
+
+        }
+    });
 });
 /**
  * @fileOverview Float ui components
@@ -29854,7 +29991,8 @@ $.ui.editor.registerUi({
     }
 });
 /**
- * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ * @fileOverview English strings file.
+ * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
 registerLocale('en', 'English', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
@@ -29984,7 +30122,8 @@ registerLocale('en', 'English', {
     "{{words}} words": "{{words}} words"
 });
 /**
- * @contributor Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
+ * @fileOverview Spanish strings file.
+ * @author Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
  */
 registerLocale('es', 'Español', {
     "A preview of your embedded object is displayed below.": "A continuación se muestra una vista previa de su objeto incrustado.",
@@ -30001,7 +30140,7 @@ registerLocale('es', 'Español', {
     "Check this box to have the file open in a new browser window": "Marque esta casilla para que el archivo se abra en una nueva ventana",
     "Check this box to have the link open in a new browser window": "Marque esta casilla para que el enlace se abra en una nueva ventana",
     "Choose a link type:": "Escoja un tipo de enlace:",
-    "Clear Formatting": "Clear Formatting",
+    "Clear Formatting": "Limpiar Formato",
     "Click to begin editing": "Haga clic para empezar a editar",
     "Click to detach the toolbar": "Haga clic para desanclar la barra de herramientas",
     "Click to dock the toolbar": "Haga clic para anclar la barra de herramientas",
@@ -30030,15 +30169,15 @@ registerLocale('es', 'Español', {
     "Enter your URL": "Introduzca su URL",
     "Failed to save {{failed}} content block(s).": "Falló al guardar los bloques del cotenido de {{failed}}.",
     "Find the page on the web you want to link to": "Busque la página web a la que desee enlazar",
-    "Float Image Left": "Float Image Left",
-    "Float Image Right": "Float Image Right",
+    "Float Image Left": "Flotar Imagen a la Izquierda",
+    "Float Image Right": "Flotar Imagen a la Derecha",
     "Formatted &amp; Cleaned": "Formateado y Limpiado",
     "Formatted Unclean": "Formateado Sucio",
     "Heading&nbsp;1": "Encabezado&nbsp;1",
     "Heading&nbsp;2": "Encabezado&nbsp;2",
     "Heading&nbsp;3": "Encabezado&nbsp;3",
-    "Image height": "Image height",
-    "Image width": "Image width",
+    "Image height": "Altura de imagen",
+    "Image width": "Ancho de imagen",
     "Increase Font Size": "Incrementar Tamaño de Fuente",
     "Initializing": "Inicializando",
     "Insert": "Insertar",
@@ -30053,7 +30192,7 @@ registerLocale('es', 'Español', {
     "Link to a page on this or another website": "Enlazar a una página en esta u otra página web",
     "Link to an email address": "Enlazar a una dirección de correo electrónico",
     "Location": "Localización",
-    "Modify Image Size": "Modify Image Size",
+    "Modify Image Size": "Cambiar Tamaño de Imagen",
     "N/A": "N/A",
     "New window": "Nueva ventana",
     "No changes detected to save...": "No se detectaron cambios para guardar...",
@@ -30070,10 +30209,10 @@ registerLocale('es', 'Español', {
     "Raptorize": "Raptorizar",
     "Reinitialise": "Reinicializar",
     "Remaining characters before the recommended character limit is reached": "Carácteres restantes antes de que se alcance el límite de cáracteres recomendado",
-    "Remove Image Float": "Remove Image Float",
+    "Remove Image Float": "No Flotar Imagen",
     "Remove Link": "Eliminar enlace",
     "Remove unnecessary markup from editor content": "Eliminar marcado innecesario del editor de contenido",
-    "Resize Image": "Resize Image",
+    "Resize Image": "Redimensionar Imagen",
     "Right Align": "Alinear a la Derecha",
     "Save": "Guardar",
     "Saved {{saved}} out of {{dirty}} content blocks.": "Guardados {{saved}} de {{dirty}} bloques de contenido.",
@@ -30091,7 +30230,7 @@ registerLocale('es', 'Español', {
     "Super script": "Superíndice",
     "The URL does not look well formed": "La URL no parece bien formada",
     "The email address does not look well formed": "El enlace de correo electrónico no parece bien formado",
-    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "La imagen \'{{image}}\' es demasiado grande para el elemento que está siendo editado.<br/>Será reemplazada por una copia redimensionada cuando se guarden sus cambios.",
     "The url for the file you inserted doesn\'t look well formed": "La URL del archivo que ha introducido no parece bien formada",
     "The url for the link you inserted doesn\'t look well formed": "La URL del enlace que ha introducido no parece bien formada",
     "This block contains unsaved changes": "Este bloque tiene cambios sin guardar",
@@ -30114,7 +30253,8 @@ registerLocale('es', 'Español', {
     "{{words}} words": "{{words}} palabras"
 });
 /**
- * @contributor SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
+ * @fileOverview French strings file.
+ * @author SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
  */
 registerLocale('fr', 'Français', {
     "A preview of your embedded object is displayed below.": "Un aperçu de votre objet intégré est affiché ci-dessous.",
@@ -30244,9 +30384,10 @@ registerLocale('fr', 'Français', {
     "{{words}} words": "{{words}} mots"
 });
 /**
- * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ * @fileOverview Simplified Chinese strings file.
+ * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
-registerLocale('zh_CN', '简体中文', {
+registerLocale('zh-CN', '简体中文', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
     "Added link: {{link}}": "Added link: {{link}}",
     "All changes will be lost!": "All changes will be lost!",
@@ -31953,7 +32094,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.12?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.13?' + query.join('&') + ')'
                     });
                 }
             });
@@ -33283,10 +33424,9 @@ $.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.p
         }
     }
 });/**
- * @fileOverview
+ * @fileOverview Element manipulation helper functions.
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
- * @version 0.1
  */
 
 /**
@@ -33389,9 +33529,9 @@ function elementDefaultDisplay(tag) {
 function elementIsValid(element, validTags) {
     return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
 }/**
- * @fileOverview
+ * @fileOverview DOM fragment manipulation helper functions
  * @author David Neilsen david@panmedia.co.nz
- * @version 0.1
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 
 /**
@@ -33438,9 +33578,10 @@ function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
         }
     }
 }/**
- * @fileOverview
+ * @fileOverview Range manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
- * @version 0.1
+ * @author Michael Robinson michael@panmedia.co.nz
+
  */
 
 /**
@@ -33518,9 +33659,9 @@ function rangeIsEmpty(range) {
     return range.startOffset === range.endOffset &&
            range.startContainer === range.endContainer;
 }/**
- * @fileOverview
+ * @fileOverview Selection manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
- * @version 0.1
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 /**
  * @type {Boolean|Object} current saved selection.
@@ -33840,10 +33981,9 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selectionReplaceSplittingSelectedElement(html, selection);
     return;
 }/**
- * @fileOverview
+ * @fileOverview String helper functions
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
- * @version 0.1
  */
 
 /**
