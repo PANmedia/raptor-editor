@@ -1,4 +1,10 @@
 /**
+ * @fileOverview Plugin that wraps naked content.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
+/**
  * @name $.editor.plugin.emptyElement
  * @augments $.ui.editor.defaultPlugin
  * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
