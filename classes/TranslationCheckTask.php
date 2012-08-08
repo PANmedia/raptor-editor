@@ -5,7 +5,7 @@ class TranslationCheckTask extends Task {
     private $name = null;
 
     private $untranslatable = [
-
+        'N/A'
     ];
 
     public function jsonError($error) {
