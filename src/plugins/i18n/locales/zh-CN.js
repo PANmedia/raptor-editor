@@ -1,7 +1,8 @@
 /**
- * @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+ * @fileOverview Simplified Chinese strings file.
+ * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
-registerLocale('zh_CN', '简体中文', {
+registerLocale('zh-CN', '简体中文', {
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
     "Added link: {{link}}": "Added link: {{link}}",
     "All changes will be lost!": "All changes will be lost!",
