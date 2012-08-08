@@ -30,7 +30,7 @@ if ($replace && $merge) {
     die();
 }
 
-$strings = array();
+$strings = [];
 
 $xgettext_extract = function($directory, $strings, $process_all = false) use (&$xgettext_extract) {
     $directory_handle = opendir($directory);
@@ -71,7 +71,7 @@ if ((!$replace && !$merge) && file_exists($locale_file)) {
 }
 
 $write = function($locale_file, $strings) use ($locale, $locale_name) {
-    $output = array();
+    $output = [];
     $tab = '    ';
     $head = "registerLocale('$locale', '$locale_name', {\n";
     $tail = "\n});\n";
