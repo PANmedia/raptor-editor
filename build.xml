@@ -125,7 +125,8 @@
     </target>
 
     <target name="clone-plugins">
-        <plugins file="${plugins.manifest}" builddir="${dir.build}"></plugins>
+        <plugins file="${plugins.extra}" builddir="${dir.build}"></plugins>
+        <plugins file="${plugins}" builddir="${dir.build}"></plugins>
     </target>
 
     <target name="pngout-exec">
