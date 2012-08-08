@@ -23,11 +23,13 @@ class PluginsTask extends Task {
     }
 
     public function main() {
+        if (!$this->file) return;
         $buildDir = (new PhingFile($this->buildDir))->getAbsolutePath();
         $buildPluginsDir = "{$buildDir}/plugins/";
         if (!file_exists($buildPluginsDir)) {
             mkdir($buildPluginsDir);
         }
+
         foreach (file($this->file, FILE_SKIP_EMPTY_LINES) as $pluginEntry) {
             $pluginDetails = explode('=', $pluginEntry);
             $pluginDetails = array_filter($pluginDetails);
