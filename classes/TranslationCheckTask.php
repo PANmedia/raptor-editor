@@ -50,17 +50,17 @@ class TranslationCheckTask extends Task {
                     $fileContentArray = file($file);
                     foreach ($fileContentArray as $key => $value) {
 
-                        // Parse contributors from form: @contributor Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
-                        if (preg_match("/@contributor/i", $value)) {
+                        // Parse contributors from form: @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
+                        if (preg_match("/@author/i", $value)) {
                             $matches = array();
-                            preg_match("/\@contributor\s{0,}([^,]+),\s{0,}([^,]+),\s{0,}([^$]+)/i", $value, $matches, PREG_OFFSET_CAPTURE);
-                            $contributor = array(
+                            preg_match("/\@author\s{0,}([^,]+),\s{0,}([^,]+),\s{0,}([^$]+)/i", $value, $matches, PREG_OFFSET_CAPTURE);
+                            $author = array(
                                 'name' => trim($matches[1][0]),
                                 'email' => trim($matches[2][0]),
                                 'link' => trim($matches[3][0])
                             );
                             if (!isset($result[$name]['contributors'])) $result[$name]['contributors'] = array();
-                            $result[$name]['contributors'][] = $contributor;
+                            $result[$name]['contributors'][] = $author;
                         }
 
                         if (preg_match("/registerLocale\('[a-z_-]+', '[^']+'/i", $value)) {
