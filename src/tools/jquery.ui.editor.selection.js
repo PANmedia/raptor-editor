@@ -1,7 +1,7 @@
 /**
- * @fileOverview
+ * @fileOverview Selection manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
- * @version 0.1
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 /**
  * @type {Boolean|Object} current saved selection.

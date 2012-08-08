@@ -1,8 +1,7 @@
 /**
- * @fileOverview
+ * @fileOverview Element manipulation helper functions.
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
- * @version 0.1
  */
 
 /**
