@@ -110,6 +110,7 @@
                 <exclude name="**/*.php" />
                 <exclude name="dependencies/**" />
                 <exclude name="plugins/**" />
+                <exclude name="plugins-extra/**" />
                 <exclude name="theme/**" />
                 <exclude name="jquery.ui.editor.loader.js" />
             </fileset>
