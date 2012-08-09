@@ -23,20 +23,6 @@
 
     @include display-box();
     @include box-orient(vertical);
-
-    .ui-editor-paste-synchronize-text {
-        height: 25px;
-        line-height: 25px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 100px;
-        input {
-            margin: 0;
-            padding: 0;
-            vertical-align: text-bottom;
-        }
-    }
 }
 
 .ui-editor-paste-panel-tabs > div {
