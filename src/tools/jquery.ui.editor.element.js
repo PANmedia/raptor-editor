@@ -78,6 +78,15 @@ function elementOuterText(element) {
 }
 
 /**
+ * Determine whether element is block.
+ * @param  {Element} element The element to test.
+ * @return {Boolean} True if the element is a block element
+ */
+function elementIsBlock(element) {
+    return elementDefaultDisplay(element.tagName) === 'block';
+}
+
+/**
  * Determine whether element is inline or block.
  * @see http://stackoverflow.com/a/2881008/187954
  * @param  {string} tag Lower case tag name, e.g. 'a'.

@@ -30,6 +30,9 @@ function selectionRestore() {
  * Reset saved selection.
  */
 function selectionDestroy() {
+    if (savedSelection) {
+        rangy.removeMarkers(savedSelection);
+    }
     savedSelection = false;
 }
 
@@ -203,6 +206,39 @@ function selectionGetEndElement() {
         return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
     }
     return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+}
+
+function selectionAtEndOfElement() {
+    var selection = rangy.getSelection();
+    var focusNode = selection.isBackwards() ? selection.anchorNode : selection.focusNode;
+    var focusOffset = selection.isBackwards() ? selection.focusOffset : selection.anchorOffset;
+    if (focusOffset !== focusNode.textContent.length) {
+        return false;
+    }
+    var previous = focusNode.nextSibling;
+    if (!previous || $(previous).html() === '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function selectionAtStartOfElement() {
+    var selection = rangy.getSelection();
+    var anchorNode = selection.isBackwards() ? selection.focusNode : selection.anchorNode;
+    if (selection.isBackwards() ? selection.focusOffset : selection.anchorOffset !== 0) {
+        return false;
+    }
+    var previous = anchorNode.previousSibling;
+    if (!previous || $(previous).html() === '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function selectionIsEmpty() {
+    return rangy.getSelection().toHtml() === '';
 }
 
 /**
