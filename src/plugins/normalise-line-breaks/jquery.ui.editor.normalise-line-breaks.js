@@ -50,42 +50,59 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
     hotkeys: {
         'return': {
             'action': function() {
-                this.insertBreak(this.options.enter, this.options.enterValidTags);
+
+                selectionDestroy();
+
+                var selectionEmpty = selectionIsEmpty();
+                var selectionIsAtStart = selectionAtStartOfElement();
+                var selectionIsAtEnd = selectionAtEndOfElement();
+
+                var breakId = this.options.baseClass + '-enter-break';
+                var breakElement = $(this.options.enter).attr('id', breakId);
+
+                selectionReplaceWithinValidTags(breakElement, this.options.enterValidTags);
+
+                breakElement = $('#' + breakId).removeAttr('id');
+                if (selectionEmpty) {
+                    if (selectionIsAtStart) {
+                        selectionSelectStart(breakElement.next());
+                    } else if(selectionIsAtEnd) {
+                        selectionSelectStart(breakElement);
+                    } else {
+                        selectionSelectStart(breakElement.next());
+                        var previousSibling = breakElement.prev();
+                        if (previousSibling && !$.trim(previousSibling.html()) == '' && elementOuterHtml(previousSibling) != this.options.enter) {
+                            breakElement.remove();
+                        }
+                    }
+                } else {
+                    selectionSelectStart(breakElement.next());
+                    breakElement.remove();
+                }
             },
             restoreSelection: false
         },
         'return+shift': {
             'action': function() {
-                this.insertBreak(this.options.shiftEnter, this.options.shiftEnterValidTags);
+                selectionDestroy();
+
+                var breakId = this.options.baseClass + '-enter-break';
+
+                var breakElement = $(breakHtml)
+                                .attr('id', breakId)
+                                .appendTo('body');
+
+                if (this.options.shiftEnterValidTags) {
+                    selectionReplaceWithinValidTags(this.options.shiftEnter, this.options.shiftEnterValidTags);
+                } else {
+                    selectionReplace(breakElement);
+                }
+
+                var select = $('#' + breakId).removeAttr('id').next();
+
+                selectionSelectStart(select);
             },
             restoreSelection: false
         }
-    },
-
-    /**
-     * Replace selection with given breakHtml
-     * @param  {String} breakHtml The HTML to replace selection with.
-     * @param  {Array} breakValidTags Array of tag names within which the replaceHtml is valid.
-     */
-    insertBreak: function(breakHtml, breakValidTags) {
-
-        selectionDestroy();
-
-        var breakId = this.options.baseClass + '-enter-break';
-
-        var breakElement = $(breakHtml)
-                        .attr('id', breakId)
-                        .appendTo('body');
-
-        if (breakValidTags) {
-            selectionReplaceWithinValidTags(breakElement, breakValidTags);
-        } else {
-            selectionReplace(breakElement);
-        }
-
-        var select = $('#' + breakId).removeAttr('id').next();
-
-        selectionSelectStart(select);
     }
-
 });
