@@ -105,6 +105,7 @@ $.widget('ui.editor',
 
         // Check for browser support
         if (!isSupported(this)) {
+            // @todo If element isn't a textarea, replace it with one
             return;
         }
 
@@ -139,7 +140,7 @@ $.widget('ui.editor',
         this.ready = true;
         this.fire('ready');
 
-        // Automaticly enable the editor if autoEnable is true
+        // Automatically enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             $(function() {
                 currentInstance.enableEditing();
