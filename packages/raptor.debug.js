@@ -26233,6 +26233,7 @@ $.widget('ui.editor',
 
         // Check for browser support
         if (!isSupported(this)) {
+            // @todo If element isn't a textarea, replace it with one
             return;
         }
 
@@ -26267,7 +26268,7 @@ $.widget('ui.editor',
         this.ready = true;
         this.fire('ready');
 
-        // Automaticly enable the editor if autoEnable is true
+        // Automatically enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             $(function() {
                 currentInstance.enableEditing();
@@ -27822,7 +27823,7 @@ $.extend($.ui.editor,
     /**
      * @property {Object} templates
      */
-    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <label class=\"ui-editor-paste-synchronize-text\" title=\"Synchronize changes to text across the three tabs\">\n            <input type=\"checkbox\" value=\"synchronize\" name=\"synchronizeText\" class=\"synchronizeText\"\/>\n            Synchronize\n        <\/label>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\">\n        <textarea>{{source}}<\/textarea>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
+    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\">\n        <textarea>{{source}}<\/textarea>\n    <\/div>\n<\/div>\n",'clicktoedit.message': "<div class=\"{{baseClass}}-message\" style=\"opacity: 0;\">_('Click to begin editing')<\/div>\n",'length.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_('Copy the file\'s URL from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
 
     /**
      * @param {String} name
@@ -32155,44 +32156,61 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
     hotkeys: {
         'return': {
             'action': function() {
-                this.insertBreak(this.options.enter, this.options.enterValidTags);
+
+                selectionDestroy();
+
+                var selectionEmpty = selectionIsEmpty();
+                var selectionIsAtStart = selectionAtStartOfElement();
+                var selectionIsAtEnd = selectionAtEndOfElement();
+
+                var breakId = this.options.baseClass + '-enter-break';
+                var breakElement = $(this.options.enter).attr('id', breakId);
+
+                selectionReplaceWithinValidTags(breakElement, this.options.enterValidTags);
+
+                breakElement = $('#' + breakId).removeAttr('id');
+                if (selectionEmpty) {
+                    if (selectionIsAtStart) {
+                        selectionSelectStart(breakElement.next());
+                    } else if(selectionIsAtEnd) {
+                        selectionSelectStart(breakElement);
+                    } else {
+                        selectionSelectStart(breakElement.next());
+                        var previousSibling = breakElement.prev();
+                        if (previousSibling && !$.trim(previousSibling.html()) == '' && elementOuterHtml(previousSibling) != this.options.enter) {
+                            breakElement.remove();
+                        }
+                    }
+                } else {
+                    selectionSelectStart(breakElement.next());
+                    breakElement.remove();
+                }
             },
             restoreSelection: false
         },
         'return+shift': {
             'action': function() {
-                this.insertBreak(this.options.shiftEnter, this.options.shiftEnterValidTags);
+                selectionDestroy();
+
+                var breakId = this.options.baseClass + '-enter-break';
+
+                var breakElement = $(breakHtml)
+                                .attr('id', breakId)
+                                .appendTo('body');
+
+                if (this.options.shiftEnterValidTags) {
+                    selectionReplaceWithinValidTags(this.options.shiftEnter, this.options.shiftEnterValidTags);
+                } else {
+                    selectionReplace(breakElement);
+                }
+
+                var select = $('#' + breakId).removeAttr('id').next();
+
+                selectionSelectStart(select);
             },
             restoreSelection: false
         }
-    },
-
-    /**
-     * Replace selection with given breakHtml
-     * @param  {String} breakHtml The HTML to replace selection with.
-     * @param  {Array} breakValidTags Array of tag names within which the replaceHtml is valid.
-     */
-    insertBreak: function(breakHtml, breakValidTags) {
-
-        selectionDestroy();
-
-        var breakId = this.options.baseClass + '-enter-break';
-
-        var breakElement = $(breakHtml)
-                        .attr('id', breakId)
-                        .appendTo('body');
-
-        if (breakValidTags) {
-            selectionReplaceWithinValidTags(breakElement, breakValidTags);
-        } else {
-            selectionReplace(breakElement);
-        }
-
-        var select = $('#' + breakId).removeAttr('id').next();
-
-        selectionSelectStart(select);
     }
-
 });
 /**
  * @name $.editor.plugin.paste
@@ -32474,15 +32492,11 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      * @param  {Element} dialog The paste dialog
      */
     updateAreas: function(target, dialog) {
-
-        var synchronize = dialog.find('.ui-editor-paste-synchronize-text input[type="checkbox"]');
         var content = $(target).is('textarea') ? $(target).val() : $(target).html();
-        if (synchronize.attr('checked')) {
-            if (!$(target).hasClass('ui-editor-paste-plain')) dialog.find('.ui-editor-paste-plain').val($('<div/>').html(content).text());
-            if (!$(target).hasClass('ui-editor-paste-rich')) dialog.find('.ui-editor-paste-rich').html(content);
-            if (!$(target).hasClass('ui-editor-paste-source')) dialog.find('.ui-editor-paste-source').html(content);
-            if (!$(target).hasClass('ui-editor-paste-markup')) dialog.find('.ui-editor-paste-markup').html(this.stripAttributes(content));
-        }
+        if (!$(target).hasClass('ui-editor-paste-plain')) dialog.find('.ui-editor-paste-plain').val($('<div/>').html(content).text());
+        if (!$(target).hasClass('ui-editor-paste-rich')) dialog.find('.ui-editor-paste-rich').html(content);
+        if (!$(target).hasClass('ui-editor-paste-source')) dialog.find('.ui-editor-paste-source').html(content);
+        if (!$(target).hasClass('ui-editor-paste-markup')) dialog.find('.ui-editor-paste-markup').html(this.stripAttributes(content));
     }
 });/**
  * @fileOverview Placeholder text component
@@ -33503,6 +33517,15 @@ function elementOuterText(element) {
 }
 
 /**
+ * Determine whether element is block.
+ * @param  {Element} element The element to test.
+ * @return {Boolean} True if the element is a block element
+ */
+function elementIsBlock(element) {
+    return elementDefaultDisplay(element.tagName) === 'block';
+}
+
+/**
  * Determine whether element is inline or block.
  * @see http://stackoverflow.com/a/2881008/187954
  * @param  {string} tag Lower case tag name, e.g. 'a'.
@@ -33690,6 +33713,9 @@ function selectionRestore() {
  * Reset saved selection.
  */
 function selectionDestroy() {
+    if (savedSelection) {
+        rangy.removeMarkers(savedSelection);
+    }
     savedSelection = false;
 }
 
@@ -33863,6 +33889,39 @@ function selectionGetEndElement() {
         return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
     }
     return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+}
+
+function selectionAtEndOfElement() {
+    var selection = rangy.getSelection();
+    var focusNode = selection.isBackwards() ? selection.anchorNode : selection.focusNode;
+    var focusOffset = selection.isBackwards() ? selection.focusOffset : selection.anchorOffset;
+    if (focusOffset !== focusNode.textContent.length) {
+        return false;
+    }
+    var previous = focusNode.nextSibling;
+    if (!previous || $(previous).html() === '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function selectionAtStartOfElement() {
+    var selection = rangy.getSelection();
+    var anchorNode = selection.isBackwards() ? selection.focusNode : selection.anchorNode;
+    if (selection.isBackwards() ? selection.focusOffset : selection.anchorOffset !== 0) {
+        return false;
+    }
+    var previous = anchorNode.previousSibling;
+    if (!previous || $(previous).html() === '') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function selectionIsEmpty() {
+    return rangy.getSelection().toHtml() === '';
 }
 
 /**
@@ -35824,17 +35883,6 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -moz-box-orient: vertical;\n\
   -ms-box-orient: vertical;\n\
   box-orient: vertical; }\n\
-  .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text {\n\
-    height: 25px;\n\
-    line-height: 25px;\n\
-    position: absolute;\n\
-    right: 0;\n\
-    top: 0;\n\
-    width: 100px; }\n\
-    .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text input {\n\
-      margin: 0;\n\
-      padding: 0;\n\
-      vertical-align: text-bottom; }\n\
 \n\
 .ui-editor-paste-panel-tabs > div {\n\
   overflow: auto;\n\
