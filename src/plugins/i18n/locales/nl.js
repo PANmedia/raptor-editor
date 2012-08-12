@@ -1,3 +1,7 @@
+/**
+ * @fileOverview Dutch strings file.
+ * @author Ruben Vincenten, rubenvincenten@gmail.com, https://github.com/rubenvincenten
+ */
 registerLocale('nl', 'Nederlands', {
     "A preview of your embedded object is displayed below.": "Een voorbeeldweergave van uw ingenestelde object is hieronder weergeven.",
     "Added link: {{link}}": "Link toegevoegd:: {{link}}",
