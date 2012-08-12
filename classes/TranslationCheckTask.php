@@ -4,10 +4,6 @@ class TranslationCheckTask extends Task {
     private $filesets = array();
     private $name = null;
 
-    private $untranslatable = [
-        'N/A'
-    ];
-
     public function jsonError($error) {
         $output = "{$error}: ";
 
@@ -96,7 +92,7 @@ class TranslationCheckTask extends Task {
                     $result[$name]['untranslated'] = [];
 
                     foreach ($filePairs as $key => $value) {
-                        if ($key !== $value || in_array($key, $this->untranslatable)) $translated++;
+                        if ($key !== $value)/* || in_array($key, $this->untranslatable))*/ $translated++;
                         else $result[$name]['untranslated'][] = $value;
                     }
 

@@ -8,7 +8,7 @@
     </if>
 
     <!-- =================================================================== -->
-    <!-- main build targets                                                  -->
+    <!-- Main build targets                                                  -->
     <!-- =================================================================== -->
     <target name="build">
         <phingcall target="clean" />
@@ -55,12 +55,24 @@
         <phingcall target="build" />
     </target>
 
+    <!-- =================================================================== -->
+    <!-- Translation build targets                                           -->
+    <!-- =================================================================== -->
+
     <target name="translationcheck">
         <translationcheck>
             <fileset dir=".">
                 <include name="${dir.locales}/*.js" />
             </fileset>
         </translationcheck>
+    </target>
+
+    <target name="translationupdate">
+        <translationupdate>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationupdate>
     </target>
 
     <!-- =================================================================== -->
@@ -445,6 +457,10 @@
 
     <adhoc-task name="translationcheck">
         require_once '${project.basedir}/classes/TranslationCheckTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationupdate">
+        require_once '${project.basedir}/classes/TranslationUpdateTask.php';
     </adhoc-task>
 
     <adhoc-task name="plugins">
