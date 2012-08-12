@@ -70,7 +70,7 @@ registerLocale('es', 'Español', {
     "Link to an email address": "Enlazar a una dirección de correo electrónico",
     "Location": "Localización",
     "Modify Image Size": "Cambiar Tamaño de Imagen",
-    "N/A": "N/A",
+    "N/A": false,
     "New window": "Nueva ventana",
     "No changes detected to save...": "No se detectaron cambios para guardar...",
     "Not sure what to put in the box above?": "¿No está seguro de qué poner en la caja anterior?",
