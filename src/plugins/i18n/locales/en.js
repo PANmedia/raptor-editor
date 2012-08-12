@@ -28,7 +28,7 @@ registerLocale('en', 'English', {
     "Content Statistics": "Content Statistics",
     "Content contains more than {{limit}} characters and may be truncated": "Content contains more than {{limit}} characters and may be truncated",
     "Content will not be truncated": "Content will not be truncated",
-    "Copy the file\'s URL from your browser\'s address bar and paste it into the box above": "Copy the file\'s URL from your browser\'s address bar and paste it into the box above",
+    "Copy the file's URL from your browser's address bar and paste it into the box above": "Copy the file's URL from your browser's address bar and paste it into the box above",
     "Copy the web address from your browser\'s address bar and paste it into the box above": "Copy the web address from your browser\'s address bar and paste it into the box above",
     "Decrease Font Size": "Decrease Font Size",
     "Destroy": "Destroy",
