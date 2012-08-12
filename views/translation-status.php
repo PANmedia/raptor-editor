@@ -46,11 +46,12 @@
         var div = $(this).closest('tr').find('.untranslated-content').clone();
         div.css({
             maxHeight: 400,
-            overflowY: 'scroll'
+            overflowY: 'auto'
         });
         div.dialog({
             title: 'Untranslated ' + $(this).closest('tr').find('td').html() + ' content',
             modal: true,
+            minWidth: 400,
             close: function() {
                 $(this).dialog('destroy').remove();
             }
