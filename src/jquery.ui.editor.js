@@ -827,7 +827,7 @@ $.widget('ui.editor',
             template = this.templates[name];
         }
         // Translate template
-        template = template.replace(/_\('(.*?)'\)/g, function(match, string) {
+        template = template.replace(/_\(['"]{1}(.*?)['"]{1}\)/g, function(match, string) {
             string = string.replace(/\\(.?)/g, function (s, slash) {
                 switch (slash) {
                     case '\\':return '\\';
