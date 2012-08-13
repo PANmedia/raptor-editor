@@ -188,7 +188,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {map} options options to be passed to editor.showInfo
      */
     showOversizeWarning: function(imageLink, options) {
-        this.editor.showInfo(_('The image "{{image}}" is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
+        this.editor.showInfo(_("The image '{{image}}' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.", {
             image: imageLink
         }), options);
     },
