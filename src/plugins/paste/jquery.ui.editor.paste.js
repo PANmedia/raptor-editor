@@ -69,9 +69,9 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
                 dialog = $(editor.getTemplate('paste.dialog', vars));
 
-                dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
-                    plugin.updateAreas(this, dialog);
-                });
+                // dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
+                //     plugin.updateAreas(this, dialog);
+                // });
 
                 $(dialog).dialog({
                     modal: true,
