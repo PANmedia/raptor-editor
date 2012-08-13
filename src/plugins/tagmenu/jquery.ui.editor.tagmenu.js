@@ -37,33 +37,33 @@ $.ui.editor.registerUi({
                     }
 
                     var editingElement = editor.getElement()[0];
-                    var selectedElement = selectionGetElements();
-                    if (!selectionGetHtml() || selectionGetHtml() === '') {
+                    var selectedElement = editor.getSelectedElements();
+                    if (!editor.getSelectedHtml() || editor.getSelectedHtml() === '') {
                         // Do not attempt to modify editing element's tag
                         if ($(selectedElement)[0] === $(editingElement)[0]) {
                             return;
                         }
-                        selectionSave();
+                        editor.saveSelection();
                         var replacementElement = $('<' + value + '>').html(selectedElement.html());
                         selectedElement.replaceWith(replacementElement);
-                        selectionRestore();
+                        editor.restoreSelection();
                     } else {
-                        var selectedElementParent = $(selectionGetElements()[0]).parent();
+                        var selectedElementParent = $(editor.getSelectedElements()[0]).parent();
                         var temporaryClass = this.options.baseClass + '-selection';
-                        var replacementHtml = $('<' + value + '>').html(selectionGetHtml()).addClass(temporaryClass);
+                        var replacementHtml = $('<' + value + '>').html(editor.getSelectedHtml()).addClass(temporaryClass);
 
                         /*
                          * Replace selection if the selected element parent or the selected element is the editing element,
                          * instead of splitting the editing element.
                          */
                         if (selectedElementParent === editingElement
-                            || selectionGetElements()[0] === editingElement) {
-                            selectionReplace(replacementHtml);
+                            || editor.getSelectedElements()[0] === editingElement) {
+                            editor.replaceSelection(replacementHtml);
                         } else {
-                            selectionReplaceWithinValidTags(replacementHtml, this.validParents);
+                            editor.replaceSelectionWithinValidTags(replacementHtml, this.validParents);
                         }
 
-                        selectionSelectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
+                        editor.selectInner(editor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
                     }
 
                     editor.checkChange();
@@ -75,7 +75,7 @@ $.ui.editor.registerUi({
          * Content changed event
          */
         change: function() {
-            var tag = selectionGetElements()[0];
+            var tag = this.editor.getSelectedElements()[0];
             if (!tag) {
                 $(this.ui.button).toggleClass('ui-state-disabled', true);
                 return;
@@ -86,7 +86,7 @@ $.ui.editor.registerUi({
             } else {
                 this.ui.val('na');
             }
-            $(this.ui.button).toggleClass('ui-state-disabled', this.editor.getElement()[0] === selectionGetElements()[0]);
+            $(this.ui.button).toggleClass('ui-state-disabled', this.editor.getElement()[0] === this.editor.getSelectedElements()[0]);
         }
     }
 });

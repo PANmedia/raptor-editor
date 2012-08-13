@@ -12,14 +12,6 @@
 $.ui.editor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
 
-        hotkeys: {
-            'ctrl+k': {
-                'action': function() {
-                    this.ui.click();
-                }
-            }
-        },
-
         /**
          * @see $.ui.editor.defaultUi#init
          */

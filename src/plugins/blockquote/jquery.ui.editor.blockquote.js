@@ -22,7 +22,7 @@
                 title: _('Blockquote'),
                 icon: 'ui-icon-quote',
                 click: function() {
-                    selectionToggleWrapper('blockquote', { classes: options.classes || options.cssPrefix + 'blockquote' });
+                    editor.toggleWrapper('blockquote', { classes: options.classes || options.cssPrefix + 'blockquote' });
                 }
             });
         }

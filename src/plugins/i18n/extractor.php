@@ -19,7 +19,6 @@ if (!isset($options['n'])) {
     echo 'Locale native name (-n 简体中文) is required'.PHP_EOL;
     die();
 }
-
 $base_directory = rtrim($options['b'], '/').'/';
 $locale = $options['l'];
 $locale_name = $options['n'];
@@ -31,12 +30,10 @@ if ($replace && $merge) {
     die();
 }
 
-/* FUNCTIONS */
-function xgettext_extract($directory, $strings, $process_all = false) {
+$strings = array();
+
+$xgettext_extract = function($directory, $strings, $process_all = false) use (&$xgettext_extract) {
     $directory_handle = opendir($directory);
-    if (preg_match('/plugins\-extra/', $directory)) {
-        return $strings;
-    }
     while (false !== ($file = readdir($directory_handle))) {
         if ($file != "." && $file != "..") {
             if (is_file($directory.$file)) {
@@ -47,7 +44,7 @@ function xgettext_extract($directory, $strings, $process_all = false) {
                         $result = null;
                         if (strpos($line, '<strict>') !== false || strpos($line, '<debug>') !== false) $skipping = true;
                         if (strpos($line, '</strict>') !== false || strpos($line, '</debug>') !== false) $skipping = false;
-                        if(!$skipping && preg_match_all("/_\(['\"]{1}(.*)['\"]{1}[,)]/iU", $line, $result)) {
+                        if(!$skipping && preg_match_all("/_\('(.*)'[,)]/iU", $line, $result)) {
                             foreach($result[1] as $string) {
                                 $strings[$string] = $string;
                             }
@@ -56,31 +53,27 @@ function xgettext_extract($directory, $strings, $process_all = false) {
                 }
             }
             else if(is_dir($directory.$file) && $file != '.git') {
-                $strings = xgettext_extract($directory.$file.'/', $strings, $file == 'templates');
+                $strings = $xgettext_extract($directory.$file.'/', $strings, $file == 'templates');
             }
         }
     }
     closedir($directory_handle);
     return $strings;
+};
+
+$strings = $xgettext_extract($base_directory, $strings);
+
+$locale_file = dirname(__FILE__).'/locales/'.$locale.'.js';
+
+if ((!$replace && !$merge) && file_exists($locale_file)) {
+    echo $locale_file.' exists - to replace it use -r, to merge use -m'.PHP_EOL;
+    die();
 }
 
-/**
- * Write locale data to file
- * @param  {string}  $locale_file Full path to file data should be written to.
- * @param  {string[]}  $strings Array of strings to be written.
- * @param  {string}  $locale Name of the locale, e.g. 'en'
- * @param  {string} $locale_name Native locale name, e.g. 'English'
- * @param  {string|null} $headerBlock Comment block to include at the top of the file.
- */
-function writeLocale($locale_file, $strings, $locale, $locale_name, $headerBlock = false) {
-    $headerBlock = $headerBlock ?: '/**
- * @fileOverview {language} strings file.
- * @author {name}, {email}, {link}
- */
-';
-    $output = [];
+$write = function($locale_file, $strings) use ($locale, $locale_name) {
+    $output = array();
     $tab = '    ';
-    $head = "{$headerBlock}registerLocale('$locale', '$locale_name', {\n";
+    $head = "registerLocale('$locale', '$locale_name', {\n";
     $tail = "\n});\n";
     ksort($strings);
 
@@ -95,33 +88,15 @@ function writeLocale($locale_file, $strings, $locale, $locale_name, $headerBlock
     fwrite($locale_handle, implode(",\n", $output));
     fwrite($locale_handle, $tail);
     fclose($locale_handle);
-}
+};
 
-/* BEGIN EXTRACTION */
-$strings = xgettext_extract($base_directory, []);
-
-$locale_file = dirname(__FILE__).'/locales/'.$locale.'.js';
-
-if ((!$replace && !$merge) && file_exists($locale_file)) {
-    echo $locale_file.' exists - to replace it use -r, to merge use -m'.PHP_EOL;
-    die();
-}
-
-/* WRITE TO FILE */
 if ($replace || (!$replace && !$merge)) {
-    writeLocale($locale_file, $strings, $locale, $localeName);
+    $write($locale_file, $strings);
 } else {
-    $headerBlock = '';
-    $headerCaptured = false;
     $lines = file($locale_file);
     foreach($lines as $line) {
-        if (!$headerCaptured && preg_match('@^(\s\*|/)@', $line)) {
-            $headerBlock .= $line;
-            continue;
-        }
         $result= null;
         if(preg_match('/^\s*"(.+)":\s?"(.+)",?$/iU', $line, $result)) {
-            $headerCaptured = true;
             $key = $result[1];
             $value = $result[2];
             if (isset($strings[$key]) && $strings[$key] != $value) {
@@ -129,5 +104,5 @@ if ($replace || (!$replace && !$merge)) {
             }
         }
     }
-    writeLocale($locale_file, $strings, $locale, $locale_name, $headerBlock);
+    $write($locale_file, $strings);
 }

@@ -1,5 +1,5 @@
 /**
- * @fileOverview Editor internationalization (i18n) private functions and properties.
+ * Editor internationalization (i18n) private functions and properties.
  *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>

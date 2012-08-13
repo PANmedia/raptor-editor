@@ -86,13 +86,6 @@ $.widget('ui.editor',
         // List of UI objects bound to the editor
         this.uiObjects = {};
 
-        // List of hotkeys bound to the editor
-        this.hotkeys = {};
-        // If hotkeys are enabled, register any custom hotkeys provided by the user
-        if (this.options.enableHotkeys) {
-            this.registerHotkey(this.hotkeys);
-        }
-
         // Bind default events
         for (var name in this.options.bind) {
             this.bind(name, this.options.bind[name]);
@@ -105,7 +98,6 @@ $.widget('ui.editor',
 
         // Check for browser support
         if (!isSupported(this)) {
-            // @todo If element isn't a textarea, replace it with one
             return;
         }
 
@@ -140,7 +132,7 @@ $.widget('ui.editor',
         this.ready = true;
         this.fire('ready');
 
-        // Automatically enable the editor if autoEnable is true
+        // Automaticly enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             $(function() {
                 currentInstance.enableEditing();
@@ -164,7 +156,7 @@ $.widget('ui.editor',
         var change = $.proxy(this.checkChange, this);
 
         this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
-            selectionSelectOuter(event.target);
+            this.selectOuter(event.target);
         }, this));
         // this.bind('change', change);
         this.getElement().bind('mouseup.' + this.widgetName, change);
@@ -253,7 +245,7 @@ $.widget('ui.editor',
 
         this.element.hide();
         this.bind('change', function() {
-            if (this.element.is('input, textarea')) {
+            if (this.element.is('input')) {
                 this.element.val(this.getHtml());
             } else {
                 this.element.html(this.getHtml());
@@ -406,8 +398,6 @@ $.widget('ui.editor',
             this.execCommand('enableInlineTableEditing', false, false);
             this.execCommand('styleWithCSS', true, true);
 
-            this.bindHotkeys();
-
             this.fire('enabled');
             this.fire('resize');
         }
@@ -493,10 +483,10 @@ $.widget('ui.editor',
                 var i = $(this).data('ui-editor-selection');
                 if (i) {
                     // Get the element from the list array
-                    selectionSelectOuter(lists[i[0]][i[1]]);
+                    editor.selectOuter(lists[i[0]][i[1]]);
                     editor.updateTagTree();
                 } else {
-                    selectionSelectOuter(editor.getElement());
+                    editor.selectOuter(editor.getElement());
                 }
             });
 
@@ -827,7 +817,7 @@ $.widget('ui.editor',
             template = this.templates[name];
         }
         // Translate template
-        template = template.replace(/_\(['"]{1}(.*?)['"]{1}\)/g, function(match, string) {
+        template = template.replace(/_\('(.*?)'\)/g, function(match, string) {
             string = string.replace(/\\(.?)/g, function (s, slash) {
                 switch (slash) {
                     case '\\':return '\\';
@@ -927,60 +917,6 @@ $.widget('ui.editor',
     },
 
     /*========================================================================*\
-     * Hotkeys
-    \*========================================================================*/
-
-    /**
-     * @param {Array|String} mixed The hotkey name or an array of hotkeys
-     * @param {Object} The hotkey object or null
-     */
-    registerHotkey: function(mixed, actionData, context) {
-        // Allow array objects, and single plugins
-        if (typeof(mixed) === 'string') {
-
-            // <strict>
-            if (this.hotkeys[mixed]) {
-                handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {hotkey: mixed}));
-            }
-            // </strict>
-
-            this.hotkeys[mixed] = $.extend({}, {
-                context: context,
-                restoreSelection: true
-            }, actionData);
-
-        } else {
-            for (var name in mixed) {
-                this.registerHotkey(name, mixed[name], context);
-            }
-        }
-    },
-
-    bindHotkeys: function() {
-        for (keyCombination in this.hotkeys) {
-            var editor = this,
-                force = this.hotkeys[keyCombination].force || false;
-
-            if (!this.options.enableHotkeys && !force) {
-                continue;
-            }
-
-            this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
-                selectionSave();
-                var object = editor.hotkeys[event.data];
-                // Returning true from action will allow event bubbling
-                if (object.action.call(object.context) !== true) {
-                    event.preventDefault();
-                }
-                if (object.restoreSelection) {
-                    selectionRestore();
-                }
-                editor.checkChange();
-            });
-        }
-    },
-
-    /*========================================================================*\
      * Buttons
     \*========================================================================*/
 
@@ -1046,14 +982,6 @@ $.widget('ui.editor',
                     uiObject.editor = this;
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(this, options);
-
-                    if (uiObject.hotkeys) {
-                        this.registerHotkey(uiObject.hotkeys, null, uiObject);
-                        // Add hotkeys to title
-                        uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
-                                return index;
-                            })[0] + ')';
-                    }
 
                     // Append the UI object to the group
                     uiObject.ui.init(uiSet[j], this, options, uiObject).appendTo(uiGroup);
@@ -1146,8 +1074,10 @@ $.widget('ui.editor',
             enable: function() {
                 this.button.button('option', 'disabled', false);
             },
-            ready: function() {},
-            click: function() {}
+            ready: function() {
+            },
+            click: function() {
+            }
         }, options);
     },
 
@@ -1242,7 +1172,7 @@ $.widget('ui.editor',
                         if ($(this).hasClass('ui-state-disabled')) {
                         	return;
                         }
-                        if (parseInt(ui.menu.css('min-width'), 10) < ui.button.outerWidth() + 10) {
+                        if (parseInt(ui.menu.css('min-width')) < ui.button.outerWidth() + 10) {
                             ui.menu.css('min-width', ui.button.outerWidth() + 10);
                         }
                         ui.wrapper.toggleClass('ui-editor-selectmenu-visible');
@@ -1324,10 +1254,6 @@ $.widget('ui.editor',
             pluginObject.editor = editor;
             pluginObject.options = options;
             pluginObject.init(editor, options);
-
-            if (pluginObject.hotkeys) {
-                this.registerHotkey(pluginObject.hotkeys, null, pluginObject);
-            }
 
             editor.plugins[name] = pluginObject;
         }
@@ -1635,17 +1561,7 @@ $.extend($.ui.editor,
          */
         cssPrefix: 'cms-',
 
-        draggable: true,
-
-        /**
-         * @type {Boolean} True to enable hotkeys
-         */
-        enableHotkeys: true,
-
-        /**
-         * @type {Object} Custom hotkeys
-         */
-        hotkeys: {}
+        draggable: true
     },
 
     /**

@@ -49,7 +49,7 @@ $.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder
                 editor.getElement().html(content);
 
                 if (options.select) {
-                    selectionSelectInner(content);
+                    editor.selectInner(content);
                 }
             }
         };

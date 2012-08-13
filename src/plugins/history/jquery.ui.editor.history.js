@@ -12,17 +12,6 @@ $.ui.editor.registerUi({
      * @class Revert most recent change to element content
      */
     undo: /** @lends $.editor.ui.undo.prototype */ {
-        options: {
-            disabled: true
-        },
-
-        hotkeys: {
-            'ctrl+z': {
-                'action': function() {
-                    this.editor.historyBack();
-                }
-            }
-        },
 
         /**
          * @see $.ui.editor.defaultUi#init
@@ -32,6 +21,7 @@ $.ui.editor.registerUi({
 
             return editor.uiButton({
                 title: _('Step Back'),
+                disabled: true,
                 click: function() {
                     editor.historyBack();
                 }
@@ -50,23 +40,6 @@ $.ui.editor.registerUi({
      */
     redo: /** @lends $.editor.ui.redo.prototype */ {
 
-        options: {
-            disabled: true
-        },
-
-        hotkeys: {
-            'ctrl+shift+z': {
-                'action': function() {
-                    this.editor.historyForward();
-                }
-            },
-            'ctrl+y': {
-                'action': function() {
-                    this.editor.historyForward();
-                }
-            }
-        },
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -75,6 +48,7 @@ $.ui.editor.registerUi({
 
             return this.ui = editor.uiButton({
                 title: _('Step Forward'),
+                disabled: true,
                 click: function() {
                     editor.historyForward();
                 }

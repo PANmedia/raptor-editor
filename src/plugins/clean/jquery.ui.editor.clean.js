@@ -36,10 +36,11 @@
          * @type {String[]}
          */
         stripEmptyTags: [
-            'span', 'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
+            'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
             'p', 'b', 'i', 'u', 'strong', 'em',
-            'big', 'small', 'div'
+            'big', 'small', 'div', 'span'
         ],
+
 
         /**
          * Attributes to be removed if empty
@@ -87,12 +88,15 @@
             editor.getElement()
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
-                    if ($.trim($(this).html()) === '') {
+                    if ($.trim($(this).html()) !== '') {
+                        return false;
+                    }
+                    if (!$(this).hasClass('rangySelectionBoundary')) {
                         return true;
                     }
                     // Do not clear selection markers if the editor has it in use
-                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved() === false) {
-                        return true;
+                    if (editor.savedSelection !== false) {
+                        return false;
                     }
                 })
                 .remove();
@@ -128,17 +132,6 @@
                 }
             });
         }
-
-        // Ensure ul, ol content is wrapped in li's
-        this.editor.getElement().find('ul, ol').each(function() {
-            $(this).find(' > :not(li)').each(function() {
-                if (elementDefaultDisplay($(this).attr('tag'))) {
-                    $(this).replaceWith($('<li>' + $(this).html() + '</li>').appendTo('body'));
-                } else {
-                    $(this).wrap($('<li>'));
-                }
-            });
-        });
     }
 });
 

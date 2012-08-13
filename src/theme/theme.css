@@ -1079,6 +1079,17 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   -moz-box-orient: vertical;
   -ms-box-orient: vertical;
   box-orient: vertical; }
+  .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text {
+    height: 25px;
+    line-height: 25px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px; }
+    .ui-editor-paste-panel-tabs .ui-editor-paste-synchronize-text input {
+      margin: 0;
+      padding: 0;
+      vertical-align: text-bottom; }
 
 .ui-editor-paste-panel-tabs > div {
   overflow: auto;

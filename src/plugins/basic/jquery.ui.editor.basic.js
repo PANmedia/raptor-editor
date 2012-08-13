@@ -15,14 +15,6 @@ $.ui.editor.registerUi({
      */
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
 
-        hotkeys: {
-            'ctrl+b': {
-                'action': function() {
-                    this.ui.click();
-                }
-            }
-        },
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -30,7 +22,7 @@ $.ui.editor.registerUi({
             return this.editor.uiButton({
                 title: _('Bold'),
                 click: function() {
-                    selectionToggleWrapper('strong', { classes: options.classes || options.cssPrefix + 'bold' });
+                    editor.toggleWrapper('strong', { classes: options.classes || options.cssPrefix + 'bold' });
                 }
             });
         }
@@ -44,15 +36,6 @@ $.ui.editor.registerUi({
      * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element
      */
     textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
-
-        hotkeys: {
-            'ctrl+i': {
-                'action': function() {
-                    this.ui.click();
-                }
-            }
-        },
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -60,7 +43,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Italic'),
                 click: function() {
-                    selectionToggleWrapper('em', { classes: options.classes || options.cssPrefix + 'italic' });
+                    editor.toggleWrapper('em', { classes: options.classes || options.cssPrefix + 'italic' });
                 }
             });
         }
@@ -75,14 +58,6 @@ $.ui.editor.registerUi({
      */
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
 
-        hotkeys: {
-            'ctrl+u': {
-                'action': function() {
-                    this.ui.click();
-                }
-            }
-        },
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -90,7 +65,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Underline'),
                 click: function() {
-                    selectionToggleWrapper('u', { classes: options.classes || options.cssPrefix + 'underline' });
+                    editor.toggleWrapper('u', { classes: options.classes || options.cssPrefix + 'underline' });
                 }
             });
         }
@@ -105,14 +80,6 @@ $.ui.editor.registerUi({
      */
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
 
-        hotkeys: {
-            'ctrl+k': {
-                'action': function() {
-                    this.ui.click();
-                }
-            }
-        },
-
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -120,7 +87,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Strikethrough'),
                 click: function() {
-                    selectionToggleWrapper('del', { classes: options.classes || options.cssPrefix + 'strike' });
+                    editor.toggleWrapper('del', { classes: options.classes || options.cssPrefix + 'strike' });
                 }
             });
         }
@@ -142,7 +109,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Sub script'),
                 click: function() {
-                    selectionToggleWrapper('sub', { classes: options.classes || options.cssPrefix + 'sub' });
+                    editor.toggleWrapper('sub', { classes: options.classes || options.cssPrefix + 'sub' });
                 }
             });
         }
@@ -164,7 +131,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Super script'),
                 click: function() {
-                    selectionToggleWrapper('sup', { classes: options.classes || options.cssPrefix + 'super' });
+                    editor.toggleWrapper('sup', { classes: options.classes || options.cssPrefix + 'super' });
                 }
             });
         }
