@@ -20,7 +20,7 @@
             return editor.uiButton({
                 title: _('Insert Horizontal Rule'),
                 click: function() {
-                    editor.replaceSelection('<hr/>');
+                    selectionReplace('<hr/>');
                 }
             });
         }
