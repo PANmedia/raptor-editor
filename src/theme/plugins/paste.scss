@@ -23,20 +23,6 @@
 
     @include display-box();
     @include box-orient(vertical);
-
-    .ui-editor-paste-synchronize-text {
-        height: 25px;
-        line-height: 25px;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 100px;
-        input {
-            margin: 0;
-            padding: 0;
-            vertical-align: text-bottom;
-        }
-    }
 }
 
 .ui-editor-paste-panel-tabs > div {
@@ -46,9 +32,18 @@
     @include box-flex(1);
     @include box-orient(vertical);
     @include box-sizing(border-box);
+
+    border: 1px solid #C2C2C2;
+    border-top: none;
 }
 
 .ui-editor-paste-panel-tabs > div > textarea.ui-editor-paste-area {
     @include box-flex(1);
     @include display-box();
+}
+
+.ui-editor-paste-panel-tabs > div > textarea,
+.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
+    border: none;
+    padding: 2px;
 }
