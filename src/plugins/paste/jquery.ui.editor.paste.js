@@ -46,7 +46,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
             if (inProgress) return false;
             inProgress = true;
 
-            editor.saveSelection();
+            selectionSave();
 
             // Make a contentEditable div to capture pasted text
             if ($(selector).length) $(selector).remove();
@@ -59,7 +59,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                 markup = plugin.filterChars(markup);
                 markup = plugin.stripEmpty(markup);
                 markup = plugin.stripAttributes(markup);
-                markup = plugin.editor.stripTags(markup, plugin.options.allowedTags);
+                markup = stringStripTags(markup, plugin.options.allowedTags);
 
                 var vars = {
                     plain: $('<div/>').html($(selector).html()).text(),
@@ -69,9 +69,9 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
                 dialog = $(editor.getTemplate('paste.dialog', vars));
 
-                dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
-                    plugin.updateAreas(this, dialog);
-                });
+                // dialog.find('.ui-editor-paste-area').bind('keyup.' + editor.widgetname, function(){
+                //     plugin.updateAreas(this, dialog);
+                // });
 
                 $(dialog).dialog({
                     modal: true,
@@ -100,8 +100,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                                     html = plugin.filterAttributes(html);
                                     html = plugin.filterChars(html);
 
-                                    editor.restoreSelection();
-                                    editor.replaceSelection(html);
+                                    selectionRestore();
+                                    selectionReplace(html);
 
                                     inProgress = false;
                                     $(this).dialog('close');
@@ -110,7 +110,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
                             {
                                 text: _('Cancel'),
                                 click: function() {
-                                    editor.restoreSelection();
+                                    selectionRestore();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
@@ -278,14 +278,10 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
      * @param  {Element} dialog The paste dialog
      */
     updateAreas: function(target, dialog) {
-
-        var synchronize = dialog.find('.ui-editor-paste-synchronize-text input[type="checkbox"]');
         var content = $(target).is('textarea') ? $(target).val() : $(target).html();
-        if (synchronize.attr('checked')) {
-            if (!$(target).hasClass('ui-editor-paste-plain')) dialog.find('.ui-editor-paste-plain').val($('<div/>').html(content).text());
-            if (!$(target).hasClass('ui-editor-paste-rich')) dialog.find('.ui-editor-paste-rich').html(content);
-            if (!$(target).hasClass('ui-editor-paste-source')) dialog.find('.ui-editor-paste-source').html(content);
-            if (!$(target).hasClass('ui-editor-paste-markup')) dialog.find('.ui-editor-paste-markup').html(this.stripAttributes(content));
-        }
+        if (!$(target).hasClass('ui-editor-paste-plain')) dialog.find('.ui-editor-paste-plain').val($('<div/>').html(content).text());
+        if (!$(target).hasClass('ui-editor-paste-rich')) dialog.find('.ui-editor-paste-rich').html(content);
+        if (!$(target).hasClass('ui-editor-paste-source')) dialog.find('.ui-editor-paste-source').html(content);
+        if (!$(target).hasClass('ui-editor-paste-markup')) dialog.find('.ui-editor-paste-markup').html(this.stripAttributes(content));
     }
 });
