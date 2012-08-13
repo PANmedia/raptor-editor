@@ -1,7 +1,7 @@
 *.sass-cache*
-/build/
 js-doc
 tagging
-/src/plugins-extra
 plugins-extra
+/build/
+/src/plugins-extra
 /nbproject/
