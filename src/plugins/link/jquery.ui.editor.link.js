@@ -438,10 +438,11 @@
     show: function() {
         if (!this.visible) {
 
-            this.selectedElement = this.editor.getSelectedElements().first();
+            selectionSave();
+
+            this.selectedElement = selectionGetElements().first();
             var edit = this.selectedElement.is('a');
             var options = this.options;
-            var selection = rangy.saveSelection();
             var plugin = this;
 
             this.dialog = $(this.editor.getTemplate('link.dialog', options)).appendTo('body');
@@ -473,11 +474,8 @@
                     {
                         text: edit ? _('Update Link') : _('Insert Link'),
                         click: function() {
-                            rangy.restoreSelection(selection);
-
-                            if (!plugin.apply(edit)) {
-                                selection = rangy.saveSelection();
-                            } else {
+                            selectionRestore();
+                            if (plugin.apply(edit)) {
                                 $(this).dialog('close');
                             }
                         }
@@ -485,7 +483,6 @@
                     {
                         text: _('Cancel'),
                         click: function() {
-                            rangy.restoreSelection(selection);
                             $(this).dialog('close');
                         }
                     }
@@ -531,6 +528,7 @@
                     });
                 },
                 close: function() {
+                    selectionRestore();
                     plugin.visible = false;
                     dialog.find('.' + options.baseClass + '-content').hide();
                     $(this).dialog('destroy');
@@ -554,12 +552,14 @@
             return true;
         }
 
+        selectionRestore();
+
         // Prepare link to be shown in any confirm message
         var link = elementOuterHtml($('<a>' + (attributes.title ? attributes.title : attributes.href) + '</a>').
                 attr($.extend({}, attributes, { target: '_blank' })));
 
         if (!edit) {
-            this.editor.wrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
+            selectionWrapTagWithAttribute('a', $.extend(attributes, { id: this.editor.getUniqueId() }), linkType.classes);
             this.editor.showConfirm(_('Added link: {{link}}', { link: link }));
             this.selectedElement = $('#' + attributes.id).removeAttr('id');
         } else {
@@ -571,6 +571,9 @@
         }
 
         this.selectedElement.data(this.options.baseClass + '-href', attributes.href);
+
+        selectionSelectOuter(this.selectedElement);
+        selectionSave();
 
         return true;
     },
@@ -649,6 +652,15 @@ $.ui.editor.registerUi({
      */
     link: /** @lends $.editor.ui.link.prototype */ {
 
+        hotkeys: {
+            'ctrl+l': {
+                'action': function() {
+                    this.editor.getPlugin('link').show();
+                },
+                restoreSelection: false
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
@@ -664,7 +676,7 @@ $.ui.editor.registerUi({
         },
 
         change: function() {
-            if (!this.editor.getSelectedElements().length) this.ui.disable();
+            if (!selectionGetElements().length) this.ui.disable();
             else this.ui.enable();
         }
     },
@@ -677,6 +689,15 @@ $.ui.editor.registerUi({
      * @class Button allowing the user to unlink text
      */
     unlink: /** @lends $.editor.ui.unlink.prototype */ {
+
+        hotkeys: {
+            'ctrl+shift+l': {
+                'action': function() {
+                    this.ui.click();
+                },
+                restoreSelection: false
+            }
+        },
 
         /**
          * @see $.ui.editor.defaultUi#init
@@ -697,7 +718,7 @@ $.ui.editor.registerUi({
          * Enable UI component only when an anchor is selected
          */
         change: function() {
-            if (!this.editor.getSelectedElements().is('a')) this.ui.disable();
+            if (!selectionGetElements().is('a')) this.ui.disable();
             else this.ui.enable();
         }
     }
