@@ -360,6 +360,14 @@ $.ui.editor.registerUi({
      */
     dock: /** @lends $.editor.ui.dock.prototype */ {
 
+        hotkeys: {
+            'ctrl+d': {
+                'action': function() {
+                    this.ui.click();
+                }
+            }
+        },
+
         /**
          * @see $.ui.editor.defaultUi#init
          */
