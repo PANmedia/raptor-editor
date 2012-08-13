@@ -8,17 +8,15 @@ $opts .= 'm::';
 $options = getopt($opts);
 
 if (!isset($options['b'])) {
-    echo 'Base directory (-b /some/directory) is required'.PHP_EOL;
-    die();
+    die('Base directory (-b /some/directory) is required'.PHP_EOL);
 }
 if (!isset($options['l'])) {
-    echo 'Locale name (-l zh_CN) is required'.PHP_EOL;
-    die();
+    die('Locale name (-l zh_CN) is required'.PHP_EOL);
 }
 if (!isset($options['n'])) {
-    echo 'Locale native name (-n 简体中文) is required'.PHP_EOL;
-    die();
+    die('Locale native name (-n 简体中文) is required'.PHP_EOL);
 }
+
 $base_directory = rtrim($options['b'], '/').'/';
 $locale = $options['l'];
 $locale_name = $options['n'];
@@ -26,14 +24,15 @@ $replace = isset($options['r']) ? true : false;
 $merge = isset($options['m']) ? true : false;
 
 if ($replace && $merge) {
-    echo 'Choose to replace OR merge an existing file, not both';
-    die();
+    die('Choose to replace OR merge an existing file, not both');
 }
 
-$strings = array();
-
-$xgettext_extract = function($directory, $strings, $process_all = false) use (&$xgettext_extract) {
+/* FUNCTIONS */
+function xgettext_extract($directory, $strings, $process_all = false) {
     $directory_handle = opendir($directory);
+    if (preg_match('/plugins\-extra/', $directory)) {
+        return $strings;
+    }
     while (false !== ($file = readdir($directory_handle))) {
         if ($file != "." && $file != "..") {
             if (is_file($directory.$file)) {
@@ -44,7 +43,7 @@ $xgettext_extract = function($directory, $strings, $process_all = false) use (&$
                         $result = null;
                         if (strpos($line, '<strict>') !== false || strpos($line, '<debug>') !== false) $skipping = true;
                         if (strpos($line, '</strict>') !== false || strpos($line, '</debug>') !== false) $skipping = false;
-                        if(!$skipping && preg_match_all("/_\('(.*)'[,)]/iU", $line, $result)) {
+                        if(!$skipping && preg_match_all("/_\(['\"]{1}(.*)['\"]{1}[,)]/iU", $line, $result)) {
                             foreach($result[1] as $string) {
                                 $strings[$string] = $string;
                             }
@@ -53,27 +52,31 @@ $xgettext_extract = function($directory, $strings, $process_all = false) use (&$
                 }
             }
             else if(is_dir($directory.$file) && $file != '.git') {
-                $strings = $xgettext_extract($directory.$file.'/', $strings, $file == 'templates');
+                $strings = xgettext_extract($directory.$file.'/', $strings, $file == 'templates');
             }
         }
     }
     closedir($directory_handle);
     return $strings;
-};
-
-$strings = $xgettext_extract($base_directory, $strings);
-
-$locale_file = dirname(__FILE__).'/locales/'.$locale.'.js';
-
-if ((!$replace && !$merge) && file_exists($locale_file)) {
-    echo $locale_file.' exists - to replace it use -r, to merge use -m'.PHP_EOL;
-    die();
 }
 
-$write = function($locale_file, $strings) use ($locale, $locale_name) {
-    $output = array();
+/**
+ * Write locale data to file
+ * @param  {string}  $locale_file Full path to file data should be written to.
+ * @param  {string[]}  $strings Array of strings to be written.
+ * @param  {string}  $locale Name of the locale, e.g. 'en'
+ * @param  {string} $locale_name Native locale name, e.g. 'English'
+ * @param  {string|null} $headerBlock Comment block to include at the top of the file.
+ */
+function writeLocale($locale_file, $strings, $locale, $locale_name, $headerBlock = false) {
+    $headerBlock = $headerBlock ?: '/**
+ * @fileOverview {language} strings file.
+ * @author {name}, {email}, {link}
+ */
+';
+    $output = [];
     $tab = '    ';
-    $head = "registerLocale('$locale', '$locale_name', {\n";
+    $head = "{$headerBlock}registerLocale('$locale', '$locale_name', {\n";
     $tail = "\n});\n";
     ksort($strings);
 
@@ -88,15 +91,32 @@ $write = function($locale_file, $strings) use ($locale, $locale_name) {
     fwrite($locale_handle, implode(",\n", $output));
     fwrite($locale_handle, $tail);
     fclose($locale_handle);
-};
+}
 
+/* BEGIN EXTRACTION */
+$strings = xgettext_extract($base_directory, []);
+
+$locale_file = dirname(__FILE__).'/locales/'.$locale.'.js';
+
+if ((!$replace && !$merge) && file_exists($locale_file)) {
+    die($locale_file.' exists - to replace it use -r, to merge use -m'.PHP_EOL);
+}
+
+/* WRITE TO FILE */
 if ($replace || (!$replace && !$merge)) {
-    $write($locale_file, $strings);
+    writeLocale($locale_file, $strings, $locale, $localeName);
 } else {
+    $headerBlock = '';
+    $headerCaptured = false;
     $lines = file($locale_file);
     foreach($lines as $line) {
+        if (!$headerCaptured && preg_match('@^(\s\*|/)@', $line)) {
+            $headerBlock .= $line;
+            continue;
+        }
         $result= null;
         if(preg_match('/^\s*"(.+)":\s?"(.+)",?$/iU', $line, $result)) {
+            $headerCaptured = true;
             $key = $result[1];
             $value = $result[2];
             if (isset($strings[$key]) && $strings[$key] != $value) {
@@ -104,5 +124,5 @@ if ($replace || (!$replace && !$merge)) {
             }
         }
     }
-    $write($locale_file, $strings);
+    writeLocale($locale_file, $strings, $locale, $locale_name, $headerBlock);
 }
