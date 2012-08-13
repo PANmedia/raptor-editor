@@ -1,8 +1,7 @@
 /**
- * @fileOverview
+ * @fileOverview Element manipulation helper functions.
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
- * @version 0.1
  */
 
 /**
@@ -76,4 +75,41 @@ function elementOuterHtml(element) {
  */
 function elementOuterText(element) {
     return element.clone().wrap('<div/>').parent().text();
+}
+
+/**
+ * Determine whether element is block.
+ * @param  {Element} element The element to test.
+ * @return {Boolean} True if the element is a block element
+ */
+function elementIsBlock(element) {
+    return elementDefaultDisplay(element.tagName) === 'block';
+}
+
+/**
+ * Determine whether element is inline or block.
+ * @see http://stackoverflow.com/a/2881008/187954
+ * @param  {string} tag Lower case tag name, e.g. 'a'.
+ * @return {string} Default display style for tag.
+ */
+function elementDefaultDisplay(tag) {
+    var cStyle,
+        t = document.createElement(tag),
+        gcs = "getComputedStyle" in window;
+
+    document.body.appendChild(t);
+    cStyle = (gcs ? window.getComputedStyle(t, "") : t.currentStyle).display;
+    document.body.removeChild(t);
+
+    return cStyle;
+}
+
+/**
+ * Check that the given element is one of the the given tags
+ * @param  {jQuery|Element} element The element to be tested.
+ * @param  {Array}  validTagNames An array of valid tag names.
+ * @return {Boolean} True if the given element is one of the give valid tags.
+ */
+function elementIsValid(element, validTags) {
+    return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
 }
