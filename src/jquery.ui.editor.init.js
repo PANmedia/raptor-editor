@@ -92,7 +92,7 @@ if (debugLevel >= MAX) {
     info('FIXME: remove editor instance from instances array on destroy');
     info('FIXME: updateTagTree click bindings');
     info('FIXME: updateTagTree should filter out duplicates');
-    info('FIXME: Check for duplicate elements in getSelectedElements');
+    info('FIXME: Check for duplicate elements in selectionGetElements');
 }
 // </debug>
 
@@ -108,7 +108,7 @@ if (debugLevel >= MAX) {
 function handleError(errorMessage) {
     if (console && console.error) {
         var args = Array.prototype.slice.call(arguments);
-        
+
         // <ie>
         if (!console.error.apply) {
             for (var i = 0, l = args.length;i < l; i++) {
