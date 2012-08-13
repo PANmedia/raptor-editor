@@ -20,6 +20,7 @@
         <phingcall target="combine" />
         <phingcall target="compile" />
         <phingcall target="merge" />
+        <phingcall target="merge-min" />
         <phingcall target="package" />
         <phingcall target="gz" />
     </target>
@@ -360,9 +361,21 @@
                 <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js"
                       dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
+                <!-- Remove preserved comments -->
+                <reflexive>
+                    <fileset dir="${dir.build}">
+                        <include pattern="concat.min.js" />
+                    </fileset>
+                    <filterchain>
+                        <!-- Escape quotes -->
+                        <replaceregexp>
+                            <regexp pattern="\/\*.*?\*\/" replace="" modifiers="s" />
+                        </replaceregexp>
+                    </filterchain>
+                </reflexive>
             </then>
             <else>
-                <move file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
+                <copy file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
             </else>
         </if>
         <if>
@@ -384,28 +397,71 @@
     <!-- =================================================================== -->
     <target name="merge">
         <!-- Append VERSION file in a comment -->
-        <echo file="${dir.build}/merge.js" append="true">/*! VERSION: ${version} </echo>
-        <!-- Append a new line -->
-        <echo file="${dir.build}/merge.js" append="true">
-        </echo>
-        <!-- Append LICENCE file in the same comment -->
+        <echo file="${dir.build}/merge.js" append="true">/*! ${line.separator}VERSION: ${version} </echo>
+        <echo file="${dir.build}/merge.js" append="true">${line.separator}</echo>
+        <!-- Append LICENSE file in the same comment -->
+        <echo>${project.basedir}/LICENSE</echo>
         <append destFile="${dir.build}/merge.js">
-            <fileset dir=".">
-                <include name="${dir.build}/LICENCE" />
+            <fileset dir="${project.basedir}">
+                <include name="LICENSE" />
             </fileset>
         </append>
-        <echo file="${dir.build}/merge.js" append="true">*/</echo>
+        <echo file="${dir.build}/merge.js" append="true">*/${line.separator}</echo>
         <!-- Close the comment -->
 
         <!-- Append the merged JS -->
         <append destFile="${dir.build}/merge.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.js" />
+            </fileset>
+        </append>
+
+        <!-- Append the style inserter -->
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="concat.css" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\n" replace="\n\${line.separator}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append destFile="${dir.build}/merge.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.css" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+    </target>
+
+    <target name="merge-min">
+        <!-- Append VERSION file in a comment -->
+        <echo file="${dir.build}/merge.min.js" append="true">/*! ${line.separator}VERSION: ${version} </echo>
+        <echo file="${dir.build}/merge.min.js" append="true">${line.separator}</echo>
+        <!-- Append LICENSE file in the same comment -->
+        <echo>${project.basedir}/LICENSE</echo>
+        <append destFile="${dir.build}/merge.min.js">
+            <fileset dir="${project.basedir}">
+                <include name="LICENSE" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.min.js" append="true">*/${line.separator}</echo>
+        <!-- Close the comment -->
+
+        <!-- Append the merged JS -->
+        <append destFile="${dir.build}/merge.min.js">
             <fileset dir=".">
                 <include name="${dir.build}/concat.min.js" />
             </fileset>
         </append>
 
         <!-- Append the style inserter -->
-        <echo file="${dir.build}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
 
         <reflexive>
             <fileset dir="${dir.build}">
@@ -419,12 +475,12 @@
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <append destFile="${dir.build}/merge.js">
+        <append destFile="${dir.build}/merge.min.js">
             <fileset dir=".">
                 <include name="${dir.build}/concat.min.css" />
             </fileset>
         </append>
-        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
     </target>
 
     <!-- =================================================================== -->
@@ -432,12 +488,13 @@
     <!-- =================================================================== -->
     <target name="package">
         <mkdir dir="${dir.package}" />
-        <copy file="${dir.build}/merge.js" tofile="${dir.package}/${filename}" />
+        <copy file="${dir.build}/merge.js" tofile="${dir.package}/${filename}.js" />
+        <copy file="${dir.build}/merge.min.js" tofile="${dir.package}/${filename}.min.js" />
         <echo>${dir.package}/${filename}</echo>
     </target>
 
     <target name="gz">
-        <exec command="cat ${dir.package}/${filename} | gzip -9 -c > ${dir.package}/${filename}.gz" />
+        <exec command="cat ${dir.package}/${filename}.min.js | gzip -9 -c > ${dir.package}/${filename}.min.js.gz" />
     </target>
 
     <!-- =================================================================== -->
