@@ -57,6 +57,26 @@
     </target>
 
     <!-- =================================================================== -->
+    <!-- Translation build targets                                           -->
+    <!-- =================================================================== -->
+
+    <target name="translationcheck">
+        <translationcheck>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationcheck>
+    </target>
+
+    <target name="translationupdate">
+        <translationupdate>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationupdate>
+    </target>
+
+    <!-- =================================================================== -->
     <!-- Compress PNG images                                                 -->
     <!-- =================================================================== -->
     <target name="pngout">
@@ -103,6 +123,7 @@
                 <exclude name="**/*.php" />
                 <exclude name="dependencies/**" />
                 <exclude name="plugins/**" />
+                <exclude name="plugins-extra/**" />
                 <exclude name="theme/**" />
                 <exclude name="jquery.ui.editor.loader.js" />
             </fileset>
@@ -114,16 +135,12 @@
         </copy>
 
         <!-- Copy specified plugins -->
-        <foreach list="${plugins}" param="plugin" target="clone-plugin" />
+        <phingcall target="clone-plugins" />
     </target>
 
-    <target name="clone-plugin">
-        <echo>${plugin}</echo>
-        <copy todir="${dir.build}" >
-            <fileset dir="src">
-                <include name="plugins/${plugin}/**" />
-            </fileset>
-        </copy>
+    <target name="clone-plugins">
+        <plugins file="${plugins.extra}" builddir="${dir.build}"></plugins>
+        <plugins file="${plugins}" builddir="${dir.build}"></plugins>
     </target>
 
     <target name="pngout-exec">
@@ -213,6 +230,12 @@
         <if><istrue value="${jquery-ui}" /><then>
             <copy file="${dir.deps}/jquery-ui.js"
                   tofile="${dir.build}/08-jquery-ui.js" />
+        </then></if>
+
+        <!-- jQuery Hotkeys -->
+        <if><istrue value="${jquery-hotkeys}" /><then>
+            <copy file="${dir.deps}/jquery-hotkeys.js"
+                  tofile="${dir.build}/09-jquery-hotkeys.js" />
         </then></if>
 
         <!-- Raptorize -->
@@ -487,6 +510,18 @@
 
     <adhoc-task name="template">
         require_once '${project.basedir}/classes/TemplateTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationcheck">
+        require_once '${project.basedir}/classes/TranslationCheckTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationupdate">
+        require_once '${project.basedir}/classes/TranslationUpdateTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="plugins">
+        require_once '${project.basedir}/classes/PluginsTask.php';
     </adhoc-task>
 
 </project>
