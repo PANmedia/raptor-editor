@@ -361,18 +361,6 @@
                 <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js"
                       dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
-                <!-- Remove preserved comments -->
-                <reflexive>
-                    <fileset dir="${dir.build}">
-                        <include pattern="concat.min.js" />
-                    </fileset>
-                    <filterchain>
-                        <!-- Escape quotes -->
-                        <replaceregexp>
-                            <regexp pattern="\/\*.*?\*\/" replace="" modifiers="s" />
-                        </replaceregexp>
-                    </filterchain>
-                </reflexive>
             </then>
             <else>
                 <copy file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
