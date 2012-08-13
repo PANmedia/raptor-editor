@@ -32,9 +32,18 @@
     @include box-flex(1);
     @include box-orient(vertical);
     @include box-sizing(border-box);
+
+    border: 1px solid #C2C2C2;
+    border-top: none;
 }
 
 .ui-editor-paste-panel-tabs > div > textarea.ui-editor-paste-area {
     @include box-flex(1);
     @include display-box();
+}
+
+.ui-editor-paste-panel-tabs > div > textarea,
+.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
+    border: none;
+    padding: 2px;
 }
