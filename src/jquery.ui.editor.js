@@ -1498,6 +1498,39 @@ $.extend($.ui.editor,
     /** @lends $.ui.editor */
     {
 
+    // <expose>
+    elementRemoveComments: elementRemoveComments,
+    elementRemoveAttributes: elementRemoveAttributes,
+    elementBringToTop: elementBringToTop,
+    elementOuterHtml: elementOuterHtml,
+    elementOuterText: elementOuterText,
+    elementIsBlock: elementIsBlock,
+    elementDefaultDisplay: elementDefaultDisplay,
+    elementIsValid: elementIsValid,
+    fragmentToHtml: fragmentToHtml,
+    fragmentInsertBefore: fragmentInsertBefore,
+    rangeExpandToParent: rangeExpandToParent,
+    rangeGetCommonAncestor: rangeGetCommonAncestor,
+    rangeIsEmpty: rangeIsEmpty,
+    selectionSave: selectionSave,
+    selectionRestore: selectionRestore,
+    selectionDestroy: selectionDestroy,
+    selectionEachRange: selectionEachRange,
+    selectionReplace: selectionReplace,
+    selectionSelectInner: selectionSelectInner,
+    selectionSelectOuter: selectionSelectOuter,
+    selectionSelectEdge: selectionSelectEdge,
+    selectionSelectEnd: selectionSelectEnd,
+    selectionSelectStart: selectionSelectStart,
+    selectionGetHtml: selectionGetHtml,
+    selectionGetElements: selectionGetElements,
+    selectionToggleWrapper: selectionToggleWrapper,
+    selectionExists: selectionExists,
+    selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
+    selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
+    stringStripTags: stringStripTags,
+    // </expose>
+
     /**
      * Default options for the jQuery UI Editor
      * @namespace Default settings for the jQuery UI Editor
