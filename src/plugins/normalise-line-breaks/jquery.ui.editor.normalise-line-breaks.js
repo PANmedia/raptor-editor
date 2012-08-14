@@ -71,7 +71,7 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
                     } else {
                         selectionSelectStart(breakElement.next());
                         var previousSibling = breakElement.prev();
-                        if (previousSibling && !$.trim(previousSibling.html()) == '' && elementOuterHtml(previousSibling) != this.options.enter) {
+                        if (previousSibling && $.trim(previousSibling.html()) !== '' && elementOuterHtml(previousSibling) !== this.options.enter) {
                             breakElement.remove();
                         }
                     }
