@@ -13,7 +13,7 @@
 function elementRemoveComments(parent) {
     parent.contents().each(function() {
         if (this.nodeType == 8) {
-            $(this).remove()
+            $(this).remove();
         }
     });
     parent.children().each(function() {
