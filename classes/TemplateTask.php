@@ -11,7 +11,9 @@ class TemplateTask extends Task {
                 $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
                 foreach ($files as $file) {
                     $preg = array();
-                    preg_match('/build[\/\\\\]{1}plugins[\/\\\\]{1}(.*?)[\/\\\\]{1}templates[\/\\\\]{1}(.*?)\\.html/i', $file, $preg);
+                    //build[\/\\\\]{1}
+                    preg_match('/plugins[\/\\\\]{1}(.*?)[\/\\\\]{1}templates[\/\\\\]{1}(.*?)\\.html/i', $file, $preg);
+
                     if (isset($preg[1]) && isset($preg[2])) {
                         $name = $preg[1] . '.' . $preg[2];
                     } else {
@@ -25,6 +27,7 @@ class TemplateTask extends Task {
                 $this->log($be->getMessage(), Project::MSG_WARN);
             }
         }
+
         $this->project->setProperty($this->name, implode(',', $result));
     }
 
@@ -40,5 +43,5 @@ class TemplateTask extends Task {
     public function getName() {
         return $this->name;
     }
-    
+
 }
