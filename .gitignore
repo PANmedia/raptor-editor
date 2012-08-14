@@ -2,7 +2,7 @@
 js-doc
 tagging
 plugins-extra
-/build/
-/src/plugins-extra
-/nbproject/
 translation-status.html
+/build/
+/nbproject/
+/src/plugins-extra/
