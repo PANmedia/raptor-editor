@@ -32,7 +32,8 @@
         <echo>${dir.build}</echo>
         <echo>${strip.blocks}</echo>
         <echo>${theme}</echo>
-        <echo>${plugins}</echo>
+        <echo>${plugins.manifest}</echo>
+        <echo>${plugins.extra}</echo>
         <echo>${jquery-no-conflict}</echo>
     </target>
 
@@ -140,7 +141,7 @@
 
     <target name="clone-plugins">
         <plugins file="${plugins.extra}" builddir="${dir.build}"></plugins>
-        <plugins file="${plugins}" builddir="${dir.build}"></plugins>
+        <plugins file="${plugins.manifest}" builddir="${dir.build}"></plugins>
     </target>
 
     <target name="pngout-exec">
