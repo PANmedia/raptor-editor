@@ -18,7 +18,7 @@ $.ui.editor.registerUi('colorPickerBasic', {
             select: $(editor.getTemplate('color-picker-basic.menu')),
             change: function(value) {
                 if (value === 'automatic') {
-                    editor.getSelectedElements().parents('.' + ui.options.cssPrefix + 'color').andSelf().each(function() {
+                    selectionGetElements().parents('.' + ui.options.cssPrefix + 'color').andSelf().each(function() {
                         var element = $(this),
                             classes = $(this).attr('class').match(/(cms-(.*?))( |$)/ig);
                         $.each(classes, function(i, color) {
@@ -27,7 +27,7 @@ $.ui.editor.registerUi('colorPickerBasic', {
                         });
                     });
                 } else {
-                    editor.toggleWrapper('span', {
+                    selectionToggleWrapper('span', {
                         classes: ui.options.classes || ui.options.cssPrefix + 'color ' + ui.options.cssPrefix + value
                     });
                 }
@@ -37,11 +37,11 @@ $.ui.editor.registerUi('colorPickerBasic', {
 
     change: function() {
         this.ui.val('automatic');
-        var tag = this.editor.getSelectedElements()[0];
+        var tag = selectionGetElements()[0];
         if (!tag) {
             return;
         }
-        tag = $(tag).closest('.' + this.options.cssPrefix + 'color')
+        tag = $(tag).closest('.' + this.options.cssPrefix + 'color');
         if (!tag) {
             return;
         }
