@@ -89,7 +89,7 @@ class TranslationCheckTask extends Task {
                     }
 
                     $translated = 0;
-                    $result[$name]['untranslated'] = [];
+                    $result[$name]['untranslated'] = array();
 
                     foreach ($filePairs as $key => $value) {
                         if ($key !== $value)/* || in_array($key, $this->untranslatable))*/ $translated++;

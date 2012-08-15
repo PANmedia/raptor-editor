@@ -45,7 +45,7 @@ class TranslationUpdateTask extends Task {
                 $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
                 foreach ($files as $file) {
                     $content = file_get_contents($file);
-                    $matches = [];
+                    $matches = array();
                     if (!preg_match("/registerLocale\('([a-zA-Z_-]+)',\s'([^']+)', \{/", $content, $matches)) {
                         throw new Exception("Failed to extract locale name from {$file}");
                     }
