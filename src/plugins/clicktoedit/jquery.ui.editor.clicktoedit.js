@@ -9,6 +9,9 @@
   * @augments $.ui.editor.defaultPlugin
   * @class Shows a message at the center of an editable block,
   * informing the user that they may click to edit the block contents
+  * The advantage of using this plugin over the click button to edit plugin is
+  * that this plugin will preserve the user's selection - i.e. the cursor will
+  * appear within the editable block at the position the user clicked.
   */
 $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit.prototype */ {
 
