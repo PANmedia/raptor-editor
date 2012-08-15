@@ -957,7 +957,7 @@ $.widget('ui.editor',
     },
 
     bindHotkeys: function() {
-        for (keyCombination in this.hotkeys) {
+        for (var keyCombination in this.hotkeys) {
             var editor = this,
                 force = this.hotkeys[keyCombination].force || false;
 
