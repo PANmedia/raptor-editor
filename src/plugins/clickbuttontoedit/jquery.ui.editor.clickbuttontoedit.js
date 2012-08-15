@@ -10,10 +10,11 @@
   * @class Shows a button at the center of an editable block,
   * informing the user that they may click said button to edit the block contents
   */
-$.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickButtonToEdit.prototype */ {
+$.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.clickButtonToEdit.prototype */ {
 
     hovering: false,
 
+    /** @type {Object} Plugin option defaults. */
     options: {
         button: {
             text: true,
@@ -27,8 +28,9 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickButton
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
+
         var plugin = this;
-        var editButton = $(editor.getTemplate('clicktoedit.edit-button', options)).appendTo('body');
+        var editButton = false;
 
         /** @type {Object} Plugin option defaults. */
         options = $.extend(true, {}, {
@@ -75,10 +77,11 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickButton
          * Hide the click to edit button
          */
         this.hide = function(event) {
-            var hoveringButton = (event &&
-                                (event.relatedTarget === editButton.get(0) ||
-                                    editButton.get(0) === $(event.relatedTarget).parent().get(0)));
-            if(hoveringButton) return;
+            if((event &&
+                    (event.relatedTarget === editButton.get(0) ||
+                     editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
+                return;
+            }
             editor.getElement().removeClass(options.baseClass + '-highlight');
             editor.getElement().removeClass(options.baseClass + '-hover');
             editButton.removeClass(options.baseClass + '-visible');
@@ -93,14 +96,22 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickButton
             if (!editor.isVisible()) editor.showToolbar(plugin.selection());
         };
 
-        editButton.position(options.position);
+        editor.bind('ready, hide, cancel', function() {
 
-        editButton.bind('click.' + editor.widgetName, plugin.edit);
+            editButton = $(editor.getTemplate('clickbuttontoedit.edit-button', options))
+                .appendTo('body')
+                .removeClass(options.baseClass + '-visible');
 
-        editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
-        editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
-        editor.bind('destroy', function() {
-            editButton.remove();
+            editButton.position(options.position);
+
+            editButton.bind('click.' + editor.widgetName, plugin.edit);
+
+            editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
+            editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
+        });
+
+        editor.bind('show', function() {
+            editButton.button('destroy').remove();
             editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().unbind('mouseleave.' + editor.widgetName, plugin.hide);
         });
