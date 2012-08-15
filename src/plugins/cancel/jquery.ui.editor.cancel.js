@@ -13,9 +13,9 @@ $.ui.editor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
 
         hotkeys: {
-            'ctrl+k': {
+            'esc': {
                 'action': function() {
-                    this.ui.click();
+                    this.confirm();
                 }
             }
         },
@@ -102,6 +102,7 @@ $.ui.editor.registerPlugin({
                 editor.resetHtml();
                 editor.hideToolbar();
                 editor.disableEditing();
+                selectionDestroy();
             });
         }
    }
