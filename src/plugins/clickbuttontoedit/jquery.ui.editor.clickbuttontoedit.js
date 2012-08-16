@@ -31,6 +31,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
         var plugin = this;
         var editButton = false;
+        var timeoutId = false;
 
         /** @type {Object} Plugin option defaults. */
         options = $.extend(true, {}, {
@@ -77,9 +78,13 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
          * Hide the click to edit button
          */
         this.hide = function(event) {
+            window.clearTimeout(plugin.timeoutId);
             if((event &&
                     (event.relatedTarget === editButton.get(0) ||
                      editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
+                // Set timeout for cases where the user mousesout of the element
+                // too quickly to trigger event properly
+                plugin.timeoutId = window.setTimeout(plugin.hide, 350);
                 return;
             }
             editor.getElement().removeClass(options.baseClass + '-highlight');
