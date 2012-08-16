@@ -69,11 +69,16 @@
             editor.getElement()
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
-                    if ($.trim($(this).html()) === '') {
-                        return true;
+                    // Do not remove ignored elements. Inserter is responsible for these.
+                    if ($(this).hasClass(plugin.options.supplementaryClass)) {
+                        return false;
                     }
                     // Do not clear selection markers if the editor has it in use
                     if ($(this).hasClass('rangySelectionBoundary') && selectionSaved() === false) {
+                        return true;
+                    }
+                    // Finally, remove empty elements
+                    if ($.trim($(this).html()) === '') {
                         return true;
                     }
                 })
