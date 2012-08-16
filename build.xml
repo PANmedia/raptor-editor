@@ -32,8 +32,8 @@
         <echo>${dir.build}</echo>
         <echo>${strip.blocks}</echo>
         <echo>${theme}</echo>
-        <echo>${plugins.manifest}</echo>
-        <echo>${plugins.extra}</echo>
+        <echo>${addons.manifest}</echo>
+        <echo>${addons.extra}</echo>
         <echo>${jquery-no-conflict}</echo>
     </target>
 
@@ -135,13 +135,13 @@
             </fileset>
         </copy>
 
-        <!-- Copy specified plugins -->
-        <phingcall target="clone-plugins" />
+        <!-- Copy specified addons -->
+        <phingcall target="clone-addons" />
     </target>
 
-    <target name="clone-plugins">
-        <plugins file="${plugins.extra}" builddir="${dir.build}"></plugins>
-        <plugins file="${plugins.manifest}" builddir="${dir.build}"></plugins>
+    <target name="clone-addons">
+        <addons file="${addons.extra}" builddir="${dir.build}"></addons>
+        <addons file="${addons.manifest}" builddir="${dir.build}"></addons>
     </target>
 
     <target name="pngout-exec">
@@ -509,8 +509,8 @@
         require_once '${project.basedir}/classes/TranslationUpdateTask.php';
     </adhoc-task>
 
-    <adhoc-task name="plugins">
-        require_once '${project.basedir}/classes/PluginsTask.php';
+    <adhoc-task name="addons">
+        require_once '${project.basedir}/classes/AddonsTask.php';
     </adhoc-task>
 
 </project>

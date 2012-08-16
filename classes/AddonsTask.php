@@ -31,15 +31,15 @@ class PluginsTask extends Task {
         }
 
         foreach (file($this->file, FILE_SKIP_EMPTY_LINES) as $pluginEntry) {
-            $pluginDetails = explode('=', $pluginEntry);
-            $pluginDetails = array_filter($pluginDetails);
-            if (count($pluginDetails) !== 2) {
-                throw new BuildException("Error processing plugin manifest: {$this->file}, one or more entries is malformed.");
+            $addonDetails = explode('=', $pluginEntry);
+            $addonDetails = array_filter($addonDetails);
+            if (count($addonDetails) !== 2) {
+                throw new BuildException("Error processing addon manifest: {$this->file}, one or more entries is malformed.");
                 return;
             }
-            // Copy the plugin
-            $pluginName = $pluginDetails[0];
-            $pluginDir = (new PhingFile(trim($pluginDetails[1])))->getAbsolutePath();
+            // Copy the addon
+            $pluginName = $addonDetails[0];
+            $pluginDir = (new PhingFile(trim($addonDetails[1])))->getAbsolutePath();
             $this->copyDirectory($pluginDir, "{$buildPluginsDir}/{$pluginName}");
         }
 

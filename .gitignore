@@ -1,7 +1,8 @@
 *.sass-cache*
 js-doc
 tagging
-plugins-extra
+plugins-extra.manifest
+addons-extra.manifest
 translation-status.html
 /build/
 /nbproject/
