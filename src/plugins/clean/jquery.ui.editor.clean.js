@@ -11,48 +11,30 @@
   */
   $.ui.editor.registerPlugin('clean', /** @lends $.editor.plugin.clean.prototype */ {
 
-    /**
-     * Attributes to be stripped, empty tags to be removed & attributes to be removed if empty
-     * @type {Object}
-     */
+    /** @type {Object} Attributes to be stripped, empty tags to be removed & attributes to be removed if empty */
     options: {
 
-        /**
-         * Attributes to be completely removed
-         * @type {Array}
-         */
+        /** @type {Array} Attributes to be completely removed */
         stripAttrs: ['_moz_dirty'],
 
-        /**
-         * Attribute contents to be stripped
-         * @type {Object}
-         */
+        /** @type {Object} Attribute contents to be stripped */
         stripAttrContent: {
             type: '_moz'
         },
 
-        /**
-         * Tags to be removed if empty
-         * @type {String[]}
-         */
+        /** @type {String[]} Tags to be removed if empty */
         stripEmptyTags: [
             'span', 'h1', 'h2', 'h3', 'h4', 'h5',  'h6',
             'p', 'b', 'i', 'u', 'strong', 'em',
             'big', 'small', 'div'
         ],
 
-        /**
-         * Attributes to be removed if empty
-         * @type {String[]}
-         */
+        /** @type {String[]} Attributes to be removed if empty */
         stripEmptyAttrs: [
             'class', 'id', 'style'
         ],
 
-        /**
-         * Tag attributes to remove the domain part of a URL from.
-         * @type {Object[]}
-         */
+        /** @type {Object[]} Tag attributes to remove the domain part of a URL from. */
         stripDomains: [
             {selector: 'a', attributes: ['href']},
             {selector: 'img', attributes: ['src']}
