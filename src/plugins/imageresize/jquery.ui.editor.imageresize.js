@@ -13,9 +13,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      */
     options: /** @lends $.editor.plugin.imageResize.options */  {
         allowOversizeImages: false,
-        manuallyResizingClass: '',
-        resizeButtonClass: '',
-        resizingClass: ''
+        manuallyResizingClass: null,
+        resizeButtonClass: null,
+        resizingClass: null
     },
 
     /**
@@ -23,7 +23,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      */
     init: function(editor, options) {
 
-        this.options = $.extend(this.options, {
+        this.options = $.extend({}, this.options, {
             manuallyResizingClass: this.options.baseClass + '-manually-resize',
             resizeButtonClass: this.options.baseClass + '-resize-button',
             resizingClass: this.options.baseClass + '-in-progress'
