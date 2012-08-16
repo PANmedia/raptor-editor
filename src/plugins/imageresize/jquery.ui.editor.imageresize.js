@@ -188,7 +188,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      * @param  {map} options options to be passed to editor.showInfo
      */
     showOversizeWarning: function(imageLink, options) {
-        this.editor.showInfo(_('The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.', {
+        this.editor.showInfo(_("The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.", {
             image: imageLink
         }), options);
     },
@@ -208,10 +208,11 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     /**
      * Display a dialog containing width / height text inputs allowing the user to manually resize the selected image.
      */
-    manuallyResizeImage: function() {
+    manuallyResizeImage: function(event) {
         this.removeToolsButtons();
         var image = this.editor.getElement().find('img.' + this.options.manuallyResizingClass);
-        var width = $(image).innerWidth(), height = $(image).innerHeight(),
+        var originalWidth = $(image).innerWidth(),
+            originalHeight = $(image).innerHeight(),
             widthInputSelector = '#' + this.options.baseClass + '-width',
             heightInputSelector = '#' + this.options.baseClass + '-height',
             plugin = this;
@@ -222,8 +223,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         };
 
         var dialog = $(this.editor.getTemplate('imageresize.manually-resize-image', {
-            width: width,
-            height: height,
+            width: originalWidth,
+            height: originalHeight,
             baseClass: this.options.baseClass
         }));
 
@@ -236,19 +237,19 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 {
                     text: _('Resize Image'),
                     click: function() {
-                        updateImageSize();
+                        updateImageSize($(this).find(widthInputSelector).val());
                         $(this).dialog('close');
                     }
                 },
                 {
                     text: _('Cancel'),
                     click: function() {
+                        updateImageSize(originalWidth);
                         $(this).dialog('close');
                     }
                 }
             ],
             close: function() {
-                updateImageSize(width);
                 plugin.editor.checkChange();
                 $(dialog).remove();
             },
@@ -256,15 +257,18 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
                 var widthInput = $(this).find(widthInputSelector);
                 var heightInput = $(this).find(heightInputSelector);
                 widthInput.keyup(function() {
-                    heightInput.val(Math.round(Math.abs((height / width) * $(this).val())));
+                    heightInput.val(Math.round(Math.abs((originalHeight / originalWidth) * $(this).val())));
                     updateImageSize();
                 });
                 heightInput.keyup(function() {
-                    widthInput.val(Math.round(Math.abs((width / height) * $(this).val())));
+                    widthInput.val(Math.round(Math.abs((originalWidth / originalHeight) * $(this).val())));
                     updateImageSize();
                 });
             }
         });
+
+        event.preventDefault();
+        return false;
     },
 
     /**
@@ -273,9 +277,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
      */
     displayToolsButtonRelativeToImage: function(image) {
 
-        var resizeButton = $('<button/>')
+        var resizeButton = $('<button>' + _('Click to edit the image') + '</button>')
             .appendTo('body')
-            .addClass(this.options.resizeButtonClass)
+            .addClass(this.options.resizeButtonClass + ' ' + this.options.supplementaryClass)
             .button({
                 text: false,
                 icons: {
@@ -286,9 +290,10 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
         resizeButton.css({
                 position: 'absolute',
                 left: ($(image).position().left + $(image).innerWidth() - $(resizeButton).outerWidth() - 10) + 'px',
-                marginTop: '10px'
+                top: ($(image).position().top + 10) + 'px'
             })
-            .click($.proxy(this.manuallyResizeImage, this))
+            .attr('contenteditable', false)
+            .click($.proxy(this.manuallyResizeImage, this));
 
         $(image).before(resizeButton);
     },
@@ -299,7 +304,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     removeToolsButtons: function() {
         this.editor.getElement().find('.' + this.options.resizeButtonClass).each(function() {
             $(this).remove();
-        })
+        });
     },
 
     /**
