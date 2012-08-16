@@ -78,13 +78,9 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
          * Hide the click to edit button
          */
         this.hide = function(event) {
-            window.clearTimeout(plugin.timeoutId);
             if((event &&
                     (event.relatedTarget === editButton.get(0) ||
                      editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
-                // Set timeout for cases where the user mousesout of the element
-                // too quickly to trigger event properly
-                plugin.timeoutId = window.setTimeout(plugin.hide, 350);
                 return;
             }
             editor.getElement().removeClass(options.baseClass + '-highlight');
@@ -101,6 +97,16 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             if (!editor.isVisible()) editor.showToolbar(plugin.selection());
         };
 
+        this.buttonOut = function(event) {
+            if (editButton.hasClass(options.baseClass + '-visible')) {
+                return;
+            }
+            window.clearTimeout(plugin.timeoutId);
+            // Set timeout for cases where the user mousesout of the element
+            // too quickly to trigger event properly
+            plugin.timeoutId = window.setTimeout(plugin.hide, 350);
+        };
+
         editor.bind('ready, hide, cancel', function() {
 
             editButton = $(editor.getTemplate('clickbuttontoedit.edit-button', options))
@@ -110,6 +116,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             editButton.position(options.position);
 
             editButton.bind('click.' + editor.widgetName, plugin.edit);
+            editButton.bind('mouseleave.' + editor.widgetName, plugin.buttonOut);
 
             editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
