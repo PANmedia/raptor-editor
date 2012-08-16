@@ -16,8 +16,6 @@ $.ui.editor.registerUi({
      */
     statistics: /** @lends $.editor.ui.statistics.prototype */ {
 
-        ui: null,
-
         /**
          * @name $.editor.ui.statistics.options
          * @namespace Default options
@@ -41,7 +39,7 @@ $.ui.editor.registerUi({
             editor.bind('show', $.proxy(this.updateCount, this));
             editor.bind('change', $.proxy(this.updateCount, this));
 
-            this.ui = this.editor.uiButton({
+            return this.editor.uiButton({
                 title: _('Remaining characters before the recommended character limit is reached'),
                 label: _('Initializing'),
                 text: true,
@@ -50,8 +48,6 @@ $.ui.editor.registerUi({
                     this.showStatistics();
                 }
             });
-
-            return this.ui;
         },
 
         /**
