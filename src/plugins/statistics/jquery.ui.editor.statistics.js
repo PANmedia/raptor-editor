@@ -7,35 +7,37 @@
 $.ui.editor.registerUi({
 
     /**
-     * @name $.editor.ui.length
+     * @name $.editor.ui.statistics
      * @augments $.ui.editor.defaultUi
      * @class Displays a button containing a character count for the editor content.
+     * When button is clicked, a dialog containing statistics is displayed.
      * <br/>
      * Shows a dialog containing more content statistics when clicked
      */
-    length: /** @lends $.editor.ui.length.prototype */ {
+    statistics: /** @lends $.editor.ui.statistics.prototype */ {
 
         ui: null,
 
         /**
-         * @name $.editor.ui.length.options
+         * @name $.editor.ui.statistics.options
          * @namespace Default options
-         * @see $.editor.ui.length
+         * @see $.editor.ui.statistics
          * @type {Object}
          */
-        options: /** @lends $.editor.ui.length.options.prototype */  {
+        options: /** @lends $.editor.ui.statistics.options.prototype */  {
 
             /**
-             * @see $.editor.ui.length.options
-             * @type {Integer}
+             * @see $.editor.ui.statistics.options
+             * @type {Boolean|Integer} To display a character count, set to an integer. Else set to false to just display the button.
              */
-            length: 150
+            maximum: null
         },
 
         /**
          * @see $.ui.editor.length#init
          */
         init: function(editor, options) {
+
             editor.bind('show', $.proxy(this.updateCount, this));
             editor.bind('change', $.proxy(this.updateCount, this));
 
@@ -60,9 +62,14 @@ $.ui.editor.registerUi({
             if (debugLevel >= MID) debug('Updating length count');
             // </debug>
 
-            var charactersRemaining = this.options.length - $('<div/>').html(this.editor.getCleanHtml()).text().length;
-
+            var charactersRemaining = this.options.maximum - $('<div/>').html(this.editor.getCleanHtml()).text().length;
             var button = this.ui.button;
+            // If maximum has been set to false, only show the icon button
+            if (this.options.maximum === false) {
+                button.button('option', 'text', false);
+                return;
+            }
+
             var label = null;
             if (charactersRemaining >= 0) {
                 label = _('{{charactersRemaining}} characters remaining', { charactersRemaining: charactersRemaining });
@@ -121,10 +128,10 @@ $.ui.editor.registerUi({
         processTemplate: function() {
             var content = $('<div/>').html(this.editor.getCleanHtml()).text();
             var truncation = null;
-            var charactersRemaining = this.options.length - content.length;
+            var charactersRemaining = this.options.maximum - content.length;
             if (charactersRemaining < 0) {
                 truncation = _('Content contains more than {{limit}} characters and may be truncated', {
-                    'limit': this.options.length
+                    'limit': this.options.maximum
                 });
             } else {
                 truncation = _('Content will not be truncated');
@@ -159,7 +166,7 @@ $.ui.editor.registerUi({
                 });
             }
 
-            return $(this.editor.getTemplate('length.dialog', {
+            return $(this.editor.getTemplate('statistics.dialog', {
                 'characters': characters,
                 'words': words,
                 'sentences': sentences,

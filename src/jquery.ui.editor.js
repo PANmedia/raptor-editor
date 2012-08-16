@@ -55,7 +55,7 @@ $.widget('ui.editor',
             ['tagMenu'],
             ['i18n'],
             ['raptorize'],
-            ['length'],
+            ['statistics'],
             ['debugReinit', 'debugDestroy']
         ];
 
