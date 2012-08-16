@@ -279,7 +279,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
 
         var resizeButton = $('<button>' + _('Click to edit the image') + '</button>')
             .appendTo('body')
-            .addClass(this.options.resizeButtonClass + ' ' + this.options.supplementaryClass)
+            .addClass(this.options.resizeButtonClass)
             .button({
                 text: false,
                 icons: {
@@ -294,6 +294,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             })
             .attr('contenteditable', false)
             .click($.proxy(this.manuallyResizeImage, this));
+
+        resizeButton.addClass(this.editor.options.supplementaryClass)
+            .find('span').addClass(this.editor.options.supplementaryClass);
 
         $(image).before(resizeButton);
     },
