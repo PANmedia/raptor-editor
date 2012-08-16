@@ -85,7 +85,12 @@ function writeLocale($locale_file, $strings, $locale, $locale_name, $headerBlock
     fwrite($locale_handle, $head);
 
     foreach ($strings as $key => $value) {
-        $output[] = $tab.'"'.str_replace('"', '\"', $key).'": "'.str_replace('"', '\"', $value).'"';
+        if ($value === false) {
+            $value = 'false';
+        } else {
+            $value = '"'.str_replace('"', '\"', $value).'"';
+        }
+        $output[] = $tab.'"'.str_replace('"', '\"', $key).'": '.$value;
     }
 
     fwrite($locale_handle, implode(",\n", $output));
@@ -114,12 +119,18 @@ if ($replace || (!$replace && !$merge)) {
             $headerBlock .= $line;
             continue;
         }
-        $result= null;
-        if(preg_match('/^\s*"(.+)":\s?"(.+)",?$/iU', $line, $result)) {
+        $result = null;
+        if(preg_match('/^\s*"(.+)":\s?(.+),?$/iU', $line, $result)) {
             $headerCaptured = true;
             $key = $result[1];
-            $value = $result[2];
-            if (isset($strings[$key]) && $strings[$key] != $value) {
+            $value = trim($result[2]);
+            $value = trim($value, '"');
+            if (!isset($strings[$key])){
+                continue;
+            }
+            if($value === 'false') {
+                $strings[$key] = false;
+            } else if (isset($strings[$key]) && $strings[$key] !== $value) {
                 $strings[$key] = $value;
             }
         }
