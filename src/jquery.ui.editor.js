@@ -716,8 +716,8 @@ $.widget('ui.editor',
             }
 
             wrapper.css({
-                top: Math.abs(parseInt(pos[0])),
-                left: Math.abs(parseInt(pos[1]))
+                top: Math.abs(parseInt(pos[0], 10)),
+                left: Math.abs(parseInt(pos[1], 10))
             });
 
             // Load the message display widget
@@ -1240,7 +1240,7 @@ $.widget('ui.editor',
                     .bind('click.' + editor.widgetName, function() {
                         // Do not fire click event when disabled
                         if ($(this).hasClass('ui-state-disabled')) {
-                        	return;
+                            return;
                         }
                         if (parseInt(ui.menu.css('min-width'), 10) < ui.button.outerWidth() + 10) {
                             ui.menu.css('min-width', ui.button.outerWidth() + 10);
@@ -1445,9 +1445,9 @@ $.widget('ui.editor',
     unbind: function(name, callback, context) {
 
         for (var i = 0, l = this.events[name].length; i < l; i++) {
-            if (this.events[name][i]
-                && this.events[name][i].callback === callback
-                && this.events[name][i].context === context) {
+            if (this.events[name][i] &&
+                this.events[name][i].callback === callback &&
+                this.events[name][i].context === context) {
                 this.events[name].splice(i, 1);
             }
         }
@@ -1531,61 +1531,43 @@ $.extend($.ui.editor,
     stringStripTags: stringStripTags,
     // </expose>
 
-    /**
-     * Default options for the jQuery UI Editor
-     * @namespace Default settings for the jQuery UI Editor
-     */
+    /** @namespace Default options for the jQuery UI Editor */
     defaults: {
-        /**
-         * Plugins option overrides
-         * @type Object
-         */
+
+        /** @type Object Plugins option overrides */
         plugins: {},
 
-        /**
-         * UI option overrides
-         * @type Object
-         */
+        /** @type Object UI option overrides */
         ui: {},
 
-        /**
-         * Default events to bind
-         * @type Object
-         */
+        /** @type Object Default events to bind */
         bind: {},
 
-        /**
-         *
-         * @type Object
-         */
+        /** @type Object */
         domTools: domTools,
 
         /**
-         * Namespace used to persistence to prevent conflicting stored values
-         * @type String
-         */
+          * @type String Namespace used to persistence to prevent conflicting
+          * stored values
+          */
         namespace: null,
 
         /**
-         * Switch to indicated that some events should be automatically applied to all editors that are 'unified'
-         * @type boolean
+         * @type boolean Switch to indicated that some events should be
+         * automatically applied to all editors that are 'unified'
          */
         unify: true,
 
-        /**
-         * Switch to indicate weather or not to stored persistent values, if set to false the persist function will always return null
-         * @type boolean
-         */
+        /** @type boolean Switch to indicate weather or not to stored persistent
+        values, if set to false the persist function will always return null */
         persistence: true,
 
-        /**
-         * The name to store persistent values under
-         * @type String
-         */
+        /** @type String The name to store persistent values under */
         persistenceName: 'uiEditor',
 
         /**
-         * Switch to indicate weather or not to a warning should pop up when the user navigates aways from the page and there are unsaved changes
+         * Switch to indicate weather or not to a warning should pop up when the
+         * user navigates aways from the page and there are unsaved changes
          * @type boolean
          */
         unloadWarning: true,
@@ -1603,7 +1585,9 @@ $.extend($.ui.editor,
         partialEdit: false,
 
         /**
-         * Switch to specify if the editor should automatically enable all plugins, if set to false, only the plugins specified in the 'plugins' option object will be enabled
+         * Switch to specify if the editor should automatically enable all
+         * plugins, if set to false, only the plugins specified in the 'plugins'
+         * option object will be enabled
          * @type boolean
          */
         enablePlugins: true,
@@ -1615,13 +1599,16 @@ $.extend($.ui.editor,
         disabledPlugins: [],
 
         /**
-         * And array of arrays denoting the order and grouping of UI elements in the toolbar
+         * And array of arrays denoting the order and grouping of UI elements in
+         * the toolbar
          * @type String[]
          */
         uiOrder: null,
 
         /**
-         * Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui} option object will be enabled
+         * Switch to specify if the editor should automatically enable all UI,
+         * if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui}
+         * option object will be enabled
          * @type boolean
          */
         enableUi: true,
@@ -1641,13 +1628,17 @@ $.extend($.ui.editor,
         },
 
         /**
-         * Switch to indicate that the element the editor is being applied to should be replaced with a div (useful for textareas), the value/html of the replaced element will be automatically updated when the editor element is changed
+         * Switch to indicate that the element the editor is being applied to
+         * should be replaced with a div (useful for textareas), the value/html
+         * of the replaced element will be automatically updated when the editor
+         * element is changed
          * @type boolean
          */
         replace: false,
 
         /**
-         * A list of styles that will be copied from the replaced element and applied to the editor replacement element
+         * A list of styles that will be copied from the replaced element and
+         * applied to the editor replacement element
          * @type String[]
          */
         replaceStyle: [
@@ -1663,34 +1654,32 @@ $.extend($.ui.editor,
         baseClass: 'ui-editor',
 
         /**
-         * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
+         * CSS class prefix that is prepended to inserted elements classes.
+         * <pre>"cms-bold"</pre>
          * @type String
          */
         cssPrefix: 'cms-',
 
+        /** @type {Boolean} True if the editor should be draggable. */
         draggable: true,
 
-        /**
-         * @type {Boolean} True to enable hotkeys
-         */
+        /** @type {Boolean} True to enable hotkeys */
         enableHotkeys: true,
 
+        /** @type {Object} Custom hotkeys */
+        hotkeys: {},
+
         /**
-         * @type {Object} Custom hotkeys
+         * @type {String} Applied to elements that should not be stripped during
+         * normal use, but do not belong in the final content.
          */
-        hotkeys: {}
+        supplementaryClass: 'supplementary-element-class'
     },
 
-    /**
-     * Events added via $.ui.editor.bind
-     * @property {Object} events
-     */
+    /** @property {Object} events Events added via $.ui.editor.bind */
     events: {},
 
-    /**
-     * Plugins added via $.ui.editor.registerPlugin
-     * @property {Object} plugins
-     */
+    /** @property {Object} plugins Plugins added via $.ui.editor.registerPlugin */
     plugins: {},
 
     /**
@@ -1723,7 +1712,7 @@ $.extend($.ui.editor,
     /**
      * @property {String} urlPrefix
      */
-    urlPrefix: '/jquery-raptor/',
+    urlPrefix: '/raptor/',
 
     /**
      * @property {Object} templates
