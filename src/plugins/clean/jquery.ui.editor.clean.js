@@ -70,7 +70,7 @@
                 .find(this.options.stripEmptyTags[i])
                 .filter(function() {
                     // Do not remove ignored elements. Inserter is responsible for these.
-                    if ($(this).hasClass(plugin.options.supplementaryClass)) {
+                    if ($(this).hasClass(editor.options.supplementaryClass)) {
                         return false;
                     }
                     // Do not clear selection markers if the editor has it in use
