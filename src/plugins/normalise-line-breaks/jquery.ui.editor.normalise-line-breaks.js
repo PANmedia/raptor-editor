@@ -13,28 +13,20 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
      */
     options: /** @lends $.editor.plugin.normaliseLineBreaks.options */  {
 
-        /**
-         * @type {String} The tag to insert when user presses enter
-         */
+        /** @type {String} The tag to insert when user presses enter */
         enter: '<p><br/></p>',
 
-        /**
-         * @type {Array} Array of tag names within which the return HTML is valid.
-         */
+        /** @type {Array} Array of tag names within which the return HTML is valid. */
         enterValidTags: [
             'address', 'blockquote', 'body', 'button', 'center', 'dd',
             'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
             'noscript', 'object', 'td', 'th'
         ],
 
-        /**
-         * @type {String} The tag to insert when user presses shift enter.
-         */
+        /** @type {String} The tag to insert when user presses shift enter. */
         shiftEnter: '<br/>',
 
-        /**
-         * @type {Array} Array of tag names within which the shiftReturn HTML is valid.
-         */
+        /** @type {Array} Array of tag names within which the shiftReturn HTML is valid. */
         shiftEnterValidTags: [
             'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo',
             'big', 'blockquote', 'body', 'button', 'caption', 'center',
