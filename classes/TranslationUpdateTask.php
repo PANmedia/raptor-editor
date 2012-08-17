@@ -1,7 +1,7 @@
 <?php
 class TranslationUpdateTask extends Task {
 
-    private $filesets = [];
+    private $filesets = array();
     private $name = null;
 
     public function jsonError($error) {
@@ -39,7 +39,7 @@ class TranslationUpdateTask extends Task {
         $extractorPath = realpath(__DIR__.'/../src/plugins/i18n/extractor.php');
         $baseDirectory = realpath(__DIR__.'/../src/');
 
-        $result = [];
+        $result = array();
         foreach($this->filesets as $fs) {
             try {
                 $files = $fs->getDirectoryScanner($this->project)->getIncludedFiles();
