@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.19 
+VERSION: 0.0.20 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -28694,6 +28694,8 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
     hovering: false,
 
+    button: false,
+
     /** @type {Object} Plugin option defaults. */
     options: {
         button: {
@@ -28710,26 +28712,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     init: function(editor, options) {
 
         var plugin = this;
-        var editButton = false;
         var timeoutId = false;
-
-        /** @type {Object} Plugin option defaults. */
-        options = $.extend(true, {}, {
-
-            /** @type {Boolean} true if links should be obscured */
-            position: {
-                at: 'center center',
-                of: editor.getElement(),
-                my: 'center center',
-                using: function(position) {
-                    $(this).css({
-                        position: 'absolute',
-                        top: position.top,
-                        left: position.left
-                    });
-                }
-            }
-        }, options);
 
         this.selection = function() {
             var range;
@@ -28749,8 +28732,15 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             editor.getElement().addClass(options.baseClass + '-highlight');
             editor.getElement().addClass(options.baseClass + '-hover');
 
-            editButton.button(options.button);
-            editButton.position(options.position);
+            var editButton = plugin.getButton();
+
+            var visibleRect = elementVisibleRect(editor.getElement());
+            editButton.css({
+                position: 'absolute',
+                // Calculate offset center for the button
+                top: visibleRect.top + ((visibleRect.height / 2) - ($(editButton).outerHeight() / 2)),
+                left: visibleRect.left + (visibleRect.width / 2) - ($(editButton).outerWidth() / 2)
+            });
             editButton.addClass(options.baseClass + '-visible');
         };
 
@@ -28758,6 +28748,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
          * Hide the click to edit button
          */
         this.hide = function(event) {
+            var editButton = plugin.getButton();
             if((event &&
                     (event.relatedTarget === editButton.get(0) ||
                      editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
@@ -28778,7 +28769,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
         };
 
         this.buttonOut = function(event) {
-            if (editButton.hasClass(options.baseClass + '-visible')) {
+            if (plugin.getButton().hasClass(options.baseClass + '-visible')) {
                 return;
             }
             window.clearTimeout(plugin.timeoutId);
@@ -28787,26 +28778,39 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             plugin.timeoutId = window.setTimeout(plugin.hide, 350);
         };
 
+        editor.getElement().addClass('ui-editor-click-button-to-edit');
+
         editor.bind('ready, hide, cancel', function() {
-
-            editButton = $(editor.getTemplate('clickbuttontoedit.edit-button', options))
-                .appendTo('body')
-                .removeClass(options.baseClass + '-visible');
-
-            editButton.position(options.position);
-
-            editButton.bind('click.' + editor.widgetName, plugin.edit);
-            editButton.bind('mouseleave.' + editor.widgetName, plugin.buttonOut);
-
             editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
         });
 
         editor.bind('show', function() {
-            editButton.button('destroy').remove();
+            plugin.destroyButton();
             editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().unbind('mouseleave.' + editor.widgetName, plugin.hide);
         });
+    },
+
+    getButton: function() {
+        if (this.button === false) {
+            this.button = $(this.editor.getTemplate('clickbuttontoedit.edit-button', this.options))
+                .appendTo('body')
+                .removeClass(this.options.baseClass + '-visible');
+            this.button.button(this.options.button);
+        }
+
+        this.button.unbind('click.' + this.editor.widgetName)
+            .bind('click.' + this.editor.widgetName, this.edit);
+        this.button.unbind('mouseleave.' + this.editor.widgetName)
+            .bind('mouseleave.' + this.editor.widgetName, this.buttonOut);
+
+        return this.button;
+    },
+
+    destroyButton: function() {
+        this.button.button('destroy').remove();
+        this.button = false;
     }
 });
 /**
@@ -29892,6 +29896,7 @@ registerLocale('en', 'English', {
     "Center Align": "Center Align",
     "Change HTML tag of selected element": "Change HTML tag of selected element",
     "Change Language": "Change Language",
+    "Change the color of the selected text.": "Change the color of the selected text.",
     "Check this box to have the file open in a new browser window": "Check this box to have the file open in a new browser window",
     "Check this box to have the link open in a new browser window": "Check this box to have the link open in a new browser window",
     "Choose a link type:": "Choose a link type:",
@@ -29899,6 +29904,7 @@ registerLocale('en', 'English', {
     "Click to begin editing": "Click to begin editing",
     "Click to detach the toolbar": "Click to detach the toolbar",
     "Click to dock the toolbar": "Click to dock the toolbar",
+    "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Click to select all editable content",
     "Click to select the contents of the '{{element}}' element": "Click to select the contents of the '{{element}}' element",
     "Close": "Close",
@@ -29985,7 +29991,7 @@ registerLocale('en', 'English', {
     "Super script": "Super script",
     "The URL does not look well formed": "The URL does not look well formed",
     "The email address does not look well formed": "The email address does not look well formed",
-    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
     "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
     "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "This block contains unsaved changes",
@@ -30023,6 +30029,7 @@ registerLocale('es', 'Español', {
     "Center Align": "Centrar",
     "Change HTML tag of selected element": "Cambiar la etiqueta HTML del elemento seleccionado",
     "Change Language": "Cambiar Idioma",
+    "Change the color of the selected text.": "Change the color of the selected text.",
     "Check this box to have the file open in a new browser window": "Marque esta casilla para que el archivo se abra en una nueva ventana",
     "Check this box to have the link open in a new browser window": "Marque esta casilla para que el enlace se abra en una nueva ventana",
     "Choose a link type:": "Escoja un tipo de enlace:",
@@ -30030,6 +30037,7 @@ registerLocale('es', 'Español', {
     "Click to begin editing": "Haga clic para empezar a editar",
     "Click to detach the toolbar": "Haga clic para desanclar la barra de herramientas",
     "Click to dock the toolbar": "Haga clic para anclar la barra de herramientas",
+    "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Haga clic para seleccionar todo el contenido editable",
     "Click to select the contents of the '{{element}}' element": "Haga clic para selecionar el contenido del elemento '{{element}}'",
     "Close": "Cerrar",
@@ -30037,7 +30045,7 @@ registerLocale('es', 'Español', {
     "Content Statistics": "Contenidos Estadísticos",
     "Content contains more than {{limit}} characters and may be truncated": "El contenido contiene más de {{limit}} carácteres y debe ser truncado",
     "Content will not be truncated": "El contenido no será truncado",
-    "Copy the file\'s URL from your browser\'s address bar and paste it into the box above": "Copie la URL de su archivo desde la barra de dirección de su navegador y péguela en la caja superior",
+    "Copy the file's URL from your browser's address bar and paste it into the box above": "Copie la URL de su archivo desde la barra de dirección de su navegador y péguela en la caja superior",
     "Copy the web address from your browser\'s address bar and paste it into the box above": "Copie la dirección web desde la barra de dirección de su navegador y péguela en la caja superior",
     "Decrease Font Size": "Disminuir Tamaño de Fuente",
     "Destroy": "Destruir",
@@ -30116,7 +30124,7 @@ registerLocale('es', 'Español', {
     "Super script": "Superíndice",
     "The URL does not look well formed": "La URL no parece bien formada",
     "The email address does not look well formed": "El enlace de correo electrónico no parece bien formado",
-    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "La imagen \'{{image}}\' es demasiado grande para el elemento que está siendo editado.<br/>Será reemplazada por una copia redimensionada cuando se guarden sus cambios.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
     "The url for the file you inserted doesn\'t look well formed": "La URL del archivo que ha introducido no parece bien formada",
     "The url for the link you inserted doesn\'t look well formed": "La URL del enlace que ha introducido no parece bien formada",
     "This block contains unsaved changes": "Este bloque tiene cambios sin guardar",
@@ -30154,6 +30162,7 @@ registerLocale('fr', 'Français', {
     "Center Align": "Aligner au centre",
     "Change HTML tag of selected element": "Modifier la balise HTML de l'élément sélectionné",
     "Change Language": "Changer de langue",
+    "Change the color of the selected text.": "Change the color of the selected text.",
     "Check this box to have the file open in a new browser window": "Cochez cette case pour ouvrir le fichier dans une nouvelle fenêtre de navigateur",
     "Check this box to have the link open in a new browser window": "Cochez cette case pour ouvrir le lien dans une nouvelle fenêtre de navigateur",
     "Choose a link type:": "Choisissez un type de lien :",
@@ -30161,6 +30170,7 @@ registerLocale('fr', 'Français', {
     "Click to begin editing": "Cliquer pour commencer la modification",
     "Click to detach the toolbar": "Cliquer pour détacher la barre d'outils",
     "Click to dock the toolbar": "Cliquer pour ancrer la barre d'outils",
+    "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Cliquer pour sélectionner tout le contenu modifiable",
     "Click to select the contents of the '{{element}}' element": "Cliquer pour sélectionner le contenu de l'élément '{{element}}'",
     "Close": "Fermer",
@@ -30168,7 +30178,7 @@ registerLocale('fr', 'Français', {
     "Content Statistics": "Statistiques de contenu",
     "Content contains more than {{limit}} characters and may be truncated": "Le contenu contient plus de {{limit}} caractères et peut être tronqué",
     "Content will not be truncated": "Le contenu ne sera pas tronqué",
-    "Copy the file\'s URL from your browser\'s address bar and paste it into the box above": "Copy the file\'s URL from your browser\'s address bar and paste it into the box above",
+    "Copy the file's URL from your browser's address bar and paste it into the box above": "Copy the file's URL from your browser's address bar and paste it into the box above",
     "Copy the web address from your browser\'s address bar and paste it into the box above": "Copy the web address from your browser\'s address bar and paste it into the box above",
     "Decrease Font Size": "Diminuer la taille de la police",
     "Destroy": "Détruire",
@@ -30210,11 +30220,11 @@ registerLocale('fr', 'Français', {
     "Link to an email address": "Lier une adresse e-mail",
     "Location": "Emplacement",
     "Modify Image Size": "Modify Image Size",
-    "N/A": false,
+    "N/A": "N/A",
     "New window": "Nouvelle fenêtre",
     "No changes detected to save...": "Aucune modification détectée à enregistrer...",
     "Not sure what to put in the box above?": "Pas sûr(e) de savoir quoi mettre dans le champ ci-dessus ?",
-    "OK": false,
+    "OK": "OK",
     "Open the uploaded file in your browser": "Ouvrir le fichier trasnféré dans votre navigateur",
     "Ordered List": "Liste ordonnée",
     "Page on this or another website": "Page sur ce site ou un autre site",
@@ -30247,7 +30257,7 @@ registerLocale('fr', 'Français', {
     "Super script": "Exposant",
     "The URL does not look well formed": "L'URL paraît malformée",
     "The email address does not look well formed": "L'adresse e-mail paraît malformée",
-    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
     "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
     "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "Ce bloc contient des modifications non enregistrées",
@@ -30285,6 +30295,7 @@ registerLocale('nl', 'Nederlands', {
     "Center Align": "Centreren",
     "Change HTML tag of selected element": "Verander type van geselecteerd element",
     "Change Language": "Taal veranderen",
+    "Change the color of the selected text.": "Change the color of the selected text.",
     "Check this box to have the file open in a new browser window": "Vink dit aan om het bestand te laten opnenen in een nieuw browser venster",
     "Check this box to have the link open in a new browser window": "Vink dit aan om de link te laten opnenen in een nieuw browser venster",
     "Choose a link type:": "Kies het type link:",
@@ -30292,6 +30303,7 @@ registerLocale('nl', 'Nederlands', {
     "Click to begin editing": "Klik hier voor het beginnen met bewerken",
     "Click to detach the toolbar": "Klik om de werkbalk los te maken",
     "Click to dock the toolbar": "Klik om de werkbalk vast te maken",
+    "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Klik om alle bewerkbare inhoud te selecteren",
     "Click to select the contents of the '{{element}}' element": "Klik om de inhoud te selecteren van het '{{element}}' element",
     "Close": "Sluiten",
@@ -30378,7 +30390,7 @@ registerLocale('nl', 'Nederlands', {
     "Super script": "Superscript",
     "The URL does not look well formed": "Het lijkt er op dat het internetadres niet correct is",
     "The email address does not look well formed": "Het e-mail adres is incorrect",
-    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "De afbeelding \"{{image}}\" is te groot voor het element dat wordt bewerkt.<br/>Het zal worden vervangen met een herschaalde kopie wanneer uw aanpassingen worden opgeslagen.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
     "The url for the file you inserted doesn\'t look well formed": "Het lijkt er op dat het internetadres voor het bestand dat u heeft ingevoegd niet correct is",
     "The url for the link you inserted doesn\'t look well formed": "Het lijkt er op dat het internetadres voor de link die u heeft ingevoegd niet correct is",
     "This block contains unsaved changes": "Dit blok bevat aanpassingen welke niet zijn opgeslagen",
@@ -30416,6 +30428,7 @@ registerLocale('zh-CN', '简体中文', {
     "Center Align": "中心对齐文本",
     "Change HTML tag of selected element": "Change HTML tag of selected element",
     "Change Language": "改变语言",
+    "Change the color of the selected text.": "Change the color of the selected text.",
     "Check this box to have the file open in a new browser window": "Check this box to have the file open in a new browser window",
     "Check this box to have the link open in a new browser window": "Check this box to have the link open in a new browser window",
     "Choose a link type:": "Choose a link type:",
@@ -30423,6 +30436,7 @@ registerLocale('zh-CN', '简体中文', {
     "Click to begin editing": "Click to begin editing",
     "Click to detach the toolbar": "Click to detach the toolbar",
     "Click to dock the toolbar": "Click to dock the toolbar",
+    "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Click to select all editable content",
     "Click to select the contents of the '{{element}}' element": "Click to select the contents of the '{{element}}' element",
     "Close": "Close",
@@ -30509,7 +30523,7 @@ registerLocale('zh-CN', '简体中文', {
     "Super script": "Super script",
     "The URL does not look well formed": "The URL does not look well formed",
     "The email address does not look well formed": "The email address does not look well formed",
-    "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.": "The image \'{{image}}\' is too large for the element being edited.<br/>It will be replaced with a resized copy when your edits are saved.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
     "The url for the file you inserted doesn\'t look well formed": "The url for the file you inserted doesn\'t look well formed",
     "The url for the link you inserted doesn\'t look well formed": "The url for the link you inserted doesn\'t look well formed",
     "This block contains unsaved changes": "This block contains unsaved changes",
@@ -31950,7 +31964,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.19?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.20?' + query.join('&') + ')'
                     });
                 }
             });
@@ -31974,28 +31988,20 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
      */
     options: /** @lends $.editor.plugin.normaliseLineBreaks.options */  {
 
-        /**
-         * @type {String} The tag to insert when user presses enter
-         */
+        /** @type {String} The tag to insert when user presses enter */
         enter: '<p><br/></p>',
 
-        /**
-         * @type {Array} Array of tag names within which the return HTML is valid.
-         */
+        /** @type {Array} Array of tag names within which the return HTML is valid. */
         enterValidTags: [
             'address', 'blockquote', 'body', 'button', 'center', 'dd',
             'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
             'noscript', 'object', 'td', 'th'
         ],
 
-        /**
-         * @type {String} The tag to insert when user presses shift enter.
-         */
+        /** @type {String} The tag to insert when user presses shift enter. */
         shiftEnter: '<br/>',
 
-        /**
-         * @type {Array} Array of tag names within which the shiftReturn HTML is valid.
-         */
+        /** @type {Array} Array of tag names within which the shiftReturn HTML is valid. */
         shiftEnterValidTags: [
             'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo',
             'big', 'blockquote', 'body', 'button', 'caption', 'center',
@@ -33575,6 +33581,49 @@ function elementDefaultDisplay(tag) {
  */
 function elementIsValid(element, validTags) {
     return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
+}
+
+/**
+ * Calculate and return the visible rectangle for the element.
+ * @param  {Element|jQuery} element The element to calculate the visible rectangle for.
+ * @return {Object} Visible rectangle for the element.
+ */
+function elementVisibleRect(element) {
+
+    element = $(element);
+
+    var rect = {
+        top: Math.round(element.offset().top),
+        left: Math.round(element.offset().left),
+        width: Math.round(element.outerWidth()),
+        height: Math.round(element.outerHeight())
+    };
+
+
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var scrollBottom = scrollTop + windowHeight;
+    var elementBottom = Math.round(rect.height + rect.top);
+
+    // If top & bottom of element are within the viewport, do nothing.
+    if (scrollTop < rect.top && scrollBottom > elementBottom) {
+        return rect;
+    }
+
+    // Top of element is outside the viewport
+    if (scrollTop > rect.top) {
+        rect.top = scrollTop;
+    }
+
+    // Bottom of element is outside the viewport
+    if (scrollBottom < elementBottom) {
+        rect.height = scrollBottom - rect.top;
+    } else {
+        // Bottom of element inside viewport
+        rect.height = windowHeight - (scrollBottom - elementBottom);
+    }
+
+    return rect;
 }
 /**
  * @fileOverview DOM fragment manipulation helper functions
@@ -35351,6 +35400,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 .ui-editor-click-button-to-edit-visible {\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
   opacity: 1; }\n\
+\n\
+.ui-editor-click-button-to-edit {\n\
+  outline: 1px solid transparent; }\n\
 \n\
 .ui-editor-click-button-to-edit-highlight {\n\
   outline: 1px dotted rgba(0, 0, 0, 0.5);\n\
