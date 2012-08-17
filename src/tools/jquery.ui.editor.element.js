@@ -113,3 +113,46 @@ function elementDefaultDisplay(tag) {
 function elementIsValid(element, validTags) {
     return -1 !== $.inArray($(element)[0].tagName.toLowerCase(), validTags);
 }
+
+/**
+ * Calculate and return the visible rectangle for the element.
+ * @param  {Element|jQuery} element The element to calculate the visible rectangle for.
+ * @return {Object} Visible rectangle for the element.
+ */
+function elementVisibleRect(element) {
+
+    element = $(element);
+
+    var rect = {
+        top: Math.round(element.offset().top),
+        left: Math.round(element.offset().left),
+        width: Math.round(element.outerWidth()),
+        height: Math.round(element.outerHeight())
+    };
+
+
+    var scrollTop = $(window).scrollTop();
+    var windowHeight = $(window).height();
+    var scrollBottom = scrollTop + windowHeight;
+    var elementBottom = Math.round(rect.height + rect.top);
+
+    // If top & bottom of element are within the viewport, do nothing.
+    if (scrollTop < rect.top && scrollBottom > elementBottom) {
+        return rect;
+    }
+
+    // Top of element is outside the viewport
+    if (scrollTop > rect.top) {
+        rect.top = scrollTop;
+    }
+
+    // Bottom of element is outside the viewport
+    if (scrollBottom < elementBottom) {
+        rect.height = scrollBottom - rect.top;
+    } else {
+        // Bottom of element inside viewport
+        rect.height = windowHeight - (scrollBottom - elementBottom);
+    }
+
+    return rect;
+}
