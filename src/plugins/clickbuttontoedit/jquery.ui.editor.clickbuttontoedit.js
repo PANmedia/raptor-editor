@@ -14,6 +14,8 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
     hovering: false,
 
+    button: false,
+
     /** @type {Object} Plugin option defaults. */
     options: {
         button: {
@@ -30,26 +32,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     init: function(editor, options) {
 
         var plugin = this;
-        var editButton = false;
         var timeoutId = false;
-
-        /** @type {Object} Plugin option defaults. */
-        options = $.extend(true, {}, {
-
-            /** @type {Boolean} true if links should be obscured */
-            position: {
-                at: 'center center',
-                of: editor.getElement(),
-                my: 'center center',
-                using: function(position) {
-                    $(this).css({
-                        position: 'absolute',
-                        top: position.top,
-                        left: position.left
-                    });
-                }
-            }
-        }, options);
 
         this.selection = function() {
             var range;
@@ -69,8 +52,15 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             editor.getElement().addClass(options.baseClass + '-highlight');
             editor.getElement().addClass(options.baseClass + '-hover');
 
-            editButton.button(options.button);
-            editButton.position(options.position);
+            var editButton = plugin.getButton();
+
+            var visibleRect = elementVisibleRect(editor.getElement());
+            editButton.css({
+                position: 'absolute',
+                // Calculate offset center for the button
+                top: visibleRect.top + ((visibleRect.height / 2) - ($(editButton).outerHeight() / 2)),
+                left: visibleRect.left + (visibleRect.width / 2) - ($(editButton).outerWidth() / 2)
+            });
             editButton.addClass(options.baseClass + '-visible');
         };
 
@@ -78,6 +68,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
          * Hide the click to edit button
          */
         this.hide = function(event) {
+            var editButton = plugin.getButton();
             if((event &&
                     (event.relatedTarget === editButton.get(0) ||
                      editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
@@ -98,7 +89,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
         };
 
         this.buttonOut = function(event) {
-            if (editButton.hasClass(options.baseClass + '-visible')) {
+            if (plugin.getButton().hasClass(options.baseClass + '-visible')) {
                 return;
             }
             window.clearTimeout(plugin.timeoutId);
@@ -107,25 +98,38 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             plugin.timeoutId = window.setTimeout(plugin.hide, 350);
         };
 
+        editor.getElement().addClass('ui-editor-click-button-to-edit');
+
         editor.bind('ready, hide, cancel', function() {
-
-            editButton = $(editor.getTemplate('clickbuttontoedit.edit-button', options))
-                .appendTo('body')
-                .removeClass(options.baseClass + '-visible');
-
-            editButton.position(options.position);
-
-            editButton.bind('click.' + editor.widgetName, plugin.edit);
-            editButton.bind('mouseleave.' + editor.widgetName, plugin.buttonOut);
-
             editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
         });
 
         editor.bind('show', function() {
-            editButton.button('destroy').remove();
+            plugin.destroyButton();
             editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
             editor.getElement().unbind('mouseleave.' + editor.widgetName, plugin.hide);
         });
+    },
+
+    getButton: function() {
+        if (this.button === false) {
+            this.button = $(this.editor.getTemplate('clickbuttontoedit.edit-button', this.options))
+                .appendTo('body')
+                .removeClass(this.options.baseClass + '-visible');
+            this.button.button(this.options.button);
+        }
+
+        this.button.unbind('click.' + this.editor.widgetName)
+            .bind('click.' + this.editor.widgetName, this.edit);
+        this.button.unbind('mouseleave.' + this.editor.widgetName)
+            .bind('mouseleave.' + this.editor.widgetName, this.buttonOut);
+
+        return this.button;
+    },
+
+    destroyButton: function() {
+        this.button.button('destroy').remove();
+        this.button = false;
     }
 });
