@@ -24,7 +24,8 @@ class PluginsTask extends Task {
 
     public function main() {
         if (!$this->file) return;
-        $buildDir = (new PhingFile($this->buildDir))->getAbsolutePath();
+        $phingFile = new PhingFile($this->buildDir);
+        $buildDir = $phingFile->getAbsolutePath();
         $buildPluginsDir = "{$buildDir}/plugins/";
         if (!file_exists($buildPluginsDir)) {
             mkdir($buildPluginsDir);
