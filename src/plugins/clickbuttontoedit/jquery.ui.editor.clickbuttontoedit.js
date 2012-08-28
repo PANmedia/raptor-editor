@@ -129,6 +129,9 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     },
 
     destroyButton: function() {
+        if (typeof this.button === 'undefined' || this.button === false) {
+            return;
+        }
         this.button.button('destroy').remove();
         this.button = false;
     }
