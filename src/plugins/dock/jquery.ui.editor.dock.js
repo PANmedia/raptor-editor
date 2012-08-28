@@ -160,8 +160,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             'width': 'auto'
         });
 
-//        plugin.editor.wrapper.css('display', '');
-
         wrapper.css('width', wrapper.width() +
             parseInt(this.editor.getElement().css('padding-left'), 10) +
             parseInt(this.editor.getElement().css('padding-right'), 10));/* +
@@ -181,8 +179,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
         // </debug>
 
-//        var wrapper = this.editor.wrapper.parent();
-
         this.editor.getElement()
             .insertAfter(this.editor.wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
@@ -190,12 +186,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.wrapper
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
-
-//        this.revertStyle(this.editor.getElement(), this.previousStyle);
-
-//        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
-
-//        wrapper.remove();
     },
 
     /**
