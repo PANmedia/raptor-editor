@@ -80,7 +80,7 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
 
                 var breakId = this.options.baseClass + '-enter-break';
 
-                var breakElement = $(breakHtml)
+                var breakElement = $(this.shiftEnter)
                                 .attr('id', breakId)
                                 .appendTo('body');
 
