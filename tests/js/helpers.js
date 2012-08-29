@@ -47,3 +47,21 @@ function setSelectionRange(el, start, end) {
         textRange.select();
     }
 }
+
+function pass(element) {
+    $(element).addClass('pass');
+}
+
+function fail(element) {
+    $(element).addClass('fail');
+}
+
+function prettyDiff(ele1, ele2) {
+    ele1 = style_html($(ele1).html());
+    ele2 = style_html($(ele2).html());
+    return diffstr(ele1, ele2);
+}
+
+function isDiff(ele1, ele2) {
+    return $(prettyDiff(ele1, ele2)).find('.add, .del').length > 0;
+}
