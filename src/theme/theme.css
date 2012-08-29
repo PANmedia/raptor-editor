@@ -501,18 +501,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * @author David Neilsen <david@panmedia.co.nz>
  */
 .ui-editor-click-button-to-edit-button {
-  z-index: 4000;
-  -webkit-transition: opacity 0.5s;
-  -webkit-transition-delay: 0s;
-  -moz-transition: opacity 0.5s 0s;
-  -o-transition: opacity 0.5s 0s;
-  transition: opacity 0.5s 0s;
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0; }
-
-.ui-editor-click-button-to-edit-visible {
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1; }
+  z-index: 4000; }
 
 .ui-editor-click-button-to-edit {
   outline: 1px solid transparent; }

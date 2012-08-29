@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.20 
+VERSION: 0.0.22 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -7720,6 +7720,8 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
     hovering: false,
 
+    buttonClass: null,
+    buttonSelector: null,
     button: false,
 
     /** @type {Object} Plugin option defaults. */
@@ -7739,6 +7741,8 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
         var plugin = this;
         var timeoutId = false;
+        this.buttonClass = this.options.baseClass + '-button-element';
+        this.buttonSelector = '.' + this.buttonClass;
 
         this.selection = function() {
             var range;
@@ -7767,7 +7771,6 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
                 top: visibleRect.top + ((visibleRect.height / 2) - ($(editButton).outerHeight() / 2)),
                 left: visibleRect.left + (visibleRect.width / 2) - ($(editButton).outerWidth() / 2)
             });
-            editButton.addClass(options.baseClass + '-visible');
         };
 
         /**
@@ -7782,7 +7785,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             }
             editor.getElement().removeClass(options.baseClass + '-highlight');
             editor.getElement().removeClass(options.baseClass + '-hover');
-            editButton.removeClass(options.baseClass + '-visible');
+            plugin.destroyButton();
         };
 
         /**
@@ -7795,13 +7798,11 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
         };
 
         this.buttonOut = function(event) {
-            if (plugin.getButton().hasClass(options.baseClass + '-visible')) {
+            if (event.relatedTarget === plugin.getButton().get(0) ||
+                (event.relatedTarget === editor.getElement().get(0) || $.contains(editor.getElement().get(0), event.relatedTarget))) {
                 return;
             }
-            window.clearTimeout(plugin.timeoutId);
-            // Set timeout for cases where the user mousesout of the element
-            // too quickly to trigger event properly
-            plugin.timeoutId = window.setTimeout(plugin.hide, 350);
+            plugin.hide();
         };
 
         editor.getElement().addClass('ui-editor-click-button-to-edit');
@@ -7819,12 +7820,14 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     },
 
     getButton: function() {
-        if (this.button === false) {
+        if (!$(this.buttonSelector).length) {
             this.button = $(this.editor.getTemplate('clickbuttontoedit.edit-button', this.options))
                 .appendTo('body')
-                .removeClass(this.options.baseClass + '-visible');
+                .addClass(this.buttonClass);
             this.button.button(this.options.button);
         }
+
+        this.button = $(this.buttonSelector);
 
         this.button.unbind('click.' + this.editor.widgetName)
             .bind('click.' + this.editor.widgetName, this.edit);
@@ -7835,6 +7838,9 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     },
 
     destroyButton: function() {
+        if (typeof this.button === 'undefined' || this.button === false) {
+            return;
+        }
         this.button.button('destroy').remove();
         this.button = false;
     }
@@ -8057,8 +8063,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             'width': 'auto'
         });
 
-//        plugin.editor.wrapper.css('display', '');
-
         wrapper.css('width', wrapper.width() +
             parseInt(this.editor.getElement().css('padding-left'), 10) +
             parseInt(this.editor.getElement().css('padding-right'), 10));/* +
@@ -8076,8 +8080,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     undockFromElement: function() {
         // <debug/>
 
-//        var wrapper = this.editor.wrapper.parent();
-
         this.editor.getElement()
             .insertAfter(this.editor.wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
@@ -8085,12 +8087,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.wrapper
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
-
-//        this.revertStyle(this.editor.getElement(), this.previousStyle);
-
-//        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
-
-//        wrapper.remove();
     },
 
     /**
@@ -10990,7 +10986,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.20?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.22?' + query.join('&') + ')'
                     });
                 }
             });
@@ -11081,7 +11077,7 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
 
                 var breakId = this.options.baseClass + '-enter-break';
 
-                var breakElement = $(breakHtml)
+                var breakElement = $(this.shiftEnter)
                                 .attr('id', breakId)
                                 .appendTo('body');
 
@@ -13646,18 +13642,7 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
  * @author David Neilsen <david@panmedia.co.nz>\n\
  */\n\
 .ui-editor-click-button-to-edit-button {\n\
-  z-index: 4000;\n\
-  -webkit-transition: opacity 0.5s;\n\
-  -webkit-transition-delay: 0s;\n\
-  -moz-transition: opacity 0.5s 0s;\n\
-  -o-transition: opacity 0.5s 0s;\n\
-  transition: opacity 0.5s 0s;\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
-  opacity: 0; }\n\
-\n\
-.ui-editor-click-button-to-edit-visible {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
+  z-index: 4000; }\n\
 \n\
 .ui-editor-click-button-to-edit {\n\
   outline: 1px solid transparent; }\n\
