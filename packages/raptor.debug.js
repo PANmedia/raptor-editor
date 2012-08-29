@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.20 
+VERSION: 0.0.22 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -28901,6 +28901,8 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
     hovering: false,
 
+    buttonClass: null,
+    buttonSelector: null,
     button: false,
 
     /** @type {Object} Plugin option defaults. */
@@ -28920,6 +28922,8 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
 
         var plugin = this;
         var timeoutId = false;
+        this.buttonClass = this.options.baseClass + '-button-element';
+        this.buttonSelector = '.' + this.buttonClass;
 
         this.selection = function() {
             var range;
@@ -28948,7 +28952,6 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
                 top: visibleRect.top + ((visibleRect.height / 2) - ($(editButton).outerHeight() / 2)),
                 left: visibleRect.left + (visibleRect.width / 2) - ($(editButton).outerWidth() / 2)
             });
-            editButton.addClass(options.baseClass + '-visible');
         };
 
         /**
@@ -28963,7 +28966,7 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
             }
             editor.getElement().removeClass(options.baseClass + '-highlight');
             editor.getElement().removeClass(options.baseClass + '-hover');
-            editButton.removeClass(options.baseClass + '-visible');
+            plugin.destroyButton();
         };
 
         /**
@@ -28976,13 +28979,11 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
         };
 
         this.buttonOut = function(event) {
-            if (plugin.getButton().hasClass(options.baseClass + '-visible')) {
+            if (event.relatedTarget === plugin.getButton().get(0) ||
+                (event.relatedTarget === editor.getElement().get(0) || $.contains(editor.getElement().get(0), event.relatedTarget))) {
                 return;
             }
-            window.clearTimeout(plugin.timeoutId);
-            // Set timeout for cases where the user mousesout of the element
-            // too quickly to trigger event properly
-            plugin.timeoutId = window.setTimeout(plugin.hide, 350);
+            plugin.hide();
         };
 
         editor.getElement().addClass('ui-editor-click-button-to-edit');
@@ -29000,12 +29001,14 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     },
 
     getButton: function() {
-        if (this.button === false) {
+        if (!$(this.buttonSelector).length) {
             this.button = $(this.editor.getTemplate('clickbuttontoedit.edit-button', this.options))
                 .appendTo('body')
-                .removeClass(this.options.baseClass + '-visible');
+                .addClass(this.buttonClass);
             this.button.button(this.options.button);
         }
+
+        this.button = $(this.buttonSelector);
 
         this.button.unbind('click.' + this.editor.widgetName)
             .bind('click.' + this.editor.widgetName, this.edit);
@@ -29016,6 +29019,9 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     },
 
     destroyButton: function() {
+        if (typeof this.button === 'undefined' || this.button === false) {
+            return;
+        }
         this.button.button('destroy').remove();
         this.button = false;
     }
@@ -29240,8 +29246,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             'width': 'auto'
         });
 
-//        plugin.editor.wrapper.css('display', '');
-
         wrapper.css('width', wrapper.width() +
             parseInt(this.editor.getElement().css('padding-left'), 10) +
             parseInt(this.editor.getElement().css('padding-right'), 10));/* +
@@ -29261,8 +29265,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
         // </debug>
 
-//        var wrapper = this.editor.wrapper.parent();
-
         this.editor.getElement()
             .insertAfter(this.editor.wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
@@ -29270,12 +29272,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.wrapper
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
-
-//        this.revertStyle(this.editor.getElement(), this.previousStyle);
-
-//        this.editor.dialog('option', 'position', this.editor.dialog('option', 'position'));
-
-//        wrapper.remove();
     },
 
     /**
@@ -30510,7 +30506,7 @@ registerLocale('nl', 'Nederlands', {
     "Center Align": "Centreren",
     "Change HTML tag of selected element": "Verander type van geselecteerd element",
     "Change Language": "Taal veranderen",
-    "Change the color of the selected text.": "Change the color of the selected text.",
+    "Change the color of the selected text.": "Verander de kleur van de geselecteerde tekst.",
     "Check this box to have the file open in a new browser window": "Vink dit aan om het bestand te laten opnenen in een nieuw browser venster",
     "Check this box to have the link open in a new browser window": "Vink dit aan om de link te laten opnenen in een nieuw browser venster",
     "Choose a link type:": "Kies het type link:",
@@ -30518,7 +30514,7 @@ registerLocale('nl', 'Nederlands', {
     "Click to begin editing": "Klik hier voor het beginnen met bewerken",
     "Click to detach the toolbar": "Klik om de werkbalk los te maken",
     "Click to dock the toolbar": "Klik om de werkbalk vast te maken",
-    "Click to edit the image": "Click to edit the image",
+    "Click to edit the image": "Klik om de afbeelding te bewerken",
     "Click to select all editable content": "Klik om alle bewerkbare inhoud te selecteren",
     "Click to select the contents of the '{{element}}' element": "Klik om de inhoud te selecteren van het '{{element}}' element",
     "Close": "Sluiten",
@@ -30605,7 +30601,7 @@ registerLocale('nl', 'Nederlands', {
     "Super script": "Superscript",
     "The URL does not look well formed": "Het lijkt er op dat het internetadres niet correct is",
     "The email address does not look well formed": "Het e-mail adres is incorrect",
-    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "De afbeelding '{{image}}' is te breed voor het element dat wordt bewerkt.<br/>Het wordt geschaald zodat het past.",
     "The url for the file you inserted doesn\'t look well formed": "Het lijkt er op dat het internetadres voor het bestand dat u heeft ingevoegd niet correct is",
     "The url for the link you inserted doesn\'t look well formed": "Het lijkt er op dat het internetadres voor de link die u heeft ingevoegd niet correct is",
     "This block contains unsaved changes": "Dit blok bevat aanpassingen welke niet zijn opgeslagen",
@@ -32179,7 +32175,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.20?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.22?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32270,7 +32266,7 @@ $.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.nor
 
                 var breakId = this.options.baseClass + '-enter-break';
 
-                var breakElement = $(breakHtml)
+                var breakElement = $(this.shiftEnter)
                                 .attr('id', breakId)
                                 .appendTo('body');
 

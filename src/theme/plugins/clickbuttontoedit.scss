@@ -9,12 +9,6 @@
 
 .ui-editor-click-button-to-edit-button {
     z-index: 4000;
-    @include transition(opacity 0.5s 0s);
-    @include opacity(0);
-}
-
-.ui-editor-click-button-to-edit-visible {
-    @include opacity(1);
 }
 
 .ui-editor-click-button-to-edit {

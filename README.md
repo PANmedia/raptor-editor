@@ -41,3 +41,4 @@ See the following links for information on build &amp; contributing to Raptor:
 [^3]: http://www.raptor-editor.com.com/license (Raptor license)
 [^4]: http://www.raptor-editor.com/demo (Raptor Editor Demo)
 [^5]: http://www.raptor-editor.com/demo/docking (Raptor Editor Examples)
+
