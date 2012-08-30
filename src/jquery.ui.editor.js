@@ -23,6 +23,7 @@ $.widget('ui.editor',
             $.ui.editor.instances.push(this);
         }
 
+        // <strict>
         // Check for nested editors
         var currentInstance = this;
         $.ui.editor.eachInstance(function(instance) {
@@ -31,6 +32,7 @@ $.widget('ui.editor',
                 handleError('Nesting editors is unsupported', currentInstance.element, instance.element);
             }
         });
+        // </strict>
 
         this.options = $.extend({}, $.ui.editor.defaults, this.options);
 
