@@ -176,3 +176,16 @@ function elementGetAttributes(element) {
     }
     return result;
 }
+
+/**
+ * FIXME: this function needs reviewing
+ * @param {jQuerySelector|jQuery|Element} element
+ */
+function elementGetStyles(element) {
+    var result = {};
+    var style = window.getComputedStyle(element[0], null);
+    for (var i = 0; i < style.length; i++) {
+        result[style.item(i)] = style.getPropertyValue(style.item(i));
+    }
+    return result;
+}
