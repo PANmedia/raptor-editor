@@ -239,7 +239,7 @@ $.widget('ui.editor',
         var target = $('<div/>')
             // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
             .html(this.element.is(':input') ? this.element.val() : this.element.html())
-            // Insert the div before the origianl element
+            // Insert the div before the original element
             .insertBefore(this.element)
             // Give the div a unique ID
             .attr('id', this.getUniqueId())
