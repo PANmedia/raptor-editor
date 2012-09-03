@@ -416,6 +416,7 @@
                 <!-- Escape quotes -->
                 <replaceregexp>
                     <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\r" replace="" />
                     <regexp pattern="\n" replace="\n\${line.separator}" />
                 </replaceregexp>
             </filterchain>
