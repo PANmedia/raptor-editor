@@ -117,8 +117,10 @@ $.widget('ui.editor',
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
-        // Replace the original element with a div (if specified)
-        if (this.options.replace) {
+        // Replace the original element with a div if either:
+        // the user has explicitly set this behaviour, or if the user has not specified a behaviour.
+        if (this.options.replace === true ||
+            (this.options.replace === null && this.element.is('textarea'))) {
             this.replaceOriginal();
             this.options.replace = false;
         }
@@ -261,6 +263,7 @@ $.widget('ui.editor',
                 this.element.html(this.getHtml());
             }
         });
+
         this.target = target;
     },
 
@@ -1630,9 +1633,9 @@ $.extend($.ui.editor,
          * should be replaced with a div (useful for textareas), the value/html
          * of the replaced element will be automatically updated when the editor
          * element is changed
-         * @type boolean
+         * @type boolean|null By default textareas will be replaced. To force replacement / prevent textarea replacement, set to true or false, respectively.
          */
-        replace: false,
+        replace: null,
 
         /**
          * A list of styles that will be copied from the replaced element and
