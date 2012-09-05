@@ -23,9 +23,9 @@ $.widget('ui.editor',
             $.ui.editor.instances.push(this);
         }
 
+        var currentInstance = this;
         // <strict>
         // Check for nested editors
-        var currentInstance = this;
         $.ui.editor.eachInstance(function(instance) {
             if (currentInstance != instance &&
                     currentInstance.element.closest(instance.element).length) {
@@ -1509,6 +1509,7 @@ $.extend($.ui.editor,
     elementIsBlock: elementIsBlock,
     elementDefaultDisplay: elementDefaultDisplay,
     elementIsValid: elementIsValid,
+    elementGetStyles: elementGetStyles,
     fragmentToHtml: fragmentToHtml,
     fragmentInsertBefore: fragmentInsertBefore,
     rangeExpandToParent: rangeExpandToParent,
@@ -1575,14 +1576,12 @@ $.extend($.ui.editor,
         unloadWarning: true,
 
         /**
-         * Switch to automatically enabled editing on the element
-         * @type boolean
+         * @type boolean Switch to automatically enabled editing on the element
          */
         autoEnable: false,
 
         /**
-         * Only enable editing on certian parts of the element
-         * @type {jQuerySelector}
+         * @type {jQuerySelector} Only enable editing on certian parts of the element
          */
         partialEdit: false,
 
@@ -1595,15 +1594,12 @@ $.extend($.ui.editor,
         enablePlugins: true,
 
         /**
-         * An array of explicitly disabled plugins
-         * @type String[]
+         * @type String[] An array of explicitly disabled plugins
          */
         disabledPlugins: [],
 
         /**
-         * And array of arrays denoting the order and grouping of UI elements in
-         * the toolbar
-         * @type String[]
+         * @type String[] And array of arrays denoting the order and grouping of UI elements in the toolbar
          */
         uiOrder: null,
 
