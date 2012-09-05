@@ -260,3 +260,19 @@ nav a:hover{
   p, h2, h3 { orphans: 3; widows: 3; }
   h2, h3 { page-break-after: avoid; }
 }
+
+textarea, textarea:focus {
+    width: 28%;
+    height: 250px;
+    padding: 20px 5% 10px;
+    outline: none;
+    float: right;
+    margin-top: 30px;
+    background-color: #f16529;
+    color: white;
+    border: none;
+    border-top:20px solid #e44d26;
+    -webkit-box-shadow: 0 5px 10px #aaa;
+    -moz-box-shadow: 0 5px 10px #aaa;
+    box-shadow: 0 5px 10px #aaa;
+}
