@@ -261,7 +261,7 @@ nav a:hover{
   h2, h3 { page-break-after: avoid; }
 }
 
-textarea, textarea:focus {
+#main-container textarea, #main-container textarea:focus {
     width: 28%;
     height: 250px;
     padding: 20px 5% 10px;
