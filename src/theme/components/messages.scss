@@ -1,0 +1,84 @@
+/**
+ * Message widget styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/border-radius';
+@import 'compass/css3/box-shadow';
+@import 'compass/css3/images';
+
+
+/******************************************************************************\
+ * Messages
+\******************************************************************************/
+.ui-editor-messages {
+    margin: 0;
+
+    .ui-editor-message-close {
+        cursor: pointer;
+        float: right;
+    }
+
+    .ui-icon {
+        margin: 0 0 3px 3px;
+    }
+
+    .ui-icon,
+    .ui-editor-message {
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .ui-editor-message-wrapper {
+        padding: 3px 3px 3px 1px;
+
+        @include box-shadow(
+            inset 0 -1px 1px rgba(0,0,0,0.35),    /*top internal highlight*/
+            inset 0 1px 2px rgba(255,255,255,0.5) /*bottom internal shadow*/
+        );
+    }
+
+    .ui-editor-message-wrapper:first-child {
+        @include border-top-right-radius();
+        @include border-top-left-radius();
+    }
+
+    .ui-editor-message-wrapper:last-child {
+        @include border-bottom-right-radius();
+        @include border-bottom-left-radius();
+    }
+
+    /* Error */
+    .ui-editor-message-circle-close {
+        /* Red */
+        @include background(linear-gradient(top, #ff5d4b, #fa1c1c));
+    }
+
+    /* Confirm */
+    .ui-editor-message-circle-check {
+        /* Green */
+        @include background(linear-gradient(top, #cdeb8e, #a5c956));
+    }
+
+    /* Information */
+    .ui-editor-message-info {
+        /* Blue */
+        @include background(linear-gradient(top, #a9e4f7, #0fb4e7));
+    }
+
+    /* Warning */
+    .ui-editor-message-alert {
+        /* Yellow */
+        @include background(linear-gradient(top, #ffd65e, #febf04));
+    }
+
+    /* Loading */
+    .ui-editor-message-clock {
+        /* Purple */
+        @include background(linear-gradient(top, #fb83fa, #e93cec));
+    }
+
+    .ui-editor-message-clock .ui-icon.ui-icon-clock {
+        background: transparent inline-image('loading-small.png') no-repeat center center;
+    }
+}

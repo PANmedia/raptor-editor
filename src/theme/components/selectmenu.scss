@@ -1,0 +1,74 @@
+/**
+ * Select menu UI widget styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/border-radius';
+
+.ui-editor-selectmenu {
+    overflow: visible;
+    position: relative;
+}
+
+.ui-editor-selectmenu-button {
+    text-align: left;
+    padding: 3px 18px 5px 5px !important;
+
+    // Pervent floated buttons breaking menu position
+    float: none !important;
+    
+    .ui-icon {
+        position: absolute;
+        right: 1px;
+        top: 8px;
+    }
+    .ui-editor-selectmenu-text {
+        font-size: $font-size;
+    }
+}
+
+.ui-editor-selectmenu-wrapper {
+    position: relative;
+}
+
+.ui-editor-selectmenu-button .ui-button-text {
+    padding: 0 25px 0 5px;
+}
+.ui-editor-selectmenu-button .ui-icon {
+    background-repeat: no-repeat;
+}
+
+.ui-editor-selectmenu-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    display: none;
+    margin-top: -1px !important;
+}
+
+.ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {
+    display: block;
+    z-index: 1;
+}
+
+.ui-editor-selectmenu-menu-item {
+    padding: 5px;
+    margin: 3px;
+    z-index: 1;
+    text-align: left;
+    font-size: $font-size;
+    font-weight: normal !important;
+    border: 1px solid transparent;
+    cursor: pointer;
+    background-color: inherit;
+}
+
+.ui-editor-selectmenu-button {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+}
+
+.ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {
+    @include border-bottom-radius(0);
+}

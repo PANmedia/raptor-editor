@@ -1,0 +1,14 @@
+/**
+ * Horizontal rule plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-hr-button .ui-icon-hr {
+    @include opacity(0.85);
+    background: inline-image('edit-rule.png') 0 0;
+}
+.ui-editor-hr-button:hover .ui-icon-hr {
+    @include opacity(1);
+}

@@ -1,0 +1,49 @@
+/**
+ * Paste plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+
+.ui-editor-paste-panel-tabs {
+    height: 100%;
+    width: 100%;
+
+    @include box-sizing(border-box);
+}
+
+.ui-editor-paste .ui-tabs a {
+    outline: none;
+}
+
+.ui-editor-paste-panel-tabs {
+    position: relative;
+
+    @include display-box();
+    @include box-orient(vertical);
+}
+
+.ui-editor-paste-panel-tabs > div {
+    overflow: auto;
+
+    @include display-box();
+    @include box-flex(1);
+    @include box-orient(vertical);
+    @include box-sizing(border-box);
+
+    border: 1px solid #C2C2C2;
+    border-top: none;
+}
+
+.ui-editor-paste-panel-tabs > div > textarea.ui-editor-paste-area {
+    @include box-flex(1);
+    @include display-box();
+}
+
+.ui-editor-paste-panel-tabs > div > textarea,
+.ui-editor-paste-panel-tabs > div > .ui-editor-paste-area {
+    border: none;
+    padding: 2px;
+}

@@ -1,0 +1,24 @@
+/**
+ * Font size plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-font-size-inc-button .ui-icon-font-size-inc {
+    @include opacity(0.85);
+    background: inline-image('edit-size-up.png') 0 0;
+}
+
+.ui-editor-font-size-inc-button:hover .ui-icon-font-size-inc {
+    @include opacity(1);
+}
+
+.ui-editor-font-size-dec-button .ui-icon-font-size-dec {
+    @include opacity(0.85);
+    background: inline-image('edit-size-down.png') 0 0;
+}
+
+.ui-editor-font-size-dec-button:hover .ui-icon-font-size-dec {
+    @include opacity(1);
+}

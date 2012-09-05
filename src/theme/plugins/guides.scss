@@ -1,0 +1,19 @@
+/**
+ * Show guides plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-show-guides-button .ui-icon-pencil {
+    @include opacity(0.85);
+    background: inline-image('guide.png') 0 0;
+}
+
+.ui-editor-show-guides-button:hover .ui-icon-pencil {
+    @include opacity(1);
+}
+
+.ui-editor-ui-show-guides-visible * {
+    outline: 1px dashed rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,5 @@
+@mixin pointer-events($events) {
+    -webkit-pointer-events: $events;
+    -moz-pointer-events: $events;
+    pointer-events: $events;
+}

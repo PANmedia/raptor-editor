@@ -1,0 +1,33 @@
+/**
+ * Main editor styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+
+.ui-editor-editing {
+    outline: none;
+}
+
+/******************************************************************************\
+ * Inputs
+\******************************************************************************/
+.ui-editor-wrapper {
+    textarea,
+    input {
+        border: 1px solid #D4D4D4;
+    }
+}
+
+/******************************************************************************\
+ * Dialogs
+\******************************************************************************/
+.ui-editor-wrapper {
+    .ui-dialog-content {
+        font-size: $font-size;
+    }
+}
+
+html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {
+    margin-top: 0!important;
+}

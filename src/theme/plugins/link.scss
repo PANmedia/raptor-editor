@@ -1,0 +1,125 @@
+/**
+ * Link plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/opacity';
+
+.ui-editor-link-button .ui-icon-link {
+    @include opacity(0.85);
+    background: inline-image('chain.png') 0 0;
+}
+
+.ui-editor-link-button:hover .ui-icon-link {
+    @include opacity(1);
+}
+
+.ui-editor-unlink-button .ui-icon-unlink {
+    @include opacity(0.85);
+    background: inline-image('chain-unchain.png') 0 0;
+}
+
+.ui-editor-unlink-button:hover .ui-icon-unlink {
+    @include opacity(1);
+}
+
+/* Dialog */
+.ui-editor-link-panel .ui-editor-link-menu {
+    height: 100%;
+    width: 200px;
+    float: left;
+    border-right: 1px dashed #D4D4D4;
+
+    @include display-box();
+    @include box-orient(vertical);
+
+    p {
+        font-weight: bold;
+        margin: 12px 0 8px;
+    }
+    fieldset {
+        @include box-flex(2);
+        margin: 2px 4px;
+        padding: 7px 4px;
+        font-size: $font-size;
+        label {
+            display: block;
+            margin-bottom: 10px;
+            span {
+                display: inline-block;
+                width: 150px;
+                font-size: $font-size;
+                vertical-align: top;
+            }
+        }
+    }
+}
+
+.ui-editor-link-panel .ui-editor-link-menu fieldset,
+.ui-editor-link-panel .ui-editor-link-wrap fieldset {
+    border: none;
+}
+
+.ui-editor-link-panel .ui-editor-link-wrap {
+    margin-left: 200px;
+    padding-left: 20px;
+    min-height: 200px;
+    position: relative;
+    &.ui-editor-link-loading{
+        &:after {
+            content: 'Loading...';
+            position: absolute;
+            top: 60px;
+            left: 200px;
+            padding-left: 20px;
+            background: inline-image('loading-small.png') no-repeat left center;
+        }
+    }
+    h2 {
+        margin: 10px 0 0;
+    }
+    fieldset {
+        margin: 2px 4px;
+        padding: 7px 4px;
+        font-size: $font-size;
+        input[type=text] {
+            width: 400px;
+        }
+        &.ui-editor-external-href {
+            width: 365px;
+        }
+        &.ui-editor-link-email label {
+            display: inline-block;
+            width: 115px;
+        }
+        &.ui-editor-link-email input {
+            width: 340px;
+        }
+    }
+    ol {
+        li {
+            list-style: decimal inside;
+        }
+    }
+}
+
+.ui-editor-link-panel .ui-editor-link-wrap
+.ui-editor-link-panel .ui-editor-link-wrap fieldset #ui-editor-link-external-target {
+    vertical-align: middle;
+}
+
+.ui-editor-link-error-message {
+    div {
+        padding: 0 .7em;
+        p {
+            margin: 0;
+            .ui-icon {
+                margin-top: 2px;
+                float: left;
+                margin-right: 2px;
+            }
+        }
+    }
+}

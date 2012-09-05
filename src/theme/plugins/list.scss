@@ -1,0 +1,24 @@
+/**
+ * List plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-list-unordered-button .ui-icon-list-unordered {
+    @include opacity(0.85);
+    background: inline-image('edit-list.png') 0 0;
+}
+
+.ui-editor-list-unordered-button:hover .ui-icon-list-unordered {
+    @include opacity(1);
+}
+
+.ui-editor-list-ordered-button .ui-icon-list-ordered {
+    @include opacity(0.85);
+    background: inline-image('edit-list-order.png') 0 0;
+}
+
+.ui-editor-list-ordered-button:hover .ui-icon-list-ordered {
+    @include opacity(1);
+}

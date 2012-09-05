@@ -1,0 +1,15 @@
+/**
+ * Clean content plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-clean-button .ui-icon-clean {
+    @include opacity(0.85);
+    background: inline-image('recycle-bin-empty.png') 0 0;
+}
+
+.ui-editor-clean-button:hover .ui-icon-clean {
+    @include opacity(1);
+}

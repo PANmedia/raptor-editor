@@ -1,0 +1,40 @@
+/**
+ * View source plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+
+.ui-editor-view-source-button .ui-icon-view-source {
+    @include opacity(0.85);
+    background: inline-image('edit-code.png') 0 0;
+}
+
+.ui-editor-view-source-button:hover .ui-icon-view-source {
+    @include opacity(1);
+}
+
+.ui-editor-ui-view-source .ui-editor-ui-view-source-dialog {
+    overflow: auto;
+}
+
+.ui-editor-ui-view-source-plain-text {
+    height: 100%;
+    width: 100%;
+    @include display-box();
+    @include box-orient(vertical);
+}
+.ui-editor-ui-view-source-dialog textarea {
+    white-space: pre-line;
+    width: 100%;
+    height: 100%;
+
+    @include display-box();
+    @include box-orient(vertical);
+    @include box-flex(1);
+    @include box-sizing(border-box);
+}
+

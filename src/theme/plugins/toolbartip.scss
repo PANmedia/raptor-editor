@@ -1,0 +1,46 @@
+/**
+ * Basic text style plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/border-radius';
+@import 'compass/css3/images';
+@import 'compass/css3/transition';
+
+.ui-editor-wrapper [data-title]:after {
+    opacity: 0;
+    content: attr(data-title);
+    display: block;
+    position: absolute;
+    top: 100%;
+    font-size: 12px;
+    font-weight: normal;
+    color: white;
+    padding: 11px 16px 7px;
+    white-space: nowrap;
+    text-shadow: none;
+    overflow: visible;
+    z-index: 1000;
+    @include pointer-events(none);
+    @include border-radius(9px 9px 2px 2px);
+    @include transition(opacity 0.23s 0s);
+    @include background(
+        linear-gradient(rgba(40, 40, 40, 0) 5px, rgba(40, 40, 40, 1) 6px, rgba(40, 40, 40, 1)),
+        inline-image('tip.png') no-repeat 10px 0
+    );
+}
+
+.ui-editor-wrapper [data-title]:hover:after {
+    opacity: 1;
+}
+
+.ui-editor-wrapper .ui-editor-select-element {
+    position: relative;
+}
+
+.ui-editor-wrapper .ui-editor-select-element:after {
+    @include background(
+        linear-gradient(rgba(40, 40, 40, 0) 5px, rgba(40, 40, 40, 1) 6px, rgba(40, 40, 40, 1)),
+        inline-image('tip.png') no-repeat 3px 0
+    );
+}

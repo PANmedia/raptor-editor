@@ -1,0 +1,35 @@
+/**
+ * Internationalisation plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+ .ui-editor-wrapper .ui-editor-i18n-select {
+    height: 23px;
+    top: -8px;
+    text-align: left;
+}
+
+.ui-editor-wrapper .ui-editor-i18n-select .ui-editor-selectmenu-status {
+    font-size: $font-size;
+    line-height: 10px;
+}
+
+.ui-editor-selectmenu-menu li a, .ui-editor-selectmenu-status {
+    line-height: 12px;
+}
+
+.ui-editor-wrapper .ui-editor-i18n-select .ui-editor-selectmenu-item-icon {
+    height: 24px;
+    width: 24px;
+}
+
+.ui-editor-selectmenu-menu .ui-icon.ui-editor-i18n-en,
+.ui-editor-wrapper .ui-icon.ui-editor-i18n-en  {
+    background: inline-image('flags/gb.png') 0 0;
+}
+
+.ui-editor-selectmenu-menu .ui-icon.ui-editor-i18n-zh_CN,
+.ui-editor-wrapper .ui-icon.ui-editor-i18n-zh_CN  {
+    background: inline-image('flags/cn.png') 0 0;
+}

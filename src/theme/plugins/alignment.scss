@@ -1,0 +1,39 @@
+/**
+ * Text alignment plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-align-left-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-alignment.png') 0 0;
+}
+
+.ui-editor-align-left-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-align-right-button .ui-icon {
+    background: inline-image('edit-alignment-right.png') 0 0;
+}
+
+.ui-editor-align-right-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-align-center-button .ui-icon {
+    background: inline-image('edit-alignment-center.png') 0 0;
+}
+
+.ui-editor-align-center-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-align-justify-button .ui-icon {
+    background: inline-image('edit-alignment-justify.png') 0 0;
+}
+
+.ui-editor-align-justify-button:hover .ui-icon {
+    @include opacity(1);
+}

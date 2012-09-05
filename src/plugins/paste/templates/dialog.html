@@ -1,0 +1,22 @@
+<div class="ui-editor-paste-panel ui-dialog-content ui-widget-content">
+    <div class="ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a>_('Plain Text')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('Formatted &amp; Cleaned')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('Formatted Unclean')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('Source Code')</a></li>
+        </ul>
+        <div class="ui-editor-paste-plain-tab">
+            <textarea class="ui-editor-paste-area ui-editor-paste-plain">{{plain}}</textarea>
+        </div>
+        <div class="ui-editor-paste-markup-tab" style="display: none">
+            <div contenteditable="true" class="ui-editor-paste-area ui-editor-paste-markup">{{markup}}</div>
+        </div>
+        <div class="ui-editor-paste-rich-tab" style="display: none">
+            <div contenteditable="true" class="ui-editor-paste-area ui-editor-paste-rich">{{html}}</div>
+        </div>
+        <div class="ui-editor-paste-source-tab" style="display: none">
+            <textarea class="ui-editor-paste-area ui-editor-paste-source">{{html}}</textarea>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+/**
+ * History plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-undo-button .ui-icon-undo {
+    @include opacity(0.85);
+    background: inline-image('arrow-curve-180-left.png') 0 0;
+}
+
+.ui-editor-undo-button:hover .ui-icon-undo {
+    @include opacity(1);
+}
+
+.ui-editor-redo-button .ui-icon-redo {
+    @include opacity(0.85);
+    background: inline-image('arrow-curve.png') 0 0;
+}
+
+.ui-editor-redo-button:hover .ui-icon-redo {
+    @include opacity(1);
+}

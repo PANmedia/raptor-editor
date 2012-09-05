@@ -1,0 +1,18 @@
+/**
+ * Tag menu plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-icon {
+    text-align: left;
+}
+
+.ui-editor-wrapper .ui-editor-selectmenu .ui-editor-selectmenu-button .ui-editor-selectmenu-text {
+    font-size: $font-size;
+    line-height: 22px;
+}
+
+.ui-editor-selectmenu-menu li a, .ui-editor-selectmenu-status {
+    line-height: 12px;
+}

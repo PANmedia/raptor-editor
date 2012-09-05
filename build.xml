@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Raptor" default="build">
+    <if>
+        <not><equals arg1="${loaded}" arg2="true" /></not>
+        <then>
+            <property file="build.properties" override="false" />
+        </then>
+    </if>
+
+    <!-- =================================================================== -->
+    <!-- main build targets                                                  -->
+    <!-- =================================================================== -->
+    <target name="build">
+        <phingcall target="clean" />
+        <phingcall target="theme" />
+        <phingcall target="clone" />
+        <phingcall target="strip-blocks" />
+        <phingcall target="version" />
+        <phingcall target="copy-dependencies" />
+        <phingcall target="combine" />
+        <phingcall target="compile" />
+        <phingcall target="merge" />
+        <phingcall target="merge-min" />
+        <phingcall target="package" />
+        <phingcall target="gz" />
+    </target>
+
+    <target name="test-build">
+        <echo>${phing.project.name}</echo>
+        <echo>${project.basedir}</echo>
+        <echo>${dir.package}</echo>
+        <echo>${dir.build}</echo>
+        <echo>${strip.blocks}</echo>
+        <echo>${theme}</echo>
+        <echo>${addons.manifest}</echo>
+        <echo>${addons.extra}</echo>
+        <echo>${jquery-no-conflict}</echo>
+    </target>
+
+    <target name="0deps">
+        <property file="build.0deps.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="nc">
+        <property file="build.0deps.nc.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="light">
+        <property file="build.light.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="debug">
+        <property file="build.debug.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Translation build targets                                           -->
+    <!-- =================================================================== -->
+
+    <target name="translationcheck">
+        <translationcheck>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationcheck>
+    </target>
+
+    <target name="translationupdate">
+        <translationupdate>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationupdate>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compress PNG images                                                 -->
+    <!-- =================================================================== -->
+    <target name="pngout">
+        <foreach param="input.file.name" absparam="input.file" target="pngout-exec">
+            <fileset dir="src">
+                <include name="*.png" />
+                <include name="**/*.png" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Development build                                                   -->
+    <!-- =================================================================== -->
+    <target name="dev">
+        <phingcall target="clean" />
+        <phingcall target="dev-clone" />
+        <phingcall target="datauri" />
+    </target>
+
+    <target name="dev-clone">
+        <copy todir="${dir.build}" >
+            <fileset dir="src">
+                <include name="**/*" />
+                <exclude name="dependencies/**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Prepare for build                                                   -->
+    <!-- =================================================================== -->
+    <target name="clean">
+        <delete dir="${dir.build}" includeemptydirs="true" failonerror="true" />
+        <mkdir dir="${dir.build}" />
+        <mkdir dir="${dir.package}" />
+    </target>
+
+    <target name="clone" depends="theme">
+        <!-- Copy all source files excluding plugins -->
+        <copy todir="${dir.build}" >
+            <fileset dir="src">
+                <include name="**/*" />
+                <exclude name="**/*.php" />
+                <exclude name="dependencies/**" />
+                <exclude name="plugins/**" />
+                <exclude name="plugins-extra/**" />
+                <exclude name="theme/**" />
+                <exclude name="jquery.ui.editor.loader.js" />
+            </fileset>
+        </copy>
+        <copy todir="${dir.build}" >
+            <fileset dir="src">
+                <include name="theme/theme.css" />
+            </fileset>
+        </copy>
+
+        <!-- Copy specified addons -->
+        <phingcall target="clone-addons" />
+    </target>
+
+    <target name="clone-addons">
+        <addons file="${addons.extra}" builddir="${dir.build}"></addons>
+        <addons file="${addons.manifest}" builddir="${dir.build}"></addons>
+    </target>
+
+    <target name="pngout-exec">
+        <exec command="pngout ${input.file}" logoutput="true" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Strip debug/strict blocks                                           -->
+    <!-- =================================================================== -->
+    <target name="strip-blocks">
+        <echo>Stripping blocks ${strip.blocks}</echo>
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="**/*" />
+            </fileset>
+            <filterchain>
+                <!-- Replace the blocks using regex -->
+                <replaceregexp>
+                    <regexp pattern="//\s&lt;(${strip.blocks})&gt;.*?//\s&lt;/(${strip.blocks})&gt;"
+                            replace="// &lt;$1/&gt;"
+                            ignoreCase="true"
+                            multiline="true" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Replace version token with current version string                   -->
+    <!-- =================================================================== -->
+    <target name="version">
+        <echo>Replacing version token ${version}</echo>
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="**/*" />
+            </fileset>
+            <filterchain>
+                <!-- Replace the blocks using regex -->
+                <replaceregexp>
+                    <regexp pattern="VERSION" replace="${version}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Copy dependencies                                                   -->
+    <!-- =================================================================== -->
+    <target name="copy-dependencies">
+        <!-- Copy all dependencies and prefix a number to enforce load order -->
+
+        <!-- Rangy -->
+        <if><istrue value="${rangy}" /><then>
+            <copy file="${dir.deps}/rangy/rangy-core.js"
+                  tofile="${dir.build}/01-rangy-core.js" />
+            <copy file="${dir.deps}/rangy/rangy-cssclassapplier.js"
+                  tofile="${dir.build}/02-rangy-cssclassapplier.js" />
+            <copy file="${dir.deps}/rangy/rangy-selectionsaverestore.js"
+                  tofile="${dir.build}/03-rangy-selectionsaverestore.js" />
+            <copy file="${dir.deps}/rangy/rangy-serializer.js"
+                  tofile="${dir.build}/04-rangy-serializer.js" />
+        </then></if>
+
+        <!-- jQuery no conflict open wrapper -->
+        <if><not><isfalse value="${jquery-no-conflict}" /></not><then>
+            <echo file="${dir.build}/05-jquery-no-conflict-open.js">
+                (function(window, undefined) {
+            </echo>
+        </then></if>
+
+        <!-- jQuery -->
+        <if><istrue value="${jquery}" /><then>
+            <copy file="${dir.deps}/jquery.js"
+                  tofile="${dir.build}/06-jquery.js" />
+        </then></if>
+
+        <!-- jQuery no conflict -->
+        <if><not><isfalse value="${jquery-no-conflict}" /></not><then>
+            <echo file="${dir.build}/07-jquery-no-conflict.js">
+                var jQuery = window.jQuery.noConflict(true);
+                var $ = jQuery;
+                window['${jquery-no-conflict}'] = jQuery;
+            </echo>
+        </then></if>
+
+        <!-- jQuery UI -->
+        <if><istrue value="${jquery-ui}" /><then>
+            <copy file="${dir.deps}/jquery-ui.js"
+                  tofile="${dir.build}/08-jquery-ui.js" />
+        </then></if>
+
+        <!-- jQuery Hotkeys -->
+        <if><istrue value="${jquery-hotkeys}" /><then>
+            <copy file="${dir.deps}/jquery-hotkeys.js"
+                  tofile="${dir.build}/09-jquery-hotkeys.js" />
+        </then></if>
+
+        <!-- Raptorize -->
+        <if><istrue value="${raptorize}" /><then>
+            <copy file="${dir.deps}/raptorize/jquery.raptorize.js"
+                  tofile="${dir.build}/10-raptorize.js" />
+        </then></if>
+
+        <!-- CSS -->
+        <if><istrue value="${jquery-ui-theme}" /><then>
+            <copy todir="${dir.build}/01-theme">
+                <fileset dir=".">
+                    <include name="${dir.deps}/themes/${theme}/jquery-ui.css" />
+                    <include name="${dir.deps}/themes/${theme}/images/**/*" />
+                </fileset>
+            </copy>
+        </then></if>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compile theme                                                       -->
+    <!-- =================================================================== -->
+    <target name="theme">
+        <exec command="sass --compass theme.scss theme.css" logoutput="true" dir="src/theme" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Convert images to data URIs                                         -->
+    <!-- =================================================================== -->
+    <target name="datauri">
+        <datauri>
+            <fileset dir=".">
+                <include name="${dir.build}/*.css" />
+                <include name="${dir.build}/**/*.css" />
+            </fileset>
+        </datauri>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Convert HTML templates to JSON                                      -->
+    <!-- =================================================================== -->
+    <target name="template">
+        <template name="templates">
+            <fileset dir=".">
+                <include name="${dir.build}/*.html" />
+                <include name="${dir.build}/**/*.html" />
+            </fileset>
+        </template>
+
+        <reflexive>
+            <fileset dir=".">
+                <include name="${dir.build}/jquery.ui.editor.js" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="\/\* &lt;templates\/&gt; \*\/" replace="${templates}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Combine all files                                                   -->
+    <!-- =================================================================== -->
+    <target name="combine" depends="datauri,template,open-wrapper">
+        <sortedfileset name="jsfiles">
+            <fileset dir=".">
+                <exclude name="${dir.build}/concat.js" />
+                <include name="${dir.build}/*.js" />
+                <include name="${dir.build}/**/*.js" />
+            </fileset>
+        </sortedfileset>
+        <append destFile="${dir.build}/concat.js">
+            <filelist dir="." files="${jsfiles}" />
+        </append>
+
+        <!-- Append global wrapper close -->
+        <if><istrue value="${wrapper}" /><then>
+            <echo file="${dir.build}/concat.js" append="true">
+                })(jQuery, window, rangy);
+            </echo>
+        </then></if>
+
+        <!-- jQuery no conflict wrapper close -->
+        <if><not><isfalse value="${jquery-no-conflict}" /></not><then>
+            <echo file="${dir.build}/concat.js" append="true">
+                })(window);
+            </echo>
+        </then></if>
+
+        <sortedfileset name="cssfiles">
+            <fileset dir=".">
+                <exclude name="${dir.build}/concat.css" />
+                <include name="${dir.build}/*.css" />
+                <include name="${dir.build}/**/*.css" />
+            </fileset>
+        </sortedfileset>
+        <echo>${cssfiles}</echo>
+        <append destFile="${dir.build}/concat.css">
+            <filelist dir="." files="${cssfiles}" />
+        </append>
+    </target>
+
+    <target name="open-wrapper">
+        <!-- Append global wrapper open -->
+        <if>
+            <istrue value="${wrapper}" />
+            <then>
+                <echo file="${dir.build}/99-wrapper-open.js">(function($, window, rangy, undefined) {</echo>
+            </then>
+        </if>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compile (minify) all files                                          -->
+    <!-- =================================================================== -->
+    <target name="compile">
+        <if>
+            <istrue value="${compile-js}" />
+            <then>
+                <echo>closure --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js</echo>
+                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js"
+                      dir="." level="info" outputProperty="output" />
+                <echo>${output}</echo>
+            </then>
+            <else>
+                <copy file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
+            </else>
+        </if>
+        <if>
+            <istrue value="${compile-css}" />
+            <then>
+                <echo>yui-compressor --type css -o ${dir.build}/concat.min.css ${dir.build}/concat.css</echo>
+                <exec command="yui-compressor --type css -o ${dir.build}/concat.min.css ${dir.build}/concat.css"
+                      dir="." level="info" outputProperty="output" />
+                <echo>${output}</echo>
+            </then>
+            <else>
+                <move file="${dir.build}/concat.css" tofile="${dir.build}/concat.min.css" />
+            </else>
+        </if>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Merge CSS and JS into one file                                      -->
+    <!-- =================================================================== -->
+    <target name="merge">
+        <!-- Append VERSION file in a comment -->
+        <echo file="${dir.build}/merge.js" append="true">/*! ${line.separator}VERSION: ${version} </echo>
+        <echo file="${dir.build}/merge.js" append="true">${line.separator}</echo>
+        <!-- Append LICENSE file in the same comment -->
+        <echo>${project.basedir}/LICENSE</echo>
+        <append destFile="${dir.build}/merge.js">
+            <fileset dir="${project.basedir}">
+                <include name="LICENSE" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.js" append="true">*/${line.separator}</echo>
+        <!-- Close the comment -->
+
+        <!-- Append the merged JS -->
+        <append destFile="${dir.build}/merge.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.js" />
+            </fileset>
+        </append>
+
+        <!-- Append the style inserter -->
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="concat.css" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\r" replace="" />
+                    <regexp pattern="\n" replace="\n\${line.separator}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append destFile="${dir.build}/merge.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.css" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+    </target>
+
+    <target name="merge-min">
+        <!-- Append VERSION file in a comment -->
+        <echo file="${dir.build}/merge.min.js" append="true">/*! ${line.separator}VERSION: ${version} </echo>
+        <echo file="${dir.build}/merge.min.js" append="true">${line.separator}</echo>
+        <!-- Append LICENSE file in the same comment -->
+        <echo>${project.basedir}/LICENSE</echo>
+        <append destFile="${dir.build}/merge.min.js">
+            <fileset dir="${project.basedir}">
+                <include name="LICENSE" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.min.js" append="true">*/${line.separator}</echo>
+        <!-- Close the comment -->
+
+        <!-- Append the merged JS -->
+        <append destFile="${dir.build}/merge.min.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.min.js" />
+            </fileset>
+        </append>
+
+        <!-- Append the style inserter -->
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="concat.min.css" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\n" replace="\n\${line.separator}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append destFile="${dir.build}/merge.min.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.min.css" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Package files                                                       -->
+    <!-- =================================================================== -->
+    <target name="package">
+        <mkdir dir="${dir.package}" />
+        <copy file="${dir.build}/merge.js" tofile="${dir.package}/${filename}.js" />
+        <copy file="${dir.build}/merge.min.js" tofile="${dir.package}/${filename}.min.js" />
+        <echo>${dir.package}/${filename}</echo>
+    </target>
+
+    <target name="gz">
+        <exec command="cat ${dir.package}/${filename}.min.js | gzip -9 -c > ${dir.package}/${filename}.min.js.gz" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Adhoc classes                                                       -->
+    <!-- =================================================================== -->
+    <adhoc-task name="datauri">
+        require_once '${project.basedir}/classes/DataURI.php';
+    </adhoc-task>
+
+    <adhoc-task name="sortedfileset">
+        require_once '${project.basedir}/classes/SortedFileSet.php';
+    </adhoc-task>
+
+    <adhoc-task name="template">
+        require_once '${project.basedir}/classes/TemplateTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationcheck">
+        require_once '${project.basedir}/classes/TranslationCheckTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationupdate">
+        require_once '${project.basedir}/classes/TranslationUpdateTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="addons">
+        require_once '${project.basedir}/classes/AddonsTask.php';
+    </adhoc-task>
+
+</project>

@@ -1,0 +1,60 @@
+/**
+ * Basic text style plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-text-bold-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-bold.png') 0 0;
+}
+
+.ui-editor-text-bold-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-text-italic-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-italic.png') 0 0;
+}
+
+.ui-editor-text-italic-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-text-underline-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-underline.png') 0 0;
+}
+
+.ui-editor-text-underline-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-text-strike-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-strike.png') 0 0;
+}
+
+.ui-editor-text-strike-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-text-sub-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-subscript.png') 0 0;
+}
+
+.ui-editor-text-sub-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-text-super-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-superscript.png') 0 0;
+}
+
+.ui-editor-text-super-button:hover .ui-icon {
+    @include opacity(1);
+}

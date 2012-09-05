@@ -1,0 +1,46 @@
+Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons Attribution 3.0 license. http://p.yusukekamiyamane.com/
+ - arrow-circle-135-left.png
+ - arrow-curve-180-left.png
+ - arrow-curve.png
+ - chain-unchain.png
+ - chain.png
+ - clear-formatting.png (modified by David Neilsen)
+ - cross.png
+ - dashboard.png
+ - disk-black.png
+ - edit-alignment-center.png
+ - edit-alignment-justify.png
+ - edit-alignment-right.png
+ - edit-alignment.png
+ - edit-bold.png
+ - edit-code.png
+ - edit-image-none.png (modified by David Neilsen)
+ - edit-image-right.png
+ - edit-image.png
+ - edit-italic.png
+ - edit-list-order.png
+ - edit-list.png
+ - edit-quotation.png
+ - edit-rule.png
+ - edit-size-down.png
+ - edit-size-up.png
+ - edit-strike.png
+ - edit-subscript.png
+ - edit-superscript.png
+ - edit-underline.png
+ - guide.png
+ - image.png
+ - pin-in.png (modified by David Neilsen)
+ - pin.png
+
+Icons by Paul Robert Lloyd. Licensed under Creative Commons Attribution-ShareAlike 2.0 UK: England & Wales license. http://www.iconfinder.com/icondetails/43189/16/button_play_red_white_youtube_icon
+ - youtube.png
+
+Icons by PraX-08. Licensed under Creative Commons Attribution 3.0 Unported license. http://www.iconfinder.com/icondetails/53041/16/bin_empty_recycle_icon
+ - recycle-bin-empty.png
+
+Images by PANmedia. All rights reserved. See license file.
+ - raptorize.png
+
+Images by David Neilsen. All rights reserved. See license file.
+ - tip.png

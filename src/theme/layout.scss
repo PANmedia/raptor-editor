@@ -1,0 +1,84 @@
+/**
+ * Main editor layout
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+@import 'compass/css3/user-interface';
+
+/******************************************************************************\
+ * Editor toolbar
+\******************************************************************************/
+
+.ui-editor-wrapper {
+    overflow: visible;
+    z-index: 1001;
+    position: fixed;
+
+    .ui-editor-toolbar {
+        padding: 6px 0 0 5px;
+        overflow: visible;
+    }
+
+    .ui-editor-toolbar,
+    .ui-editor-toolbar * {
+        @include user-select(none);
+    }
+
+    .ui-dialog-titlebar {
+        .ui-editor-element-path:first-child {
+            margin-left: 5px;
+        }
+    }
+
+    .ui-dialog-titlebar .ui-editor-element-path {
+        min-width: 10px;
+        min-height: 15px;
+        display: inline-block;
+    }
+}
+
+.ui-editor-dock-docked-to-element .ui-editor-toolbar {
+    padding: 5px 0 0 5px!important;
+
+    .ui-editor-group {
+        margin: 0 5px 5px 0;
+    }
+}
+
+.ui-editor-dock-docked-element {
+    display: block !important;
+    border: 0 none transparent;
+    @include box-sizing(border-box);
+}
+
+
+/******************************************************************************\
+ * Inputs
+\******************************************************************************/
+.ui-editor-wrapper {
+    textarea,
+    input {
+        padding: 5px;
+    }
+}
+
+/******************************************************************************\
+ * Dialogs
+\******************************************************************************/
+.ui-editor-wrapper {
+    .ui-dialog-content {
+        font-size: $font-size;
+    }
+
+    textarea {
+        @include display-box();
+        @include box-flex(1);
+    }
+}
+
+html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {
+    margin-top: 0!important;
+}

@@ -1,0 +1,24 @@
+/**
+ * Save plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-save-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('disk-black.png') 0 0;
+}
+
+.ui-editor-save-button:hover .ui-icon {
+    @include opacity(1);
+}
+
+.ui-editor-cancel-button .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('cross.png') 0 0;
+}
+
+.ui-editor-cancel-button:hover .ui-icon {
+    @include opacity(1);
+}

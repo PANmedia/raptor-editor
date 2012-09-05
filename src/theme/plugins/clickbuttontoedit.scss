@@ -1,0 +1,22 @@
+/**
+ * Click to edit plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+@import 'compass/css3/transition';
+
+.ui-editor-click-button-to-edit-button {
+    z-index: 4000;
+}
+
+.ui-editor-click-button-to-edit {
+    outline: 1px solid transparent;
+}
+
+.ui-editor-click-button-to-edit-highlight {
+    outline: 1px dotted rgba(0, 0, 0, 0.5);
+    @include transition(all 0.5s 0s);
+}
+

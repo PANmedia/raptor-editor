@@ -1,0 +1,39 @@
+/**
+ * Click to edit plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/border-radius';
+@import 'compass/css3/box-shadow';
+@import 'compass/css3/images';
+@import 'compass/css3/opacity';
+@import 'compass/css3/text-shadow';
+@import 'compass/css3/transition';
+
+.ui-editor-click-to-edit-message {
+    padding: 10px;
+    border: 1px solid #D4D4D4;
+    font-size: $font-size;
+    z-index: 4000;
+    color: #000;
+
+    @include text-shadow(none);
+    @include pointer-events(none);
+    @include border-radius(5px);
+    @include background(linear-gradient(top, #f2fff2, #daf2d7));
+    @include box-shadow(0px 2px 10px #ccc);
+    @include transition(opacity 0.5s 0s);
+    @include opacity(0);
+}
+
+.ui-editor-click-to-edit-visible {
+    @include opacity(1);
+}
+
+.ui-editor-click-to-edit-highlight {
+    cursor: pointer;
+    outline: 1px dotted rgba(0, 0, 0, 0.5);
+    @include transition(all 0.5s 0s);
+}
+

@@ -1,0 +1,18 @@
+/**
+ * Basic color picker plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.ui-editor-color-picker-basic-select .ui-editor-selectmenu-menu {
+    min-width: 100px;
+}
+.ui-editor-color-picker-basic-select span {
+    padding-left: 2px;
+}
+.ui-editor-color-picker-basic-swatch {
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin-top: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}

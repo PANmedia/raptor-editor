@@ -1,0 +1,70 @@
+/**
+ * Button UI widget styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/border-radius';
+@import 'compass/css3/box-sizing';
+
+.ui-editor-buttonset {
+    float: left;
+    margin: 0 5px 4px 0;
+    display: inline-block;
+
+    > .ui-button {
+        float: left;
+        display: block;
+        margin: 0 -1px 0 0;
+        font-size: $font-size;
+    }
+
+    .ui-button:hover {
+        z-index: 1;
+    }
+
+    .ui-editor-selectmenu {
+        display: block;
+
+        .ui-button {
+            margin: 0 -1px 0 0;
+        }
+    }
+}
+
+.ui-editor-ff .ui-editor-buttonset {
+    float: none;
+    vertical-align: top;
+}
+
+.ui-editor-wrapper {
+    .ui-button {
+        height: 32px;
+        margin-bottom: 0;
+        margin-top: 0;
+        padding: 0;
+    @include box-sizing(border-box);
+    }
+    .ui-button-icon-only { width: 32px; }
+}
+
+
+.ui-editor-wrapper {
+    .ui-editor-buttonset {
+        > .ui-button {
+            @include border-radius(0);
+
+            &:first-child {
+                @include border-top-left-radius();
+                @include border-bottom-left-radius();
+            }
+            &:last-child {
+                @include border-top-right-radius();
+                @include border-bottom-right-radius();
+            }
+        }
+    }
+}
+
+.ui-button-icon-only .ui-button-text {
+    display: none;
+}

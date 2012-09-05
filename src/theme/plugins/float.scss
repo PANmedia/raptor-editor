@@ -1,0 +1,33 @@
+/**
+ * Float block plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-float-left-button .ui-icon-float-left {
+    @include opacity(0.85);
+    background: inline-image('edit-image.png') 0 0;
+}
+
+.ui-editor-float-left-button:hover .ui-icon-float-left {
+    @include opacity(1);
+}
+
+.ui-editor-float-none-button .ui-icon-float-none {
+    @include opacity(0.85);
+    background: inline-image('edit-image-none.png') 0 0;
+}
+
+.ui-editor-float-none-button:hover .ui-icon-float-none {
+    @include opacity(1);
+}
+
+.ui-editor-float-right-button .ui-icon-float-right {
+    @include opacity(0.85);
+    background: inline-image('edit-image-right.png') 0 0;
+}
+
+.ui-editor-float-right-button:hover .ui-icon-float-right {
+    @include opacity(1);
+}

@@ -1,0 +1,15 @@
+/**
+ * Blockquote plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.ui-editor-quote-block-button .ui-icon-quote {
+    @include opacity(0.85);
+    background: inline-image('edit-quotation.png') 0 0;
+}
+
+.ui-editor-quote-block-button:hover .ui-icon-quote {
+    @include opacity(1);
+}
