@@ -13,8 +13,7 @@
     embed: /** @lends $.editor.ui.embed.prototype */ {
 
         /**
-         * Reference to the embed dialog. Only one dialog avalible for all editors.
-         * @type {Object}
+         * @type {Object} Reference to the embed dialog. Only one dialog avalible for all editors.
          */
         dialog: null,
 
