@@ -779,7 +779,10 @@ $.widget('ui.editor',
             var editor = this;
             $(function() {
                 editor.fire('show');
-                editor.getElement().focus();
+                // Only focus element if the element is not a textarea / input
+                if (!editor.element.is('textarea, input')) {
+                    editor.getElement().focus();
+                }
             });
         }
     },
