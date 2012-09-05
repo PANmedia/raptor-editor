@@ -1052,6 +1052,7 @@ $.widget('ui.editor',
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(this, options);
 
+                    // Bind hotkeys
                     if (uiObject.hotkeys) {
                         this.registerHotkey(uiObject.hotkeys, null, uiObject);
                         // Add hotkeys to title
@@ -1125,6 +1126,7 @@ $.widget('ui.editor',
                     e.preventDefault();
                     // Call the click event function
                     button.click.apply(object, arguments);
+                    editor.checkChange();
                 });
 
                 editor.bind('destroy', $.proxy(function() {

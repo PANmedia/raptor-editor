@@ -102,7 +102,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
                                     selectionRestore();
                                     selectionReplace(html);
-
+                                    editor.checkChange();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
