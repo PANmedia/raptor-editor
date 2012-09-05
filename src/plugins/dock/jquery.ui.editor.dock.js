@@ -12,6 +12,11 @@
  */
 $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ {
 
+    /**
+     * @type {jQuery} The wrapper element.
+     */
+    wrapper: null,
+
     enabled: false,
     docked: false,
     topSpacer: null,
@@ -86,7 +91,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.fire('resize');
     },
 
-
     /**
      * Change CSS styles between two values.
      *
@@ -130,41 +134,32 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         if (debugLevel >= MID) debug('Dock to element', plugin.editor.getElement());
         // </debug>
 
-        // Needs to be in the ready event because we cant insert to the DOM before ready (if auto enabling, before ready)
-//        $(function() {
-//            var element = plugin.editor.getElement()
-//                .addClass(plugin.options.baseClass + '-docked-element');
-//            plugin.editor.wrapper
-//                .addClass(plugin.options.baseClass + '-docked-to-element')
-//                .insertBefore(plugin.editor.getElement())
-//                .append(element);
-//        });
-
-        var wrapper = $('<div/>')
-            .insertBefore(this.editor.getElement())
-            .addClass(this.options.baseClass + '-docked-to-element-wrapper');
+        if (this.wrapper === null) {
+            this.wrapper = $('<div/>')
+                .insertBefore(this.editor.getElement())
+                .addClass(this.options.baseClass + '-docked-to-element-wrapper');
+        }
 
         this.editor.wrapper
-            .appendTo(wrapper);
+            .appendTo(this.wrapper);
 
-        this.previousStyle = this.swapStyle(wrapper, this.editor.getElement(), {
-            'display': 'block',
-            'float': 'none',
-            'clear': 'none',
-            'position': 'static',
-            'margin-left': 0,
-            'margin-right': 0,
-            'margin-top': 0,
-            'margin-bottom': 0,
-            'outline': 0,
-            'width': 'auto'
+        // this.previousStyle =
+        this.swapStyle(this.wrapper, this.editor.getElement(), {
+            'display': this.editor.getElement().css('display') || 'block',
+            'float': this.editor.getElement().css('float') || 'none',
+            'clear': this.editor.getElement().css('clear') || 'none',
+            'position': this.editor.getElement().css('position') || 'static',
+            'margin-left': this.editor.getElement().css('margin-left') || 0,
+            'margin-right': this.editor.getElement().css('margin-right') || 0,
+            'margin-top': this.editor.getElement().css('margin-top') || 0,
+            'margin-bottom': this.editor.getElement().css('margin-bottom') || 0,
+            'outline': this.editor.getElement().css('outline') || 0,
+            'width': this.editor.getElement().css('width') || 'auto'
         });
 
-        wrapper.css('width', wrapper.width() +
+        this.wrapper.css('width', this.wrapper.width() +
             parseInt(this.editor.getElement().css('padding-left'), 10) +
-            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
-            parseInt(this.editor.getElement().css('border-right-width')) +
-            parseInt(this.editor.getElement().css('border-left-width')));*/
+            parseInt(this.editor.getElement().css('padding-right'), 10));
 
         this.editor.getElement()
             .appendTo(this.editor.wrapper)
@@ -178,7 +173,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         // <debug>
         if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
         // </debug>
-
         this.editor.getElement()
             .insertAfter(this.editor.wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
@@ -186,6 +180,8 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.wrapper
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
+
+        this.editor.wrapper.css('width', 'auto');
     },
 
     /**
@@ -368,13 +364,15 @@ $.ui.editor.registerUi({
                 click: function() {
                     // Toggle dock on current editor
                     var plugin = editor.getPlugin('dock');
+
                     if (plugin.isDocked()) plugin.undock();
                     else plugin.dock();
 
                     // Set (un)docked on all unified editors
                     editor.unify(function(editor) {
-                        if (plugin.isDocked()) editor.getPlugin('dock').dock();
-                        else editor.getPlugin('dock').undock();
+                        var plugin = editor.getPlugin('dock');
+                        if (plugin.isDocked()) plugin.dock();
+                        else plugin.undock();
                     });
                 }
             });
