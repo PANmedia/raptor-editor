@@ -522,13 +522,15 @@ $.widget('ui.editor',
     unify: function(callback, callSelf) {
         if (callSelf !== false) callback(this);
         if (this.options.unify) {
-            var instances = $.ui.editor.getInstances();
-            for (var i = 0; i < instances.length; i++) {
-                if (instances[i] !== this &&
-                        instances[i].options.unify) {
-                    callback(instances[i]);
+            var currentInstance = this;
+            $.ui.editor.eachInstance(function(instance) {
+                if (instance === currentInstance) {
+                    return;
                 }
-            }
+                if (instance.options.unify) {
+                    callback(instance);
+                }
+            });
         }
     },
 
