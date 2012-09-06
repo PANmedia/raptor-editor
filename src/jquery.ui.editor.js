@@ -1551,6 +1551,7 @@ $.extend($.ui.editor,
     selectionExists: selectionExists,
     selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
     selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
+    selectionToggleBlockStyle: selectionToggleBlockStyle,
     stringStripTags: stringStripTags,
     // </expose>
 

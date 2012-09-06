@@ -357,3 +357,33 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selectionReplaceSplittingSelectedElement(html, selection);
     return;
 }
+
+/**
+ * Toggles style(s) on the first block level parent element of each range in a selection
+ *
+ * @public @static
+ * @param {Object} styles styles to apply
+ * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
+ * If there is no block level elements before the limit, then the limit content
+ * element will be wrapped with a "div"
+ */
+function selectionToggleBlockStyle(styles, limit) {
+    selectionEachRange(function(range) {
+        var parent = $(range.commonAncestorContainer);
+        while (parent.length && parent[0] !== limit[0] && (
+                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+            parent = parent.parent();
+        }
+        if (parent[0] === limit[0]) {
+            // Only apply block style if the limit element is a block
+            if (limit.css('display') !== 'inline') {
+                // Wrap the HTML inside the limit element
+                this.wrapInner(limit, 'div');
+                // Set the parent to the wrapper
+                parent = limit.children().first();
+            }
+        }
+        // Apply the style to the parent
+        this.toggleStyle(parent, styles);
+    }, null, this);
+}
