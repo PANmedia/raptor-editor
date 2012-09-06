@@ -1,5 +1,5 @@
 <?php
-class PluginsTask extends Task {
+class AddonsTask extends Task {
 
     private $file;
     private $buildDir;
