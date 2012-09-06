@@ -261,18 +261,15 @@ nav a:hover{
   h2, h3 { page-break-after: avoid; }
 }
 
-#main-container textarea, #main-container textarea:focus {
-    width: 28%;
-    height: 250px;
-    padding: 20px 5% 10px;
-    outline: none;
-    float: right;
+aside.textarea {
     margin-top: 30px;
-    background-color: #f16529;
-    color: white;
-    border: none;
-    border-top:20px solid #e44d26;
-    -webkit-box-shadow: 0 5px 10px #aaa;
-    -moz-box-shadow: 0 5px 10px #aaa;
-    box-shadow: 0 5px 10px #aaa;
+}
+
+aside.textarea textarea, aside.textarea textarea:focus {
+    width: 100%;
+    padding: 5px;
+    height: 250px;
+    outline: none;
+    background-color: #fff;
+    margin-bottom: 20px;
 }
