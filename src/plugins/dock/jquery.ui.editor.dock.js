@@ -147,18 +147,29 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.wrapper
             .appendTo(wrapper);
 
-        // this.previousStyle =
         this.swapStyle(wrapper, this.editor.getElement(), {
             'display': this.editor.getElement().css('display') || 'block',
             'float': this.editor.getElement().css('float') || 'none',
             'clear': this.editor.getElement().css('clear') || 'none',
             'position': this.editor.getElement().css('position') || 'static',
+
+            /* Margin */
+            'margin': this.editor.getElement().css('margin') || 0,
             'margin-left': this.editor.getElement().css('margin-left') || 0,
             'margin-right': this.editor.getElement().css('margin-right') || 0,
             'margin-top': this.editor.getElement().css('margin-top') || 0,
             'margin-bottom': this.editor.getElement().css('margin-bottom') || 0,
+
+            /* Padding */
+            'padding': this.editor.getElement().css('padding') || 0,
+            'padding-left': this.editor.getElement().css('padding-left') || 0,
+            'padding-right': this.editor.getElement().css('padding-right') || 0,
+            'padding-top': this.editor.getElement().css('padding-top') || 0,
+            'padding-bottom': this.editor.getElement().css('padding-bottom') || 0,
+
             'outline': this.editor.getElement().css('outline') || 0,
-            'width': this.editor.getElement().css('width') || 'auto'
+            'width': this.editor.getElement().css('width') || 'auto',
+            'border': this.editor.getElement().css('border') || 'none'
         });
 
         wrapper.css('width', wrapper.width() +
