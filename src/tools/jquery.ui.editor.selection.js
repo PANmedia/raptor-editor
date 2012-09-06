@@ -398,7 +398,11 @@ function selectionToggleBlockStyle(styles, limit) {
  */
 function selectionConstrain(element, selection) {
     element = $(element)[0];
-    selection = selection || rangy.getSelection();
+    selection = selection || (rangy) ? rangy.getSelection() : null;
+
+    if (!selection) {
+        return;
+    }
 
     var commonAncestor;
     $(selection.getAllRanges()).each(function(i, range){
