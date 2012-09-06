@@ -56,8 +56,8 @@ $.ui.editor.registerUi({
                          * Replace selection if the selected element parent or the selected element is the editing element,
                          * instead of splitting the editing element.
                          */
-                        if (selectedElementParent === editingElement
-                            || selectionGetElements()[0] === editingElement) {
+                        if (selectedElementParent === editingElement ||
+                            selectionGetElements()[0] === editingElement) {
                             selectionReplace(replacementHtml);
                         } else {
                             selectionReplaceWithinValidTags(replacementHtml, this.validParents);
