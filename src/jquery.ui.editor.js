@@ -798,6 +798,11 @@ $.widget('ui.editor',
         if (this.visible) {
             this.visible = false;
             this.wrapper.hide();
+
+            if (this.element.is('textarea, input')) {
+                this.element.show();
+            }
+
             this.fire('hide');
             this.fire('resize');
         }
@@ -806,9 +811,9 @@ $.widget('ui.editor',
     /**
      * @param {boolean} [instant]
      */
-    hideOtherToolbars: function(instant) {
+    hideOtherToolbars: function() {
         this.unify(function(editor) {
-            editor.hideToolbar(instant);
+            editor.hideToolbar();
         }, false);
     },
 
