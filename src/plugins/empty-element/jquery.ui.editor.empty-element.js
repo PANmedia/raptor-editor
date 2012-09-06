@@ -30,7 +30,7 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
-        this.bind('change', this.change)
+        this.bind('change', this.change);
     },
 
     change: function() {
