@@ -200,7 +200,7 @@ $.widget('ui.editor',
             visible = this.visible;
 
         // We are ready, so we can run reinit now
-        this.destruct();
+        this.destruct(true);
         this._init();
 
         // Restore the editor state
@@ -339,9 +339,11 @@ $.widget('ui.editor',
      * Hides the toolbar, disables editing, and fires the destroy event, and unbinds any events.
      * @public
      */
-    destruct: function() {
-        // Disable editing unless we are re initialising
-        this.hideToolbar();
+    destruct: function(reinitialising) {
+        if (!reinitialising) {
+            this.hideToolbar();
+        }
+
         this.disableEditing();
 
         // Trigger destroy event, for plugins to remove them selves
