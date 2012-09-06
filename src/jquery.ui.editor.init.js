@@ -88,7 +88,6 @@ if (debugLevel >= MID) {
 if (debugLevel >= MAX) {
     info('TODO: dont fire events when editing is disabled');
     info('TODO: make a way to disable all buttons then selectivity enable ones');
-    info('TODO: locale switches should affect all instances');
     info('FIXME: remove editor instance from instances array on destroy');
     info('FIXME: updateTagTree click bindings');
     info('FIXME: updateTagTree should filter out duplicates');
