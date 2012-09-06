@@ -1192,6 +1192,9 @@ $.widget('ui.editor',
             init: function(name, editor) {
                 var ui = this;
 
+                // Disable HTML select to prevent submission of select values
+                ui.select.attr('disabled', 'disabled');
+
                 var baseClass = name.replace(/([A-Z])/g, function(match) {
                     return '-' + match.toLowerCase();
                 });
