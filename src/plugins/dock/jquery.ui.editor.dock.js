@@ -12,11 +12,6 @@
  */
 $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ {
 
-    /**
-     * @type {jQuery} The wrapper element.
-     */
-    wrapper: null,
-
     enabled: false,
     docked: false,
     topSpacer: null,
@@ -37,6 +32,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.bind('show', this.show);
         this.bind('hide', this.hide);
         this.bind('disabled', this.disable);
+        this.bind('cancel', this.cancel);
         this.bind('destroy', this.destroy, this);
     },
 
@@ -124,6 +120,18 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         }
     },
 
+    getDockToElementWrapper: function() {
+        var wrapperId = this.options.baseClass + '-docked-to-element-wrapper-' + this.editor.getElement().attr('id');
+        wrapper = $('#' + wrapperId);
+        if (!wrapper.length) {
+            wrapper = $('<div/>')
+                .insertBefore(this.editor.getElement())
+                .addClass(this.options.baseClass + '-docked-to-element-wrapper')
+                .attr('id', wrapperId);
+        }
+        return wrapper;
+    },
+
     /**
      * Dock the toolbar to the editing element
      */
@@ -134,17 +142,13 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         if (debugLevel >= MID) debug('Dock to element', plugin.editor.getElement());
         // </debug>
 
-        if (this.wrapper === null) {
-            this.wrapper = $('<div/>')
-                .insertBefore(this.editor.getElement())
-                .addClass(this.options.baseClass + '-docked-to-element-wrapper');
-        }
+        wrapper = this.getDockToElementWrapper();
 
         this.editor.wrapper
-            .appendTo(this.wrapper);
+            .appendTo(wrapper);
 
         // this.previousStyle =
-        this.swapStyle(this.wrapper, this.editor.getElement(), {
+        this.swapStyle(wrapper, this.editor.getElement(), {
             'display': this.editor.getElement().css('display') || 'block',
             'float': this.editor.getElement().css('float') || 'none',
             'clear': this.editor.getElement().css('clear') || 'none',
@@ -157,7 +161,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
             'width': this.editor.getElement().css('width') || 'auto'
         });
 
-        this.wrapper.css('width', this.wrapper.width() +
+        wrapper.css('width', wrapper.width() +
             parseInt(this.editor.getElement().css('padding-left'), 10) +
             parseInt(this.editor.getElement().css('padding-right'), 10));
 
@@ -325,6 +329,13 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      */
     disable: function() {
         this.hideSpacers();
+    },
+
+    cancel: function() {
+        var wrapper = this.getDockToElementWrapper();
+        if (wrapper && wrapper.length) {
+            wrapper.remove();
+        }
     },
 
     /**
