@@ -21,7 +21,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Left Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'left'
                     }, editor.getElement());
                 }
@@ -45,7 +45,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Justify'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'justify'
                     }, editor.getElement());
                 }
@@ -69,7 +69,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Center Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'center'
                     }, editor.getElement());
                 }
@@ -93,7 +93,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Right Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'right'
                     }, editor.getElement());
                 }
