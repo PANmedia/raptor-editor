@@ -16,31 +16,6 @@ selectionReplace('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  */
 var domTools = {
 
-    /**
-     * Removes all ranges from a selection that are not contained within the
-     * supplied element.
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection]
-     */
-    constrainSelection: function(element, selection) {
-        element = $(element)[0];
-        selection = selection || rangy.getSelection();
-
-        var commonAncestor;
-        $(selection.getAllRanges()).each(function(i, range){
-            if (this.commonAncestorContainer.nodeType === 3) {
-                commonAncestor = $(range.commonAncestorContainer).parent()[0];
-            } else {
-                commonAncestor = range.commonAncestorContainer;
-            }
-            if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
-                selection.removeRange(range);
-            }
-        });
-    },
-
     unwrapParentTag: function(tag) {
         selectionGetElements().each(function(){
             if ($(this).is(tag)) {
@@ -122,22 +97,6 @@ var domTools = {
     },
 
     /**
-     * Wraps the inner content of an element with a tag
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element The element(s) to wrap
-     * @param {String} tag The wrapper tag name
-     */
-    wrapInner: function(element, tag) {
-        selectionSave();
-        $(element).each(function() {
-            var wrapper = $('<' + tag + '/>').html($(this).html());
-            element.html(wrapper);
-        });
-        selectionRestore();
-    },
-
-    /**
      *
      */
     inverseWrapWithTagClass: function(tag1, class1, tag2, class2) {
@@ -168,34 +127,6 @@ var domTools = {
         });
 
         selectionRestore();
-    },
-
-    /**
-     * FIXME: this function needs reviewing
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
-     */
-    toggleStyle: function(element, styles) {
-        $.each(styles, function(property, value) {
-            if ($(element).css(property) === value) {
-                $(element).css(property, '');
-            } else {
-                $(element).css(property, value);
-            }
-        });
-    },
-
-    /**
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element1
-     * @param {jQuerySelector|jQuery|Element} element2
-     * @param {Object} style
-     */
-    swapStyles: function(element1, element2, style) {
-        for (var name in style) {
-            element1.css(name, element2.css(name));
-            element2.css(name, style[name]);
-        }
     }
 
 };

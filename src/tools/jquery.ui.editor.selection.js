@@ -378,12 +378,37 @@ function selectionToggleBlockStyle(styles, limit) {
             // Only apply block style if the limit element is a block
             if (limit.css('display') !== 'inline') {
                 // Wrap the HTML inside the limit element
-                this.wrapInner(limit, 'div');
+                elementWrapInner(limit, 'div');
                 // Set the parent to the wrapper
                 parent = limit.children().first();
             }
         }
         // Apply the style to the parent
-        this.toggleStyle(parent, styles);
+        elementToggleStyle(parent, styles);
     }, null, this);
+}
+
+/**
+ * Removes all ranges from a selection that are not contained within the
+ * supplied element.
+ *
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element
+ * @param {RangySelection} [selection]
+ */
+function selectionConstrain(element, selection) {
+    element = $(element)[0];
+    selection = selection || rangy.getSelection();
+
+    var commonAncestor;
+    $(selection.getAllRanges()).each(function(i, range){
+        if (this.commonAncestorContainer.nodeType === 3) {
+            commonAncestor = $(range.commonAncestorContainer).parent()[0];
+        } else {
+            commonAncestor = range.commonAncestorContainer;
+        }
+        if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
+            selection.removeRange(range);
+        }
+    });
 }

@@ -127,7 +127,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * @param  {string} listType One of ul or ol.
      */
     wrapList: function(listType) {
-        this.editor.constrainSelection(this.editor.getElement());
+        selectionConstrain(this.editor.getElement());
         if ($.trim(selectionGetHtml()) === '') {
             selectionSelectInner(selectionGetElements());
         }

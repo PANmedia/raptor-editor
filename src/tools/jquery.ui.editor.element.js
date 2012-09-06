@@ -189,3 +189,45 @@ function elementGetStyles(element) {
     }
     return result;
 }
+
+/**
+ * Wraps the inner content of an element with a tag
+ *
+ * @param {jQuerySelector|jQuery|Element} element The element(s) to wrap
+ * @param {String} tag The wrapper tag name
+ */
+function elementWrapInner(element, tag) {
+    selectionSave();
+    $(element).each(function() {
+        var wrapper = $('<' + tag + '/>').html($(this).html());
+        element.html(wrapper);
+    });
+    selectionRestore();
+}
+
+/**
+ * FIXME: this function needs reviewing
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
+ */
+function elementToggleStyle(element, styles) {
+    $.each(styles, function(property, value) {
+        if ($(element).css(property) === value) {
+            $(element).css(property, '');
+        } else {
+            $(element).css(property, value);
+        }
+    });
+}
+
+/**
+ * @param {jQuerySelector|jQuery|Element} element1
+ * @param {jQuerySelector|jQuery|Element} element2
+ * @param {Object} style
+ */
+function elementSwapStyles(element1, element2, style) {
+    for (var name in style) {
+        element1.css(name, element2.css(name));
+        element2.css(name, style[name]);
+    }
+}
