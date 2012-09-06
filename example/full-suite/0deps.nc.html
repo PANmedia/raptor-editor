@@ -43,7 +43,8 @@
                         docked: true,
                         dockToElement: true
                     },
-                }
+                },
+                initialLocale: 'zh-CN'
             });
         });
     </script>
@@ -89,7 +90,29 @@
             </aside>
             <aside class="textarea">
                 <h3>Textarea</h3>
-                <textarea>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</textarea>
+                <form method="get">
+                    <textarea name="html">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</textarea>
+                    <button id="submit-button" type="submit">Submit</button>
+                    <script type="text/javascript">
+                        raptor(function($) {
+                            $('#submit-button').button();
+                            var submittedValue = function getParameterByName(name) {
+                              name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                              var regexS = "[\\?&]" + name + "=([^&#]*)";
+                              var regex = new RegExp(regexS);
+                              var results = regex.exec(window.location.search);
+                              if(results == null)
+                                return "";
+                              else
+                                return decodeURIComponent(results[1].replace(/\+/g, " "));
+                            }('html');
+
+                            if (submittedValue) {
+                                alert('Submitted value: \n\n' + submittedValue);
+                            }
+                        });
+                    </script>
+                </form>
             </aside>
 
 		</div> <!-- #main -->
