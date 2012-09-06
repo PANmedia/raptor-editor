@@ -30,6 +30,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      */
     init: function(editor) {
         this.bind('show', this.show);
+        this.bind('resize', this.resize, this);
         this.bind('hide', this.hide);
         this.bind('disabled', this.disable);
         this.bind('cancel', this.cancel);
@@ -52,6 +53,22 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.hideSpacers();
         this.editor.toolbar
             .css('width', 'auto');
+    },
+
+    resize: function() {
+
+        if (!this.editor.toolbar ||
+            this.options.dockToElement ||
+            !this.editor.toolbar.is(':visible')) {
+            return;
+        }
+
+        var topSpacer = $('.' + this.options.baseClass + '-top-spacer');
+        if (!topSpacer.length) {
+            return;
+        }
+
+        topSpacer.height(this.editor.toolbar.outerHeight());
     },
 
     showSpacers: function() {
