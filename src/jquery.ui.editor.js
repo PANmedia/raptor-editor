@@ -173,6 +173,12 @@ $.widget('ui.editor',
 
         // Unload warning
         $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
+
+        // Trigger editor resize when window is resized
+        var editor = this;
+        $(window).resize(function(event) {
+            editor.fire('resize');
+        });
     },
 
     /**
