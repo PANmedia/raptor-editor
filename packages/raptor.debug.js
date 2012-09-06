@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.23 
+VERSION: 0.0.25 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -25650,31 +25650,6 @@ selectionReplace('&lt;p&gt;Replace selection with this&lt;/p&gt;');</pre>
  */
 var domTools = {
 
-    /**
-     * Removes all ranges from a selection that are not contained within the
-     * supplied element.
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element
-     * @param {RangySelection} [selection]
-     */
-    constrainSelection: function(element, selection) {
-        element = $(element)[0];
-        selection = selection || rangy.getSelection();
-
-        var commonAncestor;
-        $(selection.getAllRanges()).each(function(i, range){
-            if (this.commonAncestorContainer.nodeType === 3) {
-                commonAncestor = $(range.commonAncestorContainer).parent()[0];
-            } else {
-                commonAncestor = range.commonAncestorContainer;
-            }
-            if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
-                selection.removeRange(range);
-            }
-        });
-    },
-
     unwrapParentTag: function(tag) {
         selectionGetElements().each(function(){
             if ($(this).is(tag)) {
@@ -25756,52 +25731,6 @@ var domTools = {
     },
 
     /**
-     * Toggles style(s) on the first block level parent element of each range in a selection
-     *
-     * @public @static
-     * @param {Object} styles styles to apply
-     * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
-     * If there is no block level elements before the limit, then the limit content
-     * element will be wrapped with a "div"
-     */
-    toggleBlockStyle: function(styles, limit) {
-        selectionEachRange(function(range) {
-            var parent = $(range.commonAncestorContainer);
-            while (parent.length && parent[0] !== limit[0] && (
-                    parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
-                parent = parent.parent();
-            }
-            if (parent[0] === limit[0]) {
-                // Only apply block style if the limit element is a block
-                if (limit.css('display') !== 'inline') {
-                    // Wrap the HTML inside the limit element
-                    this.wrapInner(limit, 'div');
-                    // Set the parent to the wrapper
-                    parent = limit.children().first();
-                }
-            }
-            // Apply the style to the parent
-            this.toggleStyle(parent, styles);
-        }, null, this);
-    },
-
-    /**
-     * Wraps the inner content of an element with a tag
-     *
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element The element(s) to wrap
-     * @param {String} tag The wrapper tag name
-     */
-    wrapInner: function(element, tag) {
-        selectionSave();
-        $(element).each(function() {
-            var wrapper = $('<' + tag + '/>').html($(this).html());
-            element.html(wrapper);
-        });
-        selectionRestore();
-    },
-
-    /**
      *
      */
     inverseWrapWithTagClass: function(tag1, class1, tag2, class2) {
@@ -25832,34 +25761,6 @@ var domTools = {
         });
 
         selectionRestore();
-    },
-
-    /**
-     * FIXME: this function needs reviewing
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
-     */
-    toggleStyle: function(element, styles) {
-        $.each(styles, function(property, value) {
-            if ($(element).css(property) === value) {
-                $(element).css(property, '');
-            } else {
-                $(element).css(property, value);
-            }
-        });
-    },
-
-    /**
-     * @public @static
-     * @param {jQuerySelector|jQuery|Element} element1
-     * @param {jQuerySelector|jQuery|Element} element2
-     * @param {Object} style
-     */
-    swapStyles: function(element1, element2, style) {
-        for (var name in style) {
-            element1.css(name, element2.css(name));
-            element2.css(name, style[name]);
-        }
     }
 
 };
@@ -26041,7 +25942,6 @@ if (debugLevel >= MID) {
 if (debugLevel >= MAX) {
     info('TODO: dont fire events when editing is disabled');
     info('TODO: make a way to disable all buttons then selectivity enable ones');
-    info('TODO: locale switches should affect all instances');
     info('FIXME: remove editor instance from instances array on destroy');
     info('FIXME: updateTagTree click bindings');
     info('FIXME: updateTagTree should filter out duplicates');
@@ -26257,6 +26157,10 @@ $.widget('ui.editor',
         // Stores the previous selection
         this.previousSelection = null;
 
+        // Set the initial locale
+        var locale = this.persist('locale') || this.options.initialLocale;
+        setLocale(locale);
+
         // Fire the ready event
         this.ready = true;
         this.fire('ready');
@@ -26293,6 +26197,12 @@ $.widget('ui.editor',
 
         // Unload warning
         $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
+
+        // Trigger editor resize when window is resized
+        var editor = this;
+        $(window).resize(function(event) {
+            editor.fire('resize');
+        });
     },
 
     /**
@@ -26393,7 +26303,7 @@ $.widget('ui.editor',
             if (!this[i]) {
                 this[i] = (function(i) {
                     return function() {
-                        this.options.domTools.constrainSelection(this.getElement());
+                        selectionConstrain(this.getElement());
                         var html = this.getHtml();
                         var result = this.options.domTools[i].apply(this.options.domTools, arguments);
                         if (html !== this.getHtml()) {
@@ -26580,22 +26490,26 @@ $.widget('ui.editor',
             if (node.nodeType === 3) {
                 // If nodes common parent is a text node, then use its parent
                 element = $(node).parent();
-            // } else if(this.rangeEmptyTag(range)) {
-            //     element = $(this.domFragmentToHtml(range.cloneContents()));
             } else {
                 // Or else use the node
                 element = $(node);
             }
 
+            // Ensure the element is the editing element or a child of the editing element
+            if (!editor.isRoot(element) && !$.contains(editor.getElement().get(0), element.get(0))) {
+                element = editor.getElement();
+            }
+
             var list = [];
             lists.push(list);
-            // Loop untill we get to the root element, or the body tag
+            // Loop until we get to the root element, or the body tag
             while (element[0] && !editor.isRoot(element) && element[0].tagName.toLowerCase() !== 'body') {
                 // Add the node to the list
                 list.push(element);
                 element = element.parent();
             }
             list.reverse();
+
             if (title) title += ' | ';
             title += this.getTemplate('root');
             for (var j = 0; j < list.length; j++) {
@@ -27306,6 +27220,9 @@ $.widget('ui.editor',
             init: function(name, editor) {
                 var ui = this;
 
+                // Disable HTML select to prevent submission of select values
+                ui.select.attr('disabled', 'disabled');
+
                 var baseClass = name.replace(/([A-Z])/g, function(match) {
                     return '-' + match.toLowerCase();
                 });
@@ -27644,6 +27561,9 @@ $.extend($.ui.editor,
     elementDefaultDisplay: elementDefaultDisplay,
     elementIsValid: elementIsValid,
     elementGetStyles: elementGetStyles,
+    elementWrapInner: elementWrapInner,
+    elementToggleStyle: elementToggleStyle,
+    elementSwapStyles: elementSwapStyles,
     fragmentToHtml: fragmentToHtml,
     fragmentInsertBefore: fragmentInsertBefore,
     rangeExpandToParent: rangeExpandToParent,
@@ -27665,102 +27585,106 @@ $.extend($.ui.editor,
     selectionExists: selectionExists,
     selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
     selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
+    selectionToggleBlockStyle: selectionToggleBlockStyle,
     stringStripTags: stringStripTags,
     // </expose>
 
-    /** @namespace Default options for the jQuery UI Editor */
+    /** @namespace Default options for Raptor Editor */
     defaults: {
 
-        /** @type Object Plugins option overrides */
+        /** @type {Object} Plugins option overrides */
         plugins: {},
 
-        /** @type Object UI option overrides */
+        /** @type {Object} UI option overrides */
         ui: {},
 
-        /** @type Object Default events to bind */
+        /** @type {Object} Default events to bind */
         bind: {},
 
-        /** @type Object */
+        /**
+         * @deprecated
+         * @type {Object}
+         */
         domTools: domTools,
 
         /**
-          * @type String Namespace used to persistence to prevent conflicting
-          * stored values
+          * @type {String} Namespace used to persistence to prevent conflicting
+          * stored values.
           */
         namespace: null,
 
         /**
-         * @type boolean Switch to indicated that some events should be
-         * automatically applied to all editors that are 'unified'
+         * @type {Boolean} Switch to indicated that some events should be
+         * automatically applied to all editors that are unified.
          */
         unify: true,
 
-        /** @type boolean Switch to indicate weather or not to stored persistent
-        values, if set to false the persist function will always return null */
+        /**
+         * @type {Boolean} Switch to indicate weather or not to stored persistent
+         * values, if set to false the persist function will always return null.
+         */
         persistence: true,
 
-        /** @type String The name to store persistent values under */
+        /** @type {String} The name to store persistent values under */
         persistenceName: 'uiEditor',
 
         /**
-         * Switch to indicate weather or not to a warning should pop up when the
-         * user navigates aways from the page and there are unsaved changes
-         * @type boolean
+         * @type {Boolean} Switch to indicate weather or not to a warning should
+         * pop up when the user navigates away from the page when unsaved changes
+         * exist.
          */
         unloadWarning: true,
 
         /**
-         * @type boolean Switch to automatically enabled editing on the element
+         * @type {Boolean} Switch to automatically enabled editing on the element.
          */
         autoEnable: false,
 
         /**
-         * @type {jQuerySelector} Only enable editing on certian parts of the element
+         * @type {Selector} Only enable editing on certain parts of the element.
          */
         partialEdit: false,
 
         /**
-         * Switch to specify if the editor should automatically enable all
-         * plugins, if set to false, only the plugins specified in the 'plugins'
-         * option object will be enabled
-         * @type boolean
+         * @type {Boolean} Switch to specify if the editor should automatically
+         * enable all plugins, if set to false, only the plugins specified in
+         * the {@link $.ui.editor.defaults.plugins} option object will be enabled.
          */
         enablePlugins: true,
 
         /**
-         * @type String[] An array of explicitly disabled plugins
+         * @type {String[]} An array of explicitly disabled plugins.
          */
         disabledPlugins: [],
 
         /**
-         * @type String[] And array of arrays denoting the order and grouping of UI elements in the toolbar
+         * @type {String[]} And array of arrays denoting the order and grouping
+         * of UI elements in the toolbar.
          */
         uiOrder: null,
 
         /**
-         * Switch to specify if the editor should automatically enable all UI,
-         * if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui}
-         * option object will be enabled
-         * @type boolean
+         * @type {Boolean} Switch to specify if the editor should automatically
+         * enable all UI, if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui}
+         * option object will be enabled.
          */
         enableUi: true,
 
         /**
-         * An array of explicitly disabled UI elements
-         * @type String[]
+         * @type {String[]} An array of explicitly disabled UI elements.
          */
         disabledUi: [],
 
         /**
-         * Default message options
-         * @type Object
+         * @type {Object} Default message options.
          */
         message: {
             delay: 5000
         },
 
         /**
-         * @type String[] A list of styles that will be copied from a replaced textarea and applied to the editor replacement element
+         * @type {String[]} A list of styles that will be copied from a replaced
+         * textarea and applied to the editor replacement element.
          */
         replaceStyle: [
             'display', 'position', 'float', 'width',
@@ -27768,17 +27692,10 @@ $.extend($.ui.editor,
             'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
         ],
 
-        /**
-         *
-         * @type String
-         */
+        /** @type {String} The base class name to use on elements created by the editor. */
         baseClass: 'ui-editor',
 
-        /**
-         * CSS class prefix that is prepended to inserted elements classes.
-         * <pre>"cms-bold"</pre>
-         * @type String
-         */
+        /** @type {String} CSS class prefix that is prepended to inserted elements classes. */
         cssPrefix: 'cms-',
 
         /** @type {Boolean} True if the editor should be draggable. */
@@ -27794,7 +27711,14 @@ $.extend($.ui.editor,
          * @type {String} Applied to elements that should not be stripped during
          * normal use, but do not belong in the final content.
          */
-        supplementaryClass: 'supplementary-element-class'
+        supplementaryClass: 'supplementary-element-class',
+
+        /**
+         * @type {String} Locale to use by default. If
+         * {@link $.ui.editor.options.persistence} is set to true and the user has
+         * changed the locale, then the user's locale choice will be used.
+         */
+        initialLocale: 'en'
     },
 
     /** @property {Object} events Events added via $.ui.editor.bind */
@@ -28215,7 +28139,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Left Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'left'
                     }, editor.getElement());
                 }
@@ -28239,7 +28163,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Justify'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'justify'
                     }, editor.getElement());
                 }
@@ -28263,7 +28187,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Center Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'center'
                     }, editor.getElement());
                 }
@@ -28287,14 +28211,15 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Right Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'right'
                     }, editor.getElement());
                 }
             });
         }
     }
-});/**
+});
+/**
  * @fileOverview Basic text styling ui components
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -29047,6 +28972,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      */
     init: function(editor) {
         this.bind('show', this.show);
+        this.bind('resize', this.resize, this);
         this.bind('hide', this.hide);
         this.bind('disabled', this.disable);
         this.bind('cancel', this.cancel);
@@ -29069,6 +28995,22 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.hideSpacers();
         this.editor.toolbar
             .css('width', 'auto');
+    },
+
+    resize: function() {
+
+        if (!this.editor.toolbar ||
+            this.options.dockToElement ||
+            !this.editor.toolbar.is(':visible')) {
+            return;
+        }
+
+        var topSpacer = $('.' + this.options.baseClass + '-top-spacer');
+        if (!topSpacer.length) {
+            return;
+        }
+
+        topSpacer.height(this.editor.toolbar.outerHeight());
     },
 
     showSpacers: function() {
@@ -29555,7 +29497,7 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
      * @see $.ui.editor.defaultPlugin#init
      */
     init: function(editor, options) {
-        this.bind('change', this.change)
+        this.bind('change', this.change);
     },
 
     change: function() {
@@ -29881,11 +29823,6 @@ $.ui.editor.registerUi({
          */
         init: function(editor, options) {
             var ui = this;
-            var locale = this.persist('locale');
-            if (locale) {
-                // @todo Move this to the global scope
-                setLocale(locale);
-            }
 
             var menu = $('<select autocomplete="off" name="i18n"/>');
 
@@ -29898,7 +29835,7 @@ $.ui.editor.registerUi({
                 }
 
                 menu.append(option);
-            };
+            }
 
             return editor.uiSelectMenu({
                 title: _('Change Language'),
@@ -31895,7 +31832,7 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
      * @param  {string} listType One of ul or ol.
      */
     wrapList: function(listType) {
-        this.editor.constrainSelection(this.editor.getElement());
+        selectionConstrain(this.editor.getElement());
         if ($.trim(selectionGetHtml()) === '') {
             selectionSelectInner(selectionGetElements());
         }
@@ -32127,7 +32064,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.23?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.25?' + query.join('&') + ')'
                     });
                 }
             });
@@ -33429,8 +33366,8 @@ $.ui.editor.registerUi({
                          * Replace selection if the selected element parent or the selected element is the editing element,
                          * instead of splitting the editing element.
                          */
-                        if (selectedElementParent === editingElement
-                            || selectionGetElements()[0] === editingElement) {
+                        if (selectedElementParent === editingElement ||
+                            selectionGetElements()[0] === editingElement) {
                             selectionReplace(replacementHtml);
                         } else {
                             selectionReplaceWithinValidTags(replacementHtml, this.validParents);
@@ -33869,6 +33806,48 @@ function elementGetStyles(element) {
         result[style.item(i)] = style.getPropertyValue(style.item(i));
     }
     return result;
+}
+
+/**
+ * Wraps the inner content of an element with a tag
+ *
+ * @param {jQuerySelector|jQuery|Element} element The element(s) to wrap
+ * @param {String} tag The wrapper tag name
+ */
+function elementWrapInner(element, tag) {
+    selectionSave();
+    $(element).each(function() {
+        var wrapper = $('<' + tag + '/>').html($(this).html());
+        element.html(wrapper);
+    });
+    selectionRestore();
+}
+
+/**
+ * FIXME: this function needs reviewing
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
+ */
+function elementToggleStyle(element, styles) {
+    $.each(styles, function(property, value) {
+        if ($(element).css(property) === value) {
+            $(element).css(property, '');
+        } else {
+            $(element).css(property, value);
+        }
+    });
+}
+
+/**
+ * @param {jQuerySelector|jQuery|Element} element1
+ * @param {jQuerySelector|jQuery|Element} element2
+ * @param {Object} style
+ */
+function elementSwapStyles(element1, element2, style) {
+    for (var name in style) {
+        element1.css(name, element2.css(name));
+        element2.css(name, style[name]);
+    }
 }
 /**
  * @fileOverview DOM fragment manipulation helper functions
@@ -34359,6 +34338,65 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     // Context is invalid. Split containing element and insert list in between.
     selectionReplaceSplittingSelectedElement(html, selection);
     return;
+}
+
+/**
+ * Toggles style(s) on the first block level parent element of each range in a selection
+ *
+ * @public @static
+ * @param {Object} styles styles to apply
+ * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
+ * If there is no block level elements before the limit, then the limit content
+ * element will be wrapped with a "div"
+ */
+function selectionToggleBlockStyle(styles, limit) {
+    selectionEachRange(function(range) {
+        var parent = $(range.commonAncestorContainer);
+        while (parent.length && parent[0] !== limit[0] && (
+                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+            parent = parent.parent();
+        }
+        if (parent[0] === limit[0]) {
+            // Only apply block style if the limit element is a block
+            if (limit.css('display') !== 'inline') {
+                // Wrap the HTML inside the limit element
+                elementWrapInner(limit, 'div');
+                // Set the parent to the wrapper
+                parent = limit.children().first();
+            }
+        }
+        // Apply the style to the parent
+        elementToggleStyle(parent, styles);
+    }, null, this);
+}
+
+/**
+ * Removes all ranges from a selection that are not contained within the
+ * supplied element.
+ *
+ * @public @static
+ * @param {jQuerySelector|jQuery|Element} element
+ * @param {RangySelection} [selection]
+ */
+function selectionConstrain(element, selection) {
+    element = $(element)[0];
+    selection = selection || (rangy) ? rangy.getSelection() : null;
+
+    if (!selection) {
+        return;
+    }
+
+    var commonAncestor;
+    $(selection.getAllRanges()).each(function(i, range){
+        if (this.commonAncestorContainer.nodeType === 3) {
+            commonAncestor = $(range.commonAncestorContainer).parent()[0];
+        } else {
+            commonAncestor = range.commonAncestorContainer;
+        }
+        if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
+            selection.removeRange(range);
+        }
+    });
 }
 /**
  * @fileOverview String helper functions
