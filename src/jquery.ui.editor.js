@@ -137,6 +137,10 @@ $.widget('ui.editor',
         // Stores the previous selection
         this.previousSelection = null;
 
+        // Set the initial locale
+        var locale = this.persist('locale') || this.options.initialLocale;
+        setLocale(locale);
+
         // Fire the ready event
         this.ready = true;
         this.fire('ready');
@@ -279,7 +283,7 @@ $.widget('ui.editor',
             if (!this[i]) {
                 this[i] = (function(i) {
                     return function() {
-                        this.options.domTools.constrainSelection(this.getElement());
+                        selectionConstrain(this.getElement());
                         var html = this.getHtml();
                         var result = this.options.domTools[i].apply(this.options.domTools, arguments);
                         if (html !== this.getHtml()) {
@@ -485,7 +489,7 @@ $.widget('ui.editor',
                 element = element.parent();
             }
             list.reverse();
-            console.log($(list[0]));
+
             if (title) title += ' | ';
             title += this.getTemplate('root');
             for (var j = 0; j < list.length; j++) {
@@ -1537,6 +1541,9 @@ $.extend($.ui.editor,
     elementDefaultDisplay: elementDefaultDisplay,
     elementIsValid: elementIsValid,
     elementGetStyles: elementGetStyles,
+    elementWrapInner: elementWrapInner,
+    elementToggleStyle: elementToggleStyle,
+    elementSwapStyles: elementSwapStyles,
     fragmentToHtml: fragmentToHtml,
     fragmentInsertBefore: fragmentInsertBefore,
     rangeExpandToParent: rangeExpandToParent,
@@ -1562,99 +1569,102 @@ $.extend($.ui.editor,
     stringStripTags: stringStripTags,
     // </expose>
 
-    /** @namespace Default options for the jQuery UI Editor */
+    /** @namespace Default options for Raptor Editor */
     defaults: {
 
-        /** @type Object Plugins option overrides */
+        /** @type {Object} Plugins option overrides */
         plugins: {},
 
-        /** @type Object UI option overrides */
+        /** @type {Object} UI option overrides */
         ui: {},
 
-        /** @type Object Default events to bind */
+        /** @type {Object} Default events to bind */
         bind: {},
 
-        /** @type Object */
+        /**
+         * @deprecated
+         * @type {Object}
+         */
         domTools: domTools,
 
         /**
-          * @type String Namespace used to persistence to prevent conflicting
-          * stored values
+          * @type {String} Namespace used to persistence to prevent conflicting
+          * stored values.
           */
         namespace: null,
 
         /**
-         * @type boolean Switch to indicated that some events should be
-         * automatically applied to all editors that are 'unified'
+         * @type {Boolean} Switch to indicated that some events should be
+         * automatically applied to all editors that are unified.
          */
         unify: true,
 
-        /** @type boolean Switch to indicate weather or not to stored persistent
-        values, if set to false the persist function will always return null */
+        /**
+         * @type {Boolean} Switch to indicate weather or not to stored persistent
+         * values, if set to false the persist function will always return null.
+         */
         persistence: true,
 
-        /** @type String The name to store persistent values under */
+        /** @type {String} The name to store persistent values under */
         persistenceName: 'uiEditor',
 
         /**
-         * Switch to indicate weather or not to a warning should pop up when the
-         * user navigates aways from the page and there are unsaved changes
-         * @type boolean
+         * @type {Boolean} Switch to indicate weather or not to a warning should
+         * pop up when the user navigates away from the page when unsaved changes
+         * exist.
          */
         unloadWarning: true,
 
         /**
-         * @type boolean Switch to automatically enabled editing on the element
+         * @type {Boolean} Switch to automatically enabled editing on the element.
          */
         autoEnable: false,
 
         /**
-         * @type {jQuerySelector} Only enable editing on certian parts of the element
+         * @type {Selector} Only enable editing on certain parts of the element.
          */
         partialEdit: false,
 
         /**
-         * Switch to specify if the editor should automatically enable all
-         * plugins, if set to false, only the plugins specified in the 'plugins'
-         * option object will be enabled
-         * @type boolean
+         * @type {Boolean} Switch to specify if the editor should automatically
+         * enable all plugins, if set to false, only the plugins specified in
+         * the {@link $.ui.editor.defaults.plugins} option object will be enabled.
          */
         enablePlugins: true,
 
         /**
-         * @type String[] An array of explicitly disabled plugins
+         * @type {String[]} An array of explicitly disabled plugins.
          */
         disabledPlugins: [],
 
         /**
-         * @type String[] And array of arrays denoting the order and grouping of UI elements in the toolbar
+         * @type {String[]} And array of arrays denoting the order and grouping
+         * of UI elements in the toolbar.
          */
         uiOrder: null,
 
         /**
-         * Switch to specify if the editor should automatically enable all UI,
-         * if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui}
-         * option object will be enabled
-         * @type boolean
+         * @type {Boolean} Switch to specify if the editor should automatically
+         * enable all UI, if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui}
+         * option object will be enabled.
          */
         enableUi: true,
 
         /**
-         * An array of explicitly disabled UI elements
-         * @type String[]
+         * @type {String[]} An array of explicitly disabled UI elements.
          */
         disabledUi: [],
 
         /**
-         * Default message options
-         * @type Object
+         * @type {Object} Default message options.
          */
         message: {
             delay: 5000
         },
 
         /**
-         * @type String[] A list of styles that will be copied from a replaced textarea and applied to the editor replacement element
+         * @type {String[]} A list of styles that will be copied from a replaced
+         * textarea and applied to the editor replacement element.
          */
         replaceStyle: [
             'display', 'position', 'float', 'width',
@@ -1662,17 +1672,10 @@ $.extend($.ui.editor,
             'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
         ],
 
-        /**
-         *
-         * @type String
-         */
+        /** @type {String} The base class name to use on elements created by the editor. */
         baseClass: 'ui-editor',
 
-        /**
-         * CSS class prefix that is prepended to inserted elements classes.
-         * <pre>"cms-bold"</pre>
-         * @type String
-         */
+        /** @type {String} CSS class prefix that is prepended to inserted elements classes. */
         cssPrefix: 'cms-',
 
         /** @type {Boolean} True if the editor should be draggable. */
@@ -1688,7 +1691,14 @@ $.extend($.ui.editor,
          * @type {String} Applied to elements that should not be stripped during
          * normal use, but do not belong in the final content.
          */
-        supplementaryClass: 'supplementary-element-class'
+        supplementaryClass: 'supplementary-element-class',
+
+        /**
+         * @type {String} Locale to use by default. If
+         * {@link $.ui.editor.options.persistence} is set to true and the user has
+         * changed the locale, then the user's locale choice will be used.
+         */
+        initialLocale: 'en'
     },
 
     /** @property {Object} events Events added via $.ui.editor.bind */
