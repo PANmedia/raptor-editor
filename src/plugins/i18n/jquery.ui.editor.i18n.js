@@ -17,11 +17,6 @@
          */
         init: function(editor, options) {
             var ui = this;
-            var locale = this.persist('locale');
-            if (locale) {
-                // @todo Move this to the global scope
-                setLocale(locale);
-            }
 
             var menu = $('<select autocomplete="off" name="i18n"/>');
 
@@ -34,7 +29,7 @@
                 }
 
                 menu.append(option);
-            };
+            }
 
             return editor.uiSelectMenu({
                 title: _('Change Language'),
