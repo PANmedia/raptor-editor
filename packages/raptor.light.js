@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.23 
+VERSION: 0.0.24 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -4782,36 +4782,6 @@ var domTools = {
     },
 
     /**
-     * Toggles style(s) on the first block level parent element of each range in a selection
-     *
-     * @public @static
-     * @param {Object} styles styles to apply
-     * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
-     * If there is no block level elements before the limit, then the limit content
-     * element will be wrapped with a "div"
-     */
-    toggleBlockStyle: function(styles, limit) {
-        selectionEachRange(function(range) {
-            var parent = $(range.commonAncestorContainer);
-            while (parent.length && parent[0] !== limit[0] && (
-                    parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
-                parent = parent.parent();
-            }
-            if (parent[0] === limit[0]) {
-                // Only apply block style if the limit element is a block
-                if (limit.css('display') !== 'inline') {
-                    // Wrap the HTML inside the limit element
-                    this.wrapInner(limit, 'div');
-                    // Set the parent to the wrapper
-                    parent = limit.children().first();
-                }
-            }
-            // Apply the style to the parent
-            this.toggleStyle(parent, styles);
-        }, null, this);
-    },
-
-    /**
      * Wraps the inner content of an element with a tag
      *
      * @public @static
@@ -5167,6 +5137,12 @@ $.widget('ui.editor',
 
         // Unload warning
         $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
+
+        // Trigger editor resize when window is resized
+        var editor = this;
+        $(window).resize(function(event) {
+            editor.fire('resize');
+        });
     },
 
     /**
@@ -6145,6 +6121,9 @@ $.widget('ui.editor',
             init: function(name, editor) {
                 var ui = this;
 
+                // Disable HTML select to prevent submission of select values
+                ui.select.attr('disabled', 'disabled');
+
                 var baseClass = name.replace(/([A-Z])/g, function(match) {
                     return '-' + match.toLowerCase();
                 });
@@ -6490,6 +6469,7 @@ $.extend($.ui.editor,
     selectionExists: selectionExists,
     selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
     selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
+    selectionToggleBlockStyle: selectionToggleBlockStyle,
     stringStripTags: stringStripTags,
     // </expose>
 
@@ -7026,7 +7006,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Left Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'left'
                     }, editor.getElement());
                 }
@@ -7050,7 +7030,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Justify'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'justify'
                     }, editor.getElement());
                 }
@@ -7074,7 +7054,7 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Center Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'center'
                     }, editor.getElement());
                 }
@@ -7098,14 +7078,15 @@ $.ui.editor.registerUi({
             return editor.uiButton({
                 title: _('Right Align'),
                 click: function() {
-                    editor.toggleBlockStyle({
+                    selectionToggleBlockStyle({
                         'text-align': 'right'
                     }, editor.getElement());
                 }
             });
         }
     }
-});/**
+});
+/**
  * @fileOverview Basic text styling ui components
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -7858,6 +7839,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
      */
     init: function(editor) {
         this.bind('show', this.show);
+        this.bind('resize', this.resize, this);
         this.bind('hide', this.hide);
         this.bind('disabled', this.disable);
         this.bind('cancel', this.cancel);
@@ -7880,6 +7862,22 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.hideSpacers();
         this.editor.toolbar
             .css('width', 'auto');
+    },
+
+    resize: function() {
+
+        if (!this.editor.toolbar ||
+            this.options.dockToElement ||
+            !this.editor.toolbar.is(':visible')) {
+            return;
+        }
+
+        var topSpacer = $('.' + this.options.baseClass + '-top-spacer');
+        if (!topSpacer.length) {
+            return;
+        }
+
+        topSpacer.height(this.editor.toolbar.outerHeight());
     },
 
     showSpacers: function() {
@@ -10930,7 +10928,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.23?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.24?' + query.join('&') + ')'
                     });
                 }
             });
@@ -13124,6 +13122,36 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     // Context is invalid. Split containing element and insert list in between.
     selectionReplaceSplittingSelectedElement(html, selection);
     return;
+}
+
+/**
+ * Toggles style(s) on the first block level parent element of each range in a selection
+ *
+ * @public @static
+ * @param {Object} styles styles to apply
+ * @param {jQuerySelector|jQuery|Element} limit The parent limit element.
+ * If there is no block level elements before the limit, then the limit content
+ * element will be wrapped with a "div"
+ */
+function selectionToggleBlockStyle(styles, limit) {
+    selectionEachRange(function(range) {
+        var parent = $(range.commonAncestorContainer);
+        while (parent.length && parent[0] !== limit[0] && (
+                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+            parent = parent.parent();
+        }
+        if (parent[0] === limit[0]) {
+            // Only apply block style if the limit element is a block
+            if (limit.css('display') !== 'inline') {
+                // Wrap the HTML inside the limit element
+                this.wrapInner(limit, 'div');
+                // Set the parent to the wrapper
+                parent = limit.children().first();
+            }
+        }
+        // Apply the style to the parent
+        this.toggleStyle(parent, styles);
+    }, null, this);
 }
 /**
  * @fileOverview String helper functions
