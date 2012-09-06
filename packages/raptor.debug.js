@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.22 
+VERSION: 0.0.23 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -25850,19 +25850,6 @@ var domTools = {
     },
 
     /**
-     * FIXME: this function needs reviewing
-     * @param {jQuerySelector|jQuery|Element} element
-     */
-    getStyles: function(element) {
-        var result = {};
-        var style = window.getComputedStyle(element[0], null);
-        for (var i = 0; i < style.length; i++) {
-            result[style.item(i)] = style.getPropertyValue(style.item(i));
-        }
-        return result;
-    },
-
-    /**
      * @public @static
      * @param {jQuerySelector|jQuery|Element} element1
      * @param {jQuerySelector|jQuery|Element} element2
@@ -25875,7 +25862,8 @@ var domTools = {
         }
     }
 
-};/**
+};
+/**
  * @fileOverview Editor internationalization (i18n) private functions and properties.
  *
  * @author David Neilsen <david@panmedia.co.nz>
@@ -26155,14 +26143,16 @@ $.widget('ui.editor',
             $.ui.editor.instances.push(this);
         }
 
-        // Check for nested editors
         var currentInstance = this;
+        // <strict>
+        // Check for nested editors
         $.ui.editor.eachInstance(function(instance) {
             if (currentInstance != instance &&
                     currentInstance.element.closest(instance.element).length) {
                 handleError('Nesting editors is unsupported', currentInstance.element, instance.element);
             }
         });
+        // </strict>
 
         this.options = $.extend({}, $.ui.editor.defaults, this.options);
 
@@ -26247,10 +26237,9 @@ $.widget('ui.editor',
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
-        // Replace the original element with a div (if specified)
-        if (this.options.replace) {
+        // Replace textareas & inputs with a div
+        if (this.element.is('textarea, input')) {
             this.replaceOriginal();
-            this.options.replace = false;
         }
 
         // Attach core events
@@ -26298,7 +26287,7 @@ $.widget('ui.editor',
         this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
             selectionSelectOuter(event.target);
         }, this));
-        // this.bind('change', change);
+
         this.getElement().bind('mouseup.' + this.widgetName, change);
         this.getElement().bind('keyup.' + this.widgetName, change);
 
@@ -26331,7 +26320,7 @@ $.widget('ui.editor',
             visible = this.visible;
 
         // We are ready, so we can run reinit now
-        this.destruct();
+        this.destruct(true);
         this._init();
 
         // Restore the editor state
@@ -26371,14 +26360,14 @@ $.widget('ui.editor',
         var target = $('<div/>')
             // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
             .html(this.element.is(':input') ? this.element.val() : this.element.html())
-            // Insert the div before the origianl element
+            // Insert the div before the original element
             .insertBefore(this.element)
             // Give the div a unique ID
             .attr('id', this.getUniqueId())
             // Copy the original elements class(es) to the replacement div
             .addClass(this.element.attr('class'));
 
-        var style = this.options.domTools.getStyles(this.element);
+        var style = elementGetStyles(this.element);
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
             target.css(this.options.replaceStyle[i], style[this.options.replaceStyle[i]]);
         }
@@ -26391,6 +26380,7 @@ $.widget('ui.editor',
                 this.element.html(this.getHtml());
             }
         });
+
         this.target = target;
     },
 
@@ -26469,9 +26459,11 @@ $.widget('ui.editor',
      * Hides the toolbar, disables editing, and fires the destroy event, and unbinds any events.
      * @public
      */
-    destruct: function() {
-        // Disable editing unless we are re initialising
-        this.hideToolbar();
+    destruct: function(reinitialising) {
+        if (!reinitialising) {
+            this.hideToolbar();
+        }
+
         this.disableEditing();
 
         // Trigger destroy event, for plugins to remove them selves
@@ -26650,13 +26642,15 @@ $.widget('ui.editor',
     unify: function(callback, callSelf) {
         if (callSelf !== false) callback(this);
         if (this.options.unify) {
-            var instances = $.ui.editor.getInstances();
-            for (var i = 0; i < instances.length; i++) {
-                if (instances[i] !== this &&
-                        instances[i].options.unify) {
-                    callback(instances[i]);
+            var currentInstance = this;
+            $.ui.editor.eachInstance(function(instance) {
+                if (instance === currentInstance) {
+                    return;
                 }
-            }
+                if (instance.options.unify) {
+                    callback(instance);
+                }
+            });
         }
     },
 
@@ -26909,7 +26903,10 @@ $.widget('ui.editor',
             var editor = this;
             $(function() {
                 editor.fire('show');
-                editor.getElement().focus();
+                // Only focus element if the element is not a textarea / input
+                if (!editor.element.is('textarea, input')) {
+                    editor.getElement().focus();
+                }
             });
         }
     },
@@ -26921,6 +26918,11 @@ $.widget('ui.editor',
         if (this.visible) {
             this.visible = false;
             this.wrapper.hide();
+
+            if (this.element.is('textarea, input')) {
+                this.element.show();
+            }
+
             this.fire('hide');
             this.fire('resize');
         }
@@ -26929,9 +26931,9 @@ $.widget('ui.editor',
     /**
      * @param {boolean} [instant]
      */
-    hideOtherToolbars: function(instant) {
+    hideOtherToolbars: function() {
         this.unify(function(editor) {
-            editor.hideToolbar(instant);
+            editor.hideToolbar();
         }, false);
     },
 
@@ -27179,6 +27181,7 @@ $.widget('ui.editor',
                     uiObject.options = options;
                     uiObject.ui = uiObject.init(this, options);
 
+                    // Bind hotkeys
                     if (uiObject.hotkeys) {
                         this.registerHotkey(uiObject.hotkeys, null, uiObject);
                         // Add hotkeys to title
@@ -27252,6 +27255,7 @@ $.widget('ui.editor',
                     e.preventDefault();
                     // Call the click event function
                     button.click.apply(object, arguments);
+                    editor.checkChange();
                 });
 
                 editor.bind('destroy', $.proxy(function() {
@@ -27639,6 +27643,7 @@ $.extend($.ui.editor,
     elementIsBlock: elementIsBlock,
     elementDefaultDisplay: elementDefaultDisplay,
     elementIsValid: elementIsValid,
+    elementGetStyles: elementGetStyles,
     fragmentToHtml: fragmentToHtml,
     fragmentInsertBefore: fragmentInsertBefore,
     rangeExpandToParent: rangeExpandToParent,
@@ -27705,14 +27710,12 @@ $.extend($.ui.editor,
         unloadWarning: true,
 
         /**
-         * Switch to automatically enabled editing on the element
-         * @type boolean
+         * @type boolean Switch to automatically enabled editing on the element
          */
         autoEnable: false,
 
         /**
-         * Only enable editing on certian parts of the element
-         * @type {jQuerySelector}
+         * @type {jQuerySelector} Only enable editing on certian parts of the element
          */
         partialEdit: false,
 
@@ -27725,15 +27728,12 @@ $.extend($.ui.editor,
         enablePlugins: true,
 
         /**
-         * An array of explicitly disabled plugins
-         * @type String[]
+         * @type String[] An array of explicitly disabled plugins
          */
         disabledPlugins: [],
 
         /**
-         * And array of arrays denoting the order and grouping of UI elements in
-         * the toolbar
-         * @type String[]
+         * @type String[] And array of arrays denoting the order and grouping of UI elements in the toolbar
          */
         uiOrder: null,
 
@@ -27760,18 +27760,7 @@ $.extend($.ui.editor,
         },
 
         /**
-         * Switch to indicate that the element the editor is being applied to
-         * should be replaced with a div (useful for textareas), the value/html
-         * of the replaced element will be automatically updated when the editor
-         * element is changed
-         * @type boolean
-         */
-        replace: false,
-
-        /**
-         * A list of styles that will be copied from the replaced element and
-         * applied to the editor replacement element
-         * @type String[]
+         * @type String[] A list of styles that will be copied from a replaced textarea and applied to the editor replacement element
          */
         replaceStyle: [
             'display', 'position', 'float', 'width',
@@ -27849,7 +27838,7 @@ $.extend($.ui.editor,
     /**
      * @property {Object} templates
      */
-    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\">\n        <textarea>{{source}}<\/textarea>\n    <\/div>\n<\/div>\n",'statistics.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_(\"Copy the file's URL from your browser's address bar and paste it into the box above\")<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'clickbuttontoedit.edit-button': "<button class=\"{{baseClass}}-button\">_('Click to begin editing')<\/button>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'color-picker-basic.menu': "<div name=\"color-picker-basic\" class=\"ui-editor-color-picker-basic-select ui-editor-selectmenu\">\n    <div class=\"ui-editor-selectmenu-option\" value=\"automatic\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"display: none\"><\/div> <span>Clear<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"white\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #ffffff\"><\/div> <span>White<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"black\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #000000\"><\/div> <span>Black<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"grey\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #999\"><\/div> <span>Grey<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"blue\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #4f81bd\"><\/div> <span>Blue<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"red\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #c0504d\"><\/div> <span>Red<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"green\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #9bbb59\"><\/div> <span>Green<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"purple\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #8064a2\"><\/div> <span>Purple<\/span><\/div>\n    <div class=\"ui-editor-selectmenu-option\" value=\"orange\"><div class=\"ui-editor-color-picker-basic-swatch\" style=\"background-color: #f79646\"><\/div> <span>Orange<\/span><\/div>\n<\/div>\n",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
+    templates: { 'paste.dialog': "<div class=\"ui-editor-paste-panel ui-dialog-content ui-widget-content\">\n    <div class=\"ui-editor-paste-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Plain Text')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted &amp; Cleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Formatted Unclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Source Code')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-paste-plain-tab\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-plain\">{{plain}}<\/textarea>\n        <\/div>\n        <div class=\"ui-editor-paste-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-markup\">{{markup}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"ui-editor-paste-area ui-editor-paste-rich\">{{html}}<\/div>\n        <\/div>\n        <div class=\"ui-editor-paste-source-tab\" style=\"display: none\">\n            <textarea class=\"ui-editor-paste-area ui-editor-paste-source\">{{html}}<\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",'imageresize.manually-resize-image': "<div>\n    <fieldset>\n        <label for=\"{{baseClass}}-width\">_('Image width')<\/label>\n        <input id=\"{{baseClass}}-width\" name=\"width\" type=\"text\" value=\"{{width}}\" placeholder=\"_('Image width')\"\/>\n    <\/fieldset>\n    <fieldset>\n        <label for=\"{{baseClass}}-height\">_('Image height')<\/label>\n        <input id=\"{{baseClass}}-height\" name=\"height\" type=\"text\" value=\"{{height}}\" placeholder=\"_('Image height')\"\/>\n    <\/fieldset>\n<\/div>",'viewsource.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-plain-text\">\n        <textarea>{{source}}<\/textarea>\n    <\/div>\n<\/div>\n",'statistics.dialog': "<div>\n    <ul>\n        <li>{{characters}}<\/li>\n        <li>{{words}}<\/li>\n        <li>{{sentences}}<\/li>\n        <li>{{truncation}}<\/li>\n    <\/ul>\n<\/div>\n",'i18n.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n    <option value=\"div\">_('Divider')<\/option>\n<\/select>\n",'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" value=\"{{type}}\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{title}}<\/span>\n<\/label>\n",'link.email': "<h2>_('Link to an email address')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('Email')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('Enter email address')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('Subject (optional)')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('Enter subject')\"\/>\n<\/fieldset>\n",'link.error': "<div style=\"display:none\" class=\"ui-widget {{baseClass}}-error-message {{messageClass}}\">\n    <div class=\"ui-state-error ui-corner-all\"> \n        <p>\n            <span class=\"ui-icon ui-icon-alert\"><\/span> \n            {{message}}\n        <\/p>\n    <\/div>\n<\/div>",'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('Choose a link type:')<\/p>\n        <fieldset><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\"><\/div>\n    <\/div>\n<\/div>\n",'link.file-url': "<h2>_('Link to a document or other file')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the file open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Ensure the file has been uploaded to your website')<\/li>\n    <li>_('Open the uploaded file in your browser')<\/li>\n    <li>_(\"Copy the file's URL from your browser's address bar and paste it into the box above\")<\/li>\n<\/ol>\n",'link.external': "<h2>_('Link to a page on this or another website')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('Location')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('Enter your URL')\" \/>\n<\/fieldset>\n<h2>_('New window')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('Check this box to have the link open in a new browser window')<\/span>\n    <\/label>\n<\/fieldset>\n<h2>_('Not sure what to put in the box above?')<\/h2>\n<ol>\n    <li>_('Find the page on the web you want to link to')<\/li>\n    <li>_('Copy the web address from your browser\'s address bar and paste it into the box above')<\/li>\n<\/ol>\n",'clickbuttontoedit.edit-button': "<button class=\"{{baseClass}}-button\">_('Click to begin editing')<\/button>\n",'embed.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-dialog\">\n    <div class=\"ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('Embed Code')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('Preview')<\/a><\/li>\n        <\/ul>\n        <div class=\"ui-editor-embed-code-tab\">\n            <p>_('Paste your embed code into the text area below.')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"ui-editor-preview-tab\" style=\"display: none\">\n            <p>_('A preview of your embedded object is displayed below.')<\/p>\n            <div class=\"ui-editor-embed-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",'cancel.dialog': "<div>\n    _('Are you sure you want to stop editing?')\n    <br\/><br\/>\n    _('All changes will be lost!')\n<\/div>\n",'tagmenu.menu': "<select autocomplete=\"off\" name=\"tag\" class=\"ui-editor-tag-select\">\n    <option value=\"na\">_('N\/A')<\/option>\n    <option value=\"p\">_('Paragraph')<\/option>\n    <option value=\"h1\">_('Heading&nbsp;1')<\/option>\n    <option value=\"h2\">_('Heading&nbsp;2')<\/option>\n    <option value=\"h3\">_('Heading&nbsp;3')<\/option>\n<\/select>\n",'unsavededitwarning.warning': "<div title=\"_('This block contains unsaved changes')\" class=\"{{baseClass}}\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>There are unsaved edits on this page<\/span>\n<\/div>",'root': "<a href=\"javascript: \/\/ _('Select all editable content')\" \n   class=\"{{baseClass}}-select-element\"\n   title=\"_('Click to select all editable content')\">_('root')<\/a> \n",'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",'tag': " &gt; <a href=\"javascript: \/\/ _('Select {{element}} element')\" \n         class=\"{{baseClass}}-select-element\"\n         title=\"_('Click to select the contents of the '{{element}}' element')\"\n         data-ui-editor-selection=\"{{data}}\">{{element}}<\/a> \n",'unsupported': "<div class=\"{{baseClass}}-unsupported-overlay\"><\/div>\n<div class=\"{{baseClass}}-unsupported-content\">\n    It has been detected that you a using a browser that is not supported by Raptor, please\n    use one of the following browsers:\n\n    <ul>\n        <li><a href=\"http:\/\/www.google.com\/chrome\">Google Chrome<\/a><\/li>\n        <li><a href=\"http:\/\/www.firefox.com\">Mozilla Firefox<\/a><\/li>\n        <li><a href=\"http:\/\/www.google.com\/chromeframe\">Internet Explorer with Chrome Frame<\/a><\/li>\n    <\/ul>\n\n    <div class=\"{{baseClass}}-unsupported-input\">\n        <button class=\"{{baseClass}}-unsupported-close\">Close<\/button>\n        <input name=\"{{baseClass}}-unsupported-show\" type=\"checkbox\" \/>\n        <label>Don't show this message again<\/label>\n    <\/div>\n<div>",'messages': "<div class=\"{{baseClass}}-messages\" \/>\n" },
 
     /**
      * @param {String} name
@@ -29027,64 +29016,6 @@ $.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.click
     }
 });
 /**
- * @fileOverview UI component basic color selection
- * @author David Neilsen david@panmedia.co.nz
- */
-$.ui.editor.registerUi('colorPickerBasic', {
-    /**
-     * @see $.ui.editor.defaultUi#init
-     */
-    init: function(editor) {
-        editor.bind('selectionChange', this.change, this);
-        editor.bind('show', this.change, this);
-
-        var ui = this;
-
-        return editor.uiSelectMenu({
-            name: 'colorPickerBasic',
-            title: _('Change the color of the selected text.'),
-            select: $(editor.getTemplate('color-picker-basic.menu')),
-            change: function(value) {
-                if (value === 'automatic') {
-                    selectionGetElements().parents('.' + ui.options.cssPrefix + 'color').andSelf().each(function() {
-                        var element = $(this),
-                            classes = $(this).attr('class').match(/(cms-(.*?))( |$)/ig);
-                        $.each(classes, function(i, color) {
-                            color = $.trim(color);
-                            element.removeClass(color);
-                        });
-                    });
-                } else {
-                    selectionToggleWrapper('span', {
-                        classes: ui.options.classes || ui.options.cssPrefix + 'color ' + ui.options.cssPrefix + value
-                    });
-                }
-            }
-        });
-    },
-
-    change: function() {
-        this.ui.val('automatic');
-        var tag = selectionGetElements()[0];
-        if (!tag) {
-            return;
-        }
-        tag = $(tag).closest('.' + this.options.cssPrefix + 'color');
-        if (!tag) {
-            return;
-        }
-
-        var classes = tag.attr('class');
-        if (classes) {
-            classes = tag.attr('class').replace(new RegExp(this.options.cssPrefix + 'color', 'g'), '');
-            var color = classes.match(/cms-(.*?)( |$)/i)[1];
-            if (this.ui.select.find('.ui-editor-selectmenu-option[value=' + color + ']').length) {
-                this.ui.val(color);
-            }
-        }
-    }
-});
-/**
  * @fileOverview Dock plugin
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -29118,6 +29049,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.bind('show', this.show);
         this.bind('hide', this.hide);
         this.bind('disabled', this.disable);
+        this.bind('cancel', this.cancel);
         this.bind('destroy', this.destroy, this);
     },
 
@@ -29172,7 +29104,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.fire('resize');
     },
 
-
     /**
      * Change CSS styles between two values.
      *
@@ -29206,6 +29137,18 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         }
     },
 
+    getDockToElementWrapper: function() {
+        var wrapperId = this.options.baseClass + '-docked-to-element-wrapper-' + this.editor.getElement().attr('id');
+        wrapper = $('#' + wrapperId);
+        if (!wrapper.length) {
+            wrapper = $('<div/>')
+                .insertBefore(this.editor.getElement())
+                .addClass(this.options.baseClass + '-docked-to-element-wrapper')
+                .attr('id', wrapperId);
+        }
+        return wrapper;
+    },
+
     /**
      * Dock the toolbar to the editing element
      */
@@ -29216,41 +29159,39 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         if (debugLevel >= MID) debug('Dock to element', plugin.editor.getElement());
         // </debug>
 
-        // Needs to be in the ready event because we cant insert to the DOM before ready (if auto enabling, before ready)
-//        $(function() {
-//            var element = plugin.editor.getElement()
-//                .addClass(plugin.options.baseClass + '-docked-element');
-//            plugin.editor.wrapper
-//                .addClass(plugin.options.baseClass + '-docked-to-element')
-//                .insertBefore(plugin.editor.getElement())
-//                .append(element);
-//        });
-
-        var wrapper = $('<div/>')
-            .insertBefore(this.editor.getElement())
-            .addClass(this.options.baseClass + '-docked-to-element-wrapper');
+        wrapper = this.getDockToElementWrapper();
 
         this.editor.wrapper
             .appendTo(wrapper);
 
-        this.previousStyle = this.swapStyle(wrapper, this.editor.getElement(), {
-            'display': 'block',
-            'float': 'none',
-            'clear': 'none',
-            'position': 'static',
-            'margin-left': 0,
-            'margin-right': 0,
-            'margin-top': 0,
-            'margin-bottom': 0,
-            'outline': 0,
-            'width': 'auto'
+        this.swapStyle(wrapper, this.editor.getElement(), {
+            'display': this.editor.getElement().css('display') || 'block',
+            'float': this.editor.getElement().css('float') || 'none',
+            'clear': this.editor.getElement().css('clear') || 'none',
+            'position': this.editor.getElement().css('position') || 'static',
+
+            /* Margin */
+            'margin': this.editor.getElement().css('margin') || 0,
+            'margin-left': this.editor.getElement().css('margin-left') || 0,
+            'margin-right': this.editor.getElement().css('margin-right') || 0,
+            'margin-top': this.editor.getElement().css('margin-top') || 0,
+            'margin-bottom': this.editor.getElement().css('margin-bottom') || 0,
+
+            /* Padding */
+            'padding': this.editor.getElement().css('padding') || 0,
+            'padding-left': this.editor.getElement().css('padding-left') || 0,
+            'padding-right': this.editor.getElement().css('padding-right') || 0,
+            'padding-top': this.editor.getElement().css('padding-top') || 0,
+            'padding-bottom': this.editor.getElement().css('padding-bottom') || 0,
+
+            'outline': this.editor.getElement().css('outline') || 0,
+            'width': this.editor.getElement().css('width') || 'auto',
+            'border': this.editor.getElement().css('border') || 'none'
         });
 
         wrapper.css('width', wrapper.width() +
             parseInt(this.editor.getElement().css('padding-left'), 10) +
-            parseInt(this.editor.getElement().css('padding-right'), 10));/* +
-            parseInt(this.editor.getElement().css('border-right-width')) +
-            parseInt(this.editor.getElement().css('border-left-width')));*/
+            parseInt(this.editor.getElement().css('padding-right'), 10));
 
         this.editor.getElement()
             .appendTo(this.editor.wrapper)
@@ -29264,7 +29205,6 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         // <debug>
         if (debugLevel >= MID) debug('Undock from element', this.editor.getElement());
         // </debug>
-
         this.editor.getElement()
             .insertAfter(this.editor.wrapper)
             .removeClass(this.options.baseClass + '-docked-element');
@@ -29272,6 +29212,8 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.editor.wrapper
             .appendTo('body')
             .removeClass(this.options.baseClass + '-docked-to-element');
+
+        this.editor.wrapper.css('width', 'auto');
     },
 
     /**
@@ -29417,6 +29359,13 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
         this.hideSpacers();
     },
 
+    cancel: function() {
+        var wrapper = this.getDockToElementWrapper();
+        if (wrapper && wrapper.length) {
+            wrapper.remove();
+        }
+    },
+
     /**
      * Undock the toolbar
      */
@@ -29454,13 +29403,15 @@ $.ui.editor.registerUi({
                 click: function() {
                     // Toggle dock on current editor
                     var plugin = editor.getPlugin('dock');
+
                     if (plugin.isDocked()) plugin.undock();
                     else plugin.dock();
 
                     // Set (un)docked on all unified editors
                     editor.unify(function(editor) {
-                        if (plugin.isDocked()) editor.getPlugin('dock').dock();
-                        else editor.getPlugin('dock').undock();
+                        var plugin = editor.getPlugin('dock');
+                        if (plugin.isDocked()) plugin.dock();
+                        else plugin.undock();
                     });
                 }
             });
@@ -29482,8 +29433,7 @@ $.ui.editor.registerUi({
     embed: /** @lends $.editor.ui.embed.prototype */ {
 
         /**
-         * Reference to the embed dialog. Only one dialog avalible for all editors.
-         * @type {Object}
+         * @type {Object} Reference to the embed dialog. Only one dialog avalible for all editors.
          */
         dialog: null,
 
@@ -29572,7 +29522,8 @@ $.ui.editor.registerUi({
             }
         }
     }
-});/**
+});
+/**
  * @fileOverview Plugin that wraps naked content.
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -29630,138 +29581,6 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
         });
     }
 
-});
-/**
- * @fileOverview File Manager ui component
- * @author David Neilsen david@panmedia.co.nz
- * @author Michael Robinson michael@panmedia.co.nz
- */
-$(function() {
-
-     $.ui.editor.registerUi({
-
-       /**
-        * @name $.editor.ui.insertFile
-        * @augments $.ui.editor.defaultUi
-        */
-        insertFile: /** @lends $.editor.ui.insertFile.prototype */ {
-
-            fileManager: null,
-
-            imageTypes: [
-                'jpg',
-                'jpeg',
-                'png',
-                'gif'
-            ],
-
-            /**
-             * @see $.ui.editor.defaultUi#init
-             */
-            init: function(editor, options) {
-                return editor.uiButton({
-                    title: 'Insert image or uploaded file',
-                    icon: 'ui-icon-image',
-                    click: function() {
-
-                        var ui = this;
-                        selectionSave();
-
-                        if (this.fileManager === null) {
-                            this.fileManager = $.ui.filemanager.create({
-                                enablePlugins: false,
-                                // ajaxSource: '/filemanager/admin',
-                                plugins: {
-                                    datatables: !XMod.FileManager.Permissions.insert ? false : {
-                                        ajaxSource: '/filemanager/admin/datatables',
-                                        insertionCallback: function(files) {
-
-                                            selectionRestore();
-
-                                            if (!files.length) {
-                                                return true;
-                                            }
-
-                                            var completeInsertion = function() {
-                                                ui.editor.fire('change');
-                                                return true;
-                                            };
-
-                                            var anchorClassNames = function(file, options) {
-                                                return options.cssPrefix + 'file ' + options.cssPrefix + file.type;
-                                            };
-
-                                            if (files.length === 1) {
-                                                var file = files[0];
-
-                                                if (ui.isImage(file)) {
-                                                    selectionReplace(ui.createImage(file, options.cssPrefix + file.type));
-                                                    return completeInsertion();
-                                                }
-
-                                                if (ui.editor.selectionExists()) {
-                                                    selectionWrapTagWithAttribute('a', {
-                                                        href: file.url,
-                                                        className: anchorClassNames(file, ui.options)
-                                                    });
-                                                    return completeInsertion();
-                                                }
-                                                selectionReplace(ui.createAnchor(file, anchorClassNames(file, ui.options)));
-                                                return completeInsertion();
-
-                                            }
-
-                                            var elements = [];
-                                            var file;
-                                            for (var filesIndex = 0; filesIndex < files.length; filesIndex++) {
-                                                file = files[filesIndex];
-                                                if (ui.isImage(file)) {
-                                                    elements.push($('<div/>').html(ui.createImage(file, options.cssPrefix + file.type)).html());
-                                                } else {
-                                                    elements.push($('<div/>').html(ui.createAnchor(file, anchorClassNames(file, ui.options))).html());
-                                                }
-                                            }
-                                            selectionReplace(elements.join(', '));
-                                            return completeInsertion();
-                                        }
-                                    },
-                                    plupload: !XMod.FileManager.Permissions.upload ? false : {
-                                        url: '/filemanager/admin/plupload'
-                                    }
-                                }
-                            });
-                        }
-
-                        $(this.fileManager).filemanager('show');
-                    }
-                });
-            },
-
-            isImage: function(file) {
-                if (-1 !== $.inArray(file.type.toLowerCase(), this.imageTypes)) {
-                    return true;
-                }
-                return false;
-            },
-
-            createImage: function(file, classNames) {
-                return $('<img/>').attr({
-                    src: file.url,
-                    title: file.name,
-                    'class': classNames
-                });
-            },
-
-            createAnchor: function(file, classNames) {
-                return $('<a/>').attr({
-                    href: file.url,
-                    title: file.name,
-                    'class': classNames
-                }).html(file.name);
-            }
-
-        }
-    });
 });
 /**
  * @fileOverview Float ui components
@@ -30090,6 +29909,139 @@ $.ui.editor.registerUi({
             });
         }
     }
+});
+/**
+ * @fileOverview German strings file.
+ * @author Michael Kessler, michi@netzpiraten.ch, https://mksoft.ch
+ */
+registerLocale('de', 'Deutsch', {
+  "A preview of your embedded object is displayed below.": "Eine Vorschau ihres eingebundenen Objekts wird unterhalb angezeigt.",
+  "Added link: {{link}}": "Link hinzugefügt: {{link}}",
+  "All changes will be lost!": "Alle Änderungen gehen verloren!",
+  "Apply Source": "Quellcode anwenden",
+  "Are you sure you want to stop editing?": "Wollen Sie wirklich mit der Bearbeitung aufhören?",
+  "Blockquote": "Zitat",
+  "Bold": "Fett",
+  "Cancel": "Abbrechen",
+  "Center Align": "Zentrieren",
+  "Change HTML tag of selected element": "HTML Tag des selektierten Elements ändern",
+  "Change Language": "Sprache wechseln",
+  "Change the color of the selected text.": "Farbe des gewählten Texts ändern.",
+  "Check this box to have the file open in a new browser window": "Markieren Sie diese Box um die Datei in einem neuen Browser zu öffnen",
+  "Check this box to have the link open in a new browser window": "Markieren Sie diese Box um den Link in einem neuen Browser zu öffnen",
+  "Choose a link type:": "Wählen Sie einen Link Typ:",
+  "Clear Formatting": "Formatierung löschen",
+  "Click to begin editing": "Zum Bearbeiten klicken",
+  "Click to detach the toolbar": "Zum Lösen der Werkzeugleiste klicken",
+  "Click to dock the toolbar": "Zum Befestigen der Werkzeugleiste klicken",
+  "Click to edit the image": "Um das Bild zu bearbeiten klicken",
+  "Click to select all editable content": "Um alle bearbeitbaren Elemente zu selektieren klicken",
+  "Click to select the contents of the '{{element}}' element": "Um den Inhalt des '{{element}}' Element zu selektieren klicken",
+  "Close": "Schliessen",
+  "Confirm Cancel Editing": "Bearbeitung abbrechen bestätigen",
+  "Content Statistics": "Inhaltsstatistik",
+  "Content contains more than {{limit}} characters and may be truncated": "Der Inhalt hat mehr als {{limit}} Zeichen und kann gekürzt werden",
+  "Content will not be truncated": "Der Inhalt wird nicht gekürzt",
+  "Copy the file's URL from your browser's address bar and paste it into the box above": "Kopieren Sie die URL der Datei von der Adressleiste ihres Browser und fügen Sie diese in der Box oberhalb ein",
+  "Copy the web address from your browser\'s address bar and paste it into the box above": "Kopieren Sie die Web Adresse von der Adressleiste ihres Browser und fügen Sie diese in der Box oberhalb ein",
+  "Decrease Font Size": "Schriftgrösse verkleinern",
+  "Destroy": "Löschen",
+  "Divider": "Trennzeichen",
+  "Document or other file": "Dokument oder andere Datei",
+  "Edit Link": "Link bearbeiten",
+  "Email": "E-Mail",
+  "Email address": "E-Mail Adresse",
+  "Embed Code": "Quellcode einbinden",
+  "Embed Object": "Objekt einbinden",
+  "Embed object": "Objekt einbinden",
+  "Ensure the file has been uploaded to your website": "Stellen Sie sicher, dass die Datei auf ihre Webseite hochgeladen wurde",
+  "Enter email address": "E-Mail Adresse eingeben",
+  "Enter subject": "Betreff eingeben",
+  "Enter your URL": "Ihre URL eingeben",
+  "Failed to save {{failed}} content block(s).": "{{failed}} Inhaltsblöcke konnten nicht gespeichert werden.",
+  "Find the page on the web you want to link to": "Finden Sie die Seite im Web welche Sie verlinken wollen",
+  "Float Image Left": "Bild nach links stellen",
+  "Float Image Right": "Bild nach rechts stellen",
+  "Formatted &amp; Cleaned": "Formatiert &amp; Bereinigt",
+  "Formatted Unclean": "Formatiert &amp; Unbereinigt",
+  "Heading&nbsp;1": "Titel&nbsp;1",
+  "Heading&nbsp;2": "Titel&nbsp;2",
+  "Heading&nbsp;3": "Titel&nbsp;3",
+  "Image height": "Bildhöhe",
+  "Image width": "Bildbreite",
+  "Increase Font Size": "Schriftgrösse vergrössern",
+  "Initializing": "Initialisieren",
+  "Insert": "Einfügen",
+  "Insert Horizontal Rule": "Horizontale Trennlinie einfügen",
+  "Insert Link": "Link einfügen",
+  "Insert Snippet": "Schnipsel einfügen",
+  "Italic": "Kursiv",
+  "Justify": "Bündig",
+  "Learn More About the Raptor WYSIWYG Editor": "Erfahren Sie mehr über dem Raptor WYSIWYG Editor",
+  "Left Align": "Links ausrichten",
+  "Link to a document or other file": "Ein Dokument oder eine Datei verlinken",
+  "Link to a page on this or another website": "Eine Seite auf dieser oder einer anderen Webseite verlinken",
+  "Link to an email address": "Eine E-Mail Adresse verlinken",
+  "Location": "Ort",
+  "Modify Image Size": "Bildgrösse ändern",
+  "N/A": "k.A.",
+  "New window": "Neues Fenster",
+  "No changes detected to save...": "Keine Änderungen zum Speichern erkannt...",
+  "Not sure what to put in the box above?": "Nicht sicher was in die Box oberhalb gehört?",
+  "OK": false,
+  "Open the uploaded file in your browser": "Die hochgeladene Datei in ihrem Browser öffnen",
+  "Ordered List": "Geordnete Liste",
+  "Page on this or another website": "Seite auf dieser oder einer anderen Webseite",
+  "Paragraph": "Paragraph",
+  "Paste Embed Code": "Quellcode einfügen",
+  "Paste your embed code into the text area below.": "Fügen Sie ihren Quellcode zum Einbetten in das Textfeld unterhalb ein.",
+  "Plain Text": "Einfacher Text",
+  "Preview": "Vorschau",
+  "Raptorize": false,
+  "Reinitialise": "Reinitialisieren",
+  "Remaining characters before the recommended character limit is reached": "Verbleibende Zeichen bis die empfohlene Limite erreicht ist",
+  "Remove Image Float": "Bildausrichtung entfernen",
+  "Remove Link": "Link entfernen",
+  "Remove unnecessary markup from editor content": "Unnötige Markierungselemente im Inhalt entfernen",
+  "Resize Image": "Bildgrösse anpassen",
+  "Right Align": "Rechts ausrichten",
+  "Save": "Speichern",
+  "Saved {{saved}} out of {{dirty}} content blocks.": "{{saved}} von {{dirty}} Inhaltsblöcken gespeichert.",
+  "Saving changes...": "Änderungen speichern...",
+  "Select all editable content": "Alle editierbaren Inhalte auswählen",
+  "Select {{element}} element": "{{element}} Element auswählen",
+  "Show Guides": "Hilfslinien anzeigen",
+  "Source Code": "Quelltext",
+  "Step Back": "Schritt zurück",
+  "Step Forward": "Schritt vorwärts",
+  "Strikethrough": "Durchstreichen",
+  "Sub script": "Unterstreichen",
+  "Subject (optional)": "Betreff (optional)",
+  "Successfully saved {{saved}} content block(s).": "{{saved}} Inhaltsblöcke erfolgreich gespeichert.",
+  "Super script": "Hochstellen",
+  "The URL does not look well formed": "Die URL scheint nicht gültig zu sein",
+  "The email address does not look well formed": "Die E-Mail Adresse scheint nicht gültig zu sein",
+  "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "Das Bild '{{image}}' ist zu breit für das gerade editierte Element.<br/>Es wird so geändert, dass es passt.",
+  "The url for the file you inserted doesn\'t look well formed": "Die URL der Datei scheint nicht gültig zu sein",
+  "The url for the link you inserted doesn\'t look well formed": "Die URL des Links scheint nicht gültig zu sein",
+  "This block contains unsaved changes": "Dieser Block enthält ungespeicherte Änderungen",
+  "Underline": "Unterstreichen",
+  "Unnamed Button": "Knopf ohne Name",
+  "Unnamed Select Menu": "Auswahlmenu ohne Name",
+  "Unordered List": "Ungeordnete Liste",
+  "Update Link": "Link aktualisieren",
+  "Updated link: {{link}}": "Link aktualisiert: {{link}}",
+  "View / Edit Source": "Quellcode anschauen/editieren",
+  "View Source": "Quellcode anschauen",
+  "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nEs gibt ungespeicherte Änderungen auf dieser Seite. \nWenn Sie diese Seite verlassen, werden Sie die ungespeicherten Änderungen verlieren",
+  "root": '',
+  "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} Zeichen über der Limite",
+  "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} Zeichen verbleibend",
+  "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} Zeichen, {{charactersRemaining}} über der empfohlenen Limite",
+  "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} Zeichen, {{charactersRemaining}} verbleibend",
+  "{{sentences}} sentences": "{{sentences}} Sätze",
+  "{{words}} word": "{{words}} Wort",
+  "{{words}} words": "{{words}} Wörter"
 });
 /**
  * @fileOverview English strings file.
@@ -32175,7 +32127,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.22?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.23?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32388,7 +32340,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
 
                                     selectionRestore();
                                     selectionReplace(html);
-
+                                    editor.checkChange();
                                     inProgress = false;
                                     $(this).dialog('close');
                                 }
@@ -32570,7 +32522,8 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
         if (!$(target).hasClass('ui-editor-paste-source')) dialog.find('.ui-editor-paste-source').html(content);
         if (!$(target).hasClass('ui-editor-paste-markup')) dialog.find('.ui-editor-paste-markup').html(this.stripAttributes(content));
     }
-});/**
+});
+/**
  * @fileOverview Placeholder text component
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
@@ -33683,6 +33636,50 @@ $.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.p
         }
     }
 });/**
+ * @fileOverview Cleaning helper functions.
+ * @author David Neilsen - david@panmedia.co.nz
+ * @author Michael Robinson - michael@panmedia.co.nz
+ */
+
+/**
+ * Replaces elements in another elements. E.g.
+ *
+ * @example
+ * cleanReplaceElements('.content', {
+ *     'b': '<strong/>',
+ *     'i': '<em/>',
+ * });
+ *
+ * @param  {jQuery|Element|Selector} selector The element to be find and replace in.
+ * @param  {Object} replacements A map of selectors to replacements. The replacement
+ *   can be a jQuery object, an element, or a selector.
+ */
+function cleanReplaceElements(selector, replacements) {
+    for (var find in replacements) {
+        var replace = replacements[find];
+        var i = 0;
+        do {
+            var found = $(selector).find(find);
+            if (found.length) {
+                found = $(found.get(0));
+                var clone = $(replace).clone();
+                clone.html(found.html());
+                clone.attr(elementGetAttributes(found));
+                found.replaceWith(clone);
+            }
+        } while(found.length);
+    }
+}
+
+/**
+ * Unwrap function. Currently just wraps jQuery.unwrap() but may be extended in future.
+ *
+ * @param  {jQuery|Element|Selector} selector The element to unwrap.
+ */
+function cleanUnwrapElements(selector) {
+    $(selector).unwrap();
+}
+/**
  * @fileOverview Element manipulation helper functions.
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
@@ -33763,6 +33760,7 @@ function elementOuterText(element) {
 
 /**
  * Determine whether element is block.
+ *
  * @param  {Element} element The element to test.
  * @return {Boolean} True if the element is a block element
  */
@@ -33772,6 +33770,7 @@ function elementIsBlock(element) {
 
 /**
  * Determine whether element is inline or block.
+ *
  * @see http://stackoverflow.com/a/2881008/187954
  * @param  {string} tag Lower case tag name, e.g. 'a'.
  * @return {string} Default display style for tag.
@@ -33789,7 +33788,8 @@ function elementDefaultDisplay(tag) {
 }
 
 /**
- * Check that the given element is one of the the given tags
+ * Check that the given element is one of the the given tags.
+ *
  * @param  {jQuery|Element} element The element to be tested.
  * @param  {Array}  validTagNames An array of valid tag names.
  * @return {Boolean} True if the given element is one of the give valid tags.
@@ -33800,7 +33800,8 @@ function elementIsValid(element, validTags) {
 
 /**
  * Calculate and return the visible rectangle for the element.
- * @param  {Element|jQuery} element The element to calculate the visible rectangle for.
+ *
+ * @param  {jQuery|Element} element The element to calculate the visible rectangle for.
  * @return {Object} Visible rectangle for the element.
  */
 function elementVisibleRect(element) {
@@ -33839,6 +33840,35 @@ function elementVisibleRect(element) {
     }
 
     return rect;
+}
+
+/**
+ * Returns a map of an elements attributes and values. The result of this function
+ * can be passed directly to $('...').attr(result);
+ *
+ * @param  {jQuery|Element|Selector} element The element to get the attributes from.
+ * @return {Object} A map of attribute names mapped to their values.
+ */
+function elementGetAttributes(element) {
+    var attributes = $(element).get(0).attributes,
+        result = {};
+    for (var i = 0, l = attributes.length; i < l; i++) {
+        result[attributes[i].name] = attributes[i].value;
+    }
+    return result;
+}
+
+/**
+ * FIXME: this function needs reviewing
+ * @param {jQuerySelector|jQuery|Element} element
+ */
+function elementGetStyles(element) {
+    var result = {};
+    var style = window.getComputedStyle(element[0], null);
+    for (var i = 0; i < style.length; i++) {
+        result[style.item(i)] = style.getPropertyValue(style.item(i));
+    }
+    return result;
 }
 /**
  * @fileOverview DOM fragment manipulation helper functions
