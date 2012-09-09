@@ -122,7 +122,7 @@ registerLocale('de', 'Deutsch', {
   "View / Edit Source": "Quellcode anschauen/editieren",
   "View Source": "Quellcode anschauen",
   "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nEs gibt ungespeicherte Änderungen auf dieser Seite. \nWenn Sie diese Seite verlassen, werden Sie die ungespeicherten Änderungen verlieren",
-  "root": 'Grundelement',
+  "root": "Grundelement",
   "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} Zeichen über der Limite",
   "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} Zeichen verbleibend",
   "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} Zeichen, {{charactersRemaining}} über der empfohlenen Limite",
