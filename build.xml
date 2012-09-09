@@ -26,15 +26,20 @@
     </target>
 
     <target name="test-build">
-        <echo>${phing.project.name}</echo>
-        <echo>${project.basedir}</echo>
-        <echo>${dir.package}</echo>
-        <echo>${dir.build}</echo>
-        <echo>${strip.blocks}</echo>
-        <echo>${theme}</echo>
-        <echo>${addons.manifest}</echo>
-        <echo>${addons.extra}</echo>
-        <echo>${jquery-no-conflict}</echo>
+        <echo>phing.project.name: ${phing.project.name}</echo>
+        <echo>project.basedir: ${project.basedir}</echo>
+        <echo>dir.package: ${dir.package}</echo>
+        <echo>dir.build: ${dir.build}</echo>
+        <echo>strip.blocks: ${strip.blocks}</echo>
+        <echo>theme: ${theme}</echo>
+        <echo>addons.manifest: ${addons.manifest}</echo>
+        <echo>addons.extra: ${addons.extra}</echo>
+        <echo>jquery-no-conflict: ${jquery-no-conflict}</echo>
+        <echo>jquery-ui: ${jquery-ui}</echo>
+        <echo>jquery-ui-theme: ${jquery-ui-theme}</echo>
+        <echo>jquery-hotkeys: ${jquery-hotkeys}</echo>
+        <echo>rangy: ${rangy}</echo>
+        <echo>raptorize: ${raptorize}</echo>
     </target>
 
     <target name="0deps">
