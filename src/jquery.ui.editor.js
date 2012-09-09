@@ -1567,6 +1567,7 @@ $.extend($.ui.editor,
     selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
     selectionToggleBlockStyle: selectionToggleBlockStyle,
     stringStripTags: stringStripTags,
+    typeIsNumber: typeIsNumber,
     // </expose>
 
     /** @namespace Default options for Raptor Editor */
