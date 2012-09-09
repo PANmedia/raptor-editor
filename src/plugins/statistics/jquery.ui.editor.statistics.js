@@ -1,7 +1,7 @@
 /**
  * @fileOverview UI Componenent for recommending & tracking maximum content length.
- * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  */
 
 $.ui.editor.registerUi({
@@ -12,7 +12,7 @@ $.ui.editor.registerUi({
      * @class Displays a button containing a character count for the editor content.
      * When button is clicked, a dialog containing statistics is displayed.
      * <br/>
-     * Shows a dialog containing more content statistics when clicked
+     * Shows a dialog containing more content statistics when clicked.
      */
     statistics: /** @lends $.editor.ui.statistics.prototype */ {
 
@@ -25,14 +25,32 @@ $.ui.editor.registerUi({
         options: /** @lends $.editor.ui.statistics.options.prototype */  {
 
             /**
-             * @see $.editor.ui.statistics.options
-             * @type {Boolean|Integer} To display a character count, set to an integer. Else set to false to just display the button.
+             * @type {Boolean|Integer} To display a character count, set to an integer.
+             * Else set to false to just display the button.
              */
-            maximum: null
+            maximum: null,
+
+            /**
+             * @type {Boolean} True to show count & other text in button, false
+             * for icon only.
+             */
+            showCountInButton: true,
+
+            /**
+             * @type {String} Text to use for the button's title when
+             * {@link $.editor.ui.statistics.options.maximum} has been provided.
+             */
+            characterLimitTitle: _('Remaining characters before the recommended character limit is reached. Click to view statistics'),
+
+            /**
+             * @type {String} Text to use for the button's title when
+             * {@link $.editor.ui.statistics.options.maximum} has not been provided.
+             */
+            characterCountTitle: _('Click to view statistics')
         },
 
         /**
-         * @see $.ui.editor.length#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
 
@@ -40,7 +58,7 @@ $.ui.editor.registerUi({
             editor.bind('change', $.proxy(this.updateCount, this));
 
             return this.editor.uiButton({
-                title: _('Remaining characters before the recommended character limit is reached'),
+                title: typeIsNumber(this.options.maximum) ? this.options.characterLimitTitle : this.options.characterCountTitle,
                 label: _('Initializing'),
                 text: true,
                 icon: 'ui-icon-dashboard',
@@ -52,28 +70,43 @@ $.ui.editor.registerUi({
 
         /**
          * Update the associated UI element when the content has changed.
+         * If {@link $.editor.ui.statistics.options.maximum} has not been specified, a character count is shown.
+         * If it has been specified, a remaining character count is shown.
          */
         updateCount: function() {
             // <debug>
             if (debugLevel >= MID) debug('Updating length count');
             // </debug>
 
-            var charactersRemaining = this.options.maximum - $('<div/>').html(this.editor.getCleanHtml()).text().length;
-            var button = this.ui.button;
-            // If maximum has been set to false, only show the icon button
-            if (this.options.maximum === false) {
-                button.button('option', 'text', false);
-                return;
+            var charactersRemaining = null;
+            var label = null;
+            var characters = $('<div/>').html(this.editor.getCleanHtml()).text().length;
+
+            // Cases where maximum has been provided
+            if (typeIsNumber(this.options.maximum)) {
+                charactersRemaining = this.options.maximum - characters;
+                if (charactersRemaining >= 0) {
+                    label = _('{{charactersRemaining}} characters remaining', { charactersRemaining: charactersRemaining });
+                } else {
+                    label = _('{{charactersRemaining}} characters over limit', { charactersRemaining: charactersRemaining * -1 });
+                }
+            } else {
+                label = _('{{characters}} characters', { characters: characters });
             }
 
-            var label = null;
-            if (charactersRemaining >= 0) {
-                label = _('{{charactersRemaining}} characters remaining', { charactersRemaining: charactersRemaining });
-            } else {
-                label = _('{{charactersRemaining}} characters over limit', { charactersRemaining: charactersRemaining * -1 });
+            var button = this.ui.button;
+
+            // If maximum has been set to false, only show the icon button
+            if (this.options.showCountInButton === false) {
+                button.button('option', 'text', false);
             }
+
             button.button('option', 'label', label);
             button.button('option', 'text', true);
+
+            if (!typeIsNumber(this.options.maximum)) {
+                return;
+            }
 
             // Add the error state to the button's text element if appropriate
             if (charactersRemaining < 0) {
@@ -88,6 +121,9 @@ $.ui.editor.registerUi({
             }
         },
 
+        /**
+         * Create & show the statistics dialog.
+         */
         showStatistics: function() {
             var dialog = this.processTemplate();
 
@@ -124,8 +160,10 @@ $.ui.editor.registerUi({
         processTemplate: function() {
             var content = $('<div/>').html(this.editor.getCleanHtml()).text();
             var truncation = null;
-            var charactersRemaining = this.options.maximum - content.length;
-            if (charactersRemaining < 0) {
+
+            // If maximum has not been set, use infinity
+            var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';
+            if (typeIsNumber(charactersRemaining)) {
                 truncation = _('Content contains more than {{limit}} characters and may be truncated', {
                     'limit': this.options.maximum
                 });
@@ -150,7 +188,7 @@ $.ui.editor.registerUi({
             }
 
             var characters = null;
-            if (charactersRemaining >= 0) {
+            if (charactersRemaining >= 0 || !typeIsNumber(charactersRemaining)) {
                 characters = _('{{characters}} characters, {{charactersRemaining}} remaining', {
                     'characters': content.length,
                     'charactersRemaining': charactersRemaining
