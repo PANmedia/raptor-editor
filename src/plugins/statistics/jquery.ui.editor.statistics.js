@@ -9,9 +9,9 @@ $.ui.editor.registerUi({
     /**
      * @name $.editor.ui.statistics
      * @augments $.ui.editor.defaultUi
+     * @see $.editor.ui.statistics.options
      * @class Displays a button containing a character count for the editor content.
      * When button is clicked, a dialog containing statistics is displayed.
-     * <br/>
      * Shows a dialog containing more content statistics when clicked.
      */
     statistics: /** @lends $.editor.ui.statistics.prototype */ {
