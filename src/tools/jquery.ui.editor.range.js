@@ -2,7 +2,6 @@
  * @fileOverview Range manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
-
  */
 
 /**
@@ -26,7 +25,7 @@ function rangeExpandTo(range, elements) {
                 return;
             }
         }
-    } while (range.commonAncestorContainer)
+    } while (range.commonAncestorContainer);
 }
 
 function rangeReplace(html, range) {
