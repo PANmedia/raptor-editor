@@ -39,7 +39,8 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
 
     show: function() {
         if (!this.enabled) {
-            // When the editor is enabled, if persistent storage or options indicate that the toolbar should be docked, dock the toolbar
+            // When the editor is enabled, if persistent storage or options
+            // indicate that the toolbar should be docked, dock the toolbar
             if (this.loadState() || this.options.docked) {
                 this.dock();
             }
