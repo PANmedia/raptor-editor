@@ -5,7 +5,7 @@
  */
 
 /**
- * Determine whether object is a number
+ * Determine whether object is a number {@link http://stackoverflow.com/a/1421988/187954}.
  * @param  {mixed} object The object to be tested
  * @return {Boolean} True if the object is a number.
  */
