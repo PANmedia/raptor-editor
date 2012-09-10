@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.25 
+VERSION: 0.0.26 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -25947,6 +25947,7 @@ $.widget('ui.editor',
         this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
+        this.target = null;
 
         // jQuery DOM elements
         this.wrapper = null;
@@ -25993,7 +25994,7 @@ $.widget('ui.editor',
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
         // Replace textareas & inputs with a div
-        if (this.element.is('textarea, input')) {
+        if (this.element.is(':input')) {
             this.replaceOriginal();
         }
 
@@ -26023,8 +26024,8 @@ $.widget('ui.editor',
         // Automatically enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             $(function() {
-                currentInstance.enableEditing();
                 currentInstance.showToolbar();
+                currentInstance.enableEditing();
             });
         }
     },
@@ -26122,7 +26123,7 @@ $.widget('ui.editor',
         // Create the replacement div
         var target = $('<div/>')
             // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
-            .html(this.element.is(':input') ? this.element.val() : this.element.html())
+            .html(this.element.val())
             // Insert the div before the original element
             .insertBefore(this.element)
             // Give the div a unique ID
@@ -26137,10 +26138,10 @@ $.widget('ui.editor',
 
         this.element.hide();
         this.bind('change', function() {
-            if (this.element.is('input, textarea')) {
-                this.element.val(this.getHtml());
+            if (this.getOriginalElement().is(':input')) {
+                this.getOriginalElement().val(this.getHtml());
             } else {
-                this.element.html(this.getHtml());
+                this.getOriginalElement().html(this.getHtml());
             }
         });
 
@@ -26233,6 +26234,12 @@ $.widget('ui.editor',
 
         // Unbind all events
         this.getElement().unbind('.' + this.widgetName);
+
+        if (this.getOriginalElement().is(':input')) {
+            this.target.remove();
+            this.target = null;
+            this.element.show();
+        }
 
         // Remove element
         if (this.wrapper) {
@@ -26616,6 +26623,7 @@ $.widget('ui.editor',
      * @param  {Range} [range] a native range to select after the toolbar has been shown
      */
     showToolbar: function(range) {
+        // this.loadMessages();
         if (!this.isToolbarLoaded()) {
             this.loadToolbar();
         }
@@ -26652,7 +26660,7 @@ $.widget('ui.editor',
             $(function() {
                 editor.fire('show');
                 // Only focus element if the element is not a textarea / input
-                if (!editor.element.is('textarea, input')) {
+                if (!editor.element.is(':input')) {
                     editor.getElement().focus();
                 }
             });
@@ -26667,7 +26675,7 @@ $.widget('ui.editor',
             this.visible = false;
             this.wrapper.hide();
 
-            if (this.element.is('textarea, input')) {
+            if (this.element.is(':input')) {
                 this.element.show();
             }
 
@@ -27393,6 +27401,7 @@ $.extend($.ui.editor,
     selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
     selectionToggleBlockStyle: selectionToggleBlockStyle,
     stringStripTags: stringStripTags,
+    typeIsNumber: typeIsNumber,
     // </expose>
 
     /** @namespace Default options for Raptor Editor */
@@ -28504,7 +28513,7 @@ $.ui.editor.registerUi({
                         var content = range.extractContents();
 
                         // Expand the range to the parent if there is no selected content
-                        if (fragmentToHtml(content) == '') {
+                        if (fragmentToHtml(content) === '') {
                             editor.expandToParent(range);
                             sel.setSingleRange(range);
                             content = range.extractContents();
@@ -28592,144 +28601,171 @@ $.ui.editor.registerUi({
 
 });
 /**
- * @fileOverview Click button to edit plugin
- * @author David Neilsen david@panmedia.co.nz
+ * @fileOverview Click button to edit plugin.
  * @author Michael Robinson michael@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  */
 
- /**
-  * @name $.editor.plugin.clickButtonToEdit
-  * @augments $.ui.editor.defaultPlugin
-  * @class Shows a button at the center of an editable block,
-  * informing the user that they may click said button to edit the block contents
-  */
-$.ui.editor.registerPlugin('clickButtonToEdit', /** @lends $.editor.plugin.clickButtonToEdit.prototype */ {
+$.ui.editor.registerPlugin({
 
-    hovering: false,
+     /**
+      * @name $.editor.plugin.clickButtonToEdit
+      * @augments $.ui.editor.defaultPlugin
+      * @see $.editor.plugin.clickButtonToEdit.options
+      * @class Shows a button at the center of an editable block,
+      * informing the user that they may click said button to edit the block contents.
+      */
+    clickButtonToEdit: /** @lends $.editor.plugin.clickButtonToEdit.prototype */ {
 
-    buttonClass: null,
-    buttonSelector: null,
-    button: false,
+        hovering: false,
 
-    /** @type {Object} Plugin option defaults. */
-    options: {
-        button: {
-            text: true,
-            icons: {
-                primary: 'ui-icon-pencil'
-            }
-        }
-    },
-
-    /**
-     * @see $.ui.editor.defaultPlugin#init
-     */
-    init: function(editor, options) {
-
-        var plugin = this;
-        var timeoutId = false;
-        this.buttonClass = this.options.baseClass + '-button-element';
-        this.buttonSelector = '.' + this.buttonClass;
-
-        this.selection = function() {
-            var range;
-            if (document.selection) {   // IE
-                range = document.selection.createRange();
-            } else if (document.getSelection().rangeCount) {    // Others
-                range = document.getSelection().getRangeAt(0);
-            }
-            return range;
-        };
+        buttonClass: null,
+        buttonSelector: null,
+        button: false,
 
         /**
-         * Show the click to edit button
+         * @name $.editor.plugin.clickButtonToEdit.options
+         * @namespace Default click button to edit options.
+         * @see $.editor.plugin.clickButtonToEdit
+         * @type {Object}
          */
-        this.show = function() {
-            if (editor.isEditing()) return;
-            editor.getElement().addClass(options.baseClass + '-highlight');
-            editor.getElement().addClass(options.baseClass + '-hover');
+        options: /** @lends $.editor.plugin.clickButtonToEdit.options.prototype */  {
+            /**
+             * @default
+                <pre>{
+                    text: true,
+                    icons: {
+                        primary: 'ui-icon-pencil'
+                    }
+                }</pre>
+             * @type {Object} jQuery UI button options
+             */
+            button: {
+                text: true,
+                icons: {
+                    primary: 'ui-icon-pencil'
+                }
+            }
+        },
 
-            var editButton = plugin.getButton();
+        /**
+         * Initialize the click button to edit plugin.
+         * @see $.ui.editor.defaultPlugin#init
+         * @param  {$.editor} editor The Raptor Editor instance.
+         * @param  {$.editor.plugin.clickButtonToEdit.options} options The options object.
+         * @return {$.editor.defaultPlugin} A new $.ui.editor.plugin.clickButtonToEdit instance.
+         */
+        init: function(editor, options) {
 
-            var visibleRect = elementVisibleRect(editor.getElement());
-            editButton.css({
-                position: 'absolute',
-                // Calculate offset center for the button
-                top: visibleRect.top + ((visibleRect.height / 2) - ($(editButton).outerHeight() / 2)),
-                left: visibleRect.left + (visibleRect.width / 2) - ($(editButton).outerWidth() / 2)
+            var plugin = this;
+            var timeoutId = false;
+            this.buttonClass = this.options.baseClass + '-button-element';
+            this.buttonSelector = '.' + this.buttonClass;
+
+            /**
+             * Show the click to edit button.
+             */
+            this.show = function() {
+                if (editor.isEditing()) return;
+                editor.getElement().addClass(options.baseClass + '-highlight');
+                editor.getElement().addClass(options.baseClass + '-hover');
+
+                var editButton = plugin.getButton();
+
+                var visibleRect = elementVisibleRect(editor.getElement());
+                editButton.css({
+                    position: 'absolute',
+                    // Calculate offset center for the button
+                    top: visibleRect.top + ((visibleRect.height / 2) - ($(editButton).outerHeight() / 2)),
+                    left: visibleRect.left + (visibleRect.width / 2) - ($(editButton).outerWidth() / 2)
+                });
+            };
+
+            /**
+             * Hide the click to edit button.
+             * @param  {Event} event The event triggering this function.
+             */
+            this.hide = function(event) {
+                var editButton = plugin.getButton();
+                if((event &&
+                        (event.relatedTarget === editButton.get(0) ||
+                         editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
+                    return;
+                }
+                editor.getElement().removeClass(options.baseClass + '-highlight');
+                editor.getElement().removeClass(options.baseClass + '-hover');
+                plugin.destroyButton();
+            };
+
+            /**
+             * Hide the click to edit button and show toolbar.
+             */
+            this.edit = function() {
+                plugin.hide();
+                if (!editor.isEditing()) editor.enableEditing();
+                if (!editor.isVisible()) editor.showToolbar();
+            };
+
+            /**
+             * Trigger the $.editor.plugin.clickButtonToEdit#hide function if
+             * the user moves the mouse off the too quickly for the element's
+             * mouseleave event to fire.
+             * @param  {Event} event The event.
+             */
+            this.buttonOut = function(event) {
+                if (event.relatedTarget === plugin.getButton().get(0) ||
+                    (event.relatedTarget === editor.getElement().get(0) || $.contains(editor.getElement().get(0), event.relatedTarget))) {
+                    return;
+                }
+                plugin.hide();
+            };
+
+            editor.getElement().addClass('ui-editor-click-button-to-edit');
+
+            editor.bind('ready, hide, cancel', function() {
+                editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
+                editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
             });
-        };
+
+            editor.bind('show', function() {
+                plugin.destroyButton();
+                editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
+                editor.getElement().unbind('mouseleave.' + editor.widgetName, plugin.hide);
+            });
+        },
 
         /**
-         * Hide the click to edit button
+         * Selects or creates the button and returns it.
+         * @return {jQuery} The "click to edit" button.
          */
-        this.hide = function(event) {
-            var editButton = plugin.getButton();
-            if((event &&
-                    (event.relatedTarget === editButton.get(0) ||
-                     editButton.get(0) === $(event.relatedTarget).parent().get(0)))) {
-                return;
+        getButton: function() {
+            if (!$(this.buttonSelector).length) {
+                this.button = $(this.editor.getTemplate('clickbuttontoedit.edit-button', this.options))
+                    .appendTo('body')
+                    .addClass(this.buttonClass);
+                this.button.button(this.options.button);
             }
-            editor.getElement().removeClass(options.baseClass + '-highlight');
-            editor.getElement().removeClass(options.baseClass + '-hover');
-            plugin.destroyButton();
-        };
+
+            this.button = $(this.buttonSelector);
+
+            this.button.unbind('click.' + this.editor.widgetName)
+                .bind('click.' + this.editor.widgetName, this.edit);
+            this.button.unbind('mouseleave.' + this.editor.widgetName)
+                .bind('mouseleave.' + this.editor.widgetName, this.buttonOut);
+
+            return this.button;
+        },
 
         /**
-         * Hide the click to edit button and show toolbar
+         * Destroys the "click to edit button".
          */
-        this.edit = function() {
-            plugin.hide();
-            if (!editor.isEditing()) editor.enableEditing();
-            if (!editor.isVisible()) editor.showToolbar(plugin.selection());
-        };
-
-        this.buttonOut = function(event) {
-            if (event.relatedTarget === plugin.getButton().get(0) ||
-                (event.relatedTarget === editor.getElement().get(0) || $.contains(editor.getElement().get(0), event.relatedTarget))) {
+        destroyButton: function() {
+            if (typeof this.button === 'undefined' || this.button === false) {
                 return;
             }
-            plugin.hide();
-        };
-
-        editor.getElement().addClass('ui-editor-click-button-to-edit');
-
-        editor.bind('ready, hide, cancel', function() {
-            editor.getElement().bind('mouseenter.' + editor.widgetName, plugin.show);
-            editor.getElement().bind('mouseleave.' + editor.widgetName, plugin.hide);
-        });
-
-        editor.bind('show', function() {
-            plugin.destroyButton();
-            editor.getElement().unbind('mouseenter.' + editor.widgetName, plugin.show);
-            editor.getElement().unbind('mouseleave.' + editor.widgetName, plugin.hide);
-        });
-    },
-
-    getButton: function() {
-        if (!$(this.buttonSelector).length) {
-            this.button = $(this.editor.getTemplate('clickbuttontoedit.edit-button', this.options))
-                .appendTo('body')
-                .addClass(this.buttonClass);
-            this.button.button(this.options.button);
+            this.button.button('destroy').remove();
+            this.button = false;
         }
-
-        this.button = $(this.buttonSelector);
-
-        this.button.unbind('click.' + this.editor.widgetName)
-            .bind('click.' + this.editor.widgetName, this.edit);
-        this.button.unbind('mouseleave.' + this.editor.widgetName)
-            .bind('mouseleave.' + this.editor.widgetName, this.buttonOut);
-
-        return this.button;
-    },
-
-    destroyButton: function() {
-        if (typeof this.button === 'undefined' || this.button === false) {
-            return;
-        }
-        this.button.button('destroy').remove();
-        this.button = false;
     }
 });
 /**
@@ -28773,7 +28809,8 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
 
     show: function() {
         if (!this.enabled) {
-            // When the editor is enabled, if persistent storage or options indicate that the toolbar should be docked, dock the toolbar
+            // When the editor is enabled, if persistent storage or options
+            // indicate that the toolbar should be docked, dock the toolbar
             if (this.loadState() || this.options.docked) {
                 this.dock();
             }
@@ -29258,7 +29295,7 @@ $.ui.editor.registerUi({
 /**
  * @name $.editor.plugin.emptyElement
  * @augments $.ui.editor.defaultPlugin
- * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
+ * @class Automatically wraps content inside an editable element with a specified tag if it is empty.
  */
 $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
 
@@ -29636,133 +29673,135 @@ $.ui.editor.registerUi({
  * @author Michael Kessler, michi@netzpiraten.ch, https://mksoft.ch
  */
 registerLocale('de', 'Deutsch', {
-  "A preview of your embedded object is displayed below.": "Eine Vorschau ihres eingebundenen Objekts wird unterhalb angezeigt.",
-  "Added link: {{link}}": "Link hinzugefügt: {{link}}",
-  "All changes will be lost!": "Alle Änderungen gehen verloren!",
-  "Apply Source": "Quellcode anwenden",
-  "Are you sure you want to stop editing?": "Wollen Sie wirklich mit der Bearbeitung aufhören?",
-  "Blockquote": "Zitat",
-  "Bold": "Fett",
-  "Cancel": "Abbrechen",
-  "Center Align": "Zentrieren",
-  "Change HTML tag of selected element": "HTML Tag des selektierten Elements ändern",
-  "Change Language": "Sprache wechseln",
-  "Change the color of the selected text.": "Farbe des gewählten Texts ändern.",
-  "Check this box to have the file open in a new browser window": "Markieren Sie diese Box um die Datei in einem neuen Browser zu öffnen",
-  "Check this box to have the link open in a new browser window": "Markieren Sie diese Box um den Link in einem neuen Browser zu öffnen",
-  "Choose a link type:": "Wählen Sie einen Link Typ:",
-  "Clear Formatting": "Formatierung löschen",
-  "Click to begin editing": "Zum Bearbeiten klicken",
-  "Click to detach the toolbar": "Zum Lösen der Werkzeugleiste klicken",
-  "Click to dock the toolbar": "Zum Befestigen der Werkzeugleiste klicken",
-  "Click to edit the image": "Um das Bild zu bearbeiten klicken",
-  "Click to select all editable content": "Um alle bearbeitbaren Elemente zu selektieren klicken",
-  "Click to select the contents of the '{{element}}' element": "Um den Inhalt des '{{element}}' Element zu selektieren klicken",
-  "Close": "Schliessen",
-  "Confirm Cancel Editing": "Bearbeitung abbrechen bestätigen",
-  "Content Statistics": "Inhaltsstatistik",
-  "Content contains more than {{limit}} characters and may be truncated": "Der Inhalt hat mehr als {{limit}} Zeichen und kann gekürzt werden",
-  "Content will not be truncated": "Der Inhalt wird nicht gekürzt",
-  "Copy the file's URL from your browser's address bar and paste it into the box above": "Kopieren Sie die URL der Datei von der Adressleiste ihres Browser und fügen Sie diese in der Box oberhalb ein",
-  "Copy the web address from your browser\'s address bar and paste it into the box above": "Kopieren Sie die Web Adresse von der Adressleiste ihres Browser und fügen Sie diese in der Box oberhalb ein",
-  "Decrease Font Size": "Schriftgrösse verkleinern",
-  "Destroy": "Löschen",
-  "Divider": "Trennzeichen",
-  "Document or other file": "Dokument oder andere Datei",
-  "Edit Link": "Link bearbeiten",
-  "Email": "E-Mail",
-  "Email address": "E-Mail Adresse",
-  "Embed Code": "Quellcode einbinden",
-  "Embed Object": "Objekt einbinden",
-  "Embed object": "Objekt einbinden",
-  "Ensure the file has been uploaded to your website": "Stellen Sie sicher, dass die Datei auf ihre Webseite hochgeladen wurde",
-  "Enter email address": "E-Mail Adresse eingeben",
-  "Enter subject": "Betreff eingeben",
-  "Enter your URL": "Ihre URL eingeben",
-  "Failed to save {{failed}} content block(s).": "{{failed}} Inhaltsblöcke konnten nicht gespeichert werden.",
-  "Find the page on the web you want to link to": "Finden Sie die Seite im Web welche Sie verlinken wollen",
-  "Float Image Left": "Bild nach links stellen",
-  "Float Image Right": "Bild nach rechts stellen",
-  "Formatted &amp; Cleaned": "Formatiert &amp; Bereinigt",
-  "Formatted Unclean": "Formatiert &amp; Unbereinigt",
-  "Heading&nbsp;1": "Titel&nbsp;1",
-  "Heading&nbsp;2": "Titel&nbsp;2",
-  "Heading&nbsp;3": "Titel&nbsp;3",
-  "Image height": "Bildhöhe",
-  "Image width": "Bildbreite",
-  "Increase Font Size": "Schriftgrösse vergrössern",
-  "Initializing": "Initialisieren",
-  "Insert": "Einfügen",
-  "Insert Horizontal Rule": "Horizontale Trennlinie einfügen",
-  "Insert Link": "Link einfügen",
-  "Insert Snippet": "Schnipsel einfügen",
-  "Italic": "Kursiv",
-  "Justify": "Bündig",
-  "Learn More About the Raptor WYSIWYG Editor": "Erfahren Sie mehr über dem Raptor WYSIWYG Editor",
-  "Left Align": "Links ausrichten",
-  "Link to a document or other file": "Ein Dokument oder eine Datei verlinken",
-  "Link to a page on this or another website": "Eine Seite auf dieser oder einer anderen Webseite verlinken",
-  "Link to an email address": "Eine E-Mail Adresse verlinken",
-  "Location": "Ort",
-  "Modify Image Size": "Bildgrösse ändern",
-  "N/A": "k.A.",
-  "New window": "Neues Fenster",
-  "No changes detected to save...": "Keine Änderungen zum Speichern erkannt...",
-  "Not sure what to put in the box above?": "Nicht sicher was in die Box oberhalb gehört?",
-  "OK": false,
-  "Open the uploaded file in your browser": "Die hochgeladene Datei in ihrem Browser öffnen",
-  "Ordered List": "Geordnete Liste",
-  "Page on this or another website": "Seite auf dieser oder einer anderen Webseite",
-  "Paragraph": "Paragraph",
-  "Paste Embed Code": "Quellcode einfügen",
-  "Paste your embed code into the text area below.": "Fügen Sie ihren Quellcode zum Einbetten in das Textfeld unterhalb ein.",
-  "Plain Text": "Einfacher Text",
-  "Preview": "Vorschau",
-  "Raptorize": false,
-  "Reinitialise": "Reinitialisieren",
-  "Remaining characters before the recommended character limit is reached": "Verbleibende Zeichen bis die empfohlene Limite erreicht ist",
-  "Remove Image Float": "Bildausrichtung entfernen",
-  "Remove Link": "Link entfernen",
-  "Remove unnecessary markup from editor content": "Unnötige Markierungselemente im Inhalt entfernen",
-  "Resize Image": "Bildgrösse anpassen",
-  "Right Align": "Rechts ausrichten",
-  "Save": "Speichern",
-  "Saved {{saved}} out of {{dirty}} content blocks.": "{{saved}} von {{dirty}} Inhaltsblöcken gespeichert.",
-  "Saving changes...": "Änderungen speichern...",
-  "Select all editable content": "Alle editierbaren Inhalte auswählen",
-  "Select {{element}} element": "{{element}} Element auswählen",
-  "Show Guides": "Hilfslinien anzeigen",
-  "Source Code": "Quelltext",
-  "Step Back": "Schritt zurück",
-  "Step Forward": "Schritt vorwärts",
-  "Strikethrough": "Durchstreichen",
-  "Sub script": "Unterstreichen",
-  "Subject (optional)": "Betreff (optional)",
-  "Successfully saved {{saved}} content block(s).": "{{saved}} Inhaltsblöcke erfolgreich gespeichert.",
-  "Super script": "Hochstellen",
-  "The URL does not look well formed": "Die URL scheint nicht gültig zu sein",
-  "The email address does not look well formed": "Die E-Mail Adresse scheint nicht gültig zu sein",
-  "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "Das Bild '{{image}}' ist zu breit für das gerade editierte Element.<br/>Es wird so geändert, dass es passt.",
-  "The url for the file you inserted doesn\'t look well formed": "Die URL der Datei scheint nicht gültig zu sein",
-  "The url for the link you inserted doesn\'t look well formed": "Die URL des Links scheint nicht gültig zu sein",
-  "This block contains unsaved changes": "Dieser Block enthält ungespeicherte Änderungen",
-  "Underline": "Unterstreichen",
-  "Unnamed Button": "Knopf ohne Name",
-  "Unnamed Select Menu": "Auswahlmenu ohne Name",
-  "Unordered List": "Ungeordnete Liste",
-  "Update Link": "Link aktualisieren",
-  "Updated link: {{link}}": "Link aktualisiert: {{link}}",
-  "View / Edit Source": "Quellcode anschauen/editieren",
-  "View Source": "Quellcode anschauen",
-  "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nEs gibt ungespeicherte Änderungen auf dieser Seite. \nWenn Sie diese Seite verlassen, werden Sie die ungespeicherten Änderungen verlieren",
-  "root": '',
-  "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} Zeichen über der Limite",
-  "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} Zeichen verbleibend",
-  "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} Zeichen, {{charactersRemaining}} über der empfohlenen Limite",
-  "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} Zeichen, {{charactersRemaining}} verbleibend",
-  "{{sentences}} sentences": "{{sentences}} Sätze",
-  "{{words}} word": "{{words}} Wort",
-  "{{words}} words": "{{words}} Wörter"
+    "A preview of your embedded object is displayed below.": "Eine Vorschau ihres eingebundenen Objekts wird unterhalb angezeigt.",
+    "Added link: {{link}}": "Link hinzugefügt: {{link}}",
+    "All changes will be lost!": "Alle Änderungen gehen verloren!",
+    "Apply Source": "Quellcode anwenden",
+    "Are you sure you want to stop editing?": "Wollen Sie wirklich mit der Bearbeitung aufhören?",
+    "Blockquote": "Zitat",
+    "Bold": "Fett",
+    "Cancel": "Abbrechen",
+    "Center Align": "Zentrieren",
+    "Change HTML tag of selected element": "HTML Tag des selektierten Elements ändern",
+    "Change Language": "Sprache wechseln",
+    "Change the color of the selected text.": "Farbe des gewählten Texts ändern.",
+    "Check this box to have the file open in a new browser window": "Markieren Sie diese Box um die Datei in einem neuen Browser zu öffnen",
+    "Check this box to have the link open in a new browser window": "Markieren Sie diese Box um den Link in einem neuen Browser zu öffnen",
+    "Choose a link type:": "Wählen Sie einen Link Typ:",
+    "Clear Formatting": "Formatierung löschen",
+    "Click to begin editing": "Zum Bearbeiten klicken",
+    "Click to detach the toolbar": "Zum Lösen der Werkzeugleiste klicken",
+    "Click to dock the toolbar": "Zum Befestigen der Werkzeugleiste klicken",
+    "Click to edit the image": "Um das Bild zu bearbeiten klicken",
+    "Click to select all editable content": "Um alle bearbeitbaren Elemente zu selektieren klicken",
+    "Click to select the contents of the '{{element}}' element": "Um den Inhalt des '{{element}}' Element zu selektieren klicken",
+    "Click to view statistics": "Click to view statistics",
+    "Close": "Schliessen",
+    "Confirm Cancel Editing": "Bearbeitung abbrechen bestätigen",
+    "Content Statistics": "Inhaltsstatistik",
+    "Content contains more than {{limit}} characters and may be truncated": "Der Inhalt hat mehr als {{limit}} Zeichen und kann gekürzt werden",
+    "Content will not be truncated": "Der Inhalt wird nicht gekürzt",
+    "Copy the file's URL from your browser's address bar and paste it into the box above": "Kopieren Sie die URL der Datei von der Adressleiste ihres Browser und fügen Sie diese in der Box oberhalb ein",
+    "Copy the web address from your browser\'s address bar and paste it into the box above": "Kopieren Sie die URL von der Adressleiste ihres Browser und fügen Sie diese in der Box oberhalb ein",
+    "Decrease Font Size": "Schriftgrösse verkleinern",
+    "Destroy": "Löschen",
+    "Divider": "Trennzeichen",
+    "Document or other file": "Dokument oder andere Datei",
+    "Edit Link": "Link bearbeiten",
+    "Email": "E-Mail",
+    "Email address": "E-Mail Adresse",
+    "Embed Code": "Quellcode einbinden",
+    "Embed Object": "Objekt einbinden",
+    "Embed object": "Objekt einbinden",
+    "Ensure the file has been uploaded to your website": "Stellen Sie sicher, dass die Datei auf ihre Webseite hochgeladen wurde",
+    "Enter email address": "E-Mail Adresse eingeben",
+    "Enter subject": "Betreff eingeben",
+    "Enter your URL": "Ihre URL eingeben",
+    "Failed to save {{failed}} content block(s).": "{{failed}} Inhaltsblöcke konnten nicht gespeichert werden.",
+    "Find the page on the web you want to link to": "Finden Sie die Seite im Web welche Sie verlinken wollen",
+    "Float Image Left": "Bild nach links stellen",
+    "Float Image Right": "Bild nach rechts stellen",
+    "Formatted &amp; Cleaned": "Formatiert &amp; Bereinigt",
+    "Formatted Unclean": "Formatiert &amp; Unbereinigt",
+    "Heading&nbsp;1": "Titel&nbsp;1",
+    "Heading&nbsp;2": "Titel&nbsp;2",
+    "Heading&nbsp;3": "Titel&nbsp;3",
+    "Image height": "Bildhöhe",
+    "Image width": "Bildbreite",
+    "Increase Font Size": "Schriftgrösse vergrössern",
+    "Initializing": "Initialisieren",
+    "Insert": "Einfügen",
+    "Insert Horizontal Rule": "Horizontale Trennlinie einfügen",
+    "Insert Link": "Link einfügen",
+    "Insert Snippet": "Schnipsel einfügen",
+    "Italic": "Kursiv",
+    "Justify": "Bündig",
+    "Learn More About the Raptor WYSIWYG Editor": "Erfahren Sie mehr über dem Raptor WYSIWYG Editor",
+    "Left Align": "Links ausrichten",
+    "Link to a document or other file": "Ein Dokument oder eine Datei verlinken",
+    "Link to a page on this or another website": "Eine Seite auf dieser oder einer anderen Webseite verlinken",
+    "Link to an email address": "Eine E-Mail Adresse verlinken",
+    "Location": "URL",
+    "Modify Image Size": "Bildgrösse ändern",
+    "N/A": "n.v.",
+    "New window": "Neues Fenster",
+    "No changes detected to save...": "Keine Änderungen zum Speichern erkannt...",
+    "Not sure what to put in the box above?": "Nicht sicher was in die Box oberhalb gehört?",
+    "OK": false,
+    "Open the uploaded file in your browser": "Öffnen Sie die hochgeladene Datei in ihrem Browser",
+    "Ordered List": "Geordnete Liste",
+    "Page on this or another website": "Seite auf dieser oder einer anderen Webseite",
+    "Paragraph": "Paragraph",
+    "Paste Embed Code": "Quellcode einfügen",
+    "Paste your embed code into the text area below.": "Fügen Sie ihren Quellcode zum Einbetten des Objektes in das Textfeld unterhalb ein.",
+    "Plain Text": "Einfacher Text",
+    "Preview": "Vorschau",
+    "Raptorize": false,
+    "Reinitialise": "Reinitialisieren",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
+    "Remove Image Float": "Bildausrichtung entfernen",
+    "Remove Link": "Link entfernen",
+    "Remove unnecessary markup from editor content": "Unnötige Markierungselemente im Inhalt entfernen",
+    "Resize Image": "Bildgrösse anpassen",
+    "Right Align": "Rechts ausrichten",
+    "Save": "Speichern",
+    "Saved {{saved}} out of {{dirty}} content blocks.": "{{saved}} von {{dirty}} Inhaltsblöcken gespeichert.",
+    "Saving changes...": "Änderungen speichern...",
+    "Select all editable content": "Alle editierbaren Inhalte auswählen",
+    "Select {{element}} element": "{{element}} Element auswählen",
+    "Show Guides": "Hilfslinien anzeigen",
+    "Source Code": "Quelltext",
+    "Step Back": "Schritt zurück",
+    "Step Forward": "Schritt vorwärts",
+    "Strikethrough": "Durchstreichen",
+    "Sub script": "Tiefstellen",
+    "Subject (optional)": "Betreff (optional)",
+    "Successfully saved {{saved}} content block(s).": "{{saved}} Inhaltsblöcke erfolgreich gespeichert.",
+    "Super script": "Hochstellen",
+    "The URL does not look well formed": "Die URL scheint nicht gültig zu sein",
+    "The email address does not look well formed": "Die E-Mail Adresse scheint nicht gültig zu sein",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "Das Bild '{{image}}' ist zu breit für das gerade editierte Element.<br/>Es wird so geändert, dass es passt.",
+    "The url for the file you inserted doesn\'t look well formed": "Die URL der Datei scheint nicht gültig zu sein",
+    "The url for the link you inserted doesn\'t look well formed": "Die URL des Links scheint nicht gültig zu sein",
+    "This block contains unsaved changes": "Dieser Block enthält ungespeicherte Änderungen",
+    "Underline": "Unterstreichen",
+    "Unnamed Button": "Knopf ohne Name",
+    "Unnamed Select Menu": "Auswahlmenu ohne Name",
+    "Unordered List": "Ungeordnete Liste",
+    "Update Link": "Link aktualisieren",
+    "Updated link: {{link}}": "Link aktualisiert: {{link}}",
+    "View / Edit Source": "Quellcode anschauen/editieren",
+    "View Source": "Quellcode anschauen",
+    "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nEs gibt ungespeicherte Änderungen auf dieser Seite. \nWenn Sie diese Seite verlassen, werden Sie die ungespeicherten Änderungen verlieren",
+    "root": "Grundelement",
+    "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} Zeichen über der Limite",
+    "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} Zeichen verbleibend",
+    "{{characters}} characters": "{{characters}} characters",
+    "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} Zeichen, {{charactersRemaining}} über der empfohlenen Limite",
+    "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} Zeichen, {{charactersRemaining}} verbleibend",
+    "{{sentences}} sentences": "{{sentences}} Sätze",
+    "{{words}} word": "{{words}} Wort",
+    "{{words}} words": "{{words}} Wörter"
 });
 /**
  * @fileOverview English strings file.
@@ -29791,6 +29830,7 @@ registerLocale('en', 'English', {
     "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Click to select all editable content",
     "Click to select the contents of the '{{element}}' element": "Click to select the contents of the '{{element}}' element",
+    "Click to view statistics": "Click to view statistics",
     "Close": "Close",
     "Confirm Cancel Editing": "Confirm Cancel Editing",
     "Content Statistics": "Content Statistics",
@@ -29853,7 +29893,7 @@ registerLocale('en', 'English', {
     "Preview": "Preview",
     "Raptorize": "Raptorize",
     "Reinitialise": "Reinitialise",
-    "Remaining characters before the recommended character limit is reached": "Remaining characters before the recommended character limit is reached",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
     "Remove Image Float": "Remove Image Float",
     "Remove Link": "Remove Link",
     "Remove unnecessary markup from editor content": "Remove unnecessary markup from editor content",
@@ -29891,6 +29931,7 @@ registerLocale('en', 'English', {
     "root": "root",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} characters over limit",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} characters remaining",
+    "{{characters}} characters": "{{characters}} characters",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} characters, {{charactersRemaining}} over the recommended limit",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} characters, {{charactersRemaining}} remaining",
     "{{sentences}} sentences": "{{sentences}} sentences",
@@ -29924,6 +29965,7 @@ registerLocale('es', 'Español', {
     "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Haga clic para seleccionar todo el contenido editable",
     "Click to select the contents of the '{{element}}' element": "Haga clic para selecionar el contenido del elemento '{{element}}'",
+    "Click to view statistics": "Click to view statistics",
     "Close": "Cerrar",
     "Confirm Cancel Editing": "Confirme Cancelar la Edición ",
     "Content Statistics": "Contenidos Estadísticos",
@@ -29986,7 +30028,7 @@ registerLocale('es', 'Español', {
     "Preview": "Previsualizar",
     "Raptorize": "Raptorizar",
     "Reinitialise": "Reinicializar",
-    "Remaining characters before the recommended character limit is reached": "Carácteres restantes antes de que se alcance el límite de cáracteres recomendado",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
     "Remove Image Float": "No Flotar Imagen",
     "Remove Link": "Eliminar enlace",
     "Remove unnecessary markup from editor content": "Eliminar marcado innecesario del editor de contenido",
@@ -30024,6 +30066,7 @@ registerLocale('es', 'Español', {
     "root": "orígen",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} carácter(es) sobre el límite",
     "{{charactersRemaining}} characters remaining": "Queda(n) {{charactersRemaining}} carácter(es)",
+    "{{characters}} characters": "{{characters}} characters",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} carácter(es), {{charactersRemaining}} sobre el límite recomendado",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} carácter(es), queda(n) {{charactersRemaining}}",
     "{{sentences}} sentences": "{{sentences}} oraciones",
@@ -30057,6 +30100,7 @@ registerLocale('fr', 'Français', {
     "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Cliquer pour sélectionner tout le contenu modifiable",
     "Click to select the contents of the '{{element}}' element": "Cliquer pour sélectionner le contenu de l'élément '{{element}}'",
+    "Click to view statistics": "Click to view statistics",
     "Close": "Fermer",
     "Confirm Cancel Editing": "Confirmer l'annulation des modifications",
     "Content Statistics": "Statistiques de contenu",
@@ -30119,7 +30163,7 @@ registerLocale('fr', 'Français', {
     "Preview": "Aperçu",
     "Raptorize": "Raptoriser",
     "Reinitialise": "Réinitialiser",
-    "Remaining characters before the recommended character limit is reached": "Caractères restants avant que la limite de caractère recommandée ne soit atteinte",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
     "Remove Image Float": "Remove Image Float",
     "Remove Link": "Retirer le lien",
     "Remove unnecessary markup from editor content": "Retirer le balisage non nécessaire du contenu de l'éditeur",
@@ -30157,6 +30201,7 @@ registerLocale('fr', 'Français', {
     "root": "racine",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} caractères au-dessus de la limite",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} caractères restants",
+    "{{characters}} characters": "{{characters}} characters",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} caractères, {{charactersRemaining}} au-dessus de la limite",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} caractères, {{charactersRemaining}} restants",
     "{{sentences}} sentences": "{{sentences}} phrases",
@@ -30190,6 +30235,7 @@ registerLocale('nl', 'Nederlands', {
     "Click to edit the image": "Klik om de afbeelding te bewerken",
     "Click to select all editable content": "Klik om alle bewerkbare inhoud te selecteren",
     "Click to select the contents of the '{{element}}' element": "Klik om de inhoud te selecteren van het '{{element}}' element",
+    "Click to view statistics": "Click to view statistics",
     "Close": "Sluiten",
     "Confirm Cancel Editing": "Bevestig annuleren van bewerken",
     "Content Statistics": "Inhoud Statistieken",
@@ -30252,7 +30298,7 @@ registerLocale('nl', 'Nederlands', {
     "Preview": "Voorbeeldweergave",
     "Raptorize": false,
     "Reinitialise": "Herinitialiseren",
-    "Remaining characters before the recommended character limit is reached": "Aantal karakters over voordat het limiet is bereikt",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
     "Remove Image Float": "Tekst niet omsluiten rondom afbeelding",
     "Remove Link": "Verwijder Link",
     "Remove unnecessary markup from editor content": "Inhoud schoonmaken van overbodige opmaak",
@@ -30290,6 +30336,7 @@ registerLocale('nl', 'Nederlands', {
     "root": false,
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} karakters over het limiet",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} karakters over",
+    "{{characters}} characters": "{{characters}} characters",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} karakters, {{charactersRemaining}} over het aangeraden limiet",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} karakters, {{charactersRemaining}} over",
     "{{sentences}} sentences": "{{sentences}} zinnen",
@@ -30323,6 +30370,7 @@ registerLocale('zh-CN', '简体中文', {
     "Click to edit the image": "Click to edit the image",
     "Click to select all editable content": "Click to select all editable content",
     "Click to select the contents of the '{{element}}' element": "Click to select the contents of the '{{element}}' element",
+    "Click to view statistics": "Click to view statistics",
     "Close": "Close",
     "Confirm Cancel Editing": "确认取消编辑",
     "Content Statistics": "Content Statistics",
@@ -30385,7 +30433,7 @@ registerLocale('zh-CN', '简体中文', {
     "Preview": "Preview",
     "Raptorize": "Raptorize",
     "Reinitialise": "Reinitialise",
-    "Remaining characters before the recommended character limit is reached": "Remaining characters before the recommended character limit is reached",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
     "Remove Image Float": "Remove Image Float",
     "Remove Link": "Remove Link",
     "Remove unnecessary markup from editor content": "Remove unnecessary markup from editor content",
@@ -30423,6 +30471,7 @@ registerLocale('zh-CN', '简体中文', {
     "root": "本",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} characters over limit",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} characters remaining",
+    "{{characters}} characters": "{{characters}} characters",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} characters, {{charactersRemaining}} over the recommended limit",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} characters, {{charactersRemaining}} remaining",
     "{{sentences}} sentences": "{{sentences}} sentences",
@@ -31848,7 +31897,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.25?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.26?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32919,8 +32968,8 @@ $.ui.editor.registerPlugin({
 });
 /**
  * @fileOverview UI Componenent for recommending & tracking maximum content length.
- * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
  */
 
 $.ui.editor.registerUi({
@@ -32928,10 +32977,10 @@ $.ui.editor.registerUi({
     /**
      * @name $.editor.ui.statistics
      * @augments $.ui.editor.defaultUi
+     * @see $.editor.ui.statistics.options
      * @class Displays a button containing a character count for the editor content.
      * When button is clicked, a dialog containing statistics is displayed.
-     * <br/>
-     * Shows a dialog containing more content statistics when clicked
+     * Shows a dialog containing more content statistics when clicked.
      */
     statistics: /** @lends $.editor.ui.statistics.prototype */ {
 
@@ -32944,14 +32993,32 @@ $.ui.editor.registerUi({
         options: /** @lends $.editor.ui.statistics.options.prototype */  {
 
             /**
-             * @see $.editor.ui.statistics.options
-             * @type {Boolean|Integer} To display a character count, set to an integer. Else set to false to just display the button.
+             * @type {Boolean|Integer} To display a character count, set to an integer.
+             * Else set to false to just display the button.
              */
-            maximum: null
+            maximum: null,
+
+            /**
+             * @type {Boolean} True to show count & other text in button, false
+             * for icon only.
+             */
+            showCountInButton: true,
+
+            /**
+             * @type {String} Text to use for the button's title when
+             * {@link $.editor.ui.statistics.options.maximum} has been provided.
+             */
+            characterLimitTitle: _('Remaining characters before the recommended character limit is reached. Click to view statistics'),
+
+            /**
+             * @type {String} Text to use for the button's title when
+             * {@link $.editor.ui.statistics.options.maximum} has not been provided.
+             */
+            characterCountTitle: _('Click to view statistics')
         },
 
         /**
-         * @see $.ui.editor.length#init
+         * @see $.ui.editor.defaultUi#init
          */
         init: function(editor, options) {
 
@@ -32959,7 +33026,7 @@ $.ui.editor.registerUi({
             editor.bind('change', $.proxy(this.updateCount, this));
 
             return this.editor.uiButton({
-                title: _('Remaining characters before the recommended character limit is reached'),
+                title: typeIsNumber(this.options.maximum) ? this.options.characterLimitTitle : this.options.characterCountTitle,
                 label: _('Initializing'),
                 text: true,
                 icon: 'ui-icon-dashboard',
@@ -32971,26 +33038,41 @@ $.ui.editor.registerUi({
 
         /**
          * Update the associated UI element when the content has changed.
+         * If {@link $.editor.ui.statistics.options.maximum} has not been specified, a character count is shown.
+         * If it has been specified, a remaining character count is shown.
          */
         updateCount: function() {
             // <debug/>
 
-            var charactersRemaining = this.options.maximum - $('<div/>').html(this.editor.getCleanHtml()).text().length;
-            var button = this.ui.button;
-            // If maximum has been set to false, only show the icon button
-            if (this.options.maximum === false) {
-                button.button('option', 'text', false);
-                return;
+            var charactersRemaining = null;
+            var label = null;
+            var characters = $('<div/>').html(this.editor.getCleanHtml()).text().length;
+
+            // Cases where maximum has been provided
+            if (typeIsNumber(this.options.maximum)) {
+                charactersRemaining = this.options.maximum - characters;
+                if (charactersRemaining >= 0) {
+                    label = _('{{charactersRemaining}} characters remaining', { charactersRemaining: charactersRemaining });
+                } else {
+                    label = _('{{charactersRemaining}} characters over limit', { charactersRemaining: charactersRemaining * -1 });
+                }
+            } else {
+                label = _('{{characters}} characters', { characters: characters });
             }
 
-            var label = null;
-            if (charactersRemaining >= 0) {
-                label = _('{{charactersRemaining}} characters remaining', { charactersRemaining: charactersRemaining });
-            } else {
-                label = _('{{charactersRemaining}} characters over limit', { charactersRemaining: charactersRemaining * -1 });
+            var button = this.ui.button;
+
+            // If maximum has been set to false, only show the icon button
+            if (this.options.showCountInButton === false) {
+                button.button('option', 'text', false);
             }
+
             button.button('option', 'label', label);
             button.button('option', 'text', true);
+
+            if (!typeIsNumber(this.options.maximum)) {
+                return;
+            }
 
             // Add the error state to the button's text element if appropriate
             if (charactersRemaining < 0) {
@@ -33005,6 +33087,9 @@ $.ui.editor.registerUi({
             }
         },
 
+        /**
+         * Create & show the statistics dialog.
+         */
         showStatistics: function() {
             var dialog = this.processTemplate();
 
@@ -33041,8 +33126,10 @@ $.ui.editor.registerUi({
         processTemplate: function() {
             var content = $('<div/>').html(this.editor.getCleanHtml()).text();
             var truncation = null;
-            var charactersRemaining = this.options.maximum - content.length;
-            if (charactersRemaining < 0) {
+
+            // If maximum has not been set, use infinity
+            var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';
+            if (typeIsNumber(charactersRemaining)) {
                 truncation = _('Content contains more than {{limit}} characters and may be truncated', {
                     'limit': this.options.maximum
                 });
@@ -33067,7 +33154,7 @@ $.ui.editor.registerUi({
             }
 
             var characters = null;
-            if (charactersRemaining >= 0) {
+            if (charactersRemaining >= 0 || !typeIsNumber(charactersRemaining)) {
                 characters = _('{{characters}} characters, {{charactersRemaining}} remaining', {
                     'characters': content.length,
                     'charactersRemaining': charactersRemaining
@@ -33682,7 +33769,6 @@ function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
  * @fileOverview Range manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
-
  */
 
 /**
@@ -33700,13 +33786,12 @@ function rangeExpandToParent(range) {
 function rangeExpandTo(range, elements) {
     do {
         rangeExpandToParent(range);
-        console.log(range.commonAncestorContainer);
         for (var i = 0, l = elements.length; i < l; i++) {
             if ($(range.commonAncestorContainer).is(elements[i])) {
                 return;
             }
         }
-    } while (range.commonAncestorContainer)
+    } while (range.commonAncestorContainer);
 }
 
 function rangeReplace(html, range) {
@@ -34205,7 +34290,21 @@ function stringStripTags(content, allowedTags) {
     return content.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
         return allowed.indexOf($1.toLowerCase()) > -1 ? $0 : '';
     });
-}function Button() {
+}/**
+ * @fileOverview Type checking functions.
+ * @author Michael Robinson michael@panmedia.co.nz
+ * @author David Neilsen david@panmedia.co.nz
+ */
+
+/**
+ * Determine whether object is a number {@link http://stackoverflow.com/a/1421988/187954}.
+ * @param  {mixed} object The object to be tested
+ * @return {Boolean} True if the object is a number.
+ */
+function typeIsNumber(object) {
+    return !isNaN(object - 0) && object !== null;
+}
+function Button() {
     return {
         init: function() {
             console.log(this);
@@ -35866,16 +35965,17 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
 \n\
 /**\n\
- * Length plugin\n\
+ * Statistics plugin\n\
  *\n\
  * @author David Neilsen <david@panmedia.co.nz>\n\
+ * @author Micharl Robinson <michael@panmedia.co.nz>\n\
  */\n\
-.ui-editor-length-button .ui-icon-dashboard {\n\
+.ui-editor-statistics-button .ui-icon-dashboard {\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
   opacity: 0.85;\n\
   background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhFJREFUeNrEk7tv01AUxr/4kcRO7Fh1HghFgSAeYglDlIfUbGEBhaWoUxFiQWJGMDDyhzB2ZmANYmAoIvQPaIHIkVJjKyWkcdzYSR1zbhSGQhFDB47007333PN9V/cVCcMQ5wkO54wIxe+5q8Rt4gaRW+VsYo9oE1/+ZpAktjKZzL1arXatWCzmFEVhOYzH40m327U7nc7nwWDwhlLbxITN8SsDVvisXq9vtVqtuqZp2XK5HDcMg5vNZlylUon7vq+XSqXLi8WiYJqmTvWfiNkvg8e06gMqLDmOI5AIvV4P8/l8CeuzHMHn8/kcmeiWZQWk6zCD67quP280GuXNdlv4qKrwTk6WwpXoFNVqNTKdTtf6/X7C87wPzOAhrX4nCIK195KEp4aBtxyHKRm4roujozGdwQSO49LYx/7+VzIPeVEUOcsyh+wab9Ge0+SKGW3nhSzj5WiEoWlhMvHolKOIRmVIkgpZVhGPKxAEGdlsIc20zOASz/NSs9lkl4IwJuOJH+CVksDi2APPx0iYIgNlCTNYXy8hmdQkpmUGCfag2u134DgJipKGdqGAR6NjbKdVOAMbQRAiRsaCEKMaHru7XdYutRw95R+Hh0NXVTNIpXQy0KDrOVy8chOb34Z4XcjCMvZoO86p12bbBy7Tsv5dYoc4OAtFFM3BxkZ4xtzOSvvPuE98X7V//oX//ht/CjAAagzmsnB4V5cAAAAASUVORK5CYII=\') 0 0; }\n\
 \n\
-.ui-editor-length-button:hover .ui-icon-dashboard {\n\
+.ui-editor-statistics-button:hover .ui-icon-dashboard {\n\
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
   opacity: 1; }\n\
 \n\
