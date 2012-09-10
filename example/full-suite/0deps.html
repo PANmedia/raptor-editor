@@ -89,11 +89,27 @@
 			</aside>
             <aside class="textarea">
                 <form method="get">
-                    <textarea name="html">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</textarea>
+                    <textarea name="first">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</textarea>
+                    <textarea name="second">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</textarea>
                     <button id="submit-button" type="submit">Submit</button>
                     <script type="text/javascript">
                         raptor(function($) {
                             $('#submit-button').button();
+                            function getParameterByName(name) {
+                              name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+                              var regexS = "[\\?&]" + name + "=([^&#]*)";
+                              var regex = new RegExp(regexS);
+                              var results = regex.exec(window.location.search);
+                              if(results == null)
+                                return "";
+                              else
+                                return decodeURIComponent(results[1].replace(/\+/g, " "));
+                            };
+                            var first = getParameterByName('first');
+                            var second = getParameterByName('second');
+                            if (first && second) {
+                                alert('First textarea value: \n\n' + first + '\n\nSecond textarea value:\n\n' + second);
+                            }
                         });
                     </script>
                 </form>
