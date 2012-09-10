@@ -28,7 +28,7 @@ $.ui.editor.registerUi({
                         var content = range.extractContents();
 
                         // Expand the range to the parent if there is no selected content
-                        if (fragmentToHtml(content) == '') {
+                        if (fragmentToHtml(content) === '') {
                             editor.expandToParent(range);
                             sel.setSingleRange(range);
                             content = range.extractContents();
