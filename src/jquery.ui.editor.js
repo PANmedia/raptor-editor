@@ -72,6 +72,7 @@ $.widget('ui.editor',
         this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
+        this.target = null;
 
         // jQuery DOM elements
         this.wrapper = null;
@@ -118,7 +119,7 @@ $.widget('ui.editor',
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
         // Replace textareas & inputs with a div
-        if (this.element.is('textarea, input')) {
+        if (this.element.is(':input')) {
             this.replaceOriginal();
         }
 
@@ -148,8 +149,8 @@ $.widget('ui.editor',
         // Automatically enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             $(function() {
-                currentInstance.enableEditing();
                 currentInstance.showToolbar();
+                currentInstance.enableEditing();
             });
         }
     },
@@ -249,7 +250,7 @@ $.widget('ui.editor',
         // Create the replacement div
         var target = $('<div/>')
             // Set the HTML of the div to the HTML of the original element, or if the original element was an input, use its value instead
-            .html(this.element.is(':input') ? this.element.val() : this.element.html())
+            .html(this.element.val())
             // Insert the div before the original element
             .insertBefore(this.element)
             // Give the div a unique ID
@@ -264,10 +265,10 @@ $.widget('ui.editor',
 
         this.element.hide();
         this.bind('change', function() {
-            if (this.element.is('input, textarea')) {
-                this.element.val(this.getHtml());
+            if (this.getOriginalElement().is(':input')) {
+                this.getOriginalElement().val(this.getHtml());
             } else {
-                this.element.html(this.getHtml());
+                this.getOriginalElement().html(this.getHtml());
             }
         });
 
@@ -364,6 +365,12 @@ $.widget('ui.editor',
 
         // Unbind all events
         this.getElement().unbind('.' + this.widgetName);
+
+        if (this.getOriginalElement().is(':input')) {
+            this.target.remove();
+            this.target = null;
+            this.element.show();
+        }
 
         // Remove element
         if (this.wrapper) {
@@ -760,6 +767,7 @@ $.widget('ui.editor',
      * @param  {Range} [range] a native range to select after the toolbar has been shown
      */
     showToolbar: function(range) {
+        // this.loadMessages();
         if (!this.isToolbarLoaded()) {
             this.loadToolbar();
         }
@@ -798,7 +806,7 @@ $.widget('ui.editor',
             $(function() {
                 editor.fire('show');
                 // Only focus element if the element is not a textarea / input
-                if (!editor.element.is('textarea, input')) {
+                if (!editor.element.is(':input')) {
                     editor.getElement().focus();
                 }
             });
@@ -813,7 +821,7 @@ $.widget('ui.editor',
             this.visible = false;
             this.wrapper.hide();
 
-            if (this.element.is('textarea, input')) {
+            if (this.element.is(':input')) {
                 this.element.show();
             }
 
