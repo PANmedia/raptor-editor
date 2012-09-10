@@ -7,7 +7,7 @@
 /**
  * @name $.editor.plugin.emptyElement
  * @augments $.ui.editor.defaultPlugin
- * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
+ * @class Automatically wraps content inside an editable element with a specified tag if it is empty.
  */
 $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
 
