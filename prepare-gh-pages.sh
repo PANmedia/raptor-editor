@@ -11,7 +11,7 @@ mkdir -p $TEMP_DIRECTORY
 
 for SUBDIR in "example" "packages"
 do
-    cp -rp "$DIR/$SUBDIR" "$TEMP_DIRECTORY/$SUBDIR"
+    cp -rp "$DIR/$SUBDIR" "$TEMP_DIRECTORY/"
 done
 
 exit 1
