@@ -19,7 +19,6 @@ function rangeExpandToParent(range) {
 function rangeExpandTo(range, elements) {
     do {
         rangeExpandToParent(range);
-        console.log(range.commonAncestorContainer);
         for (var i = 0, l = elements.length; i < l; i++) {
             if ($(range.commonAncestorContainer).is(elements[i])) {
                 return;
