@@ -110,13 +110,13 @@ $.ui.editor.registerUi({
 
             // Add the error state to the button's text element if appropriate
             if (charactersRemaining < 0) {
-                button.addClass('ui-state-error');
+                button.addClass('ui-state-error').removeClass('ui-state-default');
             } else{
                 // Add the highlight class if the remaining characters are in the "sweet zone"
                 if (charactersRemaining >= 0 && charactersRemaining <= 15) {
-                    button.addClass('ui-state-highlight').removeClass('ui-state-error');
+                    button.addClass('ui-state-highlight').removeClass('ui-state-error ui-state-default');
                 } else {
-                    button.removeClass('ui-state-highlight ui-state-error');
+                    button.removeClass('ui-state-highlight ui-state-error').addClass('ui-state-default');
                 }
             }
         },
