@@ -73,9 +73,9 @@
                     if ($(this).hasClass(editor.options.supplementaryClass)) {
                         return false;
                     }
-                    // Do not clear selection markers if the editor has it in use
-                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved() === false) {
-                        return true;
+                    // Do not clear selection markers if the editor is using it
+                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved()) {
+                        return false;
                     }
                     // Finally, remove empty elements
                     if ($.trim($(this).html()) === '') {
