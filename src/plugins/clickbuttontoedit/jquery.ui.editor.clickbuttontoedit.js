@@ -43,7 +43,12 @@ $.ui.editor.registerPlugin({
                 icons: {
                     primary: 'ui-icon-pencil'
                 }
-            }
+            },
+            /**
+             * @type {Function} Callback executed when button is clicked.
+             * If the function returns false, the editor will not be enabled.
+             */
+            callback: null
         },
 
         /**
@@ -99,6 +104,12 @@ $.ui.editor.registerPlugin({
              * Hide the click to edit button and show toolbar.
              */
             this.edit = function() {
+                // If a callback has been provided, call it.
+                if (plugin.options.callback && $.isFunction(plugin.options.callback)) {
+                    if (plugin.options.callback.call(plugin) === false) {
+                        return false;
+                    }
+                }
                 plugin.hide();
                 if (!editor.isEditing()) editor.enableEditing();
                 if (!editor.isVisible()) editor.showToolbar();
