@@ -27,6 +27,11 @@ function rangeExpandTo(range, elements) {
     } while (range.commonAncestorContainer);
 }
 
+/**
+ * Replaces the content of range with the given html.
+ * @param  {jQuery|String} html The html to use when replacing range.
+ * @param  {RangyRange} range The range to replace.
+ */
 function rangeReplace(html, range) {
     var nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
