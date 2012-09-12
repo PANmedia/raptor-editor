@@ -484,8 +484,9 @@
     <target name="package">
         <mkdir dir="${dir.package}" />
         <copy file="${dir.build}/merge.js" tofile="${dir.package}/${filename}.js" />
+        <echo>${dir.package}/${filename}.js</echo>
         <copy file="${dir.build}/merge.min.js" tofile="${dir.package}/${filename}.min.js" />
-        <echo>${dir.package}/${filename}</echo>
+        <echo>${dir.package}/${filename}.min.js</echo>
     </target>
 
     <target name="gz">
