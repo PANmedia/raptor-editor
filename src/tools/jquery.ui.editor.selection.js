@@ -403,9 +403,10 @@ function selectionToggleBlockStyle(styles, limit) {
  */
 function selectionConstrain(element, selection) {
     element = $(element)[0];
-    selection = selection || (rangy) ? rangy.getSelection() : null;
+    selection = selection || rangy.getSelection();
 
     if (!selection) {
+        selectionSelectStart(element);
         return;
     }
 
