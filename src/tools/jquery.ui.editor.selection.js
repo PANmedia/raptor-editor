@@ -64,13 +64,16 @@ function selectionSet(mixed) {
 }
 
 /**
- * FIXME: this function needs reviewing
+ * Replaces the given selection (or the current selection if selection is not
+ * supplied) with the given html.
  * @public @static
+ * @param  {jQuery|String} html The html to use when replacing.
+ * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.
  */
-function selectionReplace(html, sel) {
+function selectionReplace(html, selection) {
     selectionEachRange(function(range) {
         rangeReplace(html, range);
-    }, sel, this);
+    }, selection, this);
 }
 
 /**
@@ -291,11 +294,13 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
  * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
  */
 function selectionExists(sel) {
-    var selectionExists = false;
+    var exists = false;
     selectionEachRange(function(range) {
-        if (!rangeIsEmpty(range)) selectionExists = true;
+        if (!rangeIsEmpty(range)) {
+            exists = true;
+        }
     }, sel, this);
-    return selectionExists;
+    return exists;
 }
 
 /**
