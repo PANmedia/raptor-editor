@@ -17,7 +17,13 @@ $.ui.editor.registerUi({
      */
     save: {
 
-        options: {
+        /**
+         * @name $.editor.ui.save.options
+         * @namespace Default save UI options.
+         * @see $.editor.ui.save
+         * @type {Object}
+         */
+        options: /** @lends $.editor.ui.save.options.prototype */  {
             plugin: 'saveJson'
         },
 
