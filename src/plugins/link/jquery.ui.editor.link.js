@@ -16,10 +16,7 @@
     dialog: null,
     types: {},
 
-    /**
-     * Array of default link types
-     * @type {Array}
-     */
+    /** @type {Array} Array of default link types */
     defaultLinkTypes: [
 
         /**
@@ -37,7 +34,9 @@
             /**
              * @see $.editor.plugin.link.baseLinkType#title
              */
-            title: _('Page on this or another website'),
+            title: function() {
+                return _('Page on this or another website');
+            },
 
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
@@ -133,7 +132,9 @@
             /**
              * @see $.editor.plugin.link.baseLinkType#title
              */
-            title: _('Email address'),
+            title: function() {
+                return _('Email address');
+            },
 
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
@@ -222,7 +223,9 @@
             /**
              * @see $.editor.plugin.link.baseLinkType#title
              */
-            title: _('Document or other file'),
+            title: function() {
+                return _('Document or other file');
+            },
 
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
@@ -346,8 +349,7 @@
             type: null,
 
             /**
-             * Title of the link type.
-             * Used in the link panel's radio button
+             * @type {Function} Title of the link type. Used in the link panel's radio button
              */
             title: null,
 
@@ -454,7 +456,8 @@
             // Add link type radio buttons
             var linkTypesFieldset = this.dialog.find('fieldset');
             for (var type in this.types) {
-                $(this.editor.getTemplate('link.label', this.types[type])).appendTo(linkTypesFieldset);
+                var variables = $.extend({}, this.types[type], { title: this.types[type].title() });
+                $(this.editor.getTemplate('link.label', variables)).appendTo(linkTypesFieldset);
             }
 
             linkTypesFieldset.find('input[type="radio"]').bind('change.' + this.editor.widgetName, function(){
@@ -662,9 +665,14 @@ $.ui.editor.registerUi({
         },
 
         /**
+         * Initialize the add link UI element.
          * @see $.ui.editor.defaultUi#init
+         * @param  {$.editor} editor The Raptor Editor instance.
+         * @param  {$.editor.plugin.clickButtonToEdit.options} options The options object.
+         * @return {$.editor.defaultPlugin} A new $.ui.editor.plugin.clickButtonToEdit instance.
          */
         init: function(editor) {
+
             editor.bind('selectionChange', this.change, this);
 
             return editor.uiButton({
