@@ -55,7 +55,12 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
             url: '/',
             type: 'post',
             cache: false
-        }
+        },
+
+         /**
+         * @type {Function} Callback executed when the user saves the editable content.
+         */
+        callback: null
     },
 
     /**
@@ -130,6 +135,9 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
         } else {
             this.saved = this.dirty;
         }
+
+        var plugin = this;
+
         if (this.options.showResponse) {
             this.editor.showConfirm(data, {
                 delay: 1000,
@@ -137,6 +145,10 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
                     this.editor.unify(function(editor) {
                         editor.disableEditing();
                         editor.hideToolbar();
+                        // If a callback has been provided, call it.
+                        if (plugin.options.callback && $.isFunction(plugin.options.callback)) {
+                            plugin.options.callback.call(plugin);
+                        }
                     });
                 }
             });
