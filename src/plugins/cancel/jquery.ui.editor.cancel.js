@@ -42,8 +42,21 @@ $.ui.editor.registerUi({
         confirm: function() {
             var plugin = this.editor.getPlugin('cancel');
             var editor = this.editor;
+
+            var callback = function() {
+                // If a callback has been provided, call it.
+                if (plugin.options.callback && $.isFunction(plugin.options.callback)) {
+                    if (plugin.options.callback.call(plugin) === false) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
             if (!editor.isDirty()) {
-                plugin.cancel();
+                if (callback()) {
+                    plugin.cancel();
+                }
             } else {
                 if (!this.dialog) this.dialog = $(editor.getTemplate('cancel.dialog'));
                 this.dialog.dialog({
@@ -57,7 +70,9 @@ $.ui.editor.registerUi({
                         {
                             text: _('OK'),
                             click: function() {
-                                plugin.cancel();
+                                if (callback()) {
+                                    plugin.cancel();
+                                }
                                 $(this).dialog('close');
                             }
                         },
@@ -91,6 +106,20 @@ $.ui.editor.registerPlugin({
     * @class Plugin providing cancel functionality
     */
    cancel: /** @lends $.editor.plugin.cancel.prototype */ {
+
+        /**
+         * @name $.editor.plugin.cancel.options
+         * @namespace Default cancel plugin options.
+         * @see $.editor.plugin.cancel
+         * @type {Object}
+         */
+        options: /** @lends $.editor.plugin.cancel.options.prototype */  {
+            /**
+             * @type {Function} Callback executed when editing is canceled.
+             * If the function returns false, editing will not be canceled.
+             */
+            callback: null
+        },
 
         /**
          * Cancel editing
