@@ -13,7 +13,7 @@ This is the quickest and easiest way to see Raptor in action.
 
 ```HTML
 <div id="element-to-edit"></div>
-<script type="text/javascript" src="https://github.com/PANmedia/Raptor/blob/master/packages/raptor.0deps.js"></script>
+<script type="text/javascript" src="https://raw.github.com/PANmedia/Raptor/master/packages/raptor.0deps.js"></script>
 <script type="text/javascript">
     $('#element-to-edit').editor();
 </script>
