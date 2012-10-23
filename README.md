@@ -8,14 +8,26 @@ Raptor Editor is a user-focused extensible WYSIWYG website content editor - chec
 Usage
 ---
 
-Instantiating the Raptor editor with no options (zero configuration) results in all buttons and plugins being enabled. This is the quickest and easiest way to see Raptor in action.
+Instantiating the Raptor editor with no options (zero configuration) results in all buttons and plugins being enabled.
+This is the quickest and easiest way to see Raptor in action.
 
 ```HTML
 <div id="element-to-edit"></div>
+<script type="text/javascript" src="https://github.com/PANmedia/Raptor/blob/master/packages/raptor.0deps.js"></script>
 <script type="text/javascript">
     $('#element-to-edit').editor();
 </script>
 ```
+
+Packages
+---
+
+We've packaged Raptor into various files that should be suitable for inclusion with a wide range of projects.
+
+- [raptor.js](https://raw.github.com/PANmedia/Raptor/master/packages/raptor.js "Only Raptor & Raptor's CSS") **Only Raptor & Raptor's CSS**
+- [raptor.light.js](https://raw.github.com/PANmedia/Raptor/master/packages/raptor.light.js "Raptor, Raptor's CSS and Rangy together") **Raptor, Raptor's CSS and Rangy together**
+- [raptor.0deps.js](https://raw.github.com/PANmedia/Raptor/master/packages/raptor.0deps.js "Raptor,  Raptor's CSS, Rangy, jQuery, jQuery UI & jQuery UI's CSS") **Raptor,  Raptor's CSS, Rangy, jQuery, jQuery UI & jQuery UI's CSS**
+- [raptor.0deps.nc.js](https://raw.github.com/PANmedia/Raptor/master/packages/raptor.0deps.nc.js "All of the above, wrapped in a closer to prevent conflicts") **All of the above, wrapped in a closer to prevent conflicts**
 
 Learn More
 ---
