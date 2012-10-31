@@ -2,6 +2,7 @@
  * jQuery Hotkeys Plugin
  * Copyright 2010, John Resig
  * Dual licensed under the MIT or GPL Version 2 licenses.
+ * @link https://github.com/jeresig/jquery.hotkeys
  *
  * Based upon the plugin by Tzury Bar Yochay:
  * http://github.com/tzuryby/hotkeys
