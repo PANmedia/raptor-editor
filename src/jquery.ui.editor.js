@@ -1085,11 +1085,17 @@ $.widget('ui.editor',
 
                     // Bind hotkeys
                     if (uiObject.hotkeys) {
-                        this.registerHotkey(uiObject.hotkeys, null, uiObject);
-                        // Add hotkeys to title
-                        uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
-                                return index;
-                            })[0] + ')';
+                        if (!hotkeys) {
+                            // <strict>
+                            handleError(_('jQuery hotkey plugin (https://github.com/jeresig/jquery.hotkeys) is not present. Hotkeys are disabled.'));
+                            // </strict>
+                        } else {
+                            this.registerHotkey(uiObject.hotkeys, null, uiObject);
+                            // Add hotkeys to title
+                            uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
+                                    return index;
+                                })[0] + ')';
+                        }
                     }
 
                     // Append the UI object to the group
