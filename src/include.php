@@ -28,17 +28,21 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.element.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.fragment.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.selection.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.range.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.selection.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.string.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.types.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?php echo $uri ?>plugins/toolbartip/jquery.ui.editor.toolbartip.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/logo/jquery.ui.editor.logo.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/dock/jquery.ui.editor.dock.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/clicktoedit/jquery.ui.editor.clicktoedit.js"></script>
+<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/clicktoedit/jquery.ui.editor.clicktoedit.js"></script> */ ?>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/clickbuttontoedit/jquery.ui.editor.clickbuttontoedit.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/jquery.ui.editor.color-picker-basic.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
@@ -63,9 +67,9 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/imageresize/jquery.ui.editor.imageresize.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/unsavededitwarning/jquery.ui.editor.unsavededitwarning.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/embed/jquery.ui.editor.embed.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/length/jquery.ui.editor.length.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/statistics/jquery.ui.editor.statistics.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/jquery.ui.editor.i18n.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/en.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh_CN.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
