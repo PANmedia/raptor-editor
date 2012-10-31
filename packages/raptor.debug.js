@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.26 
+VERSION: 0.0.27 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -25306,6 +25306,7 @@ $.extend( $.ui.tabs.prototype, {
  * jQuery Hotkeys Plugin
  * Copyright 2010, John Resig
  * Dual licensed under the MIT or GPL Version 2 licenses.
+ * @link https://github.com/jeresig/jquery.hotkeys
  *
  * Based upon the plugin by Tzury Bar Yochay:
  * http://github.com/tzuryby/hotkeys
@@ -25400,7 +25401,8 @@ $.extend( $.ui.tabs.prototype, {
         jQuery.event.special[this] = { add: keyHandler };
     });
 
-})( jQuery );/*
+})( jQuery );
+/*
  * jQuery Raptorize Plugin 1.0
  * www.ZURB.com/playground
  * Copyright 2010, ZURB
@@ -27105,11 +27107,17 @@ $.widget('ui.editor',
 
                     // Bind hotkeys
                     if (uiObject.hotkeys) {
-                        this.registerHotkey(uiObject.hotkeys, null, uiObject);
-                        // Add hotkeys to title
-                        uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
-                                return index;
-                            })[0] + ')';
+                        if (!hotkeys) {
+                            // <strict>
+                            handleError(_('jQuery hotkey plugin (https://github.com/jeresig/jquery.hotkeys) is not present. Hotkeys are disabled.'));
+                            // </strict>
+                        } else {
+                            this.registerHotkey(uiObject.hotkeys, null, uiObject);
+                            // Add hotkeys to title
+                            uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
+                                    return index;
+                                })[0] + ')';
+                        }
                     }
 
                     // Append the UI object to the group
@@ -28078,7 +28086,7 @@ $.extend($.ui.editor,
     }
 
 });
-var supported, ios;
+var supported, ios, hotkeys;
 
 function isSupported(editor) {
     if (supported === undefined) {
@@ -28122,6 +28130,8 @@ function isSupported(editor) {
             });
         }
         // </ie>
+
+        hotkeys = jQuery.hotkeys !== undefined;
     }
     return supported;
 }
@@ -28474,8 +28484,21 @@ $.ui.editor.registerUi({
         confirm: function() {
             var plugin = this.editor.getPlugin('cancel');
             var editor = this.editor;
+
+            var callback = function() {
+                // If a callback has been provided, call it.
+                if (plugin.options.callback && $.isFunction(plugin.options.callback)) {
+                    if (plugin.options.callback.call(plugin) === false) {
+                        return false;
+                    }
+                }
+                return true;
+            };
+
             if (!editor.isDirty()) {
-                plugin.cancel();
+                if (callback()) {
+                    plugin.cancel();
+                }
             } else {
                 if (!this.dialog) this.dialog = $(editor.getTemplate('cancel.dialog'));
                 this.dialog.dialog({
@@ -28489,7 +28512,9 @@ $.ui.editor.registerUi({
                         {
                             text: _('OK'),
                             click: function() {
-                                plugin.cancel();
+                                if (callback()) {
+                                    plugin.cancel();
+                                }
                                 $(this).dialog('close');
                             }
                         },
@@ -28523,6 +28548,20 @@ $.ui.editor.registerPlugin({
     * @class Plugin providing cancel functionality
     */
    cancel: /** @lends $.editor.plugin.cancel.prototype */ {
+
+        /**
+         * @name $.editor.plugin.cancel.options
+         * @namespace Default cancel plugin options.
+         * @see $.editor.plugin.cancel
+         * @type {Object}
+         */
+        options: /** @lends $.editor.plugin.cancel.options.prototype */  {
+            /**
+             * @type {Function} Callback executed when editing is canceled.
+             * If the function returns false, editing will not be canceled.
+             */
+            callback: null
+        },
 
         /**
          * Cancel editing
@@ -28614,9 +28653,9 @@ $.ui.editor.registerPlugin({
                     if ($(this).hasClass(editor.options.supplementaryClass)) {
                         return false;
                     }
-                    // Do not clear selection markers if the editor has it in use
-                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved() === false) {
-                        return true;
+                    // Do not clear selection markers if the editor is using it
+                    if ($(this).hasClass('rangySelectionBoundary') && selectionSaved()) {
+                        return false;
                     }
                     // Finally, remove empty elements
                     if ($.trim($(this).html()) === '') {
@@ -28853,7 +28892,12 @@ $.ui.editor.registerPlugin({
                 icons: {
                     primary: 'ui-icon-pencil'
                 }
-            }
+            },
+            /**
+             * @type {Function} Callback executed when button is clicked.
+             * If the function returns false, the editor will not be enabled.
+             */
+            callback: null
         },
 
         /**
@@ -28909,6 +28953,12 @@ $.ui.editor.registerPlugin({
              * Hide the click to edit button and show toolbar.
              */
             this.edit = function() {
+                // If a callback has been provided, call it.
+                if (plugin.options.callback && $.isFunction(plugin.options.callback)) {
+                    if (plugin.options.callback.call(plugin) === false) {
+                        return false;
+                    }
+                }
                 plugin.hide();
                 if (!editor.isEditing()) editor.enableEditing();
                 if (!editor.isVisible()) editor.showToolbar();
@@ -29911,7 +29961,7 @@ registerLocale('de', 'Deutsch', {
     "Click to edit the image": "Um das Bild zu bearbeiten klicken",
     "Click to select all editable content": "Um alle bearbeitbaren Elemente zu selektieren klicken",
     "Click to select the contents of the '{{element}}' element": "Um den Inhalt des '{{element}}' Element zu selektieren klicken",
-    "Click to view statistics": "Click to view statistics",
+    "Click to view statistics": "Um die Statistiken zu sehen klicken",
     "Close": "Schliessen",
     "Confirm Cancel Editing": "Bearbeitung abbrechen bestÃ¤tigen",
     "Content Statistics": "Inhaltsstatistik",
@@ -29967,14 +30017,14 @@ registerLocale('de', 'Deutsch', {
     "Open the uploaded file in your browser": "Ã–ffnen Sie die hochgeladene Datei in ihrem Browser",
     "Ordered List": "Geordnete Liste",
     "Page on this or another website": "Seite auf dieser oder einer anderen Webseite",
-    "Paragraph": "Paragraph",
+    "Paragraph": "Paragraf",
     "Paste Embed Code": "Quellcode einfÃ¼gen",
     "Paste your embed code into the text area below.": "FÃ¼gen Sie ihren Quellcode zum Einbetten des Objektes in das Textfeld unterhalb ein.",
     "Plain Text": "Einfacher Text",
     "Preview": "Vorschau",
     "Raptorize": false,
     "Reinitialise": "Reinitialisieren",
-    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Verbleibende Zeichen bevor die empfohlene Zeichenlimite erreicht wird. Um die Statistiken zu sehen klicken",
     "Remove Image Float": "Bildausrichtung entfernen",
     "Remove Link": "Link entfernen",
     "Remove unnecessary markup from editor content": "UnnÃ¶tige Markierungselemente im Inhalt entfernen",
@@ -30012,7 +30062,7 @@ registerLocale('de', 'Deutsch', {
     "root": "Grundelement",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} Zeichen Ã¼ber der Limite",
     "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} Zeichen verbleibend",
-    "{{characters}} characters": "{{characters}} characters",
+    "{{characters}} characters": "{{characters}} Zeichen",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} Zeichen, {{charactersRemaining}} Ã¼ber der empfohlenen Limite",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} Zeichen, {{charactersRemaining}} verbleibend",
     "{{sentences}} sentences": "{{sentences}} SÃ¤tze",
@@ -30170,7 +30220,7 @@ registerLocale('es', 'EspaÃ±ol', {
     "Center Align": "Centrar",
     "Change HTML tag of selected element": "Cambiar la etiqueta HTML del elemento seleccionado",
     "Change Language": "Cambiar Idioma",
-    "Change the color of the selected text.": "Change the color of the selected text.",
+    "Change the color of the selected text.": "Cambiar el color del texto seleccionado.",
     "Check this box to have the file open in a new browser window": "Marque esta casilla para que el archivo se abra en una nueva ventana",
     "Check this box to have the link open in a new browser window": "Marque esta casilla para que el enlace se abra en una nueva ventana",
     "Choose a link type:": "Escoja un tipo de enlace:",
@@ -30178,10 +30228,10 @@ registerLocale('es', 'EspaÃ±ol', {
     "Click to begin editing": "Haga clic para empezar a editar",
     "Click to detach the toolbar": "Haga clic para desanclar la barra de herramientas",
     "Click to dock the toolbar": "Haga clic para anclar la barra de herramientas",
-    "Click to edit the image": "Click to edit the image",
+    "Click to edit the image": "Haga clic para editar la imagen",
     "Click to select all editable content": "Haga clic para seleccionar todo el contenido editable",
     "Click to select the contents of the '{{element}}' element": "Haga clic para selecionar el contenido del elemento '{{element}}'",
-    "Click to view statistics": "Click to view statistics",
+    "Click to view statistics": "Haga clic para ver las estadÃ­sticas",
     "Close": "Cerrar",
     "Confirm Cancel Editing": "Confirme Cancelar la EdiciÃ³n ",
     "Content Statistics": "Contenidos EstadÃ­sticos",
@@ -30244,7 +30294,7 @@ registerLocale('es', 'EspaÃ±ol', {
     "Preview": "Previsualizar",
     "Raptorize": "Raptorizar",
     "Reinitialise": "Reinicializar",
-    "Remaining characters before the recommended character limit is reached. Click to view statistics": "Remaining characters before the recommended character limit is reached. Click to view statistics",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "CarÃ¡cteres restantes hasta que se alcance el lÃ­mite de carÃ¡cteres. Haga clic para ver las estadÃ­sticas",
     "Remove Image Float": "No Flotar Imagen",
     "Remove Link": "Eliminar enlace",
     "Remove unnecessary markup from editor content": "Eliminar marcado innecesario del editor de contenido",
@@ -30266,7 +30316,7 @@ registerLocale('es', 'EspaÃ±ol', {
     "Super script": "SuperÃ­ndice",
     "The URL does not look well formed": "La URL no parece bien formada",
     "The email address does not look well formed": "El enlace de correo electrÃ³nico no parece bien formado",
-    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "La imagen '{{image}}' es demasiado ancha para el elemento que estÃ¡ siendo editado.<br/>SerÃ¡ redimensionada para que se adapte.",
     "The url for the file you inserted doesn\'t look well formed": "La URL del archivo que ha introducido no parece bien formada",
     "The url for the link you inserted doesn\'t look well formed": "La URL del enlace que ha introducido no parece bien formada",
     "This block contains unsaved changes": "Este bloque tiene cambios sin guardar",
@@ -30282,7 +30332,7 @@ registerLocale('es', 'EspaÃ±ol', {
     "root": "orÃ­gen",
     "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} carÃ¡cter(es) sobre el lÃ­mite",
     "{{charactersRemaining}} characters remaining": "Queda(n) {{charactersRemaining}} carÃ¡cter(es)",
-    "{{characters}} characters": "{{characters}} characters",
+    "{{characters}} characters": "{{characters}} carÃ¡cteres",
     "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} carÃ¡cter(es), {{charactersRemaining}} sobre el lÃ­mite recomendado",
     "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} carÃ¡cter(es), queda(n) {{charactersRemaining}}",
     "{{sentences}} sentences": "{{sentences}} oraciones",
@@ -30559,7 +30609,142 @@ registerLocale('nl', 'Nederlands', {
     "{{words}} word": "{{words}} woord",
     "{{words}} words": "{{words}} woorden"
 });
-/**
+ÿþ/ * *  
+   *   @ f i l e O v e r v i e w   S w e d i s h   s t r i n g s   f i l e .  
+   *   @ a u t h o r   C h r i s t o f f e r   B u b a c h ,   a s m h a c k e r @ g m a i l . c o m ,   h t t p : / / w w w . b u b a c h . n e t /  
+   * /  
+ r e g i s t e r L o c a l e ( ' s v ' ,   ' S v e n s k a ' ,   {  
+         " A   p r e v i e w   o f   y o u r   e m b e d d e d   o b j e c t   i s   d i s p l a y e d   b e l o w . " :   " E n   f ö r h a n d s v i s n i n g   a v   d i t t   i n b ä d d a d e   o b j e k t   v i s a s   n e d a n . " ,  
+         " A d d e d   l i n k :   { { l i n k } } " :   " T i l l a g d   l ä n k :   { { l i n k } } " ,  
+         " A l l   c h a n g e s   w i l l   b e   l o s t ! " :   " A l l a   ä n d r i n g a r   k o m m e r   f ö r l o r a s ! " ,  
+         " A p p l y   S o u r c e " :   " S p a r a   k o d ä n d r i n g a r " ,  
+         " A r e   y o u   s u r e   y o u   w a n t   t o   s t o p   e d i t i n g ? " :   " Ä r   d u   s ä k e r   p å   a t t   d u   v i l l   s l u t a   r e d i g e r a ? " ,  
+         " B l o c k q u o t e " :   " C i t a t " ,  
+         " B o l d " :   " F e t " ,  
+         " C a n c e l " :   " A v b r y t " ,  
+         " C e n t e r   A l i g n " :   " C e n t r e r a d " ,  
+         " C h a n g e   H T M L   t a g   o f   s e l e c t e d   e l e m e n t " :   " B y t   H T M L - t a g g   p å   v a l t   e l e m e n t " ,  
+         " C h a n g e   L a n g u a g e " :   " B y t   s p r å k " ,  
+         " C h a n g e   t h e   c o l o r   o f   t h e   s e l e c t e d   t e x t . " :   " Ä n d r a   f ä r g   p å   m a r k e r a d   t e x t . " ,  
+         " C h e c k   t h i s   b o x   t o   h a v e   t h e   f i l e   o p e n   i n   a   n e w   b r o w s e r   w i n d o w " :   " K r y s s a   i   d e n n a   b o x   f ö r   a t t   ö p p n a   f i l e n   i   e t t   n y t t   f ö n s t e r " ,  
+         " C h e c k   t h i s   b o x   t o   h a v e   t h e   l i n k   o p e n   i n   a   n e w   b r o w s e r   w i n d o w " :   " K r y s s a   i   d e n n a   b o x   f ö r   a t t   ö p p n a   l ä n k e n   i   e t t   n y t t   f ö n s t e r " ,  
+         " C h o o s e   a   l i n k   t y p e : " :   " V ä l j   e n   l ä n k t y p : " ,  
+         " C l e a r   F o r m a t t i n g " :   " T a   b o r t   f o r m a t e r i n g " ,  
+         " C l i c k   t o   b e g i n   e d i t i n g " :   " K l i c k a   h ä r   f ö r   a t t   r e d i g e r a " ,  
+         " C l i c k   t o   d e t a c h   t h e   t o o l b a r " :   " K l i c k a   h ä r   f ö r   a t t   f r i g ö r a   v e r k t y g s f ä l t e t " ,  
+         " C l i c k   t o   d o c k   t h e   t o o l b a r " :   " K l i c k a   h ä r   f ö r   a t t   f ä s t a   v e r k t y g s f ä l t e t " ,  
+         " C l i c k   t o   e d i t   t h e   i m a g e " :   " K l i c k a   h ä r   f ö r   a t t   r e d i g e r a   b i l d e n " ,  
+         " C l i c k   t o   s e l e c t   a l l   e d i t a b l e   c o n t e n t " :   " K l i c k a   h ä r   f ö r   a t t   m a r k e r a   a l l t   r e d i g e r b a r t   i n n e h å l l " ,  
+         " C l i c k   t o   s e l e c t   t h e   c o n t e n t s   o f   t h e   ' { { e l e m e n t } } '   e l e m e n t " :   " K l i c k a   h ä r   f ö r   a t t   m a r k e r a   ' { { e l e m e n t } } '   e l e m e n t e t " ,  
+         " C l i c k   t o   v i e w   s t a t i s t i c s " :   " K l i c k a   h ä r   f ö r   v i s a   s t a t i s t i k " ,  
+         " C l o s e " :   " S t ä n g " ,  
+         " C o n f i r m   C a n c e l   E d i t i n g " :   " B e k r ä f t a   a v b r y t n i n g   a v   r e d i g e r i n g " ,  
+         " C o n t e n t   S t a t i s t i c s " :   " I n n e h å l l s s t a t i s t i k " ,  
+         " C o n t e n t   c o n t a i n s   m o r e   t h a n   { { l i m i t } }   c h a r a c t e r s   a n d   m a y   b e   t r u n c a t e d " :   " I n n e h å l l e t   o m f a t t a r   m e r   ä n   { { l i m i t } }   b o k s t ä v e r   o c h   k a n   b l i   a v k o r t a t " ,  
+         " C o n t e n t   w i l l   n o t   b e   t r u n c a t e d " :   " I n n e h å l l e t   k o m m e r   i n t e   a t t   a v k o r t a s " ,  
+         " C o p y   t h e   f i l e ' s   U R L   f r o m   y o u r   b r o w s e r ' s   a d d r e s s   b a r   a n d   p a s t e   i t   i n t o   t h e   b o x   a b o v e " :   " K o p i e r a   f i l e n s   U R L   f r å n   w e b b l ä s a r e n s   a d r e s s f ä l t   o c h   k l i s t r a   i n   i   f ä l t e t   o v a n " ,  
+         " C o p y   t h e   w e b   a d d r e s s   f r o m   y o u r   b r o w s e r \ ' s   a d d r e s s   b a r   a n d   p a s t e   i t   i n t o   t h e   b o x   a b o v e " :   " K o p i e r a   w e b b a d r e s s e n   f r å n   w e b b l ä s a r e n s   a d r e s s f ä l t   o c h   k l i s t r a   i n   i   f ä l t e t   o v a n " ,  
+         " D e c r e a s e   F o n t   S i z e " :   " M i n s k a   t e x t s t o r l e k " ,  
+         " D e s t r o y " :   " F ö r s t ö r " ,  
+         " D i v i d e r " :   " A v s k i l j a r e " ,  
+         " D o c u m e n t   o r   o t h e r   f i l e " :   " D o k u m e n t   e l l e r   a n n a n   f i l " ,  
+         " E d i t   L i n k " :   " R e d i g e r a   l ä n k " ,  
+         " E m a i l " :   " E p o s t " ,  
+         " E m a i l   a d d r e s s " :   " E p o s t   a d r e s s " ,  
+         " E m b e d   C o d e " :   " I n b ä d d n i n g s k o d " ,  
+         " E m b e d   O b j e c t " :   " B ä d d a   i n   o b j e k t " ,  
+         " E m b e d   o b j e c t " :   " B ä d d a   i n   o b j e k t " ,  
+         " E n s u r e   t h e   f i l e   h a s   b e e n   u p l o a d e d   t o   y o u r   w e b s i t e " :   " K o n t r o l l e r a   a t t   f i l e n   h a r   l a d d a t s   u p p   t i l l   d i n   w e b b s i d a " ,  
+         " E n t e r   e m a i l   a d d r e s s " :   " A n g e   e p o s t - a d r e s s " ,  
+         " E n t e r   s u b j e c t " :   " A n g e   ä m n e " ,  
+         " E n t e r   y o u r   U R L " :   " A n g e   d i n   U R L " ,  
+         " F a i l e d   t o   s a v e   { { f a i l e d } }   c o n t e n t   b l o c k ( s ) . " :   " M i s s l y c k a d e s   m e d   a t t   s p a r a   { { f a i l e d } }   i n n e h å l l s b l o c k . " ,  
+         " F i n d   t h e   p a g e   o n   t h e   w e b   y o u   w a n t   t o   l i n k   t o " :   " H i t t a   s i d a n   p å   w e b b e n   s o m   d u   v i l l   l ä n k a   t i l l " ,  
+         " F l o a t   I m a g e   L e f t " :   " V ä n s t e r j u s t e r a   b i l d " ,  
+         " F l o a t   I m a g e   R i g h t " :   " H ö g e r j u s t e r a   b i l d " ,  
+         " F o r m a t t e d   & a m p ;   C l e a n e d " :   " F o r m a t e r a d   & a m p ;   R e n " ,  
+         " F o r m a t t e d   U n c l e a n " :   " F o r m a t e r a d   s m u t s i g " ,  
+         " H e a d i n g & n b s p ; 1 " :   " R u b r i k & n b s p ; 1 " ,  
+         " H e a d i n g & n b s p ; 2 " :   " R u b r i k & n b s p ; 2 " ,  
+         " H e a d i n g & n b s p ; 3 " :   " R u b r i k & n b s p ; 3 " ,  
+         " I m a g e   h e i g h t " :   " B i l d h ö j d " ,  
+         " I m a g e   w i d t h " :   " B i l d b r e d d " ,  
+         " I n c r e a s e   F o n t   S i z e " :   " Ö k a   t e x t s t o r l e k " ,  
+         " I n i t i a l i z i n g " :   " I n i t i e r a r " ,  
+         " I n s e r t " :   " I n f o g a " ,  
+         " I n s e r t   H o r i z o n t a l   R u l e " :   " I n f o g a   h o r i s o n t e l l   a v s k i l j a r e " ,  
+         " I n s e r t   L i n k " :   " I n f o g a   l ä n k " ,  
+         " I n s e r t   S n i p p e t " :   " I n f o g a   u t k l i p p " ,  
+         " I t a l i c " :   " K u r s i v " ,  
+         " J u s t i f y " :   " M a r g i n a l j u s t e r a " ,  
+         " L e a r n   M o r e   A b o u t   t h e   R a p t o r   W Y S I W Y G   E d i t o r " :   " L ä r   d i g   m e r   o m   R a p t o r   W Y S I W Y G   E d i t o r " ,  
+         " L e f t   A l i g n " :   " V ä n s t e r j u s t e r a " ,  
+         " L i n k   t o   a   d o c u m e n t   o r   o t h e r   f i l e " :   " L ä n k a   t i l l   e t t   d o k u m e n t   e l l e r   a n n a n   f i l " ,  
+         " L i n k   t o   a   p a g e   o n   t h i s   o r   a n o t h e r   w e b s i t e " :   " L ä n k a   t i l l   e n   s i d a   p å   d e n n a   e l l e r   u t o m s t å e n d e   w e b b p l a t s " ,  
+         " L i n k   t o   a n   e m a i l   a d d r e s s " :   " L ä n k a   t i l l   e n   e p o s t - a d r e s s " ,  
+         " L o c a t i o n " :   " P l a t s " ,  
+         " M o d i f y   I m a g e   S i z e " :   " Ä n d r a   b i l d s t o r l e k " ,  
+         " N / A " :   " E j   t i l l g ä n g l i g " ,  
+         " N e w   w i n d o w " :   " N y t t   f ö n s t e r " ,  
+         " N o   c h a n g e s   d e t e c t e d   t o   s a v e . . . " :   " I n g a   ä n d r i n g a r   a t t   s p a r a . . . " ,  
+         " N o t   s u r e   w h a t   t o   p u t   i n   t h e   b o x   a b o v e ? " :   " I n t e   s ä k e r   p å   v a d   s o m   s k a   f y l l a s   i ? " ,  
+         " O K " :   " O K " ,  
+         " O p e n   t h e   u p l o a d e d   f i l e   i n   y o u r   b r o w s e r " :   " Ö p p n a   d e n   u p p l a d d a d e   f i l e n   i   d i n   w e b b l ä s a r e " ,  
+         " O r d e r e d   L i s t " :   " O r d n a d   l i s t a " ,  
+         " P a g e   o n   t h i s   o r   a n o t h e r   w e b s i t e " :   " S i d a   p å   d e n n a   e l l e r   a n n a n   w e b b s i d a " ,  
+         " P a r a g r a p h " :   " P a r a g r a f " ,  
+         " P a s t e   E m b e d   C o d e " :   " K l i s t r a   i n   i n b ä d d n i n g s k o d " ,  
+         " P a s t e   y o u r   e m b e d   c o d e   i n t o   t h e   t e x t   a r e a   b e l o w . " :   " K l i s t r a   i n   d i n   i n b ä d d n i n g s k o d   i   t e x t r u t a n   n e d a n f ö r . " ,  
+         " P l a i n   T e x t " :   " R e n   t e x t " ,  
+         " P r e v i e w " :   " F ö r h a n d s g r a n s k i n g " ,  
+         " R a p t o r i z e " :   " R a p t o r i s e r a " ,  
+         " R e i n i t i a l i s e " :   " R e i n i t i e r a " ,  
+         " R e m a i n i n g   c h a r a c t e r s   b e f o r e   t h e   r e c o m m e n d e d   c h a r a c t e r   l i m i t   i s   r e a c h e d .   C l i c k   t o   v i e w   s t a t i s t i c s " :   " Å t e r s t å e n d e   k a r a k t ä r e r   i n n a n   r e k o m m e n d e r a d   g r ä n s   ä r   n å d d .   K l i c k a   f ö r   a t t   s e   s t a t i s t i k " ,  
+         " R e m o v e   I m a g e   F l o a t " :   " T a   b o r t   b i l d j u s t e r i n g " ,  
+         " R e m o v e   L i n k " :   " T a   b o r t   l ä n k " ,  
+         " R e m o v e   u n n e c e s s a r y   m a r k u p   f r o m   e d i t o r   c o n t e n t " :   " T a   b o r t   o n ö d i g   k o d   f r å n   r e d i g e r a r e n s   i n n e h å l l " ,  
+         " R e s i z e   I m a g e " :   " Ä n d r a   s t o r l e k   p å   b i l d " ,  
+         " R i g h t   A l i g n " :   " H ö g e r j u s t e r a " ,  
+         " S a v e " :   " S p a r a " ,  
+         " S a v e d   { { s a v e d } }   o u t   o f   { { d i r t y } }   c o n t e n t   b l o c k s . " :   " S p a r a t   { { s a v e d } }   a v   { { d i r t y } }   i n n e h å l l s b l o c k . " ,  
+         " S a v i n g   c h a n g e s . . . " :   " S p a r a r   ä n d r i n g a r . . . " ,  
+         " S e l e c t   a l l   e d i t a b l e   c o n t e n t " :   " M a r k e r a   a l l a   r e d i g e r b a r a   o m r å d e n " ,  
+         " S e l e c t   { { e l e m e n t } }   e l e m e n t " :   " M a r k e r a   { { e l e m e n t } }   e l e m e n t e t " ,  
+         " S h o w   G u i d e s " :   " V i s a   s t ö d l i n j e r " ,  
+         " S o u r c e   C o d e " :   " K ä l l k o d " ,  
+         " S t e p   B a c k " :   " Å n g r a " ,  
+         " S t e p   F o r w a r d " :   " G ö r   o m " ,  
+         " S t r i k e t h r o u g h " :   " G e n o m s t r y k e n " ,  
+         " S u b   s c r i p t " :   " N e d s ä n k t " ,  
+         " S u b j e c t   ( o p t i o n a l ) " :   " Ä m n e   ( f r i v i l l i g t ) " ,  
+         " S u c c e s s f u l l y   s a v e d   { { s a v e d } }   c o n t e n t   b l o c k ( s ) . " :   " S p a r a d e   { { s a v e d } }   i n n e h å l l s b l o c k . " ,  
+         " S u p e r   s c r i p t " :   " U p p h ö j t " ,  
+         " T h e   U R L   d o e s   n o t   l o o k   w e l l   f o r m e d " :   " U R L : e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
+         " T h e   e m a i l   a d d r e s s   d o e s   n o t   l o o k   w e l l   f o r m e d " :   " E p o s t - a d r e s s e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
+         " T h e   i m a g e   ' { { i m a g e } } '   i s   t o o   w i d e   f o r   t h e   e l e m e n t   b e i n g   e d i t e d . < b r / > I t   w i l l   b e   r e s i z e d   t o   f i t . " :   " B i l d e n   ' { { i m a g e } } '   ä r   f ö r   b r e d   f ö r   o m r å d e t   d u   r e d i g e r a r . < b r / > D e n   k o m m e r   a t t   k r y m p a s   f ö r   a t t   f å   p l a t s . " ,  
+         " T h e   u r l   f o r   t h e   f i l e   y o u   i n s e r t e d   d o e s n \ ' t   l o o k   w e l l   f o r m e d " :   " U R L : e n   f ö r   f i l e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
+         " T h e   u r l   f o r   t h e   l i n k   y o u   i n s e r t e d   d o e s n \ ' t   l o o k   w e l l   f o r m e d " :   " U R L : e n   f ö r   l ä n k e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
+         " T h i s   b l o c k   c o n t a i n s   u n s a v e d   c h a n g e s " :   " D e t t a   o m r å d e   i n n e h å l l e r   o s p a r a d   i n f o r m a t i o n " ,  
+         " U n d e r l i n e " :   " U n d e r s t r y k e n " ,  
+         " U n n a m e d   B u t t o n " :   " N a m n l ö s   k n a p p " ,  
+         " U n n a m e d   S e l e c t   M e n u " :   " N a m n l ö s   m e n y " ,  
+         " U n o r d e r e d   L i s t " :   " O o r d n a d   l i s t a " ,  
+         " U p d a t e   L i n k " :   " U p p d a t e r a   l ä n k " ,  
+         " U p d a t e d   l i n k :   { { l i n k } } " :   " U p p d a t e r a d   l ä n k :   { { l i n k } } " ,  
+         " V i e w   /   E d i t   S o u r c e " :   " V i s a   /   r e d i g e r a   k ä l l k o d " ,  
+         " V i e w   S o u r c e " :   " V i s a   k ä l l k o d " ,  
+         " \ n T h e r e   a r e   u n s a v e d   c h a n g e s   o n   t h i s   p a g e .   \ n I f   y o u   n a v i g a t e   a w a y   f r o m   t h i s   p a g e   y o u   w i l l   l o s e   y o u r   u n s a v e d   c h a n g e s " :   " \ n D e t   f i n n s   o s p a r a d e   ä n d r i n g a r   p å   d e n n a   s i d a n .   \ n O m   d u   l ä m n a r   d e n n a   s i d a n   k o m m e r   d u   a t t   f ö r l o r a   d i n a   o s p a r a d e   ä n d r i n g a r " ,  
+         " r o o t " :   " r o o t " ,  
+         " { { c h a r a c t e r s R e m a i n i n g } }   c h a r a c t e r s   o v e r   l i m i t " :   " { { c h a r a c t e r s R e m a i n i n g } }   b o k s t ä v e r   ö v e r   g r ä n s e n " ,  
+         " { { c h a r a c t e r s R e m a i n i n g } }   c h a r a c t e r s   r e m a i n i n g " :   " { { c h a r a c t e r s R e m a i n i n g } }   b o k s t ä v e r   å t e r s t å r " ,  
+         " { { c h a r a c t e r s } }   c h a r a c t e r s " :   " { { c h a r a c t e r s } }   b o k s t ä v e r " ,  
+         " { { c h a r a c t e r s } }   c h a r a c t e r s ,   { { c h a r a c t e r s R e m a i n i n g } }   o v e r   t h e   r e c o m m e n d e d   l i m i t " :   " { { c h a r a c t e r s } }   b o k s t ä v e r ,   { { c h a r a c t e r s R e m a i n i n g } }   ö v e r   d e n   r e k o m m e n d e r a d e   g r ä n s e n " ,  
+         " { { c h a r a c t e r s } }   c h a r a c t e r s ,   { { c h a r a c t e r s R e m a i n i n g } }   r e m a i n i n g " :   " { { c h a r a c t e r s } }   b o k s t ä v e r ,   { { c h a r a c t e r s R e m a i n i n g } }   k v a r s t å e n d e " ,  
+         " { { s e n t e n c e s } }   s e n t e n c e s " :   " { { s e n t e n c e s } }   m e n i n g a r " ,  
+         " { { w o r d s } }   w o r d " :   " { { w o r d s } }   o r d " ,  
+         " { { w o r d s } }   w o r d s " :   " { { w o r d s } }   o r d "  
+ } ) ;  
+ /**
  * @fileOverview Simplified Chinese strings file.
  * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
@@ -31045,10 +31230,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     dialog: null,
     types: {},
 
-    /**
-     * Array of default link types
-     * @type {Array}
-     */
+    /** @type {Array} Array of default link types */
     defaultLinkTypes: [
 
         /**
@@ -31066,7 +31248,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             /**
              * @see $.editor.plugin.link.baseLinkType#title
              */
-            title: _('Page on this or another website'),
+            title: function() {
+                return _('Page on this or another website');
+            },
 
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
@@ -31162,7 +31346,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             /**
              * @see $.editor.plugin.link.baseLinkType#title
              */
-            title: _('Email address'),
+            title: function() {
+                return _('Email address');
+            },
 
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
@@ -31251,7 +31437,9 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             /**
              * @see $.editor.plugin.link.baseLinkType#title
              */
-            title: _('Document or other file'),
+            title: function() {
+                return _('Document or other file');
+            },
 
             /**
              * @see $.editor.plugin.link.baseLinkType#focusSelector
@@ -31375,8 +31563,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             type: null,
 
             /**
-             * Title of the link type.
-             * Used in the link panel's radio button
+             * @type {Function} Title of the link type. Used in the link panel's radio button
              */
             title: null,
 
@@ -31483,7 +31670,8 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
             // Add link type radio buttons
             var linkTypesFieldset = this.dialog.find('fieldset');
             for (var type in this.types) {
-                $(this.editor.getTemplate('link.label', this.types[type])).appendTo(linkTypesFieldset);
+                var variables = $.extend({}, this.types[type], { title: this.types[type].title() });
+                $(this.editor.getTemplate('link.label', variables)).appendTo(linkTypesFieldset);
             }
 
             linkTypesFieldset.find('input[type="radio"]').bind('change.' + this.editor.widgetName, function(){
@@ -31691,9 +31879,14 @@ $.ui.editor.registerUi({
         },
 
         /**
+         * Initialize the add link UI element.
          * @see $.ui.editor.defaultUi#init
+         * @param  {$.editor} editor The Raptor Editor instance.
+         * @param  {$.editor.plugin.clickButtonToEdit.options} options The options object.
+         * @return {$.editor.defaultPlugin} A new $.ui.editor.plugin.clickButtonToEdit instance.
          */
         init: function(editor) {
+
             editor.bind('selectionChange', this.change, this);
 
             return editor.uiButton({
@@ -32113,7 +32306,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.26?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.27?' + query.join('&') + ')'
                     });
                 }
             });
@@ -32660,7 +32853,12 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
             url: '/',
             type: 'post',
             cache: false
-        }
+        },
+
+         /**
+         * @type {Function} Callback executed when the user saves the editable content.
+         */
+        callback: null
     },
 
     /**
@@ -32735,6 +32933,9 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
         } else {
             this.saved = this.dirty;
         }
+
+        var plugin = this;
+
         if (this.options.showResponse) {
             this.editor.showConfirm(data, {
                 delay: 1000,
@@ -32742,6 +32943,10 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
                     this.editor.unify(function(editor) {
                         editor.disableEditing();
                         editor.hideToolbar();
+                        // If a callback has been provided, call it.
+                        if (plugin.options.callback && $.isFunction(plugin.options.callback)) {
+                            plugin.options.callback.call(plugin);
+                        }
                     });
                 }
             });
@@ -33048,7 +33253,13 @@ $.ui.editor.registerUi({
      */
     save: {
 
-        options: {
+        /**
+         * @name $.editor.ui.save.options
+         * @namespace Default save UI options.
+         * @see $.editor.ui.save
+         * @type {Object}
+         */
+        options: /** @lends $.editor.ui.save.options.prototype */  {
             plugin: 'saveJson'
         },
 
@@ -33296,13 +33507,13 @@ $.ui.editor.registerUi({
 
             // Add the error state to the button's text element if appropriate
             if (charactersRemaining < 0) {
-                button.addClass('ui-state-error');
+                button.addClass('ui-state-error').removeClass('ui-state-default');
             } else{
                 // Add the highlight class if the remaining characters are in the "sweet zone"
                 if (charactersRemaining >= 0 && charactersRemaining <= 15) {
-                    button.addClass('ui-state-highlight').removeClass('ui-state-error');
+                    button.addClass('ui-state-highlight').removeClass('ui-state-error ui-state-default');
                 } else {
-                    button.removeClass('ui-state-highlight ui-state-error');
+                    button.removeClass('ui-state-highlight ui-state-error').addClass('ui-state-default');
                 }
             }
         },
@@ -34014,6 +34225,11 @@ function rangeExpandTo(range, elements) {
     } while (range.commonAncestorContainer);
 }
 
+/**
+ * Replaces the content of range with the given html.
+ * @param  {jQuery|String} html The html to use when replacing range.
+ * @param  {RangyRange} range The range to replace.
+ */
 function rangeReplace(html, range) {
     var nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
@@ -34131,13 +34347,16 @@ function selectionSet(mixed) {
 }
 
 /**
- * FIXME: this function needs reviewing
+ * Replaces the given selection (or the current selection if selection is not
+ * supplied) with the given html.
  * @public @static
+ * @param  {jQuery|String} html The html to use when replacing.
+ * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.
  */
-function selectionReplace(html, sel) {
+function selectionReplace(html, selection) {
     selectionEachRange(function(range) {
         rangeReplace(html, range);
-    }, sel, this);
+    }, selection, this);
 }
 
 /**
@@ -34358,11 +34577,13 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
  * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
  */
 function selectionExists(sel) {
-    var selectionExists = false;
+    var exists = false;
     selectionEachRange(function(range) {
-        if (!rangeIsEmpty(range)) selectionExists = true;
+        if (!rangeIsEmpty(range)) {
+            exists = true;
+        }
     }, sel, this);
-    return selectionExists;
+    return exists;
 }
 
 /**
@@ -34465,9 +34686,10 @@ function selectionToggleBlockStyle(styles, limit) {
  */
 function selectionConstrain(element, selection) {
     element = $(element)[0];
-    selection = selection || (rangy) ? rangy.getSelection() : null;
+    selection = selection || rangy.getSelection();
 
     if (!selection) {
+        selectionSelectStart(element);
         return;
     }
 
