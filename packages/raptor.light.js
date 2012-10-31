@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.27 
+VERSION: 0.0.29 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -11108,7 +11108,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.27?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.29?' + query.join('&') + ')'
                     });
                 }
             });
@@ -11881,13 +11881,12 @@ $.ui.editor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.proto
         this.requests = 0;
 
         // Get all unified content
-        var dirty = 0;
+        var plugin = this,
+            dirty = 0;
         this.editor.unify(function(editor) {
             if (editor.isDirty()) {
                 dirty++;
-                var plugin = editor.getPlugin('saveRest');
-                var content = plugin.editor.save();
-                plugin.ajax(content);
+                editor.getPlugin('saveRest').ajax(editor.save(), plugin);
             }
         });
         this.dirty = dirty;
@@ -11965,22 +11964,19 @@ $.ui.editor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.proto
     },
 
     /**
-     * Handle the save AJAX request(s)
-     * @param  {String} contentData The element's content
-     * @param  {String} id Editing element's identfier
+     * Handle the save AJAX request(s).
+     *
+     * @param {String} contentData The element's content.
+     * @param {String} id Editing element's ID.
+     * @param {Object} counter Counter object used to confirm all content block have been saved.
      */
-    ajax: function(contentData, id) {
-        // Create POST data
-        //var data = {};
-
-        // Content is serialized to a JSON object, and sent as 1 post parameter
-        //data[this.options.postName] = JSON.stringify(contentData);
-
+    ajax: function(contentData, counter) {
         // Create the JSON request
         var ajax = $.extend(true, {}, this.options.ajax);
 
+        // Get the data to send to the server
         if ($.isFunction(ajax.data)) {
-            ajax.data = ajax.data.apply(this, [id, contentData]);
+            ajax.data = ajax.data.apply(this, [contentData]);
         } else if (this.options.postName) {
             ajax.data = {};
             ajax.data[this.options.postName] = JSON.stringify(contentData);
@@ -11988,15 +11984,15 @@ $.ui.editor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.proto
 
         // Get the URL, if it is a callback
         if ($.isFunction(ajax.url)) {
-            ajax.url = ajax.url.apply(this, [id]);
+            ajax.url = ajax.url.apply(this);
         }
 
         // Send the data to the server
-        this.requests++;
+        counter.requests++;
         $.ajax(ajax)
-            .done($.proxy(this.done, this))
-            .fail($.proxy(this.fail, this))
-            .always($.proxy(this.always, this));
+            .done($.proxy(counter.done, counter))
+            .fail($.proxy(counter.fail, counter))
+            .always($.proxy(counter.always, counter));
     }
 
 });
