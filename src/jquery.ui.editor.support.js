@@ -1,4 +1,4 @@
-var supported, ios;
+var supported, ios, hotkeys;
 
 function isSupported(editor) {
     if (supported === undefined) {
@@ -42,6 +42,8 @@ function isSupported(editor) {
             });
         }
         // </ie>
+
+        hotkeys = jQuery.hotkeys !== undefined;
     }
     return supported;
 }
