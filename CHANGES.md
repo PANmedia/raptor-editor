@@ -1,3 +1,7 @@
+v0.0.30
+---
+Fixed encoding issue in Swedish translation.
+
 v0.0.28 - v0.0.29
 ---
 Fixed incorrect builds.
