@@ -8,6 +8,8 @@
             $content = [];
         }
     }
+
+    $type = 'light';
 ?>
 <!doctype html>
 <html>
@@ -16,7 +18,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>Raptor Editor - Save Rest Example</title>
 	<link rel="stylesheet" href="css/style.css" />
-    <?php $uri = '../../src/'; include '../../src/include.php'; ?>
+    <?php if ($type === 'light'): ?>
+        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
+        <link rel="stylesheet" href="../../src/theme/theme.css" />
+        <script src="../../src/dependencies/jquery.js"></script>
+        <script src="../../src/dependencies/jquery-ui.js"></script>
+        <script src="../../packages/raptor.light.min.js"></script>
+    <?php elseif ($type === 'include'): ?>
+        <?php $uri = '../../src/'; include '../../src/include.php'; ?>
+    <?php endif; ?>
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').editor({
