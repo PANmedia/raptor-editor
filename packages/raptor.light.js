@@ -1,5 +1,5 @@
 /*! 
-VERSION: 0.0.29 
+VERSION: 0.0.30 
 For license information, see http://www.raptor-editor.com/license
 */
 /**
@@ -9411,142 +9411,142 @@ registerLocale('nl', 'Nederlands', {
     "{{words}} word": "{{words}} woord",
     "{{words}} words": "{{words}} woorden"
 });
-ˇ˛/ * *  
-   *   @ f i l e O v e r v i e w   S w e d i s h   s t r i n g s   f i l e .  
-   *   @ a u t h o r   C h r i s t o f f e r   B u b a c h ,   a s m h a c k e r @ g m a i l . c o m ,   h t t p : / / w w w . b u b a c h . n e t /  
-   * /  
- r e g i s t e r L o c a l e ( ' s v ' ,   ' S v e n s k a ' ,   {  
-         " A   p r e v i e w   o f   y o u r   e m b e d d e d   o b j e c t   i s   d i s p l a y e d   b e l o w . " :   " E n   f ˆ r h a n d s v i s n i n g   a v   d i t t   i n b ‰ d d a d e   o b j e k t   v i s a s   n e d a n . " ,  
-         " A d d e d   l i n k :   { { l i n k } } " :   " T i l l a g d   l ‰ n k :   { { l i n k } } " ,  
-         " A l l   c h a n g e s   w i l l   b e   l o s t ! " :   " A l l a   ‰ n d r i n g a r   k o m m e r   f ˆ r l o r a s ! " ,  
-         " A p p l y   S o u r c e " :   " S p a r a   k o d ‰ n d r i n g a r " ,  
-         " A r e   y o u   s u r e   y o u   w a n t   t o   s t o p   e d i t i n g ? " :   " ƒ r   d u   s ‰ k e r   p Â   a t t   d u   v i l l   s l u t a   r e d i g e r a ? " ,  
-         " B l o c k q u o t e " :   " C i t a t " ,  
-         " B o l d " :   " F e t " ,  
-         " C a n c e l " :   " A v b r y t " ,  
-         " C e n t e r   A l i g n " :   " C e n t r e r a d " ,  
-         " C h a n g e   H T M L   t a g   o f   s e l e c t e d   e l e m e n t " :   " B y t   H T M L - t a g g   p Â   v a l t   e l e m e n t " ,  
-         " C h a n g e   L a n g u a g e " :   " B y t   s p r Â k " ,  
-         " C h a n g e   t h e   c o l o r   o f   t h e   s e l e c t e d   t e x t . " :   " ƒ n d r a   f ‰ r g   p Â   m a r k e r a d   t e x t . " ,  
-         " C h e c k   t h i s   b o x   t o   h a v e   t h e   f i l e   o p e n   i n   a   n e w   b r o w s e r   w i n d o w " :   " K r y s s a   i   d e n n a   b o x   f ˆ r   a t t   ˆ p p n a   f i l e n   i   e t t   n y t t   f ˆ n s t e r " ,  
-         " C h e c k   t h i s   b o x   t o   h a v e   t h e   l i n k   o p e n   i n   a   n e w   b r o w s e r   w i n d o w " :   " K r y s s a   i   d e n n a   b o x   f ˆ r   a t t   ˆ p p n a   l ‰ n k e n   i   e t t   n y t t   f ˆ n s t e r " ,  
-         " C h o o s e   a   l i n k   t y p e : " :   " V ‰ l j   e n   l ‰ n k t y p : " ,  
-         " C l e a r   F o r m a t t i n g " :   " T a   b o r t   f o r m a t e r i n g " ,  
-         " C l i c k   t o   b e g i n   e d i t i n g " :   " K l i c k a   h ‰ r   f ˆ r   a t t   r e d i g e r a " ,  
-         " C l i c k   t o   d e t a c h   t h e   t o o l b a r " :   " K l i c k a   h ‰ r   f ˆ r   a t t   f r i g ˆ r a   v e r k t y g s f ‰ l t e t " ,  
-         " C l i c k   t o   d o c k   t h e   t o o l b a r " :   " K l i c k a   h ‰ r   f ˆ r   a t t   f ‰ s t a   v e r k t y g s f ‰ l t e t " ,  
-         " C l i c k   t o   e d i t   t h e   i m a g e " :   " K l i c k a   h ‰ r   f ˆ r   a t t   r e d i g e r a   b i l d e n " ,  
-         " C l i c k   t o   s e l e c t   a l l   e d i t a b l e   c o n t e n t " :   " K l i c k a   h ‰ r   f ˆ r   a t t   m a r k e r a   a l l t   r e d i g e r b a r t   i n n e h Â l l " ,  
-         " C l i c k   t o   s e l e c t   t h e   c o n t e n t s   o f   t h e   ' { { e l e m e n t } } '   e l e m e n t " :   " K l i c k a   h ‰ r   f ˆ r   a t t   m a r k e r a   ' { { e l e m e n t } } '   e l e m e n t e t " ,  
-         " C l i c k   t o   v i e w   s t a t i s t i c s " :   " K l i c k a   h ‰ r   f ˆ r   v i s a   s t a t i s t i k " ,  
-         " C l o s e " :   " S t ‰ n g " ,  
-         " C o n f i r m   C a n c e l   E d i t i n g " :   " B e k r ‰ f t a   a v b r y t n i n g   a v   r e d i g e r i n g " ,  
-         " C o n t e n t   S t a t i s t i c s " :   " I n n e h Â l l s s t a t i s t i k " ,  
-         " C o n t e n t   c o n t a i n s   m o r e   t h a n   { { l i m i t } }   c h a r a c t e r s   a n d   m a y   b e   t r u n c a t e d " :   " I n n e h Â l l e t   o m f a t t a r   m e r   ‰ n   { { l i m i t } }   b o k s t ‰ v e r   o c h   k a n   b l i   a v k o r t a t " ,  
-         " C o n t e n t   w i l l   n o t   b e   t r u n c a t e d " :   " I n n e h Â l l e t   k o m m e r   i n t e   a t t   a v k o r t a s " ,  
-         " C o p y   t h e   f i l e ' s   U R L   f r o m   y o u r   b r o w s e r ' s   a d d r e s s   b a r   a n d   p a s t e   i t   i n t o   t h e   b o x   a b o v e " :   " K o p i e r a   f i l e n s   U R L   f r Â n   w e b b l ‰ s a r e n s   a d r e s s f ‰ l t   o c h   k l i s t r a   i n   i   f ‰ l t e t   o v a n " ,  
-         " C o p y   t h e   w e b   a d d r e s s   f r o m   y o u r   b r o w s e r \ ' s   a d d r e s s   b a r   a n d   p a s t e   i t   i n t o   t h e   b o x   a b o v e " :   " K o p i e r a   w e b b a d r e s s e n   f r Â n   w e b b l ‰ s a r e n s   a d r e s s f ‰ l t   o c h   k l i s t r a   i n   i   f ‰ l t e t   o v a n " ,  
-         " D e c r e a s e   F o n t   S i z e " :   " M i n s k a   t e x t s t o r l e k " ,  
-         " D e s t r o y " :   " F ˆ r s t ˆ r " ,  
-         " D i v i d e r " :   " A v s k i l j a r e " ,  
-         " D o c u m e n t   o r   o t h e r   f i l e " :   " D o k u m e n t   e l l e r   a n n a n   f i l " ,  
-         " E d i t   L i n k " :   " R e d i g e r a   l ‰ n k " ,  
-         " E m a i l " :   " E p o s t " ,  
-         " E m a i l   a d d r e s s " :   " E p o s t   a d r e s s " ,  
-         " E m b e d   C o d e " :   " I n b ‰ d d n i n g s k o d " ,  
-         " E m b e d   O b j e c t " :   " B ‰ d d a   i n   o b j e k t " ,  
-         " E m b e d   o b j e c t " :   " B ‰ d d a   i n   o b j e k t " ,  
-         " E n s u r e   t h e   f i l e   h a s   b e e n   u p l o a d e d   t o   y o u r   w e b s i t e " :   " K o n t r o l l e r a   a t t   f i l e n   h a r   l a d d a t s   u p p   t i l l   d i n   w e b b s i d a " ,  
-         " E n t e r   e m a i l   a d d r e s s " :   " A n g e   e p o s t - a d r e s s " ,  
-         " E n t e r   s u b j e c t " :   " A n g e   ‰ m n e " ,  
-         " E n t e r   y o u r   U R L " :   " A n g e   d i n   U R L " ,  
-         " F a i l e d   t o   s a v e   { { f a i l e d } }   c o n t e n t   b l o c k ( s ) . " :   " M i s s l y c k a d e s   m e d   a t t   s p a r a   { { f a i l e d } }   i n n e h Â l l s b l o c k . " ,  
-         " F i n d   t h e   p a g e   o n   t h e   w e b   y o u   w a n t   t o   l i n k   t o " :   " H i t t a   s i d a n   p Â   w e b b e n   s o m   d u   v i l l   l ‰ n k a   t i l l " ,  
-         " F l o a t   I m a g e   L e f t " :   " V ‰ n s t e r j u s t e r a   b i l d " ,  
-         " F l o a t   I m a g e   R i g h t " :   " H ˆ g e r j u s t e r a   b i l d " ,  
-         " F o r m a t t e d   & a m p ;   C l e a n e d " :   " F o r m a t e r a d   & a m p ;   R e n " ,  
-         " F o r m a t t e d   U n c l e a n " :   " F o r m a t e r a d   s m u t s i g " ,  
-         " H e a d i n g & n b s p ; 1 " :   " R u b r i k & n b s p ; 1 " ,  
-         " H e a d i n g & n b s p ; 2 " :   " R u b r i k & n b s p ; 2 " ,  
-         " H e a d i n g & n b s p ; 3 " :   " R u b r i k & n b s p ; 3 " ,  
-         " I m a g e   h e i g h t " :   " B i l d h ˆ j d " ,  
-         " I m a g e   w i d t h " :   " B i l d b r e d d " ,  
-         " I n c r e a s e   F o n t   S i z e " :   " ÷ k a   t e x t s t o r l e k " ,  
-         " I n i t i a l i z i n g " :   " I n i t i e r a r " ,  
-         " I n s e r t " :   " I n f o g a " ,  
-         " I n s e r t   H o r i z o n t a l   R u l e " :   " I n f o g a   h o r i s o n t e l l   a v s k i l j a r e " ,  
-         " I n s e r t   L i n k " :   " I n f o g a   l ‰ n k " ,  
-         " I n s e r t   S n i p p e t " :   " I n f o g a   u t k l i p p " ,  
-         " I t a l i c " :   " K u r s i v " ,  
-         " J u s t i f y " :   " M a r g i n a l j u s t e r a " ,  
-         " L e a r n   M o r e   A b o u t   t h e   R a p t o r   W Y S I W Y G   E d i t o r " :   " L ‰ r   d i g   m e r   o m   R a p t o r   W Y S I W Y G   E d i t o r " ,  
-         " L e f t   A l i g n " :   " V ‰ n s t e r j u s t e r a " ,  
-         " L i n k   t o   a   d o c u m e n t   o r   o t h e r   f i l e " :   " L ‰ n k a   t i l l   e t t   d o k u m e n t   e l l e r   a n n a n   f i l " ,  
-         " L i n k   t o   a   p a g e   o n   t h i s   o r   a n o t h e r   w e b s i t e " :   " L ‰ n k a   t i l l   e n   s i d a   p Â   d e n n a   e l l e r   u t o m s t Â e n d e   w e b b p l a t s " ,  
-         " L i n k   t o   a n   e m a i l   a d d r e s s " :   " L ‰ n k a   t i l l   e n   e p o s t - a d r e s s " ,  
-         " L o c a t i o n " :   " P l a t s " ,  
-         " M o d i f y   I m a g e   S i z e " :   " ƒ n d r a   b i l d s t o r l e k " ,  
-         " N / A " :   " E j   t i l l g ‰ n g l i g " ,  
-         " N e w   w i n d o w " :   " N y t t   f ˆ n s t e r " ,  
-         " N o   c h a n g e s   d e t e c t e d   t o   s a v e . . . " :   " I n g a   ‰ n d r i n g a r   a t t   s p a r a . . . " ,  
-         " N o t   s u r e   w h a t   t o   p u t   i n   t h e   b o x   a b o v e ? " :   " I n t e   s ‰ k e r   p Â   v a d   s o m   s k a   f y l l a s   i ? " ,  
-         " O K " :   " O K " ,  
-         " O p e n   t h e   u p l o a d e d   f i l e   i n   y o u r   b r o w s e r " :   " ÷ p p n a   d e n   u p p l a d d a d e   f i l e n   i   d i n   w e b b l ‰ s a r e " ,  
-         " O r d e r e d   L i s t " :   " O r d n a d   l i s t a " ,  
-         " P a g e   o n   t h i s   o r   a n o t h e r   w e b s i t e " :   " S i d a   p Â   d e n n a   e l l e r   a n n a n   w e b b s i d a " ,  
-         " P a r a g r a p h " :   " P a r a g r a f " ,  
-         " P a s t e   E m b e d   C o d e " :   " K l i s t r a   i n   i n b ‰ d d n i n g s k o d " ,  
-         " P a s t e   y o u r   e m b e d   c o d e   i n t o   t h e   t e x t   a r e a   b e l o w . " :   " K l i s t r a   i n   d i n   i n b ‰ d d n i n g s k o d   i   t e x t r u t a n   n e d a n f ˆ r . " ,  
-         " P l a i n   T e x t " :   " R e n   t e x t " ,  
-         " P r e v i e w " :   " F ˆ r h a n d s g r a n s k i n g " ,  
-         " R a p t o r i z e " :   " R a p t o r i s e r a " ,  
-         " R e i n i t i a l i s e " :   " R e i n i t i e r a " ,  
-         " R e m a i n i n g   c h a r a c t e r s   b e f o r e   t h e   r e c o m m e n d e d   c h a r a c t e r   l i m i t   i s   r e a c h e d .   C l i c k   t o   v i e w   s t a t i s t i c s " :   " ≈ t e r s t Â e n d e   k a r a k t ‰ r e r   i n n a n   r e k o m m e n d e r a d   g r ‰ n s   ‰ r   n Â d d .   K l i c k a   f ˆ r   a t t   s e   s t a t i s t i k " ,  
-         " R e m o v e   I m a g e   F l o a t " :   " T a   b o r t   b i l d j u s t e r i n g " ,  
-         " R e m o v e   L i n k " :   " T a   b o r t   l ‰ n k " ,  
-         " R e m o v e   u n n e c e s s a r y   m a r k u p   f r o m   e d i t o r   c o n t e n t " :   " T a   b o r t   o n ˆ d i g   k o d   f r Â n   r e d i g e r a r e n s   i n n e h Â l l " ,  
-         " R e s i z e   I m a g e " :   " ƒ n d r a   s t o r l e k   p Â   b i l d " ,  
-         " R i g h t   A l i g n " :   " H ˆ g e r j u s t e r a " ,  
-         " S a v e " :   " S p a r a " ,  
-         " S a v e d   { { s a v e d } }   o u t   o f   { { d i r t y } }   c o n t e n t   b l o c k s . " :   " S p a r a t   { { s a v e d } }   a v   { { d i r t y } }   i n n e h Â l l s b l o c k . " ,  
-         " S a v i n g   c h a n g e s . . . " :   " S p a r a r   ‰ n d r i n g a r . . . " ,  
-         " S e l e c t   a l l   e d i t a b l e   c o n t e n t " :   " M a r k e r a   a l l a   r e d i g e r b a r a   o m r Â d e n " ,  
-         " S e l e c t   { { e l e m e n t } }   e l e m e n t " :   " M a r k e r a   { { e l e m e n t } }   e l e m e n t e t " ,  
-         " S h o w   G u i d e s " :   " V i s a   s t ˆ d l i n j e r " ,  
-         " S o u r c e   C o d e " :   " K ‰ l l k o d " ,  
-         " S t e p   B a c k " :   " ≈ n g r a " ,  
-         " S t e p   F o r w a r d " :   " G ˆ r   o m " ,  
-         " S t r i k e t h r o u g h " :   " G e n o m s t r y k e n " ,  
-         " S u b   s c r i p t " :   " N e d s ‰ n k t " ,  
-         " S u b j e c t   ( o p t i o n a l ) " :   " ƒ m n e   ( f r i v i l l i g t ) " ,  
-         " S u c c e s s f u l l y   s a v e d   { { s a v e d } }   c o n t e n t   b l o c k ( s ) . " :   " S p a r a d e   { { s a v e d } }   i n n e h Â l l s b l o c k . " ,  
-         " S u p e r   s c r i p t " :   " U p p h ˆ j t " ,  
-         " T h e   U R L   d o e s   n o t   l o o k   w e l l   f o r m e d " :   " U R L : e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
-         " T h e   e m a i l   a d d r e s s   d o e s   n o t   l o o k   w e l l   f o r m e d " :   " E p o s t - a d r e s s e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
-         " T h e   i m a g e   ' { { i m a g e } } '   i s   t o o   w i d e   f o r   t h e   e l e m e n t   b e i n g   e d i t e d . < b r / > I t   w i l l   b e   r e s i z e d   t o   f i t . " :   " B i l d e n   ' { { i m a g e } } '   ‰ r   f ˆ r   b r e d   f ˆ r   o m r Â d e t   d u   r e d i g e r a r . < b r / > D e n   k o m m e r   a t t   k r y m p a s   f ˆ r   a t t   f Â   p l a t s . " ,  
-         " T h e   u r l   f o r   t h e   f i l e   y o u   i n s e r t e d   d o e s n \ ' t   l o o k   w e l l   f o r m e d " :   " U R L : e n   f ˆ r   f i l e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
-         " T h e   u r l   f o r   t h e   l i n k   y o u   i n s e r t e d   d o e s n \ ' t   l o o k   w e l l   f o r m e d " :   " U R L : e n   f ˆ r   l ‰ n k e n   s e r   i n t e   k o r r e k t   f o r m a t e r a d   u t " ,  
-         " T h i s   b l o c k   c o n t a i n s   u n s a v e d   c h a n g e s " :   " D e t t a   o m r Â d e   i n n e h Â l l e r   o s p a r a d   i n f o r m a t i o n " ,  
-         " U n d e r l i n e " :   " U n d e r s t r y k e n " ,  
-         " U n n a m e d   B u t t o n " :   " N a m n l ˆ s   k n a p p " ,  
-         " U n n a m e d   S e l e c t   M e n u " :   " N a m n l ˆ s   m e n y " ,  
-         " U n o r d e r e d   L i s t " :   " O o r d n a d   l i s t a " ,  
-         " U p d a t e   L i n k " :   " U p p d a t e r a   l ‰ n k " ,  
-         " U p d a t e d   l i n k :   { { l i n k } } " :   " U p p d a t e r a d   l ‰ n k :   { { l i n k } } " ,  
-         " V i e w   /   E d i t   S o u r c e " :   " V i s a   /   r e d i g e r a   k ‰ l l k o d " ,  
-         " V i e w   S o u r c e " :   " V i s a   k ‰ l l k o d " ,  
-         " \ n T h e r e   a r e   u n s a v e d   c h a n g e s   o n   t h i s   p a g e .   \ n I f   y o u   n a v i g a t e   a w a y   f r o m   t h i s   p a g e   y o u   w i l l   l o s e   y o u r   u n s a v e d   c h a n g e s " :   " \ n D e t   f i n n s   o s p a r a d e   ‰ n d r i n g a r   p Â   d e n n a   s i d a n .   \ n O m   d u   l ‰ m n a r   d e n n a   s i d a n   k o m m e r   d u   a t t   f ˆ r l o r a   d i n a   o s p a r a d e   ‰ n d r i n g a r " ,  
-         " r o o t " :   " r o o t " ,  
-         " { { c h a r a c t e r s R e m a i n i n g } }   c h a r a c t e r s   o v e r   l i m i t " :   " { { c h a r a c t e r s R e m a i n i n g } }   b o k s t ‰ v e r   ˆ v e r   g r ‰ n s e n " ,  
-         " { { c h a r a c t e r s R e m a i n i n g } }   c h a r a c t e r s   r e m a i n i n g " :   " { { c h a r a c t e r s R e m a i n i n g } }   b o k s t ‰ v e r   Â t e r s t Â r " ,  
-         " { { c h a r a c t e r s } }   c h a r a c t e r s " :   " { { c h a r a c t e r s } }   b o k s t ‰ v e r " ,  
-         " { { c h a r a c t e r s } }   c h a r a c t e r s ,   { { c h a r a c t e r s R e m a i n i n g } }   o v e r   t h e   r e c o m m e n d e d   l i m i t " :   " { { c h a r a c t e r s } }   b o k s t ‰ v e r ,   { { c h a r a c t e r s R e m a i n i n g } }   ˆ v e r   d e n   r e k o m m e n d e r a d e   g r ‰ n s e n " ,  
-         " { { c h a r a c t e r s } }   c h a r a c t e r s ,   { { c h a r a c t e r s R e m a i n i n g } }   r e m a i n i n g " :   " { { c h a r a c t e r s } }   b o k s t ‰ v e r ,   { { c h a r a c t e r s R e m a i n i n g } }   k v a r s t Â e n d e " ,  
-         " { { s e n t e n c e s } }   s e n t e n c e s " :   " { { s e n t e n c e s } }   m e n i n g a r " ,  
-         " { { w o r d s } }   w o r d " :   " { { w o r d s } }   o r d " ,  
-         " { { w o r d s } }   w o r d s " :   " { { w o r d s } }   o r d "  
- } ) ;  
- /**
+/**
+ * @fileOverview Swedish strings file.
+ * @author Christoffer Bubach, asmhacker@gmail.com, http://www.bubach.net/
+ */
+registerLocale('sv', 'Svenska', {
+    "A preview of your embedded object is displayed below.": "En f√∂rhandsvisning av ditt inb√§ddade objekt visas nedan.",
+    "Added link: {{link}}": "Tillagd l√§nk: {{link}}",
+    "All changes will be lost!": "Alla √§ndringar kommer f√∂rloras!",
+    "Apply Source": "Spara kod√§ndringar",
+    "Are you sure you want to stop editing?": "√Ñr du s√§ker p√• att du vill sluta redigera?",
+    "Blockquote": "Citat",
+    "Bold": "Fet",
+    "Cancel": "Avbryt",
+    "Center Align": "Centrerad",
+    "Change HTML tag of selected element": "Byt HTML-tagg p√• valt element",
+    "Change Language": "Byt spr√•k",
+    "Change the color of the selected text.": "√Ñndra f√§rg p√• markerad text.",
+    "Check this box to have the file open in a new browser window": "Kryssa i denna box f√∂r att √∂ppna filen i ett nytt f√∂nster",
+    "Check this box to have the link open in a new browser window": "Kryssa i denna box f√∂r att √∂ppna l√§nken i ett nytt f√∂nster",
+    "Choose a link type:": "V√§lj en l√§nktyp:",
+    "Clear Formatting": "Ta bort formatering",
+    "Click to begin editing": "Klicka h√§r f√∂r att redigera",
+    "Click to detach the toolbar": "Klicka h√§r f√∂r att frig√∂ra verktygsf√§ltet",
+    "Click to dock the toolbar": "Klicka h√§r f√∂r att f√§sta verktygsf√§ltet",
+    "Click to edit the image": "Klicka h√§r f√∂r att redigera bilden",
+    "Click to select all editable content": "Klicka h√§r f√∂r att markera allt redigerbart inneh√•ll",
+    "Click to select the contents of the '{{element}}' element": "Klicka h√§r f√∂r att markera '{{element}}' elementet",
+    "Click to view statistics": "Klicka h√§r f√∂r visa statistik",
+    "Close": "St√§ng",
+    "Confirm Cancel Editing": "Bekr√§fta avbrytning av redigering",
+    "Content Statistics": "Inneh√•llsstatistik",
+    "Content contains more than {{limit}} characters and may be truncated": "Inneh√•llet omfattar mer √§n {{limit}} bokst√§ver och kan bli avkortat",
+    "Content will not be truncated": "Inneh√•llet kommer inte att avkortas",
+    "Copy the file's URL from your browser's address bar and paste it into the box above": "Kopiera filens URL fr√•n webbl√§sarens adressf√§lt och klistra in i f√§ltet ovan",
+    "Copy the web address from your browser\'s address bar and paste it into the box above": "Kopiera webbadressen fr√•n webbl√§sarens adressf√§lt och klistra in i f√§ltet ovan",
+    "Decrease Font Size": "Minska textstorlek",
+    "Destroy": "F√∂rst√∂r",
+    "Divider": "Avskiljare",
+    "Document or other file": "Dokument eller annan fil",
+    "Edit Link": "Redigera l√§nk",
+    "Email": "Epost",
+    "Email address": "Epost adress",
+    "Embed Code": "Inb√§ddningskod",
+    "Embed Object": "B√§dda in objekt",
+    "Embed object": "B√§dda in objekt",
+    "Ensure the file has been uploaded to your website": "Kontrollera att filen har laddats upp till din webbsida",
+    "Enter email address": "Ange epost-adress",
+    "Enter subject": "Ange √§mne",
+    "Enter your URL": "Ange din URL",
+    "Failed to save {{failed}} content block(s).": "Misslyckades med att spara {{failed}} inneh√•llsblock.",
+    "Find the page on the web you want to link to": "Hitta sidan p√• webben som du vill l√§nka till",
+    "Float Image Left": "V√§nsterjustera bild",
+    "Float Image Right": "H√∂gerjustera bild",
+    "Formatted &amp; Cleaned": "Formaterad &amp; Ren",
+    "Formatted Unclean": "Formaterad smutsig",
+    "Heading&nbsp;1": "Rubrik&nbsp;1",
+    "Heading&nbsp;2": "Rubrik&nbsp;2",
+    "Heading&nbsp;3": "Rubrik&nbsp;3",
+    "Image height": "Bildh√∂jd",
+    "Image width": "Bildbredd",
+    "Increase Font Size": "√ñka textstorlek",
+    "Initializing": "Initierar",
+    "Insert": "Infoga",
+    "Insert Horizontal Rule": "Infoga horisontell avskiljare",
+    "Insert Link": "Infoga l√§nk",
+    "Insert Snippet": "Infoga utklipp",
+    "Italic": "Kursiv",
+    "Justify": "Marginaljustera",
+    "Learn More About the Raptor WYSIWYG Editor": "L√§r dig mer om Raptor WYSIWYG Editor",
+    "Left Align": "V√§nsterjustera",
+    "Link to a document or other file": "L√§nka till ett dokument eller annan fil",
+    "Link to a page on this or another website": "L√§nka till en sida p√• denna eller utomst√•ende webbplats",
+    "Link to an email address": "L√§nka till en epost-adress",
+    "Location": "Plats",
+    "Modify Image Size": "√Ñndra bildstorlek",
+    "N/A": "Ej tillg√§nglig",
+    "New window": "Nytt f√∂nster",
+    "No changes detected to save...": "Inga √§ndringar att spara...",
+    "Not sure what to put in the box above?": "Inte s√§ker p√• vad som ska fyllas i?",
+    "OK": "OK",
+    "Open the uploaded file in your browser": "√ñppna den uppladdade filen i din webbl√§sare",
+    "Ordered List": "Ordnad lista",
+    "Page on this or another website": "Sida p√• denna eller annan webbsida",
+    "Paragraph": "Paragraf",
+    "Paste Embed Code": "Klistra in inb√§ddningskod",
+    "Paste your embed code into the text area below.": "Klistra in din inb√§ddningskod i textrutan nedanf√∂r.",
+    "Plain Text": "Ren text",
+    "Preview": "F√∂rhandsgransking",
+    "Raptorize": "Raptorisera",
+    "Reinitialise": "Reinitiera",
+    "Remaining characters before the recommended character limit is reached. Click to view statistics": "√Öterst√•ende karakt√§rer innan rekommenderad gr√§ns √§r n√•dd. Klicka f√∂r att se statistik",
+    "Remove Image Float": "Ta bort bildjustering",
+    "Remove Link": "Ta bort l√§nk",
+    "Remove unnecessary markup from editor content": "Ta bort on√∂dig kod fr√•n redigerarens inneh√•ll",
+    "Resize Image": "√Ñndra storlek p√• bild",
+    "Right Align": "H√∂gerjustera",
+    "Save": "Spara",
+    "Saved {{saved}} out of {{dirty}} content blocks.": "Sparat {{saved}} av {{dirty}} inneh√•llsblock.",
+    "Saving changes...": "Sparar √§ndringar...",
+    "Select all editable content": "Markera alla redigerbara omr√•den",
+    "Select {{element}} element": "Markera {{element}} elementet",
+    "Show Guides": "Visa st√∂dlinjer",
+    "Source Code": "K√§llkod",
+    "Step Back": "√Öngra",
+    "Step Forward": "G√∂r om",
+    "Strikethrough": "Genomstryken",
+    "Sub script": "Neds√§nkt",
+    "Subject (optional)": "√Ñmne (frivilligt)",
+    "Successfully saved {{saved}} content block(s).": "Sparade {{saved}} inneh√•llsblock.",
+    "Super script": "Upph√∂jt",
+    "The URL does not look well formed": "URL:en ser inte korrekt formaterad ut",
+    "The email address does not look well formed": "Epost-adressen ser inte korrekt formaterad ut",
+    "The image '{{image}}' is too wide for the element being edited.<br/>It will be resized to fit.": "Bilden '{{image}}' √§r f√∂r bred f√∂r omr√•det du redigerar.<br/>Den kommer att krympas f√∂r att f√• plats.",
+    "The url for the file you inserted doesn\'t look well formed": "URL:en f√∂r filen ser inte korrekt formaterad ut",
+    "The url for the link you inserted doesn\'t look well formed": "URL:en f√∂r l√§nken ser inte korrekt formaterad ut",
+    "This block contains unsaved changes": "Detta omr√•de inneh√•ller osparad information",
+    "Underline": "Understryken",
+    "Unnamed Button": "Namnl√∂s knapp",
+    "Unnamed Select Menu": "Namnl√∂s meny",
+    "Unordered List": "Oordnad lista",
+    "Update Link": "Uppdatera l√§nk",
+    "Updated link: {{link}}": "Uppdaterad l√§nk: {{link}}",
+    "View / Edit Source": "Visa / redigera k√§llkod",
+    "View Source": "Visa k√§llkod",
+    "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nDet finns osparade √§ndringar p√• denna sidan. \nOm du l√§mnar denna sidan kommer du att f√∂rlora dina osparade √§ndringar",
+    "root": "root",
+    "{{charactersRemaining}} characters over limit": "{{charactersRemaining}} bokst√§ver √∂ver gr√§nsen",
+    "{{charactersRemaining}} characters remaining": "{{charactersRemaining}} bokst√§ver √•terst√•r",
+    "{{characters}} characters": "{{characters}} bokst√§ver",
+    "{{characters}} characters, {{charactersRemaining}} over the recommended limit": "{{characters}} bokst√§ver, {{charactersRemaining}} √∂ver den rekommenderade gr√§nsen",
+    "{{characters}} characters, {{charactersRemaining}} remaining": "{{characters}} bokst√§ver, {{charactersRemaining}} kvarst√•ende",
+    "{{sentences}} sentences": "{{sentences}} meningar",
+    "{{words}} word": "{{words}} ord",
+    "{{words}} words": "{{words}} ord"
+});
+/**
  * @fileOverview Simplified Chinese strings file.
  * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
@@ -11108,7 +11108,7 @@ $.ui.editor.registerUi({
                     }
 
                     this.ui.button.find('.ui-button-icon-primary').css({
-                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.29?' + query.join('&') + ')'
+                        'background-image': 'url(http://www.jquery-raptor.com/logo/0.0.30?' + query.join('&') + ')'
                     });
                 }
             });
