@@ -65,3 +65,21 @@ function prettyDiff(ele1, ele2) {
 function isDiff(ele1, ele2) {
     return $(prettyDiff(ele1, ele2)).find('.add, .del').length > 0;
 }
+
+function tokensToRanges(element) {
+    element = $(element);
+    var node = element.get(0);
+    var ranges = [];
+    do {
+        var text = $(node).text(),
+            start = text.indexOf('{'),
+            end = text.indexOf('}') - 1,
+            input = null;
+        input = node.innerHTML.replace('{', '').replace('}', '');
+        element.html(input);
+        var range = rangy.createRange();
+        range.selectCharacters(node, start, end);
+        ranges.push(range);
+    } while ($(node).text().indexOf('{') != -1);
+    return ranges;
+}
