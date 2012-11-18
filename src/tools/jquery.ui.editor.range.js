@@ -83,3 +83,29 @@ function rangeIsEmpty(range) {
     return range.startOffset === range.endOffset &&
            range.startContainer === range.endContainer;
 }
+
+
+
+
+
+
+
+
+
+function rangeToggleWrapper(range, tag, options) {
+    options = options || {};
+    var applier = rangy.createCssClassApplier(options.classes || '', {
+        normalize: true,
+        elementTagName: tag,
+        elementProperties: options.attributes || {}
+    });
+    if (rangeEmptyTag(range)) {
+        var element = $('<' + tag + '/>')
+            .addClass(options.classes)
+            .attr(options.attributes || {})
+            .append(fragmentToHtml(range.cloneContents()));
+        rangeReplace(element, range);
+    } else {
+        applier.toggleRange(range);
+    }
+}
