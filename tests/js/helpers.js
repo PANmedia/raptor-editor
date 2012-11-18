@@ -78,6 +78,7 @@ function tokensToRanges(element) {
         input = node.innerHTML.replace('{', '').replace('}', '');
         element.html(input);
         var range = rangy.createRange();
+        console.log(text, start, end);
         range.selectCharacters(node, start, end);
         ranges.push(range);
     } while ($(node).text().indexOf('{') != -1);

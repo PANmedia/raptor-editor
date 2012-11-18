@@ -2,9 +2,9 @@
 <html>
 <head>
     <?php if (isset($_GET['min'])): ?>
-        <script src="../packages/raptor.min.js"></script>
+        <script type="text/javascript" src="../packages/raptor.0deps.min.js"></script>
     <?php else: ?>
-        <?php $uri = '/jquery-raptor.com/private/jquery-raptor/src/'; include '../src/include.php'; ?>
+        <script type="text/javascript" src="../packages/raptor.0deps.js"></script>
     <?php endif; ?>
     <link type="text/css" rel="stylesheet" href="css/diff.css"/>
     <link type="text/css" rel="stylesheet" href="css/style.css" />
