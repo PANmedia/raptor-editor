@@ -231,3 +231,8 @@ function elementSwapStyles(element1, element2, style) {
         element2.css(name, style[name]);
     }
 }
+
+
+function elementIsEmpty(element) {
+    return $($.parseHTML(element)).is(':empty');
+}
