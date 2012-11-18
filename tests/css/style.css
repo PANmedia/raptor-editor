@@ -84,14 +84,16 @@ p, h2 {
     width: 100%;
     display: block;
 }
+
 .pass {
     margin: 5px;
     border: 2px solid #B8DC3C;
 }
-.pass .test-input,
-.pass .test-output,
-.pass .test-expected,
-.pass .test-diff {
+
+.simple .pass .test-input,
+.simple .pass .test-output,
+.simple .pass .test-expected,
+.simple .pass .test-diff {
     display: none;
 }
 
@@ -101,6 +103,7 @@ p, h2 {
     width: 100%;
     display: block;
 }
+
 .fail {
     margin: 5px;
     border: 2px solid #CB2402;
