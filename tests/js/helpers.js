@@ -84,3 +84,8 @@ function tokensToRanges(element) {
     } while ($(node).text().indexOf('{') != -1);
     return ranges;
 }
+
+function formatElement(element) {
+    var html = style_html($(element).html());
+    $(element).html(html);
+}

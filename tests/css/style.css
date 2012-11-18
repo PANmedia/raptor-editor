@@ -112,3 +112,14 @@ p, h2 {
 nav a {
     display: block;
 }
+
+aside {
+    width: 18%;
+    float: left;
+}
+
+iframe {
+    width: 78%;
+    float: left;
+    min-height: 400px;
+}

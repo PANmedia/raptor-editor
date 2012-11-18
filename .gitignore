@@ -7,3 +7,5 @@ translation-status.html
 /build/
 /nbproject/
 /src/plugins-extra/
+/vendor/
+/composer.lock
