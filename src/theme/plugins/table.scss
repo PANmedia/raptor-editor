@@ -1,0 +1,18 @@
+/**
+ * Table plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+
+.ui-editor-table-menu {
+}
+
+.ui-editor-table-menu td {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #000;
+}
+
+.ui-editor-table-menu .ui-editor-table-menu-hover {
+    border: 1px solid #f00;
+}
