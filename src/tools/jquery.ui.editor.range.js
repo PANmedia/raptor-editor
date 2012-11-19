@@ -89,7 +89,15 @@ function rangeIsEmpty(range) {
 
 
 
-
+function rangesToggleWrapper(ranges, tag, options) {
+    var applier = rangy.createCssClassApplier(options.classes || '', {
+        normalize: true,
+        elementTagName: tag,
+        elementProperties: options.attributes || {},
+        ignoreWhiteSpace: false
+    });
+    applier.applyToRanges(ranges);
+}
 
 function rangeToggleWrapper(range, tag, options) {
     options = options || {};
@@ -106,5 +114,22 @@ function rangeToggleWrapper(range, tag, options) {
         rangeReplace(element, range);
     } else {
         applier.toggleRange(range);
+    }
+}
+
+function rangeTrim(range) {
+    var selectedText = range.text();
+
+    // Trim start
+    var match = /^\s+/.exec(selectedText);
+    if (match) {
+        range.moveStart('character', match[0].length);
+    }
+
+    // Trim end
+    match = /\s+$/.exec(selectedText);
+    if (match) {
+        console.log(match[0].length)
+        range.moveEnd('character', -match[0].length);
     }
 }
