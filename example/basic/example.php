@@ -9,7 +9,7 @@
         }
     }
 
-    $type = 'light';
+    $type = 'include';
 ?>
 <!doctype html>
 <html>
@@ -30,34 +30,49 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').editor({
-                urlPrefix: '../../src/',
-                ui: {
-                    save: {
-                      plugin: 'saveRest'
-                    }
-                },
-                plugins: {
-                    saveRest: {
-                        multiple: true,
-                        ajax: {
-                            type: 'post',
-                            dataType: 'json',
-                            url: function(id) {
-                                return 'save.php';
-                            },
-                            data: function(html) {
-                                return {
-                                    _method: 'put',
-                                    id: this.editor.getElement().data('id'),
-                                    content: html
-                                };
-                            }
-                        }
-                    }
-                }
+                urlPrefix: '../../src/'
             });
         });
     </script>
+    <script type="text/javascript">
+    /*
+        var startIndex;
+        $('td, th').live('mousedown', function() {
+            if (typeof this.cellIndex !== 'undefined') {
+                startIndex = tableGetCellIndex(this);
+            }
+        });
+        $('td, th').live('mouseup', function() {
+            console.log(startIndex, tableGetCellIndex(this));
+            var table = $(this).parents('table').get(0),
+                cells = tableCellsInRange(table, startIndex, tableGetCellIndex(this));
+            $('.cms-table-cell-selected').removeClass('cms-table-cell-selected');
+            $(cells).each(function() {
+                $(this).addClass('cms-table-cell-selected');
+            });
+        });
+    */
+
+        $(function() {
+            $('tbody td').each(function() {
+                var index = tableGetCellIndex(this);
+                $(this).text($(this).text() + ' [' + index.x + ', ' + index.y + ']');
+            });
+        });
+    </script>
+    <style type="text/css">
+        table {
+            width: 100%;
+            /*-webkit-user-select: none;*/
+        }
+        td, th {
+            border: 1px dotted #777;
+        }
+
+        .cms-table-cell-selected {
+            background-color: #aaf;
+        }
+    </style>
 </head>
 <body>
     <div class="editable" data-id="header">
