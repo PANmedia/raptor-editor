@@ -82,7 +82,7 @@ $.ui.editor.registerPlugin('clickToEdit', /** @lends $.editor.plugin.clickToEdit
         this.edit = function() {
             plugin.hide();
             if (!editor.isEditing()) editor.enableEditing();
-            if (!editor.isVisible()) editor.showToolbar(plugin.selection());
+            if (!editor.isVisible()) editor.showLayout(plugin.selection());
         };
 
         message.position(options.position);

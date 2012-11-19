@@ -112,7 +112,7 @@ $.ui.editor.registerPlugin({
                 }
                 plugin.hide();
                 if (!editor.isEditing()) editor.enableEditing();
-                if (!editor.isVisible()) editor.showToolbar();
+                if (!editor.isVisible()) editor.showLayout();
             };
 
             /**
