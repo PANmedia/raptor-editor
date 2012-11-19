@@ -236,3 +236,24 @@ function elementSwapStyles(element1, element2, style) {
 function elementIsEmpty(element) {
     return $($.parseHTML(element)).is(':empty');
 }
+
+/**
+ *
+ * @param {jQuery} element Element to position.
+ * @param {jQuery} under Element to position under.
+ */
+function elementPositionUnder(element, under) {
+    var pos = $(under).offset(),
+        height = $(under).outerHeight();
+    $(element).css({
+        top: (pos.top + height) + 'px',
+        left: pos.left + 'px'
+    });
+}
+
+function elementDetachedManip(element, manip) {
+    var parent = $(element).parent();
+    $(element).detach();
+    manip(element);
+    parent.append(element);
+}
