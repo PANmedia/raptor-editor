@@ -25,6 +25,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $uri ?>theme/theme.css"/>
 
 <!-- Editor -->
+<script type="text/javascript" src="<?php echo $uri ?>adapters/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.i18n.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
@@ -35,21 +36,30 @@
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.range.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.selection.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.string.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.table.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.types.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>raptor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/menu.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/layout/toolbar.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/layout/word.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/layout/aloha.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>presets/default.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?php echo $uri ?>plugins/toolbartip/jquery.ui.editor.toolbartip.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/logo/jquery.ui.editor.logo.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/dock/jquery.ui.editor.dock.js"></script>
+<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/dock/jquery.ui.editor.dock.js"></script> */ ?>
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/clicktoedit/jquery.ui.editor.clicktoedit.js"></script> */ ?>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clickbuttontoedit/jquery.ui.editor.clickbuttontoedit.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/jquery.ui.editor.color-picker-basic.js"></script>
+<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/jquery.ui.editor.color-picker-basic.js"></script> */ ?>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/jquery.ui.editor.float.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/alignment/jquery.ui.editor.alignment.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/jquery.ui.editor.basic.js"></script>
+<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/basic/jquery.ui.editor.basic.js"></script> */ ?>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/bold.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
@@ -74,3 +84,4 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table.js"></script>
