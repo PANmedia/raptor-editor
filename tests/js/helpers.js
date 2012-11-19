@@ -88,3 +88,7 @@ function formatElement(element) {
     var html = style_html($(element).html());
     $(element).html(html);
 }
+function formatElement(element) {
+    var html = style_html($(element).html());
+    $(element).html(html);
+}
