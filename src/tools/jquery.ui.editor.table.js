@@ -133,8 +133,8 @@ function tableCellsInRange(table, startIndex, endIndex) {
         endX = Math.max(startIndex.x, endIndex.x),
         endY = Math.max(startIndex.y, endIndex.y),
         cells = [];
-    while (y < endY) {
-        while (x < endX) {
+    while (y <= endY) {
+        while (x <= endX) {
             cells.push(tableGetCellByIndex(table, {
                 x: x,
                 y: y
