@@ -36,31 +36,6 @@ $.widget('ui.editor',
 
         this.options = $.extend({}, $.ui.editor.defaults, this.options);
 
-        // Set the options after the widget initialisation, because jQuery UI widget tries to extend the array (and breaks it)
-        this.options.uiOrder = this.options.uiOrder || [
-            ['logo'],
-            ['save', 'cancel'],
-            ['dock', 'showGuides', 'clean'],
-            ['viewSource'],
-            ['undo', 'redo'],
-            ['alignLeft', 'alignCenter', 'alignJustify', 'alignRight'],
-            ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
-            ['textSuper', 'textSub'],
-            ['listUnordered', 'listOrdered'],
-            ['hr', 'quoteBlock'],
-            ['fontSizeInc', 'fontSizeDec'],
-            ['colorPickerBasic'],
-            ['clearFormatting'],
-            ['link', 'unlink'],
-            ['embed'],
-            ['floatLeft', 'floatNone', 'floatRight'],
-            ['tagMenu'],
-            ['i18n'],
-            ['raptorize'],
-            ['statistics'],
-            ['debugReinit', 'debugDestroy']
-        ];
-
         // Give the element a unique ID
         if (!this.element.attr('id')) {
             this.element.attr('id', this.getUniqueId());
@@ -73,17 +48,12 @@ $.widget('ui.editor',
         this.plugins = {};
         this.templates = $.extend({}, $.ui.editor.templates);
         this.target = null;
-
-        // jQuery DOM elements
-        this.wrapper = null;
-        this.toolbar = null;
-        this.toolbarWrapper = null;
-        this.path = null;
+        this.layout = null;
 
         // True if editing is enabled
         this.enabled = false;
 
-        // True if the toolbar has been loaded and displayed
+        // True if the layout has been loaded and displayed
         this.visible = false;
 
         // List of UI objects bound to the editor
@@ -118,7 +88,7 @@ $.widget('ui.editor',
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
-        // Replace textareas & inputs with a div
+        // Replace textareas/inputs with a div
         if (this.element.is(':input')) {
             this.replaceOriginal();
         }
@@ -149,8 +119,8 @@ $.widget('ui.editor',
         // Automatically enable the editor if autoEnable is true
         if (this.options.autoEnable) {
             $(function() {
-                currentInstance.showToolbar();
                 currentInstance.enableEditing();
+                currentInstance.showLayout();
             });
         }
     },
@@ -220,7 +190,7 @@ $.widget('ui.editor',
         }
 
         if (visible) {
-            this.showToolbar();
+            this.showLayout();
         }
     },
 
@@ -372,9 +342,9 @@ $.widget('ui.editor',
             this.element.show();
         }
 
-        // Remove element
-        if (this.wrapper) {
-            this.wrapper.remove();
+        // Remove the layout
+        if (this.layout) {
+            this.layout.destruct();
         }
     },
 
@@ -385,6 +355,37 @@ $.widget('ui.editor',
     destroy: function() {
         this.destruct();
         $.Widget.prototype.destroy.call(this);
+    },
+
+    /*========================================================================*\
+     * Preview functions
+    \*========================================================================*/
+
+    preview: null,
+    actionPreview: function(action) {
+        if (this.preview) {
+            this.actionPreviewRemove();
+        }
+        this.preview = this.getHtml();
+        action();
+    },
+
+    actionPreviewRemove: function() {
+        if (this.preview) {
+            this.setHtml(this.preview);
+        }
+    },
+
+    actionApply: function(action) {
+
+    },
+
+    actionUndo: function() {
+
+    },
+
+    actionRedo: function() {
+
     },
 
     /*========================================================================*\
@@ -409,10 +410,7 @@ $.widget('ui.editor',
      *
      */
     enableEditing: function() {
-        // Check if the toolbar is yet to be loaded
-        if (!this.isToolbarLoaded()) {
-            this.loadToolbar();
-        }
+        this.loadLayout();
 
         if (!this.enabled) {
             this.enabled = true;
@@ -459,6 +457,7 @@ $.widget('ui.editor',
      *
      */
     updateTagTree: function() {
+        /*
         if (!this.isEditing()) return;
 
         var editor = this;
@@ -526,6 +525,7 @@ $.widget('ui.editor',
             });
 
         this.fire('tagTreeUpdated');
+        */
     },
 
     /**
@@ -659,133 +659,38 @@ $.widget('ui.editor',
     },
 
     /*========================================================================*\
-     * Toolbar
+     * Layout
     \*========================================================================*/
-    /**
-     *
-     */
-    loadToolbar: function() {
-        // <strict>
-        if (this.isToolbarLoaded()) {
-            handleError('Attempting to reinitialise the toolbar', this.getElement());
-            return;
+    loadLayout: function() {
+        if (!this.layout) {
+            this.layout = $.extend({}, raptor.layouts[this.options.layout.type]);
+            this.layout.editor = this;
+            this.layout.options = $.extend(true, {}, this.options, this.layout.options, this.options.layout.options);
+            this.layout.init(this, this.layout.options);
         }
-        // </strict>
-
-        // <debug>
-        if (debugLevel >= MID) debug('Loading toolbar', this.getElement());
-        // </debug>
-
-        var toolbar = this.toolbar = $('<div/>')
-            .addClass(this.options.baseClass + '-toolbar');
-        var toolbarWrapper = this.toolbarWrapper = $('<div/>')
-            .addClass(this.options.baseClass + '-toolbar-wrapper')
-            .addClass('ui-widget-content')
-            .append(toolbar);
-        var path = this.path = $('<div/>')
-            .addClass(this.options.baseClass + '-path')
-            .addClass('ui-widget-header')
-            .html(this.getTemplate('root'));
-        var wrapper = this.wrapper = $('<div/>')
-            .addClass(this.options.baseClass + '-wrapper')
-            .css('display', 'none')
-            .append(path)
-            .append(toolbarWrapper);
-
-        if ($.fn.draggable && this.options.draggable) {
-            // <debug>
-            if (debugLevel >= MID) debug('Initialising toolbar dragging', this.getElement());
-            // </debug>
-
-            wrapper.draggable({
-                cancel: 'a, button',
-                cursor: 'move',
-                // @todo Cancel drag when docked
-                // @todo Move draggable into plugin
-                // @todo Move tag menu/list into plugin
-                handle: '.ui-editor-path',
-                stop: $.proxy(function() {
-                    // Save the persistant position
-                    var pos = this.persist('position', [
-                        wrapper.css('top'),
-                        wrapper.css('left')
-                    ]);
-                    wrapper.css({
-                        top: Math.abs(pos[0]),
-                        left: Math.abs(pos[1])
-                    });
-
-                    // <debug>
-                    if (debugLevel >= MID) debug('Saving toolbar position', this.getElement(), pos);
-                    // </debug>
-                }, this)
-            });
-
-            // Remove the relative position
-            wrapper.css('position', '');
-
-            // Set the persistant position
-            var pos = this.persist('position') || this.options.dialogPosition;
-
-            if (!pos) {
-                pos = [10, 10];
-            }
-
-            // <debug>
-            if (debugLevel >= MID) debug('Restoring toolbar position', this.getElement(), pos);
-            // </debug>
-
-            if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
-                pos[0] = $(window).height() - wrapper.outerHeight();
-            }
-            if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
-                pos[1] = $(window).width() - wrapper.outerWidth();
-            }
-
-            wrapper.css({
-                top: Math.abs(parseInt(pos[0], 10)),
-                left: Math.abs(parseInt(pos[1], 10))
-            });
-
-            // Load the message display widget
-            this.loadMessages();
-        }
-
-        $(function() {
-            wrapper.appendTo('body');
-        });
-
-        this.loadUi();
-    },
-
-    isToolbarLoaded: function() {
-        return this.wrapper !== null;
     },
 
     /**
-     * Show the toolbar for the current element.
-     * @param  {Range} [range] a native range to select after the toolbar has been shown
+     * Show the layout for the current element.
+     * @param  {Range} [range] a native range to select after the layout has been shown
      */
-    showToolbar: function(range) {
-        // this.loadMessages();
-        if (!this.isToolbarLoaded()) {
-            this.loadToolbar();
-        }
+    showLayout: function(range) {
+        this.loadLayout();
 
         if (!this.visible) {
             // <debug>
-            if (debugLevel >= MID) debug('Displaying toolbar', this.getElement());
+            if (debugLevel >= MID) debug('Displaying layout', this.getElement());
             // </debug>
 
-            // If unify option is set, hide all other toolbars first
+            // If unify option is set, hide all other layouts first
             if (this.options.unify) {
-                this.hideOtherToolbars(true);
+                this.hideOtherLayouts(true);
             }
 
             // Store the visible state
             this.visible = true;
 
-            this.wrapper.css('display', '');
+            this.layout.show();
 
             this.fire('resize');
             if (typeof this.getElement().attr('tabindex') === 'undefined') {
@@ -805,10 +710,7 @@ $.widget('ui.editor',
             var editor = this;
             $(function() {
                 editor.fire('show');
-                // Only focus element if the element is not a textarea / input
-                if (!editor.element.is(':input')) {
-                    editor.getElement().focus();
-                }
+                editor.getElement().focus();
             });
         }
     },
@@ -816,15 +718,10 @@ $.widget('ui.editor',
     /**
      *
      */
-    hideToolbar: function() {
-        if (this.visible) {
+    hideLayout: function() {
+        if (this.layout) {
             this.visible = false;
-            this.wrapper.hide();
-
-            if (this.element.is(':input')) {
-                this.element.show();
-            }
-
+            this.layout.hide();
             this.fire('hide');
             this.fire('resize');
         }
@@ -833,9 +730,9 @@ $.widget('ui.editor',
     /**
      * @param {boolean} [instant]
      */
-    hideOtherToolbars: function() {
+    hideOtherLayouts: function(instant) {
         this.unify(function(editor) {
-            editor.hideToolbar();
+            editor.hideLayout(instant);
         }, false);
     },
 
@@ -1020,7 +917,7 @@ $.widget('ui.editor',
      * Buttons
     \*========================================================================*/
 
-    uiEnabled: function(ui) {
+    isUiEnabled: function(ui) {
         // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
         if (this.options.enableUi === false &&
                 typeof this.options.ui[ui] === 'undefined' ||
@@ -1051,9 +948,7 @@ $.widget('ui.editor',
         return this.uiObjects[ui];
     },
 
-    /**
-     *
-     */
+    /*
     loadUi: function() {
         // Loop the UI order option
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
@@ -1122,7 +1017,7 @@ $.widget('ui.editor',
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
     },
-
+*/
     /**
      * @param {Object} options
      */
@@ -1538,529 +1433,4 @@ $.widget('ui.editor',
 
 });
 
-/*============================================================================*\
- * Global static class definition
-\*============================================================================*/
-$.extend($.ui.editor,
-    /** @lends $.ui.editor */
-    {
-
-    // <expose>
-    elementRemoveComments: elementRemoveComments,
-    elementRemoveAttributes: elementRemoveAttributes,
-    elementBringToTop: elementBringToTop,
-    elementOuterHtml: elementOuterHtml,
-    elementOuterText: elementOuterText,
-    elementIsBlock: elementIsBlock,
-    elementDefaultDisplay: elementDefaultDisplay,
-    elementIsValid: elementIsValid,
-    elementGetStyles: elementGetStyles,
-    elementWrapInner: elementWrapInner,
-    elementToggleStyle: elementToggleStyle,
-    elementSwapStyles: elementSwapStyles,
-    fragmentToHtml: fragmentToHtml,
-    fragmentInsertBefore: fragmentInsertBefore,
-    rangeExpandToParent: rangeExpandToParent,
-    rangeGetCommonAncestor: rangeGetCommonAncestor,
-    rangeIsEmpty: rangeIsEmpty,
-    selectionSave: selectionSave,
-    selectionRestore: selectionRestore,
-    selectionDestroy: selectionDestroy,
-    selectionEachRange: selectionEachRange,
-    selectionReplace: selectionReplace,
-    selectionSelectInner: selectionSelectInner,
-    selectionSelectOuter: selectionSelectOuter,
-    selectionSelectEdge: selectionSelectEdge,
-    selectionSelectEnd: selectionSelectEnd,
-    selectionSelectStart: selectionSelectStart,
-    selectionGetHtml: selectionGetHtml,
-    selectionGetElements: selectionGetElements,
-    selectionToggleWrapper: selectionToggleWrapper,
-    selectionExists: selectionExists,
-    selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
-    selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
-    selectionToggleBlockStyle: selectionToggleBlockStyle,
-    stringStripTags: stringStripTags,
-    typeIsNumber: typeIsNumber,
-    // </expose>
-
-    /** @namespace Default options for Raptor Editor */
-    defaults: {
-
-        /** @type {Object} Plugins option overrides */
-        plugins: {},
-
-        /** @type {Object} UI option overrides */
-        ui: {},
-
-        /** @type {Object} Default events to bind */
-        bind: {},
-
-        /**
-         * @deprecated
-         * @type {Object}
-         */
-        domTools: domTools,
-
-        /**
-          * @type {String} Namespace used to persistence to prevent conflicting
-          * stored values.
-          */
-        namespace: null,
-
-        /**
-         * @type {Boolean} Switch to indicated that some events should be
-         * automatically applied to all editors that are unified.
-         */
-        unify: true,
-
-        /**
-         * @type {Boolean} Switch to indicate weather or not to stored persistent
-         * values, if set to false the persist function will always return null.
-         */
-        persistence: true,
-
-        /** @type {String} The name to store persistent values under */
-        persistenceName: 'uiEditor',
-
-        /**
-         * @type {Boolean} Switch to indicate weather or not to a warning should
-         * pop up when the user navigates away from the page when unsaved changes
-         * exist.
-         */
-        unloadWarning: true,
-
-        /**
-         * @type {Boolean} Switch to automatically enabled editing on the element.
-         */
-        autoEnable: false,
-
-        /**
-         * @type {Selector} Only enable editing on certain parts of the element.
-         */
-        partialEdit: false,
-
-        /**
-         * @type {Boolean} Switch to specify if the editor should automatically
-         * enable all plugins, if set to false, only the plugins specified in
-         * the {@link $.ui.editor.defaults.plugins} option object will be enabled.
-         */
-        enablePlugins: true,
-
-        /**
-         * @type {String[]} An array of explicitly disabled plugins.
-         */
-        disabledPlugins: [],
-
-        /**
-         * @type {String[]} And array of arrays denoting the order and grouping
-         * of UI elements in the toolbar.
-         */
-        uiOrder: null,
-
-        /**
-         * @type {Boolean} Switch to specify if the editor should automatically
-         * enable all UI, if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui}
-         * option object will be enabled.
-         */
-        enableUi: true,
-
-        /**
-         * @type {String[]} An array of explicitly disabled UI elements.
-         */
-        disabledUi: [],
-
-        /**
-         * @type {Object} Default message options.
-         */
-        message: {
-            delay: 5000
-        },
-
-        /**
-         * @type {String[]} A list of styles that will be copied from a replaced
-         * textarea and applied to the editor replacement element.
-         */
-        replaceStyle: [
-            'display', 'position', 'float', 'width',
-            'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
-            'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
-        ],
-
-        /** @type {String} The base class name to use on elements created by the editor. */
-        baseClass: 'ui-editor',
-
-        /** @type {String} CSS class prefix that is prepended to inserted elements classes. */
-        cssPrefix: 'cms-',
-
-        /** @type {Boolean} True if the editor should be draggable. */
-        draggable: true,
-
-        /** @type {Boolean} True to enable hotkeys */
-        enableHotkeys: true,
-
-        /** @type {Object} Custom hotkeys */
-        hotkeys: {},
-
-        /**
-         * @type {String} Applied to elements that should not be stripped during
-         * normal use, but do not belong in the final content.
-         */
-        supplementaryClass: 'supplementary-element-class',
-
-        /**
-         * @type {String} Locale to use by default. If
-         * {@link $.ui.editor.options.persistence} is set to true and the user has
-         * changed the locale, then the user's locale choice will be used.
-         */
-        initialLocale: 'en'
-    },
-
-    /** @property {Object} events Events added via $.ui.editor.bind */
-    events: {},
-
-    /** @property {Object} plugins Plugins added via $.ui.editor.registerPlugin */
-    plugins: {},
-
-    /**
-     * UI added via $.ui.editor.registerUi
-     * @property {Object} ui
-     */
-    ui: {},
-
-    /**
-     * @property {$.ui.editor[]} instances
-     */
-    instances: [],
-
-    /**
-     * @returns {$.ui.editor[]}
-     */
-    getInstances: function() {
-        return this.instances;
-    },
-
-    eachInstance: function(callback) {
-        for (var i = 0; i < this.instances.length; i++) {
-            callback.call(this.instances[i], this.instances[i]);
-        }
-    },
-
-    /*========================================================================*\
-     * Templates
-    \*========================================================================*/
-    /**
-     * @property {String} urlPrefix
-     */
-    urlPrefix: '/raptor/',
-
-    /**
-     * @property {Object} templates
-     */
-    templates: { /* <templates/> */ },
-
-    /**
-     * @param {String} name
-     * @returns {String}
-     */
-    getTemplate: function(name, urlPrefix) {
-        var template;
-        if (!this.templates[name]) {
-            // Parse the URL
-            var url = urlPrefix || this.urlPrefix;
-            var split = name.split('.');
-            if (split.length === 1) {
-                // URL is for and editor core template
-                url += 'templates/' + split[0] + '.html';
-            } else {
-                // URL is for a plugin template
-                url += 'plugins/' + split[0] + '/templates/' + split.splice(1).join('/') + '.html';
-            }
-
-            // Request the template
-            $.ajax({
-                url: url,
-                type: 'GET',
-                async: false,
-                // <debug>
-                cache: false,
-                // </debug>
-                // 15 seconds
-                timeout: 15000,
-                error: function() {
-                    template = null;
-                },
-                success: function(data) {
-                    template = data;
-                }
-            });
-            // Cache the template
-            this.templates[name] = template;
-        } else {
-            template = this.templates[name];
-        }
-        return template;
-    },
-
-    /*========================================================================*\
-     * Helpers
-    \*========================================================================*/
-    /**
-     * @returns {String}
-     */
-    getUniqueId: function() {
-        var id = $.ui.editor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
-        while ($('#' + id).length) {
-            id = $.ui.editor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
-        }
-        return id;
-    },
-
-    /**
-     * @returns {boolean}
-     */
-    isDirty: function() {
-        var instances = this.getInstances();
-        for (var i = 0; i < instances.length; i++) {
-            if (instances[i].isDirty()) return true;
-        }
-        return false;
-    },
-
-    /**
-     *
-     */
-    unloadWarning: function() {
-        var instances = this.getInstances();
-        for (var i = 0; i < instances.length; i++) {
-            if (instances[i].isDirty() &&
-                    instances[i].isEditing() &&
-                    instances[i].options.unloadWarning) {
-                return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
-            }
-        }
-    },
-
-    /*========================================================================*\
-     * Plugins as UI
-    \*========================================================================*/
-
-    /**
-     * @name $.ui.editor.defaultUi
-     * @class The default UI component
-     * @property {Object} defaultUi
-     */
-    defaultUi: /** @lends $.ui.editor.defaultUi.prototype */ {
-        ui: null,
-
-        /**
-         * The {@link $.ui.editor} instance
-         * @type {Object}
-         */
-        editor: null,
-
-        /**
-         * @type {Object}
-         */
-        options: null,
-
-        /**
-         * Initialise & return an instance of this UI component
-         * @param  {$.editor} editor  The editor instance
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {Object} An instance of the ui component
-         */
-        init: function(editor, options) {},
-
-        /**
-         * @param  {String} key   The key
-         * @param  {[String|Object|int|float]} value A value to be stored
-         * @return {String|Object|int|float} The stored value
-         */
-        persist: function(key, value) {
-            return this.editor.persist(key, value);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {String}   context
-         */
-        bind: function(name, callback, context) {
-            this.editor.bind(name, callback, context || this);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {Object}   context
-         */
-        unbind: function(name, callback, context) {
-            this.editor.unbind(name, callback, context || this);
-        }
-    },
-
-    /**
-     *
-     * @param {Object|String} mixed
-     * @param {Object} [ui]
-     */
-    registerUi: function(mixed, ui) {
-        // Allow array objects, and single plugins
-        if (typeof(mixed) === 'string') {
-            // <strict>
-            if (this.ui[mixed]) {
-                handleError(_('UI "{{name}}" has already been registered, and will be overwritten', {name: mixed}));
-            }
-            // </strict>
-            this.ui[mixed] = $.extend({}, this.defaultUi, ui);
-        } else {
-            for (var name in mixed) {
-                this.registerUi(name, mixed[name]);
-            }
-        }
-    },
-
-    /**
-     * @name $.ui.editor.defaultPlugin
-     * @class The default plugin
-     * @property {Object} defaultPlugin
-     */
-    defaultPlugin: /** @lends $.ui.editor.defaultPlugin.prototype */ {
-
-        /**
-         * The {@link $.ui.editor} instance
-         * @type {Object}
-         */
-        editor: null,
-
-        /**
-         * @type {Object}
-         */
-        options: null,
-
-        /**
-         * Initialise & return an instance of this plugin
-         * @param  {$.editor} editor  The editor instance
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {Object} An instance of the ui component
-         */
-        init: function(editor, options) {},
-
-        /**
-         * @param  {String} key   The key
-         * @param  {[String|Object|int|float]} value A value to be stored
-         * @return {String|Object|int|float} The stored value
-         */
-        persist: function(key, value) {
-            return this.editor.persist(key, value);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {String}   context
-         */
-        bind: function(name, callback, context) {
-            this.editor.bind(name, callback, context || this);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {Object}   context
-         */
-        unbind: function(name, callback, context) {
-            this.editor.unbind(name, callback, context || this);
-        }
-    },
-
-    /**
-     *
-     * @param {Object|String} mixed
-     * @param {Object} [plugin]
-     */
-    registerPlugin: function(mixed, plugin) {
-        // Allow array objects, and single plugins
-        if (typeof(mixed) === 'string') {
-            // <strict>
-            if (this.plugins[mixed]) {
-                handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: mixed}));
-            }
-            // </strict>
-
-            this.plugins[mixed] = $.extend({}, this.defaultPlugin, plugin);
-        } else {
-            for (var name in mixed) {
-                this.registerPlugin(name, mixed[name]);
-            }
-        }
-    },
-
-    /*========================================================================*\
-     * Events
-    \*========================================================================*/
-
-    /**
-     * @param {String} name
-     * @param {function} callback
-     */
-    bind: function(name, callback) {
-        if (!this.events[name]) this.events[name] = [];
-        this.events[name].push(callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    unbind: function(callback) {
-        $.each(this.events, function(name) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] === callback) {
-                    this.events[name].splice(i,1);
-                }
-            }
-        });
-    },
-
-    /**
-     * @param {String} name
-     */
-    fire: function(name) {
-        // <debug>
-        if (debugLevel > MAX) {
-            debug('Firing global/static event: ' + name);
-        }
-        // </debug>
-        if (!this.events[name]) return;
-        for (var i = 0, l = this.events[name].length; i < l; i++) {
-            this.events[name][i].call(this);
-        }
-    },
-
-    /*========================================================================*\
-     * Persistance
-    \*========================================================================*/
-    /**
-     * @param {String} key
-     * @param {mixed} value
-     * @param {String} namespace
-     */
-    persist: function(key, value, namespace) {
-        key = namespace ? namespace + '.' + key : key;
-        if (localStorage) {
-            var storage;
-            if (localStorage.uiWidgetEditor) {
-                storage = JSON.parse(localStorage.uiWidgetEditor);
-            } else {
-                storage = {};
-            }
-            if (value === undefined) return storage[key];
-            storage[key] = value;
-            localStorage.uiWidgetEditor = JSON.stringify(storage);
-        }
-
-        return value;
-    }
-
-});
+$.extend($.ui.editor, raptor);
