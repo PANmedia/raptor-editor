@@ -21,6 +21,10 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+        var applier = rangy.createCssClassApplier('cms-bold', {
+            normalize: true,
+            elementTagName: 'strong'
+        });
     </script>
     <div class="test-1">
         <h1>Toggle Wrapper 2: Word Group Selection</h1>
@@ -140,12 +144,10 @@
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
-                rangeToggleWrapper(ranges[i], 'strong', {
-                    classes: 'cms-bold'
-                });
             }
+            //applier.applyToRanges(ranges);
             var selection = rangy.getSelection();
-            selection.setRanges(ranges);
+            selection.setSingleRange(ranges[2]);
             selection.refresh();
         }, false);
     </script>
