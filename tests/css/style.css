@@ -78,16 +78,32 @@ p, h2 {
     border: 1px solid #587CBF;
 }
 
-.pass:before {
+.pass {
+    margin: 5px;
+    border: 2px solid #B8DC3C;
+}
+
+.verbose .pass:before {
     content: "Pass: ";
     background: #B8DC3C;
     width: 100%;
     display: block;
 }
 
-.pass {
+.verbose .pass h1 {
     margin: 5px;
-    border: 2px solid #B8DC3C;
+}
+
+.simple .pass h1:before {
+    content: "Pass: ";
+    background: #B8DC3C;
+    margin-right: 2px;
+}
+
+.simple .pass h1 {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
 }
 
 .simple .pass .test-input,
