@@ -6,11 +6,11 @@
 
 /**
  * @name $.editor.plugin.dock
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @see  $.editor.ui.dock
  * @class Allow the user to dock / undock the toolbar from the document body or editing element
  */
-$.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ {
+Raptor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ {
 
     enabled: false,
     docked: false,
@@ -26,7 +26,7 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     },
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor) {
         this.bind('show', this.show);
@@ -376,11 +376,11 @@ $.ui.editor.registerPlugin('dock', /** @lends $.editor.plugin.dock.prototype */ 
     }
 });
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.dock
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @see  $.editor.plugin.dock
      * @class Interface for the user to dock / undock the toolbar using the {@link $.editor.plugin.dock} plugin
      */
@@ -395,7 +395,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

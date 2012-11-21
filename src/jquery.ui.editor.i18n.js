@@ -49,7 +49,7 @@ function setLocale(key) {
         // </debug>
 
         currentLocale = key;
-        $.ui.editor.eachInstance(function() {
+        Raptor.eachInstance(function() {
             this.reinit();
         });
     }

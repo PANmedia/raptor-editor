@@ -6,10 +6,10 @@
 
 /**
  * @name $.editor.plugin.emptyElement
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @class Automatically wraps content inside an editable element with a specified tag if it is empty.
  */
-$.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
+Raptor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyElement.prototype */ {
 
     /**
      * @name $.editor.plugin.emptyElement.options
@@ -27,7 +27,7 @@ $.ui.editor.registerPlugin('emptyElement', /** @lends $.editor.plugin.emptyEleme
     },
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
         this.bind('change', this.change);

@@ -3,17 +3,17 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
- $.ui.editor.registerUi({
+ Raptor.registerUi({
 
     /**
      * @name $.editor.ui.i18n
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Provides a dropdown to allow the user to switch between available localizations
      */
     i18n: /** @lends $.editor.ui.i18n.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             var ui = this;

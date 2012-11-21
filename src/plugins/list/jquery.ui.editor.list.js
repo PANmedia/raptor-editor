@@ -3,7 +3,7 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
-$.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ {
+Raptor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ {
 
     /**
      * @name $.editor.plugin.list.options
@@ -240,17 +240,17 @@ $.ui.editor.registerPlugin('list', /** @lends $.editor.plugin.list.prototype */ 
     }
 });
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.listUnordered
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps the selection with a &lt;ul&gt;, then a &lt;li&gt;
      */
     listUnordered: /** @lends $.editor.ui.listUnordered.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             var ui = editor.uiButton({
@@ -270,13 +270,13 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.listOrdered
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps the selection with a &lt;ol&gt;, then a &lt;li&gt;
      */
     listOrdered: /** @lends $.editor.ui.listOrdered.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             var ui = editor.uiButton({

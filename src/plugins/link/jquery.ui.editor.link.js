@@ -6,12 +6,12 @@
 
 /**
  * @name $.editor.plugin.link
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @see  $.editor.ui.link
  * @see  $.editor.ui.unlink
  * @class Allow the user to wrap the selection with a link or insert a new link
  */
- $.ui.editor.registerPlugin('link', /** @lends $.editor.plugin.link.prototype */ {
+ Raptor.registerPlugin('link', /** @lends $.editor.plugin.link.prototype */ {
     visible: null,
     dialog: null,
     types: {},
@@ -307,7 +307,7 @@
     ],
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
 
@@ -644,12 +644,12 @@
 
 });
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.link
-     * @augments $.ui.editor.defaultUi
-     * @see $.ui.editor.defaultUi.unlink
+     * @augments Raptor.defaultUi
+     * @see Raptor.defaultUi.unlink
      * @see  $.editor.plugin.link
      * @class Button initiating the insert link plugin
      */
@@ -666,10 +666,10 @@ $.ui.editor.registerUi({
 
         /**
          * Initialize the add link UI element.
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          * @param  {$.editor} editor The Raptor Editor instance.
          * @param  {$.editor.plugin.clickButtonToEdit.options} options The options object.
-         * @return {$.editor.defaultPlugin} A new $.ui.editor.plugin.clickButtonToEdit instance.
+         * @return {$.editor.defaultPlugin} A new Raptor.plugin.clickButtonToEdit instance.
          */
         init: function(editor) {
 
@@ -691,8 +691,8 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.unlink
-     * @augments $.ui.editor.defaultUi
-     * @see $.ui.editor.defaultUi.link
+     * @augments Raptor.defaultUi
+     * @see Raptor.defaultUi.link
      * @see  $.editor.plugin.link
      * @class Button allowing the user to unlink text
      */
@@ -708,7 +708,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('selectionChange', this.change, this);

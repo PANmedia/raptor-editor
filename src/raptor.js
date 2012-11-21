@@ -1,4 +1,4 @@
-var raptor = /** @lends $.ui.editor */ {
+var Raptor = /** @lends $.ui.raptor */ {
 
     /**
      * Default options for Raptor.
@@ -100,7 +100,7 @@ var raptor = /** @lends $.ui.editor */ {
         uiOrder: null,
 
         /**
-         * Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the {@link $.ui.editor.defaults.ui} option object will be enabled
+         * Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the {@link Raptor.defaults.ui} option object will be enabled
          * @type boolean
          */
         enableUi: true,
@@ -157,42 +157,42 @@ var raptor = /** @lends $.ui.editor */ {
     hotkeys: {},
 
     /**
-     * Events added via $.ui.editor.bind
+     * Events added via Raptor.bind
      * @property {Object} events
      */
     events: {},
 
     /**
-     * Plugins added via $.ui.editor.registerPlugin
+     * Plugins added via Raptor.registerPlugin
      * @property {Object} plugins
      */
     plugins: {},
 
     /**
-     * UI added via $.ui.editor.registerUi
+     * UI added via Raptor.registerUi
      * @property {Object} ui
      */
     ui: {},
 
     /**
-     * Layouts added via $.ui.editor.registerLayout
+     * Layouts added via Raptor.registerLayout
      * @property {Object} layouts
      */
     layouts: {},
 
     /**
-     * Presets added via $.ui.editor.registerPreset
+     * Presets added via Raptor.registerPreset
      * @property {Object} presets
      */
     presets: {},
 
     /**
-     * @property {$.ui.editor[]} instances
+     * @property {Raptor[]} instances
      */
     instances: [],
 
     /**
-     * @returns {$.ui.editor[]}
+     * @returns {Raptor[]}
      */
     getInstances: function() {
         return this.instances;
@@ -267,9 +267,9 @@ var raptor = /** @lends $.ui.editor */ {
      * @returns {String}
      */
     getUniqueId: function() {
-        var id = $.ui.editor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+        var id = Raptor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
         while ($('#' + id).length) {
-            id = $.ui.editor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+            id = Raptor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
         }
         return id;
     },
@@ -304,15 +304,15 @@ var raptor = /** @lends $.ui.editor */ {
     \*========================================================================*/
 
     /**
-     * @name $.ui.editor.defaultUi
+     * @name Raptor.defaultUi
      * @class The default UI component
      * @property {Object} defaultUi
      */
-    defaultUi: /** @lends $.ui.editor.defaultUi.prototype */ {
+    defaultUi: /** @lends Raptor.defaultUi.prototype */ {
         ui: null,
 
         /**
-         * The {@link $.ui.editor} instance
+         * The {@link Raptor} instance
          * @type {Object}
          */
         editor: null,
@@ -325,7 +325,7 @@ var raptor = /** @lends $.ui.editor */ {
         /**
          * Initialise & return an instance of this UI component
          * @param  {$.editor} editor  The editor instance
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @param  {Raptor.defaults} options The default editor options extended with any overrides set at initialisation
          * @return {Object} An instance of the ui component
          */
         init: function(editor, options) {},
@@ -404,14 +404,14 @@ var raptor = /** @lends $.ui.editor */ {
     },
 
     /**
-     * @name $.ui.editor.defaultPlugin
+     * @name Raptor.defaultPlugin
      * @class The default plugin
      * @property {Object} defaultPlugin
      */
-    defaultPlugin: /** @lends $.ui.editor.defaultPlugin.prototype */ {
+    defaultPlugin: /** @lends Raptor.defaultPlugin.prototype */ {
 
         /**
-         * The {@link $.ui.editor} instance
+         * The {@link Raptor} instance
          * @type {Object}
          */
         editor: null,
@@ -424,7 +424,7 @@ var raptor = /** @lends $.ui.editor */ {
         /**
          * Initialise & return an instance of this plugin
          * @param  {$.editor} editor  The editor instance
-         * @param  {$.ui.editor.defaults} options The default editor options extended with any overrides set at initialisation
+         * @param  {Raptor.defaults} options The default editor options extended with any overrides set at initialisation
          * @return {Object} An instance of the ui component
          */
         init: function(editor, options) {},

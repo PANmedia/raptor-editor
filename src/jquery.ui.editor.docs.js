@@ -43,7 +43,7 @@
 
 /**
  * jQuery UI Editor
- * @name $.ui.editor
+ * @name Raptor
  * @namespace jQuery UI Editor
  */
 

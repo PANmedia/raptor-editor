@@ -3,17 +3,17 @@
  * @author David Neilsen david@panmedia.co.nz
  */
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.clearFormatting
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Removes all formatting (wrapping tags) from the selected text.
      */
     clearFormatting: /** @lends $.editor.ui.clearFormatting.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return this.editor.uiButton({

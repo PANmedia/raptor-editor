@@ -4,14 +4,14 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.textBold
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;strong&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element
+     * Applies either {@link Raptor.defaults.cssPrefix} + 'bold' or a custom class (if present) to the &lt;strong&gt; element
      */
     textBold: /** @lends $.editor.ui.textBold.prototype */ {
 
@@ -24,7 +24,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return this.editor.uiButton({
@@ -38,10 +38,10 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textItalic
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;em&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element
+     * Applies either {@link Raptor.defaults.cssPrefix} + 'italic' or a custom class (if present) to the &lt;em&gt; element
      */
     textItalic: /** @lends $.editor.ui.textItalic.prototype */ {
 
@@ -54,7 +54,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -68,10 +68,10 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textUnderline
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;u&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element
+     * Applies either {@link Raptor.defaults.cssPrefix} + 'underline' or a custom class (if present) to the &lt;u&gt; element
      */
     textUnderline: /** @lends $.editor.ui.textUnderline.prototype */ {
 
@@ -84,7 +84,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -98,10 +98,10 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textStrike
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class  Wraps (or unwraps) the selection with &lt;del&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element
+     * Applies either {@link Raptor.defaults.cssPrefix} + 'strike' or a custom class (if present) to the &lt;del&gt; element
      */
     textStrike: /** @lends $.editor.ui.textStrike.prototype */ {
 
@@ -114,7 +114,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -128,15 +128,15 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textSub
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;sub&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element
+     * Applies either {@link Raptor.defaults.cssPrefix} + 'sub' or a custom class (if present) to the &lt;sub&gt; element
      */
     textSub: /** @lends $.editor.ui.textSub.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -150,15 +150,15 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.textSuper
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps (or unwraps) the selection with &lt;sup&gt; tags
      * <br/>
-     * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'super' or a custom class (if present) to the &lt;sub&gt; element
+     * Applies either {@link Raptor.defaults.cssPrefix} + 'super' or a custom class (if present) to the &lt;sub&gt; element
      */
     textSuper: /** @lends $.editor.ui.textSuper.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({

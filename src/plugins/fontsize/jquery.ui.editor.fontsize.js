@@ -4,17 +4,17 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
- $.ui.editor.registerUi({
+ Raptor.registerUi({
 
     /**
      * @name $.editor.ui.fontSizeInc
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps selection with &lt;big&gt; tags or unwraps &lt;small&gt; tags from selection
      */
     fontSizeInc: /** @lends $.editor.ui.fontSizeInc.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({
@@ -28,13 +28,13 @@
 
     /**
      * @name $.editor.ui.fontSizeDec
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Wraps selection with &lt;small&gt; tags or unwraps &lt;big&gt; tags from selection
      */
     fontSizeDec: /** @lends $.editor.ui.fontSizeDec.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({

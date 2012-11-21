@@ -4,11 +4,11 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
- $.ui.editor.registerUi({
+ Raptor.registerUi({
 
     /**
      * @name $.editor.ui.floatLeft
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Floats the selected or nearest block-level element left
      * <br/>
      * Toggles <tt>float: left</tt>
@@ -16,7 +16,7 @@
     floatLeft: /** @lends $.editor.ui.floatLeft.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -32,7 +32,7 @@
 
     /**
      * @name $.editor.ui.floatRight
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Floats the selected or nearest block-level element right
      * <br/>
      * Toggles <tt>float: right</tt>
@@ -40,7 +40,7 @@
     floatRight: /** @lends $.editor.ui.floatRight.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -56,7 +56,7 @@
 
     /**
      * @name $.editor.ui.floatNone
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Sets float none to the selected or nearest block-level element
      * <br/>
      * Toggles <tt>float: right</tt>
@@ -64,7 +64,7 @@
     floatNone: /** @lends $.editor.ui.floatNone.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

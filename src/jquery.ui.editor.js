@@ -19,14 +19,14 @@ $.widget('ui.editor',
      */
     _init: function() {
         // Add the editor instance to the global list of instances
-        if ($.inArray(this, $.ui.editor.instances) === -1) {
-            $.ui.editor.instances.push(this);
+        if ($.inArray(this, Raptor.instances) === -1) {
+            Raptor.instances.push(this);
         }
 
         var currentInstance = this;
         // <strict>
         // Check for nested editors
-        $.ui.editor.eachInstance(function(instance) {
+        Raptor.eachInstance(function(instance) {
             if (currentInstance != instance &&
                     currentInstance.element.closest(instance.element).length) {
                 handleError('Nesting editors is unsupported', currentInstance.element, instance.element);
@@ -34,7 +34,7 @@ $.widget('ui.editor',
         });
         // </strict>
 
-        this.options = $.extend({}, $.ui.editor.defaults, this.options);
+        this.options = $.extend({}, Raptor.defaults, this.options);
 
         // Give the element a unique ID
         if (!this.element.attr('id')) {
@@ -46,7 +46,7 @@ $.widget('ui.editor',
         this.events = {};
         this.ui = {};
         this.plugins = {};
-        this.templates = $.extend({}, $.ui.editor.templates);
+        this.templates = $.extend({}, Raptor.templates);
         this.target = null;
         this.layout = null;
 
@@ -147,7 +147,7 @@ $.widget('ui.editor',
         this.getElement().bind('keyup.' + this.widgetName, change);
 
         // Unload warning
-        $(window).bind('beforeunload', $.proxy($.ui.editor.unloadWarning, $.ui.editor));
+        $(window).bind('beforeunload', $.proxy(Raptor.unloadWarning, Raptor));
 
         // Trigger editor resize when window is resized
         var editor = this;
@@ -399,7 +399,7 @@ $.widget('ui.editor',
      */
     persist: function(key, value) {
         if (!this.options.persistence) return null;
-        return $.ui.editor.persist(key, value, this.options.namespace);
+        return Raptor.persist(key, value, this.options.namespace);
     },
 
     /*========================================================================*\
@@ -544,7 +544,7 @@ $.widget('ui.editor',
         if (callSelf !== false) callback(this);
         if (this.options.unify) {
             var currentInstance = this;
-            $.ui.editor.eachInstance(function(instance) {
+            Raptor.eachInstance(function(instance) {
                 if (instance === currentInstance) {
                     return;
                 }
@@ -559,7 +559,7 @@ $.widget('ui.editor',
      * @returns {String}
      */
     getUniqueId: function() {
-        return $.ui.editor.getUniqueId();
+        return Raptor.getUniqueId();
     },
 
     /*========================================================================*\
@@ -663,7 +663,7 @@ $.widget('ui.editor',
     \*========================================================================*/
     loadLayout: function() {
         if (!this.layout) {
-            this.layout = $.extend({}, raptor.layouts[this.options.layout.type]);
+            this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
             this.layout.editor = this;
             this.layout.options = $.extend(true, {}, this.options, this.layout.options, this.options.layout.options);
             this.layout.init(this, this.layout.options);
@@ -755,7 +755,7 @@ $.widget('ui.editor',
     getTemplate: function(name, variables) {
         var template;
         if (!this.templates[name]) {
-            template = $.ui.editor.getTemplate(name, this.options.urlPrefix);
+            template = Raptor.getTemplate(name, this.options.urlPrefix);
         } else {
             template = this.templates[name];
         }
@@ -966,9 +966,9 @@ $.widget('ui.editor',
                 });
 
                 // Check the UI has been registered
-                if ($.ui.editor.ui[uiSet[j]]) {
+                if (Raptor.ui[uiSet[j]]) {
                     // Clone the UI object (which should be extended from the defaultUi object)
-                    var uiObject = $.extend({}, $.ui.editor.ui[uiSet[j]]);
+                    var uiObject = $.extend({}, Raptor.ui[uiSet[j]]);
 
                     var options = $.extend(true, {}, this.options, {
                         baseClass: this.options.baseClass + '-ui-' + baseClass
@@ -1236,7 +1236,7 @@ $.widget('ui.editor',
     loadPlugins: function() {
         var editor = this;
         if (!this.options.plugins) this.options.plugins = {};
-        for (var name in $.ui.editor.plugins) {
+        for (var name in Raptor.plugins) {
             // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
             if (this.options.enablePlugins === false &&
                     typeof this.options.plugins[name] === 'undefined' ||
@@ -1253,7 +1253,7 @@ $.widget('ui.editor',
             if ($.inArray(name, this.options.disabledPlugins) !== -1) continue;
 
             // Clone the plugin object (which should be extended from the defaultPlugin object)
-            var pluginObject = $.extend({}, $.ui.editor.plugins[name]);
+            var pluginObject = $.extend({}, Raptor.plugins[name]);
 
             var baseClass = name.replace(/([A-Z])/g, function(match) {
                 return '-' + match.toLowerCase();
@@ -1424,7 +1424,7 @@ $.widget('ui.editor',
         }
         // Also trigger the global editor event, unless specified not to
         if (global !== false) {
-            $.ui.editor.fire(name);
+            Raptor.fire(name);
         }
 
         // Fire after sub-event
@@ -1432,5 +1432,3 @@ $.widget('ui.editor',
     }
 
 });
-
-$.extend($.ui.editor, raptor);

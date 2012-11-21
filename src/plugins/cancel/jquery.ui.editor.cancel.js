@@ -6,10 +6,10 @@
 
  /**
   * @name $.editor.ui.cancel
-  * @augments $.ui.editor.defaultUi
+  * @augments Raptor.defaultUi
   * @class Cancels editing
   */
-$.ui.editor.registerUi({
+Raptor.registerUi({
     cancel: /** @lends $.editor.ui.cancel.prototype */ {
 
         hotkeys: {
@@ -21,7 +21,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({
@@ -99,10 +99,10 @@ $.ui.editor.registerUi({
     }
 });
 
-$.ui.editor.registerPlugin({
+Raptor.registerPlugin({
   /**
     * @name $.editor.plugin.cancel
-    * @augments $.ui.editor.defaultPlugin
+    * @augments Raptor.defaultPlugin
     * @class Plugin providing cancel functionality
     */
    cancel: /** @lends $.editor.plugin.cancel.prototype */ {

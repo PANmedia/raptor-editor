@@ -4,10 +4,10 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
-$.ui.editor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder.prototype */ {
+Raptor.registerPlugin('placeholder', /** @lends $.editor.plugin.placeholder.prototype */ {
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
         var plugin = this;

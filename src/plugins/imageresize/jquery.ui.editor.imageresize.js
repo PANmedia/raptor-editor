@@ -1,9 +1,9 @@
 /**
  * @name $.editor.plugin.imageResize
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @class Automatically resize oversized images with CSS and height / width attributes.
  */
-$.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize.prototype */ {
+Raptor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize.prototype */ {
 
     /**
      * @name $.editor.plugin.imageResize.options
@@ -19,7 +19,7 @@ $.ui.editor.registerPlugin('imageResize', /** @lends $.editor.plugin.imageResize
     },
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
 

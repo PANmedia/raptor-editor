@@ -39,4 +39,4 @@ TableMenu.prototype.getMenu = function() {
     return this.menu;
 }
 
-$.ui.editor.registerUi('tableCreate', new TableMenu());
+Raptor.registerUi('tableCreate', new TableMenu());

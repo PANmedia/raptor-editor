@@ -4,11 +4,11 @@
  * @author David Neilsen david@panmedia.co.nz
  */
 
-$.ui.editor.registerPlugin({
+Raptor.registerPlugin({
 
      /**
       * @name $.editor.plugin.clickButtonToEdit
-      * @augments $.ui.editor.defaultPlugin
+      * @augments Raptor.defaultPlugin
       * @see $.editor.plugin.clickButtonToEdit.options
       * @class Shows a button at the center of an editable block,
       * informing the user that they may click said button to edit the block contents.
@@ -53,10 +53,10 @@ $.ui.editor.registerPlugin({
 
         /**
          * Initialize the click button to edit plugin.
-         * @see $.ui.editor.defaultPlugin#init
+         * @see Raptor.defaultPlugin#init
          * @param  {$.editor} editor The Raptor Editor instance.
          * @param  {$.editor.plugin.clickButtonToEdit.options} options The options object.
-         * @return {$.editor.defaultPlugin} A new $.ui.editor.plugin.clickButtonToEdit instance.
+         * @return {$.editor.defaultPlugin} A new Raptor.plugin.clickButtonToEdit instance.
          */
         init: function(editor, options) {
 

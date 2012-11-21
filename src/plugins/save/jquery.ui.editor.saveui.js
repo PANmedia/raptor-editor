@@ -5,14 +5,14 @@
 
 /**
  * @name $.editor.ui.save
- * @augments $.ui.editor.defaultUi
+ * @augments Raptor.defaultUi
  * @class
  */
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.save
-     * @augments $.ui.editor.defaultPlugin
+     * @augments Raptor.defaultPlugin
      * @class The save UI component
      */
     save: {
@@ -28,7 +28,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, element) {
             return editor.uiButton({

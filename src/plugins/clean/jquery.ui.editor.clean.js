@@ -6,10 +6,10 @@
 
  /**
   * @name $.editor.plugin.clean
-  * @augments $.ui.editor.defaultPlugin
+  * @augments Raptor.defaultPlugin
   * @class Strips empty tags and unwanted attributes from editing element
   */
-  $.ui.editor.registerPlugin('clean', /** @lends $.editor.plugin.clean.prototype */ {
+  Raptor.registerPlugin('clean', /** @lends $.editor.plugin.clean.prototype */ {
 
     /** @type {Object} Attributes to be stripped, empty tags to be removed & attributes to be removed if empty */
     options: {
@@ -43,7 +43,7 @@
 
     /**
      * Binds {@link $.editor.plugin.clean#clean} to the change event
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
         editor.bind('change', this.clean, this);
@@ -129,16 +129,16 @@
     }
 });
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
     /**
       * @name $.editor.ui.clean
-      * @augments $.ui.editor.defaultUi
+      * @augments Raptor.defaultUi
       * @class UI component that calls {@link $.editor.plugin.clean#clean} when clicked
       */
     clean: /** @lends $.editor.ui.clean.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             return editor.uiButton({

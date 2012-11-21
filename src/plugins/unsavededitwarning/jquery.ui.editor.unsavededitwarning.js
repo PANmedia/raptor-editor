@@ -18,14 +18,14 @@
 
     /**
      * @name $.editor.plugin.unsavedEditWarning
-     * @augments $.ui.editor.defaultPlugin
+     * @augments Raptor.defaultPlugin
      * @see $.editor.plugin.unsavedEditWarning.options
      * @class
      */
-    $.ui.editor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsavedEditWarning.prototype */ {
+    Raptor.registerPlugin('unsavedEditWarning', /** @lends $.editor.plugin.unsavedEditWarning.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultPlugin#init
+         * @see Raptor.defaultPlugin#init
          */
         init: function(editor, options) {
             var plugin = this;
@@ -35,7 +35,7 @@
                     .attr('id', editor.getUniqueId())
                     .appendTo('body')
                     .bind('mouseenter.' + editor.widgetName, function() {
-                        $.ui.editor.eachInstance(function(editor) {
+                        Raptor.eachInstance(function(editor) {
                             if (editor.isDirty()) {
                                 editor.getElement().addClass(plugin.options.baseClass + '-dirty');
                             }

@@ -4,17 +4,17 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
      /**
      * @name $.editor.ui.showGuides
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Outlines elements contained within the editing element
      */
     showGuides: /** @lends $.editor.ui.showGuides.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
 

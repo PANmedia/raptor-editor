@@ -2,9 +2,9 @@
  * @fileOverview UI component basic color selection
  * @author David Neilsen david@panmedia.co.nz
  */
-$.ui.editor.registerUi('colorPickerBasic', {
+Raptor.registerUi('colorPickerBasic', {
     /**
-     * @see $.ui.editor.defaultUi#init
+     * @see Raptor.defaultUi#init
      */
     init: function(editor) {
         editor.bind('selectionChange', this.change, this);

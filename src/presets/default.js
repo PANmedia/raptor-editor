@@ -1,4 +1,4 @@
-raptor.registerPreset('toolbar', {
+Raptor.registerPreset('toolbar', {
     layout: {
         type: 'toolbar',
         options: {
@@ -7,4 +7,4 @@ raptor.registerPreset('toolbar', {
     }
 });
 
-$.extend(raptor.defaults, raptor.presets.toolbar);
+$.extend(Raptor.defaults, Raptor.presets.toolbar);

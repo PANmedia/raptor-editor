@@ -6,10 +6,10 @@
 
 /**
  * @name $.editor.plugin.saveJson
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @class Provides an interface for saving the element's content via AJAX. For options see {@link $.editor.plugin.saveJson.options}
  */
-$.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.prototype */ {
+Raptor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.prototype */ {
 
     /**
      * @name $.editor.plugin.saveJson.options
@@ -64,7 +64,7 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
     },
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function() {
     },

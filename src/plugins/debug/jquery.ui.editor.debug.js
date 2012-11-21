@@ -4,12 +4,12 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     debugReinit: /** @lends $.editor.ui.debugReinit.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return this.editor.uiButton({
@@ -25,7 +25,7 @@ $.ui.editor.registerUi({
     debugDestroy: /** @lends $.editor.ui.debugDestroy.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({

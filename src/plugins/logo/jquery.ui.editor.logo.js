@@ -3,11 +3,11 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.logo
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Displays an <em>amazing</em> Raptor logo, providing your users with both shock and awe.
      * <br/>
      * Links back to the Raptor home page
@@ -17,7 +17,7 @@ $.ui.editor.registerUi({
         ui: null,
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             this.ui = this.editor.uiButton({

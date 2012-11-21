@@ -5,10 +5,10 @@
 
 /**
  * @name $.editor.plugin.saverest
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @class
  */
-$.ui.editor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.prototype */ {
+Raptor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.prototype */ {
 
     /**
      * @name $.editor.plugin.saveRest.options
@@ -40,7 +40,7 @@ $.ui.editor.registerPlugin('saveRest', /** @lends $.editor.plugin.saveRest.proto
     },
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function() {
     },

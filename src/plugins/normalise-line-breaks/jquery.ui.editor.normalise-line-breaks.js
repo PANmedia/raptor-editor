@@ -1,9 +1,9 @@
 /**
  * @name $.editor.plugin.normaliseLineBreaks
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @class Automaticly wraps content inside an editable element with a specified tag if it is empty.
  */
-$.ui.editor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.normaliseLineBreaks.prototype */ {
+Raptor.registerPlugin('normaliseLineBreaks', /** @lends $.editor.plugin.normaliseLineBreaks.prototype */ {
 
     /**
      * @name $.editor.plugin.normaliseLineBreaks.options

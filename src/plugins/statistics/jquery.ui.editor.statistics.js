@@ -4,11 +4,11 @@
  * @author David Neilsen david@panmedia.co.nz
  */
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.statistics
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @see $.editor.ui.statistics.options
      * @class Displays a button containing a character count for the editor content.
      * When button is clicked, a dialog containing statistics is displayed.
@@ -50,7 +50,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
 

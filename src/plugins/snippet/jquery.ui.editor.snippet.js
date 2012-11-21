@@ -1,4 +1,4 @@
-$.ui.editor.registerPlugin({
+Raptor.registerPlugin({
     snippet: {
         ids: [],
         enabled: false,
@@ -20,7 +20,7 @@ $.ui.editor.registerPlugin({
         },
 
         createSnippet: function(snippet, editor) {
-//            $.ui.editor.registerUi('snippet' + snippet.name.charAt(0).toUpperCase() + snippet.name.substr(1), {
+//            Raptor.registerUi('snippet' + snippet.name.charAt(0).toUpperCase() + snippet.name.substr(1), {
 //                init: function(editor, options) {
 //                    return editor.uiButton({
 //                        name: 'snippet',

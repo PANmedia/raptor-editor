@@ -5,13 +5,13 @@
 
 /**
  * @name $.editor.plugin.toolbarTip
- * @augments $.ui.editor.defaultPlugin
+ * @augments Raptor.defaultPlugin
  * @class Converts native tool tips to styled tool tips
  */
-$.ui.editor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.prototype */ {
+Raptor.registerPlugin('toolbarTip', /** @lends $.editor.plugin.toolbarTip.prototype */ {
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
         if ($.browser.msie) {

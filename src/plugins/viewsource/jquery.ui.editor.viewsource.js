@@ -3,17 +3,17 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
- $.ui.editor.registerUi({
+ Raptor.registerUi({
 
     /**
      * @name $.editor.ui.viewSource
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Shows a dialog containing the element's markup, allowing the user to edit the source directly
      */
     viewSource: /** @lends $.editor.ui.viewSource.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
 //            editor.bind('hide', this.hide, this);

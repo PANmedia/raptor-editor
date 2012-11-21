@@ -4,11 +4,11 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.ui.undo
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Revert most recent change to element content
      */
     undo: /** @lends $.editor.ui.undo.prototype */ {
@@ -25,7 +25,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);
@@ -45,7 +45,7 @@ $.ui.editor.registerUi({
 
     /**
      * @name $.editor.ui.redo
-     * @augments $.ui.editor.defaultUi
+     * @augments Raptor.defaultUi
      * @class Step forward through the stored history
      */
     redo: /** @lends $.editor.ui.redo.prototype */ {
@@ -68,7 +68,7 @@ $.ui.editor.registerUi({
         },
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('change', this.change, this);

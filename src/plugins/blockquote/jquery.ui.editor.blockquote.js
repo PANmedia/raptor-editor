@@ -4,18 +4,18 @@
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
- $.ui.editor.registerUi({
+ Raptor.registerUi({
    /**
     * @name $.editor.ui.quoteBlock
-    * @augments $.ui.editor.defaultUi
+    * @augments Raptor.defaultUi
     * @class Wraps (or unwraps) selection in &lt;blockquote&gt; tags
     * <br/>
-    * Applies either {@link $.ui.editor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element
+    * Applies either {@link Raptor.defaults.cssPrefix} + 'blockquote' or a custom class (if present) to the &lt;blockquote&gt; element
     */
     quoteBlock: /** @lends $.editor.ui.quoteBlock.prototype */ {
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor, options) {
             return editor.uiButton({

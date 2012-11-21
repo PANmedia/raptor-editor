@@ -3,11 +3,11 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
-$.ui.editor.registerUi({
+Raptor.registerUi({
 
     /**
      * @name $.editor.plugin.tagMenu
-     * @augments $.ui.editor.defaultPlugin
+     * @augments Raptor.defaultPlugin
      * @class Select menu allowing users to change the tag for selection
      */
     tagMenu: /** @lends $.editor.plugin.tagMenu.prototype */ {
@@ -18,7 +18,7 @@ $.ui.editor.registerUi({
         ],
 
         /**
-         * @see $.ui.editor.defaultUi#init
+         * @see Raptor.defaultUi#init
          */
         init: function(editor) {
             editor.bind('selectionChange', this.change, this);

@@ -4,7 +4,7 @@
  * @class Plugin that captures paste events on the element and shows a modal dialog containing different versions of what was pasted.
  * Intended to prevent horrible 'paste from word' catastrophes.
  */
-$.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
+Raptor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype */ {
 
     /**
      * @name $.editor.plugin.paste.options
@@ -33,7 +33,7 @@ $.ui.editor.registerPlugin('paste', /** @lends $.editor.plugin.paste.prototype *
     },
 
     /**
-     * @see $.ui.editor.defaultPlugin#init
+     * @see Raptor.defaultPlugin#init
      */
     init: function(editor, options) {
         var inProgress = false;

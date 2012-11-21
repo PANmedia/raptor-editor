@@ -1,4 +1,4 @@
-raptor.registerLayout('toolbar', {
+Raptor.registerLayout('toolbar', {
     options: {
         /**
          * Each element of the uiOrder should be an array of UI which will be grouped.
@@ -10,7 +10,7 @@ raptor.registerLayout('toolbar', {
         // Load all UI components if not supplied
         if (!options.uiOrder) {
             options.uiOrder = [];
-            for (var name in raptor.ui) {
+            for (var name in Raptor.ui) {
                 options.uiOrder.push([name]);
             }
         }
@@ -112,9 +112,9 @@ raptor.registerLayout('toolbar', {
                 }
 
                 // Check the UI has been registered
-                if ($.ui.editor.ui[uiGroup[ii]]) {
+                if (Raptor.ui[uiGroup[ii]]) {
                     // Clone the UI object (which should be extended from the defaultUi object)
-                    var uiObject = $.extend({}, $.ui.editor.ui[uiGroup[ii]]);
+                    var uiObject = $.extend({}, Raptor.ui[uiGroup[ii]]);
 
                     // Get the UI components base class
                     var baseClass = uiGroup[ii].replace(/([A-Z])/g, function(match) {

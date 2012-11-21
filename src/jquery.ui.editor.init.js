@@ -72,15 +72,15 @@ function debug() {
 if (debugLevel >= MID) {
     $(function() {
         var result = [];
-        for (var key in $.ui.editor.registeredUi) result.push(key);
+        for (var key in Raptor.registeredUi) result.push(key);
         info(_('UI loaded: {{ui}} ', {ui: result.join(', ')}));
 
         result = [];
-        for (key in $.ui.editor.plugins) result.push(key);
+        for (key in Raptor.plugins) result.push(key);
         info(_('Plugins loaded: {{plugins}} ', {plugins: result.join(', ')}));
 
         result = [];
-        for (key in $.ui.editor.translations) result.push(key);
+        for (key in Raptor.translations) result.push(key);
         info(_('Locales loaded: {{translations}} ', {translations: result.join(', ')}));
     });
 }
