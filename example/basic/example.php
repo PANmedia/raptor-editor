@@ -35,24 +35,6 @@
         });
     </script>
     <script type="text/javascript">
-    /*
-        var startIndex;
-        $('td, th').live('mousedown', function() {
-            if (typeof this.cellIndex !== 'undefined') {
-                startIndex = tableGetCellIndex(this);
-            }
-        });
-        $('td, th').live('mouseup', function() {
-            console.log(startIndex, tableGetCellIndex(this));
-            var table = $(this).parents('table').get(0),
-                cells = tableCellsInRange(table, startIndex, tableGetCellIndex(this));
-            $('.cms-table-cell-selected').removeClass('cms-table-cell-selected');
-            $(cells).each(function() {
-                $(this).addClass('cms-table-cell-selected');
-            });
-        });
-    */
-
         $(function() {
             $('tbody td').each(function() {
                 var index = tableGetCellIndex(this);
