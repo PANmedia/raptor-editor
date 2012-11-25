@@ -139,7 +139,7 @@ var Raptor = /** @lends $.ui.raptor */ {
          *
          * @type String
          */
-        baseClass: 'ui-editor',
+        baseClass: 'raptor',
 
         /**
          * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
