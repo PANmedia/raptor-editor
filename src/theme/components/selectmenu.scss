@@ -5,12 +5,12 @@
  */
 @import 'compass/css3/border-radius';
 
-.ui-editor-selectmenu {
+.raptor-selectmenu {
     overflow: visible;
     position: relative;
 }
 
-.ui-editor-selectmenu-button {
+.raptor-selectmenu-button {
     text-align: left;
     padding: 3px 18px 5px 5px !important;
 
@@ -22,23 +22,23 @@
         right: 1px;
         top: 8px;
     }
-    .ui-editor-selectmenu-text {
+    .raptor-selectmenu-text {
         font-size: $font-size;
     }
 }
 
-.ui-editor-selectmenu-wrapper {
+.raptor-selectmenu-wrapper {
     position: relative;
 }
 
-.ui-editor-selectmenu-button .ui-button-text {
+.raptor-selectmenu-button .ui-button-text {
     padding: 0 25px 0 5px;
 }
-.ui-editor-selectmenu-button .ui-icon {
+.raptor-selectmenu-button .ui-icon {
     background-repeat: no-repeat;
 }
 
-.ui-editor-selectmenu-menu {
+.raptor-selectmenu-menu {
     position: absolute;
     top: 100%;
     left: 0;
@@ -47,12 +47,12 @@
     margin-top: -1px !important;
 }
 
-.ui-editor-selectmenu-visible .ui-editor-selectmenu-menu {
+.raptor-selectmenu-visible .raptor-selectmenu-menu {
     display: block;
     z-index: 1;
 }
 
-.ui-editor-selectmenu-menu-item {
+.raptor-selectmenu-menu-item {
     padding: 5px;
     margin: 3px;
     z-index: 1;
@@ -64,11 +64,11 @@
     background-color: inherit;
 }
 
-.ui-editor-selectmenu-button {
+.raptor-selectmenu-button {
     background: #f5f5f5;
     border: 1px solid #ccc;
 }
 
-.ui-editor-buttonset .ui-editor-selectmenu-visible .ui-editor-selectmenu-button {
+.raptor-buttonset .raptor-selectmenu-visible .raptor-selectmenu-button {
     @include border-bottom-radius(0);
 }

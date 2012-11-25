@@ -4,11 +4,11 @@
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Micharl Robinson <michael@panmedia.co.nz>
  */
-.ui-editor-statistics-button .ui-icon-dashboard {
+.raptor-statistics-button .ui-icon-dashboard {
     @include opacity(0.85);
     background: inline-image('dashboard.png') 0 0;
 }
 
-.ui-editor-statistics-button:hover .ui-icon-dashboard {
+.raptor-statistics-button:hover .ui-icon-dashboard {
     @include opacity(1);
 }

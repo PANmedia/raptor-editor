@@ -6,30 +6,30 @@
 @import 'compass/css3/box';
 @import 'compass/css3/opacity';
 
-.ui-editor-dock-button .ui-icon-pin-s {
+.raptor-dock-button .ui-icon-pin-s {
     @include opacity(0.85);
     background: inline-image('pin.png') 0 0;
 }
 
-.ui-editor-dock-button:hover .ui-icon-pin-s {
+.raptor-dock-button:hover .ui-icon-pin-s {
     @include opacity(1);
 }
 
-.ui-editor-dock-button .ui-icon-pin-w {
+.raptor-dock-button .ui-icon-pin-w {
     @include opacity(0.85);
     background: inline-image('pin-in.png') 0 0;
 }
 
-.ui-editor-dock-button:hover .ui-icon-pin-w {
+.raptor-dock-button:hover .ui-icon-pin-w {
     @include opacity(1);
 }
 
 /**
  * Dialog docked to body
  */
-.ui-editor-dock-docked {
+.raptor-dock-docked {
     z-index: 10000;
-    .ui-editor-toolbar-wrapper {
+    .raptor-toolbar-wrapper {
         position: fixed;
         top: 0;
         left: 0;
@@ -41,11 +41,11 @@
         @include box-align(center);
     }
 
-    .ui-editor-toolbar {
+    .raptor-toolbar {
         text-align: center;
     }
 
-    .ui-editor-path {
+    .raptor-path {
         position: fixed;
         bottom: 0;
         left: 0;
@@ -53,19 +53,19 @@
     }
 }
 
-.ui-editor-ios .ui-editor-dock-docked .ui-editor-path {
+.raptor-ios .raptor-dock-docked .raptor-path {
     display: none;
 }
 
 /**
  * Dialog docked to element
  */
-.ui-editor-dock-docked-to-element-wrapper {
+.raptor-dock-docked-to-element-wrapper {
     font-size: inherit;
     color: inherit;
     font-family: inherit;
 }
-.ui-editor-dock-docked-to-element-wrapper .ui-editor-wrapper {
+.raptor-dock-docked-to-element-wrapper .raptor-wrapper {
     /* Removed fixed position from the editor */
     position: relative !important;
     top: auto !important;
@@ -85,20 +85,20 @@
     @include display-box();
     @include box-orient(vertical);
 
-    .ui-editor-toolbar {
+    .raptor-toolbar {
         margin: 0;
         z-index: 2;
 
         @include box-ordinal-group(1);
     }
 
-    .ui-editor-toolbar .ui-widget-header {
+    .raptor-toolbar .ui-widget-header {
         border-top: 0;
         border-left: 0;
         border-right: 0;
     }
 
-    .ui-editor-path {
+    .raptor-path {
         border: 0 none;
         margin: 0;
 
@@ -106,12 +106,12 @@
         @include border-radius(0);
     }
 
-    .ui-editor-messages {
+    .raptor-messages {
         margin: 0;
     }
 }
 
-.ui-editor-dock-docked-element {
+.raptor-dock-docked-element {
     /* Override margin so toolbars sit flush next to element */
     margin: 0 !important;
 
@@ -140,7 +140,7 @@
 /**
  * Messages
  */
-.ui-editor-dock-docked .ui-editor-messages {
+.raptor-dock-docked .raptor-messages {
     position: fixed;
     top: 0;
     left: 50%;
@@ -148,11 +148,11 @@
     padding: 0;
     text-align: left;
 
-    .ui-editor-message-wrapper {
+    .raptor-message-wrapper {
         width: 800px;
     }
 
-    .ui-editor-message-wrapper:first-child {
+    .raptor-message-wrapper:first-child {
         @include border-top-right-radius(0);
         @include border-top-left-radius(0);
     }

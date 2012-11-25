@@ -5,10 +5,10 @@
  */
 @import 'compass/css3/opacity';
 
-.ui-editor-hr-button .ui-icon-hr {
+.raptor-hr-button .ui-icon-hr {
     @include opacity(0.85);
     background: inline-image('edit-rule.png') 0 0;
 }
-.ui-editor-hr-button:hover .ui-icon-hr {
+.raptor-hr-button:hover .ui-icon-hr {
     @include opacity(1);
 }

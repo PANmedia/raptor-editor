@@ -5,14 +5,14 @@
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
 
-.ui-editor-editing {
+.raptor-editing {
     outline: none;
 }
 
 /******************************************************************************\
  * Inputs
 \******************************************************************************/
-.ui-editor-wrapper {
+.raptor-wrapper {
     textarea,
     input {
         border: 1px solid #D4D4D4;
@@ -22,7 +22,7 @@
 /******************************************************************************\
  * Dialogs
 \******************************************************************************/
-.ui-editor-wrapper {
+.raptor-wrapper {
     .ui-dialog-content {
         font-size: $font-size;
     }

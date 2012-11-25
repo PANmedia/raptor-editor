@@ -9,7 +9,7 @@
 @import 'compass/css3/opacity';
 @import 'compass/css3/transition';
 
-.ui-editor-unsaved-edit-warning {
+.raptor-unsaved-edit-warning {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -29,11 +29,11 @@
     }
 }
 
-.ui-editor-unsaved-edit-warning-visible {
+.raptor-unsaved-edit-warning-visible {
     @include opacity(1);
 }
 
-.ui-editor-unsaved-edit-warning-dirty {
+.raptor-unsaved-edit-warning-dirty {
     outline: 1px dotted #aaa;
     background-image: inline-image('diagonal-lines.png') !important;
 }

@@ -11,7 +11,7 @@
 @import 'compass/css3/text-shadow';
 @import 'compass/css3/transition';
 
-.ui-editor-click-to-edit-message {
+.raptor-click-to-edit-message {
     padding: 10px;
     border: 1px solid #D4D4D4;
     font-size: $font-size;
@@ -27,11 +27,11 @@
     @include opacity(0);
 }
 
-.ui-editor-click-to-edit-visible {
+.raptor-click-to-edit-visible {
     @include opacity(1);
 }
 
-.ui-editor-click-to-edit-highlight {
+.raptor-click-to-edit-highlight {
     cursor: pointer;
     outline: 1px dotted rgba(0, 0, 0, 0.5);
     @include transition(all 0.5s 0s);

@@ -7,16 +7,16 @@
 @import 'compass/css3/box-sizing';
 @import 'compass/css3/opacity';
 
-.ui-editor-embed-button .ui-icon-youtube {
+.raptor-embed-button .ui-icon-youtube {
     @include opacity(0.85);
     background: inline-image('youtube.png') 0 0;
 }
 
-.ui-editor-embed-button:hover .ui-icon-youtube {
+.raptor-embed-button:hover .ui-icon-youtube {
     @include opacity(1);
 }
 
-.ui-editor-ui-embed .ui-dialog-content .ui-editor-embed-panel-tabs {
+.raptor-ui-embed .ui-dialog-content .raptor-embed-panel-tabs {
 
     @include display-box();
     @include box-orient(vertical);
