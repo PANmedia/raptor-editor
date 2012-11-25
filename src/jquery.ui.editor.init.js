@@ -33,17 +33,7 @@ var debugLevel = MIN;
 function info() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Raptor Editor');
-
-    // <ie>
-    if (!console.error.apply) {
-        for (var i = 0, l = args.length;i < l; i++) {
-            console.error(args[i]);
-        }
-        return;
-    }
-    // </ie>
-
-    console.info.apply(console, args);
+    (console.info || console.log).apply(console, args);
 }
 
 /**
@@ -55,17 +45,7 @@ function info() {
 function debug() {
     var args = Array.prototype.slice.call(arguments);
     args.unshift('Raptor Editor');
-
-    // <ie>
-    if (!console.error.apply) {
-        for (var i = 0, l = args.length;i < l; i++) {
-            console.error(args[i]);
-        }
-        return;
-    }
-    // </ie>
-
-    console.debug.apply(console, args);
+    (console.debug || console.log).apply(console, args);
 }
 
 // Show some debugging information on ready
