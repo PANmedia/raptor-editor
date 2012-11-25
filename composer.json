@@ -19,6 +19,6 @@
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "phing/phing": ">=2.4.12"
+        "phing/phing": "dev-master"
     }
 }
