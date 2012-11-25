@@ -1,5 +1,5 @@
 function Menu(options) {
-    this.editor = null;
+    this.raptor = null;
     this.buttonText = '';
     this.menuContent = '';
     this.menu = null;
@@ -9,22 +9,33 @@ function Menu(options) {
     }
 };
 
-Menu.prototype.init = function(editor) {
-    this.editor = editor;
+Menu.prototype.init = function(raptor) {
+    this.setOptions();
+    this.raptor = raptor;
     this.button = $('<div>')
         .html(this.buttonText)
         .click($.proxy(this.toggle, this));
-    aButton(this.button);
+    aButton(this.button, this.options);
     return this.button;
+};
+            
+Menu.prototype.setOptions = function() {
+    this.options.title = _(this.name + '-title');
+    this.options.icon = 'ui-icon-' + this.name;
+    this.options.text = _(this.name + '-text');
 };
 
 Menu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<div>')
+            .addClass('ui-menu ui-widget ui-widget-content ui-corner-all')
             .html(this.menuContent)
             .css('position', 'fixed')
             .hide()
-            .appendTo('body');
+            .appendTo('body')
+            .mousedown(function(event) {
+                event.preventDefault();
+            });
     }
     return this.menu;
 };
