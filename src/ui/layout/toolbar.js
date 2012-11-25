@@ -16,7 +16,7 @@ Raptor.registerLayout('toolbar', {
         }
 
         // <debug>
-        if (debugLevel >= MID) debug('Loading toolbar', this.getElement());
+        if (debugLevel >= MID) debug('Loading toolbar', editor.getElement());
         // </debug>
 
         var toolbar = this.toolbar = $('<div/>')
@@ -24,6 +24,9 @@ Raptor.registerLayout('toolbar', {
         var toolbarWrapper = this.toolbarWrapper = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar-wrapper')
             .addClass('ui-widget-content')
+            .mousedown(function(event) {
+                event.preventDefault();
+            })
             .append(toolbar);
         var path = this.path = $('<div/>')
             .addClass(this.options.baseClass + '-path')
@@ -37,7 +40,7 @@ Raptor.registerLayout('toolbar', {
 
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
-            if (debugLevel >= MID) debug('Initialising toolbar dragging', this.getElement());
+            if (debugLevel >= MID) debug('Initialising toolbar dragging', editor.getElement());
             // </debug>
 
             wrapper.draggable({
@@ -59,7 +62,7 @@ Raptor.registerLayout('toolbar', {
                     });
 
                     // <debug>
-                    if (debugLevel >= MID) debug('Saving toolbar position', this.getElement(), pos);
+                    if (debugLevel >= MID) debug('Saving toolbar position', editor.getElement(), pos);
                     // </debug>
                 }, this)
             });
@@ -75,7 +78,7 @@ Raptor.registerLayout('toolbar', {
             }
 
             // <debug>
-            if (debugLevel >= MID) debug('Restoring toolbar position', this.getElement(), pos);
+            if (debugLevel >= MID) debug('Restoring toolbar position', editor.getElement(), pos);
             // </debug>
 
             if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
