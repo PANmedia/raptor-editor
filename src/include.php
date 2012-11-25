@@ -19,6 +19,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-serializer.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-textrange.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/raptorize/jquery.raptorize.js"></script>
 
 <!-- Theme -->
@@ -30,16 +31,20 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.action.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.element.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.fragment.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.range.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.selection.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.string.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.state.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.table.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.types.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>raptor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/menu.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/toolbar.js"></script>
@@ -60,6 +65,11 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/alignment/jquery.ui.editor.alignment.js"></script>
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/basic/jquery.ui.editor.basic.js"></script> */ ?>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/basic/bold.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/italic.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/underline.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/strike.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/sub.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/super.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
@@ -84,4 +94,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-row.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-column.js"></script>
