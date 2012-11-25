@@ -69,7 +69,7 @@
             }
         ?>
     </div>
-    <div class="editable" data-id="body">
+    <div class="editable" data-id="body-1">
         <?php ob_start(); ?>
         <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
@@ -91,8 +91,37 @@
         </p>
         <?php
             $buffer = ob_get_clean();
-            if (isset($content['body'])) {
-                echo $content['body'];
+            if (isset($content['body-1'])) {
+                echo $content['body-1'];
+            } else {
+                echo $buffer;
+            }
+        ?>
+    </div>
+    <div class="editable" data-id="body-2">
+        <?php ob_start(); ?>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+            has been the industry's standard dummy text ever since the 1500s, when an unknown printer
+            took a galley of type and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting, remaining essentially
+            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+            Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
+            including versions of Lorem Ipsum.
+        </p>
+        <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+            has been the industry's standard dummy text ever since the 1500s, when an unknown printer
+            took a galley of type and scrambled it to make a type specimen book. It has survived not
+            only five centuries, but also the leap into electronic typesetting, remaining essentially
+            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+            Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
+            including versions of Lorem Ipsum.
+        </p>
+        <?php
+            $buffer = ob_get_clean();
+            if (isset($content['body-2'])) {
+                echo $content['body-2'];
             } else {
                 echo $buffer;
             }
