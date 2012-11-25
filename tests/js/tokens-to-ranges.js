@@ -58,3 +58,17 @@ function tokensToRanges(el) {
 
     return ranges;
 }
+
+function rangesToTokens(ranges) {
+    var i = ranges.length;
+    while (i--) {
+        var close = document.createTextNode('}'),
+            open = document.createTextNode('{'),
+            closeRange = rangy.createRangyRange(),
+            openRange = rangy.createRangyRange();
+        closeRange.setStart(ranges[i].endContainer, ranges[i].endOffset);
+        openRange.setStart(ranges[i].startContainer, ranges[i].startOffset);
+        closeRange.insertNode(close);
+        openRange.insertNode(open);
+    }
+}

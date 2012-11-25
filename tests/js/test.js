@@ -13,18 +13,32 @@ function test(container, action, format) {
     }
 
     output.html(input.html());
-    action(output);
+    var error;
+    try {
+        action(output);
+    } catch (e) {
+        console.error(e);
+        console.error(e.stack);
+        error = e;
+    }
+    
+    output = $(container).find('.test-output');
 
     if (typeof format === 'undefined' || format) {
         formatElement(expected);
         formatElement(output);
     }
 
-    diff.html(diffstr(expected.html(), output.html()));
-
-    if (output.html() === expected.html()) {
-        pass(container);
-    } else {
+    if (error) {
+        $('<pre>').text(error).appendTo(diff);
+        $('<pre>').text(error.stack).appendTo(diff);
         fail(container);
+    } else {
+        diff.html(diffstr(expected.html(), output.html()));
+        if (output.html() !== expected.html()) {
+            fail(container);
+        } else {
+            pass(container);
+        }
     }
 }
