@@ -29,6 +29,7 @@ function rangeExpandTo(range, elements) {
 
 /**
  * Replaces the content of range with the given html.
+ * 
  * @param  {jQuery|String} html The html to use when replacing range.
  * @param  {RangyRange} range The range to replace.
  */
@@ -83,39 +84,39 @@ function rangeIsEmpty(range) {
            range.startContainer === range.endContainer;
 }
 
-
-
-
-
-
-
-function rangesToggleWrapper(ranges, tag, options) {
-    var applier = rangy.createCssClassApplier(options.classes || '', {
-        normalize: true,
-        elementTagName: tag,
-        elementProperties: options.attributes || {},
-        ignoreWhiteSpace: false
-    });
-    applier.applyToRanges(ranges);
+function rangeIsContainedBy(range, node) {
+    var nodeRange = range.cloneRange();
+    nodeRange.selectNodeContents(node);
+    return nodeRange.containsRange(range);
 }
 
-function rangeToggleWrapper(range, tag, options) {
-    options = options || {};
-    var applier = rangy.createCssClassApplier(options.classes || '', {
-        normalize: true,
-        elementTagName: tag,
-        elementProperties: options.attributes || {}
-    });
-    if (rangeEmptyTag(range)) {
-        var element = $('<' + tag + '/>')
-            .addClass(options.classes)
-            .attr(options.attributes || {})
-            .append(fragmentToHtml(range.cloneContents()));
-        rangeReplace(element, range);
-    } else {
-        applier.toggleRange(range);
-    }
-}
+//function rangesToggleWrapper(ranges, tag, options) {
+//    var applier = rangy.createCssClassApplier(options.classes || '', {
+//        normalize: true,
+//        elementTagName: tag,
+//        elementProperties: options.attributes || {},
+//        ignoreWhiteSpace: false
+//    });
+//    applier.applyToRanges(ranges);
+//}
+//
+//function rangeToggleWrapper(range, tag, options) {
+//    options = options || {};
+//    var applier = rangy.createCssClassApplier(options.classes || '', {
+//        normalize: true,
+//        elementTagName: tag,
+//        elementProperties: options.attributes || {}
+//    });
+//    if (rangeEmptyTag(range)) {
+//        var element = $('<' + tag + '/>')
+//            .addClass(options.classes)
+//            .attr(options.attributes || {})
+//            .append(fragmentToHtml(range.cloneContents()));
+//        rangeReplace(element, range);
+//    } else {
+//        applier.toggleRange(range);
+//    }
+//}
 
 function rangeTrim(range) {
     var selectedText = range.text();
@@ -132,4 +133,21 @@ function rangeTrim(range) {
         console.log(match[0].length)
         range.moveEnd('character', -match[0].length);
     }
+}
+
+function rangeSerialize(ranges, rootNode) {
+    var serializedRanges = [];
+    for (var i = 0, l = ranges.length; i < l; i++) {
+        serializedRanges[i] = rangy.serializeRange(ranges[i], true);
+    }
+    return serializedRanges.join('|');
+}
+
+function rangeDeserialize(serialized) {
+    var serializedRanges = serialized.split("|"),
+        ranges = [];
+    for (var i = 0, l = serializedRanges.length; i < l; i++) {
+        ranges[i] = rangy.deserializeRange(serializedRanges[i]);
+    }
+    return ranges;
 }
