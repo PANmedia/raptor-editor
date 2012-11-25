@@ -7,7 +7,7 @@
  * @requires jQuery UI
  * @requires Rangy
  */
-
+ 
 $.widget('ui.editor',
     /**
      * @lends $.editor.prototype
@@ -47,7 +47,7 @@ $.widget('ui.editor',
         this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, Raptor.templates);
-        this.target = null;
+        this.target = this.element;
         this.layout = null;
 
         // True if editing is enabled
@@ -134,8 +134,6 @@ $.widget('ui.editor',
      */
     attach: function() {
         this.bind('change', this.historyPush);
-        this.bind('selectionChange', this.updateTagTree);
-        this.bind('show', this.updateTagTree);
 
         var change = $.proxy(this.checkChange, this);
 
@@ -200,7 +198,7 @@ $.widget('ui.editor',
      * @returns {jQuery} The current content editable element
      */
     getElement: function() {
-        return this.target ? this.target : this.element;
+        return this.target;
     },
 
     /**
@@ -361,23 +359,22 @@ $.widget('ui.editor',
      * Preview functions
     \*========================================================================*/
 
-    preview: null,
+    previewState: null,
     actionPreview: function(action) {
-        if (this.preview) {
-            this.actionPreviewRemove();
-        }
-        this.preview = this.getHtml();
-        action();
+        this.previewState = actionPreview(this.previewState, this.target, action);
     },
 
-    actionPreviewRemove: function() {
-        if (this.preview) {
-            this.setHtml(this.preview);
+    actionPreviewRestore: function() {
+        if (this.previewState) {
+            this.target = actionPreviewRestore(this.previewState, this.target);
+            this.previewState = null;
         }
     },
 
+    history: {},
     actionApply: function(action) {
-
+        this.target = actionApply(this.previewState, this.target, action, this.history);
+        this.previewState = null;
     },
 
     actionUndo: function() {
@@ -386,6 +383,29 @@ $.widget('ui.editor',
 
     actionRedo: function() {
 
+    },
+
+    /*========================================================================*\
+     * Selection functions
+    \*========================================================================*/
+    getRanges: function() {
+        return rangy.getSelection().getAllRanges();
+        var selection = rangy.getSelection(),
+            validRanges = [],
+            allRanges;
+        selection.refresh();
+        allRanges = selection.getAllRanges();
+        for (var i = 0; i < allRanges.length; i++) {
+            allRanges[i].refresh();
+            if (rangeIsContainedBy(allRanges[i], this.getNode())) {
+                validRanges.push(allRanges[i]);
+            }
+        }
+        return validRanges;
+    },
+            
+    getSelection: function() {
+        return rangy.getSelection();
     },
 
     /*========================================================================*\
@@ -451,81 +471,6 @@ $.widget('ui.editor',
      */
     isEditing: function() {
         return this.enabled;
-    },
-
-    /**
-     *
-     */
-    updateTagTree: function() {
-        /*
-        if (!this.isEditing()) return;
-
-        var editor = this;
-        var title = '';
-
-        // An array of ranges (by index), each with a list of elements in the range
-        var lists = [];
-        var i = 0;
-
-        // Loop all selected ranges
-        selectionEachRange(function(range) {
-            // Get the selected nodes common parent
-            var node = range.commonAncestorContainer;
-
-            var element;
-            if (node.nodeType === 3) {
-                // If nodes common parent is a text node, then use its parent
-                element = $(node).parent();
-            } else {
-                // Or else use the node
-                element = $(node);
-            }
-
-            // Ensure the element is the editing element or a child of the editing element
-            if (!editor.isRoot(element) && !$.contains(editor.getElement().get(0), element.get(0))) {
-                element = editor.getElement();
-            }
-
-            var list = [];
-            lists.push(list);
-            // Loop until we get to the root element, or the body tag
-            while (element[0] && !editor.isRoot(element) && element[0].tagName.toLowerCase() !== 'body') {
-                // Add the node to the list
-                list.push(element);
-                element = element.parent();
-            }
-            list.reverse();
-
-            if (title) title += ' | ';
-            title += this.getTemplate('root');
-            for (var j = 0; j < list.length; j++) {
-                title += this.getTemplate('tag', {
-                    element: list[j][0].tagName.toLowerCase(),
-                    // Create a data attribute with the index to the range, and element (so [0,0] will be the first range/first element)
-                    data: '[' + i + ',' + j + ']'
-                });
-            }
-            i++;
-        }, null, this);
-
-        if (!title) title = this.getTemplate('root');
-        this.path
-            .html(title)
-            .find('a')
-            .click(function() {
-                // Get the range/element data attribute
-                var i = $(this).data('ui-editor-selection');
-                if (i) {
-                    // Get the element from the list array
-                    selectionSelectOuter(lists[i[0]][i[1]]);
-                    editor.updateTagTree();
-                } else {
-                    selectionSelectOuter(editor.getElement());
-                }
-            });
-
-        this.fire('tagTreeUpdated');
-        */
     },
 
     /**
@@ -948,76 +893,6 @@ $.widget('ui.editor',
         return this.uiObjects[ui];
     },
 
-    /*
-    loadUi: function() {
-        // Loop the UI order option
-        for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
-            var uiSet = this.options.uiOrder[i];
-            // Each element of the UI order should be an array of UI which will be grouped
-            var uiGroup = $('<div/>');
-
-            // Loop each UI in the array
-            for (var j = 0, ll = uiSet.length; j < ll; j++) {
-
-                if (!this.uiEnabled(uiSet[j])) continue;
-
-                var baseClass = uiSet[j].replace(/([A-Z])/g, function(match) {
-                    return '-' + match.toLowerCase();
-                });
-
-                // Check the UI has been registered
-                if (Raptor.ui[uiSet[j]]) {
-                    // Clone the UI object (which should be extended from the defaultUi object)
-                    var uiObject = $.extend({}, Raptor.ui[uiSet[j]]);
-
-                    var options = $.extend(true, {}, this.options, {
-                        baseClass: this.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, this.options.ui[uiSet[j]]);
-
-                    uiObject.editor = this;
-                    uiObject.options = options;
-                    uiObject.ui = uiObject.init(this, options);
-
-                    // Bind hotkeys
-                    if (uiObject.hotkeys) {
-                        if (!hotkeys) {
-                            // <strict>
-                            handleError(_('jQuery hotkey plugin (https://github.com/jeresig/jquery.hotkeys) is not present. Hotkeys are disabled.'));
-                            // </strict>
-                        } else {
-                            this.registerHotkey(uiObject.hotkeys, null, uiObject);
-                            // Add hotkeys to title
-                            uiObject.ui.title += ' (' + $.map(uiObject.hotkeys, function(value, index) {
-                                    return index;
-                                })[0] + ')';
-                        }
-                    }
-
-                    // Append the UI object to the group
-                    uiObject.ui.init(uiSet[j], this, options, uiObject).appendTo(uiGroup);
-
-                    // Add the UI object to the editors list
-                    this.uiObjects[uiSet[j]] = uiObject;
-                }
-                // <strict>
-                else {
-                    handleError(_('UI identified by key "{{ui}}" does not exist', {ui: uiSet[j]}));
-                }
-                // </strict>
-            }
-
-            uiGroup
-                .addClass('ui-buttonset')
-                .addClass(this.options.baseClass + '-buttonset');
-
-            // Append the UI group to the editor toolbar
-            if (uiGroup.children().length > 0) {
-                uiGroup.appendTo(this.toolbar);
-            }
-        }
-        $('<div/>').css('clear', 'both').appendTo(this.toolbar);
-    },
-*/
     /**
      * @param {Object} options
      */
