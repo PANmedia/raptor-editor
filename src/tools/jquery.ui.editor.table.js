@@ -17,9 +17,9 @@ function tableCreate(columns, rows, options) {
     options = options || {};
     var table = document.createElement('table');
     while (rows--) {
-        var row = table.insertRow();
+        var row = table.insertRow(0);
         for (var i = 0; i < columns; i++) {
-            var cell = row.insertCell();
+            var cell = row.insertCell(0);
             if (options.placeHolder) {
                 cell.innerHTML = options.placeHolder;
             }
