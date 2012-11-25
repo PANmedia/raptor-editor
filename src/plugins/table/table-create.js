@@ -1,3 +1,4 @@
+
 function TableMenu() {
     Menu.call(this);
     this.buttonText = 'Create Table';
@@ -9,7 +10,13 @@ TableMenu.prototype.constructor = TableMenu;
 TableMenu.prototype.createTable = function() {
     var x = event.target.cellIndex,
         y = event.target.parentNode.rowIndex;
-    selectionReplace(tableCreate(x + 1, y + 1));
+    this.raptor.actionApply(function() {
+        
+        selectionReplace(tableCreate(x + 1, y + 1, {
+            placeHolder: '&nbsp;'
+        }));
+        // selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1));
+    });
 };
 
 TableMenu.prototype.highLight = function(event) {
@@ -22,15 +29,15 @@ TableMenu.prototype.highLight = function(event) {
             y: event.target.parentNode.rowIndex
         });
     table
-        .find('.ui-editor-table-menu-hover')
-        .removeClass('ui-editor-table-menu-hover');
+        .find('.' + this.options.baseClass + '-menu-hover')
+        .removeClass(this.options.baseClass + '-menu-hover');
     for (var i = 0; i < cells.length; i++) {
-        $(cells[i]).addClass('ui-editor-table-menu-hover');
+        $(cells[i]).addClass(this.options.baseClass + '-menu-hover');
     }
 };
 
 TableMenu.prototype.getMenu = function() {
-    this.menuContent = this.editor.getTemplate('table.menu');
+    this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
     if (!this.menu) {
         var menu = Menu.prototype.getMenu.call(this)
             .on('click', 'td', this.createTable.bind(this))
