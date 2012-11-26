@@ -464,6 +464,14 @@ $.widget('ui.editor',
             this.fire('disabled');
         }
     },
+            
+    cancelEditing: function() {
+        this.fire('cancel');
+        this.resetHtml();
+        this.hideLayout();
+        this.disableEditing();
+        selectionDestroy();
+    },
 
     /**
      *
