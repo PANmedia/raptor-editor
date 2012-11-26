@@ -32,8 +32,8 @@ TableMenu.prototype.highLight = function(event) {
 };
 
 TableMenu.prototype.getMenu = function() {
-    this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
     if (!this.menu) {
+        this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
         var menu = Menu.prototype.getMenu.call(this)
             .on('click', 'td', this.createTable.bind(this))
             .on('mouseover', 'td', this.highLight.bind(this));

@@ -1,4 +1,4 @@
-Raptor.registerUi(new Button({
+Raptor.registerUi(new PreviewButton({
     name: 'tableAddRow',
     action: function() {
         selectionEachRange(function(range) {
