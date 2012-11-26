@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <base href="../../" />
+    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="css/diff.css"/>
+    <script src="../src/dependencies/jquery.js"></script>
+    <script src="../src/dependencies/rangy/rangy-core.js"></script>
+    <script src="../src/tools/jquery.ui.editor.selection.js"></script>
+    <script src="../src/tools/jquery.ui.editor.fragment.js"></script>
+    <script src="../src/tools/jquery.ui.editor.element.js"></script>
+    <script type="text/javascript" src="js/test.js"></script>
+    <script type="text/javascript" src="js/helpers.js"></script>
+    <script type="text/javascript" src="js/tokens-to-ranges.js"></script>
+    <script type="text/javascript" src="js/diff.js"></script>
+    <script type="text/javascript" src="js/beautify-html.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>Clear Formatting 1: Basic</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id <b>erat pellentesque</b> et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            selectionClearFormatting(input);
+        });
+    </script>
+</body>
+</html>
