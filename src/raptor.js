@@ -364,13 +364,25 @@ var Raptor = /** @lends $.ui.raptor */ {
      * @param {String} name
      * @param {Object} ui
      */
-    registerUi: function(name, ui) {
+    registerUi: function(ui) {
         // <strict>
-        if (this.ui[name]) {
-            // handleError(_('UI "{{name}}" has already been registered, and will be overwritten', {name: name}));
+        if (typeof ui !== 'object') {
+            handleError(_('errorUINotObject', { 
+                ui: ui 
+            }));
+            return;
+        } else if (typeof ui.name !== 'string') {
+            handleError(_('errorUIOverride', { 
+                ui: ui 
+            }));
+            return;
+        } else if (this.ui[ui.name]) {
+            handleError(_('errorUIOverride', { 
+                name: ui.name
+            }));
         }
         // </strict>
-        this.ui[name] = $.extend({}, this.defaultUi, ui);
+        this.ui[ui.name] = ui;
     },
 
     /**
