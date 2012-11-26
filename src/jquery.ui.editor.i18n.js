@@ -78,6 +78,11 @@ function _(string, variables) {
 
     // Convert the variables
     if (!variables) {
+        // <debug>
+        if (debugLevel >= MIN) {
+            debug('Missing locale string: ' + string);
+        }
+        // </debug>
         return string;
     } else {
         for (var key in variables) {
