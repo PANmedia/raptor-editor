@@ -28,6 +28,7 @@
 <!-- Editor -->
 <script type="text/javascript" src="<?php echo $uri ?>adapters/jquery-ui.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.i18n.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>locales/en.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
@@ -84,8 +85,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/jquery.ui.editor.cancel.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/list/jquery.ui.editor.list.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/fontsize/jquery.ui.editor.fontsize.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/hr/jquery.ui.editor.hr.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/blockquote/jquery.ui.editor.blockquote.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/hr/hr-create.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/tagmenu/jquery.ui.editor.tagmenu.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/link/jquery.ui.editor.link.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/imageresize/jquery.ui.editor.imageresize.js"></script>
@@ -93,8 +93,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/embed/jquery.ui.editor.embed.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/statistics/jquery.ui.editor.statistics.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/jquery.ui.editor.i18n.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/en.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
