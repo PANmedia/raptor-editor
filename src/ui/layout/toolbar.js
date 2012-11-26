@@ -9,9 +9,9 @@ Raptor.registerLayout('toolbar', {
     init: function(editor, options) {
         // Load all UI components if not supplied
         if (!options.uiOrder) {
-            options.uiOrder = [];
+            options.uiOrder = [[]];
             for (var name in Raptor.ui) {
-                options.uiOrder.push([name]);
+                options.uiOrder[0].push(name);
             }
         }
 
@@ -40,7 +40,9 @@ Raptor.registerLayout('toolbar', {
 
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
-            if (debugLevel >= MID) debug('Initialising toolbar dragging', editor.getElement());
+            if (debugLevel >= MID) {
+                debug('Initialising toolbar dragging', editor.getElement());
+            }
             // </debug>
 
             wrapper.draggable({
