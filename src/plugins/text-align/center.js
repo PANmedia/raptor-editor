@@ -1,4 +1,5 @@
-Raptor.registerUi('alignCenter', new Button({
+Raptor.registerUi(new Button({
+    name: 'alignCenter',
     action: function() {
         selectionToggleBlockStyle({
             'text-align': 'center'

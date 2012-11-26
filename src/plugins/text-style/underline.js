@@ -1,5 +1,5 @@
-Raptor.registerUi('textUnderline', new CSSClassApplierButton({
-    name: 'underline',
+Raptor.registerUi(new CSSClassApplierButton({
+    name: 'textUnderline',
     hotkey: 'ctrl+u',
     tag: 'u'
 }));

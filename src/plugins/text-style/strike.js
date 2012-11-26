@@ -1,4 +1,4 @@
-Raptor.registerUi('textStrike', new CSSClassApplierButton({
-    name: 'strike',
+Raptor.registerUi(new CSSClassApplierButton({
+    name: 'textStrike',
     tag: 'strike'
 }));

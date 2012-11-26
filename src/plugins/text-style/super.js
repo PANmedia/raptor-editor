@@ -1,4 +1,4 @@
-Raptor.registerUi('textSuper', new CSSClassApplierButton({
-    name: 'super',
+Raptor.registerUi(new CSSClassApplierButton({
+    name: 'textSuper',
     tag: 'sup'
 }));

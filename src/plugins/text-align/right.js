@@ -1,4 +1,5 @@
-Raptor.registerUi('alignRight', new Button({
+Raptor.registerUi(new Button({
+    name: 'alignRight',
     action: function() {
         selectionToggleBlockStyle({
             'text-align': 'right'

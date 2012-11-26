@@ -1,4 +1,4 @@
-Raptor.registerUi('textSub', new CSSClassApplierButton({
-    name: 'sub',
+Raptor.registerUi(new CSSClassApplierButton({
+    name: 'textSub',
     tag: 'sub'
 }));

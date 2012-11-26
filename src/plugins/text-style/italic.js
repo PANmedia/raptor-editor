@@ -1,5 +1,5 @@
-Raptor.registerUi('textItalic', new CSSClassApplierButton({
-    name: 'italic',
+Raptor.registerUi(new CSSClassApplierButton({
+    name: 'textItalic',
     hotkey: 'ctrl+i',
     tag: 'em'
 }));
