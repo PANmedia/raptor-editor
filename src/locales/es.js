@@ -9,7 +9,7 @@ registerLocale('es', 'Español', {
     "Apply Source": "Aplicar Fuente",
     "Are you sure you want to stop editing?": "¿Está seguro de que desea detener la edición?",
     "Blockquote": "Cita en bloque",
-    "Bold": "Negrita",
+    "bold-title": "Negrita",
     "Cancel": "Cancelar",
     "Center Align": "Centrar",
     "Change HTML tag of selected element": "Cambiar la etiqueta HTML del elemento seleccionado",

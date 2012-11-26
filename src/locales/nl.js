@@ -9,7 +9,7 @@ registerLocale('nl', 'Nederlands', {
     "Apply Source": "Broncode toepassen",
     "Are you sure you want to stop editing?": "Weet u zeker dat u wilt stoppen met aanpassen? ",
     "Blockquote": "Blokcitaat",
-    "Bold": "Vetgedrukt",
+    "bold-title": "Vetgedrukt",
     "Cancel": "Annuleren",
     "Center Align": "Centreren",
     "Change HTML tag of selected element": "Verander type van geselecteerd element",

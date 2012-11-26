@@ -9,7 +9,7 @@ registerLocale('de', 'Deutsch', {
     "Apply Source": "Quellcode anwenden",
     "Are you sure you want to stop editing?": "Wollen Sie wirklich mit der Bearbeitung aufhören?",
     "Blockquote": "Zitat",
-    "Bold": "Fett",
+    "bold-title": "Fett",
     "Cancel": "Abbrechen",
     "Center Align": "Zentrieren",
     "Change HTML tag of selected element": "HTML Tag des selektierten Elements ändern",

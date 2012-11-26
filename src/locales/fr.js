@@ -9,7 +9,7 @@ registerLocale('fr', 'Français', {
     "Apply Source": "Appliquer la source",
     "Are you sure you want to stop editing?": "Êtes-vous sûr(e) de vouloir arrêter la modification ?",
     "Blockquote": "Citation",
-    "Bold": "Gras",
+    "bold-title": "Gras",
     "Cancel": "Annuler",
     "Center Align": "Aligner au centre",
     "Change HTML tag of selected element": "Modifier la balise HTML de l'élément sélectionné",
