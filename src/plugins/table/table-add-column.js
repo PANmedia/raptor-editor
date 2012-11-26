@@ -1,5 +1,5 @@
-Raptor.registerUi('tableAddColumn', new Button({
-    name: 'addRow',
+Raptor.registerUi(new Button({
+    name: 'tableAddColumn',
     action: function() {
         selectionEachRange(function(range) {
             var cell = range.commonAncestorContainer.parentNode;

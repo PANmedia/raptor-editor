@@ -1,21 +1,16 @@
-
-function TableMenu() {
-    Menu.call(this);
-    this.buttonText = 'Create Table';
+function TableMenu(options) {
+    Menu.call(this, {
+        name: 'tableCreate'
+    });
 }
 
-TableMenu.prototype = new Menu();
-TableMenu.prototype.constructor = TableMenu;
+TableMenu.prototype = Object.create(Menu.prototype);
 
 TableMenu.prototype.createTable = function() {
-    var x = event.target.cellIndex,
-        y = event.target.parentNode.rowIndex;
     this.raptor.actionApply(function() {
-        
-        selectionReplace(tableCreate(x + 1, y + 1, {
+        selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
         }));
-        // selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1));
     });
 };
 
@@ -46,4 +41,4 @@ TableMenu.prototype.getMenu = function() {
     return this.menu;
 }
 
-Raptor.registerUi('tableCreate', new TableMenu());
+Raptor.registerUi(new TableMenu());
