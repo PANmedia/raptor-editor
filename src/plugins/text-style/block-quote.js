@@ -1,4 +1,4 @@
-Raptor.registerUi(new Button({
+Raptor.registerUi(new PreviewButton({
     name: 'textBlockQuote',
     action: function() {
         selectionToggleWrapper('blockquote', { 
