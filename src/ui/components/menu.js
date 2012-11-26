@@ -13,7 +13,8 @@ Menu.prototype.init = function(raptor) {
     this.button = new Button({
         name: this.name,
         action: this.toggle.bind(this),
-        preview: false
+        preview: false,
+        options: this.options
     });
     return this.button.init(raptor);
 };
