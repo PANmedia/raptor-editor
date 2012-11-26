@@ -62,14 +62,17 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/jquery.ui.editor.float.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/alignment/jquery.ui.editor.alignment.js"></script>
-<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/basic/jquery.ui.editor.basic.js"></script> */ ?>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/bold.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/italic.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/underline.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/strike.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/sub.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/super.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/left.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/right.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/center.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/justify.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/super.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>

@@ -15,8 +15,6 @@
 @import 'components/messages';
 
 /* Plugins */
-@import 'plugins/alignment';
-@import 'plugins/basic';
 @import 'plugins/blockquote';
 @import 'plugins/clean';
 @import 'plugins/clear-formatting';
@@ -42,6 +40,8 @@
 @import 'plugins/snippet';
 @import 'plugins/table';
 @import 'plugins/tagmenu';
+@import 'plugins/text-align';
+@import 'plugins/text-style';
 @import 'plugins/toolbartip';
 @import 'plugins/unsavededitwarning';
 @import 'plugins/viewsource';
