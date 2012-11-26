@@ -81,7 +81,7 @@ function _(string, variables) {
     // Convert the variables
     if (!variables) {
         // <debug>
-        if (debugLevel >= MIN) {
+        if (debugLevel >= MID) {
             debug('Missing locale string: ' + string);
         }
         // </debug>
