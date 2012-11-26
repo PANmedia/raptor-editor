@@ -5,6 +5,10 @@ Raptor.registerLayout('toolbar', {
          */
         uiOrder: null
     },
+    
+    setDefaultUIOrder: function() {
+        
+    },
 
     init: function(editor, options) {
         // Load all UI components if not supplied
@@ -157,6 +161,10 @@ Raptor.registerLayout('toolbar', {
 
     show: function() {
         this.wrapper.css('display', '');
+    },
+
+    hide: function() {
+        this.wrapper.css('display', 'none');
     },
 
     destruct: function() {
