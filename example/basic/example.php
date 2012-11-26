@@ -17,7 +17,6 @@
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>Raptor Editor - Save Rest Example</title>
-	<link rel="stylesheet" href="css/style.css" />
     <?php if ($type === 'light'): ?>
         <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
         <link rel="stylesheet" href="../../src/theme/theme.css" />
