@@ -16,3 +16,30 @@
 .raptor-ui-table-create-menu .raptor-ui-table-create-menu-hover {
     border: 1px solid #f00;
 }
+
+.raptor-ui-table-create .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table.png') 0 0;
+}
+
+.raptor-ui-table-create:hover .ui-icon {
+    @include opacity(1);
+}
+
+.raptor-ui-table-add-row .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table-insert-row.png') 0 0;
+}
+
+.raptor-ui-table-add-row:hover .ui-icon {
+    @include opacity(1);
+}
+
+.raptor-ui-table-add-column .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table-insert-column.png') 0 0;
+}
+
+.raptor-ui-table-add-column:hover .ui-icon {
+    @include opacity(1);
+}

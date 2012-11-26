@@ -3,13 +3,15 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-.raptor-color-picker-basic-select .raptor-selectmenu-menu {
+.raptor-ui-color-picker-basic-menu > div {
     min-width: 100px;
 }
-.raptor-color-picker-basic-select span {
+
+.raptor-ui-color-picker-basic-menu span {
     padding-left: 2px;
 }
-.raptor-color-picker-basic-swatch {
+
+.raptor-ui-color-picker-basic-swatch {
     width: 16px;
     height: 16px;
     float: left;

@@ -5,11 +5,11 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-clear-formatting-button .ui-icon {
+.raptor-ui-clear-formatting .ui-icon {
     @include opacity(0.85);
     background: inline-image('clear-formatting.png') 0 0;
 }
 
-.raptor-clear-formatting-button:hover .ui-icon {
+.raptor-ui-clear-formatting:hover .ui-icon {
     @include opacity(1);
 }

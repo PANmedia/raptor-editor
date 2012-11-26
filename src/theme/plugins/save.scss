@@ -5,20 +5,20 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-save-button .ui-icon {
+.raptor-ui-save .ui-icon {
     @include opacity(0.85);
     background: inline-image('disk-black.png') 0 0;
 }
 
-.raptor-save-button:hover .ui-icon {
+.raptor-ui-save:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-cancel-button .ui-icon {
+.raptor-ui-cancel .ui-icon {
     @include opacity(0.85);
     background: inline-image('cross.png') 0 0;
 }
 
-.raptor-cancel-button:hover .ui-icon {
+.raptor-ui-cancel:hover .ui-icon {
     @include opacity(1);
 }
