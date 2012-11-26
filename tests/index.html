@@ -10,7 +10,6 @@
                 $('#test').load(function() {
                     var verbose = $('input[name=verbose]').is(':checked'),
                         testFrame = $('#test').get(0).contentDocument;
-                    console.log(verbose);
                     if (verbose) {
                         $('body', testFrame).addClass('verbose').removeClass('simple');
                     } else {
@@ -31,6 +30,9 @@
                 <h1>Tests:</h1>
                 <a href="cases/actions/test.html" target="test">Actions</a>
                 <a href="cases/clean/convert-elements.html" target="test">Convert Elements</a>
+                <a href="cases/clear-formatting/test.html" target="test">Clear Formatting</a>
+                <a href="cases/color-picker/test.html" target="test">Color Picker</a>
+                <a href="cases/custom-tags/test.html" target="test">Custom Tags</a>
                 <a href="cases/save-state/test.html" target="test">Save State</a>
                 <a href="cases/table/index-cells.html" target="test">Table - Index Cells</a>
                 <a href="cases/table/insert-column.html" target="test">Table - Insert Column</a>
