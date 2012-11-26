@@ -26,3 +26,9 @@ function stringStripTags(content, allowedTags) {
         return allowed.indexOf($1.toLowerCase()) > -1 ? $0 : '';
     });
 }
+
+function stringCamelCaseConvert(string, delimiter) {
+    return string.replace(/([A-Z])/g, function(match) {
+        return (delimiter || '-') + match.toLowerCase();
+    });
+}
