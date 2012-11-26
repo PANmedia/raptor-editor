@@ -1,36 +1,42 @@
 function Button(overrides) {
-    this.raptor = null;
-    this.options = {};
-    this.button = null;
-    this.buttonText = '';
+    this.preview = true;
     for (var key in overrides) {
         this[key] = overrides[key];
     }
 };
 
 Button.prototype.init = function(raptor) {
-    this.setOptions();
     this.raptor = raptor;
     this.button = $('<div>')
         .html(this.text)
-        .click($.proxy(this.click, this))
-        .mouseenter($.proxy(this.mouseEnter, this))
-        .mouseleave($.proxy(this.mouseLeave, this));
-    aButton(this.button, this.options);
+        .click(this.click.bind(this))
+        .mouseenter(this.mouseEnter.bind(this))
+        .mouseleave(this.mouseLeave.bind(this));
+    aButton(this.button, {
+        icon: this.getIcon(),
+        title: this.getTitle(),
+    });
     return this.button;
 };
-            
-Button.prototype.setOptions = function() {
-    this.options.title = _(this.name + '-title');
-    this.options.icon = 'ui-icon-' + this.name;
+
+Button.prototype.getTitle = function() {
+    return this.title || _(this.name + 'Title');
+};
+
+Button.prototype.getIcon = function() {
+    return this.icon || 'ui-icon-' + stringCamelCaseConvert(this.name);
 };
 
 Button.prototype.mouseEnter = function() {
-    this.raptor.actionPreview(this.action.bind(this));
+    if (this.preview) {
+        this.raptor.actionPreview(this.action.bind(this));
+    }
 };
 
 Button.prototype.mouseLeave = function() {
-    this.raptor.actionPreviewRestore();
+    if (this.preview) {
+        this.raptor.actionPreviewRestore();
+    }
 };
 
 Button.prototype.click = function() {
