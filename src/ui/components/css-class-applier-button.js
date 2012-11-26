@@ -1,17 +1,15 @@
 function CSSClassApplierButton(options) {
-    this.applier = null;
-    Button.call(this, options);
+    PreviewButton.call(this, options);
 }
 
-CSSClassApplierButton.prototype = new Button();
-CSSClassApplierButton.prototype.constructor = CSSClassApplierButton;
+CSSClassApplierButton.prototype = Object.create(PreviewButton.prototype);
 
 CSSClassApplierButton.prototype.action = function() {
     this.getApplier().toggleSelection(this.raptor.getSelection());
 };
 
 CSSClassApplierButton.prototype.getApplier = function() {
-    if (this.applier === null) {
+    if (!this.applier) {
         this.applier = rangy.createCssClassApplier(this.getClass(), {
             elementTagName: this.getTag()
         });
