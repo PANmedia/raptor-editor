@@ -36,7 +36,9 @@ function registerLocale(name, nativeName, strings) {
 
     locales[name] = strings;
     localeNames[name] = nativeName;
-    if (!currentLocale) currentLocale = name;
+    if (!currentLocale) {
+        currentLocale = name;
+    }
 }
 
 /**
