@@ -422,3 +422,51 @@ function selectionConstrain(element, selection) {
         }
     });
 }
+
+
+function selectionClearFormatting(limitNode, selection) {
+    limitNode = limitNode || document.body;
+    selection = selection || rangy.getSelection();
+    if (selection.rangeCount > 0) {
+        // Create a copy of the selection range to work with
+        var range = selection.getRangeAt(0).cloneRange();
+
+        // Get the selected content
+        var content = range.extractContents();
+
+        // Expand the range to the parent if there is no selected content
+        if (fragmentToHtml(content) === '') {
+            rangeExpandToParent(range);
+            selection.setSingleRange(range);
+            content = range.extractContents();
+        }
+
+        content = $('<div/>').append(fragmentToHtml(content)).text();
+
+        // Get the containing element
+        var parent = range.commonAncestorContainer;
+        while (parent && parent.parentNode != limitNode) {
+            parent = parent.parentNode;
+        }
+
+        if (parent) {
+            // Place the end of the range after the paragraph
+            range.setEndAfter(parent);
+
+            // Extract the contents of the paragraph after the caret into a fragment
+            var contentAfterRangeStart = range.extractContents();
+
+            // Collapse the range immediately after the paragraph
+            range.collapseAfter(parent);
+
+            // Insert the content
+            range.insertNode(contentAfterRangeStart);
+
+            // Move the caret to the insertion point
+            range.collapseAfter(parent);
+            range.insertNode(document.createTextNode(content));
+        } else {
+            range.insertNode(document.createTextNode(content));
+        }
+    }
+}
