@@ -1,9 +1,7 @@
 function Menu(options) {
     this.raptor = null;
-    this.buttonText = '';
-    this.menuContent = '';
     this.menu = null;
-    this.button = null;
+    this.menuContent = '';
     for (var key in options) {
         this[key] = options[key];
     }
@@ -12,17 +10,18 @@ function Menu(options) {
 Menu.prototype.init = function(raptor) {
     this.setOptions();
     this.raptor = raptor;
-    this.button = $('<div>')
-        .html(this.buttonText)
-        .click($.proxy(this.toggle, this));
-    aButton(this.button, this.options);
-    return this.button;
+    this.button = new Button({
+        name: this.name,
+        action: this.toggle.bind(this),
+        preview: false
+    });
+    return this.button.init(raptor);
 };
             
 Menu.prototype.setOptions = function() {
-    this.options.title = _(this.name + '-title');
+    this.options.title = _(this.name + 'Title');
     this.options.icon = 'ui-icon-' + this.name;
-    this.options.text = _(this.name + '-text');
+    this.options.text = _(this.name + 'Text');
 };
 
 Menu.prototype.getMenu = function() {
@@ -41,7 +40,7 @@ Menu.prototype.getMenu = function() {
 };
 
 Menu.prototype.show = function() {
-    elementPositionUnder(this.getMenu().show(), this.button);
+    elementPositionUnder(this.getMenu().show(), this.button.button);
 };
 
 Menu.prototype.hide = function() {
