@@ -21,7 +21,7 @@ Button.prototype.init = function(raptor) {
 };
             
 Button.prototype.setOptions = function() {
-    this.options.title = _(this.name);
+    this.options.title = _(this.name + '-title');
     this.options.icon = 'ui-icon-' + this.name;
 };
 
