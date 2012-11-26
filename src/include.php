@@ -45,6 +45,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>raptor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/preview-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/menu.js"></script>
@@ -63,17 +64,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/jquery.ui.editor.float.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/left.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/right.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/center.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/justify.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/bold.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/block-quote.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/italic.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/underline.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/strike.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/sub.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/super.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
@@ -82,7 +72,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.saveui.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/raptorize/jquery.ui.editor.raptorize.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/paste/jquery.ui.editor.paste.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/jquery.ui.editor.cancel.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/list/jquery.ui.editor.list.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/fontsize/jquery.ui.editor.fontsize.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/hr/hr-create.js"></script>
@@ -95,6 +84,26 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/jquery.ui.editor.i18n.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
+
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/cancel.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/clear-formatting.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/color-picker-basic.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/left.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/right.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/center.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/justify.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/super.js"></script>
+
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-row.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-column.js"></script>
