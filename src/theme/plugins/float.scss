@@ -5,29 +5,29 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-float-left-button .ui-icon-float-left {
+.raptor-ui-float-left .ui-icon {
     @include opacity(0.85);
     background: inline-image('edit-image.png') 0 0;
 }
 
-.raptor-float-left-button:hover .ui-icon-float-left {
+.raptor-ui-float-left:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-float-none-button .ui-icon-float-none {
+.raptor-ui-float-none .ui-icon {
     @include opacity(0.85);
     background: inline-image('edit-image-none.png') 0 0;
 }
 
-.raptor-float-none-button:hover .ui-icon-float-none {
+.raptor-ui-float-none:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-float-right-button .ui-icon-float-right {
+.raptor-ui-float-right .ui-icon {
     @include opacity(0.85);
     background: inline-image('edit-image-right.png') 0 0;
 }
 
-.raptor-float-right-button:hover .ui-icon-float-right {
+.raptor-ui-float-right:hover .ui-icon- {
     @include opacity(1);
 }
