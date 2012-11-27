@@ -1,15 +1,8 @@
-Raptor.registerUi(new PreviewButton({
+Raptor.registerUi(new TableCellButton({
     name: 'tableAddRow',
-    action: function() {
-        selectionEachRange(function(range) {
-            var cell = range.commonAncestorContainer.parentNode;
-            if (cell.tagName === 'TD' ||
-                    cell.tagName === 'TH') {
-                var index = tableGetCellIndex(cell);
-                tableInsertRow(cell.parentNode.parentNode.parentNode, index.y, {
-                    placeHolder: '&nbsp;'
-                });
-            }
+    applyToCell: function(cell) {
+        tableInsertRow(cell.parentNode.parentNode.parentNode, tableGetCellIndex(cell).x, {
+            placeHolder: '&nbsp;'
         });
     }
 }));
