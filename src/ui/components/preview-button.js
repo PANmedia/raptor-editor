@@ -14,13 +14,15 @@ PreviewButton.prototype.getButton = function() {
 };
 
 PreviewButton.prototype.mouseEnter = function() {
-    if (this.preview) {
+    if (this.canPreview()) {
         this.raptor.actionPreview(this.action.bind(this));
     }
 };
 
 PreviewButton.prototype.mouseLeave = function() {
-    if (this.preview) {
-        this.raptor.actionPreviewRestore();
-    }
+    this.raptor.actionPreviewRestore();
+};
+
+PreviewButton.prototype.canPreview = function() {
+    return this.preview;
 };
