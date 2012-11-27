@@ -135,14 +135,11 @@ $.widget('ui.editor',
     attach: function() {
         this.bind('change', this.historyPush);
 
-        var change = $.proxy(this.checkChange, this);
-
-        this.getElement().find('img').bind('click.' + this.widgetName, $.proxy(function(event){
+        this.getElement().find('img').bind('click.' + this.widgetName, function(event){
             selectionSelectOuter(event.target);
-        }, this));
+        }.bind(this));
 
-        this.getElement().bind('mouseup.' + this.widgetName, change);
-        this.getElement().bind('keyup.' + this.widgetName, change);
+        this.getElement().bind('mouseup.' + this.widgetName + ',keyup.' + this.widgetName, this.checkChange.bind(this));
 
         // Unload warning
         $(window).bind('beforeunload', Raptor.unloadWarning.bind(Raptor));
@@ -549,12 +546,12 @@ $.widget('ui.editor',
                     window.clearTimeout(this.timer);
                     this.timer = null;
                 }
-                this.element.stop().slideUp($.proxy(function() {
+                this.element.stop().slideUp(function() {
                     if ($.isFunction(options.hide)) {
                         options.hide.call(this);
                     }
                     this.element.remove();
-                }, this));
+                }.bind(this));
             }
         };
 
@@ -1048,17 +1045,20 @@ $.widget('ui.editor',
      */
     bind: function(name, callback, context) {
         // <strict>
-        if (!$.isFunction(callback)) handleError('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
+        if (!$.isFunction(callback)) {
+            handleError('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
+        }
         // </strict>
-        var events = this.events;
-        $.each(name.split(','), function(i, name) {
-            name = $.trim(name);
-            if (!events[name]) events[name] = [];
-            events[name].push({
+        var names = name.split(/,\s*/);
+        for (var i = 0, l = names.length; i < l; i++) {
+            if (!this.events[names[i]]) {
+                this.events[names[i]] = [];
+            }
+            this.events[names[i]].push({
                 context: context,
                 callback: callback
             });
-        });
+        }
     },
 
     /**
@@ -1084,7 +1084,9 @@ $.widget('ui.editor',
      */
     fire: function(name, global, sub) {
         // Fire before sub-event
-        if (!sub) this.fire('before:' + name, global, true);
+        if (!sub) {
+            this.fire('before:' + name, global, true);
+        }
 
         // <debug>
         if (debugLevel === MAX) {
@@ -1104,13 +1106,16 @@ $.widget('ui.editor',
                 }
             }
         }
+        
         // Also trigger the global editor event, unless specified not to
         if (global !== false) {
             Raptor.fire(name);
         }
 
         // Fire after sub-event
-        if (!sub) this.fire('after:' + name, global, true);
+        if (!sub) {
+            this.fire('after:' + name, global, true);
+        }
     }
 
 });
