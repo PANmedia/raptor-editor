@@ -65,7 +65,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.savejson.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.saverest.js"></script>
@@ -111,3 +110,5 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-row.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-column.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/view-source/view-source.js"></script>
