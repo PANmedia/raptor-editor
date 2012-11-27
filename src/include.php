@@ -46,6 +46,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/preview-button.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/filtered-preview-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/menu.js"></script>
@@ -63,7 +64,6 @@
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/jquery.ui.editor.color-picker-basic.js"></script> */ ?>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/float/jquery.ui.editor.float.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
@@ -79,7 +79,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/link/jquery.ui.editor.link.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/imageresize/jquery.ui.editor.imageresize.js"></script>
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/unsavededitwarning/jquery.ui.editor.unsavededitwarning.js"></script>*/ ?>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/embed/jquery.ui.editor.embed.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/statistics/jquery.ui.editor.statistics.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/jquery.ui.editor.i18n.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
@@ -88,8 +87,12 @@
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/cancel.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/clear-formatting.js"></script>
-
 <script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/color-picker-basic.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/embed/embed.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/float/float-left.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/float/float-none.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/float/float-right.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/left.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/right.js"></script>
@@ -104,6 +107,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/sub.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/super.js"></script>
 
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-cell-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-row.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-add-column.js"></script>
