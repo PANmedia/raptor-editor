@@ -49,14 +49,16 @@
         td, th {
             border: 1px dotted #777;
         }
-
-        .cms-table-cell-selected {
-            background-color: #aaf;
+        
+        div.editable {
+            float: left;
+            width: 45%;
+            margin: 0 1%;
         }
     </style>
 </head>
 <body>
-    <div class="editable" data-id="header">
+    <header class="editable" data-id="header">
         <?php ob_start(); ?>
         <h1>Raptor Editor - Save Rest Example</h1>
         <?php
@@ -67,7 +69,8 @@
                 echo $buffer;
             }
         ?>
-    </div>
+    </header>
+    <div style="clear: both"></div>
     <div class="editable" data-id="body-1">
         <?php ob_start(); ?>
         <p>
