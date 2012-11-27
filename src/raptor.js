@@ -526,7 +526,9 @@ var Raptor = /** @lends $.ui.raptor */ {
             debug('Firing global/static event: ' + name);
         }
         // </debug>
-        if (!this.events[name]) return;
+        if (!this.events[name]) {
+            return;
+        }
         for (var i = 0, l = this.events[name].length; i < l; i++) {
             this.events[name][i].call(this);
         }
