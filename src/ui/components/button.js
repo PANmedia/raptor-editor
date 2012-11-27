@@ -11,7 +11,7 @@ Button.prototype.init = function(raptor) {
         icons: {
             primary: this.getIcon()
         },
-        text: false,
+        text: false
     });
     return this.button;
 };
