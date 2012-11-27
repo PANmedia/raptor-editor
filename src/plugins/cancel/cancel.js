@@ -13,36 +13,28 @@ Raptor.registerUi(new Button({
                 resizable: false,
                 autoOpen: false,
                 title: _('cancelDialogTitle'),
-                dialogClass: this.raptor.options.dialogClass + ' ' + this.options.baseClass,
+                dialogClass: this.options.dialogClass,
                 buttons: [
                     {
                         text: _('cancelDialogOKButton'),
                         click: function() {
                             this.raptor.cancelEditing();
                             aDialogClose(cancelDialog);
-                        }.bind(this)
+                        }.bind(this),
+                        icons: {
+                            primary: 'ui-icon-circle-check'
+                        }
                     },
                     {
                         text: _('cancelDialogCancelButton'),
                         click: function() {
                             aDialogClose(cancelDialog);
-                        }
-                    }
-                ],
-                open: function() {
-                    // Apply custom icons to the dialog buttons
-                    var buttons = $(this).parent().find('.ui-dialog-buttonpane');
-                    aButton(buttons.find('button:eq(0)'), {
-                        icons: {
-                            primary: 'ui-icon-circle-check'
-                        }
-                    });
-                    aButton(buttons.find('button:eq(1)'), {
+                        },
                         icons: {
                             primary: 'ui-icon-circle-close'
                         }
-                    });
-                }
+                    }
+                ]
             });
         }
         return cancelDialog;
