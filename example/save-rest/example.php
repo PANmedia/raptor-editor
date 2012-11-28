@@ -9,7 +9,7 @@
         }
     }
 
-    $type = 'light';
+    $type = 'include';
 ?>
 <!doctype html>
 <html>
