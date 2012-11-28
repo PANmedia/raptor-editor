@@ -6,21 +6,21 @@
 @import 'compass/css3/box';
 @import 'compass/css3/opacity';
 
-.raptor-dock-button .ui-icon-pin-s {
+.raptor-ui-dock-to-screen .ui-icon {
     @include opacity(0.85);
-    background: inline-image('pin.png') 0 0;
+    background: inline-image('application-dock-090.png') 0 0;
 }
 
-.raptor-dock-button:hover .ui-icon-pin-s {
+.raptor-ui-dock-to-screen:hover .ui-icon-pin-s {
     @include opacity(1);
 }
 
-.raptor-dock-button .ui-icon-pin-w {
+.raptor-ui-dock-to-element .ui-icon {
     @include opacity(0.85);
-    background: inline-image('pin-in.png') 0 0;
+    background: inline-image('application-dock-tab.png') 0 0;
 }
 
-.raptor-dock-button:hover .ui-icon-pin-w {
+.raptor-ui-dock-to-element:hover .ui-icon-pin-s {
     @include opacity(1);
 }
 
