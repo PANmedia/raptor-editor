@@ -10,15 +10,15 @@
     <script src="../src/tools/style.js"></script>
     <script src="../src/tools/dock.js"></script>
     <style type="text/css">
-        * {
-            font-size: 115%;
+        p {
+            font-size: 16pt;
         }
         .element-to-dock {
             background-color: #9999ff;
             border: 1px solid #3333ff;
         }
         .wrapper {
-            width: 300px;
+            width: 400px;
             margin: 0 auto;
         }
     </style>
@@ -29,6 +29,15 @@
             <h1>Element to dock</h1>
         </div>
         <div class="test-template">
+            <div>
+                <button name="undock">Undock</button>
+                <button name="dock-to" data-position="top" data-spacer="true">Dock to top</button>
+                <button name="dock-to" data-position="topLeft" data-spacer="false">Dock to top left</button>
+                <button name="dock-to" data-position="topRight" data-spacer="false">Dock to top right</button>
+                <button name="dock-to" data-position="bottom" data-spacer="true">Dock to bottom</button>
+                <button name="dock-to" data-position="bottomLeft" data-spacer="false">Dock to bottom left</button>
+                <button name="dock-to" data-position="bottomRight" data-spacer="false">Dock to bottom right</button>
+            </div>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -53,7 +62,22 @@
     </div>
 
     <script type="text/javascript">
-        dockToScreen($('.element-to-dock'));
+        var dockState = null;
+        function undock() {
+            if (dockState) {
+                var toolbar = undockFromScreen(dockState);
+                toolbar.prependTo('.wrapper');
+                dockState = null;
+            }
+        }
+        $('[name=undock]').click(undock);
+        $('[name=dock-to]').click(function() {
+            undock();
+            dockState = dockToScreen($('.element-to-dock'), {
+                position: $(this).data('position'),
+                spacer: $(this).data('spacer')
+            });
+        });
     </script>
 </body>
 </html>
