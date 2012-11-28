@@ -166,6 +166,10 @@ Raptor.registerLayout('toolbar', {
     hide: function() {
         this.wrapper.css('display', 'none');
     },
+            
+    getElement: function() {
+        return this.wrapper;
+    },
 
     destruct: function() {
         if (this.wrapper) {
