@@ -34,12 +34,14 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/action.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/clean.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/dock.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/element.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/fragment.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/range.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/selection.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/string.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/state.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/style.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/table.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/types.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>raptor.js"></script>
@@ -58,14 +60,12 @@
 <!-- Plugins -->
 <script type="text/javascript" src="<?php echo $uri ?>plugins/toolbartip/jquery.ui.editor.toolbartip.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/logo/jquery.ui.editor.logo.js"></script>
-<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/dock/jquery.ui.editor.dock.js"></script> */ ?>
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/clicktoedit/jquery.ui.editor.clicktoedit.js"></script> */ ?>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clickbuttontoedit/jquery.ui.editor.clickbuttontoedit.js"></script>
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/jquery.ui.editor.color-picker-basic.js"></script> */ ?>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.savejson.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.saverest.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.saveui.js"></script>
@@ -87,11 +87,17 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/cancel.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/color-picker-basic.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/dock/dock-to-screen.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/dock/dock-to-element.js"></script>
+
 <script type="text/javascript" src="<?php echo $uri ?>plugins/embed/embed.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/float-left.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/float-none.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/float/float-right.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/guides/guides.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/left.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/right.js"></script>
