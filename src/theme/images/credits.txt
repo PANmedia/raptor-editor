@@ -1,4 +1,6 @@
 Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons Attribution 3.0 license. http://p.yusukekamiyamane.com/
+ - application-dock-090.png
+ - application-dock-tab.png
  - arrow-circle-135-left.png
  - arrow-curve-180-left.png
  - arrow-curve.png
