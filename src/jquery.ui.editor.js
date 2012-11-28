@@ -611,6 +611,10 @@ $.widget('ui.editor',
     /*========================================================================*\
      * Layout
     \*========================================================================*/
+    getLayout: function() {
+        return this.layout;
+    },
+    
     loadLayout: function() {
         if (!this.layout) {
             this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
