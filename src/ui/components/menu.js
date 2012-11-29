@@ -12,7 +12,7 @@ Menu.prototype.init = function(raptor) {
     this.raptor = raptor;
     this.button = new Button({
         name: this.name,
-        action: this.toggle.bind(this),
+        action: this.show.bind(this),
         preview: false,
         options: this.options
     });
@@ -28,7 +28,7 @@ Menu.prototype.setOptions = function() {
 Menu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<div>')
-            .addClass('ui-menu ui-widget ui-widget-content ui-corner-all')
+            .addClass('ui-menu ui-widget ui-widget-content ui-corner-all ' + this.options.baseClass + '-menu ' + this.raptor.options.baseClass + '-menu')
             .html(this.menuContent)
             .css('position', 'fixed')
             .hide()
@@ -36,22 +36,16 @@ Menu.prototype.getMenu = function() {
             .mousedown(function(event) {
                 event.preventDefault();
             });
+        // Click off close event
+        $('html').click(function(event) {
+            if (this.button.button.has(event.target).length === 0) {
+                this.menu.hide();
+            }
+        }.bind(this));
     }
     return this.menu;
 };
 
 Menu.prototype.show = function() {
-    elementPositionUnder(this.getMenu().show(), this.button.button);
-};
-
-Menu.prototype.hide = function() {
-    this.getMenu().hide()
-};
-
-Menu.prototype.toggle = function() {
-    if (this.getMenu().is(':visible')) {
-        this.hide();
-    } else {
-        this.show();
-    }
+    elementPositionUnder(this.getMenu().toggle(), this.button.button);
 };
