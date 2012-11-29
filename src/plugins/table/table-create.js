@@ -6,7 +6,7 @@ function TableMenu(options) {
 
 TableMenu.prototype = Object.create(Menu.prototype);
 
-TableMenu.prototype.createTable = function() {
+TableMenu.prototype.createTable = function(event) {
     this.raptor.actionApply(function() {
         selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
@@ -14,21 +14,32 @@ TableMenu.prototype.createTable = function() {
     });
 };
 
-TableMenu.prototype.highLight = function(event) {
-    var table = $(event.target).closest('table'),
-        cells = tableCellsInRange(table.get(0), {
+TableMenu.prototype.highlight = function(event) {
+    var cells = tableCellsInRange(this.menuTable.get(0), {
             x: 0,
             y: 0
         }, {
             x: event.target.cellIndex,
             y: event.target.parentNode.rowIndex
         });
-    table
+        
+    // highlight cells in menu
+    this.highlightRemove(event);
+    $(cells).addClass(this.options.baseClass + '-menu-hover');
+    
+    // Preview create 
+    this.raptor.actionPreview(function() {
+        selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
+            placeHolder: '&nbsp;'
+        }));
+    });
+};
+
+TableMenu.prototype.highlightRemove = function(event) {
+    this.menuTable
         .find('.' + this.options.baseClass + '-menu-hover')
         .removeClass(this.options.baseClass + '-menu-hover');
-    for (var i = 0; i < cells.length; i++) {
-        $(cells[i]).addClass(this.options.baseClass + '-menu-hover');
-    }
+    this.raptor.actionPreviewRestore();
 };
 
 TableMenu.prototype.getMenu = function() {
@@ -36,7 +47,9 @@ TableMenu.prototype.getMenu = function() {
         this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
         var menu = Menu.prototype.getMenu.call(this)
             .on('click', 'td', this.createTable.bind(this))
-            .on('mouseover', 'td', this.highLight.bind(this));
+            .on('mouseenter', 'td', this.highlight.bind(this))
+            .mouseleave(this.highlightRemove.bind(this));
+        this.menuTable = this.menu.find('table:eq(0)');
     }
     return this.menu;
 }
