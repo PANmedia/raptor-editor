@@ -84,14 +84,7 @@
                 })
                 .remove();
         }
-        for (i = 0; i < this.options.stripEmptyAttrs.length; i++) {
-            var attr = this.options.stripEmptyAttrs[i];
-            editor.getElement()
-                .find('[' + this.options.stripEmptyAttrs[i] + ']')
-                .filter(function() {
-                    return $.trim($(this).attr(attr)) === '';
-                }).removeAttr(this.options.stripEmptyAttrs[i]);
-        }
+        cleanEmptyAttributes(editor.getElement(), this.options.stripEmptyAttrs);
 
         // Strip domains
         var origin = window.location.protocol + '//' + window.location.host,
