@@ -22,7 +22,7 @@
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Save State 1: Serialized Ranges</h1>
+        <h1>Save State 1: Serialized ranges</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -55,7 +55,7 @@
     </script>
 
     <div class="test-2">
-        <h1>Save State 2: Node State Object</h1>
+        <h1>Save State 2: Node state object</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -84,6 +84,56 @@
             input.html('');
             var restoredState = stateRestore(input, savedState);
             rangesToTokens(restoredState.ranges);
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Save State 3: Node state object with events and custom data</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+
+            var eventTest = 0;
+            input.click(function() {
+                eventTest++;
+            });
+            input.trigger('click');
+            input.data('dataTest', 'value');
+            
+            var savedState = stateSave(input);
+            input.html('');
+            
+            var restoredState = stateRestore(input, savedState);
+            input = restoredState.element;
+            rangesToTokens(restoredState.ranges);
+            
+            input.trigger('click');
+            if (eventTest !== 2) {
+                throw new Error('Test click event did not fire the correct amount of times. Fired ' + eventTest + ' expected 2.');
+            }
+            if (input.data('dataTest') !== 'value') {
+                throw new Error('Test bound data is not correct. Got ' + input.data('dataTest') + ' expected "value".');
+            }
         });
     </script>
 </body>
