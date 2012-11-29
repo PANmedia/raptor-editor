@@ -43,7 +43,8 @@ function style_html(html_source, options) {
       indent_size,
       indent_character,
       max_char,
-      brace_style;
+      brace_style,
+      unformatted;
 
   options = options || {};
   indent_size = options.indent_size || 4;
@@ -67,7 +68,7 @@ function style_html(html_source, options) {
 
     this.Utils = { //Uilities made available to the various functions
       whitespace: "\n\r\t ".split(''),
-      single_token: 'br,input,link,meta,!doctype,basefont,base,area,hr,wbr,param,img,isindex,?xml,embed'.split(','), //all the single tags for HTML
+      single_token: 'br,input,link,meta,!doctype,basefont,base,area,hr,wbr,param,img,isindex,?xml,embed,?php,?,?='.split(','), //all the single tags for HTML
       extra_liners: 'head,body,/html'.split(','), //for tags that need a line of whitespace before them
       in_array: function (what, arr) {
         for (var i=0; i<arr.length; i++) {
@@ -299,7 +300,7 @@ function style_html(html_source, options) {
 
     this.get_unformatted = function (delimiter, orig_tag) { //function to return unformatted content in its entirety
 
-      if (orig_tag && orig_tag.indexOf(delimiter) != -1) {
+      if (orig_tag && orig_tag.toLowerCase().indexOf(delimiter) != -1) {
         return '';
       }
       var input_char = '';
@@ -336,7 +337,7 @@ function style_html(html_source, options) {
         space = true;
 
 
-      } while (content.indexOf(delimiter) == -1);
+      } while (content.toLowerCase().indexOf(delimiter) == -1);
       return content;
     }
 
