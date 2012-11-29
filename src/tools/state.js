@@ -6,13 +6,9 @@ function stateSave(element) {
     }
     // </strict>
     
-    // <debug>
-    if (debugLevel >= MID) debug('State save');
-    // </debug>
-    
     var ranges = rangy.getSelection().getAllRanges();
     return {
-        element: element.clone(),
+        element: element.clone(true),
         ranges: ranges.length ? rangeSerialize(ranges, element.get(0)) : null
     };
 }
@@ -26,10 +22,6 @@ function stateRestore(element, state) {
         handleError("Preview state element must be a jQuery instance when restoring a state", state.element);
     }
     // </strict>
-    
-    // <debug>
-    if (debugLevel >= MID) debug('State restore');
-    // </debug>
     
     element.replaceWith(state.element);
     return {
