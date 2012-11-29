@@ -16,15 +16,6 @@ FilteredPreviewButton.prototype.selectionChange = function() {
     });
 };
 
-FilteredPreviewButton.prototype.getElement = function(range) {
-    var cell = range.commonAncestorContainer.parentNode;
-    if (cell.tagName === 'TD' ||
-            cell.tagName === 'TH') {
-        return cell;
-    }
-    return null;
-};
-
 FilteredPreviewButton.prototype.canPreview = function() {
     return PreviewButton.prototype.canPreview.call(this) && this.isEnabled();
 };
@@ -41,9 +32,9 @@ FilteredPreviewButton.prototype.isEnabled = function() {
 
 FilteredPreviewButton.prototype.action = function() {
     selectionEachRange(function(range) {
-        var cell = this.getElement(range);
-        if (cell) {
-            this.applyToElement(cell);
+        var element = this.getElement(range);
+        if (element) {
+            this.applyToElement(element);
         }
     }.bind(this));
 };
