@@ -134,8 +134,13 @@ aside {
     float: left;
 }
 
-iframe {
+.iframes {
     width: 78%;
     float: left;
-    min-height: 400px;
+}
+iframe {
+    border: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
