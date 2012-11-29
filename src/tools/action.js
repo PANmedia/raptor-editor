@@ -7,10 +7,6 @@ function actionPreview(previewState, target, action) {
     
     actionPreviewRestore(previewState, target);
     
-    // <debug>
-    if (debugLevel >= MID) debug('Action preview');
-    // </debug>
-    
     previewState = stateSave(target);
     action();
     rangy.getSelection().removeAllRanges();
@@ -19,10 +15,6 @@ function actionPreview(previewState, target, action) {
 
 function actionPreviewRestore(previewState, target) {
     if (previewState) {
-        // <debug>
-        if (debugLevel >= MID) debug('Action preview restore');
-        // </debug>
-        
         var state = stateRestore(target, previewState);
         if (state.ranges) {
             rangy.getSelection().setRanges(state.ranges);
@@ -32,21 +24,8 @@ function actionPreviewRestore(previewState, target) {
     return target;
 }
 
-function actionApply(previewState, target, action, history) {
-    // <strict>
-    if (!(target instanceof $)) {
-        handleError("Target must be a jQuery instance when applying an action", target);
-    }
-    // </strict>
-    
-    target = actionPreviewRestore(previewState, target);
-    
-    // <debug>
-    if (debugLevel >= MID) debug('Action apply');
-    // </debug>
-    
+function actionApply(action, history) {
     action();
-    return target;
 }
 
 function actionUndo() {
