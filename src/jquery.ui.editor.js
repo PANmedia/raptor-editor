@@ -358,6 +358,8 @@ $.widget('ui.editor',
 
     previewState: null,
     actionPreview: function(action) {
+        this.actionPreviewRestore();
+        selectionConstrain(this.getElement());
         this.previewState = actionPreview(this.previewState, this.target, action);
     },
 
@@ -370,7 +372,9 @@ $.widget('ui.editor',
 
     history: {},
     actionApply: function(action) {
-        this.target = actionApply(this.previewState, this.target, action, this.history);
+        this.actionPreviewRestore();
+        selectionConstrain(this.getElement());
+        actionApply(action, this.history);
         this.previewState = null;
     },
 
