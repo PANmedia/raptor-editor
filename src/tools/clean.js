@@ -42,3 +42,14 @@ function cleanReplaceElements(selector, replacements) {
 function cleanUnwrapElements(selector) {
     $(selector).unwrap();
 }
+
+function cleanEmptyAttributes(element, attributes) {
+    for (i = 0; i < attributes.length; i++) {
+        var attr = attributes[i];
+        element
+            .find('[' + attributes[i] + ']')
+            .filter(function() {
+                return $.trim($(this).attr(attr)) === '';
+            }).removeAttr(attributes[i]);
+    }
+}
