@@ -23,108 +23,6 @@ p, h2 {
     padding: 0 5px;
 }
 
-.ui-editor-wrapper,
-.test-templates {
-    display: none;
-}
-
-.test-results:before {
-    content: "Results: ";
-    background: #587CBF;
-    width: 100%;
-    display: block;
-}
-.test-results {
-    border: 1px solid #587CBF;
-}
-
-.test-input:before {
-    content: "Input: ";
-    background: #587CBF;
-    width: 100%;
-    display: block;
-}
-.test-input {
-    border: 1px solid #587CBF;
-}
-
-.test-output:before {
-    content: "Output: ";
-    background: #587CBF;
-    width: 100%;
-    display: block;
-}
-.test-output {
-    border: 1px solid #587CBF;
-}
-
-.test-expected:before {
-    content: "Expected: ";
-    background: #587CBF;
-    width: 100%;
-    display: block;
-}
-.test-expected {
-    border: 1px solid #587CBF;
-}
-
-.test-diff:before {
-    content: "Differences: ";
-    background: #587CBF;
-    width: 100%;
-    display: block;
-}
-.test-diff {
-    border: 1px solid #587CBF;
-}
-
-.pass {
-    margin: 5px;
-    border: 2px solid #B8DC3C;
-}
-
-.verbose .pass:before {
-    content: "Pass: ";
-    background: #B8DC3C;
-    width: 100%;
-    display: block;
-}
-
-.verbose .pass h1 {
-    margin: 5px;
-}
-
-.simple .pass h1:before {
-    content: "Pass: ";
-    background: #B8DC3C;
-    margin-right: 2px;
-}
-
-.simple .pass h1 {
-    font-size: 13px;
-    margin: 0;
-    padding: 0;
-}
-
-.simple .pass .test-input,
-.simple .pass .test-output,
-.simple .pass .test-expected,
-.simple .pass .test-diff {
-    display: none;
-}
-
-.fail:before {
-    content: "Fail: ";
-    background: #CB2402;
-    width: 100%;
-    display: block;
-}
-
-.fail {
-    margin: 5px;
-    border: 2px solid #CB2402;
-}
-
 nav a {
     display: block;
 }
@@ -138,9 +36,11 @@ aside {
     width: 78%;
     float: left;
 }
+
 iframe {
     border: 0;
     width: 100%;
     margin: 0;
     padding: 0;
+    vertical-align: bottom;
 }
