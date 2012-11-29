@@ -343,6 +343,9 @@ function selectionReplaceSplittingSelectedElement(html, selection) {
  */
 function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selection = selection || rangy.getSelection();
+    if (selection.rangeCount === 0) {
+        return;
+    }
 
     var startElement = selectionGetStartElement()[0];
     var endElement = selectionGetEndElement()[0];
@@ -360,7 +363,6 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
 
     // Context is invalid. Split containing element and insert list in between.
     selectionReplaceSplittingSelectedElement(html, selection);
-    return;
 }
 
 /**
