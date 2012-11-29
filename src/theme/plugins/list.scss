@@ -5,20 +5,20 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-list-unordered-button .ui-icon-list-unordered {
+.raptor-ui-list-unordered .ui-icon-list-unordered {
     @include opacity(0.85);
     background: inline-image('edit-list.png') 0 0;
 }
 
-.raptor-list-unordered-button:hover .ui-icon-list-unordered {
+.raptor-ui-list-unordered:hover .ui-icon-list-unordered {
     @include opacity(1);
 }
 
-.raptor-list-ordered-button .ui-icon-list-ordered {
+.raptor-ui-list-ordered .ui-icon-list-ordered {
     @include opacity(0.85);
     background: inline-image('edit-list-order.png') 0 0;
 }
 
-.raptor-list-ordered-button:hover .ui-icon-list-ordered {
+.raptor-ui-list-ordered:hover .ui-icon-list-ordered {
     @include opacity(1);
 }

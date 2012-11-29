@@ -26,20 +26,38 @@
     @include opacity(1);
 }
 
-.raptor-ui-table-add-row .ui-icon {
+.raptor-ui-table-insert-row .ui-icon {
     @include opacity(0.85);
     background: inline-image('table-insert-row.png') 0 0;
 }
 
-.raptor-ui-table-add-row:hover .ui-icon {
+.raptor-ui-table-insert-row:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-ui-table-add-column .ui-icon {
+.raptor-ui-table-insert-column .ui-icon {
     @include opacity(0.85);
     background: inline-image('table-insert-column.png') 0 0;
 }
 
-.raptor-ui-table-add-column:hover .ui-icon {
+.raptor-ui-table-insert-column:hover .ui-icon {
+    @include opacity(1);
+}
+
+.raptor-ui-table-delete-row .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table-delete-row.png') 0 0;
+}
+
+.raptor-ui-table-delete-row:hover .ui-icon {
+    @include opacity(1);
+}
+
+.raptor-ui-table-delete-column .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table-delete-column.png') 0 0;
+}
+
+.raptor-ui-table-delete-column:hover .ui-icon {
     @include opacity(1);
 }

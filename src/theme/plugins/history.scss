@@ -5,20 +5,20 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-undo-button .ui-icon-undo {
+.raptor-ui-history-undo .ui-icon {
     @include opacity(0.85);
     background: inline-image('arrow-curve-180-left.png') 0 0;
 }
 
-.raptor-undo-button:hover .ui-icon-undo {
+.raptor-ui-history-undo:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-redo-button .ui-icon-redo {
+.raptor-ui-history-redo .ui-icon {
     @include opacity(0.85);
     background: inline-image('arrow-curve.png') 0 0;
 }
 
-.raptor-redo-button:hover .ui-icon-redo {
+.raptor-ui-history-redo:hover .ui-icon {
     @include opacity(1);
 }
