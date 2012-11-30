@@ -5,7 +5,7 @@
  */
 
 /**
- * Convert a DOMFragment to an HTML string. Optinally wraps the tring in a tag.
+ * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
  *
  */
 function fragmentToHtml(domFragment, tag) {
