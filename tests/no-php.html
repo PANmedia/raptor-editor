@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="cache-control" content="no-cache" />
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+        <script src="../src/dependencies/jquery.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                function iframeResize() {
+                    $(this).height($($(this).get(0).contentDocument).find('html').outerHeight());
+                }
+                
+                function iframeAdd(src) {
+                    $('<iframe>')
+                        .attr('src', src)
+                        .load(iframeResize)
+                        .appendTo('.iframes');
+                }
+                
+                $('[name=run-all]').click(function() {
+                    $('iframe').remove();
+                    var time = 0;
+                    $('.tests a').each(function() {
+                        setTimeout(function() {
+                            iframeAdd($(this).attr('href'));
+                        }.bind(this), time += 50);
+                    });
+                });
+                
+                $('[name=verbose]').change(function() {
+                    $('iframe').each(function() {
+                        $('body', $(this).get(0).contentDocument).toggleClass('verbose').toggleClass('simple');
+                        iframeResize.call(this);
+                    });
+                });
+                
+                $('nav a').click(function() {
+                    if (event.which === 1) {
+                        $('iframe').remove();
+                        iframeAdd($(this).attr('href'));
+                        return false;
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <aside>
+            <h1>Tests:</h1>
+            <div>
+                <button name="run-all">Run All</button>
+                <input type="checkbox" name="verbose" id="verbose" />
+                <label for="verbose">Verbose Output</label>
+            </div>
+            <nav class="tests">
+                <a target="test" href="cases/actions/test.html">actions - test.html</a><a target="test" href="cases/applier/test-attributes.html">applier - test-attributes.html</a><a target="test" href="cases/applier/test-classes.html">applier - test-classes.html</a><a target="test" href="cases/applier/test-tags.html">applier - test-tags.html</a><a target="test" href="cases/clean/convert-elements.html">clean - convert-elements.html</a><a target="test" href="cases/clear-formatting/test.html">clear-formatting - test.html</a><a target="test" href="cases/color-picker/test.html">color-picker - test.html</a><a target="test" href="cases/custom-tags/test.html">custom-tags - test.html</a><a target="test" href="cases/dock/dock-to-element.html">dock - dock-to-element.html</a><a target="test" href="cases/dock/dock-to-screen.html">dock - dock-to-screen.html</a><a target="test" href="cases/list/test.html">list - test.html</a><a target="test" href="cases/save-state/test.html">save-state - test.html</a><a target="test" href="cases/table/create-table.html">table - create-table.html</a><a target="test" href="cases/table/index-cells.html">table - index-cells.html</a><a target="test" href="cases/table/insert-column.html">table - insert-column.html</a><a target="test" href="cases/table/insert-row.html">table - insert-row.html</a><a target="test" href="cases/table/merge-cell.html">table - merge-cell.html</a><a target="test" href="cases/toggle-wrapper-1/test.html">toggle-wrapper-1 - test.html</a><a target="test" href="cases/tokens-to-ranges/test.html">tokens-to-ranges - test.html</a>            </nav>
+        </aside>
+        <div class="iframes">
+            <iframe id="test" name="test" src="test.html"></iframe>
+        </div>
+    </body>
+</html>
