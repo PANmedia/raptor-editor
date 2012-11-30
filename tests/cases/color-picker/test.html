@@ -20,25 +20,21 @@
         var blueApplier = rangy.createCssClassApplier('cms-blue', {
             elementTagName: 'color'
         });
+        var remover = rangy.createApplier({
+            tag: 'color',
+            ignoreClasses: true
+        });
     </script>
     <div class="test-1">
         <h1>Color 1: Normalized groups</h1>
         <div class="test-input">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis {dui id erat {pellentesque et rhoncus} nunc semper.} Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                {This should be red {This should be red, then blue.} This should be blue.}
             </p>
         </div>
         <div class="test-expected">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis <color class="cms-red">dui id erat </color><color class="cms-blue">pellentesque et rhoncus nunc semper.</color> Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                <color class="cms-red">This should be red </color><color class="cms-blue">This should be red, then blue. This should be blue.</color>
             </p>
         </div>
     </div>
@@ -48,6 +44,7 @@
             ranges = tokensToRanges(input, 1);
             redApplier.applyToRanges(ranges);
             ranges = tokensToRanges(input, 1);
+            remover.undoToRanges(ranges);
             blueApplier.applyToRanges(ranges);
         });
     </script>
