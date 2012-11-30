@@ -9,6 +9,21 @@ body {
     margin: 0;
 }
 
+.CodeMirror-scroll {
+    height: auto !important;
+}
+
+.test-clear {
+    clear: both;
+    height: 3px;
+}
+
+.test-box {
+    float: left;
+    width: 49%;
+    border: 1px solid #587CBF;
+}
+
 .test-results:before {
     content: "Results: ";
     background: #587CBF;
@@ -27,8 +42,18 @@ body {
     display: block;
 }
 
-.test-input {
-    border: 1px solid #587CBF;
+.test-source:before {
+    content: "Source: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+
+.test-source {
+    float: right;
+    width: 49%;
+    font-family: 'Courier New', monospace;
+    overflow: auto;
 }
 
 .test-output:before {
@@ -37,18 +62,12 @@ body {
     width: 100%;
     display: block;
 }
-.test-output {
-    border: 1px solid #587CBF;
-}
 
 .test-expected:before {
     content: "Expected: ";
     background: #587CBF;
     width: 100%;
     display: block;
-}
-.test-expected {
-    border: 1px solid #587CBF;
 }
 
 .test-diff:before {
@@ -96,9 +115,8 @@ body {
     padding: 0;
 }
 
-.simple .pass .test-input,
-.simple .pass .test-output,
-.simple .pass .test-expected,
+.simple .pass .test-box,
+.simple .pass .test-clear,
 .simple .pass .test-diff {
     display: none;
 }

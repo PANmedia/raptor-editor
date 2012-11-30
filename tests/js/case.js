@@ -1,3 +1,15 @@
+var debugEnabled = false;
+function debug() {
+    if (arguments.length === 0) {
+        debugEnabled = true;
+        console.log('Debug enabled!');
+        return;
+    } 
+    if (debugEnabled) {
+        console.log.apply(console, arguments);
+    }
+}
+
 function loadJS(src) {
     document.write('<script type="text/javascript" src="../../' + src + '"></script>');
 }
@@ -10,7 +22,13 @@ function loadCSS(href) {
 // document.write('<meta http-equiv="cache-control" content="no-cache" />');
 
 loadCSS('css/case.css');
+loadCSS('../codemirror/lib/codemirror.css');
 
+loadJS('../codemirror/lib/codemirror.js');
+loadJS('../codemirror/mode/javascript/javascript.js');
+loadJS('../codemirror/mode/xml/xml.js');
+loadJS('../codemirror/mode/css/css.js');
+loadJS('../codemirror/mode/htmlmixed/htmlmixed.js');
 loadJS('../src/dependencies/jquery.js');
 loadJS('../src/dependencies/jquery-ui.js');
 loadJS('../src/dependencies/rangy/rangy-core.js');

@@ -3,6 +3,25 @@ function test(container, action, format) {
         input = $(container).find('.test-input'),
         diff = $(container).find('.test-diff'),
         expected = $(container).find('.test-expected');
+    var inputSource = $('<div>')
+        .addClass('test-source test-box test-input-source')
+        .insertAfter(input);
+    CodeMirror(inputSource.get(0), {
+        value: style_html($.trim(input.html())),
+        mode: 'htmlmixed'
+    });
+    input.addClass('test-box');
+    $('<div>').addClass('test-clear').insertAfter(inputSource);
+    
+    var expectedSource = $('<div>')
+        .addClass('test-source test-box test-expected-source')
+        .insertAfter(expected);
+    CodeMirror(expectedSource.get(0), {
+        value: style_html($.trim(expected.html())),
+        mode: 'htmlmixed'
+    });
+    expected.addClass('test-box');
+    $('<div>').addClass('test-clear').insertAfter(expectedSource);
 
     if (output.length === 0) {
         output = $('<div>').addClass('test-output').appendTo(container);
@@ -23,6 +42,16 @@ function test(container, action, format) {
     }
     
     output = $(container).find('.test-output');
+    
+    var outputSource = $('<div>')
+        .addClass('test-source test-box test-output-source')
+        .insertAfter(output);
+    CodeMirror(outputSource.get(0), {
+        value: style_html($.trim(output.html())),
+        mode: 'htmlmixed'
+    });
+    output.addClass('test-box');
+    $('<div>').addClass('test-clear').insertAfter(outputSource);
 
     if (typeof format === 'undefined' || format) {
         formatElement(expected);
