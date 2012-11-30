@@ -24,20 +24,13 @@
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
-        <div class="test-diff"></div>
-        <div class="test-output"></div>
     </div>
     <script type="text/javascript">
-        $('.test-1 .test-output').html($('.test-1 .test-input').html());
-        cleanReplaceElements('.test-1 .test-output', {
-            'div': '<p/>'
+        test('.test-1', function() {
+            cleanReplaceElements('.test-1 .test-output', {
+                div: '<p/>'
+            });
         });
-        $('.test-1 .test-diff').html(diffstr($('.test-1 .test-expected').html(), $('.test-1 .test-output').html()));
-        if ($('.test-1 .test-output').html() === $('.test-1 .test-expected').html()) {
-            pass('.test-1');
-        } else {
-            fail('.test-1');
-        }
     </script>
 
     <div class="test-2">
@@ -86,20 +79,13 @@
                 urna dignissim.
             </p>
         </div>
-        <div class="test-diff"></div>
-        <div class="test-output"></div>
     </div>
     <script type="text/javascript">
-        $('.test-2 .test-output').html($('.test-2 .test-input').html());
-        cleanReplaceElements('.test-2 .test-output', {
-            'div': '<p/>'
+        test('.test-2', function() {
+            cleanReplaceElements('.test-2 .test-output', {
+                div: '<p/>'
+            });
         });
-        $('.test-2 .test-diff').html(diffstr($('.test-2 .test-expected').html(), $('.test-2 .test-output').html()));
-        if ($('.test-2 .test-output').html() === $('.test-2 .test-expected').html()) {
-            pass('.test-2');
-        } else {
-            fail('.test-2');
-        }
     </script>
 
     <div class="test-3">
@@ -126,21 +112,13 @@
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
-        <div class="test-diff"></div>
-        <div class="test-output"></div>
     </div>
     <script type="text/javascript">
-        $('.test-3 .test-output').html($('.test-3 .test-input').html());
-        cleanReplaceElements('.test-3 .test-output', {
-            'div': '<p/>'
+        test('.test-3', function() {
+            cleanReplaceElements('.test-3 .test-output', {
+                div: '<p/>'
+            });
         });
-        cleanUnwrapElements('.test-3 .test-output p p');
-        if (isDiff('.test-3 .test-output', '.test-3 .test-expected')) {
-            $('.test-3 .test-diff').html(prettyDiff('.test-3 .test-expected', '.test-3 .test-output'));
-            fail('.test-3');
-        } else {
-            pass('.test-3');
-        }
     </script>
 
     <div class="test-4">
@@ -163,20 +141,13 @@
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
-        <div class="test-diff"></div>
-        <div class="test-output"></div>
     </div>
     <script type="text/javascript">
-        $('.test-4 .test-output').html($('.test-4 .test-input').html());
-        cleanReplaceElements('.test-4 .test-output', {
-            'div': '<p/>'
+        test('.test-4', function() {
+            cleanReplaceElements('.test-4 .test-output', {
+                div: '<p/>'
+            });
         });
-        $('.test-4 .test-diff').html(diffstr($('.test-4 .test-expected').html(), $('.test-4 .test-output').html()));
-        if ($('.test-4 .test-output').html() === $('.test-4 .test-expected').html()) {
-            pass('.test-4');
-        } else {
-            fail('.test-4');
-        }
     </script>
 
     <div class="test-5">
@@ -229,21 +200,13 @@
                 urna dignissim.
             </p>
         </div>
-        <div class="test-diff"></div>
-        <div class="test-output"></div>
     </div>
     <script type="text/javascript">
-        $('.test-5 .test-output').html($('.test-5 .test-input').html());
-        cleanReplaceElements('.test-5 .test-output', {
-            'div': '<p/>'
+        test('.test-5', function() {
+            cleanReplaceElements('.test-5 .test-output', {
+                div: '<p/>'
+            });
         });
-        cleanUnwrapElements('.test-5 .test-output p p');
-        if (isDiff('.test-5 .test-output', '.test-5 .test-expected')) {
-            $('.test-5 .test-diff').html(prettyDiff('.test-5 .test-expected', '.test-5 .test-output'));
-            fail('.test-5');
-        } else {
-            pass('.test-5');
-        }
     </script>
 </body>
 </html>
