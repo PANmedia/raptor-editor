@@ -1,5 +1,5 @@
 /**
- * CSS Applier module for Rangy.
+ * Tag/attribute/class applier module for Rangy.
  *
  * Depends on Rangy core.
  *
