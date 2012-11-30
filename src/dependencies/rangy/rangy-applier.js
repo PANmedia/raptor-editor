@@ -7,12 +7,12 @@
  * @author Tim Down
  * @author David Neilsen david@panmedia.co.nz
  *
- * Derived from "CSS Class Applier module for Rangy." which is Copyright 2012, 
+ * Derived from "CSS Class Applier module for Rangy." which is Copyright 2012,
  * Tim Down, and licensed under the MIT license.
  */
 rangy.createModule("Applier", function(api, module) {
     api.requireModules([
-        "WrappedSelection", 
+        "WrappedSelection",
         "WrappedRange"
     ]);
 
@@ -469,14 +469,20 @@ rangy.createModule("Applier", function(api, module) {
     var attrNamesForProperties = {};
 
     function Applier(options) {
-        this.tag = options.tag || null;
-        this.tags = options.tags || [];
-        this.classes = options.classes || [];
-        this.attributes = options.attributes || [];
-        this.ignoreWhiteSpace = options.ignoreWhiteSpace || true;
-        this.applyToEditableOnly = options.applyToEditableOnly || false;
-        this.useExistingElements = options.useExistingElements || true;
-        
+        this.tag = null;
+        this.tags = [];
+        this.classes = [];
+        this.attributes = [];
+        this.ignoreWhiteSpace = true;
+        this.applyToEditableOnly = false;
+        this.useExistingElements = true;
+        this.ignoreClasses = false;
+        this.ignoreAttributes = false;
+
+        for (var key in options) {
+            this[key] = options[key];
+        }
+
         // Uppercase tag names
         for (var i = 0, l = this.tags.length; i < l; i++) {
             this.tags[i] = this.tags[i].toUpperCase();
@@ -544,18 +550,18 @@ rangy.createModule("Applier", function(api, module) {
                 && this.hasClasses(node)
                 && this.hasAttributes(node);
         },
-                
+
         isValidTag: function(node) {
             // Only elements are valid
             if (node.nodeType !== 1) {
                 return false;
             }
-            
+
             // Check if tag names are ignored
             if (this.tags.length === 0) {
                 return true;
             }
-            
+
             // Check for valid tag name
             for (var i = 0, l = this.tags.length; i < l; i++) {
                 if (node.tagName === this.tags[i]) {
@@ -564,8 +570,11 @@ rangy.createModule("Applier", function(api, module) {
             }
             return false;
         },
-                
+
         hasClasses: function(node) {
+            if (this.ignoreClasses) {
+                return true;
+            }
             for (var i = 0, l = this.classes.length; i < l; i++) {
                 if (!hasClass(node, this.classes[i])) {
                     return false;
@@ -573,8 +582,11 @@ rangy.createModule("Applier", function(api, module) {
             }
             return true;
         },
-                
+
         hasAttributes: function(node) {
+            if (this.ignoreAttributes) {
+                return true;
+            }
             for (var key in this.attributes) {
                 if (!node.hasAttribute(key)) {
                     return false;
@@ -664,25 +676,25 @@ rangy.createModule("Applier", function(api, module) {
             this.addAttributes(element);
             return element;
         },
-                
+
         addClasses: function(node) {
             for (var i = 0, l = this.classes.length; i < l; i++) {
                 addClass(node, this.classes[i]);
             }
         },
-                
+
         addAttributes: function(node) {
             for (var key in this.attributes) {
                 node.setAttribute(key, this.attributes[key]);
             }
         },
-                
+
         removeClasses: function(node) {
             for (var i = 0, l = this.classes.length; i < l; i++) {
                 removeClass(node, this.classes[i]);
             }
         },
-                
+
         removeAttributes: function(node) {
             for (var key in this.attributes) {
                 node.removeAttribute(key);
@@ -691,8 +703,8 @@ rangy.createModule("Applier", function(api, module) {
 
         applyToTextNode: function(textNode, positionsToPreserve) {
             var parent = textNode.parentNode;
-            if (parent.childNodes.length == 1 
-                    && dom.arrayContains(this.tags, parent.tagName) 
+            if (parent.childNodes.length == 1
+                    && dom.arrayContains(this.tags, parent.tagName)
                     && this.useExistingElements) {
                 this.addClasses(parent);
                 this.addAttributes(parent);
@@ -703,11 +715,12 @@ rangy.createModule("Applier", function(api, module) {
             }
         },
 
-        isRemovable: function(element) {
-            return this.isValidTag(element.tagName)
-                && this.hasClasses(element)
-                && this.hasAttributes(element)
-                && this.isModifiable(element);
+        isRemovable: function(node) {
+            return this.tags.length > 0
+                && this.isValidTag(node)
+                && this.hasClasses(node)
+                && this.hasAttributes(node)
+                && this.isModifiable(node);
         },
 
         undoToTextNode: function(textNode, range, ancestor, positionsToPreserve) {
@@ -743,7 +756,7 @@ rangy.createModule("Applier", function(api, module) {
 
             if (textNodes.length) {
                 for (var i = 0, textNode; textNode = textNodes[i++]; ) {
-                    if (!this.isIgnorableWhiteSpaceNode(textNode) 
+                    if (!this.isIgnorableWhiteSpaceNode(textNode)
                             && !this.getSelfOrAncestor(textNode)
                             && this.isModifiable(textNode)) {
                         this.applyToTextNode(textNode, positionsToPreserve);
@@ -789,8 +802,7 @@ rangy.createModule("Applier", function(api, module) {
                 for (var i = 0, l = textNodes.length; i < l; ++i) {
                     textNode = textNodes[i];
                     validAncestor = this.getSelfOrAncestor(textNode);
-                    console.log(validAncestor);
-                    if (validAncestor 
+                    if (validAncestor
                             && this.isModifiable(textNode)) {
                         this.undoToTextNode(textNode, range, validAncestor, positionsToPreserve);
                     }
@@ -846,9 +858,9 @@ rangy.createModule("Applier", function(api, module) {
             } else {
                 var textNodes = range.getNodes( [3] );
                 for (var i = 0, textNode; textNode = textNodes[i++]; ) {
-                    if (!this.isIgnorableWhiteSpaceNode(textNode) 
+                    if (!this.isIgnorableWhiteSpaceNode(textNode)
                             && rangeSelectsAnyText(range, textNode)
-                            && this.isModifiable(textNode) 
+                            && this.isModifiable(textNode)
                             && !this.getSelfOrAncestor(textNode)) {
                         return false;
                     }
