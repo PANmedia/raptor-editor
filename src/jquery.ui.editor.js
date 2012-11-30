@@ -7,12 +7,11 @@
  * @requires jQuery UI
  * @requires Rangy
  */
- 
-$.widget('ui.editor',
-    /**
-     * @lends $.editor.prototype
-     */
-    {
+
+/**
+ * @lends $.editor.prototype
+ */
+var RaptorWidget = {
 
     /**
      * Constructor
@@ -49,6 +48,7 @@ $.widget('ui.editor',
         this.templates = $.extend({}, Raptor.templates);
         this.target = this.element;
         this.layout = null;
+        this.previewState = null;
 
         // True if editing is enabled
         this.enabled = false;
@@ -356,7 +356,6 @@ $.widget('ui.editor',
      * Preview functions
     \*========================================================================*/
 
-    previewState: null,
     actionPreview: function(action) {
         this.actionPreviewRestore();
         selectionConstrain(this.getElement());
@@ -370,7 +369,6 @@ $.widget('ui.editor',
         }
     },
 
-    history: {},
     actionApply: function(action) {
         this.actionPreviewRestore();
         selectionConstrain(this.getElement());
@@ -711,53 +709,12 @@ $.widget('ui.editor',
      * @param {Object} variables
      */
     getTemplate: function(name, variables) {
-        var template;
-        if (!this.templates[name]) {
-            template = Raptor.getTemplate(name, this.options.urlPrefix);
-        } else {
-            template = this.templates[name];
+        if (this.templates[name]) {
+            return this.templates[name];
         }
-        // Translate template
-        template = template.replace(/_\(['"]{1}(.*?)['"]{1}\)/g, function(match, string) {
-            string = string.replace(/\\(.?)/g, function (s, slash) {
-                switch (slash) {
-                    case '\\':return '\\';
-                    case '0':return '\u0000';
-                    case '':return '';
-                    default:return slash;
-                }
-            });
-            return _(string);
-        });
-        // Replace variables
-        variables = $.extend({}, this.options, variables || {});
-        variables = this.getTemplateVars(variables);
-        template = template.replace(/\{\{(.*?)\}\}/g, function(match, variable) {
-            return variables[variable];
-        });
-        return template;
-    },
-
-    /**
-     * @param {Object} variables
-     * @param {String} prefix
-     */
-    getTemplateVars: function(variables, prefix, depth) {
-        prefix = prefix ? prefix + '.' : '';
-        var maxDepth = 5;
-        if (!depth) depth = 1;
-        var result = {};
-        for (var name in variables) {
-            if (typeof variables[name] === 'object' && depth < maxDepth) {
-                var inner = this.getTemplateVars(variables[name], prefix + name, ++depth);
-                for (var innerName in inner) {
-                    result[innerName] = inner[innerName];
-                }
-            } else {
-                result[prefix + name] = variables[name];
-            }
-        }
-        return result;
+        this.templates[name] = templateGet(name, this.options.urlPrefix);
+        this.templates[name] = templateConvertTokens(this.templates[name], variables);
+        return this.templates[name];
     },
 
     /*========================================================================*\
@@ -1075,7 +1032,6 @@ $.widget('ui.editor',
      * @param {Object} [context]
      */
     unbind: function(name, callback, context) {
-
         for (var i = 0, l = this.events[name].length; i < l; i++) {
             if (this.events[name][i] &&
                 this.events[name][i].callback === callback &&
@@ -1125,5 +1081,6 @@ $.widget('ui.editor',
             this.fire('after:' + name, global, true);
         }
     }
+};
 
-});
+$.widget('ui.editor', RaptorWidget);
