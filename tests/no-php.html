@@ -10,14 +10,14 @@
                 function iframeResize() {
                     $(this).height($($(this).get(0).contentDocument).find('html').outerHeight());
                 }
-                
+
                 function iframeAdd(src) {
                     $('<iframe>')
                         .attr('src', src)
                         .load(iframeResize)
                         .appendTo('.iframes');
                 }
-                
+
                 $('[name=run-all]').click(function() {
                     $('iframe').remove();
                     var time = 0;
@@ -27,15 +27,15 @@
                         }.bind(this), time += 50);
                     });
                 });
-                
+
                 $('[name=verbose]').change(function() {
                     $('iframe').each(function() {
                         $('body', $(this).get(0).contentDocument).toggleClass('verbose').toggleClass('simple');
                         iframeResize.call(this);
                     });
                 });
-                
-                $('nav a').click(function() {
+
+                $('nav a').click(function(event) {
                     if (event.which === 1) {
                         $('iframe').remove();
                         iframeAdd($(this).attr('href'));
