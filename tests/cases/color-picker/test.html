@@ -2,6 +2,14 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
+    <style type="text/css">
+        .cms-red {
+            color: red;
+        }
+        .cms-blue {
+            color: blue;
+        }
+    </style>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -14,7 +22,7 @@
         });
     </script>
     <div class="test-1">
-        <h1>Toggle Wrapper 1: Word Group Selection</h1>
+        <h1>Color 1: Normalized groups</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -36,8 +44,11 @@
     </div>
     <script type="text/javascript">
         test('.test-1', function(input) {
-            var ranges = tokensToRanges(input);
+            var ranges;
+            ranges = tokensToRanges(input, 1);
             redApplier.applyToRanges(ranges);
+            ranges = tokensToRanges(input, 1);
+            blueApplier.applyToRanges(ranges);
         });
     </script>
 </body>
