@@ -130,7 +130,6 @@ function rangeTrim(range) {
     // Trim end
     match = /\s+$/.exec(selectedText);
     if (match) {
-        console.log(match[0].length)
         range.moveEnd('character', -match[0].length);
     }
 }
