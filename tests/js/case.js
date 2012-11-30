@@ -14,6 +14,7 @@ loadCSS('css/case.css');
 loadJS('../src/dependencies/jquery.js');
 loadJS('../src/dependencies/jquery-ui.js');
 loadJS('../src/dependencies/rangy/rangy-core.js');
+loadJS('../src/dependencies/rangy/rangy-applier.js');
 loadJS('../src/dependencies/rangy/rangy-cssclassapplier.js');
 loadJS('../src/dependencies/rangy/rangy-selectionsaverestore.js');
 loadJS('../src/dependencies/rangy/rangy-serializer.js');
