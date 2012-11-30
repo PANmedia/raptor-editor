@@ -36,9 +36,11 @@
                 });
                 
                 $('nav a').click(function() {
-                    $('iframe').remove();
-                    iframeAdd($(this).attr('href'));
-                    return false;
+                    if (event.which === 1) {
+                        $('iframe').remove();
+                        iframeAdd($(this).attr('href'));
+                        return false;
+                    }
                 });
             });
         </script>
