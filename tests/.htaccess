@@ -7,3 +7,5 @@
         Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
     </IfModule>
 </FilesMatch>
+
+AddType 'text/html; charset=UTF-8' html
