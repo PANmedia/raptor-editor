@@ -44,6 +44,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>tools/state.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/style.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/table.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/template.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/types.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>raptor.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
