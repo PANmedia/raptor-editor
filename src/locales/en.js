@@ -142,6 +142,8 @@ registerLocale('en', 'English', {
     statisticsDialogWords: '{{words}} words',
     statisticsDialogNotTruncated: 'Content will not be truncated',
     statisticsDialogTruncated: 'Content contains more than {{limit}} characters and may be truncated',
+    statisticsDialogSentence: '{{sentences}} sentence',
+    statisticsDialogSentences: '{{sentences}} sentences',
 
     textBoldTitle: 'Bold',
 
