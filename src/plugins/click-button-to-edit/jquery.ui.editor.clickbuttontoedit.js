@@ -59,7 +59,6 @@ Raptor.registerPlugin({
          * @return {$.editor.defaultPlugin} A new Raptor.plugin.clickButtonToEdit instance.
          */
         init: function(editor, options) {
-
             var plugin = this;
             var timeoutId = false;
             this.buttonClass = this.options.baseClass + '-button-element';
