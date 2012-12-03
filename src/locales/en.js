@@ -50,9 +50,6 @@ registerLocale('en', 'English', {
     "Float Image Right": "Float Image Right",
     "Formatted &amp; Cleaned": "Formatted &amp; Cleaned",
     "Formatted Unclean": "Formatted Unclean",
-    "Heading&nbsp;1": "Heading&nbsp;1",
-    "Heading&nbsp;2": "Heading&nbsp;2",
-    "Heading&nbsp;3": "Heading&nbsp;3",
     "Image height": "Image height",
     "Image width": "Image width",
     "Increase Font Size": "Increase Font Size",
@@ -78,7 +75,6 @@ registerLocale('en', 'English', {
     "Open the uploaded file in your browser": "Open the uploaded file in your browser",
     "Ordered List": "Ordered List",
     "Page on this or another website": "Page on this or another website",
-    "Paragraph": "Paragraph",
     "Paste Embed Code": "Paste Embed Code",
     "Paste your embed code into the text area below.": "Paste your embed code into the text area below.",
     "Plain Text": "Plain Text",
@@ -119,6 +115,12 @@ registerLocale('en', 'English', {
     "View Source": "View Source",
     "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes",
 */
+
+    tagMenuTagNA: 'N/A',
+    tagMenuTagP: 'Paragraph',
+    tagMenuTagH1: 'Heading&nbsp;1',
+    tagMenuTagH2: 'Heading&nbsp;2',
+    tagMenuTagH3: 'Heading&nbsp;3',
 
     colorPickerBasicAutomatic: 'Automatic',
     colorPickerBasicWhite: 'White',
