@@ -44,7 +44,7 @@ Raptor.registerUi(new Button({
             });
         }
 
-        aButtonSetText(this.button, label);
+        aButtonSetLabel(this.button, label);
 
         if (!this.maximum) {
             return;
