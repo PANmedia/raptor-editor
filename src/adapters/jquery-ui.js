@@ -2,8 +2,15 @@ function aButton(element, options) {
     return $(element).button(options);
 }
 
-function aButtonSetText(element, text) {
+function aButtonSetLabel(element, text) {
+    $(element).button('option', 'text', true)
     return $(element).button('option', 'label', text);
+}
+
+function aButtonSetIcon(element, icon) {
+    return $(element).button('option', 'icons', {
+        primary: icon
+    });
 }
 
 function aMenu(element, options) {
