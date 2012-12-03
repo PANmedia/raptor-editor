@@ -20,7 +20,7 @@ function loadCSS(href) {
 
 // document.write('<meta charset="utf-8" />');
 // document.write('<meta http-equiv="cache-control" content="no-cache" />');
-
+loadCSS('../src/dependencies/themes/aristo/jquery-ui.css');
 loadCSS('css/case.css');
 loadCSS('../codemirror/lib/codemirror.css');
 
