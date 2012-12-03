@@ -15,6 +15,9 @@ SelectMenu.prototype.getMenu = function() {
                 // Prevent losing the selection on the editor target
                 event.preventDefault();
             })
+            .on('click', 'a', function() {
+                aButtonSetLabel(this.button.button, $(event.target).html())
+            }.bind(this))
             .appendTo('body');
         aMenu(this.menu);
         // Click off close event
