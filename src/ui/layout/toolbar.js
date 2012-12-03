@@ -5,9 +5,9 @@ Raptor.registerLayout('toolbar', {
          */
         uiOrder: null
     },
-    
+
     setDefaultUIOrder: function() {
-        
+
     },
 
     init: function(editor, options) {
@@ -34,8 +34,7 @@ Raptor.registerLayout('toolbar', {
             .append(toolbar);
         var path = this.path = $('<div/>')
             .addClass(this.options.baseClass + '-path')
-            .addClass('ui-widget-header')
-            .html(editor.getTemplate('root'));
+            .addClass('ui-widget-header');
         var wrapper = this.wrapper = $('<div/>')
             .addClass(this.options.baseClass + '-wrapper')
             .css('display', 'none')
@@ -166,7 +165,7 @@ Raptor.registerLayout('toolbar', {
     hide: function() {
         this.wrapper.css('display', 'none');
     },
-            
+
     getElement: function() {
         return this.wrapper;
     },
