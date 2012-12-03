@@ -72,7 +72,7 @@ ColorPickerBasicMenu.prototype.changeColor = function(color) {
     }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.mouseEnter = function(event) {
+ColorPickerBasicMenu.prototype.preview = function(event) {
     if (this.preview) {
         this.raptor.actionPreview(function() {
             this.changeColor($(event.currentTarget).data('color'));
@@ -80,13 +80,13 @@ ColorPickerBasicMenu.prototype.mouseEnter = function(event) {
     }
 };
 
-ColorPickerBasicMenu.prototype.mouseLeave = function() {
+ColorPickerBasicMenu.prototype.previewRestore = function() {
     if (this.preview) {
         this.raptor.actionPreviewRestore();
     }
 };
 
-ColorPickerBasicMenu.prototype.click = function() {
+ColorPickerBasicMenu.prototype.apply = function() {
     this.raptor.actionApply(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
@@ -109,9 +109,9 @@ ColorPickerBasicMenu.prototype.getButton = function() {
 
 ColorPickerBasicMenu.prototype.getMenuItems = function() {
     return $(this.editor.getTemplate('color-picker-basic.menu', this.options))
-        .click(this.click.bind(this))
-        .mouseenter(this.mouseEnter.bind(this))
-        .mouseleave(this.mouseLeave.bind(this));
+        .click(this.apply.bind(this))
+        .mouseenter(this.preview.bind(this))
+        .mouseleave(this.previewRestore.bind(this));
 };
 
 Raptor.registerUi(new ColorPickerBasicMenu());
