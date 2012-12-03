@@ -49,7 +49,7 @@
         td, th {
             border: 1px dotted #777;
         }
-        
+
         div.editable {
             float: left;
             width: 45%;
@@ -83,13 +83,11 @@
             including versions of Lorem Ipsum.
         </p>
         <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-            has been the industry's standard dummy text ever since the 1500s, when an unknown printer
-            took a galley of type and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-            Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-            including versions of Lorem Ipsum.
+            <span class="cms-blue">This text is blue.</span>
+            <span class="cms-red">This text is red.</span>
+            <span class="cms-green">This text is green.</span>
+            <strong class="cms-bold">This text is bold.</strong>
+            <i class="cms-italic">This text is italic.</i>
         </p>
         <?php
             $buffer = ob_get_clean();
