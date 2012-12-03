@@ -3,6 +3,7 @@
  * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
 registerLocale('en', 'English', {
+    /*
     "A preview of your embedded object is displayed below.": "A preview of your embedded object is displayed below.",
     "Added link: {{link}}": "Added link: {{link}}",
     "All changes will be lost!": "All changes will be lost!",
@@ -132,11 +133,25 @@ registerLocale('en', 'English', {
     "{{sentences}} sentences": "{{sentences}} sentences",
     "{{words}} word": "{{words}} word",
     "{{words}} words": "{{words}} words",
-    
-    
+*/
+
+    statisticsCharacters: '{{characters}} characters',
+    statisticsDialogCharactersRemaining: '{{characters}} characters, {{charactersRemaining}} remaining',
+    statisticsDialogCharactersOverLimit: '{{characters}} characters, {{charactersRemaining}} over the recommended limit',
+    statisticsDialogWord: '{{words}} word',
+    statisticsDialogWords: '{{words}} words',
+    statisticsDialogNotTruncated: 'Content will not be truncated',
+    statisticsDialogTruncated: 'Content contains more than {{limit}} characters and may be truncated',
+    statisticsDialogSentence: '{{sentences}} sentence',
+    statisticsDialogSentences: '{{sentences}} sentences',
+
     textBoldTitle: 'Bold',
-    
+
     errorUIOverride: 'UI "{{name}}" has already been registered, and will be overwritten',
     errorUINotObject: 'UI "{{ui}}" is invalid (must be an object)',
     errorUINoName: 'UI "{{ui}}" is invalid (must have a name property)',
+
+    errorPluginOverride: 'Plugin "{{name}}" has already been registered, and will be overwritten',
+    errorPluginNotObject: 'Plugin "{{plugin}}" is invalid (must be an object)',
+    errorPluginNoName: 'Plugin "{{plugin}}" is invalid (must have a name property)',
 });

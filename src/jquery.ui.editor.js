@@ -107,7 +107,9 @@ var RaptorWidget = {
 
         // Set the initial locale
         var locale = this.persist('locale') || this.options.initialLocale;
-        setLocale(locale);
+        if (locale) {
+            setLocale(locale);
+        }
 
         // Fire the ready event
         this.ready = true;
@@ -394,6 +396,10 @@ var RaptorWidget = {
             } catch (error) {
                 handleError(error);
             }
+            
+            for (var name in this.plugins) {
+                this.plugins[name].enable();
+            }
 
             this.bindHotkeys();
 
@@ -414,7 +420,7 @@ var RaptorWidget = {
             this.fire('disabled');
         }
     },
-            
+
     cancelEditing: function() {
         this.fire('cancel');
         this.resetHtml();
@@ -567,7 +573,7 @@ var RaptorWidget = {
     getLayout: function() {
         return this.layout;
     },
-    
+
     loadLayout: function() {
         if (!this.layout) {
             this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
@@ -830,7 +836,11 @@ var RaptorWidget = {
      */
     loadPlugins: function() {
         var editor = this;
-        if (!this.options.plugins) this.options.plugins = {};
+
+        if (!this.options.plugins) {
+            this.options.plugins = {};
+        }
+
         for (var name in Raptor.plugins) {
             // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
             if (this.options.enablePlugins === false &&
@@ -1021,7 +1031,7 @@ var RaptorWidget = {
                 }
             }
         }
-        
+
         // Also trigger the global editor event, unless specified not to
         if (global !== false) {
             Raptor.fire(name);

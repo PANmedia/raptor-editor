@@ -304,61 +304,6 @@ var Raptor = /** @lends $.ui.raptor */ {
     \*========================================================================*/
 
     /**
-     * @name Raptor.defaultUi
-     * @class The default UI component
-     * @property {Object} defaultUi
-     */
-    defaultUi: /** @lends Raptor.defaultUi.prototype */ {
-        ui: null,
-
-        /**
-         * The {@link Raptor} instance
-         * @type {Object}
-         */
-        editor: null,
-
-        /**
-         * @type {Object}
-         */
-        options: null,
-
-        /**
-         * Initialise & return an instance of this UI component
-         * @param  {$.editor} editor  The editor instance
-         * @param  {Raptor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {Object} An instance of the ui component
-         */
-        init: function(editor, options) {},
-
-        /**
-         * @param  {String} key   The key
-         * @param  {[String|Object|int|float]} value A value to be stored
-         * @return {String|Object|int|float} The stored value
-         */
-        persist: function(key, value) {
-            return this.editor.persist(key, value);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {String}   context
-         */
-        bind: function(name, callback, context) {
-            this.editor.bind(name, callback, context || this);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {Object}   context
-         */
-        unbind: function(name, callback, context) {
-            this.editor.unbind(name, callback, context || this);
-        }
-    },
-
-    /**
      * Registers a new UI component, overriding any previous UI components registered with the same name.
      *
      * @param {String} name
@@ -367,17 +312,17 @@ var Raptor = /** @lends $.ui.raptor */ {
     registerUi: function(ui) {
         // <strict>
         if (typeof ui !== 'object') {
-            handleError(_('errorUINotObject', { 
-                ui: ui 
+            handleError(_('errorUINotObject', {
+                ui: ui
             }));
             return;
         } else if (typeof ui.name !== 'string') {
-            handleError(_('errorUIOverride', { 
-                ui: ui 
+            handleError(_('errorUINoName', {
+                ui: ui
             }));
             return;
         } else if (this.ui[ui.name]) {
-            handleError(_('errorUIOverride', { 
+            handleError(_('errorUIOverride', {
                 name: ui.name
             }));
         }
@@ -415,80 +360,26 @@ var Raptor = /** @lends $.ui.raptor */ {
         this.presets[name] = preset;
     },
 
-    /**
-     * @name Raptor.defaultPlugin
-     * @class The default plugin
-     * @property {Object} defaultPlugin
-     */
-    defaultPlugin: /** @lends Raptor.defaultPlugin.prototype */ {
-
-        /**
-         * The {@link Raptor} instance
-         * @type {Object}
-         */
-        editor: null,
-
-        /**
-         * @type {Object}
-         */
-        options: null,
-
-        /**
-         * Initialise & return an instance of this plugin
-         * @param  {$.editor} editor  The editor instance
-         * @param  {Raptor.defaults} options The default editor options extended with any overrides set at initialisation
-         * @return {Object} An instance of the ui component
-         */
-        init: function(editor, options) {},
-
-        /**
-         * @param  {String} key   The key
-         * @param  {[String|Object|int|float]} value A value to be stored
-         * @return {String|Object|int|float} The stored value
-         */
-        persist: function(key, value) {
-            return this.editor.persist(key, value);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {String}   context
-         */
-        bind: function(name, callback, context) {
-            this.editor.bind(name, callback, context || this);
-        },
-
-        /**
-         * @param  {String}   name
-         * @param  {Function} callback
-         * @param  {Object}   context
-         */
-        unbind: function(name, callback, context) {
-            this.editor.unbind(name, callback, context || this);
+    registerPlugin: function(plugin) {
+        // <strict>
+        if (typeof plugin !== 'object') {
+            handleError(_('errorPluginNotObject', {
+                plugin: plugin
+            }));
+            return;
+        } else if (typeof plugin.name !== 'string') {
+            handleError(_('errorPluginNoName', {
+                plugin: plugin
+            }));
+            return;
+        } else if (this.plugins[plugin.name]) {
+            handleError(_('errorPluginOverride', {
+                name: plugin.name
+            }));
         }
-    },
+        // </strict>
 
-    /**
-     *
-     * @param {Object|String} mixed
-     * @param {Object} [plugin]
-     */
-    registerPlugin: function(mixed, plugin) {
-        // Allow array objects, and single plugins
-        if (typeof(mixed) === 'string') {
-            // <strict>
-            if (this.plugins[mixed]) {
-                handleError(_('Plugin "{{pluginName}}" has already been registered, and will be overwritten', {pluginName: mixed}));
-            }
-            // </strict>
-
-            this.plugins[mixed] = $.extend({}, this.defaultPlugin, plugin);
-        } else {
-            for (var name in mixed) {
-                this.registerPlugin(name, mixed[name]);
-            }
-        }
+        this.plugins[plugin.name] = plugin;
     },
 
     /*========================================================================*\

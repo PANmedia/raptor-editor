@@ -20,7 +20,7 @@ function loadCSS(href) {
 
 // document.write('<meta charset="utf-8" />');
 // document.write('<meta http-equiv="cache-control" content="no-cache" />');
-
+loadCSS('../src/dependencies/themes/aristo/jquery-ui.css');
 loadCSS('css/case.css');
 loadCSS('../codemirror/lib/codemirror.css');
 
@@ -54,5 +54,6 @@ loadJS('../src/tools/types.js');
 loadJS('js/beautify-html.js');
 loadJS('js/diff.js');
 loadJS('js/helpers.js');
+loadJS('js/test-editor.js');
 loadJS('js/test.js');
 loadJS('js/tokens-to-ranges.js');

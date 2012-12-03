@@ -56,8 +56,8 @@
             <nav class="tests">
                 <?php
                     $findTests = function($case) {
-                        foreach (glob($case . '/*.html') as $file) {
-                            echo '<a target="test" href="cases/' . basename($case) . '/' . basename($file) . '">' . basename($case) . ' - ' . basename($file) . '</a>';
+                        foreach (glob($case . '/*.*') as $file) {
+                            echo '<a target="test" href="cases/' . basename($case) . '/' . basename($file) . '">' . basename($case) . ' - ' . basename($file) . '</a>' . PHP_EOL;
                         }
                     };
                     foreach (glob(__DIR__ . '/cases/*') as $case) {
