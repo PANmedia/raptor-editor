@@ -38,6 +38,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>tools/element.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/fragment.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/list.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>tools/persist.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/range.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/selection.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/string.js"></script>
@@ -69,7 +70,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/raptorize/jquery.ui.editor.raptorize.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/paste/jquery.ui.editor.paste.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/tagmenu/jquery.ui.editor.tagmenu.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/link/jquery.ui.editor.link.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/imageresize/jquery.ui.editor.imageresize.js"></script>
 <?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/unsavededitwarning/jquery.ui.editor.unsavededitwarning.js"></script>*/ ?>
@@ -107,6 +107,15 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/center.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-align/justify.js"></script>
 
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-cell-button.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-delete-column.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-delete-row.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-insert-column.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-insert-row.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/tag-menu/tag-menu.js"></script>
+
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/bold.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/block-quote.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/italic.js"></script>
@@ -114,12 +123,5 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/strike.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/sub.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/super.js"></script>
-
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-cell-button.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-create.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-delete-column.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-delete-row.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-insert-column.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-insert-row.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/view-source/view-source.js"></script>
