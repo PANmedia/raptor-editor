@@ -7,7 +7,7 @@
  * @requires jQuery UI
  * @requires Rangy
  */
- 
+
 $.widget('ui.editor',
     /**
      * @lends $.editor.prototype
@@ -110,7 +110,9 @@ $.widget('ui.editor',
 
         // Set the initial locale
         var locale = this.persist('locale') || this.options.initialLocale;
-        setLocale(locale);
+        if (locale) {
+            setLocale(locale);
+        }
 
         // Fire the ready event
         this.ready = true;
@@ -404,7 +406,7 @@ $.widget('ui.editor',
         }
         return validRanges;
     },
-            
+
     getSelection: function() {
         return rangy.getSelection();
     },
@@ -443,6 +445,10 @@ $.widget('ui.editor',
                 this.getElement().attr('contenteditable', true);
             }
 
+            for (var name in this.plugins) {
+                this.plugins[name].enable();
+            }
+
             this.execCommand('enableInlineTableEditing', false, false);
             this.execCommand('styleWithCSS', true, true);
 
@@ -465,7 +471,7 @@ $.widget('ui.editor',
             this.fire('disabled');
         }
     },
-            
+
     cancelEditing: function() {
         this.fire('cancel');
         this.resetHtml();
@@ -618,7 +624,7 @@ $.widget('ui.editor',
     getLayout: function() {
         return this.layout;
     },
-    
+
     loadLayout: function() {
         if (!this.layout) {
             this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
@@ -922,7 +928,11 @@ $.widget('ui.editor',
      */
     loadPlugins: function() {
         var editor = this;
-        if (!this.options.plugins) this.options.plugins = {};
+
+        if (!this.options.plugins) {
+            this.options.plugins = {};
+        }
+
         for (var name in Raptor.plugins) {
             // Check if we are not automaticly enabling plugins, and if not, check if the plugin was manually enabled
             if (this.options.enablePlugins === false &&
@@ -1114,7 +1124,7 @@ $.widget('ui.editor',
                 }
             }
         }
-        
+
         // Also trigger the global editor event, unless specified not to
         if (global !== false) {
             Raptor.fire(name);
