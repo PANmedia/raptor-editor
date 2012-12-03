@@ -120,6 +120,16 @@ registerLocale('en', 'English', {
     "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes": "\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes",
 */
 
+    colorPickerBasicAutomatic: 'Automatic',
+    colorPickerBasicWhite: 'White',
+    colorPickerBasicBlack: 'Black',
+    colorPickerBasicGrey: 'Grey',
+    colorPickerBasicBlue: 'Blue',
+    colorPickerBasicRed: 'Red',
+    colorPickerBasicGreen: 'Green',
+    colorPickerBasicPurple: 'Purple',
+    colorPickerBasicOrange: 'Orange',
+
     cancelDialogTitle: 'Cancel Editing',
     cancelDialogContent: 'Are you sure you want to cancel editing. All changes will be lost!',
     cancelDialogOKButton: 'Ok',
