@@ -1,5 +1,8 @@
 function Button(overrides) {
     this.preview = true;
+    this.text = false;
+    this.label = null;
+    this.icon = null;
     for (var key in overrides) {
         this[key] = overrides[key];
     }
@@ -21,7 +24,8 @@ Button.prototype.getButton = function() {
             icons: {
                 primary: this.getIcon()
             },
-            text: false
+            text: this.text,
+            label: this.label,
         });
     }
     return this.button;
@@ -32,7 +36,10 @@ Button.prototype.getTitle = function() {
 };
 
 Button.prototype.getIcon = function() {
-    return this.icon || 'ui-icon-' + stringCamelCaseConvert(this.name);
+    if (this.icon === null) {
+        return 'ui-icon-' + stringCamelCaseConvert(this.name)
+    }
+    return this.icon;
 };
 
 Button.prototype.click = function() {
