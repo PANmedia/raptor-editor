@@ -13,6 +13,14 @@ function aButtonSetIcon(element, icon) {
     });
 }
 
+function aButtonDisable(element) {
+    return $(element).addClass('ui-state-disabled');
+}
+
+function aButtonEnable(element) {
+    return $(element).addClass('ui-state-enabled');
+}
+
 function aMenu(element, options) {
     return $(element).menu(options);
 }
