@@ -32,7 +32,6 @@ TagTreePlugin.prototype.update = function() {
             // Or else use the node
             element = $(node);
         }
-        console.log(element);
 
         // Ensure the element is the editing element or a child of the editing element
         if (!this.raptor.isRoot(element) && !$.contains(this.raptor.getElement().get(0), element.get(0))) {
@@ -62,7 +61,7 @@ TagTreePlugin.prototype.update = function() {
     }, null, this);
 
     if (!title) {
-        title = this.getTemplate('tag-tree.root');
+        title = this.raptor.getTemplate('tag-tree.root');
     }
     this.raptor.getLayout().path
         .html(title)
