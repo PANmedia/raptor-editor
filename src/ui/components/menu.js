@@ -34,6 +34,7 @@ Menu.prototype.getMenu = function() {
             .hide()
             .appendTo('body')
             .mousedown(function(event) {
+                // Prevent losing the selection on the editor target
                 event.preventDefault();
             });
         // Click off close event
