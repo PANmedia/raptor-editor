@@ -2,6 +2,10 @@ function aButton(element, options) {
     return $(element).button(options);
 }
 
+function aButtonSetText(element, text) {
+    return $(element).button('option', 'label', text);
+}
+
 function aMenu(element, options) {
     return $(element).menu(options);
 }
