@@ -2,13 +2,16 @@ var statisticsDialog = null;
 
 Raptor.registerUi(new Button({
     name: 'statistics',
+    
     action: function() {
         this.processDialog();
         aDialogOpen(this.getDialog());
     },
+
     getCharacters: function() {
         return $('<div>').html(this.raptor.getCleanHtml()).text().length;
     },
+
     getButton: function() {
         if (!this.button) {
             this.text = _('statisticsCharacters', {
@@ -21,6 +24,7 @@ Raptor.registerUi(new Button({
         }
         return this.button;
     },
+
     getDialog: function() {
         if (!statisticsDialog) {
             statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'))
