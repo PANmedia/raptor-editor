@@ -56,6 +56,8 @@
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/menu.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/select-menu.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>ui/components/custom-menu.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/toolbar.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/word.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/aloha.js"></script>
