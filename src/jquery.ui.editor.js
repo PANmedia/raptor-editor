@@ -82,9 +82,6 @@ var RaptorWidget = {
             return;
         }
 
-        // Clone the DOM tools functions
-        this.cloneDomTools();
-
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
 
@@ -241,33 +238,6 @@ var RaptorWidget = {
     },
 
     /**
-     * Clones all of the DOM tools functions, and constrains the selection before
-     * calling.
-     */
-    cloneDomTools: function() {
-        for (var i in this.options.domTools) {
-            if (!this[i]) {
-                this[i] = (function(i) {
-                    return function() {
-                        selectionConstrain(this.getElement());
-                        var html = this.getHtml();
-                        var result = this.options.domTools[i].apply(this.options.domTools, arguments);
-                        if (html !== this.getHtml()) {
-                            // <debug>
-                            if (debugLevel >= MID) {
-                                debug('Dom tools function (' + i + ') changed content, firing change.');
-                            }
-                            // </debug>
-                            this.change();
-                        }
-                        return result;
-                    };
-                })(i);
-            }
-        }
-    },
-
-    /**
      * Determine whether the editing element's content has been changed.
      */
     checkChange: function() {
@@ -385,29 +355,6 @@ var RaptorWidget = {
     },
 
     /*========================================================================*\
-     * Selection functions
-    \*========================================================================*/
-    getRanges: function() {
-        return rangy.getSelection().getAllRanges();
-        var selection = rangy.getSelection(),
-            validRanges = [],
-            allRanges;
-        selection.refresh();
-        allRanges = selection.getAllRanges();
-        for (var i = 0; i < allRanges.length; i++) {
-            allRanges[i].refresh();
-            if (rangeIsContainedBy(allRanges[i], this.getNode())) {
-                validRanges.push(allRanges[i]);
-            }
-        }
-        return validRanges;
-    },
-            
-    getSelection: function() {
-        return rangy.getSelection();
-    },
-
-    /*========================================================================*\
      * Persistance Functions
     \*========================================================================*/
 
@@ -441,8 +388,12 @@ var RaptorWidget = {
                 this.getElement().attr('contenteditable', true);
             }
 
-            this.execCommand('enableInlineTableEditing', false, false);
-            this.execCommand('styleWithCSS', true, true);
+            try {
+                document.execCommand('enableInlineTableEditing', false, false);
+                document.execCommand('styleWithCSS', true, true);
+            } catch (error) {
+                handleError(error);
+            }
 
             this.bindHotkeys();
 
