@@ -12,5 +12,3 @@ TableCellButton.prototype.getElement = function(range) {
     }
     return null;
 };
-
-Raptor.registerUi(new TableCellButton());
