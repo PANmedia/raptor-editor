@@ -5,7 +5,7 @@ function CSSClassApplierButton(options) {
 CSSClassApplierButton.prototype = Object.create(PreviewButton.prototype);
 
 CSSClassApplierButton.prototype.action = function() {
-    this.getApplier().toggleSelection(this.raptor.getSelection());
+    this.getApplier().toggleSelection();
 };
 
 CSSClassApplierButton.prototype.getApplier = function() {
