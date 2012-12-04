@@ -26,10 +26,9 @@ function test(container, action, format) {
     var expectedSource = $('<div>')
         .addClass('test-source test-box test-expected-source')
         .insertAfter(expected);
-    CodeMirror(expectedSource.get(0), {
-        value: style_html($.trim(expected.html())),
-        mode: 'htmlmixed'
-    });
+
+    applyCodeMirror(expectedSource.get(0), expected.html());
+    
     expected.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(expectedSource);
 
@@ -56,10 +55,9 @@ function test(container, action, format) {
     var outputSource = $('<div>')
         .addClass('test-source test-box test-output-source')
         .insertAfter(output);
-    CodeMirror(outputSource.get(0), {
-        value: style_html($.trim(output.html())),
-        mode: 'htmlmixed'
-    });
+    
+    applyCodeMirror(outputSource.get(0), output.html());
+    
     output.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(outputSource);
 
