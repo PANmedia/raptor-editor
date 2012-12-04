@@ -9,12 +9,12 @@
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Bold Button 1: Word Group Selection</h1>
+        <h1>Reverse Bold Button 1: Word Group Selection</h1>
         <div class="test-input">
             <div class="editible">
-                <p>
+                <p> 
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                    convallis <strong class="cms-bold">{dui id erat pellentesque et rhoncus}</strong> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -25,10 +25,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <strong class="cms-bold">dui id erat pellentesque et rhoncus</strong> nunc semper. Suspendisse
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    
                 </p>
             </div>
         </div>
@@ -40,11 +41,11 @@
     </script>
     
     <div class="test-2">
-        <h1>Bold Button 2: Single Word Selection</h1>
+        <h1>Reverse Bold Button 2: Single Word Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur <strong class="cms-bold">{adipiscing}</strong> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -55,11 +56,12 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <strong class="cms-bold">adipiscing</strong> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    
                 </p>
             </div>
         </div>
@@ -71,15 +73,15 @@
     </script>
     
     <div class="test-3">
-        <h1>Bold Button 3: Part Word Selection</h1>
+        <h1>Reverse Bold Button 3: Part Word Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel<strong class="cms-bold">{lentesqu}</strong>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit. 
                 </p>
             </div>
         </div>
@@ -87,10 +89,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<strong class="cms-bold">lentesqu</strong>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    
                 </p>
             </div>
         </div>
@@ -102,17 +105,18 @@
     </script>
     
      <div class="test-4">
-        <h1>Bold Button 4: Multi-Paragraph Selection</h1>
+        <h1>Reverse Bold Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    convallis dui <strong class="cms-bold">{id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.</strong>
                 </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
+                    <strong class="cms-bold">Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse}</strong> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    
                 </p>
             </div>
         </div>
@@ -120,11 +124,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <strong class="cms-bold">id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</strong>
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
                 </p><p>
-                    <strong class="cms-bold">Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse</strong> interdum, nisi nec consectetur
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -137,30 +141,30 @@
     </script>
     
     <div class="test-5">
-        <h1>Bold Button 5: Paragraph Selection</h1>
+        <h1>Reverse Bold Button 5: Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <strong class="cms-bold">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    malesuada hendrerit velit nec tristique.</strong>
                 </p><p>
-                    Aliquam gravida mauris at
+                    <strong class="cms-bold">Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</strong>
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <strong class="cms-bold">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</strong>
+                    malesuada hendrerit velit nec tristique.
                 </p><p>
-                    <strong class="cms-bold">Aliquam gravida mauris at
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</strong>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
