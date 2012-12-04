@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -38,7 +38,7 @@
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
         });
     </script>
-    
+
     <div class="test-2">
         <h1> Center Align Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -69,7 +69,7 @@
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Center Align Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -100,7 +100,7 @@
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Center Align Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -135,7 +135,7 @@
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Center Align Button 5: Single Paragraph Selection</h1>
         <div class="test-input">
@@ -170,7 +170,7 @@
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
         });
     </script>
-    
+
      <div class="test-6">
         <h1>Center Align Button 6: More Than One Paragraph Selection</h1>
         <div class="test-input">

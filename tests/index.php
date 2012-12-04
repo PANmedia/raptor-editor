@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="cache-control" content="no-cache" />
+        <base href="<?= $baseURI ?>"/>
         <link type="text/css" rel="stylesheet" href="css/style.css"/>
         <script src="../src/dependencies/jquery.js"></script>
         <script type="text/javascript">
@@ -55,7 +56,7 @@
             </div>
             <nav class="tests">
                 <?php
-                    $findTests = function($case) {
+                    $findTests = function($case) use($baseURI) {
                         foreach (glob($case . '/*.*') as $file) {
                             echo '<a target="test" href="cases/' . basename($case) . '/' . basename($file) . '">' . basename($case) . ' - ' . basename($file) . '</a>' . PHP_EOL;
                         }
