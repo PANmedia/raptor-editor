@@ -8,11 +8,10 @@
  * @requires Rangy
  */
 
-$.widget('ui.editor',
-    /**
-     * @lends $.editor.prototype
-     */
-    {
+/**
+ * @lends $.editor.prototype
+ */
+var RaptorWidget = {
 
     /**
      * Constructor
@@ -49,6 +48,7 @@ $.widget('ui.editor',
         this.templates = $.extend({}, Raptor.templates);
         this.target = this.element;
         this.layout = null;
+        this.previewState = null;
 
         // True if editing is enabled
         this.enabled = false;
@@ -81,9 +81,6 @@ $.widget('ui.editor',
             // @todo If element isn't a textarea, replace it with one
             return;
         }
-
-        // Clone the DOM tools functions
-        this.cloneDomTools();
 
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
@@ -243,33 +240,6 @@ $.widget('ui.editor',
     },
 
     /**
-     * Clones all of the DOM tools functions, and constrains the selection before
-     * calling.
-     */
-    cloneDomTools: function() {
-        for (var i in this.options.domTools) {
-            if (!this[i]) {
-                this[i] = (function(i) {
-                    return function() {
-                        selectionConstrain(this.getElement());
-                        var html = this.getHtml();
-                        var result = this.options.domTools[i].apply(this.options.domTools, arguments);
-                        if (html !== this.getHtml()) {
-                            // <debug>
-                            if (debugLevel >= MID) {
-                                debug('Dom tools function (' + i + ') changed content, firing change.');
-                            }
-                            // </debug>
-                            this.change();
-                        }
-                        return result;
-                    };
-                })(i);
-            }
-        }
-    },
-
-    /**
      * Determine whether the editing element's content has been changed.
      */
     checkChange: function() {
@@ -358,7 +328,6 @@ $.widget('ui.editor',
      * Preview functions
     \*========================================================================*/
 
-    previewState: null,
     actionPreview: function(action) {
         this.actionPreviewRestore();
         selectionConstrain(this.getElement());
@@ -372,7 +341,6 @@ $.widget('ui.editor',
         }
     },
 
-    history: {},
     actionApply: function(action) {
         this.actionPreviewRestore();
         selectionConstrain(this.getElement());
@@ -386,29 +354,6 @@ $.widget('ui.editor',
 
     actionRedo: function() {
 
-    },
-
-    /*========================================================================*\
-     * Selection functions
-    \*========================================================================*/
-    getRanges: function() {
-        return rangy.getSelection().getAllRanges();
-        var selection = rangy.getSelection(),
-            validRanges = [],
-            allRanges;
-        selection.refresh();
-        allRanges = selection.getAllRanges();
-        for (var i = 0; i < allRanges.length; i++) {
-            allRanges[i].refresh();
-            if (rangeIsContainedBy(allRanges[i], this.getNode())) {
-                validRanges.push(allRanges[i]);
-            }
-        }
-        return validRanges;
-    },
-
-    getSelection: function() {
-        return rangy.getSelection();
     },
 
     /*========================================================================*\
@@ -445,12 +390,16 @@ $.widget('ui.editor',
                 this.getElement().attr('contenteditable', true);
             }
 
+            try {
+                document.execCommand('enableInlineTableEditing', false, false);
+                document.execCommand('styleWithCSS', true, true);
+            } catch (error) {
+                handleError(error);
+            }
+            
             for (var name in this.plugins) {
                 this.plugins[name].enable();
             }
-
-            this.execCommand('enableInlineTableEditing', false, false);
-            this.execCommand('styleWithCSS', true, true);
 
             this.bindHotkeys();
 
@@ -717,53 +666,12 @@ $.widget('ui.editor',
      * @param {Object} variables
      */
     getTemplate: function(name, variables) {
-        var template;
-        if (!this.templates[name]) {
-            template = Raptor.getTemplate(name, this.options.urlPrefix);
-        } else {
-            template = this.templates[name];
+        if (this.templates[name]) {
+            return this.templates[name];
         }
-        // Translate template
-        template = template.replace(/_\(['"]{1}(.*?)['"]{1}\)/g, function(match, string) {
-            string = string.replace(/\\(.?)/g, function (s, slash) {
-                switch (slash) {
-                    case '\\':return '\\';
-                    case '0':return '\u0000';
-                    case '':return '';
-                    default:return slash;
-                }
-            });
-            return _(string);
-        });
-        // Replace variables
-        variables = $.extend({}, this.options, variables || {});
-        variables = this.getTemplateVars(variables);
-        template = template.replace(/\{\{(.*?)\}\}/g, function(match, variable) {
-            return variables[variable];
-        });
-        return template;
-    },
-
-    /**
-     * @param {Object} variables
-     * @param {String} prefix
-     */
-    getTemplateVars: function(variables, prefix, depth) {
-        prefix = prefix ? prefix + '.' : '';
-        var maxDepth = 5;
-        if (!depth) depth = 1;
-        var result = {};
-        for (var name in variables) {
-            if (typeof variables[name] === 'object' && depth < maxDepth) {
-                var inner = this.getTemplateVars(variables[name], prefix + name, ++depth);
-                for (var innerName in inner) {
-                    result[innerName] = inner[innerName];
-                }
-            } else {
-                result[prefix + name] = variables[name];
-            }
-        }
-        return result;
+        this.templates[name] = templateGet(name, this.options.urlPrefix);
+        this.templates[name] = templateConvertTokens(this.templates[name], variables);
+        return this.templates[name];
     },
 
     /*========================================================================*\
@@ -1085,7 +993,6 @@ $.widget('ui.editor',
      * @param {Object} [context]
      */
     unbind: function(name, callback, context) {
-
         for (var i = 0, l = this.events[name].length; i < l; i++) {
             if (this.events[name][i] &&
                 this.events[name][i].callback === callback &&
@@ -1135,5 +1042,6 @@ $.widget('ui.editor',
             this.fire('after:' + name, global, true);
         }
     }
+};
 
-});
+$.widget('ui.editor', RaptorWidget);

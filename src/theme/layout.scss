@@ -16,6 +16,7 @@
     overflow: visible;
     z-index: 1001;
     position: fixed;
+    font-size: 12px;
     @include user-select(none);
 
     * {

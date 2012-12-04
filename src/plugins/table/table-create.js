@@ -45,7 +45,7 @@ TableMenu.prototype.highlightRemove = function(event) {
 TableMenu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
-        var menu = Menu.prototype.getMenu.call(this)
+        Menu.prototype.getMenu.call(this)
             .on('click', 'td', this.createTable.bind(this))
             .on('mouseenter', 'td', this.highlight.bind(this))
             .mouseleave(this.highlightRemove.bind(this));

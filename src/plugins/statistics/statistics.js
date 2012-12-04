@@ -2,25 +2,80 @@ var statisticsDialog = null;
 
 Raptor.registerUi(new Button({
     name: 'statistics',
+    maximum: 100,
+    showCountInButton: true,
+
+    init: function(raptor) {
+        if (this.showCountInButton) {
+            raptor.bind('change', this.updateButton.bind(this));
+        }
+        return Button.prototype.init.apply(this, arguments);
+    },
+
     action: function() {
         this.processDialog();
         aDialogOpen(this.getDialog());
     },
+
     getCharacters: function() {
         return $('<div>').html(this.raptor.getCleanHtml()).text().length;
     },
+
+    updateButton: function() {
+        var charactersRemaining = null,
+            label = null,
+            characters = this.getCharacters();
+
+        // Cases where maximum has been provided
+        if (this.maximum) {
+            charactersRemaining = this.maximum - characters;
+            if (charactersRemaining >= 0) {
+                label = _('statisticsButtonCharacterRemaining', {
+                    charactersRemaining: charactersRemaining
+                });
+            } else {
+                label = _('statisticsButtonCharacterOverLimit', {
+                    charactersRemaining: charactersRemaining * -1
+                });
+            }
+        } else {
+            label = _('statisticsButtonCharacters', {
+                characters: characters
+            });
+        }
+
+        aButtonSetLabel(this.button, label);
+
+        if (!this.maximum) {
+            return;
+        }
+
+        // Add the error state to the button's text element if appropriate
+        if (charactersRemaining < 0) {
+            this.button.addClass('ui-state-error').removeClass('ui-state-default');
+        } else{
+            // Add the highlight class if the remaining characters are in the "sweet zone"
+            if (charactersRemaining >= 0 && charactersRemaining <= 15) {
+                this.button.addClass('ui-state-highlight').removeClass('ui-state-error ui-state-default');
+            } else {
+                this.button.removeClass('ui-state-highlight ui-state-error').addClass('ui-state-default');
+            }
+        }
+    },
+
     getButton: function() {
         if (!this.button) {
-            this.text = _('statisticsCharacters', {
-                characters: this.getCharacters()
-            });
             Button.prototype.getButton.call(this);
             aButton(this.button, {
                 text: true
             });
+            if (this.showCountInButton) {
+                this.updateButton();
+            }
         }
         return this.button;
     },
+
     getDialog: function() {
         if (!statisticsDialog) {
             statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'))
