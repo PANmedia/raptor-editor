@@ -2,9 +2,11 @@ var embedDialog = null;
 
 Raptor.registerUi(new Button({
     name: 'embed',
+    
     action: function() {
         aDialogOpen(this.getDialog());
     },
+
     getDialog: function() {
         if (!embedDialog) {
             embedDialog = $('<div>').html(this.editor.getTemplate('embed.dialog'));
