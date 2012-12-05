@@ -25,7 +25,7 @@ Menu.prototype.getButton = function() {
             name: this.name,
             action: this.show.bind(this),
             preview: false,
-            options: this.options,
+            options: this.options
         });
     }
     return this.button;
