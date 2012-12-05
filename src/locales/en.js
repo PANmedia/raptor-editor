@@ -16,7 +16,7 @@ registerLocale('en', 'English', {
     "Change Language": "Change Language",
     "Change the color of the selected text.": "Change the color of the selected text.",
     "Check this box to have the file open in a new browser window": "Check this box to have the file open in a new browser window",
-    "Check this box to have the link open in a new browser window": "Check this box to have the link open in a new browser window",
+    "Check this box to hathe link open in a new browser window": "Check this box to have the link open in a new browser window",
     "Choose a link type:": "Choose a link type:",
     "Clear Formatting": "Clear Formatting",
     "Click to detach the toolbar": "Click to detach the toolbar",
@@ -169,7 +169,8 @@ registerLocale('en', 'English', {
 
     linkTypeExternalLabel: 'Page on another website',
     linkTypeExternalHeader: 'Link to a page on another website',
-    linkTypeExternalLocationLabel: 'Location',
+    linkTypeExternalLocationLabel: 'Location:',
+    linkTypeExternalLocationPlaceHolder: 'Enter a URL',
     linkTypeExternalNewWindowHeader: 'New window',
     linkTypeExternalNewWindowLabel: 'Check this box to have the link open in a new browser window/tab.',
     linkTypeExternalInfo:
@@ -181,7 +182,8 @@ registerLocale('en', 'English', {
 
     linkTypeInternalLabel: 'Page on this website',
     linkTypeInternalHeader: 'Link to a page on this website',
-    linkTypeInternalLocationLabel: 'Location',
+    linkTypeInternalLocationLabel: '',
+    linkTypeInternalLocationPlaceHolder: 'Enter a URI',
     linkTypeInternalNewWindowHeader: 'New window',
     linkTypeInternalNewWindowLabel: 'Check this box to have the link open in a new browser window/tab.',
     linkTypeInternalInfo:
