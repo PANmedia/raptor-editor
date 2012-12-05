@@ -1,3 +1,8 @@
+<?php
+    if (!isset($baseURI)) {
+        $baseURI = '';
+    }
+?>
 <!doctype html>
 <html>
     <head>
