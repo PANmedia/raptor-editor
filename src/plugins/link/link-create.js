@@ -2,7 +2,7 @@ var linkDialog = null
     linkDialogInstance = null;
 
 Raptor.registerUi(new Button({
-    name: 'link',
+    name: 'linkCreate',
     state: null,
 
     action: function() {
