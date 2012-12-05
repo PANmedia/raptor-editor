@@ -1,4 +1,4 @@
-var templateCache = {};
+var templateCache = { /* <templates/> */ };
 
 function templateGet(name, urlPrefix) {
     if (templateCache[name]) {
