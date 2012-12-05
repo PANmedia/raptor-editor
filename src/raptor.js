@@ -33,12 +33,6 @@ var Raptor = /** @lends $.ui.raptor */ {
         bind: {},
 
         /**
-         * @deprecated
-         * @type {Object}
-         */
-        domTools: domTools,
-
-        /**
          * Namespace used for persistence to prevent conflicting with other stored values.
          *
          * @type String
@@ -211,11 +205,6 @@ var Raptor = /** @lends $.ui.raptor */ {
      * @property {String} urlPrefix
      */
     urlPrefix: '/raptor/',
-
-    /**
-     * @property {Object} templates
-     */
-    templates: { /* <templates/> */ },
 
     /**
      * @param {String} name

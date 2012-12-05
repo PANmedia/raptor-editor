@@ -18,6 +18,7 @@
   overflow: visible;
   z-index: 1001;
   position: fixed;
+  font-size: 12px;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none; }
@@ -203,9 +204,10 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
 
 .raptor-wrapper .ui-button {
   height: 32px;
-  margin-bottom: 0;
   margin-top: 0;
   padding: 0;
+  float: left;
+  margin-bottom: 2px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
@@ -232,6 +234,9 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
     -moz-border-radius-bottomright: 5px;
     -webkit-border-bottom-right-radius: 5px;
     border-bottom-right-radius: 5px; }
+
+.raptor-menu {
+  z-index: 10000; }
 
 /**
  * Unsupported warning styles
@@ -436,6 +441,10 @@ html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.
   float: left;
   margin-top: 2px;
   border: 1px solid rgba(0, 0, 0, 0.2); }
+
+.raptor-ui-color-picker-basic .ui-icon-swatch {
+  background-image: none;
+  border: 1px solid rgba(0, 0, 0, 0.35); }
 
 /**
  * Debug plugin

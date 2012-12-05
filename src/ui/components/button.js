@@ -25,7 +25,7 @@ Button.prototype.getButton = function() {
                 primary: this.getIcon()
             },
             text: this.text,
-            label: this.label,
+            label: this.label
         });
     }
     return this.button;

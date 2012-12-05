@@ -80,8 +80,8 @@ function undockFromScreen(dockState) {
 function dockToElement(elementToDock, dockTo, options) {
     var wrapper = dockTo.wrap('<div>').parent(),
         innerStyleState = styleSwapWithWrapper(wrapper, dockTo, {
+            'float': 'none',
             display: 'block',
-            float: 'none',
             clear: 'none',
             position: 'static',
 
