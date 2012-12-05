@@ -83,6 +83,7 @@ Raptor.registerUi(new Button({
                 modal: true,
                 resizable: false,
                 autoOpen: false,
+                width: 350,
                 title: _('statisticsDialogTitle'),
                 dialogClass: this.options.dialogClass,
                 buttons: [
