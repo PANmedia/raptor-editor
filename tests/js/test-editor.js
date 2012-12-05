@@ -10,14 +10,30 @@ function testEditor(container, action, format) {
     setTimeout(function() {
         var ranges = tokensToRanges(output.find('.editible'));
         rangy.getSelection().setRanges(ranges);
-        action(output);
-        diff.html(diffstr(expected.html(), output.find('.editible').html()));
-        if (output.find('.editible').html() !== expected.html()) {
+        
+        var error;
+        try {
+            action(output);
+        } catch (e) {
+            console.error(e);
+            console.error(e.stack);
+            error = e;
+        }
+        
+        if (error) {
+            $('<pre>').text(error).appendTo(diff);
+            $('<pre>').text(error.stack).appendTo(diff);
             fail(container);
         } else {
-            pass(container);
+            diff.html(diffstr(expected.html(), output.find('.editible').html()));
+            if (output.find('.editible').html() !== expected.html()) {
+                fail(container);
+            } else {
+                pass(container);
+            }
         }
     }, 100);
+
 }
 
        
