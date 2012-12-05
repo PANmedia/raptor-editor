@@ -37,6 +37,7 @@ loadJS('../src/dependencies/rangy/rangy-cssclassapplier.js');
 loadJS('../src/dependencies/rangy/rangy-selectionsaverestore.js');
 loadJS('../src/dependencies/rangy/rangy-serializer.js');
 loadJS('../src/dependencies/rangy/rangy-textrange.js');
+loadJS('../src/dependencies/resizetable/resizetable.js');
 loadJS('../src/tools/action.js');
 loadJS('../src/tools/clean.js');
 loadJS('../src/tools/dock.js');
