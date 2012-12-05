@@ -241,6 +241,6 @@ registerLocale('en', 'English', {
     viewSourceDialogCancelButton: 'Close',
     viewSourceDialogOKButton: 'Apply source code',
     viewSourceDialogTitle: 'Content source code',
-    viewSourceTitle: 'View/edit source code',
+    viewSourceTitle: 'View/edit source code'
 
 });

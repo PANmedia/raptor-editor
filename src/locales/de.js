@@ -140,7 +140,7 @@ registerLocale('de', 'Deutsch', {
     viewSourceDialogCancelButton: 'Schliessen',
     viewSourceDialogOKButton: 'Quellcode anwenden',
     viewSourceDialogTitle: 'Content source code',
-    viewSourceTitle: 'Quellcode anschauen/editieren',
+    viewSourceTitle: 'Quellcode anschauen/editieren'
     
 //    "A preview of your embedded object is displayed below.": "Eine Vorschau ihres eingebundenen Objekts wird unterhalb angezeigt.",
 //    "Added link: {{link}}": "Link hinzugefügt: {{link}}",
