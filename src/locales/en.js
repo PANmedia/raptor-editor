@@ -117,7 +117,7 @@ registerLocale('en', 'English', {
     cancelTitle: 'Cancel editing',
 
     clearFormattingTitle: 'Clear formatting',
-    clickButtonToEditPluginButton: "Click to begin editing",
+    clickButtonToEditPluginButton: 'Click to begin editing',
 
     colorPickerBasicAutomatic: 'Automatic',
     colorPickerBasicBlack: 'Black',
