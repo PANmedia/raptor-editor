@@ -1,5 +1,5 @@
 Raptor.registerUi(new PreviewButton({
-    name: 'textSizeDecrease',
+    name: 'textSizeIncrease',
     action: function() {
         selectionInverseWrapWithTagClass('big', this.options.cssPrefix + 'big', 'small', this.options.cssPrefix + 'small');
     }
