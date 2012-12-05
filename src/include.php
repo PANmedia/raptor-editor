@@ -17,6 +17,7 @@
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/jquery-hotkeys.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-core.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-serializer.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-applier.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-selectionsaverestore.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-textrange.js"></script>
@@ -83,6 +84,14 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/history-redo.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/history/history-undo.js"></script>
 
+<script type="text/javascript" src="<?php echo $uri ?>plugins/hr/hr-create.js"></script>
+
+<script type="text/javascript" src="<?php echo $uri ?>plugins/link/link-create.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/link/link-remove.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/link/link-type-email.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/link/link-type-internal.js"></script>
+
 <script type="text/javascript" src="<?php echo $uri ?>plugins/list/list-ordered.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/list/list-unordered.js"></script>
 
@@ -109,10 +118,12 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/bold.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/block-quote.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/italic.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/size-decrease.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/size-increase.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/strike.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/sub.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/super.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/text-style/underline.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/view-source/view-source.js"></script>
