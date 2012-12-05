@@ -17,7 +17,7 @@ Raptor.registerUi(new Button({
             this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
             this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
                 position: this.options.position,
-                spacer: this.options.spacer,
+                spacer: this.options.spacer
             });
         }
     }

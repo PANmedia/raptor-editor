@@ -17,7 +17,7 @@ Raptor.registerUi(new Button({
             this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layout);
             this.dockState = dockToScreen(layout, {
                 position: this.options.position,
-                spacer: this.options.spacer,
+                spacer: this.options.spacer
             });
         }
     }

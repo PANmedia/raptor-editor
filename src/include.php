@@ -31,7 +31,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.i18n.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>locales/en.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/action.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>tools/clean.js"></script>
@@ -55,7 +54,6 @@
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/preview-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/filtered-preview-button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/css-class-applier-button.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>ui/components/button.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/menu.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/select-menu.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/components/custom-menu.js"></script>

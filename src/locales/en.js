@@ -111,7 +111,7 @@ registerLocale('en', 'English', {
     alignRightTitle: 'Align text right',
 
     cancelDialogCancelButton: 'Close',
-    cancelDialogContent: 'Are you sure you want to cancel editing. All changes will be lost!',
+    cancelDialogContent: 'Are you sure you want to cancel editing? All changes will be lost!',
     cancelDialogOKButton: 'Ok',
     cancelDialogTitle: 'Cancel Editing',
     cancelTitle: 'Cancel editing',
@@ -238,11 +238,11 @@ registerLocale('en', 'English', {
     textSuperTitle: 'Super-script',
     textUnderlineTitle: 'Underline',
 
-    unsavedEditWarningText: 'The are unsaved changes on this page',
+    unsavedEditWarningText: 'There are unsaved changes on this page',
 
     viewSourceDialogCancelButton: 'Close',
     viewSourceDialogOKButton: 'Apply source code',
     viewSourceDialogTitle: 'Content source code',
-    viewSourceTitle: 'View/edit source code',
+    viewSourceTitle: 'View/edit source code'
 
 });

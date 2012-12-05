@@ -17,7 +17,6 @@ Raptor.registerUi(new Button({
                 resizable: true,
                 autoOpen: false,
                 title: _('embedDialogTitle'),
-                autoOpen: true,
                 dialogClass: this.options.dialogClass,
                 buttons: [
                     {
