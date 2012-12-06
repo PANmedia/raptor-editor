@@ -7,8 +7,8 @@
  * Create and return a new table element with the supplied number of rows/columns.
  *
  * @public @static
- * @param {int} columns
- * @param {int} rows
+ * @param {int} columns The number of columns to add to the table.
+ * @param {int} rows The number of rows to add to the table.
  * @param [options] Extra options to apply.
  * @param [options.placeHolder=""] Place holder HTML to insert into each created cell.
  * @returns {HTMLTableElement}
@@ -31,7 +31,7 @@ function tableCreate(columns, rows, options) {
 /**
  * Adds a column to a table.
  *
- * @param {HTMLTableElement} table
+ * @param {HTMLTableElement} table 
  * @param {int} index Position to insert the column at, starting at 0.
  * @param [options] Extra options to apply.
  * @param [options.placeHolder=""] Place holder HTML to insert into each created cell.
@@ -50,8 +50,15 @@ function tableInsertColumn(table, index, options) {
     }
     return cells;
 }
-
-function tableDeleteColumn() {}
+/**
+ * Removes a column from a table.
+ *
+ * @param {HTMLTableElement} table
+ * @param {int} index Position to remove the column at, starting at 0.
+ */
+function tableDeleteColumn(table, index) {
+    resizeTable(table, 0, 0, -1, index);
+}
 
 /**
  * Adds a row to a table, and append as many cells as the longest row in the table.
@@ -81,7 +88,16 @@ function tableInsertRow(table, index, options) {
     return cells;
 }
 
-function tableDeleteRow() {}
+/**
+ * Removes a row from a table.
+ *
+ * @param {HTMLTableElement} table The table to remove the row from.
+ * @param {int} index Position to remove the row at, starting at 0.
+ */
+function tableDeleteRow(table, index) {
+    resizeTable(table, -1, index, 0, 0);
+    
+}
 
 /**
  * Return the x/y position of a table cell, taking into consideration the column/row span.
