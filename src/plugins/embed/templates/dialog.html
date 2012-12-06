@@ -1,16 +1,16 @@
 <div class="{{baseClass}}-dialog">
-    <div class="ui-editor-embed-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <div class="{{baseClass}}-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
             <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a>_('embedDialogTabCode')</a></li>
             <li class="ui-state-default ui-corner-top"><a>_('embedDialogTabPreview')</a></li>
         </ul>
-        <div class="ui-editor-embed-code-tab">
+        <div class="{{baseClass}}-code-tab">
             <p>_('embedDialogTabCodeContent')</p>
             <textarea></textarea>
         </div>
-        <div class="ui-editor-preview-tab" style="display: none">
+        <div class="{{baseClass}}-preview-tab" style="display: none">
             <p>_('embedDialogTabPreviewContent')</p>
-            <div class="ui-editor-embed-preview"></div>
+            <div class="{{baseClass}}-preview"></div>
         </div>
     </div>
 </div>
