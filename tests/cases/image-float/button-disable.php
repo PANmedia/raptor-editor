@@ -24,7 +24,7 @@
             <div class="editible">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
-                    Some text here
+                    {Some text here}
                 </p>
                 <div style="clear: both">
                 </div>
@@ -35,6 +35,7 @@
         testEditor('.test-1', function(input) {
             var floatLeftButton = input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-float-left');
             floatLeftButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
             
             if (!floatLeftButton.is('.ui-button-disabled')) {
                 throw new Error('Button is not disabled');
@@ -59,7 +60,7 @@
             <div class="editible">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
-                    Some text here
+                    {Some text here}
                 </p>
                 <div style="clear: both">
                 </div>
@@ -70,6 +71,7 @@
         testEditor('.test-2', function(input) {
             var floatRightButton = input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-float-right');
             floatRightButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
             
             if (!floatRightButton.is('.ui-button-disabled')) {
                 throw new Error('Button is not disabled');
@@ -93,7 +95,7 @@
             <div class="editible">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
-                    Some text here
+                    {Some text here}
                 </p>
                 <div style="clear: both">
                 </div>
@@ -104,6 +106,7 @@
         testEditor('.test-3', function(input) {
             var floatNoneButton = input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-float-none');
             floatNoneButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
             
             if (!floatNoneButton.is('.ui-button-disabled')) {
                 throw new Error('Button is not disabled');
