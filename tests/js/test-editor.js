@@ -3,14 +3,14 @@ function testEditor(container, action, format) {
     var output = $('<div>').addClass('test-output').html(html).appendTo(container);
     var diff = $('<div>').addClass('test-diff').appendTo(container);
     var expected = $('.test-expected .editible');
-    output.find('.editible').editor({
+    output.find('.editible').raptor({
         autoEnable: true,
         urlPrefix: '../../../src/'
     });
     setTimeout(function() {
         var ranges = tokensToRanges(output.find('.editible'));
         rangy.getSelection().setRanges(ranges);
-        
+
         var error;
         try {
             action(output);
@@ -19,7 +19,7 @@ function testEditor(container, action, format) {
             console.error(e.stack);
             error = e;
         }
-        
+
         if (error) {
             $('<pre>').text(error).appendTo(diff);
             $('<pre>').text(error.stack).appendTo(diff);
@@ -36,5 +36,4 @@ function testEditor(container, action, format) {
 
 }
 
-       
-            
+

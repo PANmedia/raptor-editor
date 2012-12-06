@@ -4,7 +4,7 @@ function debug() {
         debugEnabled = true;
         console.log('Debug enabled!');
         return;
-    } 
+    }
     if (debugEnabled) {
         console.log.apply(console, arguments);
     }
@@ -38,6 +38,7 @@ loadJS('../src/dependencies/rangy/rangy-selectionsaverestore.js');
 loadJS('../src/dependencies/rangy/rangy-serializer.js');
 loadJS('../src/dependencies/rangy/rangy-textrange.js');
 loadJS('../src/dependencies/resizetable.js');
+loadJS('../src/dependencies/redips-table.js');
 loadJS('../src/tools/action.js');
 loadJS('../src/tools/clean.js');
 loadJS('../src/tools/dock.js');
