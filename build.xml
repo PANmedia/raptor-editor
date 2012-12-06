@@ -31,6 +31,7 @@
         <echo>dir.build: ${dir.build}</echo>
         <echo>strip.blocks: ${strip.blocks}</echo>
         <echo>theme: ${theme}</echo>
+        <echo>theme: ${files.manifest}</echo>
         <echo>jquery-no-conflict: ${jquery-no-conflict}</echo>
         <echo>jquery-ui: ${jquery-ui}</echo>
         <echo>jquery-ui-theme: ${jquery-ui-theme}</echo>
