@@ -138,7 +138,8 @@ var RaptorWidget = {
             selectionSelectOuter(event.target);
         }.bind(this));
 
-        this.getElement().bind('mouseup.' + this.widgetName + ',keyup.' + this.widgetName, this.checkChange.bind(this));
+        this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
+        this.target.bind('keyup.' + this.widgetName, this.checkChange.bind(this));
 
         // Unload warning
         $(window).bind('beforeunload', Raptor.unloadWarning.bind(Raptor));
@@ -239,30 +240,32 @@ var RaptorWidget = {
         this.target = target;
     },
 
-    /**
-     * Determine whether the editing element's content has been changed.
-     */
-    checkChange: function() {
+    checkSelectionChange: function() {
         // Check if the caret has changed position
         var currentSelection = rangy.serializeSelection();
         if (this.previousSelection !== currentSelection) {
             this.fire('selectionChange');
         }
         this.previousSelection = currentSelection;
+    },
 
+    /**
+     * Determine whether the editing element's content has been changed.
+     */
+    checkChange: function() {
         // Get the current content
-        var currentHtml = this.getCleanHtml();
+        var currentHtml = this.getHtml();
 
         // Check if the dirty state has changed
         var wasDirty = this.dirty;
 
         // Check if the current content is different from the original content
-        this.dirty = this.getOriginalHtml() !== currentHtml;
+        this.dirty = this.originalHtml !== currentHtml;
 
         // If the current content has changed since the last check, fire the change event
         if (this.previousHtml !== currentHtml) {
             this.previousHtml = currentHtml;
-            this.change();
+            this.fire('change');
 
             // If the content was changed to its original state, fire the cleaned event
             if (wasDirty !== this.dirty) {
@@ -330,7 +333,7 @@ var RaptorWidget = {
 
     actionPreview: function(action) {
         this.actionPreviewRestore();
-        selectionConstrain(this.getElement());
+        selectionConstrain(this.target);
         this.previewState = actionPreview(this.previewState, this.target, action);
     },
 
@@ -343,9 +346,10 @@ var RaptorWidget = {
 
     actionApply: function(action) {
         this.actionPreviewRestore();
-        selectionConstrain(this.getElement());
+        selectionConstrain(this.target);
         actionApply(action, this.history);
         this.previewState = null;
+        this.checkChange();
     },
 
     actionUndo: function() {
@@ -354,6 +358,19 @@ var RaptorWidget = {
 
     actionRedo: function() {
 
+    },
+
+    stateSave: function() {
+        selectionConstrain(this.target);
+        return stateSave(this.target);
+    },
+
+    stateRestore: function(state) {
+        var restoredState = stateRestore(this.target, state),
+            selection = rangy.getSelection();
+        this.target = restoredState.element;
+        selection.setRanges(restoredState.ranges);
+        selection.refresh();
     },
 
     /*========================================================================*\
@@ -396,7 +413,7 @@ var RaptorWidget = {
             } catch (error) {
                 handleError(error);
             }
-            
+
             for (var name in this.plugins) {
                 this.plugins[name].enable();
             }
@@ -479,7 +496,7 @@ var RaptorWidget = {
      *
      */
     loadMessages: function() {
-        this.messages = $(this.getTemplate('messages')).appendTo(this.wrapper);
+        this.messages = $(this.getTemplate('messages', this.options)).appendTo(this.getLayout().getElement());
     },
 
     /**
@@ -515,10 +532,10 @@ var RaptorWidget = {
         };
 
         messageObject.element =
-            $(this.getTemplate('message', {
+            $(this.getTemplate('message', $.extend(this.options, {
                 type: type,
                 message: message
-            }))
+            })))
             .hide()
             .appendTo(this.messages)
             .find('.ui-editor-message-close')
@@ -624,6 +641,7 @@ var RaptorWidget = {
             $(function() {
                 editor.fire('show');
                 editor.getElement().focus();
+                editor.fire('selectionChange');
             });
         }
     },
@@ -666,12 +684,10 @@ var RaptorWidget = {
      * @param {Object} variables
      */
     getTemplate: function(name, variables) {
-        if (this.templates[name]) {
-            return this.templates[name];
+        if (!this.templates[name]) {
+            this.templates[name] = templateGet(name, this.options.urlPrefix);
         }
-        this.templates[name] = templateGet(name, this.options.urlPrefix);
-        this.templates[name] = templateConvertTokens(this.templates[name], variables);
-        return this.templates[name];
+        return templateConvertTokens(this.templates[name], variables);;
     },
 
     /*========================================================================*\
@@ -895,14 +911,7 @@ var RaptorWidget = {
      * @returns {String}
      */
     getHtml: function() {
-        var content = this.getElement().html();
-
-        // Remove saved rangy ranges
-        content = $('<div/>').html(content);
-        content.find('.rangySelectionBoundary').remove();
-        content = content.html();
-
-        return content;
+        return this.target.html();
     },
 
     getCleanHtml: function() {
@@ -945,13 +954,11 @@ var RaptorWidget = {
     /**
      *
      */
-    save: function() {
-        var html = this.getCleanHtml();
-        this.fire('save');
-        this.setOriginalHtml(html);
+    saved: function() {
+        this.setOriginalHtml(this.getHtml());
+        this.dirty = false;
         this.fire('saved');
         this.fire('cleaned');
-        return html;
     },
 
     /**
@@ -1044,4 +1051,4 @@ var RaptorWidget = {
     }
 };
 
-$.widget('ui.editor', RaptorWidget);
+$.widget('ui.raptor', RaptorWidget);
