@@ -16,27 +16,25 @@
     @include opacity(1);
 }
 
-.raptor-ui-embed .ui-dialog-content .raptor-embed-panel-tabs {
-
+.raptor-ui-embed-panel-tabs {
     @include display-box();
     @include box-orient(vertical);
 
     height: 100%;
     width: 100%;
 
-     > div {
-
+    .raptor-ui-embed-code-tab,
+    .raptor-ui-embed-preview-tab {
         @include display-box();
         @include box-orient(vertical);
         @include box-flex(1);
         @include box-sizing(border-box);
 
-        > p:first-child {
+        p {
             padding-top: 10px;
         }
 
         textarea {
-
             @include display-box();
             @include box-flex(4);
         }

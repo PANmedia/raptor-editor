@@ -7,26 +7,26 @@
 @import 'compass/css3/box';
 @import 'compass/css3/opacity';
 
-.raptor-link-button .ui-icon-link {
+.raptor-ui-link-create .ui-icon {
     @include opacity(0.85);
     background: inline-image('chain.png') 0 0;
 }
 
-.raptor-link-button:hover .ui-icon-link {
+.raptor-ui-link-create:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-unlink-button .ui-icon-unlink {
+.raptor-ui-link-remove .ui-icon {
     @include opacity(0.85);
     background: inline-image('chain-unchain.png') 0 0;
 }
 
-.raptor-unlink-button:hover .ui-icon-unlink {
+.raptor-ui-link-remove:hover .ui-icon {
     @include opacity(1);
 }
 
 /* Dialog */
-.raptor-link-panel .raptor-link-menu {
+.raptor-ui-link-panel .raptor-ui-link-menu {
     height: 100%;
     width: 200px;
     float: left;
@@ -57,17 +57,17 @@
     }
 }
 
-.raptor-link-panel .raptor-link-menu fieldset,
-.raptor-link-panel .raptor-link-wrap fieldset {
+.raptor-ui-link-panel .raptor-ui-link-menu fieldset,
+.raptor-ui-link-panel .raptor-ui-link-wrap fieldset {
     border: none;
 }
 
-.raptor-link-panel .raptor-link-wrap {
+.raptor-ui-link-panel .raptor-ui-link-wrap {
     margin-left: 200px;
     padding-left: 20px;
     min-height: 200px;
     position: relative;
-    &.raptor-link-loading{
+    &.raptor-ui-link-loading{
         &:after {
             content: 'Loading...';
             position: absolute;
@@ -90,11 +90,11 @@
         &.raptor-external-href {
             width: 365px;
         }
-        &.raptor-link-email label {
+        &.raptor-ui-link-email label {
             display: inline-block;
             width: 115px;
         }
-        &.raptor-link-email input {
+        &.raptor-ui-link-email input {
             width: 340px;
         }
     }
@@ -105,12 +105,12 @@
     }
 }
 
-.raptor-link-panel .raptor-link-wrap
-.raptor-link-panel .raptor-link-wrap fieldset #raptor-link-external-target {
+.raptor-ui-link-panel .raptor-ui-link-wrap
+.raptor-ui-link-panel .raptor-ui-link-wrap fieldset #raptor-ui-link-external-target {
     vertical-align: middle;
 }
 
-.raptor-link-error-message {
+.raptor-ui-link-error-message {
     div {
         padding: 0 .7em;
         p {

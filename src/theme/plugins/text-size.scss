@@ -5,20 +5,20 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-font-size-inc-button .ui-icon-font-size-inc {
+.raptor-ui-text-size-increase .ui-icon {
     @include opacity(0.85);
     background: inline-image('edit-size-up.png') 0 0;
 }
 
-.raptor-font-size-inc-button:hover .ui-icon-font-size-inc {
+.raptor-ui-text-size-increase:hover .ui-icon {
     @include opacity(1);
 }
 
-.raptor-font-size-dec-button .ui-icon-font-size-dec {
+.raptor-ui-text-size-decrease .ui-icon {
     @include opacity(0.85);
     background: inline-image('edit-size-down.png') 0 0;
 }
 
-.raptor-font-size-dec-button:hover .ui-icon-font-size-dec {
+.raptor-ui-text-size-decrease:hover .ui-icon {
     @include opacity(1);
 }
