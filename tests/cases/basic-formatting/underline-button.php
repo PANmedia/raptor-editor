@@ -25,7 +25,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <u class="cms-underline">dui id erat pellentesque et rhoncus</u> nunc semper. Suspendisse
+                    convallis <u class="cms-underline">{dui id erat pellentesque et rhoncus}</u> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -36,6 +36,7 @@
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -55,7 +56,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <u class="cms-underline">adipiscing</u> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur <u class="cms-underline">{adipiscing}</u> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -67,6 +68,7 @@
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -87,7 +89,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<u class="cms-underline">lentesqu</u>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel<u class="cms-underline">{lentesqu}</u>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -98,6 +100,7 @@
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -120,11 +123,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <u class="cms-underline">id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui <u class="cms-underline">{id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.</u>
                 </p><p>
                     <u class="cms-underline">Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse</u> interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse}</u> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -133,6 +136,7 @@
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -154,13 +158,13 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <u class="cms-underline">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <u class="cms-underline">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.</u>
                 </p><p>
                     <u class="cms-underline">Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</u>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</u>
                 </p>
             </div>
         </div>
@@ -168,6 +172,7 @@
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 </body>
