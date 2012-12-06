@@ -77,7 +77,7 @@ SaveRestPlugin.prototype.sendRequest = function() {
         url = this.raptor.getPlugin('saveRest').getURL();
     return $.ajax({
         type: this.options.type || 'post',
-        dataType: this.options.type || 'json',
+        dataType: this.options.dataType || 'json',
         headers: headers,
         data: data,
         url: url
@@ -93,8 +93,10 @@ SaveRestPlugin.prototype.getHeaders = function() {
 
 SaveRestPlugin.prototype.getData = function() {
     // Get the data to send to the server
-    var content = this.raptor.getHtml();
-    return this.options.data.call(this, content);
+    var content = this.raptor.getHtml(),
+        data = this.options.data.call(this, content);
+    data._method = this.method;
+    return data;
 };
 
 SaveRestPlugin.prototype.getURL = function() {
