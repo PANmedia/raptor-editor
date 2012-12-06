@@ -31,13 +31,15 @@ function tableCreate(columns, rows, options) {
 /**
  * Adds a column to a table.
  *
- * @param {HTMLTableElement} table 
+ * @param {HTMLTableElement} table
  * @param {int} index Position to insert the column at, starting at 0.
  * @param [options] Extra options to apply.
  * @param [options.placeHolder=""] Place holder HTML to insert into each created cell.
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
  */
 function tableInsertColumn(table, index, options) {
+    resizeTable(table, 0, 0, 1, index, options || {});
+    return;
     // TODO: Detach table from DOM for speed before adding the rows.
     options = options || {};
     var cells = [];
@@ -70,6 +72,8 @@ function tableDeleteColumn(table, index) {
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
  */
 function tableInsertRow(table, index, options) {
+    resizeTable(table, 1, index, 0, 0, options || {});
+    return;
     // TODO: Detach table from DOM for speed before adding the rows.
     options = options || {};
     var i,
@@ -96,7 +100,7 @@ function tableInsertRow(table, index, options) {
  */
 function tableDeleteRow(table, index) {
     resizeTable(table, -1, index, 0, 0);
-    
+
 }
 
 /**
