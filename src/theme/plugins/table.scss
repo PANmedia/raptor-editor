@@ -61,3 +61,22 @@
 .raptor-ui-table-delete-column:hover .ui-icon {
     @include opacity(1);
 }
+
+.raptor-ui-table-merge-cells .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table-join.png') 0 0;
+}
+
+.raptor-ui-table-merge-cells:hover .ui-icon {
+    @include opacity(1);
+}
+
+
+.raptor-ui-table-split-cells .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('table-split.png') 0 0;
+}
+
+.raptor-ui-table-split-cells:hover .ui-icon {
+    @include opacity(1);
+}
