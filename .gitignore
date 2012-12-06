@@ -4,9 +4,9 @@ tagging
 plugins-extra.manifest
 addons-extra.manifest
 translation-status.html
-/build/
 /nbproject/
 /src/plugins-extra/
 /vendor/
 /composer.lock
 /codemirror/
+/jscover/
