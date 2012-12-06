@@ -134,6 +134,13 @@ registerLocale('en', 'English', {
     dockToScreenTitle: 'Dock editor to screen',
 
     embedTitle: 'Embed object',
+    embedDialogTitle: 'Embed Object',
+    embedDialogTabCode: 'Embed Code',
+    embedDialogTabCodeContent: 'Paste your embed code into the text area below:',
+    embedDialogTabPreview: 'Preview',
+    embedDialogTabPreviewContent: 'A preview of your embedded object is displayed below:',
+    embedDialogOKButton: 'Embed Object',
+    embedDialogCancelButton: 'Cancel',
 
     errorPluginNoName: 'Plugin "{{plugin}}" is invalid (must have a name property)',
     errorPluginNotObject: 'Plugin "{{plugin}}" is invalid (must be an object)',
@@ -194,7 +201,11 @@ registerLocale('en', 'English', {
         '</ol>',
 
     logoTitle: 'Learn More About the Raptor WYSIWYG Editor',
+
     saveTitle: 'Save content',
+    saveRestFail: 'Failed to save {{failed}} content block(s).',
+    saveRestPartial: 'Saved {{saved}} out of {{failed}} content blocks.',
+    saveRestSaved: 'Successfully saved {{saved}} content block(s).',
 
     statisticsButtonCharacterOverLimit: '{{charactersRemaining}} characters over limit',
     statisticsButtonCharacterRemaining: '{{charactersRemaining}} characters remaining',
