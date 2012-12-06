@@ -19,7 +19,7 @@
     <?php $uri = '../../src/'; include '../../src/include.php'; ?>
     <script>
         jQuery(function($) {
-            $('.editable').editor({
+            $('.editable').raptor({
                 urlPrefix: '../../src/'
             });
         });
