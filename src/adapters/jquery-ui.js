@@ -14,11 +14,11 @@ function aButtonSetIcon(element, icon) {
 }
 
 function aButtonDisable(element) {
-    return $(element).addClass('ui-state-disabled');
+    return $(element).button('option', 'disabled', true);
 }
 
 function aButtonEnable(element) {
-    return $(element).addClass('ui-state-enabled');
+    return $(element).button('option', 'disabled', false);
 }
 
 function aMenu(element, options) {
