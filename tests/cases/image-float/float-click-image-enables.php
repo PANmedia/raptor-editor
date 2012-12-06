@@ -22,7 +22,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-left"/>
+                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-left"/>}
                 <p>
                     Some text here
                 </p>
@@ -35,6 +35,7 @@
         testEditor('.test-1', function(input) {
             input.find('img').trigger('click');
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-float-left').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -52,7 +53,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right" />
+                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right" />}
                 <p>
                     Some text here
                 </p>
@@ -65,6 +66,7 @@
         testEditor('.test-2', function(input) {
             input.find('img').trigger('click');
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-float-right').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -82,7 +84,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
+                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                 <p>
                     Some text here
                 </p>
@@ -95,6 +97,7 @@
         testEditor('.test-3', function(input) {
             input.find('img').trigger('click');
             input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-float-none').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 </body>
