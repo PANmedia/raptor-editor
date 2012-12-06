@@ -472,3 +472,35 @@ function selectionClearFormatting(limitNode, selection) {
         }
     }
 }
+
+
+
+function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
+    selectionSave();
+    // Assign a temporary tag name (to fool rangy)
+    var id = 'domTools' + Math.ceil(Math.random() * 10000000);
+
+    selectionEachRange(function(range) {
+        var applier2 = rangy.createCssClassApplier(class2, {
+            elementTagName: tag2
+        });
+
+        // Check if tag 2 is applied to range
+        if (applier2.isAppliedToRange(range)) {
+            // Remove tag 2 to range
+            applier2.toggleSelection();
+        } else {
+            // Apply tag 1 to range
+            rangy.createCssClassApplier(class1, {
+                elementTagName: id
+            }).toggleSelection();
+        }
+    }, null, this);
+
+    // Replace the temparay tag with the correct tag
+    $(id).each(function() {
+        $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
+    });
+
+    selectionRestore();
+}
