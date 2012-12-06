@@ -3,7 +3,7 @@
     <if>
         <not><equals arg1="${loaded}" arg2="true" /></not>
         <then>
-            <property file="build.properties" override="false" />
+            <property file="build/build.properties" override="false" />
         </then>
     </if>
 
