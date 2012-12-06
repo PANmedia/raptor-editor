@@ -33,7 +33,7 @@ function countColumns(tableElement) {
     return tableCols;
 }
 
-function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
+function resizeTable(tableElement, rCount, rStart, cCount, cStart, options) {
     // Insert or remove rows and columns in the table, taking into account
     // rowspans and colspans
     // Parameters:
@@ -45,10 +45,11 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
     //   cCount
     //   cStart
     var tr, td, i, j, k, l, cs, rs;
-    var rowspanLeft = new Array();
-    var rowspanCell = new Array();
+    var rowspanLeft = [];
+    var rowspanCell = [];
     var tableRows0 = tableElement.rows.length;
     var tableCols0 = countColumns(tableElement);
+    var cells = [];
 
     if (rCount > 0) { // Prep insertion of rows
         for (i = rStart; i < rStart + rCount; i++) {
@@ -62,13 +63,14 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
         var k = 0;
         // Trace and adjust the cells of this row
         while (k < tableCols0) {
-            if (cCount > 0 && k == cStart) { // Insert columns by inserting cells
+            if (cCount > 0 && k === cStart) { // Insert columns by inserting cells
                 for (l = 0; l < cCount; l++) {  // between/before existing cells
-                    insertEmptyCell(tr, j++);
+                    cells.push(insertEmptyCell(tr, j++, options.placeHolder));
                 }
             }
             if (rowspanLeft[k]) {
-                if (rCount < 0 && i == rStart - rCount && rowspanCell[k]
+                if (rCount < 0
+                        && i === rStart - rCount && rowspanCell[k]
                         && rowspanCell[k].rowSpan == 1) {
                     // This is the first row after a series of to-be-deleted rows.
                     // Any rowspan-cells covering this row which started in the
@@ -86,7 +88,7 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
                         rowspanLeft[k++] = rs - 1;
                     }
                 } else {
-                    if (--rowspanLeft[k++] == 0)
+                    if (--rowspanLeft[k++] === 0)
                         rowspanCell[k] = null;
                     while (rowspanLeft[k] && !rowspanCell[k]) {
                         // This is a cell of a block with both rowspan and colspan>1
@@ -97,7 +99,7 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
                 }
             } else {
                 if (j >= tr.cells.length) {
-                    insertEmptyCell(tr, j); // append missing cell
+                    cells.push(insertEmptyCell(tr, j, options.placeHolder)); // append missing cell
                 }
                 td = tr.cells[j++];
                 rs = Math.max(1, parseInt(td.rowSpan));
@@ -133,13 +135,13 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
                 }
             }
         }
-        if (cCount > 0 && k == cStart) { // Insert columns by appending cells to row
+        if (cCount > 0 && k === cStart) { // Insert columns by appending cells to row
             for (l = 0; l < cCount; l++) {
-                insertEmptyCell(tr, j++);
+                cells.push(insertEmptyCell(tr, j++, options.placeHolder));
             }
         }
         i++;
-        if (rCount > 0 && i == rStart) {
+        if (rCount > 0 && i === rStart) {
             // Adjust rowspans present at start of inserted rows
             for (l = 0; l < tableCols0; l++) {
                 if (rowspanLeft[l])
@@ -147,7 +149,7 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
                 if (rowspanCell[l])
                     rowspanCell[l].rowSpan += rCount;
             }
-        } else if (rCount < 0 && i == rStart) {
+        } else if (rCount < 0 && i === rStart) {
             // Adjust rowspans present at start of to-be-deleted rows
             for (l = 0; l < rowspanCell.length; l++) {
                 if (rowspanCell[l]) {
@@ -161,10 +163,26 @@ function resizeTable(tableElement, rCount, rStart, cCount, cStart) {
             tableElement.deleteRow(i);
         }
     }
+    return cells;
 }
 
-function insertEmptyCell(tr, j) {
-    var td = tr.insertCell(j);
-    td.vAlign = 'top';
-    td.innerHTML = '&nbsp;';
+function insertEmptyCell(row, index, placeHolder) {
+    var sibling, cell;
+    // Check the cell's sibling to detect header cells
+    if (index > 0) {
+        sibling = row.cells[index - 1];
+    } else if (index < row.cells.length) {
+        sibling = row.cells[index + 1];
+    }
+
+    // Header cell
+    cell = row.insertCell(index);
+    if (sibling && sibling.tagName === 'TH') {
+        $(cell).replaceWith(document.createElement('th'))
+    }
+
+    if (placeHolder) {
+        cell.innerHTML = placeHolder;
+    }
+    return cell;
 }
