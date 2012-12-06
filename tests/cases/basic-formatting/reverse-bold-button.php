@@ -179,5 +179,77 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
+    
+    <div class="test-6">
+        <h1>Reverse Bold Button 6: Empty Selection in Word</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. <strong class="cms-bold">Suspen{}disse</strong> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                 <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-6', function(input) {
+            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+    
+    <div class="test-7">
+        <h1>Reverse Bold Button 7: Empty Selection at the Beginning of a Word</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada <strong class="cms-bold">{}hendrerit</strong> velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada {}hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-7', function(input) {
+            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
 </body>
 </html>

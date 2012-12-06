@@ -175,5 +175,77 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
+    
+    <div class="test-6">
+        <h1>Underline Button 6: Empty Selection in Word</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. <u class="cms-underline">Suspen{}disse</u> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-6', function(input) {
+            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+    
+    <div class="test-7">
+        <h1>Underline Button 7: Empty Selection at the Beginning of a Word</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada {}hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada <u class="cms-underline">{}hendrerit</u> velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-7', function(input) {
+            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
 </body>
 </html>
