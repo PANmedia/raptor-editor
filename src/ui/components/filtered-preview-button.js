@@ -7,13 +7,15 @@ FilteredPreviewButton.prototype = Object.create(PreviewButton.prototype);
 FilteredPreviewButton.prototype.init = function(raptor) {
     var result = PreviewButton.prototype.init.call(this, raptor);
     this.raptor.bind('selectionChange', this.selectionChange.bind(this))
-    return result;  
+    return result;
 };
 
 FilteredPreviewButton.prototype.selectionChange = function() {
-    aButton(this.button, {
-        disabled: !this.isEnabled()
-    });
+    if (this.isEnabled()) {
+        aButtonEnable(this.button);
+    } else {
+        aButtonDisable(this.button);
+    }
 };
 
 FilteredPreviewButton.prototype.canPreview = function() {
