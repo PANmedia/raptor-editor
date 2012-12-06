@@ -63,7 +63,8 @@
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/toolbar.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/word.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>ui/layout/aloha.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>presets/default.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>presets/base.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>presets/full.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/cancel.js"></script>
