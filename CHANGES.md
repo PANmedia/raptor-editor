@@ -23,6 +23,7 @@ v0.5.0
  - Rewrote plugin/UI architecture
    - Adjusted exiting plugins/UI
  - Updated translations to use keys instead of english strings
+ - Changed save REST options
 
 
 v0.0.30
