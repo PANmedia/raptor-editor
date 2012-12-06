@@ -72,14 +72,23 @@ SaveRestPlugin.prototype.always = function() {
 };
 
 SaveRestPlugin.prototype.sendRequest = function() {
-    var data = this.raptor.getPlugin('saveRest').getData(),
+    var headers = this.raptor.getPlugin('saveRest').getHeaders(),
+        data = this.raptor.getPlugin('saveRest').getData(),
         url = this.raptor.getPlugin('saveRest').getURL();
     return $.ajax({
         type: this.options.type || 'post',
         dataType: this.options.type || 'json',
+        headers: headers,
         data: data,
         url: url
     });
+};
+
+SaveRestPlugin.prototype.getHeaders = function() {
+    if (this.options.headers) {
+        return this.options.headers.call(this);
+    }
+    return {};
 };
 
 SaveRestPlugin.prototype.getData = function() {
