@@ -96,6 +96,9 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/logo/logo.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/save/save.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/save/save-json.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/save/save-rest.js"></script>
+
 <script type="text/javascript" src="<?php echo $uri ?>plugins/statistics/statistics.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-cell-button.js"></script>
