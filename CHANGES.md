@@ -1,8 +1,8 @@
 v0.5.0
 ---
- - Rewrote plugin/UI architecture
-   - Adjusted exiting plugins/UI
- - Updated translations to use keys instead of english strings
+
+*Updates:*
+
  - Preview action when you hover a button
  - Restore selection after an action is applied
  - Improved performance
@@ -11,11 +11,18 @@ v0.5.0
    - Removed rangy markers (serialized ranges)
    - Use static/shared dialogs
    - Only create toolbar/buttons/menus/dialogs when first used
- - Decoupled layout (messaging system still need decoupling)
  - Many bug fixes
  - Added lots of tests
  - Added option presets
  - Updated build script to create smaller, more targeted builds
+
+*API Changes:*
+
+ - Renamed variables from 'editor' to 'raptor' to prevent conflicts
+ - Decoupled layout (messaging system still need decoupling)
+ - Rewrote plugin/UI architecture
+   - Adjusted exiting plugins/UI
+ - Updated translations to use keys instead of english strings
 
 
 v0.0.30
