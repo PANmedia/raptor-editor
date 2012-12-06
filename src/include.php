@@ -23,6 +23,9 @@
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-textrange.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>dependencies/raptorize/jquery.raptorize.js"></script>
 
+<script type="text/javascript" src="<?php echo $uri ?>dependencies/resizetable.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>dependencies/goog-table.js"></script>
+
 <!-- Theme -->
 <link rel="stylesheet" type="text/css" href="<?php echo $uri ?>theme/theme.css"/>
 
@@ -107,6 +110,8 @@
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-delete-row.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-insert-column.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-insert-row.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-merge-cells.js"></script>
+<script type="text/javascript" src="<?php echo $uri ?>plugins/table/table-split-cells.js"></script>
 
 <script type="text/javascript" src="<?php echo $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?php echo $uri ?>plugins/tag-menu/tag-menu.js"></script>
