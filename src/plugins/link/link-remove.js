@@ -8,5 +8,5 @@ Raptor.registerUi(new Button({
             });
             applier.undoToSelection();
         });
-    },
+    }
 }));
