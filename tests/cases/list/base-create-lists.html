@@ -105,7 +105,7 @@
     </script>
     
      <div class="test-4">
-        <h1>List 4: Create unordered list with multiple items</h1>
+        <h1>List 4: Create ordered list with multiple items</h1>
         <div class="test-input">
             {
                 <p>Item 1</p>
@@ -124,7 +124,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-3', function(input) {
+        test('.test-4', function(input) {
             var ranges = tokensToRanges(input);
             rangy.getSelection().setRanges(ranges);
             listWrapSelection('ol', input);
