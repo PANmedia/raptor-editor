@@ -18,7 +18,7 @@ Raptor.registerUi(new Button({
     },
 
     getCharacters: function() {
-        return $('<div>').html(this.raptor.getCleanHtml()).text().length;
+        return $('<div>').html(this.raptor.getHtml()).text().length;
     },
 
     updateButton: function() {
@@ -108,7 +108,7 @@ Raptor.registerUi(new Button({
      */
     processDialog: function() {
         var dialog = this.getDialog();
-        var content = $('<div/>').html(this.editor.getCleanHtml()).text();
+        var content = $('<div/>').html(this.editor.getHtml()).text();
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';
