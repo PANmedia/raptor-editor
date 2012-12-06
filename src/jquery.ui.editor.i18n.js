@@ -74,7 +74,7 @@ function _(string, variables) {
     // Get the current locale translated string
     if (currentLocale &&
             locales[currentLocale] &&
-            locales[currentLocale][string]) {
+            typeof locales[currentLocale][string] === 'string') {
         string = locales[currentLocale][string];
     }
 
