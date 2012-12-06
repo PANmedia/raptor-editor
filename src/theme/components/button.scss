@@ -37,19 +37,6 @@
 }
 
 .raptor-wrapper {
-    .ui-button {
-        height: 32px;
-        margin-top: 0;
-        padding: 0;
-        float: left;
-        margin-bottom: 2px;
-        @include box-sizing(border-box);
-    }
-    .ui-button-icon-only { width: 32px; }
-}
-
-
-.raptor-wrapper {
     .raptor-buttonset {
         > .ui-button {
             @include border-radius(0);

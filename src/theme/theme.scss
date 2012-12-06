@@ -7,7 +7,6 @@
 @import 'style';
 
 /* Components */
-@import 'components/wrapper';
 @import 'components/path';
 @import 'components/selectmenu';
 @import 'components/button';
@@ -15,17 +14,19 @@
 @import 'components/support';
 @import 'components/messages';
 
+/* Layouts */
+@import 'layout/toolbar';
+
 /* Plugins */
 @import 'plugins/blockquote';
 @import 'plugins/clean';
 @import 'plugins/clear-formatting';
-@import 'plugins/clickbuttontoedit';
+@import 'plugins/click-button-to-edit';
 @import 'plugins/color-picker-basic';
 @import 'plugins/debug';
 @import 'plugins/dock';
 @import 'plugins/embed';
 @import 'plugins/float';
-@import 'plugins/fontsize';
 @import 'plugins/guides';
 @import 'plugins/history';
 @import 'plugins/hr';
@@ -42,6 +43,7 @@
 @import 'plugins/table';
 @import 'plugins/tagmenu';
 @import 'plugins/text-align';
+@import 'plugins/text-size';
 @import 'plugins/text-style';
 @import 'plugins/toolbartip';
 @import 'plugins/unsaved-edit-warning';
