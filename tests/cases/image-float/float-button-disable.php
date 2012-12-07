@@ -34,16 +34,15 @@
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
             var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
-            floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!floatLeftButton.is('.ui-button-disabled')) {
+            input.find('.editible').data('raptor').checkSelectionChange();
+            if (!floatLeftButton.hasClass('ui-button-disabled')) {
                 throw new Error('Button is not disabled');
-            } 
-            
+            }
+
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Right Float Button 1: Disabled When Image Not Selected </h1>
         <div class="test-input">
@@ -70,15 +69,14 @@
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
             var floatRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right');
-            floatRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!floatRightButton.is('.ui-button-disabled')) {
+            input.find('.editible').data('raptor').checkSelectionChange();
+            if (!floatRightButton.hasClass('ui-button-disabled')) {
                 throw new Error('Button is not disabled');
-            } 
+            }
         });
     </script>
-    
+
      <div class="test-3">
         <h1>No Float Button 1: Disabled When Image Not Selected </h1>
         <div class="test-input">
@@ -105,10 +103,9 @@
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
             var floatNoneButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none');
-            floatNoneButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!floatNoneButton.is('.ui-button-disabled')) {
+            input.find('.editible').data('raptor').checkSelectionChange();
+            if (!floatNoneButton.hasClass('ui-button-disabled')) {
                 throw new Error('Button is not disabled');
             }
         });
