@@ -1,8 +1,6 @@
 Raptor.registerUi(new PreviewButton({
     name: 'alignJustify',
     action: function() {
-        selectionToggleBlockStyle({
-            'text-align': 'justify'
-        }, this.raptor.getElement());
+        selectionToggleBlockClass(this.options.cssPrefix + 'justify', this.raptor.getElement());
     }
 }));
