@@ -68,14 +68,14 @@
     </script>
     
     <div class="test-2">
-        <h1>Insert Column Button 1: Active When Table is Selected in Cell</h1>
+        <h1>Insert Column Button 1: Active When Table is Selected</h1>
          <div class="test-input">
             <div class="editible">
                <p>some text that isn't selected</p>
-                <table>
+                <table>{
                     <tr>
                         <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
+                        <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -85,7 +85,7 @@
                     </tr>
                     <tr>
                         <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
+                        <td>Cell 1},2</td>
                         <td>Cell 2,2</td>
                     </tr>
                 </table>
@@ -94,10 +94,10 @@
         <div class="test-expected">
             <div class="editible">
                 <p>some text that isn't selected</p>
-                <table>
+                <table>{
                     <tr>
                         <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
+                        <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -107,7 +107,7 @@
                     </tr>
                     <tr>
                         <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
+                        <td>Cell 1},2</td>
                         <td>Cell 2,2</td>
                     </tr>
                 </table>
@@ -127,14 +127,14 @@
     </script>
     
     <div class="test-3">
-        <h1>Insert Row Button 1: Active When Table is Selected in Cell</h1>
+        <h1>Insert Row Button 1: Active When Table is Selected</h1>
          <div class="test-input">
             <div class="editible">
                <p>some text that isn't selected</p>
                 <table>
                     <tr>
-                        <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -145,7 +145,7 @@
                     <tr>
                         <td>Cell 0,2</td>
                         <td>Cell 1,2</td>
-                        <td>Cell 2,2</td>
+                        <td>Cell 2,2}</td>
                     </tr>
                 </table>
             </div>
@@ -155,8 +155,8 @@
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
-                        <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -167,7 +167,7 @@
                     <tr>
                         <td>Cell 0,2</td>
                         <td>Cell 1,2</td>
-                        <td>Cell 2,2</td>
+                        <td>Cell 2,2}</td>
                     </tr>
                 </table>
             </div>
@@ -186,15 +186,15 @@
     </script>
     
     <div class="test-4">
-        <h1>Delete Column Button 1: Active When Table is Selected in Cell</h1>
+        <h1>Delete Column Button 1: Active When Table is Selected</h1>
          <div class="test-input">
             <div class="editible">
                <p>some text that isn't selected</p>
                 <table>
                     <tr>
-                        <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
-                        <td>Cell 2,0</td>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0}</td>
                     </tr>
                     <tr>
                         <td>Cell 0,1</td>
@@ -214,9 +214,9 @@
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
-                        <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
-                        <td>Cell 2,0</td>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0}</td>
                     </tr>
                     <tr>
                         <td>Cell 0,1</td>
@@ -311,17 +311,17 @@
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
-                        <td>Cell 1,0</td>
+                        <td>{Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
-                        <td>Cell {}0,1</td>
+                        <td>Cell 0,1</td>
                         <td>Cell 1,1</td>
                         <td>Cell 2,1</td>
                     </tr>
                     <tr>
                         <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
+                        <td>Cell 1,2}</td>
                         <td>Cell 2,2</td>
                     </tr>
                 </table>
