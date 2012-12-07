@@ -605,9 +605,9 @@ var RaptorWidget = {
     loadLayout: function() {
         if (!this.layout) {
             this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
-            this.layout.editor = this;
-            this.layout.options = $.extend(true, {}, this.options, this.layout.options, this.options.layout.options);
-            this.layout.init(this, this.layout.options);
+            this.layout.raptor = this;
+            this.layout.options = $.extend({}, this.options, this.layout.options, this.options.layout.options);
+            this.layout.init();
         }
     },
 
@@ -895,9 +895,9 @@ var RaptorWidget = {
                 baseClass: editor.options.baseClass + '-' + baseClass
             }, pluginObject.options, editor.options.plugins[name]);
 
-            pluginObject.editor = editor;
+            pluginObject.raptor = this;
             pluginObject.options = options;
-            pluginObject.init(editor, options);
+            pluginObject.init();
 
             if (pluginObject.hotkeys) {
                 this.registerHotkey(pluginObject.hotkeys, null, pluginObject);
