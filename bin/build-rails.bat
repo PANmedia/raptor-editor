@@ -1,1 +1,1 @@
-call phing -Dfiles.manifest=rails.manifest -Dfilename=raptor.rails
+call phing -Dfiles.manifest=build/rails.manifest -Dfilename=raptor.rails

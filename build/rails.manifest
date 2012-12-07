@@ -9,11 +9,11 @@ dependencies/rangy/rangy-serializer.js
 dependencies/jquery-hotkeys.js
 
 adapters/jquery-ui.js
-jquery.ui.editor.i18n.js
+i18n.js
 locales/en.js
 
-jquery.ui.editor.init.js
-jquery.ui.editor.support.js
+init.js
+support.js
 
 tools/action.js
 tools/clean.js
@@ -33,21 +33,21 @@ tools/template.js
 tools/types.js
 
 raptor.js
-jquery.ui.editor.js
+raptor-widget.js
 expose.js
 
 components/plugin.js
 
-ui/components/button.js
-ui/components/preview-button.js
-ui/components/filtered-preview-button.js
-ui/components/css-class-applier-button.js
-ui/components/menu.js
-ui/components/select-menu.js
-ui/components/custom-menu.js
-ui/layout/toolbar.js
+components/ui/button.js
+components/ui/preview-button.js
+components/ui/filtered-preview-button.js
+components/ui/css-class-applier-button.js
+components/ui/menu.js
+components/ui/select-menu.js
+components/ui/custom-menu.js
+components/layout/toolbar.js
 
-presets/default.js
+presets/rails.js
 
 plugins/cancel/cancel.js
 plugins/clear-formatting/clear-formatting.js
