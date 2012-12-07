@@ -236,7 +236,7 @@
                 </p><p class="cms-right">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
