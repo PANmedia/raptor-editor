@@ -8,7 +8,7 @@ Raptor.registerUi(new Button({
     },
     getDialog: function() {
         if (!viewSourceDialog) {
-            viewSourceDialog = $('<div>').html(this.editor.getTemplate('view-source.dialog', this.options));
+            viewSourceDialog = $('<div>').html(this.raptor.getTemplate('view-source.dialog', this.options));
             aDialog(viewSourceDialog, {
                 modal: true,
                 width: 600,

@@ -20,7 +20,7 @@ Raptor.registerUi(new Button({
     getDialog: function(instance) {
         embedInstance = instance;
         if (!embedDialog) {
-            embedDialog = $('<div>').html(this.editor.getTemplate('embed.dialog', this.options));
+            embedDialog = $('<div>').html(this.raptor.getTemplate('embed.dialog', this.options));
             aDialog(embedDialog, {
                 modal: true,
                 width: 600,

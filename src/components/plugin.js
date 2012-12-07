@@ -5,10 +5,6 @@ function RaptorPlugin(name, overrides) {
     }
 }
 
-RaptorPlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
-};
+RaptorPlugin.prototype.init = function() {};
 
-RaptorPlugin.prototype.enable = function() {
-
-};
+RaptorPlugin.prototype.enable = function() {};

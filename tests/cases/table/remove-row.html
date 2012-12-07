@@ -5,37 +5,37 @@
 </head>
 <body class="simple">
     <div class="test-1">
-        <h1>Remove Row 1</h1>
+        <h1>Remove first row</h1>
         <div class="test-input">
             <table>
                 <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
-                    <td>Cell 2,0</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
                 </tr>
             </table>
         </div>
         <div class="test-expected">
             <table>
                 <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
                 </tr>
             </table>
         </div>
@@ -46,9 +46,9 @@
             tableDeleteRow(table, 0);
         });
     </script>
-    
+
     <div class="test-2">
-        <h1>Remove Row 2</h1>
+        <h1>Remove row 2, with colspan and rowspan</h1>
         <div class="test-input">
             <table>
                 <thead>
@@ -189,9 +189,9 @@
             tableDeleteRow(table, 2);
         });
     </script>
-    
+
      <div class="test-3">
-        <h1>Remove Header</h1>
+        <h1>Remove header row</h1>
         <div class="test-input">
             <table>
                 <thead>
@@ -283,7 +283,7 @@
                     <tr>
                         <td>Row 3</td>
                         <td>Row 3</td>
-                        
+
                         <td colspan="2">Row 3</td>
                         <td>Row 3</td>
                     </tr>
@@ -330,9 +330,9 @@
             tableDeleteRow(table, 0);
         });
     </script>
-    
+
      <div class="test-4">
-        <h1>Remove Footer</h1>
+        <h1>Remove footer row</h1>
         <div class="test-input">
             <table>
                 <thead>
@@ -363,7 +363,7 @@
                     <tr>
                         <td>Row 3</td>
                         <td>Row 3</td>
-                        
+
                         <td colspan="2">Row 3</td>
                         <td>Row 3</td>
                     </tr>
@@ -433,7 +433,7 @@
                     <tr>
                         <td>Row 3</td>
                         <td>Row 3</td>
-                        
+
                         <td colspan="2">Row 3</td>
                         <td>Row 3</td>
                     </tr>

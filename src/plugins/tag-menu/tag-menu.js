@@ -6,8 +6,8 @@ function TagMenu(options) {
 
 TagMenu.prototype = Object.create(SelectMenu.prototype);
 
-TagMenu.prototype.init = function(raptor) {
-    raptor.bind('selectionChange', this.updateButton.bind(this));
+TagMenu.prototype.init = function() {
+    this.raptor.bind('selectionChange', this.updateButton.bind(this));
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
@@ -84,7 +84,7 @@ TagMenu.prototype.updateButton = function() {
     } else {
         aButtonSetLabel(button, _('tagMenuTagNA'));
     }
-    if (this.editor.getElement()[0] === tag) {
+    if (this.raptor.getElement()[0] === tag) {
         aButtonDisable(button);
     } else {
         aButtonEnable(button);
@@ -105,7 +105,7 @@ TagMenu.prototype.getButton = function() {
 };
 
 TagMenu.prototype.getMenuItems = function() {
-    return $(this.editor.getTemplate('tag-menu.menu', this.options))
+    return $(this.raptor.getTemplate('tag-menu.menu', this.options))
         .click(this.apply.bind(this))
         .mouseenter(this.preview.bind(this))
         .mouseleave(this.previewRestore.bind(this));

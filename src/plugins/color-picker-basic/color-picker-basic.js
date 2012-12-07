@@ -17,8 +17,8 @@ function ColorPickerBasicMenu(options) {
 
 ColorPickerBasicMenu.prototype = Object.create(SelectMenu.prototype);
 
-ColorPickerBasicMenu.prototype.init = function(raptor) {
-    raptor.bind('selectionChange', this.updateButton.bind(this));
+ColorPickerBasicMenu.prototype.init = function() {
+    this.raptor.bind('selectionChange', this.updateButton.bind(this));
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
@@ -108,7 +108,7 @@ ColorPickerBasicMenu.prototype.getButton = function() {
 };
 
 ColorPickerBasicMenu.prototype.getMenuItems = function() {
-    return $(this.editor.getTemplate('color-picker-basic.menu', this.options))
+    return $(this.raptor.getTemplate('color-picker-basic.menu', this.options))
         .click(this.apply.bind(this))
         .mouseenter(this.preview.bind(this))
         .mouseleave(this.previewRestore.bind(this));

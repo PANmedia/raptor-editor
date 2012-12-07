@@ -4,7 +4,7 @@ function debug() {
         debugEnabled = true;
         console.log('Debug enabled!');
         return;
-    } 
+    }
     if (debugEnabled) {
         console.log.apply(console, arguments);
     }
@@ -38,6 +38,7 @@ loadJS('../src/dependencies/rangy/rangy-selectionsaverestore.js');
 loadJS('../src/dependencies/rangy/rangy-serializer.js');
 loadJS('../src/dependencies/rangy/rangy-textrange.js');
 loadJS('../src/dependencies/resizetable.js');
+loadJS('../src/dependencies/goog-table.js');
 loadJS('../src/tools/action.js');
 loadJS('../src/tools/clean.js');
 loadJS('../src/tools/dock.js');
@@ -53,8 +54,10 @@ loadJS('../src/tools/table.js');
 loadJS('../src/tools/tag.js');
 loadJS('../src/tools/types.js');
 loadJS('js/beautify-html.js');
+loadJS('js/code-mirror.js');
 loadJS('js/diff.js');
 loadJS('js/helpers.js');
+loadJS('js/reorder-attributes.js');
 loadJS('js/test-editor.js');
 loadJS('js/test.js');
 loadJS('js/tokens-to-ranges.js');

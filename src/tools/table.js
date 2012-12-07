@@ -31,24 +31,14 @@ function tableCreate(columns, rows, options) {
 /**
  * Adds a column to a table.
  *
- * @param {HTMLTableElement} table 
+ * @param {HTMLTableElement} table
  * @param {int} index Position to insert the column at, starting at 0.
  * @param [options] Extra options to apply.
  * @param [options.placeHolder=""] Place holder HTML to insert into each created cell.
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
  */
 function tableInsertColumn(table, index, options) {
-    // TODO: Detach table from DOM for speed before adding the rows.
-    options = options || {};
-    var cells = [];
-    for (var i = 0; i < table.rows.length; i++) {
-        var cell = table.rows[i].insertCell(index);
-        if (options.placeHolder) {
-            cell.innerHTML = options.placeHolder;
-        }
-        cells.push(cell);
-    }
-    return cells;
+    return resizeTable(table, 0, 0, 1, index, options || {});
 }
 /**
  * Removes a column from a table.
@@ -70,22 +60,7 @@ function tableDeleteColumn(table, index) {
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
  */
 function tableInsertRow(table, index, options) {
-    // TODO: Detach table from DOM for speed before adding the rows.
-    options = options || {};
-    var i,
-        cells = [],
-        length = 0,
-        row = table.insertRow(index);
-    for (i = 0; i < table.rows.length; i++) {
-        length = Math.max(table.rows[i].cells.length, length);
-    };
-    for (i = 0; i < length; i++) {
-        var cell = row.insertCell(i);
-        if (options.placeHolder) {
-            cell.innerHTML = options.placeHolder;
-        }
-    }
-    return cells;
+    return resizeTable(table, 1, index, 0, 0, options || {});
 }
 
 /**
@@ -96,7 +71,6 @@ function tableInsertRow(table, index, options) {
  */
 function tableDeleteRow(table, index) {
     resizeTable(table, -1, index, 0, 0);
-    
 }
 
 /**
@@ -163,10 +137,18 @@ function tableCellsInRange(table, startIndex, endIndex) {
     return cells;
 }
 
-function tableCanMergeCells(table, startIndex, endIndex) {}
+function tableCanMergeCells(table, startX, startY, endX, endY) {
+}
 
-function tableMergeCells() {}
+function tableMergeCells(table, startX, startY, endX, endY) {
+    var googTable = new GoogTable(table);
+    googTable.mergeCells(startX, startY, endX, endY);
+}
 
-function tableCanSplitCells() {}
+function tableCanSplitCells(table, x, y) {
+}
 
-function tableSplitCells() {}
+function tableSplitCells(table, x, y) {
+    var googTable = new GoogTable(table);
+    googTable.splitCell(x, y);
+}

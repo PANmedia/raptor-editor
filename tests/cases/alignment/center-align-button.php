@@ -112,7 +112,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -125,7 +126,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-center">
+                </p>
+                <p class="cms-center">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -148,7 +150,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.}
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -161,7 +164,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.}
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -184,7 +188,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -197,7 +202,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-center">
+                </p>
+                <p class="cms-center">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -211,7 +217,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Center Align Button 7: Empty Selection in Word</h1>
         <div class="test-input">
@@ -220,7 +226,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -233,7 +240,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-center">
+                </p>
+                <p class="cms-center">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -247,7 +255,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-8">
         <h1>Center Align Button 8: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -256,7 +264,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada {}hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -269,7 +278,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada {}hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.

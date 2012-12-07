@@ -5,39 +5,39 @@
 </head>
 <body class="simple">
     <div class="test-1">
-        <h1>Remove Column 2</h1>
+        <h1>Remove column 2</h1>
         <div class="test-input">
             <table>
                 <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
-                    <td>Cell 2,0</td>
+                    <td>Column 1</td>
+                    <td>Column 2</td>
+                    <td>Column 3</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
+                    <td>Column 1</td>
+                    <td>Column 2</td>
+                    <td>Column 3</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
+                    <td>Column 1</td>
+                    <td>Column 2</td>
+                    <td>Column 3</td>
                 </tr>
             </table>
         </div>
         <div class="test-expected">
             <table>
                 <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
+                    <td>Column 1</td>
+                    <td>Column 3</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td> 
+                    <td>Column 1</td>
+                    <td>Column 3</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
+                    <td>Column 1</td>
+                    <td>Column 3</td>
                 </tr>
             </table>
         </div>
@@ -46,13 +46,13 @@
     </div>
     <script type="text/javascript">
         test('.test-1', function(input) {
-          var table = input.find('table').get(0);
-          tableDeleteColumn(table, 2);
+            var table = input.find('table').get(0);
+            tableDeleteColumn(table, 1);
         });
     </script>
-    
+
     <div class="test-2">
-        <h1>Remove Column 5</h1>
+        <h1>Remove column 5, with colspan and rowspan</h1>
         <div class="test-input">
             <table>
                 <thead>
@@ -67,52 +67,52 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td>Column 3</td>
+                        <td rowspan="2">Column 4</td>
+                        <td>Column 5</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td colspan="2">Column 2</td>
+                        <td rowspan="2">Column 5</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td colspan="2">Column 3</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td>Column 3</td>
+                        <td>Column 4</td>
+                        <td>Column 5</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td colspan="2">Column 2</td>
+                        <td>Column 4</td>
+                        <td>Column 5</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td>Column 3</td>
+                        <td>Column 4</td>
+                        <td>Column 5</td>
+                        <td>Column 6</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Header</th>
+                        <th>Footer</th>
                         <td>Cell</td>
                         <td>Cell</td>
                         <td>Cell</td>
@@ -135,47 +135,47 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td>Column 3</td>
+                        <td rowspan="2">Column 4</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td colspan="2">Column 2</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td colspan="2">Column 3</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td>Column 3</td>
+                        <td>Column 4</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td colspan="2">Column 2</td>
+                        <td>Column 4</td>
+                        <td>Column 6</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Column 1</td>
+                        <td>Column 2</td>
+                        <td>Column 3</td>
+                        <td>Column 4</td>
+                        <td>Column 6</td>
                     </tr>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Header</th>
+                        <th>Footer</th>
                         <td>Cell</td>
                         <td>Cell</td>
                         <td>Cell</td>
@@ -187,8 +187,8 @@
     </div>
     <script type="text/javascript">
         test('.test-2', function(input) {
-          var table = input.find('table').get(0);
-          tableDeleteColumn(table, 4);
+            var table = input.find('table').get(0);
+            tableDeleteColumn(table, 4);
         });
     </script>
 </body>

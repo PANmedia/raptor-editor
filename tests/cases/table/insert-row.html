@@ -5,47 +5,47 @@
 </head>
 <body class="simple">
     <div class="test-1">
-        <h1>Insert Row 1</h1>
+        <h1>Insert row 1</h1>
         <div class="test-input">
             <table>
                 <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
-                    <td>Cell 2,0</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
                 </tr>
             </table>
         </div>
         <div class="test-expected">
             <table>
                 <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
-                    <td>Cell 2,0</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
                 </tr>
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>New</td>
+                    <td>New</td>
+                    <td>New</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
                 </tr>
                 <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
                 </tr>
             </table>
         </div>
@@ -53,12 +53,14 @@
     <script type="text/javascript">
         test('.test-1', function(input) {
             var table = input.find('table').get(0);
-            tableInsertRow(table, 1);
+            tableInsertRow(table, 1, {
+                placeHolder: 'New'
+            });
         });
     </script>
-    
+
     <div class="test-2">
-        <h1>Insert Row 2</h1>
+        <h1>Insert row 2, with colspan and rowspan</h1>
         <div class="test-input">
             <table>
                 <thead>
@@ -73,47 +75,47 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td rowspan="2">Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Row 2</td>
+                        <td colspan="2">Row 2</td>
+                        <td rowspan="2">Row 2</td>
+                        <td>Row 2</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Row 3</td>
+                        <td>Row 3</td>
+                        <td colspan="2">Row 3</td>
+                        <td>Row 3</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 5</td>
+                        <td colspan="2">Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -142,55 +144,54 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td rowspan="3">Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Row 2</td>
+                        <td colspan="2">Row 2</td>
+                        <td rowspan="2">Row 2</td>
+                        <td>Row 2</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
+                        <td>Row 3</td>
+                        <td>Row 3</td>
+                        <td colspan="2">Row 3</td>
+                        <td>Row 3</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 5</td>
+                        <td colspan="2">Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
                     </tr>
                     <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
                     </tr>
                 </tbody>
                 <tfoot>
@@ -210,7 +211,7 @@
         test('.test-2', function(input) {
             var table = input.find('table').get(0);
             tableInsertRow(table, 2, {
-                placeHolder: 'Cell'
+                placeHolder: '&nbsp;'
             });
         });
     </script>

@@ -8,11 +8,10 @@ function Menu(options) {
     }
 };
 
-Menu.prototype.init = function(raptor) {
+Menu.prototype.init = function() {
     this.setOptions();
-    this.raptor = raptor;
     this.bind();
-    return this.getButton().init(raptor);
+    return this.getButton().init();
 };
 
 Menu.prototype.bind = function() {

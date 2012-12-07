@@ -4,10 +4,6 @@ function TagTreePlugin(name, overrides) {
 
 TagTreePlugin.prototype = Object.create(RaptorPlugin.prototype);
 
-TagTreePlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
-};
-
 TagTreePlugin.prototype.enable = function() {
     this.raptor.bind('selectionChange', this.update.bind(this));
 };

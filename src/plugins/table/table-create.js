@@ -22,12 +22,12 @@ TableMenu.prototype.highlight = function(event) {
             x: event.target.cellIndex,
             y: event.target.parentNode.rowIndex
         });
-        
+
     // highlight cells in menu
     this.highlightRemove(event);
     $(cells).addClass(this.options.baseClass + '-menu-hover');
-    
-    // Preview create 
+
+    // Preview create
     this.raptor.actionPreview(function() {
         selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
@@ -44,7 +44,7 @@ TableMenu.prototype.highlightRemove = function(event) {
 
 TableMenu.prototype.getMenu = function() {
     if (!this.menu) {
-        this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
+        this.menuContent = this.raptor.getTemplate('table.create-menu', this.options);
         Menu.prototype.getMenu.call(this)
             .on('click', 'td', this.createTable.bind(this))
             .on('mouseenter', 'td', this.highlight.bind(this))

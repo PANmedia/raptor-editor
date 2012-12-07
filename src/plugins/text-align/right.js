@@ -1,8 +1,6 @@
 Raptor.registerUi(new PreviewButton({
     name: 'alignRight',
     action: function() {
-        selectionToggleBlockStyle({
-            'text-align': 'right'
-        }, this.raptor.getElement());
+        selectionToggleBlockClass(this.options.cssPrefix + 'right', this.raptor.getElement());
     }
 }));

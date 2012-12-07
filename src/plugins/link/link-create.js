@@ -35,7 +35,7 @@ Raptor.registerUi(new Button({
                 ];
 
             for (var i = 0, l = linkTypes.length; i < l; i++) {
-                $(this.editor.getTemplate('link.label', linkTypes[i]))
+                $(this.raptor.getTemplate('link.label', linkTypes[i]))
                     .click(function() {
                         content.children('div').hide();
                         content.children('div:eq(' + $(this).index() + ')').show();

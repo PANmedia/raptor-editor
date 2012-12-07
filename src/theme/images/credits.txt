@@ -38,6 +38,8 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - table-delete-row.png
  - table-insert-column.png
  - table-insert-row.png
+ - table-join.png
+ - table-split.png
  - table.png
 
 Icons by Paul Robert Lloyd. Licensed under Creative Commons Attribution-ShareAlike 2.0 UK: England & Wales license. http://www.iconfinder.com/icondetails/43189/16/button_play_red_white_youtube_icon

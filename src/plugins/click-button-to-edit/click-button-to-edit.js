@@ -8,8 +8,7 @@ function ClickButtonToEditPlugin(name, overrides) {
 
 ClickButtonToEditPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
-ClickButtonToEditPlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
+ClickButtonToEditPlugin.prototype.init = function() {
     this.raptor.getElement()
         .mouseenter(this.show.bind(this))
         .mouseleave(this.hide.bind(this));
@@ -53,7 +52,7 @@ ClickButtonToEditPlugin.prototype.edit = function() {
 ClickButtonToEditPlugin.prototype.getButton = function(instance) {
     clickButtonToEditInstance = instance;
     if (!clickButtonToEditButton) {
-        clickButtonToEditButton = $(this.editor.getTemplate('click-button-to-edit.button', this.options))
+        clickButtonToEditButton = $(this.raptor.getTemplate('click-button-to-edit.button', this.options))
             .click(function() {
                 clickButtonToEditInstance.edit();
             })
