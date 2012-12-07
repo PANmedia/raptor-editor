@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -67,7 +67,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -99,7 +99,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -112,7 +112,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -125,7 +126,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-center">
+                </p>
+                <p class="cms-center">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -135,7 +137,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -148,7 +150,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.}
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -161,7 +164,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.}
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -171,7 +175,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -184,7 +188,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -197,7 +202,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-center">
+                </p>
+                <p class="cms-center">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -207,20 +213,21 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
-    <div class="test-6">
-        <h1>Center Align Button 6: Empty Selection in Word</h1>
+
+    <div class="test-7">
+        <h1>Center Align Button 7: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -233,30 +240,32 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-center">
+                </p>
+                <p class="cms-center">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+        testEditor('.test-7', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
-    <div class="test-7">
-        <h1>Center Align Button 7: Empty Selection at the Beginning of a Word</h1>
+
+    <div class="test-8">
+        <h1>Center Align Button 8: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada {}hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -269,7 +278,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada {}hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -278,8 +288,8 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
+        testEditor('.test-8', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
