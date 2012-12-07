@@ -395,6 +395,27 @@ function selectionToggleBlockStyle(styles, limit) {
     }, null, this);
 }
 
+function selectionToggleBlockClass(classes, limit) {
+    selectionEachRange(function(range) {
+        var parent = $(range.commonAncestorContainer);
+        while (parent.length && parent[0] !== limit[0] && (
+                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+            parent = parent.parent();
+        }
+        if (parent[0] === limit[0]) {
+            // Only apply block style if the limit element is a block
+            if (limit.css('display') !== 'inline') {
+                // Wrap the HTML inside the limit element
+                elementWrapInner(limit, 'div');
+                // Set the parent to the wrapper
+                parent = limit.children().first();
+            }
+        }
+        // Apply the style to the parent
+        parent.toggleClass(classes);
+    }, null, this);
+}
+
 /**
  * Removes all ranges from a selection that are not contained within the
  * supplied element.
