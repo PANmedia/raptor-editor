@@ -2,6 +2,13 @@
 $.extend($.ui.raptor, Raptor, {
 
     // <expose>
+    Button: Button,
+    CSSClassApplierButton: CSSClassApplierButton,
+    FilteredPreviewButton: FilteredPreviewButton,
+    Menu: Menu,
+    PreviewButton: PreviewButton,
+    RaptorPlugin: RaptorPlugin,
+    SelectMenu: SelectMenu,
     actionApply: actionApply,
     actionPreview: actionPreview,
     actionPreviewRestore: actionPreviewRestore,
@@ -58,6 +65,7 @@ $.extend($.ui.raptor, Raptor, {
     selectionGetEndElement: selectionGetEndElement,
     selectionGetHtml: selectionGetHtml,
     selectionGetStartElement: selectionGetStartElement,
+    selectionInverseWrapWithTagClass: selectionInverseWrapWithTagClass,
     selectionIsEmpty: selectionIsEmpty,
     selectionReplace: selectionReplace,
     selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
@@ -71,6 +79,7 @@ $.extend($.ui.raptor, Raptor, {
     selectionSelectOuter: selectionSelectOuter,
     selectionSelectStart: selectionSelectStart,
     selectionSet: selectionSet,
+    selectionToggleBlockClass: selectionToggleBlockClass,
     selectionToggleBlockStyle: selectionToggleBlockStyle,
     selectionToggleWrapper: selectionToggleWrapper,
     selectionWrapTagWithAttribute: selectionWrapTagWithAttribute,
@@ -100,7 +109,7 @@ $.extend($.ui.raptor, Raptor, {
     templateGetVariables: templateGetVariables,
     typeIsNumber: typeIsNumber,
     undockFromElement: undockFromElement,
-    undockFromScreen: undockFromScreen    
+    undockFromScreen: undockFromScreen
     // </expose>
 
 });
