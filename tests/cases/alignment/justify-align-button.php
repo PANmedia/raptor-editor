@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -67,7 +67,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -99,7 +99,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -135,7 +135,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -171,7 +171,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -207,13 +207,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
-    <div class="test-6">
-        <h1>Justify Align Button 6: Empty Selection in Word</h1>
+    <div class="test-7">
+        <h1>Justify Align Button 7: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -242,14 +242,14 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+        testEditor('.test-7', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
-    <div class="test-7">
-        <h1>Justify Align Button 7: Empty Selection at the Beginning of a Word</h1>
+    <div class="test-8">
+        <h1>Justify Align Button 8: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -278,8 +278,8 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            input.find('.editible').data('editor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
+        testEditor('.test-8', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
