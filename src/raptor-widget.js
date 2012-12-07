@@ -17,6 +17,17 @@ var RaptorWidget = {
      * Constructor
      */
     _init: function() {
+        // Prevent double initialisation
+        if (this.element.data('raptor').initialised) {
+            // <debug>
+            if (debugLevel >= MID) {
+                debug('Raptor already initialised, attempted to reinitialise on: ', this.element);
+            }
+            // </debug>
+            return;
+        }
+        this.element.data('raptor').initialised = true;
+
         // Add the editor instance to the global list of instances
         if ($.inArray(this, Raptor.instances) === -1) {
             Raptor.instances.push(this);
