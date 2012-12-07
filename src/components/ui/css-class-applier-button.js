@@ -5,6 +5,14 @@ function CSSClassApplierButton(options) {
 CSSClassApplierButton.prototype = Object.create(PreviewButton.prototype);
 
 CSSClassApplierButton.prototype.action = function() {
+    // Test for 0 length selection
+    var ranges = rangy.getSelection().getAllRanges();
+    if (ranges.length === 1) {
+        if (ranges[0].toString() === '') {
+            rangy.getSelection().expand('word');
+        }
+    }
+
     this.getApplier().toggleSelection();
 };
 
@@ -22,5 +30,5 @@ CSSClassApplierButton.prototype.getTag = function() {
 };
 
 CSSClassApplierButton.prototype.getClass = function() {
-    return this.classes || this.cssPrefix + this.name
+    return this.options.cssPrefix + this.class
 };
