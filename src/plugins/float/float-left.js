@@ -1,7 +1,9 @@
 Raptor.registerUi(new FilteredPreviewButton({
     name: 'floatLeft',
     applyToElement: function(element) {
-        element.css('float', 'left');
+        element.removeClass(this.options.cssPrefix + 'float-right');
+        element.toggleClass(this.options.cssPrefix + 'float-left');
+        cleanEmptyAttributes(element, ['class']);
     },
     getElement: function(range) {
         var images = $(range.commonAncestorContainer).find('img');
