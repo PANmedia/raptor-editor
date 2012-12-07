@@ -10,18 +10,18 @@ Raptor.registerLayout('toolbar', {
 
     },
 
-    init: function(raptor, options) {
+    init: function() {
         // Load all UI components if not supplied
-        if (!options.uiOrder) {
-            options.uiOrder = [[]];
+        if (!this.options.uiOrder) {
+            this.options.uiOrder = [[]];
             for (var name in Raptor.ui) {
-                options.uiOrder[0].push(name);
+                this.options.uiOrder[0].push(name);
             }
         }
 
         // <debug>
         if (debugLevel >= MID) {
-            debug('Loading toolbar', raptor.getElement());
+            debug('Loading toolbar', this.raptor.getElement());
         }
         // </debug>
 
@@ -46,7 +46,7 @@ Raptor.registerLayout('toolbar', {
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
             if (debugLevel >= MID) {
-                debug('Initialising toolbar dragging', raptor.getElement());
+                debug('Initialising toolbar dragging', this.raptor.getElement());
             }
             // </debug>
 
@@ -59,7 +59,7 @@ Raptor.registerLayout('toolbar', {
                 handle: '.ui-editor-path',
                 stop: $.proxy(function() {
                     // Save the persistant position
-                    var pos = raptor.persist('position', [
+                    var pos = this.raptor.persist('position', [
                         wrapper.css('top'),
                         wrapper.css('left')
                     ]);
@@ -69,7 +69,7 @@ Raptor.registerLayout('toolbar', {
                     });
 
                     // <debug>
-                    if (debugLevel >= MID) debug('Saving toolbar position', raptor.getElement(), pos);
+                    if (debugLevel >= MID) debug('Saving toolbar position', this.raptor.getElement(), pos);
                     // </debug>
                 }, this)
             });
@@ -78,14 +78,14 @@ Raptor.registerLayout('toolbar', {
             wrapper.css('position', '');
 
             // Set the persistant position
-            var pos = raptor.persist('position') || this.options.dialogPosition;
+            var pos = this.raptor.persist('position') || this.options.dialogPosition;
 
             if (!pos) {
                 pos = [10, 10];
             }
 
             // <debug>
-            if (debugLevel >= MID) debug('Restoring toolbar position', raptor.getElement(), pos);
+            if (debugLevel >= MID) debug('Restoring toolbar position', this.raptor.getElement(), pos);
             // </debug>
 
             if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
@@ -101,7 +101,7 @@ Raptor.registerLayout('toolbar', {
             });
 
             // Load the message display widget
-            raptor.loadMessages();
+            this.raptor.loadMessages();
         }
 
         $(function() {
@@ -111,13 +111,13 @@ Raptor.registerLayout('toolbar', {
         // Loop the UI component order option
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiGroupContainer = $('<div/>')
-                .addClass(raptor.options.baseClass + '-layout-toolbar-group');
+                .addClass(this.raptor.options.baseClass + '-layout-toolbar-group');
 
             // Loop each UI in the group
             var uiGroup = this.options.uiOrder[i];
             for (var ii = 0, ll = uiGroup.length; ii < ll; ii++) {
                 // Check if the UI component has been explicitly disabled
-                if (!raptor.isUiEnabled(uiGroup[ii])) {
+                if (!this.raptor.isUiEnabled(uiGroup[ii])) {
                     continue;
                 }
 
@@ -131,19 +131,19 @@ Raptor.registerLayout('toolbar', {
                         return '-' + match.toLowerCase();
                     });
 
-                    var options = $.extend(true, {}, raptor.options, {
-                        baseClass: raptor.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, raptor.options.ui[uiGroup[ii]]);
+                    var options = $.extend(true, {}, this.raptor.options, {
+                        baseClass: this.raptor.options.baseClass + '-ui-' + baseClass
+                    }, uiObject.options, this.raptor.options.ui[uiGroup[ii]]);
 
-                    uiObject.editor = raptor;
+                    uiObject.raptor = this.raptor;
                     uiObject.options = options;
-                    var ui = uiObject.init(raptor, options);
+                    var ui = uiObject.init();
 
                     // Append the UI object to the group
                     uiGroupContainer.append(ui);
 
                     // Add the UI object to the editors list
-                    raptor.uiObjects[uiGroup[ii]] = uiObject;
+                    this.raptor.uiObjects[uiGroup[ii]] = uiObject;
                 }
                 // <strict>
                 else {
