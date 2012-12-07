@@ -19,6 +19,7 @@ Raptor.defaults = $.extend(basePreset, {
                 ['linkCreate', 'linkRemove'],
                 ['embed'],
                 ['floatLeft', 'floatNone', 'floatRight'],
+                ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn', 'tableMergeCells', 'tableSplitCells'],
                 ['tagMenu'],
                 ['statistics']
             ]

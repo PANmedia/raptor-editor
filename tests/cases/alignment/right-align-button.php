@@ -23,7 +23,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class=""cms-right>
+                <p class="cms-right">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -39,7 +39,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1> Right Align Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -71,7 +71,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Right Align Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -103,7 +103,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Right Align Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -139,7 +139,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Right Align Button 5: Single Paragraph Selection</h1>
         <div class="test-input">
@@ -175,7 +175,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-6">
         <h1>Right Align Button 6: More Than One Paragraph Selection</h1>
         <div class="test-input">
@@ -211,9 +211,9 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
-        <h1>Right Align Button 6: Empty Selection in Word</h1>
+        <h1>Right Align Button7: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -247,7 +247,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-8">
         <h1>Right Align Button 8: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">

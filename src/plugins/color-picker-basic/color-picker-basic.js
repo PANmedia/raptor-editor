@@ -1,5 +1,4 @@
 function ColorPickerBasicMenu(options) {
-    this.preview = true;
     this.colors = [
         'white',
         'black',
@@ -54,11 +53,13 @@ ColorPickerBasicMenu.prototype.changeColor = function(color) {
     this.raptor.actionApply(function() {
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
-                var element = $(this),
-                    classes = element.attr('class').match(/(cms-(.*?))( |$)/ig);
-                for (var i = 0, l = classes.length; i < l; i++) {
-                    element.removeClass($.trim(classes[i]));
-                };
+                var classes = $(this).attr('class');
+                if (classes) {
+                    classes = classes.match(/(cms-(.*?))( |$)/ig);
+                    for (var i = 0, l = classes.length; i < l; i++) {
+                        $(this).removeClass($.trim(classes[i]));
+                    }
+                }
             });
         } else {
             selectionToggleWrapper('span', {
@@ -73,17 +74,13 @@ ColorPickerBasicMenu.prototype.changeColor = function(color) {
 };
 
 ColorPickerBasicMenu.prototype.preview = function(event) {
-    if (this.preview) {
-        this.raptor.actionPreview(function() {
-            this.changeColor($(event.currentTarget).data('color'));
-        }.bind(this));
-    }
+    this.raptor.actionPreview(function() {
+        this.changeColor($(event.currentTarget).data('color'));
+    }.bind(this));
 };
 
 ColorPickerBasicMenu.prototype.previewRestore = function() {
-    if (this.preview) {
-        this.raptor.actionPreviewRestore();
-    }
+    this.raptor.actionPreviewRestore();
 };
 
 ColorPickerBasicMenu.prototype.apply = function() {
@@ -101,7 +98,8 @@ ColorPickerBasicMenu.prototype.getButton = function() {
             options: this.options,
             text: true,
             icon: false,
-            label: _('colorPickerBasicAutomatic')
+            label: _('colorPickerBasicAutomatic'),
+            raptor: this.raptor
         });
     }
     return this.button;

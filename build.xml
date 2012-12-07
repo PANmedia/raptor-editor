@@ -241,7 +241,7 @@
         <echo>${project.basedir}/LICENSE</echo>
         <append destFile="${dir.build}/merge.js">
             <fileset dir="${project.basedir}">
-                <include name="LICENSE" />
+                <include name="LICENSE.md" />
             </fileset>
         </append>
         <echo file="${dir.build}/merge.js" append="true">*/${line.separator}</echo>

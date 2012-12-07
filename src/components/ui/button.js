@@ -41,6 +41,7 @@ Button.prototype.getIcon = function() {
     return this.icon;
 };
 
+// FIXME: this probably should not nest actions
 Button.prototype.click = function() {
     this.raptor.actionApply(this.action.bind(this));
 };

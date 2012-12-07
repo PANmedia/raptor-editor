@@ -98,7 +98,8 @@ TagMenu.prototype.getButton = function() {
             action: this.show.bind(this),
             preview: false,
             options: this.options,
-            icon: false
+            icon: false,
+            raptor: this.raptor
         });
     }
     return this.button;

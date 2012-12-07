@@ -1,5 +1,4 @@
 function Menu(options) {
-    this.raptor = null;
     this.menu = null;
     this.menuContent = '';
     this.button = null;
@@ -24,7 +23,8 @@ Menu.prototype.getButton = function() {
             name: this.name,
             action: this.show.bind(this),
             preview: false,
-            options: this.options
+            options: this.options,
+            raptor: this.raptor
         });
     }
     return this.button;

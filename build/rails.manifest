@@ -47,6 +47,7 @@ components/ui/select-menu.js
 components/ui/custom-menu.js
 components/layout/toolbar.js
 
+presets/base.js
 presets/rails.js
 
 plugins/cancel/cancel.js
