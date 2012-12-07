@@ -212,8 +212,8 @@
         });
     </script>
     
-    <div class="test-6">
-        <h1>Left Align Button 6: Empty Selection in Word</h1>
+    <div class="test-7">
+        <h1>Left Align Button 7: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -242,14 +242,14 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
+        testEditor('.test-7', function(input) {
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-left').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
-    <div class="test-7">
-        <h1>Left Align Button 7: Empty Selection at the Beginning of a Word</h1>
+    <div class="test-8">
+        <h1>Left Align Button 8: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -278,7 +278,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
+        testEditor('.test-8', function(input) {
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-left').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
