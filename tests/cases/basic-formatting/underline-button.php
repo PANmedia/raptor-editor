@@ -39,7 +39,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-2">
         <h1>Underline Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -71,7 +71,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Underline Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -103,7 +103,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Underline Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -124,9 +124,10 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <u class="cms-underline">{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</u>
-                </p><p>
-                    <u class="cms-underline">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </u></p>
+                <p><u class="cms-underline">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</u> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -139,7 +140,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Underline Button 5: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -160,9 +161,10 @@
                 <p>
                     <u class="cms-underline">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</u>
-                </p><p>
-                    <u class="cms-underline">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </u></p>
+                <p><u class="cms-underline">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</u>
                 </p>
@@ -175,7 +177,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Underline Button 6: Empty Selection in Word</h1>
         <div class="test-input">
@@ -199,19 +201,19 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. <u class="cms-underline">Suspen{}disse</u> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    ligula venenatis rhoncus. <u class="cms-underline">{Suspendisse}</u> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Underline Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -232,7 +234,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <u class="cms-underline">{}hendrerit</u> velit nec tristique.
+                    malesuada <u class="cms-underline">{hendrerit}</u> velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
