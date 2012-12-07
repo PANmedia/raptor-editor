@@ -4,8 +4,8 @@ function FilteredPreviewButton(options) {
 
 FilteredPreviewButton.prototype = Object.create(PreviewButton.prototype);
 
-FilteredPreviewButton.prototype.init = function(raptor) {
-    var result = PreviewButton.prototype.init.call(this, raptor);
+FilteredPreviewButton.prototype.init = function() {
+    var result = PreviewButton.prototype.init.apply(this, arguments);
     this.raptor.bind('selectionChange', this.selectionChange.bind(this))
     return result;
 };

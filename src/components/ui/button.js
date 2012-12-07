@@ -8,8 +8,7 @@ function Button(overrides) {
     }
 };
 
-Button.prototype.init = function(raptor) {
-    this.raptor = raptor;
+Button.prototype.init = function() {
     return this.getButton();
 };
 

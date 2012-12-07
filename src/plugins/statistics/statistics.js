@@ -5,9 +5,9 @@ Raptor.registerUi(new Button({
     maximum: 100,
     showCountInButton: true,
 
-    init: function(raptor) {
+    init: function() {
         if (this.showCountInButton) {
-            raptor.bind('change', this.updateButton.bind(this));
+            this.raptor.bind('change', this.updateButton.bind(this));
         }
         return Button.prototype.init.apply(this, arguments);
     },
@@ -108,7 +108,7 @@ Raptor.registerUi(new Button({
      */
     processDialog: function() {
         var dialog = this.getDialog();
-        var content = $('<div/>').html(this.editor.getHtml()).text();
+        var content = $('<div/>').html(this.raptor.getHtml()).text();
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';

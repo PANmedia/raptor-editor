@@ -5,8 +5,7 @@ function SaveRestPlugin(name, overrides) {
 
 SaveRestPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
-SaveRestPlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
+SaveRestPlugin.prototype.init = function() {
     // <strict>
     if (typeof this.options.url !== 'string' && !$.isFunction(this.options.url)) {
         handleError('Expected save REST URL option to be a string or a function.');
@@ -61,9 +60,9 @@ SaveRestPlugin.prototype.always = function() {
             }), {
                 delay: 1000,
                 hide: function() {
-                    this.editor.unify(function(editor) {
-                        editor.disableEditing();
-                        editor.hideLayout();
+                    this.raptor.unify(function(raptor) {
+                        raptor.disableEditing();
+                        raptor.hideLayout();
                     });
                 }
             });
