@@ -1,14 +1,3 @@
-function applyCodeMirror(node, html) {
-    if (typeof CodeMirror !== 'undefined') {
-        CodeMirror(node, {
-            value: style_html($.trim(html)),
-            mode: 'htmlmixed'
-        });
-    } else {
-        $(node).text(html);
-    }
-}
-
 function test(container, action, format) {
     var output = $(container).find('.test-output'),
         input = $(container).find('.test-input'),
@@ -28,7 +17,7 @@ function test(container, action, format) {
         .insertAfter(expected);
 
     applyCodeMirror(expectedSource.get(0), expected.html());
-    
+
     expected.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(expectedSource);
 
@@ -55,9 +44,9 @@ function test(container, action, format) {
     var outputSource = $('<div>')
         .addClass('test-source test-box test-output-source')
         .insertAfter(output);
-    
+
     applyCodeMirror(outputSource.get(0), output.html());
-    
+
     output.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(outputSource);
 
@@ -71,8 +60,12 @@ function test(container, action, format) {
         $('<pre>').text(error.stack).appendTo(diff);
         fail(container);
     } else {
-        diff.html(diffstr(expected.html(), output.html()));
-        if (output.html() !== expected.html()) {
+        sortAttributes(expected.find('*'));
+        sortAttributes(output.find('*'));
+        var expectedHTML = style_html(expected.html());
+        var outputHTML = style_html(output.html());
+        diff.html(diffstr(expectedHTML, outputHTML));
+        if (expectedHTML !== outputHTML) {
             fail(container);
         } else {
             pass(container);
