@@ -2,6 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
+    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <div class="test-1">
@@ -50,10 +51,10 @@
             </table>
         </div>
     </div>
-    <script type="text/javascript">
-        test('.test-1', function(input) {
-            var table = input.find('table').get(0);
-            tableInsertRow(table, 1);
+   <script type="text/javascript">
+        testEditor('.test-1', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-row').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -206,12 +207,10 @@
             </table>
         </div>
     </div>
-    <script type="text/javascript">
-        test('.test-2', function(input) {
-            var table = input.find('table').get(0);
-            tableInsertRow(table, 2, {
-                placeHolder: 'Cell'
-            });
+   <script type="text/javascript">
+        testEditor('.test-2', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-row').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -346,12 +345,10 @@
             </table>
         </div>
     </div>
-    <script type="text/javascript">
-        test('.test-3', function(input) {
-            var table = input.find('table').get(0);
-            tableInsertRow(table, 0, {
-                placeHolder: 'Header'
-            });
+   <script type="text/javascript">
+        testEditor('.test-3', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-row').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
     
@@ -487,11 +484,9 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-4', function(input) {
-            var table = input.find('table').get(0);
-            tableInsertRow(table, table.rows.length, {
-                placeHolder: 'Footer'
-            });
+        testEditor('.test-4', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-row').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 </body>
