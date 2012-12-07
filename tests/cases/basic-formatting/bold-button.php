@@ -39,7 +39,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Bold Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -71,7 +71,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Bold Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -103,7 +103,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Bold Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -112,7 +112,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -124,9 +125,10 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <strong class="cms-bold">{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</strong>
-                </p><p>
-                    <strong class="cms-bold">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </strong></p>
+                <p><strong class="cms-bold">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</strong> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -139,7 +141,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Bold Button 5: Paragraph Selection</h1>
         <div class="test-input">
@@ -160,9 +162,10 @@
                 <p>
                     <strong class="cms-bold">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</strong>
-                </p><p>
-                    <strong class="cms-bold">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </strong></p>
+                <p><strong class="cms-bold">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</strong>
                 </p>
@@ -175,7 +178,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Bold Button 6: Empty Selection in Word</h1>
         <div class="test-input">
@@ -199,8 +202,8 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. <strong class="cms-bold">Suspen{}disse</strong> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    ligula venenatis rhoncus. <strong class="cms-bold">{Suspendisse}</strong> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -211,7 +214,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Bold Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -232,7 +235,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <strong class="cms-bold">{}hendrerit</strong> velit nec tristique.
+                    malesuada <strong class="cms-bold">{hendrerit}</strong> velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
