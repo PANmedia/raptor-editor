@@ -1,0 +1,51 @@
+.cms-blue-bg {
+    background-color: #2e6e9e;
+}
+
+.cms-round-corners {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.cms-indent-center {
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}
+
+.cms-center {
+    text-align: center;
+}
+
+.cms-white {
+    color: #ffffff;
+}
+
+.cms-black {
+    color: #000000;
+}
+
+.cms-blue {
+    color: #4f81bd;
+}
+
+.cms-red {
+    color: #c0504d;
+}
+
+.cms-green {
+    color: #9bbb59;
+}
+
+.cms-purple {
+    color: #8064a2;
+}
+
+.cms-orange {
+    color: #f79646;
+}
+
+.cms-grey {
+    color: #999;
+}
