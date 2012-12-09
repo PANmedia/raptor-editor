@@ -6,7 +6,16 @@ function testEditor(container, action, format) {
     var expected = $(container).find('.test-expected');
     output.find('.editible').raptor({
         autoEnable: true,
-        urlPrefix: '../../../src/'
+        urlPrefix: '../../../src/',
+        ui: {
+            classMenu: {
+                classes: {
+                    'Blue background': 'cms-blue-bg',
+                    'Round corners': 'cms-round-corners',
+                    'Indent and center': 'cms-indent-center'
+                }
+            }
+        }
     });
 
     var inputSource = $('<div>')
