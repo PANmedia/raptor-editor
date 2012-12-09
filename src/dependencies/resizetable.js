@@ -178,10 +178,12 @@ function insertEmptyCell(row, index, placeHolder) {
     // Header cell
     cell = row.insertCell(index);
     if (sibling && sibling.tagName === 'TH') {
-        $(cell).replaceWith(document.createElement('th'))
-    }
-
-    if (placeHolder) {
+        var header = document.createElement('th');
+        if (placeHolder) {
+            header.innerHTML = placeHolder;
+        }
+        $(cell).replaceWith(header)
+    } else if (placeHolder) {
         cell.innerHTML = placeHolder;
     }
     return cell;
