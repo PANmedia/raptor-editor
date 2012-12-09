@@ -329,11 +329,11 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p>{some text that is selected}</p>
+                <p>some text that isn't selected</p>
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
-                        <td>Cell 1,0</td>
+                        <td>{Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -343,7 +343,7 @@
                     </tr>
                     <tr>
                         <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
+                        <td>Cell 1,2}</td>
                         <td>Cell 2,2</td>
                     </tr>
                 </table>
@@ -547,7 +547,7 @@
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
+                        <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -569,7 +569,7 @@
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
-                        <td>Cell {}1,0</td>
+                        <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
@@ -589,6 +589,258 @@
     <script type="text/javascript">
         testEditor('.test-10', function(input) {
             var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-delete-row');
+            deleteRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (deleteRowButton.is('.ui-state-active')) {
+                throw new Error('Button is active');
+            } 
+        });
+    </script>
+    
+    <div class="test-11">
+        <h1>Merge Cells Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>some text that isn't selected</p>
+                <table>
+                <tr>
+                    <td>Cell 0,0</td>
+                    <td>Cell 1,0</td>
+                    <td>Cell 2,0</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,1</td>
+                    <td>{Cell 1,1</td>
+                    <td>Cell 2,1}</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,2</td>
+                    <td>{Cell 1,2</td>
+                    <td>Cell 2,2}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td colspan="2" rowspan="2">
+                            {Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                    </tr>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-11', function(input) {
+            var mergeCellsButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-merge-cells');
+            mergeCellsButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!mergeCellsButton.is('.ui-state-active')) {
+                throw new Error('Button is not active');
+            } 
+        });
+    </script>
+    
+    <div class="test-12">
+        <h1>Merge Cells Button 2: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-12', function(input) {
+            var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-merge-cells');
+            deleteRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (deleteRowButton.is('.ui-state-active')) {
+                throw new Error('Button is active');
+            } 
+        });
+    </script>
+    
+    <div class="test-13">
+        <h1>Split Cells Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+               <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td colspan="2" rowspan="2">
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <<td>Cell 0,1</td>
+                        <td>
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-13', function(input) {
+            var mergeCellsButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-split-cells');
+            mergeCellsButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!mergeCellsButton.is('.ui-state-active')) {
+                throw new Error('Button is not active');
+            } 
+        });
+    </script>
+    
+    <div class="test-14">
+        <h1>Split Cells Button 2: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td colspan="2" rowspan="2">
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                 <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <<td>Cell 0,1</td>
+                        <td>
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-14', function(input) {
+            var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-split-cells');
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
