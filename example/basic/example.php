@@ -17,6 +17,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>Raptor Editor - Save Rest Example</title>
+    <link rel="stylesheet" href="../assets/style.css" />
     <?php if ($type === 'light'): ?>
         <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
         <link rel="stylesheet" href="../../src/theme/theme.css" />
@@ -34,7 +35,16 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
-                urlPrefix: '../../src/'
+                urlPrefix: '../../src/',
+                ui: {
+                    classMenu: {
+                        classes: {
+                            'Blue background': 'cms-blue-bg',
+                            'Round corners': 'cms-round-corners',
+                            'Indent and center': 'cms-indent-center'
+                        }
+                    }
+                }
             });
         });
     </script>
