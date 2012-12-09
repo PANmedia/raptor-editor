@@ -25,11 +25,11 @@ class CombineTask extends Task {
     public function main() {
         $noConflict = false;
         $wrapper = false;
-        
+
         $cssOutput = $this->buildDir . '/concat.css';
         $cssOutputHandle = fopen($cssOutput, 'w');
         ftruncate($cssOutputHandle, 0);
-        
+
         $jsOutput = $this->buildDir . '/concat.js';
         $jsOutputHandle = fopen($jsOutput, 'w');
         ftruncate($jsOutputHandle, 0);
@@ -38,7 +38,7 @@ class CombineTask extends Task {
             if (!$file) {
                 continue;
             }
-            $file = $this->buildDir . '/src/' . $file;
+            $file = $this->buildDir . '/' . $file;
             if (!is_file($file)) {
                 die("Error processing file manifest: {$file}, does not exist.");
             }
@@ -49,7 +49,7 @@ class CombineTask extends Task {
                 $data
                 /* End of file: $file */
             ";
-            
+
             if (pathinfo($file, PATHINFO_EXTENSION) === 'css') {
                 fwrite($cssOutputHandle, $data);
             } elseif (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
@@ -63,14 +63,14 @@ class CombineTask extends Task {
                 fwrite($jsOutputHandle, $data);
             }
         }
-        
+
         if ($wrapper) {
             fwrite($jsOutputHandle, $this->getWrapperBottom());
         }
         if ($noConflict) {
             fwrite($jsOutputHandle, $this->getNoConflictBottom());
         }
-        
+
         fclose($cssOutputHandle);
         fclose($jsOutputHandle);
     }
@@ -98,28 +98,28 @@ class CombineTask extends Task {
     public function getName() {
         return $this->name;
     }
-    
+
     public function getWrapperTop() {
         return "
             // Raptor wrapper
             (function($, window, rangy, undefined) {
         ";
     }
-    
+
     public function getWrapperBottom() {
         return "
             // Raptor wrapper
             })(jQuery, window, rangy);
         ";
     }
-    
+
     public function getNoConflictTop() {
         return "
             // No conflict wrapper
             (function(window, undefined) {
         ";
     }
-    
+
     public function getNoConflictBottom() {
         return "
             // No conflict wrapper
@@ -129,5 +129,5 @@ class CombineTask extends Task {
             window['raptor'] = jQuery;
         ";
     }
-    
+
 }
