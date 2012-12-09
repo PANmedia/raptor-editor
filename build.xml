@@ -31,7 +31,7 @@
         <echo>dir.build: ${dir.build}</echo>
         <echo>strip.blocks: ${strip.blocks}</echo>
         <echo>theme: ${theme}</echo>
-        <echo>theme: ${files.manifest}</echo>
+        <echo>files.manifest: ${files.manifest}</echo>
         <echo>jquery-no-conflict: ${jquery-no-conflict}</echo>
         <echo>jquery-ui: ${jquery-ui}</echo>
         <echo>jquery-ui-theme: ${jquery-ui-theme}</echo>
@@ -171,7 +171,12 @@
     <!-- Compile theme                                                       -->
     <!-- =================================================================== -->
     <target name="theme">
-        <exec command="sass --compass theme.scss theme.css" logoutput="true" dir="src/theme" />
+        <exec command="sass --compass theme.scss ${project.basedir}/${dir.package}/raptor-theme.css" dir="src/theme" level="info" logOutput="true" />
+        <exec command="sass --compass front-end.scss ${project.basedir}/${dir.package}/raptor-front-end.css" dir="src/theme" level="info" logOutput="true" />
+        <exec command="yui-compressor --type css -o ${dir.package}/raptor-theme.min.css ${dir.package}/raptor-theme.css" level="info" logOutput="true" />
+        <exec command="yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css" level="info" logOutput="true" />
+        <exec command="cat ${dir.package}/raptor-theme.min.css | gzip -9 -c > ${dir.package}/raptor-theme.min.css.gz" level="info" logOutput="true" />
+        <exec command="cat ${dir.package}/raptor-front-end.min.css | gzip -9 -c > ${dir.package}/raptor-front-end.min.css.gz" level="info" logOutput="true" />
     </target>
 
     <!-- =================================================================== -->
