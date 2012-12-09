@@ -1,4 +1,4 @@
-function ColorPickerBasicMenu(options) {
+function ColorMenuBasic(options) {
     this.colors = [
         'white',
         'black',
@@ -10,24 +10,24 @@ function ColorPickerBasicMenu(options) {
         'orange'
     ]
     SelectMenu.call(this, {
-        name: 'colorPickerBasic'
+        name: 'colorMenuBasic'
     });
 }
 
-ColorPickerBasicMenu.prototype = Object.create(SelectMenu.prototype);
+ColorMenuBasic.prototype = Object.create(SelectMenu.prototype);
 
-ColorPickerBasicMenu.prototype.init = function() {
+ColorMenuBasic.prototype.init = function() {
     this.raptor.bind('selectionChange', this.updateButton.bind(this));
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
-ColorPickerBasicMenu.prototype.updateButton = function() {
+ColorMenuBasic.prototype.updateButton = function() {
     var tag = selectionGetElements()[0],
         button = this.getButton().getButton(),
         color = null,
         closest = null;
     // TODO: set automatic icon color to the color of the text
-    aButtonSetLabel(button, _('colorPickerBasicAutomatic'));
+    aButtonSetLabel(button, _('colorMenuBasicAutomatic'));
     aButtonSetIcon(button, false);
     if (!tag) {
         return;
@@ -41,7 +41,7 @@ ColorPickerBasicMenu.prototype.updateButton = function() {
         }
     }
     if (color) {
-        aButtonSetLabel(button, _('colorPickerBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
+        aButtonSetLabel(button, _('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
         aButtonSetIcon(button, 'ui-icon-swatch');
         // FIXME: set color in an adapter friendly way
         button.find('.ui-icon').css('background-color', closest.css('color'));
@@ -49,7 +49,7 @@ ColorPickerBasicMenu.prototype.updateButton = function() {
     }
 };
 
-ColorPickerBasicMenu.prototype.changeColor = function(color) {
+ColorMenuBasic.prototype.changeColor = function(color) {
     this.raptor.actionApply(function() {
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
@@ -73,43 +73,43 @@ ColorPickerBasicMenu.prototype.changeColor = function(color) {
     }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.preview = function(event) {
+ColorMenuBasic.prototype.preview = function(event) {
     this.raptor.actionPreview(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.previewRestore = function() {
+ColorMenuBasic.prototype.previewRestore = function() {
     this.raptor.actionPreviewRestore();
 };
 
-ColorPickerBasicMenu.prototype.apply = function() {
+ColorMenuBasic.prototype.apply = function() {
     this.raptor.actionApply(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.getButton = function() {
-    if (!this.button) {
-        this.button = new Button({
-            name: this.name,
-            action: this.show.bind(this),
-            preview: false,
-            options: this.options,
-            text: true,
-            icon: false,
-            label: _('colorPickerBasicAutomatic'),
-            raptor: this.raptor
-        });
-    }
-    return this.button;
-};
+//ColorMenuBasic.prototype.getButton = function() {
+//    if (!this.button) {
+//        this.button = new Button({
+//            name: this.name,
+//            action: this.show.bind(this),
+//            preview: false,
+//            options: this.options,
+//            text: true,
+//            icon: false,
+//            label: _('colorMenuBasicAutomatic'),
+//            raptor: this.raptor
+//        });
+//    }
+//    return this.button;
+//};
 
-ColorPickerBasicMenu.prototype.getMenuItems = function() {
-    return $(this.raptor.getTemplate('color-picker-basic.menu', this.options))
+ColorMenuBasic.prototype.getMenuItems = function() {
+    return $(this.raptor.getTemplate('color-menu-basic.menu', this.options))
         .click(this.apply.bind(this))
         .mouseenter(this.preview.bind(this))
         .mouseleave(this.previewRestore.bind(this));
 };
 
-Raptor.registerUi(new ColorPickerBasicMenu());
+Raptor.registerUi(new ColorMenuBasic());
