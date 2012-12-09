@@ -1,17 +1,17 @@
 /**
- * Basic color picker plugin.
+ * Basic color menu plugin.
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-.raptor-ui-color-picker-basic-menu > div {
+.raptor-ui-color-menu-basic-menu > div {
     min-width: 100px;
 }
 
-.raptor-ui-color-picker-basic-menu span {
+.raptor-ui-color-menu-basic-menu span {
     padding-left: 2px;
 }
 
-.raptor-ui-color-picker-basic-swatch {
+.raptor-ui-color-menu-basic-swatch {
     width: 16px;
     height: 16px;
     float: left;
@@ -19,7 +19,7 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
 }
 
-.raptor-ui-color-picker-basic .ui-icon-swatch {
+.raptor-ui-color-menu-basic .ui-icon-swatch {
     background-image: none;
     border: 1px solid rgba(0, 0, 0, 0.35);
 }
