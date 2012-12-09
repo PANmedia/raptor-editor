@@ -79,7 +79,7 @@ $.extend($.ui.raptor, Raptor, {
     selectionSelectOuter: selectionSelectOuter,
     selectionSelectStart: selectionSelectStart,
     selectionSet: selectionSet,
-    selectionToggleBlockClass: selectionToggleBlockClass,
+    selectionToggleBlockClasses: selectionToggleBlockClasses,
     selectionToggleBlockStyle: selectionToggleBlockStyle,
     selectionToggleWrapper: selectionToggleWrapper,
     selectionWrapTagWithAttribute: selectionWrapTagWithAttribute,
