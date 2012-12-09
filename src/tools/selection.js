@@ -395,25 +395,46 @@ function selectionToggleBlockStyle(styles, limit) {
     }, null, this);
 }
 
-function selectionToggleBlockClass(classes, limit) {
+function selectionEachBlock(callback, limitElement, blockContainer) {
+    // <strict>
+    if (!$.isFunction(callback)) {
+        handleError('Paramter 1 to selectionEachBlock is expected to be a function');
+    }
+    if (!limitElement) {
+        handleError('Paramter 2 to selectionToggleBlockClasses is expected a jQuery element');
+    }
+    // </strict>
     selectionEachRange(function(range) {
-        var parent = $(range.commonAncestorContainer);
-        while (parent.length && parent[0] !== limit[0] && (
-                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
-            parent = parent.parent();
-        }
-        if (parent[0] === limit[0]) {
-            // Only apply block style if the limit element is a block
-            if (limit.css('display') !== 'inline') {
-                // Wrap the HTML inside the limit element
-                elementWrapInner(limit, 'div');
-                // Set the parent to the wrapper
-                parent = limit.children().first();
+        // Loop range parents until a block element is found, or the limit element is reached
+        var startBlock = elementClosestBlock($(range.startContainer), limitElement),
+            endBlock = elementClosestBlock($(range.endContainer), limitElement),
+            blocks = startBlock.nextUntil(endBlock).andSelf().add(endBlock);
+        if (blocks[0] === limitElement[0]) {
+            // Wrap the HTML inside the limit element
+            callback(elementWrapInner(limitElement, blockContainer));
+        } else {
+            for (var i = 0, l = blocks.length; i < l; i++) {
+                callback(blocks);
             }
         }
-        // Apply the style to the parent
-        parent.toggleClass(classes);
-    }, null, this);
+    });
+}
+
+function selectionToggleBlockClasses(classes, limitElement, blockContainer) {
+    // <strict>
+    if (!$.isArray(classes)) {
+        handleError('Paramter 1 to selectionToggleBlockClasses is expected to be an array of classes');
+    }
+    if (!limitElement) {
+        handleError('Paramter 2 to selectionToggleBlockClasses is expected a jQuery element');
+    }
+    // </strict>
+    selectionEachBlock(function(blocks) {
+        // Apply the class to the parent
+        for (var i = 0, l = classes.length; i < l; i++) {
+            blocks.toggleClass(classes[i]);
+        }
+    }, limitElement, blockContainer);   
 }
 
 /**
