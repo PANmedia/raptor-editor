@@ -12,7 +12,7 @@
         <h1>Reverse Bold Button 1: Word Group Selection</h1>
         <div class="test-input">
             <div class="editible">
-                <p> 
+                <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <strong class="cms-bold">{dui id erat pellentesque et rhoncus}</strong> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -29,7 +29,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -40,7 +40,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Reverse Bold Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -62,7 +62,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -73,7 +73,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Reverse Bold Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -83,7 +83,7 @@
                     convallis dui id erat pel<strong class="cms-bold">{lentesqu}</strong>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit. 
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -95,7 +95,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -106,7 +106,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Reverse Bold Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -114,12 +114,12 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <strong class="cms-bold">{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</strong>
-                </p><p>
-                    <strong class="cms-bold">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </strong></p>
+                <p><strong class="cms-bold">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</strong> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
                 </p>
             </div>
         </div>
@@ -143,7 +143,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Reverse Bold Button 5: Paragraph Selection</h1>
         <div class="test-input">
@@ -151,9 +151,10 @@
                 <p>
                     <strong class="cms-bold">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</strong>
-                </p><p>
-                    <strong class="cms-bold">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </strong></p>
+                <p><strong class="cms-bold">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</strong>
                 </p>
@@ -179,7 +180,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Reverse Bold Button 6: Empty Selection in Word</h1>
         <div class="test-input">
@@ -191,7 +192,7 @@
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. <strong class="cms-bold">Suspen{}disse</strong> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -203,7 +204,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -215,7 +216,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Reverse Bold Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -236,7 +237,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
+                    malesuada {hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur

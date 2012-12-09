@@ -45,11 +45,13 @@ function cleanUnwrapElements(selector) {
 
 function cleanEmptyAttributes(element, attributes) {
     for (i = 0; i < attributes.length; i++) {
-        var attr = attributes[i];
+        if (!$.trim(element.attr(attributes[i]))) {
+            element.removeAttr(attributes[i]);
+        }
         element
             .find('[' + attributes[i] + ']')
             .filter(function() {
-                return $.trim($(this).attr(attr)) === '';
+                return $.trim($(this).attr(attributes[i])) === '';
             }).removeAttr(attributes[i]);
     }
 }

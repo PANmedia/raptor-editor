@@ -12,7 +12,7 @@
         <h1>Reverse Italic Button 1: Word Group Selection</h1>
         <div class="test-input">
             <div class="editible">
-                <p> 
+                <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <em class="cms-italic">{dui id erat pellentesque et rhoncus}</em> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -29,7 +29,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -40,7 +40,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Reverse Italic Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -62,7 +62,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -73,7 +73,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Reverse Italic Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -83,7 +83,7 @@
                     convallis dui id erat pel<em class="cms-italic">{lentesqu}</em>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit. 
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -95,7 +95,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -106,7 +106,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Reverse Italic Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -114,12 +114,13 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <em class="cms-italic">{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</em>
-                </p><p>
-                    <em class="cms-italic">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </em></p>
+                <p><em class="cms-italic">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</em> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -143,7 +144,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Reverse Italic Button 5: Paragraph Selection</h1>
         <div class="test-input">
@@ -151,9 +152,10 @@
                 <p>
                     <em class="cms-italic">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</em>
-                </p><p>
-                    <em class="cms-italic">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </em></p>
+                <p><em class="cms-italic">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</em>
                 </p>
@@ -165,7 +167,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -179,7 +182,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Reverse Italic Button 6: Empty Selection in Word</h1>
         <div class="test-input">
@@ -191,7 +194,7 @@
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. <em class="cms-italic">Suspen{}disse</em> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -203,7 +206,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -215,7 +218,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Reverse Italic Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -236,7 +239,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
+                    malesuada {hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur

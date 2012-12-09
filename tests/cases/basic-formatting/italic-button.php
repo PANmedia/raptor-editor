@@ -39,7 +39,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Italic Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -71,7 +71,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Italic Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -103,7 +103,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Italic Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -124,9 +124,10 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <em class="cms-italic">{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</em>
-                </p><p>
-                    <em class="cms-italic">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </em></p>
+                <p><em class="cms-italic">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</em> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -139,7 +140,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Italic Button 5: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -148,7 +149,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -160,9 +162,10 @@
                 <p>
                     <em class="cms-italic">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</em>
-                </p><p>
-                    <em class="cms-italic">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </em></p>
+                <p><em class="cms-italic">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</em>
                 </p>
@@ -175,8 +178,8 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
-    
+
+
     <div class="test-6">
         <h1>Italic Button 6: Empty Selection in Word</h1>
         <div class="test-input">
@@ -185,7 +188,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -198,10 +202,11 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. <em class="cms-italic">Suspen{}disse</em> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    ligula venenatis rhoncus. <em class="cms-italic">{Suspendisse}</em> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -212,7 +217,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Italic Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -221,7 +226,8 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada {}hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -233,8 +239,9 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <em class="cms-italic">{}hendrerit</em> velit nec tristique.
-                </p><p>
+                    malesuada <em class="cms-italic">{hendrerit}</em> velit nec tristique.
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
