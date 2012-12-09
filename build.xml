@@ -120,7 +120,7 @@
         <mkdir dir="${dir.package}" />
     </target>
 
-    <target name="clone" depends="theme">
+    <target name="clone">
         <clone file="${files.manifest}" builddir="${dir.build}" />
     </target>
 
