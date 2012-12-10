@@ -46,8 +46,6 @@ TagMenu.prototype.changeTag = function(tag) {
 
         selectionSelectInner(this.raptor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
     }
-
-    this.raptor.checkChange();
 };
 
 TagMenu.prototype.apply = function(event) {
@@ -91,19 +89,19 @@ TagMenu.prototype.updateButton = function() {
     }
 };
 
-TagMenu.prototype.getButton = function() {
-    if (!this.button) {
-        this.button = new Button({
-            name: this.name,
-            action: this.show.bind(this),
-            preview: false,
-            options: this.options,
-            icon: false,
-            raptor: this.raptor
-        });
-    }
-    return this.button;
-};
+//TagMenu.prototype.getButton = function() {
+//    if (!this.button) {
+//        this.button = new Button({
+//            name: this.name,
+//            action: this.show.bind(this),
+//            preview: false,
+//            options: this.options,
+//            icon: false,
+//            raptor: this.raptor
+//        });
+//    }
+//    return this.button;
+//};
 
 TagMenu.prototype.getMenuItems = function() {
     return $(this.raptor.getTemplate('tag-menu.menu', this.options))

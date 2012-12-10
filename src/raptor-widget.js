@@ -359,7 +359,6 @@ var RaptorWidget = {
         this.actionPreviewRestore();
         selectionConstrain(this.target);
         actionApply(action, this.history);
-        this.previewState = null;
         this.checkChange();
     },
 

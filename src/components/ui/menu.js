@@ -19,13 +19,7 @@ Menu.prototype.bind = function() {
 
 Menu.prototype.getButton = function() {
     if (!this.button) {
-        this.button = new Button({
-            name: this.name,
-            action: this.show.bind(this),
-            preview: false,
-            options: this.options,
-            raptor: this.raptor
-        });
+        this.button = new MenuButton(this);
     }
     return this.button;
 };

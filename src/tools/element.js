@@ -197,12 +197,15 @@ function elementGetStyles(element) {
  * @param {String} tag The wrapper tag name
  */
 function elementWrapInner(element, tag) {
+    var result = new jQuery();
     selectionSave();
-    $(element).each(function() {
-        var wrapper = $('<' + tag + '/>').html($(this).html());
+    for (var i = 0, l = element.length; i < l; i++) {
+        var wrapper = $('<' + tag + '/>').html($(element[i]).html());
         element.html(wrapper);
-    });
+        result.push(wrapper);
+    }
     selectionRestore();
+    return result;
 }
 
 /**
@@ -256,4 +259,26 @@ function elementDetachedManip(element, manip) {
     $(element).detach();
     manip(element);
     parent.append(element);
+}
+
+function elementClosestBlock(element, limitElement) {
+    // <strict>
+    if (!(element instanceof jQuery)) {
+        handleError('Parameter 1 to elementClosestBlock must be a jQuery element');
+        return;
+    }
+    if (!(limitElement instanceof jQuery)) {
+        handleError('Parameter 2 to elementClosestBlock must be a jQuery element');
+        return;
+    }
+    // </strict>
+    while (element.length > 0
+            && element[0] !== limitElement[0] 
+            && (element[0].nodeType === 3 || element.css('display') === 'inline')) {
+        element = element.parent();
+    }
+    if (parent[0] === limitElement[0]) {
+        return null;
+    }
+    return element;
 }
