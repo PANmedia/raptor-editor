@@ -5,7 +5,7 @@ function LinkTypeExternal(raptor) {
 };
 
 LinkTypeExternal.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.external', this.options);
+    return this.raptor.getTemplate('link.external', this.raptor.options);
 };
 
 LinkTypeExternal.prototype.getAttributes = function(panel) {
