@@ -292,7 +292,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-', function(input) {
+        testEditor('.test-5', function(input) {
             var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-delete-row');
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());

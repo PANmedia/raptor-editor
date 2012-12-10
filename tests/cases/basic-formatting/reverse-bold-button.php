@@ -36,8 +36,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 
@@ -69,8 +74,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 
@@ -102,8 +112,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 
@@ -139,8 +154,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 
@@ -176,8 +196,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 
@@ -212,8 +237,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 
@@ -248,8 +278,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
+            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
+            boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (boldButton('.ui-state-active')){
+                throw new Error('Button is active');
+            }
         });
     </script>
 </body>

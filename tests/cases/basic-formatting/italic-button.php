@@ -35,8 +35,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 
@@ -67,8 +72,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 
@@ -99,8 +109,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 
@@ -136,8 +151,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 
@@ -174,8 +194,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 
@@ -213,8 +238,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 
@@ -251,8 +281,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic')
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!italicButton('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 </body>

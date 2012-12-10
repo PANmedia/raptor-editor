@@ -27,8 +27,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none').trigger('click');
+            var floatNoneButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none');
+            floatNoneButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!floatNoneButton.is('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
     
@@ -61,8 +66,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none').trigger('click');
+            var floatNoneButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none');
+            floatNoneButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!floatNoneButton.is('.ui-state-active')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
     
