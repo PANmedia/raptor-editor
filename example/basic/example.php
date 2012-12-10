@@ -34,7 +34,12 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
-                urlPrefix: '../../src/'
+                urlPrefix: '../../src/',
+                ui: {
+                    dockToScreen: {
+                        docked: true
+                    }
+                }
             });
         });
     </script>
