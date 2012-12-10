@@ -26,7 +26,7 @@
 }
 
 /* Dialog */
-.raptor-ui-link-panel .raptor-ui-link-menu {
+.raptor-ui-link-create-panel .raptor-ui-link-create-menu {
     height: 100%;
     width: 200px;
     float: left;
@@ -57,17 +57,17 @@
     }
 }
 
-.raptor-ui-link-panel .raptor-ui-link-menu fieldset,
-.raptor-ui-link-panel .raptor-ui-link-wrap fieldset {
+.raptor-ui-link-create-panel .raptor-ui-link-create-menu fieldset,
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap fieldset {
     border: none;
 }
 
-.raptor-ui-link-panel .raptor-ui-link-wrap {
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap {
     margin-left: 200px;
     padding-left: 20px;
     min-height: 200px;
     position: relative;
-    &.raptor-ui-link-loading{
+    &.raptor-ui-link-create-loading{
         &:after {
             content: 'Loading...';
             position: absolute;
@@ -90,11 +90,11 @@
         &.raptor-external-href {
             width: 365px;
         }
-        &.raptor-ui-link-email label {
+        &.raptor-ui-link-create-email label {
             display: inline-block;
             width: 115px;
         }
-        &.raptor-ui-link-email input {
+        &.raptor-ui-link-create-email input {
             width: 340px;
         }
     }
@@ -105,12 +105,12 @@
     }
 }
 
-.raptor-ui-link-panel .raptor-ui-link-wrap
-.raptor-ui-link-panel .raptor-ui-link-wrap fieldset #raptor-ui-link-external-target {
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap fieldset #raptor-ui-link-create-external-target {
     vertical-align: middle;
 }
 
-.raptor-ui-link-error-message {
+.raptor-ui-link-create-error-message {
     div {
         padding: 0 .7em;
         p {
