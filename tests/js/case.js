@@ -23,6 +23,7 @@ function loadCSS(href) {
 loadCSS('../src/dependencies/themes/aristo/jquery-ui.css');
 loadCSS('css/case.css');
 loadCSS('../codemirror/lib/codemirror.css');
+loadCSS('../example/assets/style.css');
 
 loadJS('../codemirror/lib/codemirror.js');
 loadJS('../codemirror/mode/javascript/javascript.js');
@@ -39,6 +40,7 @@ loadJS('../src/dependencies/rangy/rangy-serializer.js');
 loadJS('../src/dependencies/rangy/rangy-textrange.js');
 loadJS('../src/dependencies/resizetable.js');
 loadJS('../src/dependencies/goog-table.js');
+loadJS('../src/init.js');
 loadJS('../src/tools/action.js');
 loadJS('../src/tools/clean.js');
 loadJS('../src/tools/dock.js');

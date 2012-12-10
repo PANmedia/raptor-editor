@@ -104,19 +104,19 @@ function handleError(errorMessage) {
 }
 
 // Ensure jQuery has been included
-if (!$) handleError(_('jQuery is required'));
+if (typeof $ === 'undefined') handleError('jQuery is required');
 
 // Ensure jQuery UI has been included
-if (!$.ui) handleError(_('jQuery UI is required'));
+else if (!$.ui) handleError('jQuery UI is required');
 
 // Ensure dialog has been included
-if (!$.ui.dialog) handleError(_('jQuery UI Dialog is required.'));
+else if (!$.ui.dialog) handleError('jQuery UI Dialog is required.');
 
 // Ensure dialog has been included
-if (!$.ui.position) handleError(_('jQuery UI Position is required.'));
+else if (!$.ui.position) handleError('jQuery UI Position is required.');
 
 // Ensure rangy has been included
-if (!rangy) handleError(_('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"'));
+if (typeof rangy === 'undefined') handleError('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"');
 
 // </strict>
 

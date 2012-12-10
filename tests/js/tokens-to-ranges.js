@@ -70,6 +70,12 @@ function tokensToRanges(el, limit) {
     return ranges;
 }
 
+function tokensToSelection(el, limit) {
+    var ranges = tokensToRanges(el, limit);
+    rangy.getSelection().setRanges(ranges);
+    return ranges;
+}
+
 function rangesToTokens(ranges) {
     var i = ranges.length;
     while (i--) {
@@ -82,4 +88,8 @@ function rangesToTokens(ranges) {
         closeRange.insertNode(close);
         openRange.insertNode(open);
     }
+}
+
+function selectionToTokens() {
+    return rangesToTokens(rangy.getSelection().getAllRanges());
 }
