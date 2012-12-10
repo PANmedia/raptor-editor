@@ -46,8 +46,8 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <em class="cms-italic">{pellentesque et rhoncus nunc semper. <del class="cms-strike">Suspendisse
-                    malesuada</del> hendrerit velit nec tristique.</em> A}liquam gravida mauris at
+                    convallis dui id erat <em class="cms-italic">{pellentesque et rhoncus nunc semper. <ol><li><del class="cms-strike">Suspendisse
+                    malesuada</del></li></ol> hendrerit velit nec tristique.</em> A}liquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -152,7 +152,7 @@
                     malesuada <u class="cms-underline">hendrerit velit nec tristique.</u></strong>
                 </p><p>
                 <u class="cms-underline"><strong class="cms-bold">Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse}</strong> interdum, nisi</u> nec consectetur
+                    ligula <ul><li>venenatis rhoncus.</li></ul> Suspendisse}</strong> interdum, nisi</u> nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
