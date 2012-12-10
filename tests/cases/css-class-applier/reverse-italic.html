@@ -27,7 +27,7 @@
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit. 
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
     </div>
@@ -59,7 +59,7 @@
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-               
+
             </p>
         </div>
     </div>
@@ -72,7 +72,7 @@
             applier.toggleRanges(ranges);
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Reverse Italic 3: Full Word Selection</h1>
         <div class="test-input">
@@ -91,7 +91,7 @@
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                
+
             </p>
         </div>
     </div>
@@ -104,15 +104,16 @@
             applier.undoToRanges(ranges);
         });
     </script>
-    
+
     <div class="test-4">
         <h1>Reverse Italic 4: Multi Paragraph Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id {<em class="cms-italic">erat pellentesque et rhoncus nunc semper.</em>
-            <p>
-                <em class="cms-italic">Suspendisse
+                convallis dui id {<em class="cms-italic">erat pellentesque et rhoncus nunc semper.
+            </em></p>
+            <p><em class="cms-italic">
+                Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam}</em> gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -121,7 +122,7 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
+                convallis dui id erat pellentesque et rhoncus nunc semper.
             </p>
             <p>
                 Suspendisse
@@ -140,7 +141,7 @@
             applier.toggleRanges(ranges);
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Reverse Italic 5: Paragraph Selection</h1>
         <div class="test-input">
@@ -158,7 +159,7 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
+                convallis dui id erat pellentesque et rhoncus nunc semper.
             </p>
             <p>
                 Suspendisse
@@ -175,80 +176,6 @@
                 rangeTrim(ranges[i]);
             }
             applier.undoToRanges(ranges);
-        });
-    </script>
-    
-       <div class="test-6">
-        <h1>Reverse Italic 6: Empty Selection In Word</h1>
-        <div class="test-input">
-            <p>
-                Lorem ipsum dolor sit amet, <em class="cms-italic">conse{}ctetur</em> adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper.
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-        <div class="test-expected">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec conse{}ctetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test6', function(input) {
-            var ranges = tokensToRanges(input);
-            for (var i = 0; i < ranges.length; i++) {
-                rangeTrim(ranges[i]);
-            }
-            applier.applyToRanges(ranges);
-        });
-    </script>
-    
-    <div class="test-7">
-        <h1>Reverse Underline 7: Empty Selection In Front of Word</h1>
-        <div class="test-input">
-            <p>
-                Lorem ipsum dolor sit amet, consecteturadipiscing elit. Maecenas
-                convallis dui id erat <em class="cms-italic">{}pellentesque</em>  et rhoncus nunc semper.
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-        <div class="test-expected">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat {}pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec conse{}ctetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test7', function(input) {
-            var ranges = tokensToRanges(input);
-            for (var i = 0; i < ranges.length; i++) {
-                rangeTrim(ranges[i]);
-            }
-            applier.applyToRanges(ranges);
         });
     </script>
 </body>

@@ -12,7 +12,7 @@
         <h1>Reverse Strike Button 1: Word Group Selection</h1>
         <div class="test-input">
             <div class="editible">
-                <p> 
+                <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <del class="cms-strike">{dui id erat pellentesque et rhoncus}</del> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -29,7 +29,6 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
                 </p>
             </div>
         </div>
@@ -40,7 +39,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Reverse Strike Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -62,7 +61,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -73,7 +72,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Reverse Strike Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -83,7 +82,7 @@
                     convallis dui id erat pel<del class="cms-strike">{lentesqu}</del>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit. 
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -95,7 +94,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -106,7 +105,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
      <div class="test-4">
         <h1>Reverse Strike Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
@@ -114,12 +113,13 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <del class="cms-strike">{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</del>
-                </p><p>
-                    <del class="cms-strike">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </del></p>
+                <p><del class="cms-strike">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</del> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -143,7 +143,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Reverse Strike Button 5: Paragraph Selection</h1>
         <div class="test-input">
@@ -151,9 +151,10 @@
                 <p>
                     <del class="cms-strike">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.</del>
-                </p><p>
-                    <del class="cms-strike">Aliquam gravida mauris at
+                    malesuada hendrerit velit nec tristique.
+                </del></p>
+                <p><del class="cms-strike">
+                    Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</del>
                 </p>
@@ -179,7 +180,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Reverse Strike Button 6: Empty Selection in Word</h1>
         <div class="test-input">
@@ -191,7 +192,7 @@
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. <del class="cms-strike">Suspen{}disse</del> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
@@ -203,7 +204,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -215,7 +216,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Reverse Strike Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -236,7 +237,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
+                    malesuada {hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur

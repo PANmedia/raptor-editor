@@ -6,16 +6,16 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
-        var applier = rangy.createCssClassApplier('cms-strike', {
-            elementTagName: 'del'
+        var applier = rangy.createCssClassApplier('cms-bold', {
+            elementTagName: 'strong'
         });
     </script>
     <div class="test-1">
-        <h1>Reverse Strike 1: Word Group Selection</h1>
+        <h1>Bold 1: Word Group Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis {<del class="cms-strike">dui id erat pellentesque et rhoncus}</del> nunc semper. Suspendisse
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -24,10 +24,10 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                convallis <strong class="cms-bold">dui id erat pellentesque et rhoncus</strong> nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit. 
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
     </div>
@@ -37,16 +37,16 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.undoToRanges(ranges);
+            applier.applyToRanges(ranges);
         });
     </script>
 
     <div class="test-2">
-        <h1>Reverse Strike 2: Word Part Selection</h1>
+        <h1>Bold 2: Word Part Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat <del class="cms-strike">{pellentes</del>}que et rhoncus nunc semper. Suspendisse
+                convallis dui id erat {pellentes}que et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -55,11 +55,10 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                convallis dui id erat <strong class="cms-bold">pellentes</strong>que et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-               
             </p>
         </div>
     </div>
@@ -69,18 +68,18 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.toggleRanges(ranges);
+            applier.applyToRanges(ranges);
         });
     </script>
-    
+
     <div class="test-3">
-        <h1>Reverse Strike 3: Full Word Selection</h1>
+        <h1>Bold 3: Full Word Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula {<del class="cms-strike">venenatis</del>} rhoncus. Suspendisse interdum, nisi nec consectetur
+                ligula {venenatis} rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
@@ -89,9 +88,8 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                ligula <strong class="cms-bold">venenatis</strong> rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                
             </p>
         </div>
     </div>
@@ -101,19 +99,20 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.undoToRanges(ranges);
+            applier.applyToRanges(ranges);
         });
     </script>
-    
+
     <div class="test-4">
-        <h1>Reverse Strike 4: Multi Paragraph Selection</h1>
+        <h1>Bold 4: Multi Paragraph Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id {<del class="cms-strike">erat pellentesque et rhoncus nunc semper.</del>
+                convallis dui id {erat pellentesque et rhoncus nunc semper.
+            </p>
             <p>
-                <del class="cms-strike">Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam}</del> gravida mauris at
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam} gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
@@ -121,11 +120,11 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
+                convallis dui id <strong class="cms-bold">erat pellentesque et rhoncus nunc semper.
+            </strong></p>
+            <p><strong class="cms-bold">
                 Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                malesuada hendrerit velit nec tristique. Aliquam</strong> gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
@@ -137,113 +136,39 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.toggleRanges(ranges);
+            applier.applyToRanges(ranges);
         });
     </script>
-    
+
     <div class="test-5">
-        <h1>Reverse Strike 5: Paragraph Selection</h1>
+        <h1>Bold 5: Paragraph Selection</h1>
         <div class="test-input">
             <p>
-                <del class="cms-strike">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper.</del>
-            </p>
-            <p>
-                <del class="cms-strike">Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</del>
-            </p>
-        </div>
-        <div class="test-expected">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test-5', function(input) {
-            var ranges = tokensToRanges(input);
-            for (var i = 0; i < ranges.length; i++) {
-                rangeTrim(ranges[i]);
-            }
-            applier.undoToRanges(ranges);
-        });
-    </script>
-    
-       <div class="test-6">
-        <h1>Reverse Strike 6: Empty Selection In Word</h1>
-        <div class="test-input">
-            <p>
-                Lorem ipsum dolor sit amet, <del class="cms-strike">conse{}ctetur</del> adipiscing elit. Maecenas
+                {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper.
             </p>
             <p>
                 Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
             </p>
         </div>
         <div class="test-expected">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec conse{}ctetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test6', function(input) {
-            var ranges = tokensToRanges(input);
-            for (var i = 0; i < ranges.length; i++) {
-                rangeTrim(ranges[i]);
-            }
-            applier.applyToRanges(ranges);
-        });
-    </script>
-    
-    <div class="test-7">
-        <h1>Reverse Strike 7: Empty Selection In Front of Word</h1>
-        <div class="test-input">
-            <p>
-                Lorem ipsum dolor sit amet, consecteturadipiscing elit. Maecenas
-                convallis dui id erat <del class="cms-strike">{}pellentesque</del>  et rhoncus nunc semper.
-            </p>
-            <p>
+                <strong class="cms-bold">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.
+            </strong></p>
+            <p><strong class="cms-bold">
                 Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-        <div class="test-expected">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat {}pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec conse{}ctetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</strong>
             </p>
         </div>
     </div>
     <script type="text/javascript">
-        test('.test7', function(input) {
+        test('.test-5', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);

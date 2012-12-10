@@ -20,25 +20,25 @@ class TemplateTask extends Task {
                     $name = substr(basename($file), 0, -5);
                 }
 
-                $content = json_encode(file_get_contents($this->buildDir . '/src/' . $file));
+                $content = json_encode(file_get_contents($this->buildDir . '/' . $file));
                 $result[] = "'$name': $content";
             }
         }
-        
+
         $result = implode(',' . PHP_EOL, $result);
-        
+
         foreach (file($this->file) as $file) {
             $file = trim($file);
             if (!$file) {
                 continue;
             }
             if (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
-                $content = file_get_contents($this->buildDir . '/src/' . $file);
+                $content = file_get_contents($this->buildDir . '/' . $file);
                 $position = strpos($content, '/* <templates/> */');
                 if ($position !== false) {
                     $this->log($file, Project::MSG_INFO);
                     $content = str_replace('/* <templates/> */', $result, $content);
-                    file_put_contents($this->buildDir . '/src/' . $file, $content);
+                    file_put_contents($this->buildDir . '/' . $file, $content);
                 }
             }
         }

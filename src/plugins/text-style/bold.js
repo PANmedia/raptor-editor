@@ -1,5 +1,6 @@
 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textBold',
     hotkey: 'ctrl+b',
-    tag: 'strong'
+    tag: 'strong',
+    classes: ['bold']
 }));

@@ -1,4 +1,5 @@
 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textSuper',
-    tag: 'sup'
+    tag: 'sup',
+    classes: ['sup']
 }));

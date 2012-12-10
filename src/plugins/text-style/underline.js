@@ -1,5 +1,6 @@
 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textUnderline',
     hotkey: 'ctrl+u',
-    tag: 'u'
+    tag: 'u',
+    classes: ['underline']
 }));

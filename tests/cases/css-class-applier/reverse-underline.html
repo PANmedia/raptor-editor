@@ -6,16 +6,16 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
-        var applier = rangy.createCssClassApplier('cms-bold', {
-            elementTagName: 'strong'
+        var applier = rangy.createCssClassApplier('cms-underline', {
+            elementTagName: 'u'
         });
     </script>
     <div class="test-1">
-        <h1>Bold 1: Word Group Selection</h1>
+        <h1>Reverse Underline 1: Word Group Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                convallis {<u class="cms-underline">dui id erat pellentesque et rhoncus}</u> nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -24,7 +24,7 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis <strong class="cms-bold">dui id erat pellentesque et rhoncus</strong> nunc semper. Suspendisse
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -37,16 +37,16 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.applyToRanges(ranges);
+            applier.undoToRanges(ranges);
         });
     </script>
 
     <div class="test-2">
-        <h1>Bold 2: Word Part Selection</h1>
+        <h1>Reverse Underline 2: Word Part Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat {pellentes}que et rhoncus nunc semper. Suspendisse
+                convallis dui id erat <u class="cms-underline">{pellentes</u>}que et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -55,10 +55,11 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat <strong class="cms-bold">pellentes</strong>que et rhoncus nunc semper. Suspendisse
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
             </p>
         </div>
     </div>
@@ -68,18 +69,18 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.applyToRanges(ranges);
+            applier.toggleRanges(ranges);
         });
     </script>
-    
+
     <div class="test-3">
-        <h1>Bold 3: Full Word Selection</h1>
+        <h1>Reverse Underline 3: Full Word Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula {venenatis} rhoncus. Suspendisse interdum, nisi nec consectetur
+                ligula {<u class="cms-underline">venenatis</u>} rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
         </div>
@@ -88,8 +89,9 @@
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula <strong class="cms-bold">venenatis</strong> rhoncus. Suspendisse interdum, nisi nec consectetur
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
             </p>
         </div>
     </div>
@@ -99,20 +101,20 @@
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.applyToRanges(ranges);
+            applier.undoToRanges(ranges);
         });
     </script>
-    
+
     <div class="test-4">
-        <h1>Bold 4: Multi Paragraph Selection</h1>
+        <h1>Reverse Underline 4: Multi Paragraph Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id {erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
+                convallis dui id {<u class="cms-underline">erat pellentesque et rhoncus nunc semper.
+            </u></p>
+            <p><u class="cms-underline">
                 Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam} gravida mauris at
+                malesuada hendrerit velit nec tristique. Aliquam}</u> gravida mauris at
                 ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                 pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
             </p>
@@ -120,80 +122,6 @@
         <div class="test-expected">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id <strong class="cms-bold">erat pellentesque et rhoncus nunc semper.</strong>
-            </p>
-            <p>
-                <strong class="cms-bold">Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam</strong> gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test-4', function(input) {
-            var ranges = tokensToRanges(input);
-            for (var i = 0; i < ranges.length; i++) {
-                rangeTrim(ranges[i]);
-            }
-            applier.applyToRanges(ranges);
-        });
-    </script>
-    
-    <div class="test-5">
-        <h1>Bold 5: Paragraph Selection</h1>
-        <div class="test-input">
-            <p>
-                {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
-            </p>
-        </div>
-        <div class="test-expected">
-            <p>
-                <strong class="cms-bold">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper.</strong>
-            </p>
-            <p>
-                <strong class="cms-bold">Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</strong>
-            </p>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test-5', function(input) {
-            var ranges = tokensToRanges(input);
-            for (var i = 0; i < ranges.length; i++) {
-                rangeTrim(ranges[i]);
-            }
-            applier.applyToRanges(ranges);
-        });
-    </script>
-    
-    <div class="test-6">
-        <h1>Bold 6: Empty Selection In Word</h1>
-        <div class="test-input">
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat pellentesque et rhoncus nunc semper. 
-            </p>
-            <p>
-                Suspendisse
-                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec conse{}ctetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-            </p>
-        </div>
-        <div class="test-expected">
-            <p>
-                Lorem ipsum dolor sit amet, <strong class="cms-bold">conse{}ctetur</strong> adipiscing elit. Maecenas
                 convallis dui id erat pellentesque et rhoncus nunc semper.
             </p>
             <p>
@@ -205,33 +133,33 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test6', function(input) {
+        test('.test-4', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.applyToRanges(ranges);
+            applier.toggleRanges(ranges);
         });
     </script>
-    
-    <div class="test-7">
-        <h1>Bold 7: Empty Selection In Front of Word</h1>
+
+    <div class="test-5">
+        <h1>Reverse Underline 5: Paragraph Selection</h1>
         <div class="test-input">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                convallis dui id erat {}pellentesque et rhoncus nunc semper. 
+                <u class="cms-underline">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.</u>
             </p>
             <p>
-                Suspendisse
+                <u class="cms-underline">Suspendisse
                 malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                ligula venenatis rhoncus. Suspendisse interdum, nisi nec conse{}ctetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</u>
             </p>
         </div>
         <div class="test-expected">
             <p>
-                Lorem ipsum dolor sit amet, consecteturadipiscing elit. Maecenas
-                convallis dui id erat <strong class="cms-bold">{}pellentesque</strong>  et rhoncus nunc semper.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.
             </p>
             <p>
                 Suspendisse
@@ -242,12 +170,12 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test7', function(input) {
+        test('.test-5', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
             }
-            applier.applyToRanges(ranges);
+            applier.undoToRanges(ranges);
         });
     </script>
 </body>
