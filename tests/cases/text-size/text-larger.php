@@ -39,8 +39,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -76,8 +76,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -113,8 +113,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -156,8 +156,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -198,8 +198,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -239,8 +239,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -280,8 +280,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
@@ -321,8 +321,8 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!sizeIncreaseButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
+            if (sizeIncreaseButton.is('.ui-state-active')){
+                throw new Error('Button is active');
             }
         });
     </script>
