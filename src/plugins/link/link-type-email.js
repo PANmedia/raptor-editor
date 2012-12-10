@@ -5,7 +5,7 @@ function LinkTypeEmail(raptor) {
 }
 
 LinkTypeEmail.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.email', this.options);
+    return this.raptor.getTemplate('link.email', this.raptor.options);
 };
 
 LinkTypeEmail.prototype.getAttributes = function(panel) {

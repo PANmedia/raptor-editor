@@ -4,7 +4,7 @@ function templateGet(name, urlPrefix) {
     if (templateCache[name]) {
         return templateCache[name];
     }
-    
+
     // Parse the URL
     var url = urlPrefix;
     var split = name.split('.');
@@ -34,10 +34,10 @@ function templateGet(name, urlPrefix) {
             template = data;
         }
     });
-    
+
     // Cache the template
     templateCache[name] = template;
-    
+
     return template;
 };
 
@@ -63,14 +63,19 @@ function templateConvertTokens(template, variables) {
         });
         return _(key);
     });
-    
+
     // Replace variables
     variables = $.extend({}, this.options, variables || {});
     variables = templateGetVariables(variables);
     template = template.replace(/\{\{(.*?)\}\}/g, function(match, variable) {
+        // <debug>
+        if (typeof variables[variable] === 'undefined') {
+            handleError('Missing template variable: ' + variable);
+        }
+        // </debug>
         return variables[variable];
     });
-    
+
     return template;
 };
 

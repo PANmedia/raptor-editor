@@ -45,13 +45,13 @@ TagTreePlugin.prototype.update = function() {
         list.reverse();
 
         if (title) title += ' | ';
-        title += this.raptor.getTemplate('tag-tree.root');
+        title += this.raptor.getTemplate('tag-tree.root', this.options);
         for (var j = 0; j < list.length; j++) {
-            title += this.raptor.getTemplate('tag-tree.tag', {
+            title += this.raptor.getTemplate('tag-tree.tag', $.extend({
                 element: list[j][0].tagName.toLowerCase(),
                 // Create a data attribute with the index to the range, and element (so [0,0] will be the first range/first element)
                 data: '[' + i + ',' + j + ']'
-            });
+            }, this.options));
         }
         i++;
     }, null, this);
