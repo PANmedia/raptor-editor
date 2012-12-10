@@ -27,7 +27,8 @@
 <script type="text/javascript" src="<?= $uri ?>dependencies/goog-table.js"></script>
 
 <!-- Theme -->
-<link rel="stylesheet" type="text/css" href="<?= $uri ?>theme/theme.css"/>
+<link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor-theme.css"/>
+<link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor-front-end.css"/>
 
 <!-- Editor -->
 <script type="text/javascript" src="<?= $uri ?>adapters/jquery-ui.js"></script>
@@ -70,7 +71,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/cancel/cancel.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/clear-formatting/clear-formatting.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/click-button-to-edit/click-button-to-edit.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/color-picker-basic/color-picker-basic.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/color-menu-basic/color-menu-basic.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-screen.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-element.js"></script>

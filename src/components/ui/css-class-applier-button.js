@@ -13,22 +13,10 @@ CSSClassApplierButton.prototype.action = function() {
         }
     }
 
-    this.getApplier().toggleSelection();
-};
-
-CSSClassApplierButton.prototype.getApplier = function() {
-    if (!this.applier) {
-        this.applier = rangy.createCssClassApplier(this.getClass(), {
-            elementTagName: this.getTag()
+    for (var i = 0, l = this.classes.length; i < l; i++) {
+        var applier = rangy.createCssClassApplier(this.options.cssPrefix + this.classes[i], {
+            elementTagName: this.tag || 'span'
         });
+        applier.toggleSelection();
     }
-    return this.applier;
-};
-
-CSSClassApplierButton.prototype.getTag = function() {
-    return this.tag || 'span';
-};
-
-CSSClassApplierButton.prototype.getClass = function() {
-    return this.options.cssPrefix + this.class
 };

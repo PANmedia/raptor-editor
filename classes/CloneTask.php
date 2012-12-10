@@ -42,7 +42,6 @@ class CloneTask extends Task {
             if (!$file) {
                 continue;
             }
-            $file = 'src/' . $file;
             if (!is_file($file)) {
                 die("Error processing file manifest: {$file}, does not exist.");
                 return;
