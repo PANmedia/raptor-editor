@@ -39,12 +39,17 @@
                 ui: {
                     dockToScreen: {
                         docked: true
-                    }
+                    },
                     classMenu: {
                         classes: {
                             'Blue background': 'cms-blue-bg',
                             'Round corners': 'cms-round-corners',
                             'Indent and center': 'cms-indent-center'
+                        }
+                    },
+                    snippetMenu: {
+                        snippets: {
+                            'Grey Box': '<div>Grey Box</div>'
                         }
                     }
                 }
