@@ -39,7 +39,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -76,7 +76,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -113,7 +113,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -155,7 +155,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -197,7 +197,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -238,7 +238,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -279,7 +279,7 @@
             underlineButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!underlineButton.is('.ui-state-active')){
+            if (!underlineButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });

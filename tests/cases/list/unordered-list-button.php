@@ -45,7 +45,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -88,7 +88,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -126,7 +126,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -163,7 +163,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -198,7 +198,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -234,7 +234,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -270,7 +270,7 @@
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!unorderedListButton.is('.ui-state-active')){
+            if (!unorderedListButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
