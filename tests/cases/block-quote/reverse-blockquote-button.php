@@ -9,12 +9,12 @@
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Reverse Strike Button 1: Word Group Selection</h1>
+        <h1>Reverse Block Quote Button 1: Word Group Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <del class="cms-strike">{dui id erat pellentesque et rhoncus}</del> nunc semper. Suspendisse
+                    convallis <blockquote>{dui id erat pellentesque et rhoncus}</blockquote> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -25,7 +25,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                    convallis 
+                </p><p>
+                    {dui id erat pellentesque et rhoncus}
+                </p><p>
+                    nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -35,22 +39,22 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });
     </script>
 
     <div class="test-2">
-        <h1>Reverse Strike Button 2: Single Word Selection</h1>
+        <h1>Reverse Block Quote Button 2: Single Word Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <del class="cms-strike">{adipiscing}</del> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur <blockquote>{adipiscing}</blockquote> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -61,35 +65,38 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur
+                </p><p
+                    adipiscing}
+                </p><p> 
+                    elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });
     </script>
 
     <div class="test-3">
-        <h1>Reverse Strike Button 3: Part Word Selection</h1>
+        <h1>Reverse Block Quote Button 3: Part Word Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<del class="cms-strike">{lentesqu}</del>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel<blockquote>{lentesqu}</blockquote>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -100,41 +107,43 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel
+                </p><p>
+                    {lentesqu}
+                </p><p>
+                    e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });
     </script>
 
      <div class="test-4">
-        <h1>Reverse Strike Button 4: Multi-Paragraph Selection</h1>
+        <h1>Reverse Block Quote Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <del class="cms-strike">{id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui <blockquote>{id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </del></p>
-                <p><del class="cms-strike">
+                </blockquote></p>
+                <p><blockquote>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse}</del> interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse}</blockquote> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-
                 </p>
             </div>
         </div>
@@ -142,41 +151,46 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui 
+                </p><p>
+                    {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse}
+                 </p><p> 
+                     interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
+                
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });
     </script>
 
     <div class="test-5">
-        <h1>Reverse Strike Button 5: Paragraph Selection</h1>
+        <h1>Reverse Block Quote Button 5: Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <del class="cms-strike">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    blockquote>{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </del></p>
-                <p><del class="cms-strike">
+                </blockquote></p>
+                <p><blockquote>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</del>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</blockquote>
                 </p>
             </div>
         </div>
@@ -186,7 +200,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
@@ -196,19 +211,32 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });
     </script>
 
     <div class="test-6">
-        <h1>Reverse Strike Button 6: Empty Selection in Word</h1>
+        <h1>Reverse Block Quote Button 6: Empty Selection in Word</h1>
         <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p><blockquote>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</blockquote>
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -216,20 +244,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. <del class="cms-strike">Suspen{}disse</del> interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -237,24 +252,24 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });
     </script>
 
     <div class="test-7">
-        <h1>Reverse Strike Button 7: Empty Selection at the Beginning of a Word</h1>
+        <h1>Reverse Block Quote Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <del class="cms-strike">{}hendrerit</del> velit nec tristique.
+                    malesuada {}hendrerit velit nec tristique.</blockquote>
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -267,7 +282,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {hendrerit} velit nec tristique.
+                    malesuada {}hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -278,11 +293,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (blockquoteButton.is('.ui-state-active')){
                 throw new Error('Button is active');
             }
         });

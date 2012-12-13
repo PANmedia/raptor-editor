@@ -14,6 +14,11 @@
         <script type="text/javascript">
             $(function() {
                 function iframeResize() {
+                    if ($('[name=verbose]').is(':checked')) {
+                        $('body', $(this).get(0).contentDocument).addClass('verbose').removeClass('simple');
+                    }else {
+                        $('body', $(this).get(0).contentDocument).removeClass('verbose').addClass('simple');
+                    }
                     $(this).height($($(this).get(0).contentDocument).find('html').outerHeight());
                 }
 
@@ -35,10 +40,9 @@
                 });
 
                 $('[name=verbose]').change(function() {
-                    $('iframe').each(function() {
-                        $('body', $(this).get(0).contentDocument).toggleClass('verbose').toggleClass('simple');
-                        iframeResize.call(this);
-                    });
+                        $('iframe').each(function() {
+                            iframeResize.call(this);
+                        });
                 });
 
                 $('nav a').click(function(event) {

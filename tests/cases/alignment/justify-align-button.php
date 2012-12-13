@@ -323,5 +323,48 @@
             }
         });
     </script>
+    
+    <div class="test-9">
+        <h1>Justify Align Button 9: More Than One Paragraph Selection with one already aligned</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p class="cms-right">
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p>
+                <p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p class="cms-justify">
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p>
+                <p class="cms-justify">
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-9', function(input) {
+            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-justify');
+            alignCenterButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!alignCenterButton.is('.ui-state-active')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
 </body>
 </html>
