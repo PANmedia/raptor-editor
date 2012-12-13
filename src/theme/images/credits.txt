@@ -10,6 +10,7 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - cross.png
  - dashboard.png
  - disk-black.png
+ - document-snippet.png
  - edit-alignment-center.png
  - edit-alignment-justify.png
  - edit-alignment-right.png
