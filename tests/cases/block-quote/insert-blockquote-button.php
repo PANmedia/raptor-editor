@@ -39,7 +39,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -76,7 +76,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -113,7 +113,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -156,7 +156,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -198,7 +198,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -239,7 +239,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -280,7 +280,7 @@
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!blockquoteButton.is('.ui-state-active')){
+            if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });

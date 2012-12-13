@@ -40,7 +40,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -78,7 +78,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -116,7 +116,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -158,7 +158,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -200,7 +200,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -241,7 +241,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -282,7 +282,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (boldButton.is('.ui-state-active')){
+            if (boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });

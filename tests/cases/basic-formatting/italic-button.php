@@ -39,7 +39,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -76,7 +76,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -113,7 +113,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -155,7 +155,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -198,7 +198,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -242,7 +242,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -285,7 +285,7 @@
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!italicButton.is('.ui-state-active')){
+            if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });

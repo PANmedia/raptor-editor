@@ -61,7 +61,7 @@
             createTableButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!createTableButton.is('.ui-state-active')) {
+            if (!createTableButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -120,7 +120,7 @@
             insertColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!insertColumnButton.is('.ui-state-active')) {
+            if (!insertColumnButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -179,7 +179,7 @@
             insertRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!insertRowButton.is('.ui-state-active')) {
+            if (!insertRowButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -238,7 +238,7 @@
             deleteColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!deleteColumnButton.is('.ui-state-active')) {
+            if (!deleteColumnButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -297,7 +297,7 @@
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!deleteRowButton.is('.ui-state-active')) {
+            if (!deleteRowButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -356,7 +356,7 @@
             createTableButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!createTableButton.is('.ui-state-active')) {
+            if (!createTableButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -415,7 +415,7 @@
             insertColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (insertColumnButton.is('.ui-state-active')) {
+            if (insertColumnButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
             } 
         });
@@ -474,7 +474,7 @@
             insertRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (insertRowButton.is('.ui-state-active')) {
+            if (insertRowButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
             } 
         });
@@ -533,7 +533,7 @@
             deleteColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (deleteColumnButton.is('.ui-state-active')) {
+            if (deleteColumnButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
             } 
         });
@@ -592,7 +592,7 @@
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (deleteRowButton.is('.ui-state-active')) {
+            if (deleteRowButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
             } 
         });
@@ -652,7 +652,7 @@
             mergeCellsButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!mergeCellsButton.is('.ui-state-active')) {
+            if (!mergeCellsButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -711,7 +711,7 @@
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (deleteRowButton.is('.ui-state-active')) {
+            if (deleteRowButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
             } 
         });
@@ -778,7 +778,7 @@
             mergeCellsButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!mergeCellsButton.is('.ui-state-active')) {
+            if (!mergeCellsButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             } 
         });
@@ -844,7 +844,7 @@
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (deleteRowButton.is('.ui-state-active')) {
+            if (deleteRowButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
             } 
         });
