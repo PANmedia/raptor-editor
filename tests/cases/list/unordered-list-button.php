@@ -275,5 +275,38 @@
             }
         });
     </script>
+    
+    <div class="test-8">
+        <h1>Unordered List 8: Toggle bottom list of two lists and check selection remains on bottom list</h1>
+        <div class="test-input">
+            <div class="editible">
+                <ul>
+                    <li><h3>Item 1</h3></li>
+                </ul>
+                 <h2>{Item 2}</h2>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <ul>
+                    <li><h3>Item 1</h3></li> 
+                </ul>
+                <ul>
+                    <li><h2>{Item 2}</h2></li>
+                </ul> 
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-8', function(input) {
+            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
+            unorderedListButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+//            if (!unorderedListButton.is('.ui-state-highlight')){
+//                throw new Error('Button is not active');
+//            }
+        });
+    </script>
 </body>
 </html>
