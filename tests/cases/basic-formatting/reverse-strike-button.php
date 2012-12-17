@@ -39,7 +39,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -77,7 +77,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -115,7 +115,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -158,7 +158,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -200,7 +200,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -241,7 +241,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -282,7 +282,7 @@
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-active')){
+            if (strikeButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });

@@ -31,7 +31,7 @@
             floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!floatLeftButton.is('.ui-state-active')){
+            if (!floatLeftButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             } 
         });
@@ -70,7 +70,7 @@
             floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!floatLeftButton.is('.ui-state-active')){
+            if (!floatLeftButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });

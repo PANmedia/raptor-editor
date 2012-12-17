@@ -39,7 +39,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -76,7 +76,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -113,7 +113,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -154,7 +154,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -195,7 +195,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -236,7 +236,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -277,7 +277,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -318,7 +318,7 @@
             alignJustifyButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignJustifyButton.is('.ui-state-active')) {
+            if (!alignJustifyButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
@@ -361,7 +361,7 @@
             alignCenterButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!alignCenterButton.is('.ui-state-active')) {
+            if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });

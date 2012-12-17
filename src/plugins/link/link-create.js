@@ -57,7 +57,7 @@ Raptor.registerUi(new Button({
                 resizable: true,
                 autoOpen: false,
                 title: _('linkDialogTitle'),
-                dialogClass: this.options.dialogClass,
+                dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
                 width: 850,
                 buttons: [
                     {

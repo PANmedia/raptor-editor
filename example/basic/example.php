@@ -46,6 +46,11 @@
                             'Round corners': 'cms-round-corners',
                             'Indent and center': 'cms-indent-center'
                         }
+                    },
+                    snippetMenu: {
+                        snippets: {
+                            'Grey Box': '<div>Grey Box</div>'
+                        }
                     }
                 }
             });

@@ -13,7 +13,7 @@ Raptor.registerUi(new Button({
                 resizable: false,
                 autoOpen: false,
                 title: _('cancelDialogTitle'),
-                dialogClass: this.options.dialogClass,
+                dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
                 buttons: [
                     {
                         text: _('cancelDialogOKButton'),

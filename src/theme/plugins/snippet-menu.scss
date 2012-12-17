@@ -1,0 +1,15 @@
+/**
+ * Snippet menu plugin.
+ *
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.raptor-ui-snippet-menu .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('document-snippet.png') 0 0;
+}
+
+.raptor-ui-snippet-menu:hover .ui-icon {
+    @include opacity(1);
+}

@@ -9,7 +9,7 @@
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Right Align Button 1: Word Group Selection</h1>
+        <h1>H1 Tag Button 1: Word Group Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -23,9 +23,13 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
+                <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                    convallis 
+                </p><h1>
+                    {dui id erat pellentesque et rhoncus}
+                </h1><p>
+                    nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -35,18 +39,20 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
 
     <div class="test-2">
-        <h1> Right Align Button 2: Single Word Selection</h1>
+        <h1>H1 Tag Button 2: Single Word Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -60,8 +66,12 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
-                    Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur 
+                </p><h1>
+                    {adipiscing}
+                </h1><p> 
+                    elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -72,18 +82,20 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-           var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
 
     <div class="test-3">
-        <h1>Right Align Button 3: Part Word Selection</h1>
+        <h1>H1 Tag Button 3: Part Word Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -97,9 +109,13 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
+                <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel
+                </p><h1>
+                    {lentesqu}
+               </h1><p>
+                    e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -109,18 +125,20 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
 
      <div class="test-4">
-        <h1>Right Align Button 4: Multi-Paragraph Selection</h1>
+        <h1>H1 Tag Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -136,13 +154,16 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
+                <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui 
+                </p><h1>
+                    {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-right">
+                </h1><h1>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse}
+               </h1><p> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -150,122 +171,135 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
 
     <div class="test-5">
-        <h1>Right Align Button 5: Single Paragraph Selection</h1>
+        <h1>H1 Tag Button 5: Multi-Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.}
-                </p><p>
+                    malesuada hendrerit velit nec tristique.
+                </p>
+                <h1>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </h1>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
+                <h1>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.}
-                </p><p>
+                    malesuada hendrerit velit nec tristique.
+                </h1>
+                <h1>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </h1>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
 
-     <div class="test-6">
-        <h1>Right Align Button 6: More Than One Paragraph Selection</h1>
+
+    <div class="test-6">
+        <h1>H1 Tag Button 6: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p class="cms-right">
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
                 </p>
+                <h1>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </h1>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
 
     <div class="test-7">
-        <h1>Right Align Button7: Empty Selection in Word</h1>
+        <h1>H1 Tag Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p><p>
+                    malesuada {}hendrerit velit nec tristique.
+                </p>
+                <p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p>
+                <h1>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p><p class="cms-right">
+                    malesuada {}hendrerit velit nec tristique.
+                </h1>
+                <p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -273,95 +307,58 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignRightButton.is('.ui-state-highlight')) {
-                throw new Error('Button is not active');
-            }
-        });
-    </script>
-
-    <div class="test-8">
-        <h1>Right Align Button 8: Empty Selection at the Beginning of a Word</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p class="cms-right">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-8', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignRightButton.trigger('click');
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!alignRightButton.is('.ui-state-highlight')) {
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });
     </script>
     
-    <div class="test-9">
-        <h1>Right Align Button 9: More Than One Paragraph Selection with one already aligned</h1>
+    <div class="test-8">
+        <h1>H1 Tag Button 8: Empty Selection at the Beginning of a Word in a Header H1</h1>
         <div class="test-input">
             <div class="editible">
-                <p class="cms-center">
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                <h1>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p>
-                <p>
+                    malesuada {}hendrerit velit nec tristique.
+                </h1>
+                <h2>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
-                </p>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </h2>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-right">
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                <h1>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p>
-                <p class="cms-right">
+                    malesuada {}hendrerit velit nec tristique.
+                </h1>
+                <h2>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
-                </p>
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </h2>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-9', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
-            alignCenterButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+        testEditor('.test-8', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            okButton.trigger('click');
             
-            if (!alignCenterButton.is('.ui-state-highlight')) {
+            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            if (!tagMenuValue.is('Paragraph')){
                 throw new Error('Button is not active');
             }
         });

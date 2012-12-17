@@ -107,6 +107,8 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/save/save-json.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/save/save-rest.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/snippet-menu/snippet-menu.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/statistics/statistics.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-cell-button.js"></script>

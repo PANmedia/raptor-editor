@@ -39,7 +39,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -76,7 +76,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -113,7 +113,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -156,7 +156,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -198,7 +198,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -239,7 +239,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -280,7 +280,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -321,7 +321,7 @@
             sizeIncreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (sizeIncreaseButton.is('.ui-state-active')){
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });

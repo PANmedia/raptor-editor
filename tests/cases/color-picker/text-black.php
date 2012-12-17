@@ -33,17 +33,18 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var blackButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            console.log($('.raptor-ui-color-menu-basic-swatch'));
+            blackButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-active')){
-                throw new Error('Button is not active');
-            }
+//            
+//            if (!blackButton.is('.ui-state-highlight')){
+//                throw new Error('Button is not active');
+//            }
         });
-    </script>-->
+    </script>
 
     <div class="test-2">
         <h1>Text Black Button 2: Single Word Selection</h1>
@@ -76,7 +77,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!boldButton.is('.ui-state-active')){
+            if (!boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -113,7 +114,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!boldButton.is('.ui-state-active')){
+            if (!boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -156,7 +157,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!boldButton.is('.ui-state-active')){
+            if (!boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -198,7 +199,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!boldButton.is('.ui-state-active')){
+            if (!boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -239,7 +240,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!boldButton.is('.ui-state-active')){
+            if (!boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
@@ -280,7 +281,7 @@
             boldButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (!boldButton.is('.ui-state-active')){
+            if (!boldButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
