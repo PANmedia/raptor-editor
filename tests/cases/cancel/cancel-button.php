@@ -37,7 +37,7 @@
         testEditor('.test-1', function(input) {
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
+            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
             okButton.trigger('click');
         });
     </script>
@@ -72,7 +72,7 @@
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
+            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
             okButton.trigger('click');
         });
     </script>
@@ -112,7 +112,7 @@
         testEditor('.test-3', function(input) {
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
              okButton.trigger('click');
         });
     </script>
@@ -154,8 +154,8 @@
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+             okButton.trigger('click');
         });
     </script>
 
@@ -193,8 +193,8 @@
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+             okButton.trigger('click');
         });
     </script>
 
@@ -232,8 +232,8 @@
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+             okButton.trigger('click');
         });
     </script>
     
@@ -271,8 +271,8 @@
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-left').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+             okButton.trigger('click');
         });
     </script>
     
@@ -310,8 +310,8 @@
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-left').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+             okButton.trigger('click');
         });
     </script>
 
@@ -337,8 +337,8 @@
         testEditor('.test-9', function(input) {
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right').trigger('click');
              input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+             okButton.trigger('click');
         });
     </script>
     
@@ -347,8 +347,7 @@
         <div class="test-input">
             <div class="editible">
                 <p> 
-                    {Some text that can be bold and underlined and italic as 
-                    well as being right aligned before clearing the formatting.
+                    {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                     <div style="clear: both">
@@ -358,8 +357,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p> 
-                    {Some text that can be bold and underlined and italic as 
-                    well as being right aligned before clearing the formatting.
+                    {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                     <div style="clear: both">
@@ -373,7 +371,7 @@
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = input.find('.raptor-ui-cancel-dialog button:contains(Ok)');
+            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
             okButton.trigger('click');
         });
     </script>
