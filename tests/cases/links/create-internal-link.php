@@ -44,11 +44,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -94,12 +92,13 @@
             
             createLinkButton.trigger('click');
             
-            var linkInput = document.getElementById('raptor-external-href');
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 0;
             
+            var linkInput = document.getElementById('raptor-external-href');
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -149,11 +148,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -209,11 +206,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -264,15 +259,13 @@
             
             createLinkButton.trigger('click');
             
-            var linkInput = document.getElementById('raptor-external-href');
-            
             var linkType = $('.raptor-ui-link-create-menu');
             linkType.value = 0;
             
+            var linkInput = document.getElementById('raptor-external-href');
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -326,11 +319,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -376,6 +367,7 @@
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
             var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
+            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
             var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
             
             createLinkButton.trigger('click');
@@ -384,11 +376,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -430,11 +420,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -482,11 +470,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -534,11 +520,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = "."; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
@@ -586,11 +570,9 @@
             linkType.value = 0;
             
             var linkInput = document.getElementById('raptor-external-href');
-            
             linkInput.value = ""; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            console.log(insertLinkButton);    
             insertLinkButton.trigger('click');
             
             rangesToTokens(rangy.getSelection().getAllRanges());
