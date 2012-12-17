@@ -399,42 +399,93 @@ function selectionEachBlock(callback, limitElement, blockContainer) {
     // <strict>
     if (!$.isFunction(callback)) {
         handleError('Paramter 1 to selectionEachBlock is expected to be a function');
+        return;
     }
-    if (!limitElement) {
-        handleError('Paramter 2 to selectionToggleBlockClasses is expected a jQuery element');
+    if (!(limitElement instanceof jQuery)) {
+        handleError('Paramter 2 to selectionEachBlock is expected a jQuery element');
+        return;
+    }
+    if (typeof blockContainer !== 'undefined' && typeof blockContainer !== 'string') {
+        handleError('Paramter 3 to selectionEachBlock is expected be undefined or a string');
+        return;
     }
     // </strict>
     selectionEachRange(function(range) {
         // Loop range parents until a block element is found, or the limit element is reached
         var startBlock = elementClosestBlock($(range.startContainer), limitElement),
             endBlock = elementClosestBlock($(range.endContainer), limitElement),
-            blocks = startBlock.nextUntil(endBlock).andSelf().add(endBlock);
-        if (blocks[0] === limitElement[0]) {
+            blocks;
+        if (!startBlock || !endBlock) {
             // Wrap the HTML inside the limit element
-            callback(elementWrapInner(limitElement, blockContainer));
+            callback(elementWrapInner(limitElement, blockContainer).get(0));
         } else {
+            if (startBlock.is(endBlock)) {
+                blocks = startBlock;
+            } else if (startBlock && endBlock) {
+                blocks = startBlock.nextUntil(endBlock).andSelf().add(endBlock);
+            }
             for (var i = 0, l = blocks.length; i < l; i++) {
-                callback(blocks);
+                callback(blocks[i]);
             }
         }
     });
 }
 
-function selectionToggleBlockClasses(classes, limitElement, blockContainer) {
+/**
+ * Add or removes a set of classes to the closest block elements in a selection.
+ * If the `limitElement` is closer than a block element, then a new
+ * `blockContainer` element wrapped around the selection.
+ *
+ * If any block in the selected text has not got the class applied to it, then
+ * the class will be applied to all blocks.
+ *
+ *
+ * @param {string[]} addClasses
+ * @param {string[]} removeClasses
+ * @param {type} limitElement
+ * @param {type} blockContainer
+ * @returns {undefined}
+ */
+function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, blockContainer) {
     // <strict>
-    if (!$.isArray(classes)) {
+    if (!$.isArray(addClasses)) {
         handleError('Paramter 1 to selectionToggleBlockClasses is expected to be an array of classes');
+        return;
     }
-    if (!limitElement) {
-        handleError('Paramter 2 to selectionToggleBlockClasses is expected a jQuery element');
+    if (!$.isArray(removeClasses)) {
+        handleError('Paramter 2 to selectionToggleBlockClasses is expected to be an array of classes');
+        return;
+    }
+    if (!(limitElement instanceof jQuery)) {
+        handleError('Paramter 3 to selectionToggleBlockClasses is expected a jQuery element');
+        return;
+    }
+    if (typeof blockContainer !== 'undefined' && typeof blockContainer !== 'string') {
+        handleError('Paramter 4 to selectionToggleBlockClasses is expected be undefined or a string');
+        return;
     }
     // </strict>
-    selectionEachBlock(function(blocks) {
-        // Apply the class to the parent
-        for (var i = 0, l = classes.length; i < l; i++) {
-            blocks.toggleClass(classes[i]);
+
+    var apply = false,
+        blocks = new jQuery();
+
+    selectionEachBlock(function(block) {
+        blocks.push(block);
+        if (!apply) {
+            for (var i = 0, l = addClasses.length; i < l; i++) {
+                if (!$(block).hasClass(addClasses[i])) {
+                    apply = true;
+                }
+            }
         }
-    }, limitElement, blockContainer);   
+    }, limitElement, blockContainer);
+
+    if (apply) {
+        $(blocks).addClass(addClasses.join(' '));
+    } else {
+        $(blocks).removeClass(addClasses.join(' '));
+    }
+    $(blocks).removeClass(removeClasses.join(' '));
 }
 
 /**
