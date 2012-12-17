@@ -43,7 +43,7 @@ Raptor.registerUi(new Button({
                     {
                         text: _('embedDialogCancelButton'),
                         click: function() {
-                            ui.hide();
+                            aDialogClose(embedDialog);
                         },
                         icons: {
                             primary: 'ui-icon-circle-close'
