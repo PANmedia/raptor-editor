@@ -554,5 +554,57 @@
             }
         });
     </script>
+    
+    <div class="test-11">
+        <h1>Create Link Button 11: Empty Link</h1>
+        <div class="test-input">
+            <div class="editible">
+                <ul>
+                    <li>Item 1</li>
+                    <li>{Item 2}</li>
+                    <li>Item 3</li>
+                    <li>Item 4</li>
+                </ul>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <ul>
+                    <li>Item 1</li>
+                    <li>{Item 2}</li>
+                    <li>Item 3</li>
+                    <li>Item 4</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-11', function(input) {
+            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
+            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
+            
+            createLinkButton.trigger('click');
+            
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 1;
+            
+            var linkInput = document.getElementById('raptor-external-href');
+            
+            linkInput.value = ""; 
+            
+            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
+            console.log(insertLinkButton);    
+            insertLinkButton.trigger('click');
+            
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!createLinkButton.is('.ui-state-highlight')){
+                throw new Error('Create link button is not active');
+            }
+            if (!removeLinkButton.is('.ui-state-highlight')){
+                throw new Error('Remove link button is not active');
+            }
+        });
+    </script>
 </body>
 </html>
