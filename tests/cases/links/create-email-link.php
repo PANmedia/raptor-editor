@@ -40,9 +40,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -91,9 +94,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -142,9 +148,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -199,9 +208,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -255,9 +267,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -310,9 +325,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -365,9 +383,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -408,9 +429,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -457,9 +481,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
@@ -506,9 +533,12 @@
             
             createLinkButton.trigger('click');
             
+            var linkType = $('.raptor-ui-link-create-menu');
+            linkType.value = 2;
+            
             var linkInput = document.getElementById('raptor-external-href');
             
-            linkInput.value = "."; 
+            linkInput.value = "test@test.com"; 
             
             var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
             console.log(insertLinkButton);    
