@@ -39,15 +39,18 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
+            
         });
     </script>
 
@@ -82,13 +85,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
@@ -125,13 +130,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
@@ -171,13 +178,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
@@ -216,13 +225,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
@@ -262,13 +273,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
@@ -307,13 +320,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
@@ -352,13 +367,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu').trigger('click');
+            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
             var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
             okButton.trigger('click');
-            
-            var tagMenuValue = (input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu')).firstChild.data;
             rangesToTokens(rangy.getSelection().getAllRanges());
-            if (!tagMenuValue.is('Paragraph')){
+            
+            var tagMenuValue = tagMenu.toString();
+            
+            if (!tagMenuValue === 'Paragraph'){
                 throw new Error('Button is not active');
             }
         });
