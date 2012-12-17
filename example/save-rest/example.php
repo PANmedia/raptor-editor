@@ -28,12 +28,12 @@
         <link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/redmond/jquery-ui.css" />
         <script src="../../src/dependencies/jquery.js"></script>
         <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/rails.js"></script>
+        <script src="../../packages/raptor.rails.js"></script>
     <?php elseif ($type === 'include'): ?>
         <?php $uri = '../../src/'; include '../../src/include.php'; ?>
     <?php endif; ?>
     <script type="text/javascript">
-        jQuery(function($) {
+        function initRaptor() {
             $('.editable').raptor({
                 urlPrefix: '../../src/',
                 ui: {
@@ -53,7 +53,8 @@
                     }
                 }
             });
-        });
+        }
+        jQuery(initRaptor);
     </script>
 </head>
 <body>

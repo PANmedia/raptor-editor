@@ -39,7 +39,7 @@
                 ui: {
                     dockToScreen: {
                         docked: true
-                    }
+                    },
                     classMenu: {
                         classes: {
                             'Blue background': 'cms-blue-bg',
