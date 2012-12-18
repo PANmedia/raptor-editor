@@ -36,11 +36,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -74,11 +74,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -112,11 +112,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -155,11 +155,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -198,11 +198,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -231,7 +231,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -239,11 +239,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
@@ -269,7 +269,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {hendrerit} velit nec tristique.
+                    malesuada {}hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -280,11 +280,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
-            strikeButton.trigger('click');
+            var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
+            italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
             
-            if (strikeButton.is('.ui-state-highlight')){
+            if (italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
         });
