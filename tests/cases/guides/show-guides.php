@@ -35,8 +35,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides').trigger('click');
+            var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
+            guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!guidesButton.is('.ui-state-highlight')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
     
@@ -93,8 +98,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides').trigger('click');
+            var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
+            guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!guidesButton.is('.ui-state-highlight')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
     
@@ -131,8 +141,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides').trigger('click');
+            var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
+            guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
+            
+            if (!guidesButton.is('.ui-state-highlight')){
+                throw new Error('Button is not active');
+            }
         });
     </script>
     
