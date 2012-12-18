@@ -19,6 +19,7 @@
 .raptor-ui-embed-panel-tabs {
     @include display-box();
     @include box-orient(vertical);
+    @include box-flex(1);
 
     height: 100%;
     width: 100%;
@@ -39,4 +40,13 @@
             @include box-flex(4);
         }
     }
+}
+
+.raptor-ui-embed-dialog .ui-dialog-content {
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: box !important;
+    width: 100% !important;
+    overflow: hidden;
+    @include box-sizing(border-box);
 }
