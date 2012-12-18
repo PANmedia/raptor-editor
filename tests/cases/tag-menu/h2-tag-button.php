@@ -25,7 +25,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis 
+                    convallis
                 </p><h2>
                     {dui id erat pellentesque et rhoncus}
                 </h2><p>
@@ -41,12 +41,12 @@
         testEditor('.test-1', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
@@ -69,10 +69,10 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur 
+                    Lorem ipsum dolor sit amet, consectetur
                 </p><h2>
                     {adipiscing}
-                </h2><p> 
+                </h2><p>
                     elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -86,12 +86,12 @@
         testEditor('.test-2', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
@@ -131,12 +131,12 @@
         testEditor('.test-3', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
@@ -162,7 +162,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui 
+                    convallis dui
                 </p><h2>
                     {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
@@ -179,12 +179,12 @@
         testEditor('.test-4', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
@@ -226,12 +226,12 @@
         testEditor('.test-5', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
@@ -274,12 +274,12 @@
         testEditor('.test-6', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
@@ -321,18 +321,18 @@
         testEditor('.test-7', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-8">
         <h1>H2 Tag Button 8: Empty Selection at the Beginning of a Word in a Header H1</h1>
         <div class="test-input">
@@ -368,12 +368,12 @@
         testEditor('.test-8', function(input) {
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             tagMenu.trigger('click');
-            var okButton = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
-            okButton.trigger('click');
+            var h2Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h2]');
+            h2Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2'){
                 throw new Error('Button is not active');
             }

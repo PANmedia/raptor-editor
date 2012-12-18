@@ -28,7 +28,9 @@
                     convallis
                 </p>
                 <blockquote>
-                    <p>{dui id erat pellentesque et rhoncus}</p>
+                    <p>
+                        {dui id erat pellentesque et rhoncus}
+                    </p>
                 </blockquote>
                 <p>
                     nunc semper. Suspendisse
@@ -67,7 +69,15 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <blockquote>{adipiscing}</blockquote> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur
+                </p>
+                <blockquote>
+                    <p>
+                        {adipiscing}
+                    </p>
+                </blockquote>
+                <p>
+                    elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -105,7 +115,15 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<blockquote>{lentesqu}</blockquote>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel
+                </p>
+                <blockquote>
+                    <p>
+                        {lentesqu}
+                    </p>
+                </blockquote>
+                <p>
+                    e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -145,14 +163,23 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <blockquote>{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </blockquote></p>
-                <p><blockquote>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse}</blockquote> interdum, nisi nec consectetur
+                    convallis dui
+                </p>
+                <blockquote>
+                    <p>
+                        {id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada hendrerit velit nec tristique.
+                    </p>
+                    <p>
+                        Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspendisse}
+                    </p>
+                </blockquote>
+                <p>
+                    interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
+
             </div>
         </div>
     </div>
@@ -185,16 +212,19 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p>
-                    <blockquote>{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </blockquote></p>
-                <p><blockquote>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</blockquote>
-                </p>
+                <blockquote>
+                    <p>
+                        {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada hendrerit velit nec tristique.
+                    </p>
+                    <p>
+                        Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    </p>
+                </blockquote>
+
             </div>
         </div>
     </div>
@@ -231,11 +261,15 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p><blockquote>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</blockquote>
                 </p>
+                <blockquote>
+                    <p>
+                        Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    </p>
+                </blockquote>
+
             </div>
         </div>
     </div>
@@ -268,11 +302,14 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                <blockquote>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada {}hendrerit velit nec tristique.
+                    </p>
+                </blockquote>
                 <p>
-                    <blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</blockquote>
-                </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -282,6 +319,53 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
+            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            blockquoteButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!blockquoteButton.is('.ui-state-highlight')){
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-8">
+        <h1>Block Quote Button 8: Text Selection With an image</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem {ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p>
+                    <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
+                <p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <blockquote>
+                    <p>
+                        Lorem {ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada hendrerit velit nec tristique.
+                    </p>
+                    <p><img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</p>
+                </blockquote>
+                <p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-8', function(input) {
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
