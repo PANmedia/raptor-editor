@@ -202,7 +202,7 @@ function elementWrapInner(element, tag) {
     for (var i = 0, l = element.length; i < l; i++) {
         var wrapper = $('<' + tag + '/>').html($(element[i]).html());
         element.html(wrapper);
-        result.push(wrapper);
+        result.push(wrapper[0]);
     }
     selectionRestore();
     return result;
@@ -249,7 +249,7 @@ function elementPositionUnder(element, under) {
     var pos = $(under).offset(),
         height = $(under).outerHeight();
     $(element).css({
-        top: (pos.top + height) + 'px',
+        top: (pos.top + height - $(window).scrollTop()) + 'px',
         left: pos.left + 'px'
     });
 }
@@ -273,11 +273,11 @@ function elementClosestBlock(element, limitElement) {
     }
     // </strict>
     while (element.length > 0
-            && element[0] !== limitElement[0] 
+            && element[0] !== limitElement[0]
             && (element[0].nodeType === 3 || element.css('display') === 'inline')) {
         element = element.parent();
     }
-    if (parent[0] === limitElement[0]) {
+    if (element[0] === limitElement[0]) {
         return null;
     }
     return element;
