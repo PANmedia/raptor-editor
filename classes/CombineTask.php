@@ -53,7 +53,7 @@ class CombineTask extends Task {
             if (pathinfo($file, PATHINFO_EXTENSION) === 'css') {
                 fwrite($cssOutputHandle, $data);
             } elseif (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
-                if (basename($file) === 'jquery.ui.editor.init.js' && $this->wrapper) {
+                if (basename($file) === 'init.js' && $this->wrapper) {
                     $wrapper = true;
                     fwrite($jsOutputHandle, $this->getWrapperTop());
                 } elseif (basename($file) === 'jquery.js' && $this->noConflict) {
