@@ -25,7 +25,14 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <blockquote>{dui id erat pellentesque et rhoncus}</blockquote> nunc semper. Suspendisse
+                    convallis 
+                </p>
+                <blockquote>
+                    <p>
+                        {dui id erat pellentesque et rhoncus}
+                    </p>
+                </blockquote>
+                <p> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -61,7 +68,15 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <blockquote>{adipiscing}</blockquote> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur 
+                </p>
+                <blockquote>
+                    <p>
+                        {adipiscing}
+                    </p>
+                </blockquote> 
+                <p>
+                    elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -99,7 +114,15 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<blockquote>{lentesqu}</blockquote>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel
+                </p>
+                <blockquote>
+                    <p>
+                        {lentesqu}
+                    </p>
+                </blockquote>
+                <p>
+                    e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -139,14 +162,23 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <blockquote>{id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </blockquote></p>
-                <p><blockquote>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse}</blockquote> interdum, nisi nec consectetur
+                    convallis dui 
+                </p> 
+                <blockquote>
+                    <p>
+                        {id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada hendrerit velit nec tristique.
+                    </p>
+                    <p>
+                        Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspendisse}
+                    </p>
+                </blockquote> 
+                <p>
+                    interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
+                
             </div>
         </div>
     </div>
@@ -179,16 +211,19 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p>
-                    <blockquote>{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </blockquote></p>
-                <p><blockquote>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</blockquote>
-                </p>
+                <blockquote>
+                    <p>
+                        {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada hendrerit velit nec tristique.
+                    </p>
+                    <p>
+                        Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    </p>
+                </blockquote>
+                
             </div>
         </div>
     </div>
@@ -225,11 +260,15 @@
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p><blockquote>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</blockquote>
                 </p>
+                <blockquote>
+                    <p>
+                        Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    </p>
+                </blockquote>
+                
             </div>
         </div>
     </div>
@@ -262,11 +301,14 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                <blockquote>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                        malesuada {}hendrerit velit nec tristique.
+                    </p>
+                </blockquote>
                 <p>
-                    <blockquote>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</blockquote>
-                </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
