@@ -25,7 +25,13 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <blockquote>{dui id erat pellentesque et rhoncus}</blockquote> nunc semper. Suspendisse
+                    convallis
+                </p>
+                <blockquote>
+                    <p>{dui id erat pellentesque et rhoncus}</p>
+                </blockquote>
+                <p>
+                    nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -38,7 +44,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -75,7 +81,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -112,7 +118,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -155,7 +161,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -197,7 +203,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -238,7 +244,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -279,7 +285,7 @@
             var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
