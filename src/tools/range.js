@@ -29,20 +29,24 @@ function rangeExpandTo(range, elements) {
 
 /**
  * Replaces the content of range with the given html.
- * 
+ *
  * @param  {jQuery|String} html The html to use when replacing range.
  * @param  {RangyRange} range The range to replace.
+ * @return {Node[]} Array of new nodes inserted.
  */
 function rangeReplace(html, range) {
-    var nodes = $('<div/>').append(html)[0].childNodes;
+    var result = [],
+        nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
     if (nodes.length === undefined || nodes.length === 1) {
         range.insertNode(nodes[0].cloneNode(true));
     } else {
         $.each(nodes, function(i, node) {
-            range.insertNodeAtEnd(node.cloneNode(true));
+            result.unshift(node.cloneNode(true));
+            range.insertNodeAtEnd(result[0]);
         });
     }
+    return result;
 }
 
 function rangeEmptyTag(range) {

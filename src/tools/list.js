@@ -1,18 +1,18 @@
-function listToggle(listType, wrapper) {
+function listToggle(listType, listItem, wrapper) {
     // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
-    if ($(selectionGetElements()).is('li')
+    if ($(selectionGetElements()).is(listItem)
         && $(selectionGetElements()).parent().is(listType)) {
-        listUnwrapSelection();
+        listUnwrapSelection(listItem);
     } else {
-        listWrapSelection(listType, wrapper);
+        listWrapSelection(listType, listItem, wrapper);
     }
 };
 
-function listWrapSelection(listType, wrapper) {
+function listWrapSelection(listType, listItem, wrapper) {
     if ($.trim(selectionGetHtml()) === '') {
         selectionSelectInner(selectionGetElements());
     }
-    
+
     var validChildren = [
             'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn',
             'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd', 'label', 'map', 'object', 'p', 'q', 's',  'samp',
@@ -36,7 +36,7 @@ function listWrapSelection(listType, wrapper) {
         }
 
         // Avoid inserting blank lists
-        var listElement = $('<li>' + liContent + '</li>');
+        var listElement = $('<' + listItem + '>' + liContent + '</' + listItem + '>');
         if ($.trim(listElement.text()) !== '') {
             listElements.push(elementOuterHtml(listElement));
         }
@@ -50,20 +50,19 @@ function listWrapSelection(listType, wrapper) {
      * Replace selection if the selected element parent or the selected element is the editing element,
      * instead of splitting the editing element.
      */
+    var replacement;
     if (selectedElementParent === editingElement
-        || selectionGetElements()[0] === editingElement) {
-        selectionReplace(replacementHtml);
+            || selectionGetElements()[0] === editingElement) {
+        replacement = selectionReplace(replacementHtml);
     } else {
-        selectionReplaceWithinValidTags(replacementHtml, validParents);
+        replacement = selectionReplaceWithinValidTags(replacementHtml, validParents);
     }
 
     // Select the first list element of the inserted list
-    selectionSelectInner(selectedElementParent.find('li:first')[0]);
+    selectionSelectInner(replacement.find(listItem + ':first')[0]);
 };
 
-function listUnwrapSelection() {
-    selectionSave();
-
+function listUnwrapSelection(listItem) {
     // Array containing the html contents of each of the selected li elements.
     var listElementsContent = [];
     // Array containing the selected li elements themselves.
@@ -89,8 +88,8 @@ function listUnwrapSelection() {
     }
 
     // Boolean values used to determine whether first / last list element of the parent is selected.
-    var firstLiSelected = $(startElement).prev().length === 0;
-    var lastLiSelected = $(endElement).next().length === 0;
+    var firstLISelected = $(startElement).prev().length === 0;
+    var lastLISelected = $(endElement).next().length === 0;
 
     // The parent list container, e.g. the parent ul / ol
     var parentListContainer = $(startElement).parent();
@@ -102,13 +101,13 @@ function listUnwrapSelection() {
 
     // Wrap list element content in p tags if the list element parent's parent is not a li.
     for (var listElementsContentIndex = 0; listElementsContentIndex < listElementsContent.length; listElementsContentIndex++) {
-        if (!parentListContainer.parent().is('li')) {
+        if (!parentListContainer.parent().is(listItem)) {
             listElementsContent[listElementsContentIndex] = '<p>' + listElementsContent[listElementsContentIndex] + '</p>';
         }
     }
 
     // Every li of the list has been selected, replace the entire list
-    if (firstLiSelected && lastLiSelected) {
+    if (firstLISelected && lastLISelected) {
         parentListContainer.replaceWith(listElementsContent.join(''));
         selectionRestore();
         var selectedElement = selectionGetElements()[0];
@@ -116,13 +115,11 @@ function listUnwrapSelection() {
         return;
     }
 
-    if (firstLiSelected) {
+    if (firstLISelected) {
         $(parentListContainer).before(listElementsContent.join(''));
-    } else if (lastLiSelected) {
+    } else if (lastLISelected) {
         $(parentListContainer).after(listElementsContent.join(''));
     } else {
         selectionReplaceSplittingSelectedElement(listElementsContent.join(''));
     }
-
-    selectionRestore();
 };

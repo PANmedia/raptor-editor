@@ -24,6 +24,7 @@ loadCSS('../src/dependencies/themes/aristo/jquery-ui.css');
 loadCSS('css/case.css');
 loadCSS('../codemirror/lib/codemirror.css');
 loadCSS('../example/assets/style.css');
+loadCSS('../packages/raptor-front-end.css');
 
 loadJS('../codemirror/lib/codemirror.js');
 loadJS('../codemirror/mode/javascript/javascript.js');

@@ -56,7 +56,6 @@ src/raptor-widget.js
 src/expose.js
 
 src/components/plugin.js
-
 src/components/ui/button.js
 src/components/ui/preview-button.js
 src/components/ui/filtered-preview-button.js

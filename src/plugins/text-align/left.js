@@ -1,6 +1,6 @@
-Raptor.registerUi(new PreviewButton({
+Raptor.registerUi(new TextAlignButton({
     name: 'alignLeft',
-    action: function() {
-        selectionToggleBlockClasses(this.options.cssPrefix + 'left', this.raptor.getElement());
+    getClass: function() {
+        return this.options.cssPrefix + 'left'
     }
 }));

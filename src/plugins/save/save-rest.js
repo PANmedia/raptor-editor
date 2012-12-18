@@ -64,7 +64,7 @@ SaveRestPlugin.prototype.always = function() {
                         raptor.disableEditing();
                         raptor.hideLayout();
                     });
-                }
+                }.bind(this)
             });
         }
     }

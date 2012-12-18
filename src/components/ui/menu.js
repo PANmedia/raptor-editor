@@ -37,11 +37,11 @@ Menu.prototype.getMenu = function() {
             .html(this.menuContent)
             .css('position', 'fixed')
             .hide()
-            .appendTo('body')
             .mousedown(function(event) {
                 // Prevent losing the selection on the editor target
                 event.preventDefault();
-            });
+            })
+            .appendTo('body');
         // Click off close event
         $('html').click(function(event) {
             if (this.getButton().getButton().has(event.target).length === 0) {

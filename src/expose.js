@@ -1,14 +1,26 @@
 
-$.extend($.ui.raptor, Raptor, {
-
-    // <expose>
+// <expose>
+$.extend(Raptor, {
     Button: Button,
     CSSClassApplierButton: CSSClassApplierButton,
     FilteredPreviewButton: FilteredPreviewButton,
     Menu: Menu,
+    MenuButton: MenuButton,
     PreviewButton: PreviewButton,
+    PreviewToggleButton: PreviewToggleButton,
     RaptorPlugin: RaptorPlugin,
     SelectMenu: SelectMenu,
+    aButton: aButton,
+    aButtonActive: aButtonActive,
+    aButtonDisable: aButtonDisable,
+    aButtonEnable: aButtonEnable,
+    aButtonInactive: aButtonInactive,
+    aButtonSetIcon: aButtonSetIcon,
+    aButtonSetLabel: aButtonSetLabel,
+    aDialog: aDialog,
+    aDialogClose: aDialogClose,
+    aDialogOpen: aDialogOpen,
+    aMenu: aMenu,
     actionApply: actionApply,
     actionPreview: actionPreview,
     actionPreviewRestore: actionPreviewRestore,
@@ -20,6 +32,7 @@ $.extend($.ui.raptor, Raptor, {
     dockToElement: dockToElement,
     dockToScreen: dockToScreen,
     elementBringToTop: elementBringToTop,
+    elementClosestBlock: elementClosestBlock,
     elementDefaultDisplay: elementDefaultDisplay,
     elementDetachedManip: elementDetachedManip,
     elementGetAttributes: elementGetAttributes,
@@ -58,6 +71,7 @@ $.extend($.ui.raptor, Raptor, {
     selectionClearFormatting: selectionClearFormatting,
     selectionConstrain: selectionConstrain,
     selectionDestroy: selectionDestroy,
+    selectionEachBlock: selectionEachBlock,
     selectionEachRange: selectionEachRange,
     selectionExists: selectionExists,
     selectionGetElement: selectionGetElement,
@@ -110,6 +124,6 @@ $.extend($.ui.raptor, Raptor, {
     typeIsNumber: typeIsNumber,
     undockFromElement: undockFromElement,
     undockFromScreen: undockFromScreen
-    // </expose>
-
 });
+window.Raptor = Raptor;
+// </expose>

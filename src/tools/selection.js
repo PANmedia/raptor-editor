@@ -71,9 +71,11 @@ function selectionSet(mixed) {
  * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.
  */
 function selectionReplace(html, selection) {
+    var result = [];
     selectionEachRange(function(range) {
-        rangeReplace(html, range);
+        result.concat(rangeReplace(html, range));
     }, selection, this);
+    return result;
 }
 
 /**
@@ -328,10 +330,13 @@ function selectionReplaceSplittingSelectedElement(html, selection) {
 
     // Replace the start element's html with the content that was not selected, append html & end element's html
     var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
-    replacement += elementOuterHtml($(html));
+    replacement += elementOuterHtml($(html).attr('data-replacement', true));
     replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
 
-    $(selectedElement).replaceWith($(replacement));
+    replacement = $(replacement);
+
+    $(selectedElement).replaceWith(replacement);
+    return replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
 }
 
 /**
@@ -357,12 +362,11 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
 
     // The html may be inserted within the selected element & selection start / end.
     if (selectedElementValid && startElementValid && endElementValid) {
-        selectionReplace(html);
-        return;
+        return selectionReplace(html);
     }
 
     // Context is invalid. Split containing element and insert list in between.
-    selectionReplaceSplittingSelectedElement(html, selection);
+    return selectionReplaceSplittingSelectedElement(html, selection);
 }
 
 /**
@@ -480,12 +484,12 @@ function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, bl
         }
     }, limitElement, blockContainer);
 
+    $(blocks).removeClass(removeClasses.join(' '));
     if (apply) {
         $(blocks).addClass(addClasses.join(' '));
     } else {
         $(blocks).removeClass(addClasses.join(' '));
     }
-    $(blocks).removeClass(removeClasses.join(' '));
 }
 
 /**
