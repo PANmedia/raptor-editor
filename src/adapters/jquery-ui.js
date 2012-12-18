@@ -13,12 +13,19 @@ function aButtonSetIcon(element, icon) {
     });
 }
 
+function aButtonEnable(element) {
+    return $(element).button('option', 'disabled', false);
+}
+
 function aButtonDisable(element) {
     return $(element).button('option', 'disabled', true);
 }
+function aButtonActive(element) {
+    return $(element).addClass('ui-state-highlight');
+}
 
-function aButtonEnable(element) {
-    return $(element).button('option', 'disabled', false);
+function aButtonInactive(element) {
+    return $(element).removeClass('ui-state-highlight');
 }
 
 function aMenu(element, options) {
