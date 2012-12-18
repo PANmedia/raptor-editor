@@ -28,7 +28,7 @@ Button.prototype.getButton = function() {
         });
     }
     return this.button;
-}
+};
 
 Button.prototype.getTitle = function() {
     return this.title || _(this.name + 'Title');
