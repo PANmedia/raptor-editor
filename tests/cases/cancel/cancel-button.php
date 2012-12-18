@@ -375,6 +375,74 @@
             okButton.trigger('click');
         });
     </script>
+    
+    <div class="test-11">
+        <h1>Cancel Formatting Button 11: Guides Disappear</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p> 
+                    {Some text here.
+                </p>
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
+                    <div style="clear: both">
+                    </div>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p> 
+                    {Some text here.
+                </p>
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
+                    <div style="clear: both">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-11', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
+            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+            okButton.trigger('click');
+        });
+    </script>
+    
+    <div class="test-12">
+        <h1>Cancel Formatting Button 12: Spacer Div Disappears</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p> 
+                    {Some text here.
+                </p>
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
+                    <div style="clear: both">
+                    </div>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p> 
+                    {Some text here.
+                </p>
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
+                    <div style="clear: both">
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-12', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-screen').trigger('click');
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
+            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
+            okButton.trigger('click');
+            
+            if (input.find('.spacer')) {
+                    throw new Error('Spacer still displayed');
+                }
+        });
+    </script>
  
 </body>
 </html>
