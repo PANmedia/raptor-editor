@@ -123,6 +123,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/text-align/text-align-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/left.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/right.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/center.js"></script>
