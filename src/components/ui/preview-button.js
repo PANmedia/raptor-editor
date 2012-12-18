@@ -1,4 +1,5 @@
 function PreviewButton(options) {
+    this.previewing = false;
     Button.call(this, options);
 }
 
@@ -15,14 +16,25 @@ PreviewButton.prototype.getButton = function() {
 
 PreviewButton.prototype.mouseEnter = function() {
     if (this.canPreview()) {
+        this.previewing = true;
         this.raptor.actionPreview(this.action.bind(this));
     }
 };
 
 PreviewButton.prototype.mouseLeave = function() {
     this.raptor.actionPreviewRestore();
+    this.previewing = false;
+};
+
+PreviewButton.prototype.click = function() {
+    this.previewing = false;
+    return Button.prototype.click.apply(this, arguments);
 };
 
 PreviewButton.prototype.canPreview = function() {
     return this.preview;
+};
+
+PreviewButton.prototype.isPreviewing = function() {
+    return this.previewing;
 };
