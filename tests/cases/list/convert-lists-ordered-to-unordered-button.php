@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -14,7 +14,7 @@
             <div class="editible">
                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis 
+                    convallis
                 </p>
                 <ol>
                     <li>{dui id erat pellentesque et rhoncus}</li>
@@ -31,7 +31,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis 
+                    convallis
                 </p>
                 <ul>
                     <li>{dui id erat pellentesque et rhoncus}</li>
@@ -51,13 +51,13 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Unordered List 2: Create an unordered list from an ordered list using single word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                   Lorem ipsum dolor sit amet,  
+                   Lorem ipsum dolor sit amet,
                 </p>
                 <ol>
                     <li>{consectetur}</li>
@@ -74,7 +74,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                   Lorem ipsum dolor sit amet,  
+                   Lorem ipsum dolor sit amet,
                 </p>
                 <ul>
                     <li>{consectetur}</li>
@@ -95,14 +95,14 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
-    
+
+
     <div class="test-3">
         <h1>Unordered List 3: Create an unordered list from an ordered list using empty selection before a word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                   Lorem ipsum dolor sit amet,  
+                   Lorem ipsum dolor sit amet,
                 </p>
                 <ol>
                     <li>{consectetur}</li>
@@ -134,7 +134,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-4">
         <h1>Unordered List 4: Create an unordered list from an ordered list using empty selection inside a word</h1>
         <div class="test-input">
@@ -166,7 +166,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
        <h1>Unordered List 5: Create an unordered list with multiple items selection from an ordered list using part word to part word</h1>
         <div class="test-input">
@@ -200,7 +200,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Unordered List 6: Create an unordered list with multiple items from an ordered list</h1>
         <div class="test-input">
@@ -232,7 +232,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Unordered List 7: Create an unordered list with multiple heading items from an ordered list</h1>
         <div class="test-input">

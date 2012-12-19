@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -250,7 +250,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-8">
         <h1>Clear Formatting Button 8: Alignment</h1>
         <div class="test-input">
@@ -286,7 +286,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-9">
         <h1>Clear Formatting Button 9: Two Different Alignments</h1>
         <div class="test-input">
@@ -322,7 +322,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-10">
         <h1>Clear Formatting Button 10: Alignment and Other Formatting</h1>
         <div class="test-input">
@@ -358,7 +358,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-11">
         <h1>Clear Formatting Button 11: Image Float</h1>
         <div class="test-input">
@@ -382,13 +382,13 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-12">
         <h1>Clear Formatting Button 12: Image Float and text and alignment</h1>
         <div class="test-input">
             <div class="editible">
-                <p class="cms-right"> 
-                    {Some text that can be <strong class="cms-bold">bold</strong> and <u class="cms-underline">underlined</u> and <em class="cms-italic">italic</em> as 
+                <p class="cms-right">
+                    {Some text that can be <strong class="cms-bold">bold</strong> and <u class="cms-underline">underlined</u> and <em class="cms-italic">italic</em> as
                     well as being right aligned before clearing the formatting.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right"  />}
@@ -398,8 +398,8 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p> 
-                    {Some text that can be bold and underlined and italic as 
+                <p>
+                    {Some text that can be bold and underlined and italic as
                     well as being right aligned before clearing the formatting.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}

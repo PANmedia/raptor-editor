@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <div class="test-1">
@@ -58,7 +58,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Merge Cells 2 - Across a Column </h1>
         <div class="test-input">
@@ -93,8 +93,8 @@
                     <tr>
                         <td>Cell 0,1</td>
                         <td colspan="2">
-                            {Cell 1,1     Cell 2,1}<br/> 
-                        </td> 
+                            {Cell 1,1     Cell 2,1}<br/>
+                        </td>
                     </tr>
                     <tr>
                         <td>Cell 0,2</td>
@@ -111,7 +111,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Merge Cells 3 - Across a Row</h1>
         <div class="test-input">

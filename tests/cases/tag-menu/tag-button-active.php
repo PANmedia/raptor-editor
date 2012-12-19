@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -36,10 +36,10 @@
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'N/A') {
                 throw new Error('Button is not active');
             }
@@ -74,16 +74,16 @@
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            var tagMenuValue = tagMenu.toString();            
-            
+            var tagMenuValue = tagMenu.toString();
+
             if (!tagMenuValue === 'Paragraph') {
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Heading 1 Tag Button 1: Active in Paragraph Word Group Selection</h1>
         <div class="test-input">
@@ -112,16 +112,16 @@
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Headung 1') {
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-4">
         <h1>Heading 2 Tag Button 1: Active in Paragraph Word Group Selection</h1>
         <div class="test-input">
@@ -150,16 +150,16 @@
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 2') {
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Heading 3 Tag Button 1: Active in Paragraph Word Group Selection</h1>
         <div class="test-input">
@@ -188,10 +188,10 @@
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
-            
+
             if (!tagMenuValue === 'Heading 3') {
                 throw new Error('Button is not active');
             }

@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -25,7 +25,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis 
+                    convallis
                 </p>
                 <ol>
                     <li>{dui id erat pellentesque et rhoncus}</li>
@@ -45,7 +45,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Ordered List 2: Create an ordered list from single word</h1>
         <div class="test-input">
@@ -62,7 +62,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                   Lorem ipsum dolor sit amet,  
+                   Lorem ipsum dolor sit amet,
                 </p>
                 <ol>
                     <li>{consectetur}</li>
@@ -83,8 +83,8 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
-    
+
+
     <div class="test-3">
         <h1>Ordered List 3: Create an ordered list from empty selection before a word</h1>
         <div class="test-input">
@@ -116,7 +116,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-4">
         <h1>Ordered List 4: Create an ordered list from empty selection inside a word</h1>
         <div class="test-input">
@@ -148,7 +148,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
        <h1>Ordered List 5: Create an ordered list with multiple items selection from part word to part word</h1>
         <div class="test-input">
@@ -178,7 +178,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Ordered List 6: Create an ordered list with multiple items</h1>
         <div class="test-input">
@@ -209,7 +209,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Ordered List 7: Create an ordered list with multiple heading items</h1>
         <div class="test-input">
@@ -240,7 +240,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-8">
         <h1>Ordered List 8: Toggle bottom list of two lists and check selection remains on bottom list</h1>
         <div class="test-input">
@@ -254,11 +254,11 @@
         <div class="test-expected">
             <div class="editible">
                 <ol>
-                    <li><h3>Item 1</h3></li> 
+                    <li><h3>Item 1</h3></li>
                 </ol>
                 <ol>
                     <li><h2>{Item 2}</h2></li>
-                </ol> 
+                </ol>
             </div>
         </div>
     </div>
@@ -267,7 +267,7 @@
             var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
 //            if (!unorderedListButton.is('.ui-state-highlight')){
 //                throw new Error('Button is not active');
 //            }
