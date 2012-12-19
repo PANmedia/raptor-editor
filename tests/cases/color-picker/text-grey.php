@@ -33,17 +33,22 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            console.log(grey);
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 
     <div class="test-2">
         <h1>Text Grey Button 2: Single Word Selection</h1>
@@ -70,17 +75,21 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 
     <div class="test-3">
         <h1>Text Grey Button 3: Part Word Selection</h1>
@@ -107,17 +116,21 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 
      <div class="test-4">
         <h1>Text Grey Button 4: Multi-Paragraph Selection</h1>
@@ -150,17 +163,21 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 
     <div class="test-5">
         <h1>Text Grey Button 5: Paragraph Selection</h1>
@@ -192,17 +209,21 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 
     <div class="test-6">
         <h1>Text Grey Button 6: Empty Selection in Word</h1>
@@ -233,17 +254,21 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 
     <div class="test-7">
         <h1>Text Grey Button 7: Empty Selection at the Beginning of a Word</h1>
@@ -274,16 +299,20 @@
             </div>
         </div>
     </div>
-<!--    <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var boldButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold');
-            boldButton.trigger('click');
+            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            colorMenuBasic.trigger('click');
+            var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
+            grey.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!boldButton.is('.ui-state-highlight')){
+
+            var colorMenuBasicValue = colorMenuBasic.toString();
+
+            if (!colorMenuBasicValue === 'Grey'){
                 throw new Error('Button is not active');
             }
         });
-    </script>-->
+    </script>
 </body>
 </html>
