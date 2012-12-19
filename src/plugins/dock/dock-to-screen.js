@@ -25,16 +25,17 @@ Raptor.registerUi(new Button({
     },
 
     dock: function() {
-        layout = this.raptor.getLayout().getElement();
+        var layout = this.raptor.getLayout().getElement();
         this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layout);
         this.dockState = dockToScreen(layout, {
             position: this.options.position,
-            spacer: this.options.spacer
+            spacer: this.options.spacer,
+            under: this.options.under
         });
     },
 
     undock: function() {
-        layout = undockFromScreen(this.dockState);
+        var layout = undockFromScreen(this.dockState);
         this.marker.replaceWith(layout);
         this.dockState = null;
     },

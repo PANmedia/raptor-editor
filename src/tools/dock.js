@@ -10,30 +10,30 @@ function dockToScreen(element, options) {
     if (options.position === 'top') {
         position = {
             position: 'fixed',
-            top: 0,
+            top: options.under ? $(options.under).outerHeight() : 0,
             left: 0,
             right: 0
         };
         if (options.spacer) {
-            spacer.prependTo('body');
+            spacer.insertAfter(options.under);
         }
     } else if (options.position === 'topLeft') {
         position = {
             position: 'fixed',
-            top: 0,
+            top: options.under ? $(options.under).outerHeight() : 0,
             left: 0
         };
         if (options.spacer) {
-            spacer.prependTo('body');
+            spacer.insertAfter(options.under);
         }
     } else if (options.position === 'topRight') {
         position = {
             position: 'fixed',
-            top: 0,
+            top: options.under ? $(options.under).outerHeight() : 0,
             right: 0
         };
         if (options.spacer) {
-            spacer.prependTo('body');
+            spacer.insertAfter(options.under);
         }
     } else if (options.position === 'bottom') {
         position = {
