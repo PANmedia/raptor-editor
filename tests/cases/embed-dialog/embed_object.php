@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible"> 
+            <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <video src="http://www.youtube.com/watch?v=KQbySwxU8L4" controls></video>{} nunc semper. Suspendisse
@@ -37,19 +37,19 @@
         testEditor('.test-1', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Embed Object Button 2: Single Word Selection</h1>
         <div class="test-input">
@@ -79,15 +79,15 @@
         testEditor('.test-2', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
         });
@@ -122,15 +122,15 @@
         testEditor('.test-3', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -158,7 +158,7 @@
                     convallis dui
                 </p>
                     <video src="http://www.youtube.com/watch?v=KQbySwxU8L4" controls></video>{}
-                <p> 
+                <p>
                     interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -169,15 +169,15 @@
         testEditor('.test-4', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -209,15 +209,15 @@
         testEditor('.test-5', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -255,15 +255,15 @@
         testEditor('.test-6', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -301,15 +301,15 @@
         testEditor('.test-7', function(input) {
             var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
             embedButton.trigger('click');
-            
+
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
-            
+
             var textarea = $(document.querySelector('.raptor-ui-embed-tab > textarea'));
             textarea.value = video;
-            
-            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');   
+
+            var embedObjectButton = $('.raptor-ui-embed-dialog button:contains(Embed Object)');
             embedObjectButton.trigger('click');
-            
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>

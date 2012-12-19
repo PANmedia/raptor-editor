@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -12,7 +12,7 @@
         <h1>Right Float Button 1: Float Image - No Text</h1>
         <div class="test-input">
             <div class="editible">
-                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />} 
+                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                     <div style="clear: both">
                     </div>
             </div>
@@ -30,13 +30,13 @@
             var floatRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right');
             floatRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!floatRightButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Right Float Button 2: Float Image With Text </h1>
         <div class="test-input">
@@ -69,13 +69,13 @@
             var floatRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right');
             floatRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!floatRightButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
-    
+
+
 </body>
 </html>

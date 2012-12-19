@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <div class="test-1">
@@ -55,7 +55,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Remove Column 2</h1>
         <div class="test-input">

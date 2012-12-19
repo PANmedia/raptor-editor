@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -38,7 +38,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -75,7 +75,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -112,7 +112,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -154,7 +154,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -197,7 +197,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -241,7 +241,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -284,7 +284,7 @@
             var italicButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic');
             italicButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!italicButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }

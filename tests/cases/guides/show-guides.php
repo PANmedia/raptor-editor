@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -38,13 +38,13 @@
             var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
             guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!guidesButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
      <div class="test-2">
         <h1>Show Guides 2: Single Paragraph with multiple attributes</h1>
         <div class="test-input">
@@ -54,7 +54,7 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat
                 </p>
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" /> 
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p> pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada </p><blockquote>hendrerit} velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum,</blockquote>
@@ -62,8 +62,8 @@
                     nisi nec consectetur
                     </p>
                     <ol>
-                        <li>pulvinar, lorem</li> 
-                        <li>augue ornare felis,</li> 
+                        <li>pulvinar, lorem</li>
+                        <li>augue ornare felis,</li>
                     </ol>
                     <ul>
                         <li>vel lacinia</li>
@@ -78,7 +78,7 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat
                 </p>
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" /> 
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p> pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada </p><blockquote>hendrerit} velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum,</blockquote>
@@ -86,8 +86,8 @@
                     nisi nec consectetur
                     </p>
                     <ol>
-                        <li>pulvinar, lorem</li> 
-                        <li>augue ornare felis,</li> 
+                        <li>pulvinar, lorem</li>
+                        <li>augue ornare felis,</li>
                     </ol>
                     <ul>
                         <li>vel lacinia</li>
@@ -101,15 +101,15 @@
             var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
             guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!guidesButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
-    
-    
+
+
+
     <div class="test-3">
         <h1>Show Guides 3: Multi Paragraph</h1>
         <div class="test-input">
@@ -117,7 +117,7 @@
                 <p>
                     {Lorem ipsum dolor s<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />it amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit} velit nec tristique. 
+                    malesuada hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at<hr>
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -130,7 +130,7 @@
                 <p>
                     {Lorem ipsum dolor s<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />it amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit} velit nec tristique. 
+                    malesuada hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at<hr>
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -144,12 +144,12 @@
             var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
             guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!guidesButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
 </body>
 </html>
