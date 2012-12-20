@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -38,7 +38,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
@@ -55,7 +55,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    
+
                 </p>
             </div>
         </div>
@@ -76,7 +76,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
@@ -113,7 +113,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
@@ -156,7 +156,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
@@ -198,7 +198,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
@@ -239,7 +239,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }
@@ -280,7 +280,7 @@
             var supButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-sup');
             supButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (supButton.is('.ui-state-highlight')){
                 throw new Error('Button is active');
             }

@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -14,7 +14,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis 
+                    convallis
                 </p>
                 <ul>
                     <li>{dui id erat pellentesque et rhoncus}</li>
@@ -49,13 +49,13 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Reverse Unordered List 2: Reverse an unordered list from single word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                   Lorem ipsum dolor sit amet,  
+                   Lorem ipsum dolor sit amet,
                 </p>
                 <ul>
                     <li>{consectetur}</li>
@@ -81,7 +81,7 @@
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p> 
+                </p>
             </div>
         </div>
     </div>
@@ -91,8 +91,8 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
-    
+
+
     <div class="test-3">
         <h1>Reverse Unordered List 3: Reverse an unordered list from empty selection before a word</h1>
         <div class="test-input">
@@ -124,7 +124,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-4">
         <h1>Reverse Unordered List 4: Reverse an unordered list from empty selection inside a word</h1>
         <div class="test-input">
@@ -156,7 +156,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-5">
        <h1>Reverse Unordered List 5: Reverse an unordered list with multiple items selection from part word to part word</h1>
         <div class="test-input">
@@ -195,7 +195,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-6">
         <h1>Reverse Unordered List 6: Reverse an unordered list with multiple items</h1>
         <div class="test-input">
@@ -216,7 +216,7 @@
                     <p>Item 2</p>
                     <p>Item 3</p>
                     <p>Item 4</p>
-                } 
+                }
             </div>
         </div>
     </div>
@@ -226,7 +226,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Reverse Unordered List 7: Reverse an unordered list with multiple heading items</h1>
         <div class="test-input">

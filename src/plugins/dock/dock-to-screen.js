@@ -16,18 +16,23 @@ Raptor.registerUi(new Button({
         if (typeof docked === 'undefined') {
             docked = this.options.docked;
         } else {
-            docked = false
+            docked = false;
         }
         if (docked) {
-            this.dock();
+            this.raptor.bind('layoutShow', function() {
+                this.dock();
+            }.bind(this));
         }
         return Button.prototype.init.apply(this, arguments);
     },
 
     dock: function() {
-        var layout = this.raptor.getLayout().getElement();
-        this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layout);
-        this.dockState = dockToScreen(layout, {
+        var layout = this.raptor.getLayout(),
+            layoutElement = layout.getElement();
+        this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layoutElement);
+        layoutElement.addClass(this.options.baseClass + '-docked');
+        layout.disableDragging();
+        this.dockState = dockToScreen(layoutElement, {
             position: this.options.position,
             spacer: this.options.spacer,
             under: this.options.under
@@ -35,13 +40,13 @@ Raptor.registerUi(new Button({
     },
 
     undock: function() {
-        var layout = undockFromScreen(this.dockState);
-        this.marker.replaceWith(layout);
+        var layoutElement = undockFromScreen(this.dockState);
+        this.marker.replaceWith(layoutElement);
+        this.raptor.getLayout().enableDragging();
         this.dockState = null;
     },
 
     action: function() {
-        var layout;
         if (this.dockState) {
             this.undock();
         } else {

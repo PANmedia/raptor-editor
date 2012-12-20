@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+     <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -38,7 +38,7 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -75,7 +75,7 @@
            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -112,7 +112,7 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -153,7 +153,7 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -194,7 +194,7 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -235,7 +235,7 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -276,7 +276,7 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -317,13 +317,13 @@
             var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignRightButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-9">
         <h1>Right Align Button 9: More Than One Paragraph Selection with one already aligned</h1>
         <div class="test-input">
@@ -360,7 +360,7 @@
             var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
             alignCenterButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }

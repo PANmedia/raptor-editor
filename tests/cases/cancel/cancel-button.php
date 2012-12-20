@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -68,7 +68,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-2', function(input) { 
+        testEditor('.test-2', function(input) {
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
@@ -236,7 +236,7 @@
              okButton.trigger('click');
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Cancel Formatting Button 7: Alignment</h1>
         <div class="test-input">
@@ -275,7 +275,7 @@
              okButton.trigger('click');
         });
     </script>
-    
+
     <div class="test-8">
         <h1>Cancel Formatting Button 8: Two Different Alignments</h1>
         <div class="test-input">
@@ -315,7 +315,7 @@
         });
     </script>
 
-    
+
     <div class="test-9">
         <h1>Cancel Formatting Button 9: Image Float</h1>
         <div class="test-input">
@@ -341,12 +341,12 @@
              okButton.trigger('click');
         });
     </script>
-    
+
     <div class="test-10">
         <h1>Cancel Formatting Button 10: Image Float and text and alignment</h1>
         <div class="test-input">
             <div class="editible">
-                <p> 
+                <p>
                     {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
@@ -356,7 +356,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p> 
+                <p>
                     {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
@@ -375,12 +375,12 @@
             okButton.trigger('click');
         });
     </script>
-    
+
     <div class="test-11">
         <h1>Cancel Formatting Button 11: Guides Disappear</h1>
         <div class="test-input">
             <div class="editible">
-                <p> 
+                <p>
                     {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
@@ -390,7 +390,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p> 
+                <p>
                     {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
@@ -407,12 +407,12 @@
             okButton.trigger('click');
         });
     </script>
-    
+
     <div class="test-12">
         <h1>Cancel Formatting Button 12: Spacer Div Disappears</h1>
         <div class="test-input">
             <div class="editible">
-                <p> 
+                <p>
                     {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
@@ -422,7 +422,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p> 
+                <p>
                     {Some text here.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
@@ -437,12 +437,12 @@
             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
             okButton.trigger('click');
-            
+
             if (input.find('.spacer')) {
                     throw new Error('Spacer still displayed');
                 }
         });
     </script>
- 
+
 </body>
 </html>

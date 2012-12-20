@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -42,7 +42,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 
@@ -62,10 +62,10 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur 
+                    Lorem ipsum dolor sit amet, consectetur
                 </p>
                 <hr>
-                <p> 
+                <p>
                     {}elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -80,7 +80,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 
@@ -118,7 +118,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 
@@ -142,7 +142,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui 
+                    convallis dui
                 </p>
                 <hr>
                 <p>
@@ -157,7 +157,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 
@@ -187,7 +187,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 
@@ -214,7 +214,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. 
+                    ligula venenatis rhoncus.
                 </p>
                 <hr>
                 <p>
@@ -229,7 +229,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 
@@ -253,7 +253,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada 
+                    malesuada
                 </p>
                 <hr>
                 <p>
@@ -272,7 +272,7 @@
             var hrCreateButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-hr-create');
             hrCreateButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
         });
     </script>
 </body>

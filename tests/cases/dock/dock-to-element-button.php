@@ -2,14 +2,14 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Dock to Element Button</h1>
+        <h1>Dock to Element Button: Dock to Output Div</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -36,13 +36,14 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                <marker class="raptor-ui-dock-to-element-marker"></marker>
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                    <marker class="raptor-ui-dock-to-element-marker"></marker>
+
                </p>
                <p>
                    Hendrerit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
@@ -65,8 +66,8 @@
             var dockToElement = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-element');
             dockToElement.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
-            if (!dockToElement.is('.ui-state-active')){
+
+            if (!dockToElement.is('.ui-state-highlight')){
                 throw new Error('Button not active')
             }
         });

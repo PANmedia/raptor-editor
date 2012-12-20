@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -30,13 +30,13 @@
             var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
             floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!floatLeftButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Left Float Button 2: Float Image With Text </h1>
         <div class="test-input">
@@ -69,13 +69,13 @@
             var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
             floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!floatLeftButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
-    
+
+
 </body>
 </html>

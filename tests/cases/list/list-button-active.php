@@ -2,7 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include '../../../src/include.php'; ?>
+    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
@@ -37,13 +37,13 @@
             var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!orderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Ordered List Button 2: Active When Ordered Sublist is Selected</h1>
          <div class="test-input">
@@ -74,13 +74,13 @@
             var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!orderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-3">
         <h1>Ordered List Button 3: Active When Unordered Sublist is Selected</h1>
          <div class="test-input">
@@ -111,13 +111,13 @@
             var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (unorderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-4">
         <h1>Unordered List Button 1: Not Active When List is Not Selected</h1>
          <div class="test-input">
@@ -146,13 +146,13 @@
             var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (unorderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-5">
         <h1>Ordered List Button 4: Not Active When List is Not Selected</h1>
          <div class="test-input">
@@ -181,13 +181,13 @@
             var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (orderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is active');
-            } 
+            }
         });
     </script>
-    
+
         <div class="test-6">
         <h1>Unordered List Button 2: Active With Empty Selection</h1>
          <div class="test-input">
@@ -214,13 +214,13 @@
             var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!unorderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-7">
         <h1>Ordered List Button 5: Active With Empty Selection</h1>
          <div class="test-input">
@@ -247,13 +247,13 @@
             var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!orderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-8">
         <h1>Unordered List Button 3: Active When Ordered Sublist is Selected</h1>
          <div class="test-input">
@@ -284,13 +284,13 @@
             var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!unorderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
-    
+
     <div class="test-9">
         <h1>Unordered List Button 4: Active When Unordered Sublist is Selected</h1>
          <div class="test-input">
@@ -321,10 +321,10 @@
             var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!unorderedListButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
 </body>
