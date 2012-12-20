@@ -66,6 +66,7 @@ function selectionSet(mixed) {
 /**
  * Replaces the given selection (or the current selection if selection is not
  * supplied) with the given html.
+ *
  * @public @static
  * @param  {jQuery|String} html The html to use when replacing.
  * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.

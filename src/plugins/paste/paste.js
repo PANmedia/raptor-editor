@@ -41,9 +41,7 @@ PastePlugin.prototype.caputrePaste = function() {
     //selectionSave();
 
     // Make a contentEditable div to capture pasted text
-    if ($('.raptorPasteBin').length) {
-        $('.raptorPasteBin').remove();
-    }
+    $('.raptorPasteBin').remove();
     $('<div class="raptorPasteBin" contenteditable="true" style="width: 1px; height: 1px; overflow: hidden; position: fixed; top: -1px;" />').appendTo('body');
     $('.raptorPasteBin').focus();
 
@@ -63,6 +61,7 @@ PastePlugin.prototype.pasteContent = function(html) {
         html = this.filterAttributes(html);
         html = this.filterChars(html);
         selectionReplace(html);
+        $('.raptorPasteBin').remove();
         pasteInProgress = false;
     }.bind(this));
 };
@@ -75,8 +74,8 @@ PastePlugin.prototype.getDialog = function(instance) {
             modal: true,
             resizable: true,
             autoOpen: false,
-            width: 600,
-            height: 400,
+            width: 800,
+            height: 500,
             title: _('pasteDialogTitle'),
             dialogClass: this.options.baseClass + '-dialog',
             buttons: [
@@ -101,6 +100,8 @@ PastePlugin.prototype.getDialog = function(instance) {
                 {
                     text: _('pasteDialogCancelButton'),
                     click: function() {
+                        pasteInProgress = false;
+                        $('.raptorPasteBin').remove();
                         aDialogClose(pasteDialog);
                     },
                     icons: {
