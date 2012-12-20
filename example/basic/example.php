@@ -56,14 +56,6 @@
             });
         });
     </script>
-    <script type="text/javascript">
-        $(function() {
-            $('tbody td').each(function() {
-                var index = tableGetCellIndex(this);
-                $(this).text($(this).text() + ' [' + index.x + ', ' + index.y + ']');
-            });
-        });
-    </script>
     <style type="text/css">
         table {
             width: 100%;
@@ -128,6 +120,39 @@
             <strong class="cms-bold">This text is bold.</strong>
             <em class="cms-italic">This text is italic.</em>
         </p>
+
+        <table>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+        </table>
         <?php
             $buffer = ob_get_clean();
             if (isset($content['body-1'])) {
