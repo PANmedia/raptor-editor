@@ -202,6 +202,14 @@ registerLocale('en', 'English', {
 
     logoTitle: 'Learn More About the Raptor WYSIWYG Editor',
 
+    pasteDialogTitle: 'Paste',
+    pasteDialogOKButton: 'Insert',
+    pasteDialogCancelButton: 'Cancel',
+    pasteDialogPlain: 'Plain Text',
+    pasteDialogFormattedCleaned: 'Formatted &amp; Cleaned',
+    pasteDialogFormattedUnclean: 'Formatted Unclean',
+    pasteDialogSource: 'Source Code',
+
     saveTitle: 'Save content',
     saveRestFail: 'Failed to save {{failed}} content block(s).',
     saveRestPartial: 'Saved {{saved}} out of {{failed}} content blocks.',

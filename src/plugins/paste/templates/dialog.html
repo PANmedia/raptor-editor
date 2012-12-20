@@ -1,0 +1,22 @@
+<div class="{{baseClass}}-panel ui-dialog-content ui-widget-content">
+    <div class="{{baseClass}}-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
+        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-state-default ui-corner-top ui-tabs-selected ui-state-active"><a>_('pasteDialogPlain')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('pasteDialogFormattedCleaned')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('pasteDialogFormattedUnclean')</a></li>
+            <li class="ui-state-default ui-corner-top"><a>_('pasteDialogSource')</a></li>
+        </ul>
+        <div class="{{baseClass}}-plain-tab">
+            <textarea class="{{baseClass}}-area {{baseClass}}-plain"></textarea>
+        </div>
+        <div class="{{baseClass}}-markup-tab" style="display: none">
+            <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-markup"></div>
+        </div>
+        <div class="{{baseClass}}-rich-tab" style="display: none">
+            <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-rich"></div>
+        </div>
+        <div class="{{baseClass}}-source-tab" style="display: none">
+            <textarea class="{{baseClass}}-area {{baseClass}}-source"></textarea>
+        </div>
+    </div>
+</div>
