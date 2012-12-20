@@ -158,6 +158,7 @@ Raptor.registerLayout('toolbar', {
             }
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
+        this.raptor.fire('layoutReady');
     },
 
     show: function() {
