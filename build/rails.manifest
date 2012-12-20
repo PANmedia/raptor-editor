@@ -1,5 +1,7 @@
 packages/raptor-theme.css
 
+(function($) {
+
 src/dependencies/rangy/rangy-core.js
 src/dependencies/rangy/rangy-applier.js
 src/dependencies/rangy/rangy-cssclassapplier.js
@@ -8,6 +10,7 @@ src/dependencies/rangy/rangy-serializer.js
 src/dependencies/rangy/rangy-textrange.js
 src/dependencies/jquery-hotkeys.js
 src/dependencies/resizetable.js
+src/dependencies/goog-table.js
 
 src/adapters/jquery-ui.js
 src/i18n.js
@@ -74,7 +77,7 @@ src/plugins/link/link-remove.js
 src/plugins/list/list-ordered.js
 src/plugins/list/list-unordered.js
 src/plugins/logo/logo.js
-src/plugins/logo/paste.js
+src/plugins/paste/paste.js
 src/plugins/save/save.js
 src/plugins/save/save-rest.js
 src/plugins/statistics/statistics.js
@@ -85,6 +88,7 @@ src/plugins/table/table-delete-row.js
 src/plugins/table/table-insert-column.js
 src/plugins/table/table-insert-row.js
 src/plugins/tag-menu/tag-menu.js
+src/plugins/text-align/text-align-button.js
 src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
@@ -118,3 +122,5 @@ src/plugins/view-source/templates/dialog.html
 src/templates/message.html
 src/templates/messages.html
 src/templates/unsupported.html
+
+})(jQuery);
