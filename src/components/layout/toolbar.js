@@ -55,7 +55,6 @@ Raptor.registerLayout('toolbar', {
                 cursor: 'move',
                 // @todo Cancel drag when docked
                 // @todo Move draggable into plugin
-                // @todo Move tag menu/list into plugin
                 handle: '.ui-editor-path',
                 stop: $.proxy(function() {
                     // Save the persistant position
@@ -162,10 +161,23 @@ Raptor.registerLayout('toolbar', {
 
     show: function() {
         this.wrapper.css('display', '');
+        this.raptor.fire('layoutShow');
     },
 
     hide: function() {
         this.wrapper.css('display', 'none');
+    },
+
+    enableDragging: function() {
+        if ($.fn.draggable && this.options.draggable) {
+            this.wrapper.draggable('enable');
+        }
+    },
+
+    disableDragging: function() {
+        if ($.fn.draggable && this.options.draggable) {
+            this.wrapper.draggable('disable').removeClass('ui-state-disabled');
+        }
     },
 
     getElement: function() {
