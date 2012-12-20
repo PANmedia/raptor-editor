@@ -6,11 +6,11 @@ Raptor.registerUi(new PreviewToggleButton({
     },
     selectionToggle: function() {
         var result = true;
-        selectionEachBlock(function(block) {
-            if ($(block).parentsUntil(this.raptor.getElement(), 'blockquote').length === 0) {
+        selectionEachRange(function(range) {
+            if ($(range.commonAnsestor).parentsUntil(this.raptor.getElement(), 'blockquote').length === 0) {
                 result = false;
             }
-        }.bind(this), this.raptor.getElement());
+        }.bind(this));
         return result;
     }
 }));
