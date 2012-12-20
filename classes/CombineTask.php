@@ -38,6 +38,23 @@ class CombineTask extends Task {
             if (!$file) {
                 continue;
             }
+            if (preg_match('/^\(function\(/', $file)) {
+                $this->log($file, Project::MSG_INFO);
+                $data = "
+                    /* Wrapper. */
+                    $file
+                ";
+                fwrite($jsOutputHandle, $data);
+                continue;
+            } elseif (preg_match('/^}\)\(.*\);/', $file)) {
+                $this->log($file, Project::MSG_INFO);
+                $data = "
+                    $file
+                    /* End of wrapper. */
+                ";
+                fwrite($jsOutputHandle, $data);
+                continue;
+            }
             $file = $this->buildDir . '/' . $file;
             if (!is_file($file)) {
                 die("Error processing file manifest: {$file}, does not exist.");
@@ -53,10 +70,7 @@ class CombineTask extends Task {
             if (pathinfo($file, PATHINFO_EXTENSION) === 'css') {
                 fwrite($cssOutputHandle, $data);
             } elseif (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
-                if (basename($file) === 'init.js' && $this->wrapper) {
-                    $wrapper = true;
-                    fwrite($jsOutputHandle, $this->getWrapperTop());
-                } elseif (basename($file) === 'jquery.js' && $this->noConflict) {
+                if (basename($file) === 'jquery.js' && $this->noConflict) {
                     $noConflict = true;
                     fwrite($jsOutputHandle, $this->getNoConflictTop());
                 }
@@ -64,9 +78,6 @@ class CombineTask extends Task {
             }
         }
 
-        if ($wrapper) {
-            fwrite($jsOutputHandle, $this->getWrapperBottom());
-        }
         if ($noConflict) {
             fwrite($jsOutputHandle, $this->getNoConflictBottom());
         }
@@ -97,20 +108,6 @@ class CombineTask extends Task {
 
     public function getName() {
         return $this->name;
-    }
-
-    public function getWrapperTop() {
-        return "
-            // Raptor wrapper
-            (function($, window, rangy, undefined) {
-        ";
-    }
-
-    public function getWrapperBottom() {
-        return "
-            // Raptor wrapper
-            })(jQuery, window, rangy);
-        ";
     }
 
     public function getNoConflictTop() {
