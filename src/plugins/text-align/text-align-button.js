@@ -13,11 +13,11 @@ function TextAlignButton(options) {
         },
         selectionToggle: function() {
             var result = true;
-            selectionEachBlock(function(block) {
-                if (!$(block).hasClass(this.getClass())) {
+            selectionEachRange(function(range) {
+                if ($(range.commonAnsestor).parentsUntil(this.raptor.getElement(), '.' + this.getClass()).length === 0) {
                     result = false;
                 }
-            }.bind(this), this.raptor.getElement());
+            }.bind(this));
             return result;
         }
     }, options));
