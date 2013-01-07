@@ -13,7 +13,7 @@
 // limitations under the License.
 //
 // http://code.google.com/p/closure-library/source/browse/trunk/closure/goog/editor/table.js
-// 
+//
 // Modified by David Neilsen <david@panmedia.co.nz>
 
 /**
@@ -157,7 +157,7 @@ GoogTable.prototype.mergeCells = function(
         // Add a space if needed, to keep merged content from getting squished
         // together.
         if (targetTd.lastChild &&
-                targetTd.lastChild.nodeType == 3) {
+                targetTd.lastChild.nodeType === Node.TEXT_NODE) {
             targetTd.appendChild(doc.createElement('br'));
         }
         var childNode;
