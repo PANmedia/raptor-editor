@@ -95,8 +95,8 @@ Raptor.registerLayout('toolbar', {
             }
 
             wrapper.css({
-                top: Math.abs(parseInt(pos[0])),
-                left: Math.abs(parseInt(pos[1]))
+                top: Math.abs(parseInt(pos[0], 10)),
+                left: Math.abs(parseInt(pos[1], 10))
             });
 
             // Load the message display widget
