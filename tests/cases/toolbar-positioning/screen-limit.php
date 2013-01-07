@@ -40,7 +40,7 @@
 
             if (toolbarTop <= raptorWrapper) {
 
-                alert ('toolbar inside viewport');
+                alert ('Toolbar inside viewport');
             }
             else {
                 throw new Error('Toolbar outside viewport');
