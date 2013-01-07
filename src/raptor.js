@@ -102,16 +102,6 @@ var Raptor = /** @lends $.ui.raptor */ {
     /*========================================================================*\
      * Helpers
     \*========================================================================*/
-    /**
-     * @returns {String}
-     */
-    getUniqueId: function() {
-        var id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
-        while ($('#' + id).length) {
-            id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
-        }
-        return id;
-    },
 
     /**
      * @returns {boolean}
