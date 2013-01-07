@@ -8,21 +8,16 @@
 @import 'compass/css3/box-sizing';
 
 .raptor-paste-panel-tabs {
-    height: 100%;
+    height: auto;
     width: 100%;
 
-    @include box-sizing(border-box);
+    @include display-box();
+    @include box-orient(vertical);
+    @include box-flex(1);
 }
 
 .raptor-paste .ui-tabs a {
     outline: none;
-}
-
-.raptor-paste-panel-tabs {
-    position: relative;
-
-    @include display-box();
-    @include box-orient(vertical);
 }
 
 .raptor-paste-panel-tabs > div {
@@ -46,4 +41,13 @@
 .raptor-paste-panel-tabs > div > .raptor-paste-area {
     border: none;
     padding: 2px;
+}
+
+.raptor-paste-dialog .ui-dialog-content {
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: box !important;
+    width: 100% !important;
+    overflow: hidden;
+    @include box-sizing(border-box);
 }

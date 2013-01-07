@@ -13,12 +13,12 @@ Raptor.registerUi(new Button({
         };
 
         button.find('.ui-button-icon-primary').css({
-            'background-image': 'url(http://www.jquery-raptor.com/logo/VERSION?json=' + encodeURIComponent(JSON.stringify(data)) + ')'
+            'background-image': 'url(http://www.raptor-editor.com/logo/VERSION?json=' + encodeURIComponent(JSON.stringify(data)) + ')'
         });
-        
+
         return button;
     },
     action: function() {
-        window.open('http://www.jquery-raptor.com/about/editors/', '_blank');
+        window.open('http://www.raptor-editor.com/about/editors/', '_blank');
     }
 }));

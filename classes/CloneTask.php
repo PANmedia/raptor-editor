@@ -42,6 +42,10 @@ class CloneTask extends Task {
             if (!$file) {
                 continue;
             }
+            if (preg_match('/^\(function\(/', $file) ||
+                    preg_match('/^}\)\(.*\);/', $file)) {
+                continue;
+            }
             if (!is_file($file)) {
                 die("Error processing file manifest: {$file}, does not exist.");
                 return;

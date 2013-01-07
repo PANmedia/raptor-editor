@@ -17,12 +17,12 @@
 }
 
 .raptor-ui-embed-panel-tabs {
+    height: 100%;
+    width: 100%;
+
     @include display-box();
     @include box-orient(vertical);
     @include box-flex(1);
-
-    height: 100%;
-    width: 100%;
 
     .raptor-ui-embed-code-tab,
     .raptor-ui-embed-preview-tab {
