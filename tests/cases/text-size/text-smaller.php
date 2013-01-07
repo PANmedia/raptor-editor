@@ -77,7 +77,7 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
 
             if (sizeDecreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is  active');
+                throw new Error('Button is active');
             }
         });
     </script>
