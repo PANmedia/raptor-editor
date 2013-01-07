@@ -16,16 +16,12 @@ SelectMenu.prototype.getMenu = function() {
                 event.preventDefault();
             })
             .on('click', 'a', function(event) {
-                aButtonSetLabel(this.button.button, $(event.target).html())
+                aButtonSetLabel(this.button.button, $(event.target).html());
+                // Prevent jQuery UI focusing the menu
+                return false;
             }.bind(this))
             .appendTo('body');
         aMenu(this.menu);
-        // Click off close event
-        $('html').click(function(event) {
-            if (this.button.button.has(event.target).length === 0) {
-                this.menu.hide();
-            }
-        }.bind(this));
     }
     return this.menu;
 };
