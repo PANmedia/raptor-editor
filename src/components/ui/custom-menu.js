@@ -10,13 +10,6 @@ Menu.prototype.getMenu = function() {
                 // Prevent losing the selection on the editor target
                 event.preventDefault();
             });
-        // Click off close event
-        $('html').click(function(event) {
-            if (this.button.button.has(event.target).length === 0 &&
-                    !this.button.button.is(event.target)) {
-                this.menu.hide();
-            }
-        }.bind(this));
     }
     return this.menu;
 };
