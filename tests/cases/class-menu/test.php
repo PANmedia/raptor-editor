@@ -35,7 +35,17 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-class-menu').trigger('click');
+            var classMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-class-menu');
+            classMenu.trigger('click');
+            var blueBackgroundTag = input.find('.raptor-ui-class-menu-menu [data-value=cms-blue-bg]');
+            blueBackgroundTag.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            var tagMenuValue = classMenu.toString();
+
+            if (!tagMenuValue === 'Blue background'){
+                throw new Error('Button is not active');
+            }
         });
     </script>
 </body>
