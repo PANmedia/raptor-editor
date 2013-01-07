@@ -5,24 +5,6 @@
  */
 
 /**
- * Remove comments from element.
- *
- * @param  {jQuery} parent The jQuery element to have comments removed from.
- * @return {jQuery} The modified parent.
- */
-function elementRemoveComments(parent) {
-    parent.contents().each(function() {
-        if (this.nodeType == 8) {
-            $(this).remove();
-        }
-    });
-    parent.children().each(function() {
-        element.removeComments($(this));
-    });
-    return parent;
-}
-
-/**
  * Remove all but the allowed attributes from the parent.
  *
  * @param {jQuery} parent The jQuery element to cleanse of attributes.
@@ -274,11 +256,33 @@ function elementClosestBlock(element, limitElement) {
     // </strict>
     while (element.length > 0
             && element[0] !== limitElement[0]
-            && (element[0].nodeType === 3 || element.css('display') === 'inline')) {
+            && (element[0].nodeType === Node.TEXT_NODE || element.css('display') === 'inline')) {
         element = element.parent();
     }
     if (element[0] === limitElement[0]) {
         return null;
     }
     return element;
+}
+
+function elementUniqueId() {
+    var id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+    while ($('#' + id).length) {
+        id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+    }
+    return id;
+}
+
+function elementChangeTag(element, newTag) {
+    var tags = [];
+    for (var i = element.length - 1; 0 <= i ; i--) {
+        var node = document.createElement(newTag);
+        node.innerHTML = element[i].innerHTML;
+        $.each(element[i].attributes, function() {
+            $(node).attr(this.name, this.value);
+        });
+        $(element[i]).after(node).remove();
+        tags[i] = node;
+    }
+    return $(tags);
 }
