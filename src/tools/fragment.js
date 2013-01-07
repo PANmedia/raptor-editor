@@ -13,7 +13,7 @@ function fragmentToHtml(domFragment, tag) {
     // Get all nodes in the extracted content
     for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
         var node = domFragment.childNodes.item(j);
-        var content = node.nodeType === 3 ? node.nodeValue : elementOuterHtml($(node));
+        var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml($(node));
         if (content) {
             html += content;
         }
@@ -40,7 +40,7 @@ function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
     for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
         var node = domFragment.childNodes.item(j);
         // Prepend the node before the current node
-        var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
+        var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : $(node).html();
         if (content) {
             $('<' + wrapperTag + '/>')
                 .html($.trim(content))
