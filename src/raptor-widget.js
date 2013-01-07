@@ -221,7 +221,7 @@ var RaptorWidget = {
      * to replace a textarea.
      */
     replaceOriginal: function() {
-        if (this.target) return;
+        if (!this.target.is(':input')) return;
 
         // Create the replacement div
         var target = $('<div/>')
