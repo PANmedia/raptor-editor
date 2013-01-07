@@ -10,7 +10,9 @@ function Menu(options) {
 Menu.prototype.init = function() {
     this.setOptions();
     this.bind();
-    return this.getButton().init();
+    var button = this.getButton().init();
+    button.addClass('raptor-menu-button');
+    return button;
 };
 
 Menu.prototype.bind = function() {
@@ -41,13 +43,8 @@ Menu.prototype.getMenu = function() {
                 // Prevent losing the selection on the editor target
                 event.preventDefault();
             })
+            .children()
             .appendTo('body');
-        // Click off close event
-        $('html').click(function(event) {
-            if (this.getButton().getButton().has(event.target).length === 0) {
-                this.menu.hide();
-            }
-        }.bind(this));
     }
     return this.menu;
 };
@@ -55,3 +52,11 @@ Menu.prototype.getMenu = function() {
 Menu.prototype.show = function() {
     elementPositionUnder(this.getMenu().toggle(), this.getButton().getButton());
 };
+
+// Click off close event
+$('html').click(function(event) {
+    if (!$(event.target).hasClass('raptor-menu-button') &&
+            !$(event.target).closest('.raptor-menu-button').length) {
+        $('.raptor-menu').hide();
+    }
+});
