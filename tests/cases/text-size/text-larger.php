@@ -7,7 +7,18 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+
+        function testSizeButton(input) {
+            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
+            sizeIncreaseButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (sizeIncreaseButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        }
     </script>
+
     <div class="test-1">
         <h1>Size Increase Button 1: Word Group Selection</h1>
         <div class="test-input">
@@ -34,15 +45,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-1', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-1', testSizeButton);
     </script>
 
     <div class="test-2">
@@ -71,15 +74,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-2', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-2', testSizeButton);
     </script>
 
     <div class="test-3">
@@ -108,15 +103,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-3', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-3', testSizeButton);
     </script>
 
      <div class="test-4">
@@ -151,15 +138,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-4', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-4', testSizeButton);
     </script>
 
     <div class="test-5">
@@ -193,15 +172,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-5', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-5', testSizeButton);
     </script>
 
     <div class="test-6">
@@ -234,15 +205,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-6', testSizeButton);
     </script>
 
     <div class="test-7">
@@ -275,15 +238,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-7', testSizeButton);
     </script>
 
     <div class="test-8">
@@ -316,15 +271,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-8', function(input) {
-            var sizeIncreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-increase');
-            sizeIncreaseButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (sizeIncreaseButton.is('.ui-state-highlight')){
-                throw new Error('Button is active');
-            }
-        });
+        testEditor('.test-8', testSizeButton);
     </script>
 </body>
 </html>
