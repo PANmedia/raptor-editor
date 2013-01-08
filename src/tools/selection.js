@@ -602,3 +602,62 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
 
     selectionRestore();
 }
+
+function selectionExpandToWord() {
+    var ranges = rangy.getSelection().getAllRanges();
+    if (ranges.length === 1) {
+        if (ranges[0].toString() === '') {
+            rangy.getSelection().expand('word');
+        }
+    }
+}
+
+function selectionFindWrappingAndInnerElements(selector, limitElement) {
+    var result = new jQuery();
+    selectionEachRange(function(range) {
+        var startNode = range.startContainer;
+        while (startNode.nodeType === Node.TEXT_NODE) {
+            startNode = startNode.parentNode;
+        }
+
+        var endNode = range.endContainer;
+        while (endNode.nodeType === Node.TEXT_NODE) {
+            endNode = endNode.parentNode;
+        }
+
+        var filter = function() {
+            if (!limitElement.is(this)) {
+                result.push(this);
+            }
+        };
+
+        do {
+            $(startNode).filter(selector).each(filter);
+
+            if (!limitElement.is(startNode)) {
+                $(startNode).parentsUntil(limitElement, selector).each(filter);
+            }
+
+            $(startNode).find(selector).each(filter);
+
+            if ($(endNode).is(startNode)) {
+                break;
+            }
+
+            startNode = $(startNode).next();
+        } while (startNode.length > 0 && $(startNode).prevAll().has(endNode).length === 0);
+    });
+    return result;
+}
+
+function selectionChangeTags(changeTo, changeFrom, limitElement) {
+    selectionSave();
+    var elements = selectionFindWrappingAndInnerElements(changeFrom.join(','), limitElement);
+    if (elements.length) {
+        elementChangeTag(elements, changeTo);
+    } else {
+        var limitNode = limitElement.get(0);
+        limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+    }
+    selectionRestore();
+}
