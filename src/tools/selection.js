@@ -606,6 +606,9 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
 function selectionExpandToWord() {
     var ranges = rangy.getSelection().getAllRanges();
     if (ranges.length === 1) {
+        if (!$.isFunction(rangy.getSelection().expand)) {
+            return;
+        }
         if (ranges[0].toString() === '') {
             rangy.getSelection().expand('word');
         }
