@@ -4,7 +4,7 @@ class CloneTask extends Task {
     private $file;
     private $buildDir;
 
-    public function mkdir($directory, $mode = 0664, $recursive = true) {
+    public function mkdir($directory, $mode = 0777, $recursive = true) {
         // Check the directory is not blank
         if (!$directory) return false;
 
