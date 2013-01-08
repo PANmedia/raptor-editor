@@ -14,7 +14,10 @@ function TextAlignButton(options) {
         selectionToggle: function() {
             var result = true;
             selectionEachRange(function(range) {
-                if ($(range.commonAnsestor).parentsUntil(this.raptor.getElement(), '.' + this.getClass()).length === 0) {
+                // Check if selection only contains valid children
+                var children = $(range.commonAncestorContainer).find('*');
+                if ($(range.commonAncestorContainer).parentsUntil(this.raptor.getElement(), '.' + this.getClass()).length === 0 &&
+                        children.length !== children.filter('.' + this.getClass()).length) {
                     result = false;
                 }
             }.bind(this));

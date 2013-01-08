@@ -46,8 +46,15 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <em class="cms-italic">{pellentesque et rhoncus nunc semper. <ol><li><del class="cms-strike">Suspendisse
-                    malesuada</del></li></ol> hendrerit velit nec tristique.</em> A}liquam gravida mauris at
+                    convallis dui id erat <em class="cms-italic">{pellentesque et rhoncus nunc semper.</em>
+                </p>
+                <ol>
+                    <li>
+                        <del class="cms-strike">Suspendisse malesuada</del>
+                    </li>
+                </ol>
+                <p>
+                    <em class="cms-italic">hendrerit velit nec tristique.</em> A}liquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -57,8 +64,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat {pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. A}liquam gravida mauris at
+                    convallis dui id erat {pellentesque et rhoncus nunc semper.
+                </p><p>
+                    Suspendisse malesuada
+                </p><p>
+                    hendrerit velit nec tristique. A}liquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
@@ -149,10 +159,13 @@
                 <p>
                     Lorem ipsum {<strong class="cms-bold">dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <u class="cms-underline">hendrerit velit nec tristique.</u></strong>
+                    malesuada <span class="cms-underline">hendrerit velit nec tristique.</span></strong>
                 </p><p>
-                <u class="cms-underline"><strong class="cms-bold">Aliquam gravida mauris at
-                    ligula <ul><li>venenatis rhoncus.</li></ul> Suspendisse}</strong> interdum, nisi</u> nec consectetur
+                    <span class="cms-underline cms-bold">Aliquam gravida mauris at
+                    ligula</span>
+                </p>
+                <ul><li><span class="cms-underline cms-bold">venenatis rhoncus.</span></li></ul>
+                <p><span class="cms-underline"><strong class="cms-bold"> Suspendisse}</strong> interdum, nisi</span> nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -163,10 +176,12 @@
                     Lorem ipsum {dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p>
-                <p>
+                </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse} <u class="underline">interdum, nisi</u> nec consectetur
+                    ligula
+                </p>
+                <p>venenatis rhoncus.</p>
+                <p> Suspendisse}<span class="cms-underline"> interdum, nisi</span> nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -221,8 +236,8 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <u class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</u>
+                    convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada {}hendrerit velit nec tristique.</span>
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -234,8 +249,8 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <u class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</u>
+                    convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada {}hendrerit velit nec tristique.</span>
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -255,10 +270,10 @@
         <h1>Clear Formatting Button 8: Alignment</h1>
         <div class="test-input">
             <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <u class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</u>
+                <p class="cms-center">
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit} nec tristique.</span>
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -268,7 +283,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-center">
+                <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit} nec tristique.
@@ -304,7 +319,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-center">
+                <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
@@ -328,9 +343,9 @@
         <div class="test-input">
             <div class="editible">
                 <p class="cms-right">
-                    {Lorem ipsum <u class="cms-underline"> dolor sit amet, consectetur adipiscing elit. Maecenas
+                    {Lorem ipsum <span class="cms-underline"> dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique</u>.
+                    malesuada hendrerit velit nec tristique</span>.
                 </p><p class="cms-left">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -340,7 +355,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <p class="cms-center">
+                <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
@@ -388,7 +403,7 @@
         <div class="test-input">
             <div class="editible">
                 <p class="cms-right">
-                    {Some text that can be <strong class="cms-bold">bold</strong> and <u class="cms-underline">underlined</u> and <em class="cms-italic">italic</em> as
+                    {Some text that can be <strong class="cms-bold">bold</strong> and <span class="cms-underline">underlined</span> and <em class="cms-italic">italic</em> as
                     well as being right aligned before clearing the formatting.
                 </p>
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right"  />}

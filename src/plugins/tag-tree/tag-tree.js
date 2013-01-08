@@ -21,7 +21,7 @@ TagTreePlugin.prototype.update = function() {
         var node = range.commonAncestorContainer;
 
         var element;
-        if (node.nodeType === 3) {
+        if (node.nodeType === Node.TEXT_NODE) {
             // If nodes common parent is a text node, then use its parent
             element = $(node).parent();
         } else {

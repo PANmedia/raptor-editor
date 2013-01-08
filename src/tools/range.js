@@ -67,7 +67,7 @@ function rangeGetCommonAncestor(selection) {
 
     var commonAncestor;
     $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === 3) {
+        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
             commonAncestor = $(range.commonAncestorContainer).parent()[0];
         } else {
             commonAncestor = range.commonAncestorContainer;

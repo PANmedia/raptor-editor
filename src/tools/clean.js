@@ -55,3 +55,22 @@ function cleanEmptyAttributes(element, attributes) {
             }).removeAttr(attributes[i]);
     }
 }
+
+
+/**
+ * Remove comments from element.
+ *
+ * @param  {jQuery} parent The jQuery element to have comments removed from.
+ * @return {jQuery} The modified parent.
+ */
+function cleanRemoveComments(parent) {
+    parent.contents().each(function() {
+        if (this.nodeType == Node.COMMENT_NODE) {
+            $(this).remove();
+        }
+    });
+    parent.children().each(function() {
+        cleanRemoveComments($(this));
+    });
+    return parent;
+}

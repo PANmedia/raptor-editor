@@ -48,7 +48,7 @@ var RaptorWidget = {
 
         // Give the element a unique ID
         if (!this.element.attr('id')) {
-            this.element.attr('id', this.getUniqueId());
+            this.element.attr('id', elementUniqueId());
         }
 
         // Initialise properties
@@ -230,7 +230,7 @@ var RaptorWidget = {
             // Insert the div before the original element
             .insertBefore(this.element)
             // Give the div a unique ID
-            .attr('id', this.getUniqueId())
+            .attr('id', elementUniqueId())
             // Copy the original elements class(es) to the replacement div
             .addClass(this.element.attr('class'));
 
@@ -489,13 +489,6 @@ var RaptorWidget = {
                 }
             });
         }
-    },
-
-    /**
-     * @returns {String}
-     */
-    getUniqueId: function() {
-        return Raptor.getUniqueId();
     },
 
     /*========================================================================*\

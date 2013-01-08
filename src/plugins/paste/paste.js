@@ -55,7 +55,7 @@ PastePlugin.prototype.showPasteDialog = function() {
 };
 
 PastePlugin.prototype.pasteContent = function(html) {
-    console.log(this.state);
+//    console.log(this.state);
     this.raptor.stateRestore(this.state);
     this.raptor.actionApply(function() {
         html = this.filterAttributes(html);

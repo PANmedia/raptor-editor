@@ -167,7 +167,7 @@ function selectionGetElement(range) {
     range = range || rangy.getSelection().getRangeAt(0);
 
     // Check if the common ancestor container is a text node
-    if (range.commonAncestorContainer.nodeType === 3) {
+    if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
         // Use the parent instead
         commonAncestor = range.commonAncestorContainer.parentNode;
     } else {
@@ -197,10 +197,10 @@ function selectionGetStartElement() {
         return null;
     }
     if (selection.isBackwards()) {
-        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+        return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
     }
     if (!selection.anchorNode) console.trace();
-    return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
 }
 
 function selectionGetEndElement() {
@@ -209,9 +209,9 @@ function selectionGetEndElement() {
         return null;
     }
     if (selection.isBackwards()) {
-        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+        return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
     }
-    return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+    return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
 }
 
 function selectionAtEndOfElement() {
@@ -383,7 +383,7 @@ function selectionToggleBlockStyle(styles, limit) {
     selectionEachRange(function(range) {
         var parent = $(range.commonAncestorContainer);
         while (parent.length && parent[0] !== limit[0] && (
-                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+                parent[0].nodeType === Node.TEXT_NODE || parent.css('display') === 'inline')) {
             parent = parent.parent();
         }
         if (parent[0] === limit[0]) {
@@ -512,7 +512,7 @@ function selectionConstrain(element, selection) {
 
     var commonAncestor;
     $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === 3) {
+        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
             commonAncestor = $(range.commonAncestorContainer).parent()[0];
         } else {
             commonAncestor = range.commonAncestorContainer;
@@ -600,5 +600,64 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
         $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
     });
 
+    selectionRestore();
+}
+
+function selectionExpandToWord() {
+    var ranges = rangy.getSelection().getAllRanges();
+    if (ranges.length === 1) {
+        if (ranges[0].toString() === '') {
+            rangy.getSelection().expand('word');
+        }
+    }
+}
+
+function selectionFindWrappingAndInnerElements(selector, limitElement) {
+    var result = new jQuery();
+    selectionEachRange(function(range) {
+        var startNode = range.startContainer;
+        while (startNode.nodeType === Node.TEXT_NODE) {
+            startNode = startNode.parentNode;
+        }
+
+        var endNode = range.endContainer;
+        while (endNode.nodeType === Node.TEXT_NODE) {
+            endNode = endNode.parentNode;
+        }
+
+        var filter = function() {
+            if (!limitElement.is(this)) {
+                result.push(this);
+            }
+        };
+
+        do {
+            $(startNode).filter(selector).each(filter);
+
+            if (!limitElement.is(startNode)) {
+                $(startNode).parentsUntil(limitElement, selector).each(filter);
+            }
+
+            $(startNode).find(selector).each(filter);
+
+            if ($(endNode).is(startNode)) {
+                break;
+            }
+
+            startNode = $(startNode).next();
+        } while (startNode.length > 0 && $(startNode).prevAll().has(endNode).length === 0);
+    });
+    return result;
+}
+
+function selectionChangeTags(changeTo, changeFrom, limitElement) {
+    selectionSave();
+    var elements = selectionFindWrappingAndInnerElements(changeFrom.join(','), limitElement);
+    if (elements.length) {
+        elementChangeTag(elements, changeTo);
+    } else {
+        var limitNode = limitElement.get(0);
+        limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+    }
     selectionRestore();
 }
