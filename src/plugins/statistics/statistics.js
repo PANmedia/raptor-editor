@@ -2,11 +2,13 @@ var statisticsDialog = null;
 
 Raptor.registerUi(new Button({
     name: 'statistics',
-    maximum: 100,
-    showCountInButton: true,
+    options: {
+        maximum: 100,
+        showCountInButton: true
+    },
 
     init: function() {
-        if (this.showCountInButton) {
+        if (this.options.showCountInButton) {
             this.raptor.bind('change', this.updateButton.bind(this));
         }
         return Button.prototype.init.apply(this, arguments);
@@ -27,8 +29,8 @@ Raptor.registerUi(new Button({
             characters = this.getCharacters();
 
         // Cases where maximum has been provided
-        if (this.maximum) {
-            charactersRemaining = this.maximum - characters;
+        if (this.options.maximum) {
+            charactersRemaining = this.options.maximum - characters;
             if (charactersRemaining >= 0) {
                 label = _('statisticsButtonCharacterRemaining', {
                     charactersRemaining: charactersRemaining
@@ -46,7 +48,7 @@ Raptor.registerUi(new Button({
 
         aButtonSetLabel(this.button, label);
 
-        if (!this.maximum) {
+        if (!this.options.maximum) {
             return;
         }
 
@@ -69,7 +71,7 @@ Raptor.registerUi(new Button({
             aButton(this.button, {
                 text: true
             });
-            if (this.showCountInButton) {
+            if (this.options.showCountInButton) {
                 this.updateButton();
             }
         }
@@ -78,7 +80,7 @@ Raptor.registerUi(new Button({
 
     getDialog: function() {
         if (!statisticsDialog) {
-            statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'))
+            statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'));
             aDialog(statisticsDialog, {
                 modal: true,
                 resizable: false,
@@ -112,8 +114,8 @@ Raptor.registerUi(new Button({
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';
-        if (typeIsNumber(charactersRemaining)) {
-            dialog.find('[data-name=truncation]').html(_('statisticsDialogNotTruncated', {
+        if (typeIsNumber(charactersRemaining) && charactersRemaining < 0) {
+            dialog.find('[data-name=truncation]').html(_('statisticsDialogTruncated', {
                 'limit': this.options.maximum
             }));
         } else {
