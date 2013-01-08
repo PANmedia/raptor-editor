@@ -72,7 +72,7 @@ function dockToScreen(element, options) {
 }
 
 function undockFromScreen(dockState) {
-    styleRestoreState(dockState.dockedElement, dockState.styleState)
+    styleRestoreState(dockState.dockedElement, dockState.styleState);
     dockState.spacer.remove();
     return dockState.dockedElement.detach();
 }
@@ -105,7 +105,7 @@ function dockToElement(elementToDock, dockTo, options) {
         }),
         dockedElementStyleState = styleSwapState(elementToDock, {
             position: 'static'
-        });
+    });
     wrapper.prepend(elementToDock);
     return {
         dockedElement: elementToDock,
@@ -116,8 +116,8 @@ function dockToElement(elementToDock, dockTo, options) {
 }
 
 function undockFromElement(dockState) {
-    styleRestoreState(dockState.dockedTo, dockState.innerStyleState)
-    styleRestoreState(dockState.dockedElement, dockState.dockedElementStyleState)
+    styleRestoreState(dockState.dockedTo, dockState.innerStyleState);
+    styleRestoreState(dockState.dockedElement, dockState.dockedElementStyleState);
     var dockedElement = dockState.dockedElement.detach();
     dockState.dockedTo.unwrap();
     return dockedElement;
