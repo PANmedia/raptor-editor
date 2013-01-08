@@ -32,6 +32,11 @@ DockPlugin.prototype.init = function() {
     }
 };
 
+/**
+ * Switch between docked / undocked, depending on options.
+ *
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.toggleState = function() {
     if (this.options.dockToElement) {
         return this.toggleDockToElement();
@@ -39,6 +44,9 @@ DockPlugin.prototype.toggleState = function() {
     return this.toggleDockToScreen();
 };
 
+/**
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.toggleDockToElement = function() {
     if (this.dockState) {
         this.dockToElement();
@@ -47,11 +55,17 @@ DockPlugin.prototype.toggleDockToElement = function() {
     }
 };
 
+/**
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.dockToElement = function() {
     this.marker.replaceWith(undockFromElement(this.dockState));
     this.dockState = null;
 };
 
+/**
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.undockFromElement = function() {
     var element = this.raptor.getElement();
     this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
@@ -61,6 +75,9 @@ DockPlugin.prototype.undockFromElement = function() {
     });
 };
 
+/**
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.toggleDockToScreen = function() {
     if (this.dockState) {
         this.dockToScreen();
@@ -69,6 +86,9 @@ DockPlugin.prototype.toggleDockToScreen = function() {
     }
 };
 
+/**
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.dockToScreen = function() {
     var layout = this.raptor.getLayout(),
         layoutElement = layout.getElement();
@@ -82,6 +102,9 @@ DockPlugin.prototype.dockToScreen = function() {
     });
 };
 
+/**
+ * @return {Object} Resulting dock state
+ */
 DockPlugin.prototype.undockFromScreen = function() {
     var layoutElement = undockFromScreen(this.dockState);
     this.marker.replaceWith(layoutElement);
