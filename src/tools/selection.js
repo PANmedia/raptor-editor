@@ -167,7 +167,7 @@ function selectionGetElement(range) {
     range = range || rangy.getSelection().getRangeAt(0);
 
     // Check if the common ancestor container is a text node
-    if (range.commonAncestorContainer.nodeType === 3) {
+    if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
         // Use the parent instead
         commonAncestor = range.commonAncestorContainer.parentNode;
     } else {
@@ -197,10 +197,10 @@ function selectionGetStartElement() {
         return null;
     }
     if (selection.isBackwards()) {
-        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+        return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
     }
     if (!selection.anchorNode) console.trace();
-    return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
 }
 
 function selectionGetEndElement() {
@@ -209,9 +209,9 @@ function selectionGetEndElement() {
         return null;
     }
     if (selection.isBackwards()) {
-        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+        return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
     }
-    return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+    return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
 }
 
 function selectionAtEndOfElement() {
@@ -383,7 +383,7 @@ function selectionToggleBlockStyle(styles, limit) {
     selectionEachRange(function(range) {
         var parent = $(range.commonAncestorContainer);
         while (parent.length && parent[0] !== limit[0] && (
-                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+                parent[0].nodeType === Node.TEXT_NODE || parent.css('display') === 'inline')) {
             parent = parent.parent();
         }
         if (parent[0] === limit[0]) {
@@ -512,7 +512,7 @@ function selectionConstrain(element, selection) {
 
     var commonAncestor;
     $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === 3) {
+        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
             commonAncestor = $(range.commonAncestorContainer).parent()[0];
         } else {
             commonAncestor = range.commonAncestorContainer;
