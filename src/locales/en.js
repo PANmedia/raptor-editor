@@ -241,6 +241,9 @@ registerLocale('en', 'English', {
     tagMenuTagH3: 'Heading&nbsp;3',
     tagMenuTagNA: 'N/A',
     tagMenuTagP: 'Paragraph',
+    tagMenuTagDiv: 'Div',
+    tagMenuTagPre: 'Pre-formatted',
+    tagMenuTagAddress: 'Address',
     tagMenuTitle: 'Change element style',
 
     tagTreeElementLink: 'Select {{element}} element',
