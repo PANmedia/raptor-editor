@@ -6,7 +6,7 @@ function Button(overrides) {
     for (var key in overrides) {
         this[key] = overrides[key];
     }
-};
+}
 
 Button.prototype.init = function() {
     return this.getButton();
@@ -36,7 +36,7 @@ Button.prototype.getTitle = function() {
 
 Button.prototype.getIcon = function() {
     if (this.icon === null) {
-        return 'ui-icon-' + stringCamelCaseConvert(this.name)
+        return 'ui-icon-' + stringCamelCaseConvert(this.name);
     }
     return this.icon;
 };
