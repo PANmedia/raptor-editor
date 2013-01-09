@@ -343,12 +343,14 @@ function selectionReplaceSplittingSelectedElement(html, selection) {
 /**
  * Replace current selection with given html, ensuring that selection container is split at
  * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+ *
  * @param  {jQuery|Element|string} html The html to replace current selection with.
  * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
  * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
  */
 function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selection = selection || rangy.getSelection();
+
     if (selection.rangeCount === 0) {
         return;
     }
@@ -523,7 +525,6 @@ function selectionConstrain(element, selection) {
     });
 }
 
-
 function selectionClearFormatting(limitNode, selection) {
     limitNode = limitNode || document.body;
     selection = selection || rangy.getSelection();
@@ -570,8 +571,6 @@ function selectionClearFormatting(limitNode, selection) {
         }
     }
 }
-
-
 
 function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
     selectionSave();
