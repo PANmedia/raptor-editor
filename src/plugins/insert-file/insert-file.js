@@ -12,17 +12,22 @@ Raptor.registerUi(new Button({
     options: {
         /**
          * @type {null|Function} Specify a function to use instead of the default
-         * file insertion dialog.
+         *                       file insertion dialog.
+         * @return {Boolean} False to indicate that custom action failed and the
+         *                         default dialog should be used.
          */
         customAction: false
     },
     action: function() {
         selectionSave();
         // If a customAction has been specified, use it instead of the default dialog.
-        if (this.options.customAction) {
-            return this.options.customAction.call(this);
+        if (!this.options.customAction) {
+            return this.showDialog();
         }
-        this.showDialog();
+
+        if (this.options.customAction.call(this) === false) {
+            return this.showDialog();
+        }
     },
 
     /**
@@ -41,10 +46,10 @@ Raptor.registerUi(new Button({
                     text: _('insertFileDialogOKButton'),
                     click: function() {
                         this.insertFiles([{
-                            url: dialogElement.find('input[name="location"]').val(),
+                            location: dialogElement.find('input[name="location"]').val(),
                             name: dialogElement.find('input[name="name"]').val()
                         }]);
-                        aDialogClose(cancelDialog);
+                        aDialogClose(dialogElement);
                     }.bind(this),
                     icons: {
                         primary: 'ui-icon-circle-check'
@@ -53,7 +58,7 @@ Raptor.registerUi(new Button({
                 {
                     text: _('insertFileDialogCancelButton'),
                     click: function() {
-                        aDialogClose(cancelDialog);
+                        aDialogClose(dialogElement);
                     },
                     icons: {
                         primary: 'ui-icon-circle-close'
@@ -114,10 +119,10 @@ Raptor.registerUi(new Button({
             return;
         }
 
+        selectionRestore();
         var file;
         if (files.length === 1) {
             file = files.shift();
-            selectionRestore();
 
             var html = this.prepareElement(file, selectionGetHtml());
 
@@ -148,7 +153,6 @@ Raptor.registerUi(new Button({
             elements.push(this.prepareElement(files[fileIndex]));
         }
 
-        selectionRestore();
         selectionReplaceWithinValidTags(elements.join(', '), [
             // Tags within which both the <img> & <a> tags may reside
             'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
@@ -186,7 +190,7 @@ Raptor.registerUi(new Button({
      */
     prepareImage: function(file, classNames, text) {
         return $('<div/>').html($('<img/>').attr({
-            src: file.url,
+            src: file.location,
             title: text || file.name,
             'class': classNames
         })).html();
@@ -203,7 +207,7 @@ Raptor.registerUi(new Button({
      */
     prepareAnchor: function(file, classNames, text) {
         return $('<div/>').html($('<a/>').attr({
-            href: file.url,
+            href: file.location,
             title: file.name,
             'class': classNames
         }).html(text || file.name)).html();
