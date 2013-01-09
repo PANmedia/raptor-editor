@@ -229,7 +229,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -267,7 +267,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
+                    malesuada {hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
