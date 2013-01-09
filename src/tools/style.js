@@ -5,8 +5,8 @@ function styleSwapState(element, newState) {
     for (var key in newState) {
         previousState[key] = node.style[key];
     }
-    for (var key in newState) {
-        element.css(key, newState[key])
+    for (key in newState) {
+        element.css(key, newState[key]);
     }
     return previousState;
 }
@@ -18,9 +18,9 @@ function styleSwapWithWrapper(wrapper, inner, newState) {
     for (var key in newState) {
         previousState[key] = innerNode.style[key];
     }
-    for (var key in newState) {
+    for (key in newState) {
         wrapper.css(key, inner.css(key));
-        inner.css(key, newState[key])
+        inner.css(key, newState[key]);
     }
     return previousState;
 }

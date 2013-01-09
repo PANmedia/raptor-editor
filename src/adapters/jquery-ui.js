@@ -35,6 +35,9 @@ function aMenu(element, options) {
 function aDialog(element, options) {
     var dialog = $(element).dialog(options);
     // TODO: Remove this when jQuery UI 1.10 is released
+    if (typeof options.buttons === 'undefined') {
+        return dialog;
+    }
     var buttons = dialog.parent().find('.ui-dialog-buttonpane');
     for (var i = 0, l = options.buttons.length; i < l; i++) {
         aButton(buttons.find('button:eq(' + i + ')'), {

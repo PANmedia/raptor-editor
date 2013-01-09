@@ -691,7 +691,7 @@ var RaptorWidget = {
         if (!this.templates[name]) {
             this.templates[name] = templateGet(name, this.options.urlPrefix);
         }
-        return templateConvertTokens(this.templates[name], variables);;
+        return templateConvertTokens(this.templates[name], variables);
     },
 
     /*========================================================================*\
@@ -884,7 +884,7 @@ var RaptorWidget = {
                 return '-' + match.toLowerCase();
             });
 
-            var options = $.extend(true, {}, editor.options, {
+            var options = $.extend({}, editor.options, {
                 baseClass: editor.options.baseClass + '-' + baseClass
             }, pluginObject.options, editor.options.plugins[name]);
 

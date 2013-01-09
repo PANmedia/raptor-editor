@@ -1,0 +1,55 @@
+.tests {
+    border-collapse: collapse;
+    width: 90%;
+    border: 2px solid #b3b3b3;
+    margin-right: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.test-button{
+    float: right;
+    margin-right: 1em;
+}
+
+.group{
+    border-bottom: 1px solid #b3b3b3;
+}
+
+.group-header{
+    float: right;
+    width: 92%;
+}
+
+.item{
+    float: right;
+    width: 92%;
+}
+
+.item-header{
+    float: right;
+    width: 92%;
+}
+
+.number{
+    width: 8%;
+    float: left;
+}
+
+.description{
+    margin-left: 4em;
+}
+
+.content{
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+}
+
+h2 {
+    margin-left: 3%;
+}
+
+.clear {
+    clear: both;
+}

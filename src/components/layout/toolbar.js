@@ -6,10 +6,6 @@ Raptor.registerLayout('toolbar', {
         uiOrder: null
     },
 
-    setDefaultUIOrder: function() {
-
-    },
-
     init: function() {
         // Load all UI components if not supplied
         if (!this.options.uiOrder) {
@@ -103,10 +99,6 @@ Raptor.registerLayout('toolbar', {
             this.raptor.loadMessages();
         }
 
-        $(function() {
-            wrapper.appendTo('body');
-        });
-
         // Loop the UI component order option
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiGroupContainer = $('<div/>')
@@ -157,7 +149,12 @@ Raptor.registerLayout('toolbar', {
             }
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
-        this.raptor.fire('layoutReady');
+
+        var layout = this;
+        $(function() {
+            wrapper.appendTo('body');
+            layout.raptor.fire('layoutReady');
+        });
     },
 
     show: function() {
