@@ -364,7 +364,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem {ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </p>

@@ -264,9 +264,9 @@
                 </p>
                 <blockquote>
                     <p>
-                        Aliquam gravida mauris at
-                        ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
-                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                        {Aliquam gravida mauris at
+                        ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
                     </p>
                 </blockquote>
 
@@ -304,9 +304,9 @@
             <div class="editible">
                 <blockquote>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                         convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                        malesuada {hendrerit} velit nec tristique.
+                        malesuada hendrerit velit nec tristique.}
                     </p>
                 </blockquote>
                 <p>
@@ -350,7 +350,7 @@
             <div class="editible">
                 <blockquote>
                     <p>
-                        Lorem {ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                        {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                         convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                         malesuada hendrerit velit nec tristique.
                     </p>
