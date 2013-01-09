@@ -159,6 +159,9 @@ registerLocale('en', 'English', {
     historyRedoTitle: 'Redo',
     historyUndoTitle: 'Undo',
 
+    insertFileDialogOKButton: 'Insert file',
+    insertFileDialogCancelButton: 'Cancel',
+
     listOrderedTitle: 'Ordered list',
     listUnorderedTitle: 'Unordered list',
 
