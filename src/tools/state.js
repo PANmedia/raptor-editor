@@ -5,7 +5,7 @@ function stateSave(element) {
         handleError("Element must be a jQuery instance when saving a state", element);
     }
     // </strict>
-    
+
     var ranges = rangy.getSelection().getAllRanges();
     return {
         element: element.clone(true),
@@ -22,16 +22,10 @@ function stateRestore(element, state) {
         handleError("Preview state element must be a jQuery instance when restoring a state", state.element);
     }
     // </strict>
-    
+
     element.replaceWith(state.element);
     return {
         element: state.element,
         ranges: state.ranges ? rangeDeserialize(state.ranges) : null
     };
 }
-
-//function stateRestoreRanges(state) {
-//    if (state.ranges) {
-//        rangeDeserialize(state.ranges);
-//    }
-//}
