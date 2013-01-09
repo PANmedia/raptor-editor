@@ -408,6 +408,7 @@ var RaptorWidget = {
         this.loadLayout();
 
         if (!this.enabled) {
+            this.fire('enabling');
             this.enabled = true;
             this.getElement().addClass(this.options.baseClass + '-editing');
 
