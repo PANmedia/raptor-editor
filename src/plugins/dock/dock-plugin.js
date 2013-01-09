@@ -80,9 +80,9 @@ DockPlugin.prototype.undockFromElement = function() {
  */
 DockPlugin.prototype.toggleDockToScreen = function() {
     if (this.dockState) {
-        this.dockToScreen();
-    } else {
         this.undockFromScreen();
+    } else {
+        this.dockToScreen();
     }
 };
 
@@ -110,6 +110,7 @@ DockPlugin.prototype.undockFromScreen = function() {
     this.marker.replaceWith(layoutElement);
     this.raptor.getLayout().enableDragging();
     this.dockState = null;
+    layoutElement.css({ backgroundColor: 'red' });
 };
 
 Raptor.registerPlugin(new DockPlugin());
