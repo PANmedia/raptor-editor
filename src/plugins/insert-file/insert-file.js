@@ -1,6 +1,8 @@
 
 Raptor.registerUi(new Button({
     name: 'insertFile',
+
+    /** @type {string[]} Image extensions*/
     imageTypes: [
         'jpeg',
         'jpg',
@@ -8,17 +10,25 @@ Raptor.registerUi(new Button({
         'gif'
     ],
     options: {
+        /**
+         * @type {null|Function} Specify a function to use instead of the default
+         * file insertion dialog.
+         */
         customAction: false
     },
     action: function() {
         selectionSave();
+        // If a customAction has been specified, use it instead of the default dialog.
         if (this.options.customAction) {
             return this.options.customAction.call(this);
         }
-        this.requestFiles();
+        this.showDialog();
     },
 
-    requestFiles: function() {
+    /**
+     * Show the insert files dialog.
+     */
+    showDialog: function() {
         var dialogElement = $('.file-manager-missing');
         if (!dialogElement.length) {
             dialogElement = $(this.raptor.getTemplate('insert-file.dialog'));
@@ -31,7 +41,7 @@ Raptor.registerUi(new Button({
                     text: _('insertFileDialogOKButton'),
                     click: function() {
                         this.insertFiles([{
-                            url: dialogElement.find('input[name="url"]').val(),
+                            url: dialogElement.find('input[name="location"]').val(),
                             name: dialogElement.find('input[name="name"]').val()
                         }]);
                         aDialogClose(cancelDialog);
@@ -54,19 +64,29 @@ Raptor.registerUi(new Button({
         aDialogOpen(dialogElement);
     },
 
+    /**
+     * Attempt to determine the file type from either the file's explicitly set
+     * extension property, or the file extension of the file's location property.
+     *
+     * @param  {Object} file
+     * @return {string}
+     */
     getFileType: function(file) {
         if (typeof file.extension !== 'undefined') {
             return file.extension;
         }
-        var extension = file.url.split('.');
+        var extension = file.location.split('.');
         if (extension.length > 0) {
             return extension.pop();
         }
         return 'unknown';
     },
 
+    /**
+     * @param  {Object} file
+     * @return {Boolean} True if the file is an image.
+     */
     isImage: function(file) {
-        console.log(this.getFileType(file));
         return $.inArray(this.getFileType(file), this.imageTypes) !== -1;
     },
 
@@ -175,7 +195,7 @@ Raptor.registerUi(new Button({
     /**
      * Prepare HTML for an anchor tag.
      *
-     * @param  {File} file
+     * @param  {Object} file
      * @param  {string} classNames Classnames to apply to the anchor tag.
      * @param  {string|null} text Text to use as the anchor tag's title & content. If null,
      *                            the file's name is used.
