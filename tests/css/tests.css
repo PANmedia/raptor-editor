@@ -1,43 +1,55 @@
-table {
+.tests {
     border-collapse: collapse;
-    width:100%;
-    font-family: 'Bitstream Vera Sans Mono', Courier, monospace;
-    border: 1px solid #CCC;
+    width: 90%;
+    border: 2px solid #b3b3b3;
+    margin-right: 5%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
-thead tr {
-    font-weight: normal;
-    text-aling: left;
-    height: 2em;
-    border-bottom: 1px solid #DDD;
-    background-color: #ECECEC;
-    background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#ECECEC));
-    background: -moz-linear-gradient(top,  #FAFAFA,  #ECECEC);
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#ECECEC');
+.test-button{
+    float: right;
+    margin-right: 1em;
 }
 
-td {
-    padding: 1px 2px;
-    white-space: pre;
+.group{
+    border-bottom: 1px solid #b3b3b3;
 }
 
-td.bredecode {
-    width: 100%;
-    padding-left: 4px;
+.group-header{
+    float: right;
+    width: 92%;
 }
 
-td.codekolom {
-    text-align: right;
-    min-width: 3em;
-    background-color: #ECECEC;
-    border-right: 1px solid #DDD;
-    color: #AAA;
+.item{
+    float: right;
+    width: 92%;
 }
 
-tr.add {
-    background: #DFD;
+.item-header{
+    float: right;
+    width: 92%;
 }
 
-tr.del {
-    background: #FDD;
+.number{
+    width: 8%;
+    float: left;
+}
+
+.description{
+    margin-left: 4em;
+}
+
+.content{
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+}
+
+h2 {
+    margin-left: 3%;
+}
+
+.clear {
+    clear: both;
 }
