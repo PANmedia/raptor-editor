@@ -254,7 +254,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <strong class="cms-bold">{hendrerit}</strong> velit nec tristique.
+                    malesuada <strong class="cms-bold">{}hendrerit</strong> velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
