@@ -69,6 +69,7 @@ src/plugins/guides/guides.js
 src/plugins/history/history-redo.js
 src/plugins/history/history-undo.js
 src/plugins/hr/hr-create.js
+src/plugins/insert-file/insert-file.js
 src/plugins/link/link-type-email.js
 src/plugins/link/link-type-external.js
 src/plugins/link/link-type-internal.js
@@ -108,6 +109,7 @@ src/plugins/view-source/view-source.js
 src/plugins/click-button-to-edit/templates/button.html
 src/plugins/color-menu-basic/templates/menu.html
 src/plugins/embed/templates/dialog.html
+src/plugins/insert-file/templates/dialog.html
 src/plugins/link/templates/dialog.html
 src/plugins/link/templates/email.html
 src/plugins/link/templates/external.html
