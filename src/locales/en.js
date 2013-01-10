@@ -218,6 +218,11 @@ registerLocale('en', 'English', {
     saveRestPartial: 'Saved {{saved}} out of {{failed}} content blocks.',
     saveRestSaved: 'Successfully saved {{saved}} content block(s).',
 
+    specialCharactersDialogOKButton: 'OK',
+    specialCharactersDialogTitle: 'Insert Special Characters',
+    specialCharactersHelp: 'Click a special character to add it. Click "OK" when done to close this dialog',
+    specialCharactersTitle: 'Insert a special character',
+
     statisticsButtonCharacterOverLimit: '{{charactersRemaining}} characters over limit',
     statisticsButtonCharacterRemaining: '{{charactersRemaining}} characters remaining',
     statisticsButtonCharacters: '{{characters}} characters',
