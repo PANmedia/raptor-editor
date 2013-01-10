@@ -18,8 +18,11 @@
 
             function runTest(path){
                 $('<iframe>')
-                        .attr('src', path)
-                        .appendTo('.iframes');
+                    .attr('src', path)
+                    .load(function() {
+                        console.log(this.contentWindow.testResults);
+                    })
+                    .appendTo('.iframes');
             }
 
             $(function() {
@@ -47,11 +50,16 @@
                 $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
             }
 
+            $warnings = [];
             $groups = [];
-            $findTests = function($case) use($csv_data) {
+            $findTests = function($case) use($csv_data, &$warnings) {
                 $tests = [];
                 foreach (glob($case . '/*.*') as $file) {
                     $index = basename($case) . '/' . basename($file);
+                    if (!isset($csv_data[$index])) {
+                        $warnings[] = 'No description found for: ' . $index;
+                        continue;
+                    }
                     $tests[] = [
                         'name' => $csv_data[$index]['Name'],
                         'filename' => basename($file),
@@ -74,6 +82,14 @@
 
     </head>
     <body>
+        <?php if (!empty($warnings)): ?>
+            <h2>Warnings: </h2>
+            <ul>
+                <?php foreach ($warnings as $warning): ?>
+                    <li><?= $warning ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
         <h2>Tests: </h2>
         <div class="content">
             <div class="iframes"></div>
