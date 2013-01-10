@@ -1,9 +1,12 @@
 /*! 
-VERSION: 0.5.0 
+VERSION: 0.5.11 
 For license information, see http://www.raptor-editor.com/license
 */
 
-                /* File: build/default/src/dependencies/rangy/rangy-core.js */
+                    /* Wrapper. */
+                    (function($) {
+                
+                /* File: temp/default/src/dependencies/rangy/rangy-core.js */
                 /**
  * Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
@@ -3388,9 +3391,9 @@ rangy.createModule("WrappedSelection", function(api, module) {
     });
 });
 
-                /* End of file: build/default/src/dependencies/rangy/rangy-core.js */
+                /* End of file: temp/default/src/dependencies/rangy/rangy-core.js */
             
-                /* File: build/default/src/dependencies/rangy/rangy-applier.js */
+                /* File: temp/default/src/dependencies/rangy/rangy-applier.js */
                 /**
  * Tag/attribute/class applier module for Rangy.
  *
@@ -4315,9 +4318,9 @@ rangy.createModule("Applier", function(api, module) {
     api.createApplier = createApplier;
 });
 
-                /* End of file: build/default/src/dependencies/rangy/rangy-applier.js */
+                /* End of file: temp/default/src/dependencies/rangy/rangy-applier.js */
             
-                /* File: build/default/src/dependencies/rangy/rangy-cssclassapplier.js */
+                /* File: temp/default/src/dependencies/rangy/rangy-cssclassapplier.js */
                 /**
  * CSS Class Applier module for Rangy.
  * Adds, removes and toggles CSS classes on Ranges and Selections
@@ -5221,9 +5224,9 @@ rangy.createModule("CssClassApplier", function(api, module) {
     api.createCssClassApplier = createCssClassApplier;
 });
 
-                /* End of file: build/default/src/dependencies/rangy/rangy-cssclassapplier.js */
+                /* End of file: temp/default/src/dependencies/rangy/rangy-cssclassapplier.js */
             
-                /* File: build/default/src/dependencies/rangy/rangy-selectionsaverestore.js */
+                /* File: temp/default/src/dependencies/rangy/rangy-selectionsaverestore.js */
                 /**
  * Selection save and restore module for Rangy.
  * Saves and restores user selections using marker invisible elements in the DOM.
@@ -5458,9 +5461,9 @@ rangy.createModule("SaveRestore", function(api, module) {
     });
 });
 
-                /* End of file: build/default/src/dependencies/rangy/rangy-selectionsaverestore.js */
+                /* End of file: temp/default/src/dependencies/rangy/rangy-selectionsaverestore.js */
             
-                /* File: build/default/src/dependencies/rangy/rangy-serializer.js */
+                /* File: temp/default/src/dependencies/rangy/rangy-serializer.js */
                 /**
  * Serializer module for Rangy.
  * Serializes Ranges and Selections. An example use would be to store a user's selection on a particular page in a
@@ -5763,9 +5766,1462 @@ rangy.createModule("Serializer", function(api, module) {
     api.nodeToInfoString = nodeToInfoString;
 });
 
-                /* End of file: build/default/src/dependencies/rangy/rangy-serializer.js */
+                /* End of file: temp/default/src/dependencies/rangy/rangy-serializer.js */
             
-                /* File: build/default/src/dependencies/jquery-hotkeys.js */
+                /* File: temp/default/src/dependencies/rangy/rangy-textrange.js */
+                /**
+ * Text range module for Rangy.
+ * Text-based manipulation and searching of ranges and selections.
+ *
+ * Features
+ *
+ * - Ability to move range boundaries by character or word offsets
+ * - Customizable word tokenizer
+ * - Ignore text nodes inside <script> or <style> elements or those hidden by CSS display and visibility properties
+ * - Do not ignore text nodes that are outside normal document flow
+ * - Range findText method to search for text or regex within the page or within a range. Flags for whole words and case
+ *   sensitivity
+ * - Selection and range save/restore as text offsets within a node
+ * - Methods to return visible text within a range or selection
+ * - innerText method for elements
+ *
+ * References
+ *
+ * https://www.w3.org/Bugs/Public/show_bug.cgi?id=13145
+ * http://aryeh.name/spec/innertext/innertext.html
+ * http://dvcs.w3.org/hg/editing/raw-file/tip/editing.html
+ *
+ * Part of Rangy, a cross-browser JavaScript range and selection library
+ * http://code.google.com/p/rangy/
+ *
+ * Depends on Rangy core.
+ *
+ * Copyright 2012, Tim Down
+ * Licensed under the MIT license.
+ * Version: 1.3alpha.681
+ * Build date: 20 July 2012
+ */
+
+/**
+ * Problem: handling of trailing spaces before line breaks is handled inconsistently between browsers.
+ *
+ * First, a <br>: this is relatively simple. For the following HTML:
+ *
+ * 1 <br>2
+ *
+ * - IE and WebKit render the space, include it in the selection (i.e. when the content is selected and pasted in to a
+ *   textarea, the space is present) and allow the caret to be placed after it.
+ * - Firefox does not acknowledge the space in any way except that it is possible to place the caret after it.
+ * - Opera does not render the space but has two separate caret positions on either side of the space (left and right
+ *   arrow keys show this) and includes the space in the selection.
+ *
+ * The other case is the line break or breaks implied by block elements. For the following HTML:
+ *
+ * <p>1 </p><p>2<p>
+ *
+ * - WebKit does not acknowledge the space in any way
+ * - Firefox, IE and Opera as per <br>
+ *
+ * Problem is whether Rangy should ever acknowledge the space and if so, when.
+ */
+rangy.createModule("TextRange", function(api, module) {
+    api.requireModules( ["WrappedSelection"] );
+
+    var UNDEF = "undefined";
+    var CHARACTER = "character", WORD = "word";
+    var dom = api.dom, util = api.util, DomPosition = dom.DomPosition;
+    var extend = util.extend;
+
+
+    var spacesRegex = /^[ \t\f\r\n]+$/;
+    var spacesMinusLineBreaksRegex = /^[ \t\f\r]+$/;
+    var allWhiteSpaceRegex = /^[\t-\r \u0085\u00A0\u1680\u180E\u2000-\u200B\u2028\u2029\u202F\u205F\u3000]+$/;
+    var nonLineBreakWhiteSpaceRegex = /^[\t \u00A0\u1680\u180E\u2000-\u200B\u202F\u205F\u3000]+$/;
+    var lineBreakRegex = /^[\n-\r\u0085\u2028\u2029]$/;
+
+    var defaultLanguage = "en";
+
+    var isDirectionBackward = api.Selection.isDirectionBackward;
+
+    // Test whether trailing spaces inside blocks are completely collapsed (as they are in WebKit, but not other
+    // browsers). Also test whether trailing spaces before <br> elements are collapsed
+    var trailingSpaceInBlockCollapses = false;
+    var trailingSpaceBeforeBrCollapses = false;
+    var trailingSpaceBeforeLineBreakInPreLineCollapses = true;
+    
+    var el = document.createElement("div");
+    if (util.isHostProperty(el, "innerText")) {
+        el.innerHTML = "<p>&nbsp; </p><p></p>";
+        document.body.appendChild(el);
+        trailingSpaceInBlockCollapses = (!/ /.test(el.innerText));
+        document.body.removeChild(el);
+    }
+    //alert([trailingSpaceBeforeBrBlockCollapses, trailingSpaceInBlockCollapses])
+
+
+    var getComputedStyleProperty;
+    if (typeof window.getComputedStyle != UNDEF) {
+        getComputedStyleProperty = function(el, propName, win) {
+            return (win || dom.getWindow(el)).getComputedStyle(el, null)[propName];
+        };
+    } else if (typeof document.documentElement.currentStyle != UNDEF) {
+        getComputedStyleProperty = function(el, propName) {
+            return el.currentStyle[propName];
+        };
+    } else {
+        module.fail("No means of obtaining computed style properties found");
+    }
+
+    // "A block node is either an Element whose "display" property does not have
+    // resolved value "inline" or "inline-block" or "inline-table" or "none", or a
+    // Document, or a DocumentFragment."
+    function isBlockNode(node) {
+        return node
+            && ((node.nodeType == 1 && !/^(inline(-block|-table)?|none)$/.test(getComputedDisplay(node)))
+            || node.nodeType == 9 || node.nodeType == 11);
+    }
+
+    function getLastDescendantOrSelf(node) {
+        var lastChild = node.lastChild;
+        return lastChild ? getLastDescendantOrSelf(lastChild) : node;
+    }
+
+    function containsPositions(node) {
+        return dom.isCharacterDataNode(node)
+            || !/^(area|base|basefont|br|col|frame|hr|img|input|isindex|link|meta|param)$/i.test(node.nodeName);
+    }
+
+    function getAncestors(node) {
+        var ancestors = [];
+        while (node.parentNode) {
+            ancestors.unshift(node.parentNode);
+            node = node.parentNode;
+        }
+        return ancestors;
+    }
+
+    function getAncestorsAndSelf(node) {
+        return getAncestors(node).concat([node]);
+    }
+
+    // Opera 11 puts HTML elements in the null namespace, it seems, and IE 7 has undefined namespaceURI
+/*
+    function isHtmlNode(node) {
+        var ns;
+        return typeof (ns = node.namespaceURI) == UNDEF || (ns === null || ns == "http://www.w3.org/1999/xhtml");
+    }
+
+    function isHtmlElement(node, tagNames) {
+        if (!node || node.nodeType != 1 || !isHtmlNode(node)) {
+            return false;
+        }
+        switch (typeof tagNames) {
+            case "string":
+                return node.tagName.toLowerCase() == tagNames.toLowerCase();
+            case "object":
+                return new RegExp("^(" + tagNames.join("|S") + ")$", "i").test(node.tagName);
+            default:
+                return true;
+        }
+    }
+*/
+
+    function nextNodeDescendants(node) {
+        while (node && !node.nextSibling) {
+            node = node.parentNode;
+        }
+        if (!node) {
+            return null;
+        }
+        return node.nextSibling;
+    }
+
+    function nextNode(node, excludeChildren) {
+        if (!excludeChildren && node.hasChildNodes()) {
+            return node.firstChild;
+        }
+        return nextNodeDescendants(node);
+    }
+
+    function previousNode(node) {
+        var previous = node.previousSibling;
+        if (previous) {
+            node = previous;
+            while (node.hasChildNodes()) {
+                node = node.lastChild;
+            }
+            return node;
+        }
+        var parent = node.parentNode;
+        if (parent && parent.nodeType == 1) {
+            return parent;
+        }
+        return null;
+    }
+
+    function isHidden(node) {
+        var ancestors = getAncestorsAndSelf(node);
+        for (var i = 0, len = ancestors.length; i < len; ++i) {
+            if (ancestors[i].nodeType == 1 && getComputedDisplay(ancestors[i]) == "none") {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function isVisibilityHiddenTextNode(textNode) {
+        var el;
+        return textNode.nodeType == 3
+            && (el = textNode.parentNode)
+            && getComputedStyleProperty(el, "visibility") == "hidden";
+    }
+
+    // Adpated from Aryeh's code.
+    // "A whitespace node is either a Text node whose data is the empty string; or
+    // a Text node whose data consists only of one or more tabs (0x0009), line
+    // feeds (0x000A), carriage returns (0x000D), and/or spaces (0x0020), and whose
+    // parent is an Element whose resolved value for "white-space" is "normal" or
+    // "nowrap"; or a Text node whose data consists only of one or more tabs
+    // (0x0009), carriage returns (0x000D), and/or spaces (0x0020), and whose
+    // parent is an Element whose resolved value for "white-space" is "pre-line"."
+    function isWhitespaceNode(node) {
+        if (!node || node.nodeType != 3) {
+            return false;
+        }
+        var text = node.data;
+        if (text == "") {
+            return true;
+        }
+        var parent = node.parentNode;
+        if (!parent || parent.nodeType != 1) {
+            return false;
+        }
+        var computedWhiteSpace = getComputedStyleProperty(node.parentNode, "whiteSpace");
+
+        return (/^[\t\n\r ]+$/.test(text) && /^(normal|nowrap)$/.test(computedWhiteSpace))
+            || (/^[\t\r ]+$/.test(text) && computedWhiteSpace == "pre-line");
+    }
+
+    // Adpated from Aryeh's code.
+    // "node is a collapsed whitespace node if the following algorithm returns
+    // true:"
+    function isCollapsedWhitespaceNode(node) {
+        // "If node's data is the empty string, return true."
+        if (node.data == "") {
+            return true;
+        }
+
+        // "If node is not a whitespace node, return false."
+        if (!isWhitespaceNode(node)) {
+            return false;
+        }
+
+        // "Let ancestor be node's parent."
+        var ancestor = node.parentNode;
+
+        // "If ancestor is null, return true."
+        if (!ancestor) {
+            return true;
+        }
+
+        // "If the "display" property of some ancestor of node has resolved value "none", return true."
+        if (isHidden(node)) {
+            return true;
+        }
+
+        // Algorithms further down the line decide whether the white space node is collapsed or not
+        return false;
+
+/*
+        // "While ancestor is not a block node and its parent is not null, set
+        // ancestor to its parent."
+        while (!isBlockNode(ancestor) && ancestor.parentNode) {
+            ancestor = ancestor.parentNode;
+        }
+
+        // "Let reference be node."
+        var reference = node;
+
+        // "While reference is a descendant of ancestor:"
+        while (reference != ancestor) {
+            // "Let reference be the node before it in tree order."
+            reference = previousNode(reference);
+
+            // "If reference is a block node or a br, return true."
+            if (isBlockNode(reference) || isHtmlElement(reference, "br")) {
+                return true;
+            }
+
+            // "If reference is a Text node that is not a whitespace node, or is an
+            // img, break from this loop."
+            if ((reference.nodeType == 3 && !isWhitespaceNode(reference)) || isHtmlElement(reference, "img")) {
+                break;
+            }
+        }
+
+        // "Let reference be node."
+        reference = node;
+
+        // "While reference is a descendant of ancestor:"
+        var stop = nextNodeDescendants(ancestor);
+        while (reference != stop) {
+            // "Let reference be the node after it in tree order, or null if there
+            // is no such node."
+            reference = nextNode(reference);
+
+            // "If reference is a block node or a br, return true."
+            if (isBlockNode(reference) || isHtmlElement(reference, "br")) {
+                return true;
+            }
+
+            // "If reference is a Text node that is not a whitespace node, or is an
+            // img, break from this loop."
+            if ((reference && reference.nodeType == 3 && !isWhitespaceNode(reference)) || isHtmlElement(reference, "img")) {
+                break;
+            }
+        }
+
+        // "Return false."
+        return false;
+*/
+    }
+
+    // Test for old IE's incorrect display properties
+    var tableCssDisplayBlock;
+    (function() {
+        var table = document.createElement("table");
+        document.body.appendChild(table);
+        tableCssDisplayBlock = (getComputedStyleProperty(table, "display") == "block");
+        document.body.removeChild(table);
+    })();
+
+    api.features.tableCssDisplayBlock = tableCssDisplayBlock;
+
+    var defaultDisplayValueForTag = {
+        table: "table",
+        caption: "table-caption",
+        colgroup: "table-column-group",
+        col: "table-column",
+        thead: "table-header-group",
+        tbody: "table-row-group",
+        tfoot: "table-footer-group",
+        tr: "table-row",
+        td: "table-cell",
+        th: "table-cell"
+    };
+
+    // Corrects IE's "block" value for table-related elements
+    function getComputedDisplay(el, win) {
+        var display = getComputedStyleProperty(el, "display", win);
+        var tagName = el.tagName.toLowerCase();
+        return (display == "block"
+                && tableCssDisplayBlock
+                && defaultDisplayValueForTag.hasOwnProperty(tagName))
+            ? defaultDisplayValueForTag[tagName] : display;
+    }
+
+    function isCollapsedNode(node) {
+        var type = node.nodeType;
+        return type == 7 /* PROCESSING_INSTRUCTION */
+            || type == 8 /* COMMENT */
+            || isHidden(node)
+            || /^(script|style)$/i.test(node.nodeName)
+            || isVisibilityHiddenTextNode(node)
+            || isCollapsedWhitespaceNode(node);
+    }
+
+    function isIgnoredNode(node, win) {
+        var type = node.nodeType;
+        return type == 7 /* PROCESSING_INSTRUCTION */
+            || type == 8 /* COMMENT */
+            || (type == 1 && getComputedDisplay(node, win) == "none");
+    }
+
+    function hasInnerText(node) {
+        if (!isCollapsedNode(node)) {
+            if (node.nodeType == 3) {
+                return true;
+            } else {
+                for (var child = node.firstChild; child; child = child.nextSibling) {
+                    if (hasInnerText(child)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    function getRangeStartPosition(range) {
+        return new DomPosition(range.startContainer, range.startOffset);
+    }
+
+    function getRangeEndPosition(range) {
+        return new DomPosition(range.endContainer, range.endOffset);
+    }
+
+    function TextPosition(character, position, isLeadingSpace, isTrailingSpace, isBr, collapsible) {
+        this.character = character;
+        this.position = position;
+        this.isLeadingSpace = isLeadingSpace;
+        this.isTrailingSpace = isTrailingSpace;
+        this.isBr = isBr;
+        this.collapsible = collapsible;
+    }
+
+    TextPosition.prototype.toString = function() {
+        return this.character;
+    };
+
+    TextPosition.prototype.collapsesPrecedingSpace = function() {
+        return this.character == "\n" &&
+            ( (this.isBr && trailingSpaceBeforeBrCollapses) || (this.isTrailingSpace && trailingSpaceInBlockCollapses) );
+    };
+
+    function getTrailingSpace(el) {
+        if (el.tagName.toLowerCase() == "br") {
+            return "";
+        } else {
+            switch (getComputedDisplay(el)) {
+                case "inline":
+                    var child = el.lastChild;
+                    while (child) {
+                        if (!isIgnoredNode(child)) {
+                            return (child.nodeType == 1) ? getTrailingSpace(child) : "";
+                        }
+                        child = child.previousSibling;
+                    }
+                    break;
+                case "inline-block":
+                case "inline-table":
+                case "none":
+                case "table-column":
+                case "table-column-group":
+                    break;
+                case "table-cell":
+                    return "\t";
+                default:
+                    return hasInnerText(el) ? "\n" : "";
+            }
+        }
+        return "";
+    }
+
+    function getLeadingSpace(el) {
+        switch (getComputedDisplay(el)) {
+            case "inline":
+            case "inline-block":
+            case "inline-table":
+            case "none":
+            case "table-column":
+            case "table-column-group":
+            case "table-cell":
+                break;
+            default:
+                return hasInnerText(el) ? "\n" : "";
+        }
+        return "";
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    /*
+    Next and previous position moving functions that move between all possible positions in the document
+     */
+    function nextPosition(pos) {
+        var node = pos.node, offset = pos.offset;
+        if (!node) {
+            return null;
+        }
+        var nextNode, nextOffset, child;
+        if (offset == dom.getNodeLength(node)) {
+            // Move onto the next node
+            nextNode = node.parentNode;
+            nextOffset = nextNode ? dom.getNodeIndex(node) + 1 : 0;
+        } else {
+            if (dom.isCharacterDataNode(node)) {
+                nextNode = node;
+                nextOffset = offset + 1;
+            } else {
+                child = node.childNodes[offset];
+                // Go into the children next, if children there are
+                if (containsPositions(child)) {
+                    nextNode = child;
+                    nextOffset = 0;
+                } else {
+                    nextNode = node;
+                    nextOffset = offset + 1;
+                }
+            }
+        }
+        return nextNode ? new DomPosition(nextNode, nextOffset) : null;
+    }
+
+    function previousPosition(pos) {
+        if (!pos) {
+            return null;
+        }
+        var node = pos.node, offset = pos.offset;
+        var previousNode, previousOffset, child;
+        if (offset == 0) {
+            previousNode = node.parentNode;
+            previousOffset = previousNode ? dom.getNodeIndex(node) : 0;
+        } else {
+            if (dom.isCharacterDataNode(node)) {
+                previousNode = node;
+                previousOffset = offset - 1;
+            } else {
+                child = node.childNodes[offset - 1];
+                // Go into the children next, if children there are
+                if (containsPositions(child)) {
+                    previousNode = child;
+                    previousOffset = dom.getNodeLength(child);
+                } else {
+                    previousNode = node;
+                    previousOffset = offset - 1;
+                }
+            }
+        }
+        return previousNode ? new DomPosition(previousNode, previousOffset) : null;
+    }
+
+    /*
+    Next and previous position moving functions that filter out
+
+    - Whole whitespace nodes that do not affect rendering
+    - Hidden (CSS visibility/display) elements
+    - Script and style elements
+    - collapsed whitespace characters
+     */
+    function nextVisiblePosition(pos) {
+        var next = nextPosition(pos);
+        if (!next) {
+            return null;
+        }
+        var node = next.node;
+        var newPos = next;
+        if (isCollapsedNode(node)) {
+            // We're skipping this node and all its descendants
+            newPos = new DomPosition(node.parentNode, dom.getNodeIndex(node) + 1);
+        }
+        return newPos;
+    }
+
+    function previousVisiblePosition(pos) {
+        var previous = previousPosition(pos);
+        if (!previous) {
+            return null;
+        }
+        var node = previous.node;
+        var newPos = previous;
+        if (isCollapsedNode(node)) {
+            // We're skipping this node and all its descendants
+            newPos = new DomPosition(node.parentNode, dom.getNodeIndex(node));
+        }
+        return newPos;
+    }
+
+    function createTransaction(win, characterOptions) {
+        return {
+            characterOptions: characterOptions
+        };
+    }
+
+    function getTextNodeProperties(textNode) {
+        var spaceRegex = null, collapseSpaces = false;
+        var cssWhitespace = getComputedStyleProperty(textNode.parentNode, "whiteSpace");
+        var preLine = (cssWhitespace == "pre-line");
+        if (preLine) {
+            spaceRegex = spacesMinusLineBreaksRegex;
+            collapseSpaces = true;
+        } else if (cssWhitespace == "normal" || cssWhitespace == "nowrap") {
+            spaceRegex = spacesRegex;
+            collapseSpaces = true;
+        }
+
+        return {
+            node: textNode,
+            text: textNode.data,
+            spaceRegex: spaceRegex,
+            collapseSpaces: collapseSpaces,
+            preLine: preLine
+        };
+    }
+
+    function getPossibleCharacterAt(pos, transaction) {
+        var node = pos.node, offset = pos.offset;
+        var visibleChar = "", isLeadingSpace = false, isTrailingSpace = false, isBr = false, collapsible = false;
+        if (offset > 0) {
+            if (node.nodeType == 3) {
+                var text = node.data;
+                var textChar = text.charAt(offset - 1);
+                var nodeInfo = transaction.nodeInfo;
+                if (!nodeInfo || nodeInfo.node !== node) {
+                    transaction.nodeInfo = nodeInfo = getTextNodeProperties(node);
+                }
+                var spaceRegex = nodeInfo.spaceRegex;
+                if (nodeInfo.collapseSpaces) {
+                    if (spaceRegex.test(textChar)) {
+                        collapsible = true;
+                        // "If the character at position is from set, append a single space (U+0020) to newdata and advance
+                        // position until the character at position is not from set."
+
+                        // We also need to check for the case where we're in a pre-line and we have a space preceding a
+                        // line break, because such spaces are collapsed in some browsers
+                        if (offset > 1 && spaceRegex.test(text.charAt(offset - 2))) {
+                        } else if (nodeInfo.preLine && text.charAt(offset) === "\n" && trailingSpaceBeforeBrCollapses) {
+                        } else {
+                            visibleChar = " ";
+                        }
+                    } else {
+                        visibleChar = textChar;
+                    }
+                } else {
+                    visibleChar = textChar;
+                }
+            } else {
+                var nodePassed = node.childNodes[offset - 1];
+                if (nodePassed && nodePassed.nodeType == 1 && !isCollapsedNode(nodePassed)) {
+                    if (nodePassed.tagName.toLowerCase() == "br") {
+                        visibleChar = "\n";
+                        isBr = true;
+                    } else {
+                        visibleChar = getTrailingSpace(nodePassed);
+                        if (visibleChar) {
+                            isTrailingSpace = collapsible = true;
+                        }
+                    }
+                }
+
+                // Check the leading space of the next node for the case when a block element follows an inline
+                // element or text node. In that case, there is an implied line break between the two nodes.
+                if (!visibleChar) {
+                    var nextNode = node.childNodes[offset];
+                    if (nextNode && nextNode.nodeType == 1 && !isCollapsedNode(nextNode)) {
+                        visibleChar = getLeadingSpace(nextNode);
+                        if (visibleChar) {
+                            isLeadingSpace = true;
+                        }
+                    }
+                }
+            }
+        }
+        return new TextPosition(visibleChar, pos, isLeadingSpace, isTrailingSpace, isBr, collapsible);
+    }
+
+/*
+    function getPreviousPossibleCharacter(pos, transaction) {
+        var previousPos = pos, previous;
+        while ( (previousPos = previousVisiblePosition(previousPos)) ) {
+            previous = getPossibleCharacterAt(previousPos, transaction);
+            if (previous.character !== "") {
+                return previous;
+            }
+        }
+        return null;
+    }
+*/
+
+    function getNextPossibleCharacter(pos, transaction) {
+        var nextPos = pos, next;
+        while ( (nextPos = nextVisiblePosition(nextPos)) ) {
+            next = getPossibleCharacterAt(nextPos, transaction);
+            if (next.character !== "") {
+                return next;
+            }
+        }
+        return null;
+    }
+
+    function getCharacterAt(pos, transaction, precedingChars) {
+        var possible = getPossibleCharacterAt(pos, transaction);
+        var possibleChar = possible.character;
+        var next, preceding;
+        if (!possibleChar) {
+            return possible;
+        }
+        if (spacesRegex.test(possibleChar)) {
+            if (!precedingChars) {
+                // Work backwards until we have a non-space character
+                var previousPos = pos, previous, previousPossibleChar;
+                precedingChars = [];
+                while ( (previousPos = previousVisiblePosition(previousPos)) ) {
+                    previous = getPossibleCharacterAt(previousPos, transaction);
+                    previousPossibleChar = previous.character;
+                    if (previousPossibleChar !== "") {
+                        precedingChars.unshift(previous);
+                        if (previousPossibleChar != " " && previousPossibleChar != "\n") {
+                            break;
+                        }
+                    }
+                }
+            }
+            preceding = precedingChars[precedingChars.length - 1];
+
+            if (preceding) {
+            }
+
+            // Disallow a collapsible space that follows a trailing space or line break, or is the first character
+            if (possibleChar === " " && possible.collapsible &&
+                    (!preceding || preceding.isTrailingSpace || preceding.character == "\n")) {
+                possible.character = "";
+            }
+
+            // Disallow a collapsible space that is followed by a line break or is the last character
+            else if (possible.collapsible &&
+                    (!(next = getNextPossibleCharacter(pos, transaction))
+                        || (next.character == "\n" && next.collapsesPrecedingSpace()))) {
+                possible.character = "";
+            }
+
+            // Collapse a br element that is followed by a trailing space
+            else if (possibleChar === "\n" && !possible.collapsible && (!(next = getNextPossibleCharacter(pos, transaction)) || next.isTrailingSpace)) {
+                possible.character = "";
+            }
+
+            return possible;
+        } else {
+            return possible;
+        }
+    }
+
+    var defaultCharacterOptions = {
+        ignoreSpaceBeforeLineBreak: true
+    };
+
+    function createCharacterIterator(startPos, backward, endPos, optionsParam) {
+        var defaults = extend({}, defaultCharacterOptions);
+        var options = optionsParam ? extend(defaults, optionsParam) : defaults;
+                
+        var transaction = createTransaction(dom.getWindow(startPos.node), options);
+
+        // Adjust the end position to ensure that it is actually reached
+        if (endPos) {
+            if (backward) {
+                if (isCollapsedNode(endPos.node)) {
+                    endPos = previousVisiblePosition(endPos);
+                }
+            } else {
+                if (isCollapsedNode(endPos.node)) {
+                    endPos = nextVisiblePosition(endPos);
+                }
+            }
+        }
+
+        var pos = startPos, finished = false;
+
+        function next() {
+            var textPos = null;
+            if (!finished) {
+                if (!backward) {
+                    pos = nextVisiblePosition(pos);
+                }
+                if (pos) {
+                    textPos = getCharacterAt(pos, transaction);
+                    if (endPos && pos.equals(endPos)) {
+                        finished = true;
+                    }
+                } else {
+                    finished = true;
+                }
+                if (backward) {
+                    pos = previousVisiblePosition(pos);
+                }
+            }
+            return textPos;
+        }
+
+        var previousTextPos, returnPreviousTextPos = false;
+
+        return {
+            next: function() {
+                if (returnPreviousTextPos) {
+                    returnPreviousTextPos = false;
+                    return previousTextPos;
+                } else {
+                    var textPos;
+                    while ( (textPos = next()) ) {
+                        if (textPos.character) {
+                            previousTextPos = textPos;
+                            return textPos;
+                        }
+                    }
+                }
+            },
+
+            rewind: function() {
+                if (previousTextPos) {
+                    returnPreviousTextPos = true;
+                } else {
+                    throw module.createError("createCharacterIterator: cannot rewind. Only one position can be rewound.");
+                }
+            },
+
+            dispose: function() {
+                startPos = endPos = transaction = null;
+            }
+        };
+    }
+
+    // This function must create word and non-word tokens for the whole of the text supplied to it
+    function defaultTokenizer(chars, options) {
+        var word = chars.join(""), result, tokens = [];
+
+        function createTokenFromRange(start, end, isWord) {
+            var tokenChars = chars.slice(start, end);
+            var token = {
+                isWord: isWord,
+                chars: tokenChars,
+                toString: function() { return tokenChars.join(""); }
+            };
+            for (var i = 0, len = tokenChars.length; i < len; ++i) {
+                tokenChars[i].token = token;
+            }
+            tokens.push(token);
+        }
+
+        // Match words and mark characters
+        var lastWordEnd = 0, wordStart, wordEnd;
+        while ( (result = options.wordRegex.exec(word)) ) {
+            wordStart = result.index;
+            wordEnd = wordStart + result[0].length;
+
+            // Create token for non-word characters preceding this word
+            if (wordStart > lastWordEnd) {
+                createTokenFromRange(lastWordEnd, wordStart, false);
+            }
+
+            // Get trailing space characters for word
+            if (options.includeTrailingSpace) {
+                while (nonLineBreakWhiteSpaceRegex.test(chars[wordEnd])) {
+                    ++wordEnd;
+                }
+            }
+            createTokenFromRange(wordStart, wordEnd, true);
+            lastWordEnd = wordEnd;
+        }
+
+        // Create token for trailing non-word characters, if any exist
+        if (lastWordEnd < chars.length) {
+            createTokenFromRange(lastWordEnd, chars.length, false);
+        }
+
+        return tokens;
+    }
+
+    var arrayIndexOf = Array.prototype.indexOf ?
+        function(arr, val) {
+            return arr.indexOf(val);
+        } :
+        function(arr, val) {
+            for (var i = 0, len = arr.length; i < len; ++i) {
+                if (arr[i] === val) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+
+    // Provide pair of iterators over text positions, tokenized. Transparently requests more text when next()
+    // is called and there is no more tokenized text
+    function createTokenizedTextProvider(pos, options) {
+        var forwardIterator = createCharacterIterator(pos, false);
+        var backwardIterator = createCharacterIterator(pos, true);
+        var tokenizer = options.tokenizer;
+
+        // Consumes a word and the whitespace beyond it
+        function consumeWord(forward) {
+            var textPos, textChar;
+            var newChars = [], it = forward ? forwardIterator : backwardIterator;
+
+            var passedWordBoundary = false, insideWord = false;
+
+            while ( (textPos = it.next()) ) {
+                textChar = textPos.character;
+
+                if (allWhiteSpaceRegex.test(textChar)) {
+                    if (insideWord) {
+                        insideWord = false;
+                        passedWordBoundary = true;
+                    }
+                } else {
+                    if (passedWordBoundary) {
+                        it.rewind();
+                        break;
+                    } else {
+                        insideWord = true;
+                    }
+                }
+                newChars.push(textPos);
+            }
+
+            return newChars;
+        }
+
+        // Get initial word surrounding initial position and tokenize it
+        var forwardChars = consumeWord(true);
+        var backwardChars = consumeWord(false).reverse();
+        var tokens = tokenizer(backwardChars.concat(forwardChars), options);
+
+        // Create initial token buffers
+        var forwardTokensBuffer = forwardChars.length ?
+            tokens.slice(arrayIndexOf(tokens, forwardChars[0].token)) : [];
+
+        var backwardTokensBuffer = backwardChars.length ?
+            tokens.slice(0, arrayIndexOf(tokens, backwardChars.pop().token) + 1) : [];
+
+        function inspectBuffer(buffer) {
+            var textPositions = [];
+            for (var i = 0; i < buffer.length; ++i) {
+                textPositions[i] = "(word: " + buffer[i] + ", is word: " + buffer[i].isWord + ")";
+            }
+            return textPositions;
+        }
+
+
+        return {
+            nextEndToken: function() {
+                var lastToken;
+                if (forwardTokensBuffer.length == 1 && !(lastToken = forwardTokensBuffer[0]).isWord) {
+                    // Merge trailing non-word into next word and tokenize
+                    forwardTokensBuffer = tokenizer(lastToken.chars.concat(consumeWord(true)), options);
+                }
+
+                return forwardTokensBuffer.shift();
+            },
+
+            previousStartToken: function() {
+                var lastToken;
+                if (backwardTokensBuffer.length == 1 && !(lastToken = backwardTokensBuffer[0]).isWord) {
+                    // Merge leading non-word into next word and tokenize
+                    backwardTokensBuffer = tokenizer(consumeWord(false).reverse().concat(lastToken.chars), options);
+                }
+
+                return backwardTokensBuffer.pop();
+            },
+
+            dispose: function() {
+                forwardIterator.dispose();
+                backwardIterator.dispose();
+                forwardTokensBuffer = backwardTokensBuffer = null;
+            }
+        };
+    }
+
+    var defaultWordOptions = {
+        "en": {
+            wordRegex: /[a-z0-9]+('[a-z0-9]+)*/gi,
+            includeTrailingSpace: false,
+            tokenizer: defaultTokenizer
+        }
+    };
+
+    function createWordOptions(options) {
+        var lang, defaults;
+        if (!options) {
+            return defaultWordOptions[defaultLanguage];
+        } else {
+            lang = options.language || defaultLanguage;
+            defaults = {};
+            extend(defaults, defaultWordOptions[lang] || defaultWordOptions[defaultLanguage]);
+            extend(defaults, options);
+            return defaults;
+        }
+    }
+
+    var defaultFindOptions = {
+        caseSensitive: false,
+        withinRange: null,
+        wholeWordsOnly: false,
+        wrap: false,
+        direction: "forward",
+        wordOptions: null
+    };
+
+    function movePositionBy(pos, unit, count, options) {
+        var unitsMoved = 0, newPos = pos, textPos, charIterator, nextTextPos, newTextPos, absCount = Math.abs(count), token;
+        if (count !== 0) {
+            var backward = (count < 0);
+
+            switch (unit) {
+                case CHARACTER:
+                    charIterator = createCharacterIterator(pos, backward);
+                    while ( (textPos = charIterator.next()) && unitsMoved < absCount ) {
+                        ++unitsMoved;
+                        newTextPos = textPos;
+                    }
+                    nextTextPos = textPos;
+                    charIterator.dispose();
+                    break;
+                case WORD:
+                    var tokenizedTextProvider = createTokenizedTextProvider(pos, options);
+                    var next = backward ? tokenizedTextProvider.previousStartToken : tokenizedTextProvider.nextEndToken;
+
+                    while ( (token = next()) && unitsMoved < absCount ) {
+                        if (token.isWord) {
+                            ++unitsMoved;
+                            newTextPos = backward ? token.chars[0] : token.chars[token.chars.length - 1];
+                        }
+                    }
+                    break;
+                default:
+                    throw new Error("movePositionBy: unit '" + unit + "' not implemented");
+            }
+
+            // Perform any necessary position tweaks
+            if (newTextPos) {
+                newPos = newTextPos.position;
+            }
+            if (backward) {
+                newPos = previousVisiblePosition(newPos);
+                unitsMoved = -unitsMoved;
+            } else if (newTextPos && newTextPos.isLeadingSpace) {
+                // Tweak the position for the case of a leading space. The problem is that an uncollapsed leading space
+                // before a block element (for example, the line break between "1" and "2" in the following HTML:
+                // "1<p>2</p>") is considered to be attached to the position immediately before the block element, which
+                // corresponds with a different selection position in most browsers from the one we want (i.e. at the
+                // start of the contents of the block element). We get round this by advancing the position returned to
+                // the last possible equivalent visible position.
+                if (unit == WORD) {
+                    charIterator = createCharacterIterator(pos, false);
+                    nextTextPos = charIterator.next();
+                    charIterator.dispose();
+                }
+                if (nextTextPos) {
+                    newPos = previousVisiblePosition(nextTextPos.position);
+                }
+            }
+        }
+
+        return {
+            position: newPos,
+            unitsMoved: unitsMoved
+        };
+    }
+
+    function createRangeCharacterIterator(range) {
+        return createCharacterIterator(
+            getRangeStartPosition(range),
+            false,
+            getRangeEndPosition(range)
+        );
+    }
+
+    function getRangeCharacters(range) {
+
+        var chars = [], it = createRangeCharacterIterator(range), textPos;
+        while ( (textPos = it.next()) ) {
+            chars.push(textPos);
+        }
+
+        it.dispose();
+        return chars;
+    }
+
+    function isWholeWord(startPos, endPos, wordOptions) {
+        var range = api.createRange(startPos.node);
+        range.setStart(startPos.node, startPos.offset);
+        range.setEnd(endPos.node, endPos.offset);
+        var returnVal = !range.expand("word", wordOptions);
+        range.detach();
+        return returnVal;
+    }
+
+    function findTextFromPosition(initialPos, searchTerm, isRegex, searchScopeRange, options) {
+        var backward = isDirectionBackward(options.direction);
+        var it = createCharacterIterator(
+            initialPos,
+            backward,
+            backward ? getRangeStartPosition(searchScopeRange) : getRangeEndPosition(searchScopeRange)
+        );
+        var text = "", chars = [], textPos, currentChar, matchStartIndex, matchEndIndex;
+        var result, insideRegexMatch;
+        var returnValue = null;
+
+        function handleMatch(startIndex, endIndex) {
+            var startPos = previousVisiblePosition(chars[startIndex].position);
+            var endPos = chars[endIndex - 1].position;
+            var valid = (!options.wholeWordsOnly || isWholeWord(startPos, endPos, options.wordOptions));
+
+            return {
+                startPos: startPos,
+                endPos: endPos,
+                valid: valid
+            };
+        }
+
+        while ( (textPos = it.next()) ) {
+            currentChar = textPos.character;
+            currentChar = textPos.character;
+            if (!isRegex && !options.caseSensitive) {
+                currentChar = currentChar.toLowerCase();
+            }
+
+            if (backward) {
+                chars.unshift(textPos);
+                text = currentChar + text;
+            } else {
+                chars.push(textPos);
+                text += currentChar;
+            }
+
+            if (isRegex) {
+                result = searchTerm.exec(text);
+                if (result) {
+                    if (insideRegexMatch) {
+                        // Check whether the match is now over
+                        matchStartIndex = result.index;
+                        matchEndIndex = matchStartIndex + result[0].length;
+                        if ((!backward && matchEndIndex < text.length) || (backward && matchStartIndex > 0)) {
+                            returnValue = handleMatch(matchStartIndex, matchEndIndex);
+                            break;
+                        }
+                    } else {
+                        insideRegexMatch = true;
+                    }
+                }
+            } else if ( (matchStartIndex = text.indexOf(searchTerm)) != -1 ) {
+                returnValue = handleMatch(matchStartIndex, matchStartIndex + searchTerm.length);
+                break;
+            }
+        }
+
+        // Check whether regex match extends to the end of the range
+        if (insideRegexMatch) {
+            returnValue = handleMatch(matchStartIndex, matchEndIndex);
+        }
+        it.dispose();
+
+        return returnValue;
+    }
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    // Extensions to the rangy.dom utility object
+
+    extend(dom, {
+        nextNode: nextNode,
+        previousNode: previousNode,
+        hasInnerText: hasInnerText
+    });
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    // Extensions to the Rangy Range object
+
+    function createRangeBoundaryMover(isStart, collapse) {
+        // Unit can be "character" or "word"
+        return function(unit, count, options) {
+            if (typeof count == "undefined") {
+                count = unit;
+                unit = CHARACTER;
+            }
+            if (unit == WORD) {
+                options = createWordOptions(options);
+            }
+
+            var boundaryIsStart = isStart;
+            if (collapse) {
+                boundaryIsStart = (count >= 0);
+                this.collapse(!boundaryIsStart);
+            }
+            var rangePositionGetter = boundaryIsStart ? getRangeStartPosition : getRangeEndPosition;
+            var moveResult = movePositionBy(rangePositionGetter(this), unit, count, options);
+            var newPos = moveResult.position;
+            this[boundaryIsStart ? "setStart" : "setEnd"](newPos.node, newPos.offset);
+            return moveResult.unitsMoved;
+        };
+    }
+
+    extend(api.rangePrototype, {
+        moveStart: createRangeBoundaryMover(true, false),
+
+        moveEnd: createRangeBoundaryMover(false, false),
+
+        move: createRangeBoundaryMover(true, true),
+
+        expand: function(unit, options) {
+            var moved = false;
+            if (!unit) {
+                unit = CHARACTER;
+            }
+            if (unit == WORD) {
+                options = createWordOptions(options);
+                var startPos = getRangeStartPosition(this);
+                var endPos = getRangeEndPosition(this);
+
+                var startTokenizedTextProvider = createTokenizedTextProvider(startPos, options);
+                var startToken = startTokenizedTextProvider.nextEndToken();
+                var newStartPos = previousVisiblePosition(startToken.chars[0].position);
+                var endToken, newEndPos;
+
+                if (this.collapsed) {
+                    endToken = startToken;
+                } else {
+                    var endTokenizedTextProvider = createTokenizedTextProvider(endPos, options);
+                    endToken = endTokenizedTextProvider.previousStartToken();
+                }
+                newEndPos = endToken.chars[endToken.chars.length - 1].position;
+
+                if (!newStartPos.equals(startPos)) {
+                    this.setStart(newStartPos.node, newStartPos.offset);
+                    moved = true;
+                }
+                if (!newEndPos.equals(endPos)) {
+                    this.setEnd(newEndPos.node, newEndPos.offset);
+                    moved = true;
+                }
+                return moved;
+            } else {
+                return this.moveEnd(CHARACTER, 1);
+            }
+        },
+
+        text: function() {
+            return this.collapsed ? "" : getRangeCharacters(this).join("");
+        },
+
+        selectCharacters: function(containerNode, startIndex, endIndex) {
+            this.selectNodeContents(containerNode);
+            this.collapse(true);
+            this.moveStart(startIndex);
+            this.collapse(true);
+            this.moveEnd(endIndex - startIndex);
+        },
+
+        // Character indexes are relative to the start of node
+        toCharacterRange: function(containerNode) {
+            if (!containerNode) {
+                containerNode = document.body;
+            }
+            var parent = containerNode.parentNode, nodeIndex = dom.getNodeIndex(containerNode);
+            var rangeStartsBeforeNode = (dom.comparePoints(this.startContainer, this.endContainer, parent, nodeIndex) == -1);
+            var rangeBetween = this.cloneRange();
+            var startIndex, endIndex;
+            if (rangeStartsBeforeNode) {
+                rangeBetween.setStart(this.startContainer, this.startOffset);
+                rangeBetween.setEnd(parent, nodeIndex);
+                startIndex = -rangeBetween.text().length;
+            } else {
+                rangeBetween.setStart(parent, nodeIndex);
+                rangeBetween.setEnd(this.startContainer, this.startOffset);
+                startIndex = rangeBetween.text().length;
+            }
+            endIndex = startIndex + this.text().length;
+
+            return {
+                start: startIndex,
+                end: endIndex
+            };
+        },
+
+        findText: function(searchTermParam, optionsParam) {
+            // Set up options
+            var defaults = extend({}, defaultFindOptions);
+            var options = optionsParam ? extend(defaults, optionsParam) : defaults;
+
+            // Create word options if we're matching whole words only
+            if (options.wholeWordsOnly) {
+                options.wordOptions = createWordOptions(options.wordOptions);
+
+                // We don't want trailing spaces
+                options.wordOptions.includeTrailingSpace = false;
+            }
+
+            var backward = isDirectionBackward(options.direction);
+
+            // Create a range representing the search scope if none was provided
+            var searchScopeRange = options.withinRange;
+            if (!searchScopeRange) {
+                searchScopeRange = api.createRange();
+                searchScopeRange.selectNodeContents(this.getDocument());
+            }
+
+            // Examine and prepare the search term
+            var searchTerm = searchTermParam, isRegex = false;
+            if (typeof searchTerm == "string") {
+                if (!options.caseSensitive) {
+                    searchTerm = searchTerm.toLowerCase();
+                }
+            } else {
+                isRegex = true;
+            }
+
+            var initialPos = backward ? getRangeEndPosition(this) : getRangeStartPosition(this);
+
+            // Adjust initial position if it lies outside the search scope
+            var comparison = searchScopeRange.comparePoint(initialPos.node, initialPos.offset);
+            if (comparison === -1) {
+                initialPos = getRangeStartPosition(searchScopeRange);
+            } else if (comparison === 1) {
+                initialPos = getRangeEndPosition(searchScopeRange);
+            }
+
+            var pos = initialPos;
+            var wrappedAround = false;
+
+            // Try to find a match and ignore invalid ones
+            var findResult;
+            while (true) {
+                findResult = findTextFromPosition(pos, searchTerm, isRegex, searchScopeRange, options);
+
+                if (findResult) {
+                    if (findResult.valid) {
+                        this.setStart(findResult.startPos.node, findResult.startPos.offset);
+                        this.setEnd(findResult.endPos.node, findResult.endPos.offset);
+                        return true;
+                    } else {
+                        // We've found a match that is not a whole word, so we carry on searching from the point immediately
+                        // after the match
+                        pos = backward ? findResult.startPos : findResult.endPos;
+                    }
+                } else if (options.wrap && !wrappedAround) {
+                    // No result found but we're wrapping around and limiting the scope to the unsearched part of the range
+                    searchScopeRange = searchScopeRange.cloneRange();
+                    if (backward) {
+                        pos = getRangeEndPosition(searchScopeRange);
+                        searchScopeRange.setStart(initialPos.node, initialPos.offset);
+                    } else {
+                        pos = getRangeStartPosition(searchScopeRange);
+                        searchScopeRange.setEnd(initialPos.node, initialPos.offset);
+                    }
+                    wrappedAround = true;
+                } else {
+                    // Nothing found and we can't wrap around, so we're done
+                    return false;
+                }
+            }
+        },
+
+        pasteHtml: function(html) {
+            this.deleteContents();
+            if (html) {
+                var frag = this.createContextualFragment(html);
+                var lastChild = frag.lastChild;
+                this.insertNode(frag);
+                this.collapseAfter(lastChild);
+            }
+        }
+    });
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    // Extensions to the Rangy Selection object
+
+    extend(api.selectionPrototype, {
+        expand: function(unit, options) {
+            var ranges = this.getAllRanges(), rangeCount = ranges.length;
+            var backward = this.isBackward();
+
+            for (var i = 0, len = ranges.length; i < len; ++i) {
+                ranges[i].expand(unit, options);
+            }
+
+            this.removeAllRanges();
+            if (backward && rangeCount == 1) {
+                this.addRange(ranges[0], true);
+            } else {
+                this.setRanges(ranges);
+            }
+        },
+
+        move: function(unit, count, options) {
+            if (this.focusNode) {
+                this.collapse(this.focusNode, this.focusOffset);
+                var range = this.getRangeAt(0);
+                range.move(unit, count, options);
+                this.setSingleRange(range);
+            }
+        },
+
+        selectCharacters: function(containerNode, startIndex, endIndex, direction) {
+            var range = api.createRange(containerNode);
+            range.selectCharacters(containerNode, startIndex, endIndex);
+            this.setSingleRange(range, direction);
+        },
+
+        saveCharacterRanges: function(containerNode) {
+            var ranges = this.getAllRanges(), rangeCount = ranges.length;
+            var characterRanges = [];
+
+            var backward = rangeCount == 1 && this.isBackward();
+
+            for (var i = 0, len = ranges.length; i < len; ++i) {
+                characterRanges[i] = {
+                    range: ranges[i].toCharacterRange(containerNode),
+                    backward: backward
+                };
+            }
+
+            return characterRanges;
+        },
+
+        restoreCharacterRanges: function(containerNode, characterRanges) {
+            this.removeAllRanges();
+            for (var i = 0, len = characterRanges.length, range, characterRange; i < len; ++i) {
+                characterRange = characterRanges[i];
+                range = api.createRange(containerNode);
+                range.selectCharacters(containerNode, characterRange.range.start, characterRange.range.end);
+                this.addRange(range, characterRange.backward);
+            }
+        },
+
+        text: function() {
+            var rangeTexts = [];
+            for (var i = 0, len = this.rangeCount; i < len; ++i) {
+                rangeTexts[i] = this.getRangeAt(i).text();
+            }
+            return rangeTexts.join("");
+        }
+    });
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    // Extensions to the core rangy object
+
+    api.innerText = function(el) {
+        var range = api.createRange(el);
+        range.selectNodeContents(el);
+        var text = range.text();
+        range.detach();
+        return text;
+    };
+
+    api.createWordIterator = function(startNode, startOffset, direction, options) {
+        options = createWordOptions(options);
+        var startPos = new DomPosition(startNode, startOffset);
+        var tokenizedTextProvider = createTokenizedTextProvider(startPos, options);
+        var backward = isDirectionBackward(direction);
+
+        return {
+            next: function() {
+                return backward ? tokenizedTextProvider.previousStartToken() : tokenizedTextProvider.nextEndToken();
+            },
+
+            dispose: function() {
+                tokenizedTextProvider.dispose();
+                this.next = function() {};
+            }
+        };
+    };
+
+    /*----------------------------------------------------------------------------------------------------------------*/
+
+    api.textRange = {
+        isBlockNode: isBlockNode,
+        isCollapsedWhitespaceNode: isCollapsedWhitespaceNode,
+        nextPosition: nextPosition,
+        previousPosition: previousPosition,
+        nextVisiblePosition: nextVisiblePosition,
+        previousVisiblePosition: previousVisiblePosition
+    };
+
+});
+
+                /* End of file: temp/default/src/dependencies/rangy/rangy-textrange.js */
+            
+                /* File: temp/default/src/dependencies/jquery-hotkeys.js */
                 /*
  * jQuery Hotkeys Plugin
  * Copyright 2010, John Resig
@@ -5867,9 +7323,518 @@ rangy.createModule("Serializer", function(api, module) {
 
 })( jQuery );
 
-                /* End of file: build/default/src/dependencies/jquery-hotkeys.js */
+                /* End of file: temp/default/src/dependencies/jquery-hotkeys.js */
             
-                /* File: build/default/src/adapters/jquery-ui.js */
+                /* File: temp/default/src/dependencies/resizetable.js */
+                function countColumns(tableElement) {
+    // calculate current number of columns of a table,
+    // taking into account rowspans and colspans
+
+    var tr, td, i, j, k, cs, rs;
+    var rowspanLeft = new Array();
+    var tableCols = 0;
+    var tableRows = tableElement.rows.length;
+    i = 0;
+    while (i < tableRows) {
+        var tr = tableElement.rows[i];
+        var j = 0;
+        var k = 0;
+        // Trace and adjust the cells of this row
+        while (j < tr.cells.length || k < rowspanLeft.length) {
+            if (rowspanLeft[k]) {
+                rowspanLeft[k++]--;
+            } else if (j >= tr.cells.length) {
+                k++;
+            } else {
+                td = tr.cells[j++];
+                rs = Math.max(1, parseInt(td.rowSpan));
+                for (cs = Math.max(1, parseInt(td.colSpan)); cs > 0; cs--) {
+                    if (rowspanLeft[k])
+                        break; // Overlapping colspan and rowspan cells
+                    rowspanLeft[k++] = rs - 1;
+                }
+            }
+        }
+        tableCols = Math.max(k, tableCols);
+        i++;
+    }
+    return tableCols;
+}
+
+function resizeTable(tableElement, rCount, rStart, cCount, cStart, options) {
+    // Insert or remove rows and columns in the table, taking into account
+    // rowspans and colspans
+    // Parameters:
+    //   tableElement: DOM element representing existing table to be modified
+    //   rCount:       number of rows to add (if >0) or delete (if <0)
+    //   rStart:       number of row where rows should be added/deleted
+    //   cCount:       number of columns to add (if >0) or delete (if <0)
+    //   cStart:       number of column where columns should be added/deleted
+    //   cCount
+    //   cStart
+    var tr, td, i, j, k, l, cs, rs;
+    var rowspanLeft = [];
+    var rowspanCell = [];
+    var tableRows0 = tableElement.rows.length;
+    var tableCols0 = countColumns(tableElement);
+    var cells = [];
+
+    if (rCount > 0) { // Prep insertion of rows
+        for (i = rStart; i < rStart + rCount; i++) {
+            tableElement.insertRow(i);
+        }
+    }
+    i = 0;
+    while (i < tableRows0) {
+        var tr = tableElement.rows[i];
+        var j = 0;
+        var k = 0;
+        // Trace and adjust the cells of this row
+        while (k < tableCols0) {
+            if (cCount > 0 && k === cStart) { // Insert columns by inserting cells
+                for (l = 0; l < cCount; l++) {  // between/before existing cells
+                    cells.push(insertEmptyCell(tr, j++, options.placeHolder));
+                }
+            }
+            if (rowspanLeft[k]) {
+                if (rCount < 0
+                        && i === rStart - rCount && rowspanCell[k]
+                        && rowspanCell[k].rowSpan == 1) {
+                    // This is the first row after a series of to-be-deleted rows.
+                    // Any rowspan-cells covering this row which started in the
+                    // to-be-deleted rows have to be moved into this row, with
+                    // rowspan adjusted. All such cells are marked td.rowSpan==1.
+                    td = rowspanCell[k];
+                    if (j >= tr.cells.length) {
+                        tr.appendChild(td);
+                    } else {
+                        tr.insertBefore(td, tr.cells[j]);
+                    }
+                    j++;
+                    rs = td.rowSpan = rowspanLeft[k];
+                    for (cs = Math.max(1, parseInt(td.colSpan)); cs > 0; --cs) {
+                        rowspanLeft[k++] = rs - 1;
+                    }
+                } else {
+                    if (--rowspanLeft[k++] === 0)
+                        rowspanCell[k] = null;
+                    while (rowspanLeft[k] && !rowspanCell[k]) {
+                        // This is a cell of a block with both rowspan and colspan>1
+                        // Handle all remaining cells in this row of the block, so as to
+                        // avoid inserting cells which are already covered by the block
+                        --rowspanLeft[k++];
+                    }
+                }
+            } else {
+                if (j >= tr.cells.length) {
+                    cells.push(insertEmptyCell(tr, j, options.placeHolder)); // append missing cell
+                }
+                td = tr.cells[j++];
+                rs = Math.max(1, parseInt(td.rowSpan));
+                if (rs > 1) {
+                    rowspanCell[k] = td;
+                    if (rCount < 0 && i >= rStart && i < rStart - rCount) {//row is to-be-deleted
+                        td.rowSpan = 1; // Mark cell as to-be-moved-down-later
+                    }
+                }
+                var k0 = k;
+                for (cs = Math.max(1, parseInt(td.colSpan)); cs > 0; --cs) {
+                    if (rowspanLeft[k]) { // Overlapping colspan and rowspan cells
+                        td.colSpan -= cs; // Set adjustment into table
+                        break;
+                    }
+                    rowspanLeft[k++] = rs - 1;
+                }
+                if (rCount < 0 && i >= rStart && i < rStart - rCount) {
+                    // This row is to be deleted: do not insert/remove columns,
+                    // but preserve row as-is so we can move cells down later on
+                } else if (cCount > 0 && k > cStart && k0 < cStart) {
+                    td.colSpan += cCount; // Insert columns by widening cell
+                } else if (cCount < 0 && k0 < cStart - cCount && k > cStart) {
+                    // Delete columns in overlap of [k0,k> and [cStart,cStart-cCount>
+                    var newColSpan = Math.max(0, cStart - k0) + Math.max(0, k - (cStart - cCount));
+                    if (newColSpan) {
+                        // .. by reducing width of cell containing to-be-deleted columns
+                        td.colSpan = newColSpan;
+                    } else {
+                        // .. by removing fully-encompassed cell
+                        tr.deleteCell(--j);
+                    }
+                }
+            }
+        }
+        if (cCount > 0 && k === cStart) { // Insert columns by appending cells to row
+            for (l = 0; l < cCount; l++) {
+                cells.push(insertEmptyCell(tr, j++, options.placeHolder));
+            }
+        }
+        i++;
+        if (rCount > 0 && i === rStart) {
+            // Adjust rowspans present at start of inserted rows
+            for (l = 0; l < tableCols0; l++) {
+                if (rowspanLeft[l])
+                    rowspanLeft[l] += rCount;
+                if (rowspanCell[l])
+                    rowspanCell[l].rowSpan += rCount;
+            }
+        } else if (rCount < 0 && i === rStart) {
+            // Adjust rowspans present at start of to-be-deleted rows
+            for (l = 0; l < rowspanCell.length; l++) {
+                if (rowspanCell[l]) {
+                    rowspanCell[l].rowSpan -= Math.min(-rCount, rowspanLeft[l]);
+                }
+            }
+        }
+    }
+    if (rCount < 0) {
+        for (i = rStart; i < rStart - rCount; i++) {
+            tableElement.deleteRow(i);
+        }
+    }
+    return cells;
+}
+
+function insertEmptyCell(row, index, placeHolder) {
+    var sibling, cell;
+    // Check the cell's sibling to detect header cells
+    if (index > 0) {
+        sibling = row.cells[index - 1];
+    } else if (index < row.cells.length) {
+        sibling = row.cells[index + 1];
+    }
+
+    // Header cell
+    cell = row.insertCell(index);
+    if (sibling && sibling.tagName === 'TH') {
+        var header = document.createElement('th');
+        if (placeHolder) {
+            header.innerHTML = placeHolder;
+        }
+        $(cell).replaceWith(header)
+    } else if (placeHolder) {
+        cell.innerHTML = placeHolder;
+    }
+    return cell;
+}
+
+                /* End of file: temp/default/src/dependencies/resizetable.js */
+            
+                /* File: temp/default/src/dependencies/goog-table.js */
+                // Copyright 2008 The Closure Library Authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS-IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+// http://code.google.com/p/closure-library/source/browse/trunk/closure/goog/editor/table.js
+//
+// Modified by David Neilsen <david@panmedia.co.nz>
+
+/**
+ * Class providing high level table editing functions.
+ * @param {Element} node Element that is a table or descendant of a table.
+ * @constructor
+ */
+GoogTable = function(node) {
+    this.element = node;
+    this.refresh();
+};
+
+
+/**
+ * Walks the dom structure of this object's table element and populates
+ * this.rows with GoogTableRow objects. This is done initially
+ * to populate the internal data structures, and also after each time the
+ * DOM structure is modified. Currently this means that the all existing
+ * information is discarded and re-read from the DOM.
+ */
+// TODO(user): support partial refresh to save cost of full update
+// every time there is a change to the DOM.
+GoogTable.prototype.refresh = function() {
+    var rows = this.rows = [];
+    var tbody = this.element.tBodies[0];
+    if (!tbody) {
+        return;
+    }
+    var trs = [];
+    for (var child = tbody.firstChild; child; child = child.nextSibling) {
+        if (child.tagName === 'TR') {
+            trs.push(child);
+        }
+    }
+
+    for (var rowNum = 0, tr; tr = trs[rowNum]; rowNum++) {
+        var existingRow = rows[rowNum];
+        var tds = GoogTable.getChildCellElements(tr);
+        var columnNum = 0;
+        // A note on cellNum vs. columnNum: A cell is a td/th element. Cells may
+        // use colspan/rowspan to extend over multiple rows/columns. cellNum
+        // is the dom element number, columnNum is the logical column number.
+        for (var cellNum = 0, td; td = tds[cellNum]; cellNum++) {
+            // If there's already a cell extending into this column
+            // (due to that cell's colspan/rowspan), increment the column counter.
+            while (existingRow && existingRow.columns[columnNum]) {
+                columnNum++;
+            }
+            var cell = new GoogTableCell(td, rowNum, columnNum);
+            // Place this cell in every row and column into which it extends.
+            for (var i = 0; i < cell.rowSpan; i++) {
+                var cellRowNum = rowNum + i;
+                // Create TableRow objects in this.rows as needed.
+                var cellRow = rows[cellRowNum];
+                if (!cellRow) {
+                    // TODO(user): try to avoid second trs[] lookup.
+                    rows.push(
+                            cellRow = new GoogTableRow(trs[cellRowNum], cellRowNum));
+                }
+                // Extend length of column array to make room for this cell.
+                var minimumColumnLength = columnNum + cell.colSpan;
+                if (cellRow.columns.length < minimumColumnLength) {
+                    cellRow.columns.length = minimumColumnLength;
+                }
+                for (var j = 0; j < cell.colSpan; j++) {
+                    var cellColumnNum = columnNum + j;
+                    cellRow.columns[cellColumnNum] = cell;
+                }
+            }
+            columnNum += cell.colSpan;
+        }
+    }
+};
+
+
+/**
+ * Returns all child elements of a TR element that are of type TD or TH.
+ * @param {Element} tr TR element in which to find children.
+ * @return {Array.<Element>} array of child cell elements.
+ */
+GoogTable.getChildCellElements = function(tr) {
+    var cells = [];
+    for (var i = 0, cell; cell = tr.childNodes[i]; i++) {
+        if (cell.tagName === 'TD' ||
+                cell.tagName === 'TH') {
+            cells.push(cell);
+        }
+    }
+    return cells;
+};
+
+/**
+ * Merges multiple cells into a single cell, and sets the rowSpan and colSpan
+ * attributes of the cell to take up the same space as the original cells.
+ * @param {number} startRowIndex Top coordinate of the cells to merge.
+ * @param {number} startColIndex Left coordinate of the cells to merge.
+ * @param {number} endRowIndex Bottom coordinate of the cells to merge.
+ * @param {number} endColIndex Right coordinate of the cells to merge.
+ * @return {boolean} Whether or not the merge was possible. If the cells
+ *     in the supplied coordinates can't be merged this will return false.
+ */
+GoogTable.prototype.mergeCells = function(
+        startRowIndex, startColIndex, endRowIndex, endColIndex) {
+    // TODO(user): take a single goog.math.Rect parameter instead?
+    var cells = [];
+    var cell;
+    if (startRowIndex == endRowIndex && startColIndex == endColIndex) {
+        handleError("Can't merge single cell");
+        return false;
+    }
+    // Gather cells and do sanity check.
+    for (var i = startRowIndex; i <= endRowIndex; i++) {
+        for (var j = startColIndex; j <= endColIndex; j++) {
+            cell = this.rows[i].columns[j];
+            if (cell.startRow < startRowIndex ||
+                    cell.endRow > endRowIndex ||
+                    cell.startCol < startColIndex ||
+                    cell.endCol > endColIndex) {
+                handleError(
+                        "Can't merge cells: the cell in row " + i + ', column ' + j +
+                        'extends outside the supplied rectangle.');
+                return false;
+            }
+            // TODO(user): this is somewhat inefficient, as we will add
+            // a reference for a cell for each position, even if it's a single
+            // cell with row/colspan.
+            cells.push(cell);
+        }
+    }
+    var targetCell = cells[0];
+    var targetTd = targetCell.element;
+    var doc = document;
+
+    // Merge cell contents and discard other cells.
+    for (var i = 1; cell = cells[i]; i++) {
+        var td = cell.element;
+        if (!td.parentNode || td == targetTd) {
+            // We've already handled this cell at one of its previous positions.
+            continue;
+        }
+        // Add a space if needed, to keep merged content from getting squished
+        // together.
+        if (targetTd.lastChild &&
+                targetTd.lastChild.nodeType === Node.TEXT_NODE) {
+            targetTd.appendChild(doc.createElement('br'));
+        }
+        var childNode;
+        while ((childNode = td.firstChild)) {
+            targetTd.appendChild(childNode);
+        }
+        td.parentNode.removeChild(td);
+    }
+    targetCell.setColSpan((endColIndex - startColIndex) + 1);
+    targetCell.setRowSpan((endRowIndex - startRowIndex) + 1);
+    this.refresh();
+
+    return true;
+};
+
+
+/**
+ * Splits a cell with colspans or rowspans into multiple descrete cells.
+ * @param {number} rowIndex y coordinate of the cell to split.
+ * @param {number} colIndex x coordinate of the cell to split.
+ * @return {Array.<Element>} Array of new cell elements created by splitting
+ *     the cell.
+ */
+// TODO(user): support splitting only horizontally or vertically,
+// support splitting cells that aren't already row/colspanned.
+GoogTable.prototype.splitCell = function(rowIndex, colIndex) {
+    var row = this.rows[rowIndex];
+    var cell = row.columns[colIndex];
+    var newTds = [];
+    var html = cell.element.innerHTML;
+    for (var i = 0; i < cell.rowSpan; i++) {
+        for (var j = 0; j < cell.colSpan; j++) {
+            if (i > 0 || j > 0) {
+                var newTd = document.createElement('td');
+                this.insertCellElement(newTd, rowIndex + i, colIndex + j);
+                newTds.push(newTd);
+            }
+        }
+    }
+    cell.setColSpan(1);
+    cell.setRowSpan(1);
+    // Set first cell HTML
+    newTds[0].innerHTML = html;
+    cell.element.innerHTML = '';
+    this.refresh();
+    return newTds;
+};
+
+
+/**
+ * Inserts a cell element at the given position. The colIndex is the logical
+ * column index, not the position in the dom. This takes into consideration
+ * that cells in a given logical  row may actually be children of a previous
+ * DOM row that have used rowSpan to extend into the row.
+ * @param {Element} td The new cell element to insert.
+ * @param {number} rowIndex Row in which to insert the element.
+ * @param {number} colIndex Column in which to insert the element.
+ */
+GoogTable.prototype.insertCellElement = function(
+        td, rowIndex, colIndex) {
+    var row = this.rows[rowIndex];
+    var nextSiblingElement = null;
+    for (var i = colIndex, cell; cell = row.columns[i]; i += cell.colSpan) {
+        if (cell.startRow == rowIndex) {
+            nextSiblingElement = cell.element;
+            break;
+        }
+    }
+    row.element.insertBefore(td, nextSiblingElement);
+};
+
+
+/**
+ * Class representing a logical table row: a tr element and any cells
+ * that appear in that row.
+ * @param {Element} trElement This rows's underlying TR element.
+ * @param {number} rowIndex This row's index in its parent table.
+ * @constructor
+ */
+GoogTableRow = function(trElement, rowIndex) {
+    this.index = rowIndex;
+    this.element = trElement;
+    this.columns = [];
+};
+
+
+
+/**
+ * Class representing a table cell, which may span across multiple
+ * rows and columns
+ * @param {Element} td This cell's underlying TD or TH element.
+ * @param {number} startRow Index of the row where this cell begins.
+ * @param {number} startCol Index of the column where this cell begins.
+ * @constructor
+ */
+GoogTableCell = function(td, startRow, startCol) {
+    this.element = td;
+    this.colSpan = parseInt(td.colSpan, 10) || 1;
+    this.rowSpan = parseInt(td.rowSpan, 10) || 1;
+    this.startRow = startRow;
+    this.startCol = startCol;
+    this.updateCoordinates_();
+};
+
+
+/**
+ * Calculates this cell's endRow/endCol coordinates based on rowSpan/colSpan
+ * @private
+ */
+GoogTableCell.prototype.updateCoordinates_ = function() {
+    this.endCol = this.startCol + this.colSpan - 1;
+    this.endRow = this.startRow + this.rowSpan - 1;
+};
+
+
+/**
+ * Set this cell's colSpan, updating both its colSpan property and the
+ * underlying element's colSpan attribute.
+ * @param {number} colSpan The new colSpan.
+ */
+GoogTableCell.prototype.setColSpan = function(colSpan) {
+    if (colSpan != this.colSpan) {
+        if (colSpan > 1) {
+            this.element.colSpan = colSpan;
+        } else {
+            this.element.colSpan = 1,
+                    this.element.removeAttribute('colSpan');
+        }
+        this.colSpan = colSpan;
+        this.updateCoordinates_();
+    }
+};
+
+
+/**
+ * Set this cell's rowSpan, updating both its rowSpan property and the
+ * underlying element's rowSpan attribute.
+ * @param {number} rowSpan The new rowSpan.
+ */
+GoogTableCell.prototype.setRowSpan = function(rowSpan) {
+    if (rowSpan != this.rowSpan) {
+        if (rowSpan > 1) {
+            this.element.rowSpan = rowSpan.toString();
+        } else {
+            this.element.rowSpan = '1';
+            this.element.removeAttribute('rowSpan');
+        }
+        this.rowSpan = rowSpan;
+        this.updateCoordinates_();
+    }
+};
+
+                /* End of file: temp/default/src/dependencies/goog-table.js */
+            
+                /* File: temp/default/src/adapters/jquery-ui.js */
                 function aButton(element, options) {
     return $(element).button(options);
 }
@@ -5885,12 +7850,19 @@ function aButtonSetIcon(element, icon) {
     });
 }
 
+function aButtonEnable(element) {
+    return $(element).button('option', 'disabled', false);
+}
+
 function aButtonDisable(element) {
     return $(element).button('option', 'disabled', true);
 }
+function aButtonActive(element) {
+    return $(element).addClass('ui-state-highlight');
+}
 
-function aButtonEnable(element) {
-    return $(element).button('option', 'disabled', false);
+function aButtonInactive(element) {
+    return $(element).removeClass('ui-state-highlight');
 }
 
 function aMenu(element, options) {
@@ -5900,6 +7872,9 @@ function aMenu(element, options) {
 function aDialog(element, options) {
     var dialog = $(element).dialog(options);
     // TODO: Remove this when jQuery UI 1.10 is released
+    if (typeof options.buttons === 'undefined') {
+        return dialog;
+    }
     var buttons = dialog.parent().find('.ui-dialog-buttonpane');
     for (var i = 0, l = options.buttons.length; i < l; i++) {
         aButton(buttons.find('button:eq(' + i + ')'), {
@@ -5920,9 +7895,9 @@ function aDialogClose(element) {
     return $(element).dialog('close');
 }
 
-                /* End of file: build/default/src/adapters/jquery-ui.js */
+                /* End of file: temp/default/src/adapters/jquery-ui.js */
             
-                /* File: build/default/src/jquery.ui.editor.i18n.js */
+                /* File: temp/default/src/i18n.js */
                 /**
  * @fileOverview Editor internationalization (i18n) private functions and properties.
  *
@@ -6009,9 +7984,9 @@ function _(string, variables) {
     }
 }
 
-                /* End of file: build/default/src/jquery.ui.editor.i18n.js */
+                /* End of file: temp/default/src/i18n.js */
             
-                /* File: build/default/src/locales/en.js */
+                /* File: temp/default/src/locales/en.js */
                 /**
  * @fileOverview English strings file.
  * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
@@ -6133,16 +8108,16 @@ registerLocale('en', 'English', {
     clearFormattingTitle: 'Clear formatting',
     clickButtonToEditPluginButton: 'Click to begin editing',
 
-    colorPickerBasicAutomatic: 'Automatic',
-    colorPickerBasicBlack: 'Black',
-    colorPickerBasicBlue: 'Blue',
-    colorPickerBasicGreen: 'Green',
-    colorPickerBasicGrey: 'Grey',
-    colorPickerBasicOrange: 'Orange',
-    colorPickerBasicPurple: 'Purple',
-    colorPickerBasicRed: 'Red',
-    colorPickerBasicTitle: 'Change text color',
-    colorPickerBasicWhite: 'White',
+    colorMenuBasicAutomatic: 'Automatic',
+    colorMenuBasicBlack: 'Black',
+    colorMenuBasicBlue: 'Blue',
+    colorMenuBasicGreen: 'Green',
+    colorMenuBasicGrey: 'Grey',
+    colorMenuBasicOrange: 'Orange',
+    colorMenuBasicPurple: 'Purple',
+    colorMenuBasicRed: 'Red',
+    colorMenuBasicTitle: 'Change text color',
+    colorMenuBasicWhite: 'White',
 
     dockToElementTitle: 'Dock editor to element',
     dockToScreenTitle: 'Dock editor to screen',
@@ -6172,6 +8147,9 @@ registerLocale('en', 'English', {
 
     historyRedoTitle: 'Redo',
     historyUndoTitle: 'Undo',
+
+    insertFileDialogOKButton: 'Insert file',
+    insertFileDialogCancelButton: 'Cancel',
 
     listOrderedTitle: 'Ordered list',
     listUnorderedTitle: 'Unordered list',
@@ -6216,6 +8194,14 @@ registerLocale('en', 'English', {
 
     logoTitle: 'Learn More About the Raptor WYSIWYG Editor',
 
+    pasteDialogTitle: 'Paste',
+    pasteDialogOKButton: 'Insert',
+    pasteDialogCancelButton: 'Cancel',
+    pasteDialogPlain: 'Plain Text',
+    pasteDialogFormattedCleaned: 'Formatted &amp; Cleaned',
+    pasteDialogFormattedUnclean: 'Formatted Unclean',
+    pasteDialogSource: 'Source Code',
+
     saveTitle: 'Save content',
     saveRestFail: 'Failed to save {{failed}} content block(s).',
     saveRestPartial: 'Saved {{saved}} out of {{failed}} content blocks.',
@@ -6247,6 +8233,9 @@ registerLocale('en', 'English', {
     tagMenuTagH3: 'Heading&nbsp;3',
     tagMenuTagNA: 'N/A',
     tagMenuTagP: 'Paragraph',
+    tagMenuTagDiv: 'Div',
+    tagMenuTagPre: 'Pre-formatted',
+    tagMenuTagAddress: 'Address',
     tagMenuTitle: 'Change element style',
 
     tagTreeElementLink: 'Select {{element}} element',
@@ -6272,12 +8261,9 @@ registerLocale('en', 'English', {
 
 });
 
-                /* End of file: build/default/src/locales/en.js */
+                /* End of file: temp/default/src/locales/en.js */
             
-            // Raptor wrapper
-            (function($, window, rangy, undefined) {
-        
-                /* File: build/default/src/jquery.ui.editor.init.js */
+                /* File: temp/default/src/init.js */
                 // <debug/>
 
 
@@ -6308,9 +8294,9 @@ $('html').click(function(event) {
         .removeClass('ui-editor-selectmenu-visible');
 });
 
-                /* End of file: build/default/src/jquery.ui.editor.init.js */
+                /* End of file: temp/default/src/init.js */
             
-                /* File: build/default/src/jquery.ui.editor.support.js */
+                /* File: temp/default/src/support.js */
                 var supported, ios, hotkeys;
 
 function isSupported(editor) {
@@ -6361,9 +8347,9 @@ function isSupported(editor) {
     return supported;
 }
 
-                /* End of file: build/default/src/jquery.ui.editor.support.js */
+                /* End of file: temp/default/src/support.js */
             
-                /* File: build/default/src/tools/action.js */
+                /* File: temp/default/src/tools/action.js */
                 function actionPreview(previewState, target, action) {
     // <strict/>
     
@@ -6398,9 +8384,9 @@ function actionRedo() {
     
 }
 
-                /* End of file: build/default/src/tools/action.js */
+                /* End of file: temp/default/src/tools/action.js */
             
-                /* File: build/default/src/tools/clean.js */
+                /* File: temp/default/src/tools/clean.js */
                 /**
  * @fileOverview Cleaning helper functions.
  * @author David Neilsen - david@panmedia.co.nz
@@ -6448,18 +8434,38 @@ function cleanUnwrapElements(selector) {
 
 function cleanEmptyAttributes(element, attributes) {
     for (i = 0; i < attributes.length; i++) {
-        var attr = attributes[i];
+        if (!$.trim(element.attr(attributes[i]))) {
+            element.removeAttr(attributes[i]);
+        }
         element
             .find('[' + attributes[i] + ']')
             .filter(function() {
-                return $.trim($(this).attr(attr)) === '';
+                return $.trim($(this).attr(attributes[i])) === '';
             }).removeAttr(attributes[i]);
     }
 }
 
-                /* End of file: build/default/src/tools/clean.js */
+
+/**
+ * Remove comments from element.
+ *
+ * @param  {jQuery} parent The jQuery element to have comments removed from.
+ * @return {jQuery} The modified parent.
+ */
+function cleanRemoveComments(parent) {
+    parent.contents().each(function() {
+        if (this.nodeType == Node.COMMENT_NODE) {
+            $(this).remove();
+        }
+    });
+    parent.children().each(function() {
+        cleanRemoveComments($(this));
+    });
+    return parent;
+}
+                /* End of file: temp/default/src/tools/clean.js */
             
-                /* File: build/default/src/tools/dock.js */
+                /* File: temp/default/src/tools/dock.js */
                 
 
 function dockToScreen(element, options) {
@@ -6472,30 +8478,30 @@ function dockToScreen(element, options) {
     if (options.position === 'top') {
         position = {
             position: 'fixed',
-            top: 0,
+            top: options.under ? $(options.under).outerHeight() : 0,
             left: 0,
             right: 0
         };
         if (options.spacer) {
-            spacer.prependTo('body');
+            spacer.insertAfter(options.under);
         }
     } else if (options.position === 'topLeft') {
         position = {
             position: 'fixed',
-            top: 0,
+            top: options.under ? $(options.under).outerHeight() : 0,
             left: 0
         };
         if (options.spacer) {
-            spacer.prependTo('body');
+            spacer.insertAfter(options.under);
         }
     } else if (options.position === 'topRight') {
         position = {
             position: 'fixed',
-            top: 0,
+            top: options.under ? $(options.under).outerHeight() : 0,
             right: 0
         };
         if (options.spacer) {
-            spacer.prependTo('body');
+            spacer.insertAfter(options.under);
         }
     } else if (options.position === 'bottom') {
         position = {
@@ -6534,7 +8540,7 @@ function dockToScreen(element, options) {
 }
 
 function undockFromScreen(dockState) {
-    styleRestoreState(dockState.dockedElement, dockState.styleState)
+    styleRestoreState(dockState.dockedElement, dockState.styleState);
     dockState.spacer.remove();
     return dockState.dockedElement.detach();
 }
@@ -6567,7 +8573,7 @@ function dockToElement(elementToDock, dockTo, options) {
         }),
         dockedElementStyleState = styleSwapState(elementToDock, {
             position: 'static'
-        });
+    });
     wrapper.prepend(elementToDock);
     return {
         dockedElement: elementToDock,
@@ -6578,39 +8584,21 @@ function dockToElement(elementToDock, dockTo, options) {
 }
 
 function undockFromElement(dockState) {
-    styleRestoreState(dockState.dockedTo, dockState.innerStyleState)
-    styleRestoreState(dockState.dockedElement, dockState.dockedElementStyleState)
+    styleRestoreState(dockState.dockedTo, dockState.innerStyleState);
+    styleRestoreState(dockState.dockedElement, dockState.dockedElementStyleState);
     var dockedElement = dockState.dockedElement.detach();
     dockState.dockedTo.unwrap();
     return dockedElement;
 }
 
-                /* End of file: build/default/src/tools/dock.js */
+                /* End of file: temp/default/src/tools/dock.js */
             
-                /* File: build/default/src/tools/element.js */
+                /* File: temp/default/src/tools/element.js */
                 /**
  * @fileOverview Element manipulation helper functions.
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
  */
-
-/**
- * Remove comments from element.
- *
- * @param  {jQuery} parent The jQuery element to have comments removed from.
- * @return {jQuery} The modified parent.
- */
-function elementRemoveComments(parent) {
-    parent.contents().each(function() {
-        if (this.nodeType == 8) {
-            $(this).remove();
-        }
-    });
-    parent.children().each(function() {
-        element.removeComments($(this));
-    });
-    return parent;
-}
 
 /**
  * Remove all but the allowed attributes from the parent.
@@ -6787,12 +8775,15 @@ function elementGetStyles(element) {
  * @param {String} tag The wrapper tag name
  */
 function elementWrapInner(element, tag) {
+    var result = new jQuery();
     selectionSave();
-    $(element).each(function() {
-        var wrapper = $('<' + tag + '/>').html($(this).html());
+    for (var i = 0, l = element.length; i < l; i++) {
+        var wrapper = $('<' + tag + '/>').html($(element[i]).html());
         element.html(wrapper);
-    });
+        result.push(wrapper[0]);
+    }
     selectionRestore();
+    return result;
 }
 
 /**
@@ -6836,7 +8827,7 @@ function elementPositionUnder(element, under) {
     var pos = $(under).offset(),
         height = $(under).outerHeight();
     $(element).css({
-        top: (pos.top + height) + 'px',
+        top: (pos.top + height - $(window).scrollTop()) + 'px',
         left: pos.left + 'px'
     });
 }
@@ -6847,9 +8838,44 @@ function elementDetachedManip(element, manip) {
     manip(element);
     parent.append(element);
 }
-                /* End of file: build/default/src/tools/element.js */
+
+function elementClosestBlock(element, limitElement) {
+    // <strict/>
+    while (element.length > 0
+            && element[0] !== limitElement[0]
+            && (element[0].nodeType === Node.TEXT_NODE || element.css('display') === 'inline')) {
+        element = element.parent();
+    }
+    if (element[0] === limitElement[0]) {
+        return null;
+    }
+    return element;
+}
+
+function elementUniqueId() {
+    var id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+    while ($('#' + id).length) {
+        id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
+    }
+    return id;
+}
+
+function elementChangeTag(element, newTag) {
+    var tags = [];
+    for (var i = element.length - 1; 0 <= i ; i--) {
+        var node = document.createElement(newTag);
+        node.innerHTML = element[i].innerHTML;
+        $.each(element[i].attributes, function() {
+            $(node).attr(this.name, this.value);
+        });
+        $(element[i]).after(node).remove();
+        tags[i] = node;
+    }
+    return $(tags);
+}
+                /* End of file: temp/default/src/tools/element.js */
             
-                /* File: build/default/src/tools/fragment.js */
+                /* File: temp/default/src/tools/fragment.js */
                 /**
  * @fileOverview DOM fragment manipulation helper functions
  * @author David Neilsen david@panmedia.co.nz
@@ -6865,7 +8891,7 @@ function fragmentToHtml(domFragment, tag) {
     // Get all nodes in the extracted content
     for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
         var node = domFragment.childNodes.item(j);
-        var content = node.nodeType === 3 ? node.nodeValue : elementOuterHtml($(node));
+        var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml($(node));
         if (content) {
             html += content;
         }
@@ -6892,7 +8918,7 @@ function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
     for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
         var node = domFragment.childNodes.item(j);
         // Prepend the node before the current node
-        var content = node.nodeType === 3 ? node.nodeValue : $(node).html();
+        var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : $(node).html();
         if (content) {
             $('<' + wrapperTag + '/>')
                 .html($.trim(content))
@@ -6900,24 +8926,24 @@ function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
         }
     }
 }
-                /* End of file: build/default/src/tools/fragment.js */
+                /* End of file: temp/default/src/tools/fragment.js */
             
-                /* File: build/default/src/tools/list.js */
-                function listToggle(listType, wrapper) {
+                /* File: temp/default/src/tools/list.js */
+                function listToggle(listType, listItem, wrapper) {
     // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
-    if ($(selectionGetElements()).is('li')
+    if ($(selectionGetElements()).is(listItem)
         && $(selectionGetElements()).parent().is(listType)) {
-        listUnwrapSelection();
+        listUnwrapSelection(listItem);
     } else {
-        listWrapSelection(listType, wrapper);
+        listWrapSelection(listType, listItem, wrapper);
     }
 };
 
-function listWrapSelection(listType, wrapper) {
+function listWrapSelection(listType, listItem, wrapper) {
     if ($.trim(selectionGetHtml()) === '') {
         selectionSelectInner(selectionGetElements());
     }
-    
+
     var validChildren = [
             'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn',
             'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd', 'label', 'map', 'object', 'p', 'q', 's',  'samp',
@@ -6941,7 +8967,7 @@ function listWrapSelection(listType, wrapper) {
         }
 
         // Avoid inserting blank lists
-        var listElement = $('<li>' + liContent + '</li>');
+        var listElement = $('<' + listItem + '>' + liContent + '</' + listItem + '>');
         if ($.trim(listElement.text()) !== '') {
             listElements.push(elementOuterHtml(listElement));
         }
@@ -6955,20 +8981,19 @@ function listWrapSelection(listType, wrapper) {
      * Replace selection if the selected element parent or the selected element is the editing element,
      * instead of splitting the editing element.
      */
+    var replacement;
     if (selectedElementParent === editingElement
-        || selectionGetElements()[0] === editingElement) {
-        selectionReplace(replacementHtml);
+            || selectionGetElements()[0] === editingElement) {
+        replacement = selectionReplace(replacementHtml);
     } else {
-        selectionReplaceWithinValidTags(replacementHtml, validParents);
+        replacement = selectionReplaceWithinValidTags(replacementHtml, validParents);
     }
 
     // Select the first list element of the inserted list
-    selectionSelectInner(selectedElementParent.find('li:first')[0]);
+    selectionSelectInner(replacement.find(listItem + ':first')[0]);
 };
 
-function listUnwrapSelection() {
-    selectionSave();
-
+function listUnwrapSelection(listItem) {
     // Array containing the html contents of each of the selected li elements.
     var listElementsContent = [];
     // Array containing the selected li elements themselves.
@@ -6994,8 +9019,8 @@ function listUnwrapSelection() {
     }
 
     // Boolean values used to determine whether first / last list element of the parent is selected.
-    var firstLiSelected = $(startElement).prev().length === 0;
-    var lastLiSelected = $(endElement).next().length === 0;
+    var firstLISelected = $(startElement).prev().length === 0;
+    var lastLISelected = $(endElement).next().length === 0;
 
     // The parent list container, e.g. the parent ul / ol
     var parentListContainer = $(startElement).parent();
@@ -7007,13 +9032,13 @@ function listUnwrapSelection() {
 
     // Wrap list element content in p tags if the list element parent's parent is not a li.
     for (var listElementsContentIndex = 0; listElementsContentIndex < listElementsContent.length; listElementsContentIndex++) {
-        if (!parentListContainer.parent().is('li')) {
+        if (!parentListContainer.parent().is(listItem)) {
             listElementsContent[listElementsContentIndex] = '<p>' + listElementsContent[listElementsContentIndex] + '</p>';
         }
     }
 
     // Every li of the list has been selected, replace the entire list
-    if (firstLiSelected && lastLiSelected) {
+    if (firstLISelected && lastLISelected) {
         parentListContainer.replaceWith(listElementsContent.join(''));
         selectionRestore();
         var selectedElement = selectionGetElements()[0];
@@ -7021,20 +9046,18 @@ function listUnwrapSelection() {
         return;
     }
 
-    if (firstLiSelected) {
+    if (firstLISelected) {
         $(parentListContainer).before(listElementsContent.join(''));
-    } else if (lastLiSelected) {
+    } else if (lastLISelected) {
         $(parentListContainer).after(listElementsContent.join(''));
     } else {
         selectionReplaceSplittingSelectedElement(listElementsContent.join(''));
     }
-
-    selectionRestore();
 };
 
-                /* End of file: build/default/src/tools/list.js */
+                /* End of file: temp/default/src/tools/list.js */
             
-                /* File: build/default/src/tools/persist.js */
+                /* File: temp/default/src/tools/persist.js */
                 function persistSet(key, value) {
     if (localStorage) {
         var storage;
@@ -7061,9 +9084,9 @@ function persistGet(key) {
 }
 
 
-                /* End of file: build/default/src/tools/persist.js */
+                /* End of file: temp/default/src/tools/persist.js */
             
-                /* File: build/default/src/tools/range.js */
+                /* File: temp/default/src/tools/range.js */
                 /**
  * @fileOverview Range manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
@@ -7095,20 +9118,24 @@ function rangeExpandTo(range, elements) {
 
 /**
  * Replaces the content of range with the given html.
- * 
+ *
  * @param  {jQuery|String} html The html to use when replacing range.
  * @param  {RangyRange} range The range to replace.
+ * @return {Node[]} Array of new nodes inserted.
  */
 function rangeReplace(html, range) {
-    var nodes = $('<div/>').append(html)[0].childNodes;
+    var result = [],
+        nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
     if (nodes.length === undefined || nodes.length === 1) {
         range.insertNode(nodes[0].cloneNode(true));
     } else {
         $.each(nodes, function(i, node) {
-            range.insertNodeAtEnd(node.cloneNode(true));
+            result.unshift(node.cloneNode(true));
+            range.insertNodeAtEnd(result[0]);
         });
     }
+    return result;
 }
 
 function rangeEmptyTag(range) {
@@ -7129,7 +9156,7 @@ function rangeGetCommonAncestor(selection) {
 
     var commonAncestor;
     $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === 3) {
+        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
             commonAncestor = $(range.commonAncestorContainer).parent()[0];
         } else {
             commonAncestor = range.commonAncestorContainer;
@@ -7216,9 +9243,9 @@ function rangeDeserialize(serialized) {
     }
     return ranges;
 }
-                /* End of file: build/default/src/tools/range.js */
+                /* End of file: temp/default/src/tools/range.js */
             
-                /* File: build/default/src/tools/selection.js */
+                /* File: temp/default/src/tools/selection.js */
                 /**
  * @fileOverview Selection manipulation helper functions.
  * @author David Neilsen david@panmedia.co.nz
@@ -7287,14 +9314,17 @@ function selectionSet(mixed) {
 /**
  * Replaces the given selection (or the current selection if selection is not
  * supplied) with the given html.
+ *
  * @public @static
  * @param  {jQuery|String} html The html to use when replacing.
  * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.
  */
 function selectionReplace(html, selection) {
+    var result = [];
     selectionEachRange(function(range) {
-        rangeReplace(html, range);
+        result.concat(rangeReplace(html, range));
     }, selection, this);
+    return result;
 }
 
 /**
@@ -7385,7 +9415,7 @@ function selectionGetElement(range) {
     range = range || rangy.getSelection().getRangeAt(0);
 
     // Check if the common ancestor container is a text node
-    if (range.commonAncestorContainer.nodeType === 3) {
+    if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
         // Use the parent instead
         commonAncestor = range.commonAncestorContainer.parentNode;
     } else {
@@ -7415,10 +9445,10 @@ function selectionGetStartElement() {
         return null;
     }
     if (selection.isBackwards()) {
-        return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+        return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
     }
     if (!selection.anchorNode) console.trace();
-    return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+    return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
 }
 
 function selectionGetEndElement() {
@@ -7427,9 +9457,9 @@ function selectionGetEndElement() {
         return null;
     }
     if (selection.isBackwards()) {
-        return selection.anchorNode.nodeType === 3 ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
+        return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
     }
-    return selection.focusNode.nodeType === 3 ? $(selection.focusNode.parentElement) : $(selection.focusNode);
+    return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
 }
 
 function selectionAtEndOfElement() {
@@ -7549,21 +9579,26 @@ function selectionReplaceSplittingSelectedElement(html, selection) {
 
     // Replace the start element's html with the content that was not selected, append html & end element's html
     var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
-    replacement += elementOuterHtml($(html));
+    replacement += elementOuterHtml($(html).attr('data-replacement', true));
     replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
 
-    $(selectedElement).replaceWith($(replacement));
+    replacement = $(replacement);
+
+    $(selectedElement).replaceWith(replacement);
+    return replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
 }
 
 /**
  * Replace current selection with given html, ensuring that selection container is split at
  * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+ *
  * @param  {jQuery|Element|string} html The html to replace current selection with.
  * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
  * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
  */
 function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selection = selection || rangy.getSelection();
+
     if (selection.rangeCount === 0) {
         return;
     }
@@ -7578,12 +9613,11 @@ function selectionReplaceWithinValidTags(html, validTagNames, selection) {
 
     // The html may be inserted within the selected element & selection start / end.
     if (selectedElementValid && startElementValid && endElementValid) {
-        selectionReplace(html);
-        return;
+        return selectionReplace(html);
     }
 
     // Context is invalid. Split containing element and insert list in between.
-    selectionReplaceSplittingSelectedElement(html, selection);
+    return selectionReplaceSplittingSelectedElement(html, selection);
 }
 
 /**
@@ -7599,7 +9633,7 @@ function selectionToggleBlockStyle(styles, limit) {
     selectionEachRange(function(range) {
         var parent = $(range.commonAncestorContainer);
         while (parent.length && parent[0] !== limit[0] && (
-                parent[0].nodeType === 3 || parent.css('display') === 'inline')) {
+                parent[0].nodeType === Node.TEXT_NODE || parent.css('display') === 'inline')) {
             parent = parent.parent();
         }
         if (parent[0] === limit[0]) {
@@ -7614,6 +9648,69 @@ function selectionToggleBlockStyle(styles, limit) {
         // Apply the style to the parent
         elementToggleStyle(parent, styles);
     }, null, this);
+}
+
+function selectionEachBlock(callback, limitElement, blockContainer) {
+    // <strict/>
+    selectionEachRange(function(range) {
+        // Loop range parents until a block element is found, or the limit element is reached
+        var startBlock = elementClosestBlock($(range.startContainer), limitElement),
+            endBlock = elementClosestBlock($(range.endContainer), limitElement),
+            blocks;
+        if (!startBlock || !endBlock) {
+            // Wrap the HTML inside the limit element
+            callback(elementWrapInner(limitElement, blockContainer).get(0));
+        } else {
+            if (startBlock.is(endBlock)) {
+                blocks = startBlock;
+            } else if (startBlock && endBlock) {
+                blocks = startBlock.nextUntil(endBlock).andSelf().add(endBlock);
+            }
+            for (var i = 0, l = blocks.length; i < l; i++) {
+                callback(blocks[i]);
+            }
+        }
+    });
+}
+
+/**
+ * Add or removes a set of classes to the closest block elements in a selection.
+ * If the `limitElement` is closer than a block element, then a new
+ * `blockContainer` element wrapped around the selection.
+ *
+ * If any block in the selected text has not got the class applied to it, then
+ * the class will be applied to all blocks.
+ *
+ *
+ * @param {string[]} addClasses
+ * @param {string[]} removeClasses
+ * @param {type} limitElement
+ * @param {type} blockContainer
+ * @returns {undefined}
+ */
+function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, blockContainer) {
+    // <strict/>
+
+    var apply = false,
+        blocks = new jQuery();
+
+    selectionEachBlock(function(block) {
+        blocks.push(block);
+        if (!apply) {
+            for (var i = 0, l = addClasses.length; i < l; i++) {
+                if (!$(block).hasClass(addClasses[i])) {
+                    apply = true;
+                }
+            }
+        }
+    }, limitElement, blockContainer);
+
+    $(blocks).removeClass(removeClasses.join(' '));
+    if (apply) {
+        $(blocks).addClass(addClasses.join(' '));
+    } else {
+        $(blocks).removeClass(addClasses.join(' '));
+    }
 }
 
 /**
@@ -7635,7 +9732,7 @@ function selectionConstrain(element, selection) {
 
     var commonAncestor;
     $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === 3) {
+        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
             commonAncestor = $(range.commonAncestorContainer).parent()[0];
         } else {
             commonAncestor = range.commonAncestorContainer;
@@ -7645,7 +9742,6 @@ function selectionConstrain(element, selection) {
         }
     });
 }
-
 
 function selectionClearFormatting(limitNode, selection) {
     limitNode = limitNode || document.body;
@@ -7694,8 +9790,6 @@ function selectionClearFormatting(limitNode, selection) {
     }
 }
 
-
-
 function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
     selectionSave();
     // Assign a temporary tag name (to fool rangy)
@@ -7725,13 +9819,76 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
 
     selectionRestore();
 }
-                /* End of file: build/default/src/tools/selection.js */
+
+function selectionExpandToWord() {
+    var ranges = rangy.getSelection().getAllRanges();
+    if (ranges.length === 1) {
+        if (!$.isFunction(rangy.getSelection().expand)) {
+            return;
+        }
+        if (ranges[0].toString() === '') {
+            rangy.getSelection().expand('word');
+        }
+    }
+}
+
+function selectionFindWrappingAndInnerElements(selector, limitElement) {
+    var result = new jQuery();
+    selectionEachRange(function(range) {
+        var startNode = range.startContainer;
+        while (startNode.nodeType === Node.TEXT_NODE) {
+            startNode = startNode.parentNode;
+        }
+
+        var endNode = range.endContainer;
+        while (endNode.nodeType === Node.TEXT_NODE) {
+            endNode = endNode.parentNode;
+        }
+
+        var filter = function() {
+            if (!limitElement.is(this)) {
+                result.push(this);
+            }
+        };
+
+        do {
+            $(startNode).filter(selector).each(filter);
+
+            if (!limitElement.is(startNode)) {
+                $(startNode).parentsUntil(limitElement, selector).each(filter);
+            }
+
+            $(startNode).find(selector).each(filter);
+
+            if ($(endNode).is(startNode)) {
+                break;
+            }
+
+            startNode = $(startNode).next();
+        } while (startNode.length > 0 && $(startNode).prevAll().has(endNode).length === 0);
+    });
+    return result;
+}
+
+function selectionChangeTags(changeTo, changeFrom, limitElement) {
+    selectionSave();
+    var elements = selectionFindWrappingAndInnerElements(changeFrom.join(','), limitElement);
+    if (elements.length) {
+        elementChangeTag(elements, changeTo);
+    } else {
+        var limitNode = limitElement.get(0);
+        limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+    }
+    selectionRestore();
+}
+
+                /* End of file: temp/default/src/tools/selection.js */
             
-                /* File: build/default/src/tools/state.js */
+                /* File: temp/default/src/tools/state.js */
                 
 function stateSave(element) {
     // <strict/>
-    
+
     var ranges = rangy.getSelection().getAllRanges();
     return {
         element: element.clone(true),
@@ -7741,7 +9898,7 @@ function stateSave(element) {
 
 function stateRestore(element, state) {
     // <strict/>
-    
+
     element.replaceWith(state.element);
     return {
         element: state.element,
@@ -7749,15 +9906,9 @@ function stateRestore(element, state) {
     };
 }
 
-//function stateRestoreRanges(state) {
-//    if (state.ranges) {
-//        rangeDeserialize(state.ranges);
-//    }
-//}
-
-                /* End of file: build/default/src/tools/state.js */
+                /* End of file: temp/default/src/tools/state.js */
             
-                /* File: build/default/src/tools/string.js */
+                /* File: temp/default/src/tools/string.js */
                 /**
  * @fileOverview String helper functions
  * @author David Neilsen - david@panmedia.co.nz
@@ -7793,9 +9944,9 @@ function stringCamelCaseConvert(string, delimiter) {
     });
 }
 
-                /* End of file: build/default/src/tools/string.js */
+                /* End of file: temp/default/src/tools/string.js */
             
-                /* File: build/default/src/tools/style.js */
+                /* File: temp/default/src/tools/style.js */
                 function styleSwapState(element, newState) {
     var node = element.get(0),
         previousState = {};
@@ -7803,8 +9954,8 @@ function stringCamelCaseConvert(string, delimiter) {
     for (var key in newState) {
         previousState[key] = node.style[key];
     }
-    for (var key in newState) {
-        element.css(key, newState[key])
+    for (key in newState) {
+        element.css(key, newState[key]);
     }
     return previousState;
 }
@@ -7816,9 +9967,9 @@ function styleSwapWithWrapper(wrapper, inner, newState) {
     for (var key in newState) {
         previousState[key] = innerNode.style[key];
     }
-    for (var key in newState) {
+    for (key in newState) {
         wrapper.css(key, inner.css(key));
-        inner.css(key, newState[key])
+        inner.css(key, newState[key]);
     }
     return previousState;
 }
@@ -7829,9 +9980,9 @@ function styleRestoreState(element, state) {
     }
 }
 
-                /* End of file: build/default/src/tools/style.js */
+                /* End of file: temp/default/src/tools/style.js */
             
-                /* File: build/default/src/tools/table.js */
+                /* File: temp/default/src/tools/table.js */
                 /**
  * @fileOverview Table helper functions.
  * @author David Neilsen - david@panmedia.co.nz
@@ -7987,9 +10138,9 @@ function tableSplitCells(table, x, y) {
     googTable.splitCell(x, y);
 }
 
-                /* End of file: build/default/src/tools/table.js */
+                /* End of file: temp/default/src/tools/table.js */
             
-                /* File: build/default/src/tools/tag.js */
+                /* File: temp/default/src/tools/tag.js */
                 
 
 
@@ -8008,20 +10159,22 @@ function tagCustomRemoveFromSelection(tag, className) {
     applier.undoToSelection();
 }
 
-                /* End of file: build/default/src/tools/tag.js */
+                /* End of file: temp/default/src/tools/tag.js */
             
-                /* File: build/default/src/tools/template.js */
+                /* File: temp/default/src/tools/template.js */
                 var templateCache = { 'click-button-to-edit.button': "<button class=\"{{baseClass}}-button\">_('clickButtonToEditPluginButton')<\/button>\n",
-'color-picker-basic.menu': "<li data-color=\"automatic\"><a><div class=\"{{baseClass}}-swatch\" style=\"display: none\"><\/div> <span>_('colorPickerBasicAutomatic')<\/span><\/a><\/li>\n<li data-color=\"white\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #ffffff\"><\/div> <span>_('colorPickerBasicWhite')<\/span><\/a><\/li>\n<li data-color=\"black\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #000000\"><\/div> <span>_('colorPickerBasicBlack')<\/span><\/a><\/li>\n<li data-color=\"grey\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #999\"><\/div> <span>_('colorPickerBasicGrey')<\/span><\/a><\/li>\n<li data-color=\"blue\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #4f81bd\"><\/div> <span>_('colorPickerBasicBlue')<\/span><\/a><\/li>\n<li data-color=\"red\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #c0504d\"><\/div> <span>_('colorPickerBasicRed')<\/span><\/a><\/li>\n<li data-color=\"green\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #9bbb59\"><\/div> <span>_('colorPickerBasicGreen')<\/span><\/a><\/li>\n<li data-color=\"purple\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #8064a2\"><\/div> <span>_('colorPickerBasicPurple')<\/span><\/a><\/li>\n<li data-color=\"orange\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #f79646\"><\/div> <span>_('colorPickerBasicOrange')<\/span><\/a><\/li>\n",
-'embed.dialog': "<div class=\"{{baseClass}}-dialog\">\n    <div class=\"{{baseClass}}-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('embedDialogTabCode')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('embedDialogTabPreview')<\/a><\/li>\n        <\/ul>\n        <div class=\"{{baseClass}}-code-tab\">\n            <p>_('embedDialogTabCodeContent')<\/p>\n            <textarea><\/textarea>\n        <\/div>\n        <div class=\"{{baseClass}}-preview-tab\" style=\"display: none\">\n            <p>_('embedDialogTabPreviewContent')<\/p>\n            <div class=\"{{baseClass}}-preview\"><\/div>\n        <\/div>\n    <\/div>\n<\/div>\n",
+'color-menu-basic.menu': "<li data-color=\"automatic\"><a><div class=\"{{baseClass}}-swatch\" style=\"display: none\"><\/div> <span>_('colorMenuBasicAutomatic')<\/span><\/a><\/li>\n<li data-color=\"white\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #ffffff\"><\/div> <span>_('colorMenuBasicWhite')<\/span><\/a><\/li>\n<li data-color=\"black\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #000000\"><\/div> <span>_('colorMenuBasicBlack')<\/span><\/a><\/li>\n<li data-color=\"grey\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #999\"><\/div> <span>_('colorMenuBasicGrey')<\/span><\/a><\/li>\n<li data-color=\"blue\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #4f81bd\"><\/div> <span>_('colorMenuBasicBlue')<\/span><\/a><\/li>\n<li data-color=\"red\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #c0504d\"><\/div> <span>_('colorMenuBasicRed')<\/span><\/a><\/li>\n<li data-color=\"green\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #9bbb59\"><\/div> <span>_('colorMenuBasicGreen')<\/span><\/a><\/li>\n<li data-color=\"purple\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #8064a2\"><\/div> <span>_('colorMenuBasicPurple')<\/span><\/a><\/li>\n<li data-color=\"orange\"><a><div class=\"{{baseClass}}-swatch\" style=\"background-color: #f79646\"><\/div> <span>_('colorMenuBasicOrange')<\/span><\/a><\/li>\n",
+'embed.dialog': "<div class=\"{{baseClass}}-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n    <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n        <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('embedDialogTabCode')<\/a><\/li>\n        <li class=\"ui-state-default ui-corner-top\"><a>_('embedDialogTabPreview')<\/a><\/li>\n    <\/ul>\n    <div class=\"{{baseClass}}-code-tab\">\n        <p>_('embedDialogTabCodeContent')<\/p>\n        <textarea><\/textarea>\n    <\/div>\n    <div class=\"{{baseClass}}-preview-tab\" style=\"display: none\">\n        <p>_('embedDialogTabPreviewContent')<\/p>\n        <div class=\"{{baseClass}}-preview\"><\/div>\n    <\/div>\n<\/div>\n",
+'insert-file.dialog': "<div>\n    <label>_('File URL')<\/label>\n    <input type=\"text\" name=\"location\" placeholder=\"Paste file URL here\"\/>\n    <label>_('File Name')<\/label>\n    <input type=\"text\" name=\"name\" placeholder=\"Name of file\"\/>\n<\/div>\n",
 'link.dialog': "<div style=\"display:none\" class=\"{{baseClass}}-panel\">\n    <div class=\"{{baseClass}}-menu\">\n        <p>_('linkDialogMenuHeader')<\/p>\n        <fieldset data-menu=\"\"><\/fieldset>\n    <\/div>\n    <div class=\"{{baseClass}}-wrap\">\n        <div class=\"{{baseClass}}-content\" data-content=\"\"><\/div>\n    <\/div>\n<\/div>\n",
 'link.email': "<h2>_('linkTypeEmailHeader')<\/h2>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email\">_('linkTypeEmailToLabel')<\/label>\n    <input id=\"{{baseClass}}-email\" name=\"email\" type=\"text\" placeholder=\"_('linkTypeEmailToPlaceHolder')\"\/>\n<\/fieldset>\n<fieldset class=\"{{baseClass}}-email\">\n    <label for=\"{{baseClass}}-email-subject\">_('linkTypeEmailSubjectLabel')<\/label>\n    <input id=\"{{baseClass}}-email-subject\" name=\"subject\" type=\"text\" placeholder=\"_('linkTypeEmailSubjectPlaceHolder')\"\/>\n<\/fieldset>\n",
 'link.external': "<h2>_('linkTypeExternalHeader')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('linkTypeExternalLocationLabel')<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"http:\/\/\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('linkTypeExternalLocationPlaceHolder')\" \/>\n<\/fieldset>\n<h2>_('linkTypeExternalNewWindowHeader')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('linkTypeExternalNewWindowLabel')<\/span>\n    <\/label>\n<\/fieldset>\n_('linkTypeExternalInfo')\n",
 'link.internal': "<h2>_('linkTypeInternalHeader')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-href\">_('linkTypeInternalLocationLabel') {{domain}}<\/label>\n    <input id=\"{{baseClass}}-external-href\" value=\"\" name=\"location\" class=\"{{baseClass}}-external-href\" type=\"text\" placeholder=\"_('linkTypeInternalLocationPlaceHolder')\" \/>\n<\/fieldset>\n<h2>_('linkTypeInternalNewWindowHeader')<\/h2>\n<fieldset>\n    <label for=\"{{baseClass}}-external-target\">\n        <input id=\"{{baseClass}}-external-target\" name=\"blank\" type=\"checkbox\" \/>\n        <span>_('linkTypeInternalNewWindowLabel')<\/span>\n    <\/label>\n<\/fieldset>\n_('linkTypeInternalInfo')\n",
-'link.label': "<label>\n    <input class=\"{{classes}}\" type=\"radio\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{label}}<\/span>\n<\/label>\n",
+'link.label': "<label>\n    <input type=\"radio\" name=\"link-type\" autocomplete=\"off\"\/>\n    <span>{{label}}<\/span>\n<\/label>\n",
+'paste.dialog': "<div class=\"{{baseClass}}-panel ui-dialog-content ui-widget-content\">\n    <div class=\"{{baseClass}}-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all\">\n        <ul class=\"ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n            <li class=\"ui-state-default ui-corner-top ui-tabs-selected ui-state-active\"><a>_('pasteDialogPlain')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('pasteDialogFormattedCleaned')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('pasteDialogFormattedUnclean')<\/a><\/li>\n            <li class=\"ui-state-default ui-corner-top\"><a>_('pasteDialogSource')<\/a><\/li>\n        <\/ul>\n        <div class=\"{{baseClass}}-plain-tab\">\n            <textarea class=\"{{baseClass}}-area {{baseClass}}-plain\"><\/textarea>\n        <\/div>\n        <div class=\"{{baseClass}}-markup-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"{{baseClass}}-area {{baseClass}}-markup\"><\/div>\n        <\/div>\n        <div class=\"{{baseClass}}-rich-tab\" style=\"display: none\">\n            <div contenteditable=\"true\" class=\"{{baseClass}}-area {{baseClass}}-rich\"><\/div>\n        <\/div>\n        <div class=\"{{baseClass}}-source-tab\" style=\"display: none\">\n            <textarea class=\"{{baseClass}}-area {{baseClass}}-source\"><\/textarea>\n        <\/div>\n    <\/div>\n<\/div>\n",
 'statistics.dialog': "<div>\n    <ul>\n        <li data-name=\"characters\"><\/li>\n        <li data-name=\"words\"><\/li>\n        <li data-name=\"sentences\"><\/li>\n        <li data-name=\"truncation\"><\/li>\n    <\/ul>\n<\/div>\n",
 'table.create-menu': "<table class=\"{{baseClass}}-menu\">\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n    <tr>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n        <td><\/td>\n    <\/tr>\n<\/table>\n",
-'tag-menu.menu': "<li data-value=\"na\"><a>_('tagMenuTagNA')<\/a><\/li>\n<li data-value=\"p\"><a>_('tagMenuTagP')<\/a><\/li>\n<li data-value=\"h1\"><a>_('tagMenuTagH1')<\/a><\/li>\n<li data-value=\"h2\"><a>_('tagMenuTagH2')<\/a><\/li>\n<li data-value=\"h3\"><a>_('tagMenuTagH3')<\/a><\/li>\n",
+'tag-menu.menu': "<li data-value=\"na\"><a>_('tagMenuTagNA')<\/a><\/li>\n<li data-value=\"p\"><a>_('tagMenuTagP')<\/a><\/li>\n<li data-value=\"h1\"><a>_('tagMenuTagH1')<\/a><\/li>\n<li data-value=\"h2\"><a>_('tagMenuTagH2')<\/a><\/li>\n<li data-value=\"h3\"><a>_('tagMenuTagH3')<\/a><\/li>\n<li data-value=\"div\"><a>_('tagMenuTagDiv')<\/a><\/li>\n<li data-value=\"pre\"><a>_('tagMenuTagPre')<\/a><\/li>\n<li data-value=\"address\"><a>_('tagMenuTagAddress')<\/a><\/li>\n",
 'unsaved-edit-warning.warning': "<div class=\"{{baseClass}}\">\n    <span class=\"ui-icon ui-icon-alert\"><\/span>\n    <span>_('unsavedEditWarningText')<\/span>\n<\/div>\n",
 'view-source.dialog': "<div class=\"{{baseClass}}-inner-wrapper\">\n    <textarea><\/textarea>\n<\/div>\n",
 'message': "<div class=\"{{baseClass}}-message-wrapper {{baseClass}}-message-{{type}}\">\n    <div class=\"ui-icon ui-icon-{{type}}\" \/>\n    <div class=\"{{baseClass}}-message\">{{message}}<\/div>\n    <div class=\"{{baseClass}}-message-close ui-icon ui-icon-circle-close\"><\/div>\n<\/div>\n",
@@ -8032,7 +10185,7 @@ function templateGet(name, urlPrefix) {
     if (templateCache[name]) {
         return templateCache[name];
     }
-    
+
     // Parse the URL
     var url = urlPrefix;
     var split = name.split('.');
@@ -8060,10 +10213,10 @@ function templateGet(name, urlPrefix) {
             template = data;
         }
     });
-    
+
     // Cache the template
     templateCache[name] = template;
-    
+
     return template;
 };
 
@@ -8089,14 +10242,15 @@ function templateConvertTokens(template, variables) {
         });
         return _(key);
     });
-    
+
     // Replace variables
     variables = $.extend({}, this.options, variables || {});
     variables = templateGetVariables(variables);
     template = template.replace(/\{\{(.*?)\}\}/g, function(match, variable) {
+        // <debug/>
         return variables[variable];
     });
-    
+
     return template;
 };
 
@@ -8118,9 +10272,9 @@ function templateGetVariables(variables, prefix, depth) {
     return result;
 };
 
-                /* End of file: build/default/src/tools/template.js */
+                /* End of file: temp/default/src/tools/template.js */
             
-                /* File: build/default/src/tools/types.js */
+                /* File: temp/default/src/tools/types.js */
                 /**
  * @fileOverview Type checking functions.
  * @author Michael Robinson michael@panmedia.co.nz
@@ -8136,154 +10290,10 @@ function typeIsNumber(object) {
     return !isNaN(object - 0) && object !== null;
 }
 
-                /* End of file: build/default/src/tools/types.js */
+                /* End of file: temp/default/src/tools/types.js */
             
-                /* File: build/default/src/raptor.js */
+                /* File: temp/default/src/raptor.js */
                 var Raptor = /** @lends $.ui.raptor */ {
-
-    /**
-     * Default options for Raptor.
-     *
-     * @namespace Default options for Raptor.
-     */
-    defaults: {
-        /**
-         * @type Object Default layout to use.
-         */
-        layout: null,
-
-        /**
-         * Plugins option overrides.
-         *
-         * @type Object
-         */
-        plugins: {},
-
-        /**
-         * UI option overrides.
-         *
-         * @type Object
-         */
-        ui: {},
-
-        /**
-         * Default events to bind.
-         *
-         * @type Object
-         */
-        bind: {},
-
-        /**
-         * Namespace used for persistence to prevent conflicting with other stored values.
-         *
-         * @type String
-         */
-        namespace: null,
-
-        /**
-         * Switch to indicated that some events should be automatically applied to all editors that are 'unified'
-         * @type boolean
-         */
-        unify: true,
-
-        /**
-         * Switch to indicate weather or not to stored persistent values, if set to false the persist function will always return null
-         * @type boolean
-         */
-        persistence: true,
-
-        /**
-         * The name to store persistent values under
-         * @type String
-         */
-        persistenceName: 'uiEditor',
-
-        /**
-         * Switch to indicate weather or not to a warning should pop up when the user navigates aways from the page and there are unsaved changes
-         * @type boolean
-         */
-        unloadWarning: true,
-
-        /**
-         * Switch to automatically enabled editing on the element
-         * @type boolean
-         */
-        autoEnable: false,
-
-        /**
-         * Only enable editing on certian parts of the element
-         * @type {jQuerySelector}
-         */
-        partialEdit: false,
-
-        /**
-         * Switch to specify if the editor should automatically enable all plugins, if set to false, only the plugins specified in the 'plugins' option object will be enabled
-         * @type boolean
-         */
-        enablePlugins: true,
-
-        /**
-         * An array of explicitly disabled plugins
-         * @type String[]
-         */
-        disabledPlugins: [],
-
-        /**
-         * And array of arrays denoting the order and grouping of UI elements in the toolbar
-         * @type String[]
-         */
-        uiOrder: null,
-
-        /**
-         * Switch to specify if the editor should automatically enable all UI, if set to false, only the UI specified in the {@link Raptor.defaults.ui} option object will be enabled
-         * @type boolean
-         */
-        enableUi: true,
-
-        /**
-         * An array of explicitly disabled UI elements
-         * @type String[]
-         */
-        disabledUi: [],
-
-        /**
-         * Default message options
-         * @type Object
-         */
-        message: {
-            delay: 5000
-        },
-
-        /**
-         * Switch to indicate that the element the editor is being applied to should be replaced with a div (useful for textareas), the value/html of the replaced element will be automatically updated when the editor element is changed
-         * @type boolean
-         */
-        replace: false,
-
-        /**
-         * A list of styles that will be copied from the replaced element and applied to the editor replacement element
-         * @type String[]
-         */
-        replaceStyle: [
-            'display', 'position', 'float', 'width',
-            'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
-            'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
-        ],
-
-        /**
-         *
-         * @type String
-         */
-        baseClass: 'raptor',
-
-        /**
-         * CSS class prefix that is prepended to inserted elements classes. E.g. "cms-bold"
-         * @type String
-         */
-        cssPrefix: 'cms-',
-
-        draggable: true
-    },
 
     /** @type {Boolean} True to enable hotkeys */
     enableHotkeys: true,
@@ -8314,12 +10324,6 @@ function typeIsNumber(object) {
      * @property {Object} layouts
      */
     layouts: {},
-
-    /**
-     * Presets added via Raptor.registerPreset
-     * @property {Object} presets
-     */
-    presets: {},
 
     /**
      * @property {Raptor[]} instances
@@ -8391,16 +10395,6 @@ function typeIsNumber(object) {
     /*========================================================================*\
      * Helpers
     \*========================================================================*/
-    /**
-     * @returns {String}
-     */
-    getUniqueId: function() {
-        var id = Raptor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
-        while ($('#' + id).length) {
-            id = Raptor.defaults.baseClass + '-uid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
-        }
-        return id;
-    },
 
     /**
      * @returns {boolean}
@@ -8451,17 +10445,6 @@ function typeIsNumber(object) {
     registerLayout: function(name, layout) {
         // <strict/>
         this.layouts[name] = layout;
-    },
-
-    /**
-     * Registers a new preset, overriding any previous preset registered with the same name.
-     *
-     * @param {String} name
-     * @param {Object} preset
-     */
-    registerPreset: function(name, preset) {
-        // <strict/>
-        this.presets[name] = preset;
     },
 
     registerPlugin: function(plugin) {
@@ -8536,9 +10519,9 @@ function typeIsNumber(object) {
 
 };
 
-                /* End of file: build/default/src/raptor.js */
+                /* End of file: temp/default/src/raptor.js */
             
-                /* File: build/default/src/jquery.ui.editor.js */
+                /* File: temp/default/src/raptor-widget.js */
                 /**
  *
  * @author David Neilsen - david@panmedia.co.nz
@@ -8558,6 +10541,13 @@ var RaptorWidget = {
      * Constructor
      */
     _init: function() {
+        // Prevent double initialisation
+        if (this.element.attr('data-raptor-initialised')) {
+            // <debug/>
+            return;
+        }
+        this.element.attr('data-raptor-initialised', true);
+
         // Add the editor instance to the global list of instances
         if ($.inArray(this, Raptor.instances) === -1) {
             Raptor.instances.push(this);
@@ -8570,7 +10560,7 @@ var RaptorWidget = {
 
         // Give the element a unique ID
         if (!this.element.attr('id')) {
-            this.element.attr('id', this.getUniqueId());
+            this.element.attr('id', elementUniqueId());
         }
 
         // Initialise properties
@@ -8741,7 +10731,7 @@ var RaptorWidget = {
      * to replace a textarea.
      */
     replaceOriginal: function() {
-        if (this.target) return;
+        if (!this.target.is(':input')) return;
 
         // Create the replacement div
         var target = $('<div/>')
@@ -8750,7 +10740,7 @@ var RaptorWidget = {
             // Insert the div before the original element
             .insertBefore(this.element)
             // Give the div a unique ID
-            .attr('id', this.getUniqueId())
+            .attr('id', elementUniqueId())
             // Copy the original elements class(es) to the replacement div
             .addClass(this.element.attr('class'));
 
@@ -8879,7 +10869,6 @@ var RaptorWidget = {
         this.actionPreviewRestore();
         selectionConstrain(this.target);
         actionApply(action, this.history);
-        this.previewState = null;
         this.checkChange();
     },
 
@@ -9012,13 +11001,6 @@ var RaptorWidget = {
         }
     },
 
-    /**
-     * @returns {String}
-     */
-    getUniqueId: function() {
-        return Raptor.getUniqueId();
-    },
-
     /*========================================================================*\
      * Messages
     \*========================================================================*/
@@ -9125,9 +11107,9 @@ var RaptorWidget = {
     loadLayout: function() {
         if (!this.layout) {
             this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
-            this.layout.editor = this;
-            this.layout.options = $.extend(true, {}, this.options, this.layout.options, this.options.layout.options);
-            this.layout.init(this, this.layout.options);
+            this.layout.raptor = this;
+            this.layout.options = $.extend({}, this.options, this.layout.options, this.options.layout.options);
+            this.layout.init();
         }
     },
 
@@ -9216,7 +11198,7 @@ var RaptorWidget = {
         if (!this.templates[name]) {
             this.templates[name] = templateGet(name, this.options.urlPrefix);
         }
-        return templateConvertTokens(this.templates[name], variables);;
+        return templateConvertTokens(this.templates[name], variables);
     },
 
     /*========================================================================*\
@@ -9395,13 +11377,13 @@ var RaptorWidget = {
                 return '-' + match.toLowerCase();
             });
 
-            var options = $.extend(true, {}, editor.options, {
+            var options = $.extend({}, editor.options, {
                 baseClass: editor.options.baseClass + '-' + baseClass
             }, pluginObject.options, editor.options.plugins[name]);
 
-            pluginObject.editor = editor;
+            pluginObject.raptor = this;
             pluginObject.options = options;
-            pluginObject.init(editor, options);
+            pluginObject.init();
 
             if (pluginObject.hotkeys) {
                 this.registerHotkey(pluginObject.hotkeys, null, pluginObject);
@@ -9556,24 +11538,46 @@ var RaptorWidget = {
 
 $.widget('ui.raptor', RaptorWidget);
 
-                /* End of file: build/default/src/jquery.ui.editor.js */
+                /* End of file: temp/default/src/raptor-widget.js */
             
-                /* File: build/default/src/expose.js */
+                /* File: temp/default/src/expose.js */
                 
-$.extend($.ui.raptor, Raptor, {
-
-    // <expose>
+// <expose>
+$.extend(Raptor, {
+    Button: Button,
+    CSSClassApplierButton: CSSClassApplierButton,
+    FilteredPreviewButton: FilteredPreviewButton,
+    Menu: Menu,
+    MenuButton: MenuButton,
+    PreviewButton: PreviewButton,
+    PreviewToggleButton: PreviewToggleButton,
+    RaptorPlugin: RaptorPlugin,
+    SelectMenu: SelectMenu,
+    aButton: aButton,
+    aButtonActive: aButtonActive,
+    aButtonDisable: aButtonDisable,
+    aButtonEnable: aButtonEnable,
+    aButtonInactive: aButtonInactive,
+    aButtonSetIcon: aButtonSetIcon,
+    aButtonSetLabel: aButtonSetLabel,
+    aDialog: aDialog,
+    aDialogClose: aDialogClose,
+    aDialogOpen: aDialogOpen,
+    aMenu: aMenu,
     actionApply: actionApply,
     actionPreview: actionPreview,
     actionPreviewRestore: actionPreviewRestore,
     actionRedo: actionRedo,
     actionUndo: actionUndo,
     cleanEmptyAttributes: cleanEmptyAttributes,
+    cleanRemoveComments: cleanRemoveComments,
     cleanReplaceElements: cleanReplaceElements,
     cleanUnwrapElements: cleanUnwrapElements,
     dockToElement: dockToElement,
     dockToScreen: dockToScreen,
     elementBringToTop: elementBringToTop,
+    elementChangeTag: elementChangeTag,
+    elementClosestBlock: elementClosestBlock,
     elementDefaultDisplay: elementDefaultDisplay,
     elementDetachedManip: elementDetachedManip,
     elementGetAttributes: elementGetAttributes,
@@ -9585,9 +11589,9 @@ $.extend($.ui.raptor, Raptor, {
     elementOuterText: elementOuterText,
     elementPositionUnder: elementPositionUnder,
     elementRemoveAttributes: elementRemoveAttributes,
-    elementRemoveComments: elementRemoveComments,
     elementSwapStyles: elementSwapStyles,
     elementToggleStyle: elementToggleStyle,
+    elementUniqueId: elementUniqueId,
     elementVisibleRect: elementVisibleRect,
     elementWrapInner: elementWrapInner,
     fragmentInsertBefore: fragmentInsertBefore,
@@ -9609,16 +11613,21 @@ $.extend($.ui.raptor, Raptor, {
     rangeTrim: rangeTrim,
     selectionAtEndOfElement: selectionAtEndOfElement,
     selectionAtStartOfElement: selectionAtStartOfElement,
+    selectionChangeTags: selectionChangeTags,
     selectionClearFormatting: selectionClearFormatting,
     selectionConstrain: selectionConstrain,
     selectionDestroy: selectionDestroy,
+    selectionEachBlock: selectionEachBlock,
     selectionEachRange: selectionEachRange,
     selectionExists: selectionExists,
+    selectionExpandToWord: selectionExpandToWord,
+    selectionFindWrappingAndInnerElements: selectionFindWrappingAndInnerElements,
     selectionGetElement: selectionGetElement,
     selectionGetElements: selectionGetElements,
     selectionGetEndElement: selectionGetEndElement,
     selectionGetHtml: selectionGetHtml,
     selectionGetStartElement: selectionGetStartElement,
+    selectionInverseWrapWithTagClass: selectionInverseWrapWithTagClass,
     selectionIsEmpty: selectionIsEmpty,
     selectionReplace: selectionReplace,
     selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
@@ -9632,6 +11641,7 @@ $.extend($.ui.raptor, Raptor, {
     selectionSelectOuter: selectionSelectOuter,
     selectionSelectStart: selectionSelectStart,
     selectionSet: selectionSet,
+    selectionToggleBlockClasses: selectionToggleBlockClasses,
     selectionToggleBlockStyle: selectionToggleBlockStyle,
     selectionToggleWrapper: selectionToggleWrapper,
     selectionWrapTagWithAttribute: selectionWrapTagWithAttribute,
@@ -9661,14 +11671,14 @@ $.extend($.ui.raptor, Raptor, {
     templateGetVariables: templateGetVariables,
     typeIsNumber: typeIsNumber,
     undockFromElement: undockFromElement,
-    undockFromScreen: undockFromScreen    
-    // </expose>
-
+    undockFromScreen: undockFromScreen
 });
+window.Raptor = Raptor;
+// </expose>
 
-                /* End of file: build/default/src/expose.js */
+                /* End of file: temp/default/src/expose.js */
             
-                /* File: build/default/src/components/plugin.js */
+                /* File: temp/default/src/components/plugin.js */
                 function RaptorPlugin(name, overrides) {
     this.name = name;
     for (var key in overrides) {
@@ -9676,17 +11686,13 @@ $.extend($.ui.raptor, Raptor, {
     }
 }
 
-RaptorPlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
-};
+RaptorPlugin.prototype.init = function() {};
 
-RaptorPlugin.prototype.enable = function() {
+RaptorPlugin.prototype.enable = function() {};
 
-};
-
-                /* End of file: build/default/src/components/plugin.js */
+                /* End of file: temp/default/src/components/plugin.js */
             
-                /* File: build/default/src/ui/components/button.js */
+                /* File: temp/default/src/components/ui/button.js */
                 function Button(overrides) {
     this.preview = true;
     this.text = false;
@@ -9695,10 +11701,9 @@ RaptorPlugin.prototype.enable = function() {
     for (var key in overrides) {
         this[key] = overrides[key];
     }
-};
+}
 
-Button.prototype.init = function(raptor) {
-    this.raptor = raptor;
+Button.prototype.init = function() {
     return this.getButton();
 };
 
@@ -9718,7 +11723,7 @@ Button.prototype.getButton = function() {
         });
     }
     return this.button;
-}
+};
 
 Button.prototype.getTitle = function() {
     return this.title || _(this.name + 'Title');
@@ -9726,19 +11731,21 @@ Button.prototype.getTitle = function() {
 
 Button.prototype.getIcon = function() {
     if (this.icon === null) {
-        return 'ui-icon-' + stringCamelCaseConvert(this.name)
+        return 'ui-icon-' + stringCamelCaseConvert(this.name);
     }
     return this.icon;
 };
 
+// FIXME: this probably should not nest actions
 Button.prototype.click = function() {
     this.raptor.actionApply(this.action.bind(this));
 };
 
-                /* End of file: build/default/src/ui/components/button.js */
+                /* End of file: temp/default/src/components/ui/button.js */
             
-                /* File: build/default/src/ui/components/preview-button.js */
+                /* File: temp/default/src/components/ui/preview-button.js */
                 function PreviewButton(options) {
+    this.previewing = false;
     Button.call(this, options);
 }
 
@@ -9755,29 +11762,64 @@ PreviewButton.prototype.getButton = function() {
 
 PreviewButton.prototype.mouseEnter = function() {
     if (this.canPreview()) {
+        this.previewing = true;
         this.raptor.actionPreview(this.action.bind(this));
     }
 };
 
 PreviewButton.prototype.mouseLeave = function() {
     this.raptor.actionPreviewRestore();
+    this.previewing = false;
+};
+
+PreviewButton.prototype.click = function() {
+    this.previewing = false;
+    return Button.prototype.click.apply(this, arguments);
 };
 
 PreviewButton.prototype.canPreview = function() {
     return this.preview;
 };
 
-                /* End of file: build/default/src/ui/components/preview-button.js */
+PreviewButton.prototype.isPreviewing = function() {
+    return this.previewing;
+};
+
+                /* End of file: temp/default/src/components/ui/preview-button.js */
             
-                /* File: build/default/src/ui/components/filtered-preview-button.js */
+                /* File: temp/default/src/components/ui/preview-toggle-button.js */
+                function PreviewToggleButton(options) {
+    Button.call(this, options);
+}
+
+PreviewToggleButton.prototype = Object.create(PreviewButton.prototype);
+
+PreviewToggleButton.prototype.init = function() {
+    this.raptor.bind('selectionChange', this.selectionChange.bind(this));
+    return PreviewButton.prototype.init.apply(this, arguments);
+};
+
+PreviewToggleButton.prototype.selectionChange = function() {
+    if (this.selectionToggle()) {
+        if (!this.isPreviewing()) {
+            aButtonActive(this.button);
+        }
+    } else {
+        aButtonInactive(this.button);
+    }
+};
+
+                /* End of file: temp/default/src/components/ui/preview-toggle-button.js */
+            
+                /* File: temp/default/src/components/ui/filtered-preview-button.js */
                 function FilteredPreviewButton(options) {
     Button.call(this, options);
 }
 
 FilteredPreviewButton.prototype = Object.create(PreviewButton.prototype);
 
-FilteredPreviewButton.prototype.init = function(raptor) {
-    var result = PreviewButton.prototype.init.call(this, raptor);
+FilteredPreviewButton.prototype.init = function() {
+    var result = PreviewButton.prototype.init.apply(this, arguments);
     this.raptor.bind('selectionChange', this.selectionChange.bind(this))
     return result;
 };
@@ -9813,41 +11855,42 @@ FilteredPreviewButton.prototype.action = function() {
     }.bind(this));
 };
 
-                /* End of file: build/default/src/ui/components/filtered-preview-button.js */
+                /* End of file: temp/default/src/components/ui/filtered-preview-button.js */
             
-                /* File: build/default/src/ui/components/css-class-applier-button.js */
+                /* File: temp/default/src/components/ui/css-class-applier-button.js */
                 function CSSClassApplierButton(options) {
-    PreviewButton.call(this, options);
+    PreviewToggleButton.call(this, options);
 }
 
-CSSClassApplierButton.prototype = Object.create(PreviewButton.prototype);
+CSSClassApplierButton.prototype = Object.create(PreviewToggleButton.prototype);
 
 CSSClassApplierButton.prototype.action = function() {
-    this.getApplier().toggleSelection();
-};
-
-CSSClassApplierButton.prototype.getApplier = function() {
-    if (!this.applier) {
-        this.applier = rangy.createCssClassApplier(this.getClass(), {
-            elementTagName: this.getTag()
+    selectionExpandToWord();
+    for (var i = 0, l = this.classes.length; i < l; i++) {
+        var applier = rangy.createCssClassApplier(this.options.cssPrefix + this.classes[i], {
+            elementTagName: this.tag || 'span'
         });
+        applier.toggleSelection();
     }
-    return this.applier;
+    this.selectionChange();
 };
 
-CSSClassApplierButton.prototype.getTag = function() {
-    return this.tag || 'span';
+CSSClassApplierButton.prototype.selectionToggle = function() {
+    for (var i = 0, l = this.classes.length; i < l; i++) {
+        var applier = rangy.createCssClassApplier(this.options.cssPrefix + this.classes[i], {
+            elementTagName: this.tag || 'span'
+        });
+        if (!applier.isAppliedToSelection()) {
+            return false;
+        }
+    }
+    return true;
 };
 
-CSSClassApplierButton.prototype.getClass = function() {
-    return this.classes || this.cssPrefix + this.name
-};
-
-                /* End of file: build/default/src/ui/components/css-class-applier-button.js */
+                /* End of file: temp/default/src/components/ui/css-class-applier-button.js */
             
-                /* File: build/default/src/ui/components/menu.js */
+                /* File: temp/default/src/components/ui/menu.js */
                 function Menu(options) {
-    this.raptor = null;
     this.menu = null;
     this.menuContent = '';
     this.button = null;
@@ -9856,11 +11899,12 @@ CSSClassApplierButton.prototype.getClass = function() {
     }
 };
 
-Menu.prototype.init = function(raptor) {
+Menu.prototype.init = function() {
     this.setOptions();
-    this.raptor = raptor;
     this.bind();
-    return this.getButton().init(raptor);
+    var button = this.getButton().init();
+    button.addClass('raptor-menu-button');
+    return button;
 };
 
 Menu.prototype.bind = function() {
@@ -9869,12 +11913,7 @@ Menu.prototype.bind = function() {
 
 Menu.prototype.getButton = function() {
     if (!this.button) {
-        this.button = new Button({
-            name: this.name,
-            action: this.show.bind(this),
-            preview: false,
-            options: this.options
-        });
+        this.button = new MenuButton(this);
     }
     return this.button;
 };
@@ -9892,17 +11931,12 @@ Menu.prototype.getMenu = function() {
             .html(this.menuContent)
             .css('position', 'fixed')
             .hide()
-            .appendTo('body')
             .mousedown(function(event) {
                 // Prevent losing the selection on the editor target
                 event.preventDefault();
-            });
-        // Click off close event
-        $('html').click(function(event) {
-            if (this.getButton().getButton().has(event.target).length === 0) {
-                this.menu.hide();
-            }
-        }.bind(this));
+            })
+            .children()
+            .appendTo('body');
     }
     return this.menu;
 };
@@ -9911,9 +11945,35 @@ Menu.prototype.show = function() {
     elementPositionUnder(this.getMenu().toggle(), this.getButton().getButton());
 };
 
-                /* End of file: build/default/src/ui/components/menu.js */
+// Click off close event
+$('html').click(function(event) {
+    if (!$(event.target).hasClass('raptor-menu-button') &&
+            !$(event.target).closest('.raptor-menu-button').length) {
+        $('.raptor-menu').hide();
+    }
+});
+
+                /* End of file: temp/default/src/components/ui/menu.js */
             
-                /* File: build/default/src/ui/components/select-menu.js */
+                /* File: temp/default/src/components/ui/menu-button.js */
+                function MenuButton(menu, options) {
+    this.menu = menu;
+    this.name = menu.name;
+    this.raptor = menu.raptor;
+    this.options = menu.options;
+    Button.call(this, options);
+}
+
+MenuButton.prototype = Object.create(Button.prototype);
+
+MenuButton.prototype.click = function(event) {
+    this.menu.show();
+    event.preventDefault();
+}
+
+                /* End of file: temp/default/src/components/ui/menu-button.js */
+            
+                /* File: temp/default/src/components/ui/select-menu.js */
                 function SelectMenu(options) {
     Menu.call(this, options);
 }
@@ -9932,23 +11992,19 @@ SelectMenu.prototype.getMenu = function() {
                 event.preventDefault();
             })
             .on('click', 'a', function(event) {
-                aButtonSetLabel(this.button.button, $(event.target).html())
+                aButtonSetLabel(this.button.button, $(event.target).html());
+                // Prevent jQuery UI focusing the menu
+                return false;
             }.bind(this))
             .appendTo('body');
         aMenu(this.menu);
-        // Click off close event
-        $('html').click(function(event) {
-            if (this.button.button.has(event.target).length === 0) {
-                this.menu.hide();
-            }
-        }.bind(this));
     }
     return this.menu;
 };
 
-                /* End of file: build/default/src/ui/components/select-menu.js */
+                /* End of file: temp/default/src/components/ui/select-menu.js */
             
-                /* File: build/default/src/ui/components/custom-menu.js */
+                /* File: temp/default/src/components/ui/custom-menu.js */
                 Menu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<div>')
@@ -9961,19 +12017,13 @@ SelectMenu.prototype.getMenu = function() {
                 // Prevent losing the selection on the editor target
                 event.preventDefault();
             });
-        // Click off close event
-        $('html').click(function(event) {
-            if (this.button.button.has(event.target).length === 0) {
-                this.menu.hide();
-            }
-        }.bind(this));
     }
     return this.menu;
 };
 
-                /* End of file: build/default/src/ui/components/custom-menu.js */
+                /* End of file: temp/default/src/components/ui/custom-menu.js */
             
-                /* File: build/default/src/ui/layout/toolbar.js */
+                /* File: temp/default/src/components/layout/toolbar.js */
                 Raptor.registerLayout('toolbar', {
     options: {
         /**
@@ -9982,16 +12032,12 @@ SelectMenu.prototype.getMenu = function() {
         uiOrder: null
     },
 
-    setDefaultUIOrder: function() {
-
-    },
-
-    init: function(raptor, options) {
+    init: function() {
         // Load all UI components if not supplied
-        if (!options.uiOrder) {
-            options.uiOrder = [[]];
+        if (!this.options.uiOrder) {
+            this.options.uiOrder = [[]];
             for (var name in Raptor.ui) {
-                options.uiOrder[0].push(name);
+                this.options.uiOrder[0].push(name);
             }
         }
 
@@ -10023,11 +12069,10 @@ SelectMenu.prototype.getMenu = function() {
                 cursor: 'move',
                 // @todo Cancel drag when docked
                 // @todo Move draggable into plugin
-                // @todo Move tag menu/list into plugin
                 handle: '.ui-editor-path',
                 stop: $.proxy(function() {
                     // Save the persistant position
-                    var pos = raptor.persist('position', [
+                    var pos = this.raptor.persist('position', [
                         wrapper.css('top'),
                         wrapper.css('left')
                     ]);
@@ -10044,7 +12089,7 @@ SelectMenu.prototype.getMenu = function() {
             wrapper.css('position', '');
 
             // Set the persistant position
-            var pos = raptor.persist('position') || this.options.dialogPosition;
+            var pos = this.raptor.persist('position') || this.options.dialogPosition;
 
             if (!pos) {
                 pos = [10, 10];
@@ -10060,28 +12105,24 @@ SelectMenu.prototype.getMenu = function() {
             }
 
             wrapper.css({
-                top: Math.abs(parseInt(pos[0])),
-                left: Math.abs(parseInt(pos[1]))
+                top: Math.abs(parseInt(pos[0], 10)),
+                left: Math.abs(parseInt(pos[1], 10))
             });
 
             // Load the message display widget
-            raptor.loadMessages();
+            this.raptor.loadMessages();
         }
-
-        $(function() {
-            wrapper.appendTo('body');
-        });
 
         // Loop the UI component order option
         for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
             var uiGroupContainer = $('<div/>')
-                .addClass(raptor.options.baseClass + '-layout-toolbar-group');
+                .addClass(this.raptor.options.baseClass + '-layout-toolbar-group');
 
             // Loop each UI in the group
             var uiGroup = this.options.uiOrder[i];
             for (var ii = 0, ll = uiGroup.length; ii < ll; ii++) {
                 // Check if the UI component has been explicitly disabled
-                if (!raptor.isUiEnabled(uiGroup[ii])) {
+                if (!this.raptor.isUiEnabled(uiGroup[ii])) {
                     continue;
                 }
 
@@ -10095,19 +12136,19 @@ SelectMenu.prototype.getMenu = function() {
                         return '-' + match.toLowerCase();
                     });
 
-                    var options = $.extend(true, {}, raptor.options, {
-                        baseClass: raptor.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, raptor.options.ui[uiGroup[ii]]);
+                    var options = $.extend(true, {}, this.raptor.options, {
+                        baseClass: this.raptor.options.baseClass + '-ui-' + baseClass
+                    }, uiObject.options, this.raptor.options.ui[uiGroup[ii]]);
 
-                    uiObject.editor = raptor;
+                    uiObject.raptor = this.raptor;
                     uiObject.options = options;
-                    var ui = uiObject.init(raptor, options);
+                    var ui = uiObject.init();
 
                     // Append the UI object to the group
                     uiGroupContainer.append(ui);
 
                     // Add the UI object to the editors list
-                    raptor.uiObjects[uiGroup[ii]] = uiObject;
+                    this.raptor.uiObjects[uiGroup[ii]] = uiObject;
                 }
                 // <strict/>
             }
@@ -10118,14 +12159,33 @@ SelectMenu.prototype.getMenu = function() {
             }
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
+
+        var layout = this;
+        $(function() {
+            wrapper.appendTo('body');
+            layout.raptor.fire('layoutReady');
+        });
     },
 
     show: function() {
         this.wrapper.css('display', '');
+        this.raptor.fire('layoutShow');
     },
 
     hide: function() {
         this.wrapper.css('display', 'none');
+    },
+
+    enableDragging: function() {
+        if ($.fn.draggable && this.options.draggable) {
+            this.wrapper.draggable('enable');
+        }
+    },
+
+    disableDragging: function() {
+        if ($.fn.draggable && this.options.draggable) {
+            this.wrapper.draggable('disable').removeClass('ui-state-disabled');
+        }
     },
 
     getElement: function() {
@@ -10139,38 +12199,182 @@ SelectMenu.prototype.getMenu = function() {
     }
 });
 
-                /* End of file: build/default/src/ui/layout/toolbar.js */
+                /* End of file: temp/default/src/components/layout/toolbar.js */
             
-                /* File: build/default/src/presets/default.js */
-                Raptor.registerPreset('toolbar', {
-    layout: {
-        type: 'toolbar',
-        options: {
-            uiOrder: [
-                ['logo'],
-                ['save', 'cancel'],
-                ['dockToScreen', 'guides'],
-                ['viewSource'],
-                ['historyUndo', 'historyRedo'],
-                ['alignLeft', 'alignCenter', 'alignJustify', 'alignRight'],
-                ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
-                ['textSuper', 'textSub'],
-                ['listUnordered', 'listOrdered'],
-                ['hrCreate', 'textBlockQuote'],
-                ['textSizeIncrease', 'textSizeDecrease'],
-                ['colorPickerBasic'],
-                ['clearFormatting'],
-                ['linkCreate', 'linkRemove'],
-                ['embed'],
-                ['floatLeft', 'floatNone', 'floatRight'],
-                ['tagMenu'],
-                ['statistics']
-            ]
-        }
-    }
-});
+                /* File: temp/default/src/presets/base.js */
+                /**
+ * Default options for Raptor.
+ *
+ * @namespace Default options for Raptor.
+ */
+var basePreset = {
+    /**
+     * @type Object Default layout to use.
+     */
+    layout: null,
 
-Raptor.registerPreset('tristan', {
+    /**
+     * Plugins option overrides.
+     *
+     * @type Object
+     */
+    plugins: {},
+
+    /**
+     * UI option overrides.
+     *
+     * @type Object
+     */
+    ui: {},
+
+    /**
+     * Default events to bind.
+     *
+     * @type Object
+     */
+    bind: {},
+
+    /**
+     * Namespace used for persistence to prevent conflicting with other stored
+     * values.
+     *
+     * @type String
+     */
+    namespace: null,
+
+    /**
+     * Switch to indicated that some events should be automatically applied to
+     * all editors that are 'unified'
+     *
+     * @type boolean
+     */
+    unify: true,
+
+    /**
+     * Switch to indicate weather or not to stored persistent values, if set to
+     * false the persist function will always return null
+     *
+     * @type boolean
+     */
+    persistence: true,
+
+    /**
+     * The name to store persistent values under
+     * @type String
+     */
+    persistenceName: 'uiEditor',
+
+    /**
+     * Switch to indicate weather or not to a warning should pop up when the
+     * user navigates aways from the page and there are unsaved changes
+     *
+     * @type boolean
+     */
+    unloadWarning: true,
+
+    /**
+     * Switch to automatically enabled editing on the element
+     *
+     * @type boolean
+     */
+    autoEnable: false,
+
+    /**
+     * Only enable editing on certian parts of the element
+     *
+     * @type {jQuerySelector}
+     */
+    partialEdit: false,
+
+    /**
+     * Switch to specify if the editor should automatically enable all plugins,
+     * if set to false, only the plugins specified in the 'plugins' option
+     * object will be enabled
+     *
+     * @type boolean
+     */
+    enablePlugins: true,
+
+    /**
+     * An array of explicitly disabled plugins
+     * @type String[]
+     */
+    disabledPlugins: [],
+
+    /**
+     * And array of arrays denoting the order and grouping of UI elements in the
+     * toolbar
+     *
+     * @type String[]
+     */
+    uiOrder: null,
+
+    /**
+     * Switch to specify if the editor should automatically enable all UI, if
+     * set to false, only the UI specified in the {@link Raptor.defaults.ui}
+     * option object will be enabled
+     *
+     * @type boolean
+     */
+    enableUi: true,
+
+    /**
+     * An array of explicitly disabled UI elements
+     * @type String[]
+     */
+    disabledUi: [],
+
+    /**
+     * Default message options
+     * @type Object
+     */
+    message: {
+        delay: 5000
+    },
+
+    /**
+     * Switch to indicate that the element the editor is being applied to should
+     * be replaced with a div (useful for textareas), the value/html of the
+     * replaced element will be automatically updated when the editor element is
+     * changed
+     *
+     * @type boolean
+     */
+    replace: false,
+
+    /**
+     * A list of styles that will be copied from the replaced element and
+     * applied to the editor replacement element
+     *
+     * @type String[]
+     */
+    replaceStyle: [
+        'display', 'position', 'float', 'width',
+        'padding-left', 'padding-right', 'padding-top', 'padding-bottom',
+        'margin-left', 'margin-right', 'margin-top', 'margin-bottom'
+    ],
+
+    /**
+     *
+     * @type String
+     */
+    baseClass: 'raptor',
+
+    /**
+     * CSS class prefix that is prepended to inserted elements classes.
+     * E.g. "cms-bold"
+     *
+     * @type String
+     */
+    cssPrefix: 'cms-',
+
+    draggable: true
+};
+
+                /* End of file: temp/default/src/presets/base.js */
+            
+                /* File: temp/default/src/presets/rails.js */
+                Raptor.defaults = $.extend(basePreset, {
     layout: {
         type: 'toolbar',
         options: {
@@ -10196,12 +12400,10 @@ Raptor.registerPreset('tristan', {
     }
 });
 
-//$.extend(Raptor.defaults, Raptor.presets.toolbar);
-$.extend(Raptor.defaults, Raptor.presets.tristan);
 
-                /* End of file: build/default/src/presets/default.js */
+                /* End of file: temp/default/src/presets/rails.js */
             
-                /* File: build/default/src/plugins/cancel/cancel.js */
+                /* File: temp/default/src/plugins/cancel/cancel.js */
                 var cancelDialog = null;
 
 Raptor.registerUi(new Button({
@@ -10217,7 +12419,7 @@ Raptor.registerUi(new Button({
                 resizable: false,
                 autoOpen: false,
                 title: _('cancelDialogTitle'),
-                dialogClass: this.options.dialogClass,
+                dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
                 buttons: [
                     {
                         text: _('cancelDialogOKButton'),
@@ -10245,9 +12447,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/cancel/cancel.js */
+                /* End of file: temp/default/src/plugins/cancel/cancel.js */
             
-                /* File: build/default/src/plugins/clear-formatting/clear-formatting.js */
+                /* File: temp/default/src/plugins/clear-formatting/clear-formatting.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'clearFormatting',
     action: function() {
@@ -10255,9 +12457,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/clear-formatting/clear-formatting.js */
+                /* End of file: temp/default/src/plugins/clear-formatting/clear-formatting.js */
             
-                /* File: build/default/src/plugins/click-button-to-edit/click-button-to-edit.js */
+                /* File: temp/default/src/plugins/click-button-to-edit/click-button-to-edit.js */
                 var clickButtonToEditButton = null,
     clickButtonToEditInstance = null,
     clickButtonToEditHover = false;
@@ -10268,8 +12470,7 @@ function ClickButtonToEditPlugin(name, overrides) {
 
 ClickButtonToEditPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
-ClickButtonToEditPlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
+ClickButtonToEditPlugin.prototype.init = function() {
     this.raptor.getElement()
         .mouseenter(this.show.bind(this))
         .mouseleave(this.hide.bind(this));
@@ -10294,6 +12495,11 @@ ClickButtonToEditPlugin.prototype.show = function() {
 
 ClickButtonToEditPlugin.prototype.hide = function(event) {
     var button = this.getButton(this);
+    if((event &&
+            (event.relatedTarget === button.get(0) ||
+             button.get(0) === $(event.relatedTarget).parent().get(0)))) {
+        return;
+    }
     if (!button.is(':hover')) {
         button.hide();
     }
@@ -10313,7 +12519,7 @@ ClickButtonToEditPlugin.prototype.edit = function() {
 ClickButtonToEditPlugin.prototype.getButton = function(instance) {
     clickButtonToEditInstance = instance;
     if (!clickButtonToEditButton) {
-        clickButtonToEditButton = $(this.editor.getTemplate('click-button-to-edit.button', this.options))
+        clickButtonToEditButton = $(this.raptor.getTemplate('click-button-to-edit.button', this.options))
             .click(function() {
                 clickButtonToEditInstance.edit();
             })
@@ -10330,11 +12536,10 @@ ClickButtonToEditPlugin.prototype.getButton = function(instance) {
 
 Raptor.registerPlugin(new ClickButtonToEditPlugin());
 
-                /* End of file: build/default/src/plugins/click-button-to-edit/click-button-to-edit.js */
+                /* End of file: temp/default/src/plugins/click-button-to-edit/click-button-to-edit.js */
             
-                /* File: build/default/src/plugins/color-picker-basic/color-picker-basic.js */
-                function ColorPickerBasicMenu(options) {
-    this.preview = true;
+                /* File: temp/default/src/plugins/color-menu-basic/color-menu-basic.js */
+                function ColorMenuBasic(options) {
     this.colors = [
         'white',
         'black',
@@ -10346,24 +12551,24 @@ Raptor.registerPlugin(new ClickButtonToEditPlugin());
         'orange'
     ]
     SelectMenu.call(this, {
-        name: 'colorPickerBasic'
+        name: 'colorMenuBasic'
     });
 }
 
-ColorPickerBasicMenu.prototype = Object.create(SelectMenu.prototype);
+ColorMenuBasic.prototype = Object.create(SelectMenu.prototype);
 
-ColorPickerBasicMenu.prototype.init = function(raptor) {
-    raptor.bind('selectionChange', this.updateButton.bind(this));
+ColorMenuBasic.prototype.init = function() {
+    this.raptor.bind('selectionChange', this.updateButton.bind(this));
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
-ColorPickerBasicMenu.prototype.updateButton = function() {
+ColorMenuBasic.prototype.updateButton = function() {
     var tag = selectionGetElements()[0],
         button = this.getButton().getButton(),
         color = null,
         closest = null;
     // TODO: set automatic icon color to the color of the text
-    aButtonSetLabel(button, _('colorPickerBasicAutomatic'));
+    aButtonSetLabel(button, _('colorMenuBasicAutomatic'));
     aButtonSetIcon(button, false);
     if (!tag) {
         return;
@@ -10377,7 +12582,7 @@ ColorPickerBasicMenu.prototype.updateButton = function() {
         }
     }
     if (color) {
-        aButtonSetLabel(button, _('colorPickerBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
+        aButtonSetLabel(button, _('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
         aButtonSetIcon(button, 'ui-icon-swatch');
         // FIXME: set color in an adapter friendly way
         button.find('.ui-icon').css('background-color', closest.css('color'));
@@ -10385,15 +12590,17 @@ ColorPickerBasicMenu.prototype.updateButton = function() {
     }
 };
 
-ColorPickerBasicMenu.prototype.changeColor = function(color) {
+ColorMenuBasic.prototype.changeColor = function(color) {
     this.raptor.actionApply(function() {
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
-                var element = $(this),
-                    classes = element.attr('class').match(/(cms-(.*?))( |$)/ig);
-                for (var i = 0, l = classes.length; i < l; i++) {
-                    element.removeClass($.trim(classes[i]));
-                };
+                var classes = $(this).attr('class');
+                if (classes) {
+                    classes = classes.match(/(cms-(.*?))( |$)/ig);
+                    for (var i = 0, l = classes.length; i < l; i++) {
+                        $(this).removeClass($.trim(classes[i]));
+                    }
+                }
             });
         } else {
             selectionToggleWrapper('span', {
@@ -10407,109 +12614,70 @@ ColorPickerBasicMenu.prototype.changeColor = function(color) {
     }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.preview = function(event) {
-    if (this.preview) {
-        this.raptor.actionPreview(function() {
-            this.changeColor($(event.currentTarget).data('color'));
-        }.bind(this));
-    }
+ColorMenuBasic.prototype.preview = function(event) {
+    this.raptor.actionPreview(function() {
+        this.changeColor($(event.currentTarget).data('color'));
+    }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.previewRestore = function() {
-    if (this.preview) {
-        this.raptor.actionPreviewRestore();
-    }
+ColorMenuBasic.prototype.previewRestore = function() {
+    this.raptor.actionPreviewRestore();
 };
 
-ColorPickerBasicMenu.prototype.apply = function() {
+ColorMenuBasic.prototype.apply = function() {
     this.raptor.actionApply(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
 };
 
-ColorPickerBasicMenu.prototype.getButton = function() {
-    if (!this.button) {
-        this.button = new Button({
-            name: this.name,
-            action: this.show.bind(this),
-            preview: false,
-            options: this.options,
-            text: true,
-            icon: false,
-            label: _('colorPickerBasicAutomatic')
-        });
-    }
-    return this.button;
-};
+//ColorMenuBasic.prototype.getButton = function() {
+//    if (!this.button) {
+//        this.button = new Button({
+//            name: this.name,
+//            action: this.show.bind(this),
+//            preview: false,
+//            options: this.options,
+//            text: true,
+//            icon: false,
+//            label: _('colorMenuBasicAutomatic'),
+//            raptor: this.raptor
+//        });
+//    }
+//    return this.button;
+//};
 
-ColorPickerBasicMenu.prototype.getMenuItems = function() {
-    return $(this.editor.getTemplate('color-picker-basic.menu', this.options))
+ColorMenuBasic.prototype.getMenuItems = function() {
+    return $(this.raptor.getTemplate('color-menu-basic.menu', this.options))
         .click(this.apply.bind(this))
         .mouseenter(this.preview.bind(this))
         .mouseleave(this.previewRestore.bind(this));
 };
 
-Raptor.registerUi(new ColorPickerBasicMenu());
+Raptor.registerUi(new ColorMenuBasic());
 
-                /* End of file: build/default/src/plugins/color-picker-basic/color-picker-basic.js */
+                /* End of file: temp/default/src/plugins/color-menu-basic/color-menu-basic.js */
             
-                /* File: build/default/src/plugins/dock/dock-to-element.js */
+                /* File: temp/default/src/plugins/dock/dock-to-element.js */
                 Raptor.registerUi(new Button({
     name: 'dockToElement',
-    dockState: null,
-    marker: null,
-    options: {
-        position: 'top',
-        spacer: true
-    },
     action: function() {
-        var element;
-        if (this.dockState) {
-            element = undockFromElement(this.dockState);
-            this.marker.replaceWith(element);
-            this.dockState = null;
-        } else {
-            element = this.raptor.getElement();
-            this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
-            this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
-                position: this.options.position,
-                spacer: this.options.spacer
-            });
-        }
+        this.raptor.plugins.dock.toggleDockToElement();
     }
 }));
 
-                /* End of file: build/default/src/plugins/dock/dock-to-element.js */
+                /* End of file: temp/default/src/plugins/dock/dock-to-element.js */
             
-                /* File: build/default/src/plugins/dock/dock-to-screen.js */
+                /* File: temp/default/src/plugins/dock/dock-to-screen.js */
                 Raptor.registerUi(new Button({
     name: 'dockToScreen',
-    dockState: null,
-    marker: null,
-    options: {
-        position: 'top',
-        spacer: true
-    },
     action: function() {
-        var layout;
-        if (this.dockState) {
-            layout = undockFromScreen(this.dockState);
-            this.marker.replaceWith(layout);
-            this.dockState = null;
-        } else {
-            layout = this.raptor.getLayout().getElement();
-            this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layout);
-            this.dockState = dockToScreen(layout, {
-                position: this.options.position,
-                spacer: this.options.spacer
-            });
-        }
+        this.raptor.plugins.dock.toggleDockToScreen();
     }
 }));
 
-                /* End of file: build/default/src/plugins/dock/dock-to-screen.js */
+                /* End of file: temp/default/src/plugins/dock/dock-to-screen.js */
             
-                /* File: build/default/src/plugins/embed/embed.js */
+                /* File: temp/default/src/plugins/embed/embed.js */
                 var embedDialog = null,
     embedInstance = null;
 
@@ -10532,7 +12700,7 @@ Raptor.registerUi(new Button({
     getDialog: function(instance) {
         embedInstance = instance;
         if (!embedDialog) {
-            embedDialog = $('<div>').html(this.editor.getTemplate('embed.dialog', this.options));
+            embedDialog = $('<div>').html(this.raptor.getTemplate('embed.dialog', this.options));
             aDialog(embedDialog, {
                 modal: true,
                 width: 600,
@@ -10555,7 +12723,7 @@ Raptor.registerUi(new Button({
                     {
                         text: _('embedDialogCancelButton'),
                         click: function() {
-                            ui.hide();
+                            aDialogClose(embedDialog);
                         },
                         icons: {
                             primary: 'ui-icon-circle-close'
@@ -10581,13 +12749,15 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/embed/embed.js */
+                /* End of file: temp/default/src/plugins/embed/embed.js */
             
-                /* File: build/default/src/plugins/float/float-left.js */
+                /* File: temp/default/src/plugins/float/float-left.js */
                 Raptor.registerUi(new FilteredPreviewButton({
     name: 'floatLeft',
     applyToElement: function(element) {
-        element.css('float', 'left');
+        element.removeClass(this.options.cssPrefix + 'float-right');
+        element.toggleClass(this.options.cssPrefix + 'float-left');
+        cleanEmptyAttributes(element, ['class']);
     },
     getElement: function(range) {
         var images = $(range.commonAncestorContainer).find('img');
@@ -10595,13 +12765,15 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/float/float-left.js */
+                /* End of file: temp/default/src/plugins/float/float-left.js */
             
-                /* File: build/default/src/plugins/float/float-none.js */
+                /* File: temp/default/src/plugins/float/float-none.js */
                 Raptor.registerUi(new FilteredPreviewButton({
     name: 'floatNone',
     applyToElement: function(element) {
-        element.css('float', 'none');
+        element.removeClass(this.options.cssPrefix + 'float-right');
+        element.removeClass(this.options.cssPrefix + 'float-left');
+        cleanEmptyAttributes(element, ['class']);
     },
     getElement: function(range) {
         var images = $(range.commonAncestorContainer).find('img');
@@ -10609,13 +12781,15 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/float/float-none.js */
+                /* End of file: temp/default/src/plugins/float/float-none.js */
             
-                /* File: build/default/src/plugins/float/float-right.js */
+                /* File: temp/default/src/plugins/float/float-right.js */
                 Raptor.registerUi(new FilteredPreviewButton({
     name: 'floatRight',
     applyToElement: function(element) {
-        element.css('float', 'right');
+        element.removeClass(this.options.cssPrefix + 'float-left');
+        element.toggleClass(this.options.cssPrefix + 'float-right');
+        cleanEmptyAttributes(element, ['class']);
     },
     getElement: function(range) {
         var images = $(range.commonAncestorContainer).find('img');
@@ -10623,9 +12797,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/float/float-right.js */
+                /* End of file: temp/default/src/plugins/float/float-right.js */
             
-                /* File: build/default/src/plugins/guides/guides.js */
+                /* File: temp/default/src/plugins/guides/guides.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'guides',
     action: function() {
@@ -10633,27 +12807,27 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/guides/guides.js */
+                /* End of file: temp/default/src/plugins/guides/guides.js */
             
-                /* File: build/default/src/plugins/history/history-redo.js */
+                /* File: temp/default/src/plugins/history/history-redo.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'historyRedo',
     action: function() {
     }
 }));
 
-                /* End of file: build/default/src/plugins/history/history-redo.js */
+                /* End of file: temp/default/src/plugins/history/history-redo.js */
             
-                /* File: build/default/src/plugins/history/history-undo.js */
+                /* File: temp/default/src/plugins/history/history-undo.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'historyUndo',
     action: function() {
     }
 }));
 
-                /* End of file: build/default/src/plugins/history/history-undo.js */
+                /* End of file: temp/default/src/plugins/history/history-undo.js */
             
-                /* File: build/default/src/plugins/hr/hr-create.js */
+                /* File: temp/default/src/plugins/hr/hr-create.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'hrCreate',
     action: function() {
@@ -10661,9 +12835,228 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/hr/hr-create.js */
+                /* End of file: temp/default/src/plugins/hr/hr-create.js */
             
-                /* File: build/default/src/plugins/link/link-type-email.js */
+                /* File: temp/default/src/plugins/insert-file/insert-file.js */
+                
+Raptor.registerUi(new Button({
+    name: 'insertFile',
+
+    /** @type {string[]} Image extensions*/
+    imageTypes: [
+        'jpeg',
+        'jpg',
+        'png',
+        'gif'
+    ],
+    options: {
+        /**
+         * @type {null|Function} Specify a function to use instead of the default
+         *                       file insertion dialog.
+         * @return {Boolean} False to indicate that custom action failed and the
+         *                         default dialog should be used.
+         */
+        customAction: false
+    },
+    action: function() {
+        selectionSave();
+        // If a customAction has been specified, use it instead of the default dialog.
+        if (!this.options.customAction) {
+            return this.showDialog();
+        }
+
+        if (this.options.customAction.call(this) === false) {
+            return this.showDialog();
+        }
+    },
+
+    /**
+     * Show the insert files dialog.
+     */
+    showDialog: function() {
+        var dialogElement = $('.file-manager-missing');
+        if (!dialogElement.length) {
+            dialogElement = $(this.raptor.getTemplate('insert-file.dialog'));
+        }
+        aDialog(dialogElement, {
+            title: 'No File Manager',
+            modal: true,
+            buttons: [
+                {
+                    text: _('insertFileDialogOKButton'),
+                    click: function() {
+                        this.insertFiles([{
+                            location: dialogElement.find('input[name="location"]').val(),
+                            name: dialogElement.find('input[name="name"]').val()
+                        }]);
+                        aDialogClose(dialogElement);
+                    }.bind(this),
+                    icons: {
+                        primary: 'ui-icon-circle-check'
+                    }
+                },
+                {
+                    text: _('insertFileDialogCancelButton'),
+                    click: function() {
+                        aDialogClose(dialogElement);
+                    },
+                    icons: {
+                        primary: 'ui-icon-circle-close'
+                    }
+                }
+            ]
+        });
+        aDialogOpen(dialogElement);
+    },
+
+    /**
+     * Attempt to determine the file type from either the file's explicitly set
+     * extension property, or the file extension of the file's location property.
+     *
+     * @param  {Object} file
+     * @return {string}
+     */
+    getFileType: function(file) {
+        if (typeof file.extension !== 'undefined') {
+            return file.extension;
+        }
+        var extension = file.location.split('.');
+        if (extension.length > 0) {
+            return extension.pop();
+        }
+        return 'unknown';
+    },
+
+    /**
+     * @param  {Object} file
+     * @return {Boolean} True if the file is an image.
+     */
+    isImage: function(file) {
+        return $.inArray(this.getFileType(file), this.imageTypes) !== -1;
+    },
+
+    /**
+     * Insert the given files. If files contains only one item, it is inserted
+     * with selectionReplaceWithinValidTags using an appropriate valid tag array
+     * for the file's type. If files contains more than one item, the items are
+     * processed into an array of HTML strings, joined then inserted using
+     * selectionReplaceWithinValidTags with a valid tag array of tags that may
+     * contain both image and anchor tags.
+     *
+     * [
+     *     {
+     *         location: location of the file, e.g. http://www.raptor-editor.com/images/html5.png
+     *         name: a name for the file, e.g. HTML5 Logo
+     *         extension: explicitly defined extension for the file, e.g. png
+     *     }
+     * ]
+     *
+     * @param  {Object[]} files Array of files to be inserted.
+     */
+    insertFiles: function(files) {
+
+        if (!files.length) {
+            return;
+        }
+
+        selectionRestore();
+        var file;
+        if (files.length === 1) {
+            file = files.shift();
+
+            var html = this.prepareElement(file, selectionGetHtml());
+
+            if (this.isImage(file)) {
+                selectionReplaceWithinValidTags(html, [
+                    // Tags within which the <img> tag may reside
+                    'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
+                    'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em', 'fieldset', 'font',
+                    'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins', 'kbd', 'label', 'legend',
+                    'li', 'noframes', 'noscript', 'object', 'p', 'pre', 'q', 's', 'samp', 'small', 'span',
+                    'strike', 'strong', 'sub', 'sup', 'td', 'th', 'u', 'var'
+                ]);
+            } else {
+                selectionReplaceWithinValidTags(html, [
+                    // Tags within which the <a> tag may reside
+                    'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body',
+                    'button', 'caption', 'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em',
+                    'fieldset', 'font', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins',
+                    'kbd', 'label', 'legend', 'li', 'noframes', 'noscript', 'object', 'p', 'q', 's', 'samp',
+                    'small', 'span', 'strike', 'strong', 'sub', 'sup', 'td', 'th', 'tt', 'u', 'var'
+                ]);
+            }
+            return;
+        }
+
+        var elements = [];
+        for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+            elements.push(this.prepareElement(files[fileIndex]));
+        }
+
+        selectionReplaceWithinValidTags(elements.join(', '), [
+            // Tags within which both the <img> & <a> tags may reside
+            'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
+            'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em', 'fieldset', 'font',
+            'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins', 'kbd', 'label',
+            'legend', 'li', 'noframes', 'noscript', 'object', 'p', 'q', 's', 'samp', 'small',
+            'span', 'strike', 'strong', 'sub', 'sup', 'td', 'th', 'u', 'var'
+        ]);
+    },
+
+    /**
+     * Prepare the HTML for either an image or an anchor tag, depending on the file's type.
+     *
+     * @param {Object} file
+     * @param {string|null} text The text to use as the tag's title and an anchor
+     *                           tag's HTML. If null, the file's name is used.
+     * @return {string} The tag's HTML.
+     */
+    prepareElement: function(file, text) {
+        if (this.isImage(file)) {
+            return this.prepareImage(file, this.options.cssPrefix + this.getFileType(file), text);
+        } else {
+            return this.prepareAnchor(file, this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(file), text);
+        }
+    },
+
+    /**
+     * Prepare HTML for an image tag.
+     *
+     * @param  {Object} file
+     * @param  {string} classNames Classnames to apply to the image tag.
+     * @param  {string|null} text Text to use as the image tag's title. If null,
+     *                            the file's name is used.
+     * @return {string} Image tag's HTML.
+     */
+    prepareImage: function(file, classNames, text) {
+        return $('<div/>').html($('<img/>').attr({
+            src: file.location,
+            title: text || file.name,
+            'class': classNames
+        })).html();
+    },
+
+    /**
+     * Prepare HTML for an anchor tag.
+     *
+     * @param  {Object} file
+     * @param  {string} classNames Classnames to apply to the anchor tag.
+     * @param  {string|null} text Text to use as the anchor tag's title & content. If null,
+     *                            the file's name is used.
+     * @return {string} Anchor tag's HTML.
+     */
+    prepareAnchor: function(file, classNames, text) {
+        return $('<div/>').html($('<a/>').attr({
+            href: file.location,
+            title: file.name,
+            'class': classNames
+        }).html(text || file.name)).html();
+    }
+}));
+
+                /* End of file: temp/default/src/plugins/insert-file/insert-file.js */
+            
+                /* File: temp/default/src/plugins/link/link-type-email.js */
                 
 function LinkTypeEmail(raptor) {
     this.raptor = raptor;
@@ -10671,7 +13064,7 @@ function LinkTypeEmail(raptor) {
 }
 
 LinkTypeEmail.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.email', this.options);
+    return this.raptor.getTemplate('link.email', this.raptor.options);
 };
 
 LinkTypeEmail.prototype.getAttributes = function(panel) {
@@ -10685,9 +13078,9 @@ LinkTypeEmail.prototype.getAttributes = function(panel) {
     };
 };
 
-                /* End of file: build/default/src/plugins/link/link-type-email.js */
+                /* End of file: temp/default/src/plugins/link/link-type-email.js */
             
-                /* File: build/default/src/plugins/link/link-type-external.js */
+                /* File: temp/default/src/plugins/link/link-type-external.js */
                 
 function LinkTypeExternal(raptor) {
     this.raptor = raptor;
@@ -10695,7 +13088,7 @@ function LinkTypeExternal(raptor) {
 };
 
 LinkTypeExternal.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.external', this.options);
+    return this.raptor.getTemplate('link.external', this.raptor.options);
 };
 
 LinkTypeExternal.prototype.getAttributes = function(panel) {
@@ -10712,9 +13105,9 @@ LinkTypeExternal.prototype.getAttributes = function(panel) {
     return result;
 };
 
-                /* End of file: build/default/src/plugins/link/link-type-external.js */
+                /* End of file: temp/default/src/plugins/link/link-type-external.js */
             
-                /* File: build/default/src/plugins/link/link-type-internal.js */
+                /* File: temp/default/src/plugins/link/link-type-internal.js */
                 
 function LinkTypeInternal(raptor) {
     this.raptor = raptor;
@@ -10742,9 +13135,9 @@ LinkTypeInternal.prototype.getAttributes = function(panel) {
     return result;
 };
 
-                /* End of file: build/default/src/plugins/link/link-type-internal.js */
+                /* End of file: temp/default/src/plugins/link/link-type-internal.js */
             
-                /* File: build/default/src/plugins/link/link-create.js */
+                /* File: temp/default/src/plugins/link/link-create.js */
                 var linkDialog = null
     linkDialogInstance = null;
 
@@ -10782,7 +13175,7 @@ Raptor.registerUi(new Button({
                 ];
 
             for (var i = 0, l = linkTypes.length; i < l; i++) {
-                $(this.editor.getTemplate('link.label', linkTypes[i]))
+                $(this.raptor.getTemplate('link.label', linkTypes[i]))
                     .click(function() {
                         content.children('div').hide();
                         content.children('div:eq(' + $(this).index() + ')').show();
@@ -10804,7 +13197,7 @@ Raptor.registerUi(new Button({
                 resizable: true,
                 autoOpen: false,
                 title: _('linkDialogTitle'),
-                dialogClass: this.options.dialogClass,
+                dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
                 width: 850,
                 buttons: [
                     {
@@ -10838,9 +13231,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/link/link-create.js */
+                /* End of file: temp/default/src/plugins/link/link-create.js */
             
-                /* File: build/default/src/plugins/link/link-remove.js */
+                /* File: temp/default/src/plugins/link/link-remove.js */
                 Raptor.registerUi(new Button({
     name: 'linkRemove',
 
@@ -10854,9 +13247,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/link/link-remove.js */
+                /* End of file: temp/default/src/plugins/link/link-remove.js */
             
-                /* File: build/default/src/plugins/list/list-ordered.js */
+                /* File: temp/default/src/plugins/list/list-ordered.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'listOrdered',
     action: function() {
@@ -10864,9 +13257,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/list/list-ordered.js */
+                /* End of file: temp/default/src/plugins/list/list-ordered.js */
             
-                /* File: build/default/src/plugins/list/list-unordered.js */
+                /* File: temp/default/src/plugins/list/list-unordered.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'listUnordered',
     action: function() {
@@ -10874,37 +13267,311 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/list/list-unordered.js */
+                /* End of file: temp/default/src/plugins/list/list-unordered.js */
             
-                /* File: build/default/src/plugins/logo/logo.js */
+                /* File: temp/default/src/plugins/logo/logo.js */
                 Raptor.registerUi(new Button({
     name: 'logo',
     init: function() {
         var button = Button.prototype.init.apply(this, arguments);
 
-        var data = {
-            enableUi: this.raptor.options.enableUi,
-            enablePlugins: this.raptor.options.enablePlugins,
-            disabledPlugins: this.raptor.options.disabledPlugins,
-            ui: this.options.ui,
-            layout: this.options.layout,
-            t: new Date().getTime()
-        };
-
         button.find('.ui-button-icon-primary').css({
-            'background-image': 'url(http://www.jquery-raptor.com/logo/0.5.0?json=' + encodeURIComponent(JSON.stringify(data)) + ')'
+            'background-image': 'url(http://www.raptor-editor.com/logo/0.5.11?json=' +
+                encodeURIComponent(JSON.stringify(this.raptor.options)) + ')'
         });
-        
+
         return button;
     },
     action: function() {
-        window.open('http://www.jquery-raptor.com/about/editors/', '_blank');
+        window.open('http://www.raptor-editor.com/about/0.5.11', '_blank');
     }
 }));
 
-                /* End of file: build/default/src/plugins/logo/logo.js */
+                /* End of file: temp/default/src/plugins/logo/logo.js */
             
-                /* File: build/default/src/plugins/save/save.js */
+                /* File: temp/default/src/plugins/paste/paste.js */
+                var pasteInProgress = false,
+    pasteDialog = null,
+    pasteInstance = null;
+
+function PastePlugin(name, overrides) {
+    this.options = {
+        /**
+         * Tags that will not be stripped from pasted content.
+         * @type {Array}
+         */
+        allowedTags: [
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
+            'p', 'a', 'span', 'hr', 'br'
+        ],
+
+        allowedAttributes: [
+            'href', 'title'
+        ],
+
+        allowedEmptyTags: [
+            'hr', 'br'
+        ]
+    };
+
+    RaptorPlugin.call(this, name || 'paste', overrides);
+}
+
+PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
+
+PastePlugin.prototype.enable = function() {
+    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.caputrePaste.bind(this));
+};
+
+PastePlugin.prototype.caputrePaste = function() {
+    if (pasteInProgress) {
+        return false;
+    }
+    this.state = this.raptor.stateSave();
+    pasteInProgress = true;
+
+    //selectionSave();
+
+    // Make a contentEditable div to capture pasted text
+    $('.raptorPasteBin').remove();
+    $('<div class="raptorPasteBin" contenteditable="true" style="width: 1px; height: 1px; overflow: hidden; position: fixed; top: -1px;" />').appendTo('body');
+    $('.raptorPasteBin').focus();
+
+    window.setTimeout(this.showPasteDialog.bind(this), 0);
+
+    return true;
+};
+
+PastePlugin.prototype.showPasteDialog = function() {
+    aDialogOpen(this.getDialog(this));
+};
+
+PastePlugin.prototype.pasteContent = function(html) {
+//    console.log(this.state);
+    this.raptor.stateRestore(this.state);
+    this.raptor.actionApply(function() {
+        html = this.filterAttributes(html);
+        html = this.filterChars(html);
+        selectionReplace(html);
+        $('.raptorPasteBin').remove();
+        pasteInProgress = false;
+    }.bind(this));
+};
+
+PastePlugin.prototype.getDialog = function(instance) {
+    pasteInstance = instance;
+    if (!pasteDialog) {
+        pasteDialog = $('<div>').html(this.raptor.getTemplate('paste.dialog', this.options));
+        aDialog(pasteDialog, {
+            modal: true,
+            resizable: true,
+            autoOpen: false,
+            width: 800,
+            height: 500,
+            title: _('pasteDialogTitle'),
+            dialogClass: this.options.baseClass + '-dialog',
+            buttons: [
+                {
+                    text: _('pasteDialogOKButton'),
+                    click: function() {
+                        var html = null,
+                            element = pasteDialog.find('.' + this.options.baseClass + '-area:visible');
+
+                        if (element.hasClass(this.options.baseClass + '-plain') || element.hasClass(this.options.baseClass + '-source')) {
+                            html = element.val();
+                        } else {
+                            html = element.html();
+                        }
+                        pasteInstance.pasteContent(html);
+                        aDialogClose(pasteDialog);
+                    }.bind(this),
+                    icons: {
+                        primary: 'ui-icon-circle-check'
+                    }
+                },
+                {
+                    text: _('pasteDialogCancelButton'),
+                    click: function() {
+                        pasteInProgress = false;
+                        $('.raptorPasteBin').remove();
+                        aDialogClose(pasteDialog);
+                    },
+                    icons: {
+                        primary: 'ui-icon-circle-close'
+                    }
+                }
+            ]
+        });
+
+        // Create fake jQuery UI tabs (to prevent hash changes)
+        var tabs = pasteDialog.find('.' + this.options.baseClass + '-panel-tabs');
+        tabs.find('li')
+            .click(function() {
+                tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
+                tabs.children('div').hide().eq($(this).index()).show();
+            });
+    }
+    this.updateAreas();
+    return pasteDialog;
+};
+
+/**
+ * Attempts to filter rubbish from content using regular expressions
+ * @param  {String} content Dirty text
+ * @return {String} The filtered content
+ */
+PastePlugin.prototype.filterAttributes = function(content) {
+    // The filters variable is an array of of regular expression & handler pairs.
+    //
+    // The regular expressions attempt to strip out a lot of style data that
+    // MS Word likes to insert when pasting into a contentEditable.
+    // Almost all of it is junk and not good html.
+    //
+    // The hander is a place to put a function for match handling.
+    // In most cases, it just handles it as empty string.  But the option is there
+    // for more complex handling.
+    var filters = [
+        // Meta tags, link tags, and prefixed tags
+        {regexp: /(<meta\s*[^>]*\s*>)|(<\s*link\s* href="file:[^>]*\s*>)|(<\/?\s*\w+:[^>]*\s*>)/gi, handler: ''},
+        // MS class tags and comment tags.
+        {regexp: /(class="Mso[^"]*")|(<!--(.|\s){1,}?-->)/gi, handler: ''},
+        // Apple class tags
+        {regexp: /(class="Apple-(style|converted)-[a-z]+\s?[^"]+")/, handle: ''},
+        // Google doc attributes
+        {regexp: /id="internal-source-marker_[^"]+"|dir="[rtl]{3}"/, handle: ''},
+        // blank p tags
+        {regexp: /(<p[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/p[^>]*>)|(<p[^>]*>\s*<font[^>]*>\s*(\&nbsp;|\u00A0)*\s*<\/\s*font\s*>\s<\/p[^>]*>)/ig, handler: ''},
+        // Strip out styles containing mso defs and margins, as likely added in IE and are not good to have as it mangles presentation.
+        {regexp: /(style="[^"]*mso-[^;][^"]*")|(style="margin:\s*[^;"]*;")/gi, handler: ''},
+        // Style tags
+        {regexp: /(?:<style([^>]*)>([\s\S]*?)<\/style>|<link\s+(?=[^>]*rel=['"]?stylesheet)([^>]*?href=(['"])([^>]*?)\4[^>\/]*)\/?>)/gi, handler: ''},
+        // Scripts (if any)
+        {regexp: /(<\s*script[^>]*>((.|\s)*?)<\\?\/\s*script\s*>)|(<\s*script\b([^<>]|\s)*>?)|(<[^>]*=(\s|)*[("|')]javascript:[^$1][(\s|.)]*[$1][^>]*>)/ig, handler: ''}
+    ];
+
+    $.each(filters, function(i, filter) {
+        content = content.replace(filter.regexp, filter.handler);
+    });
+
+    return content;
+};
+
+/**
+ * Replaces commonly-used Windows 1252 encoded chars that do not exist in ASCII or ISO-8859-1 with ISO-8859-1 cognates.
+ * @param  {[type]} content [description]
+ * @return {[type]}
+ */
+PastePlugin.prototype.filterChars = function(content) {
+    var s = content;
+
+    // smart single quotes and apostrophe
+    s = s.replace(/[\u2018|\u2019|\u201A]/g, '\'');
+
+    // smart double quotes
+    s = s.replace(/[\u201C|\u201D|\u201E]/g, '\"');
+
+    // ellipsis
+    s = s.replace(/\u2026/g, '...');
+
+    // dashes
+    s = s.replace(/[\u2013|\u2014]/g, '-');
+
+    // circumflex
+    s = s.replace(/\u02C6/g, '^');
+
+    // open angle bracket
+    s = s.replace(/\u2039/g, '<');
+
+    // close angle bracket
+    s = s.replace(/\u203A/g, '>');
+
+    // spaces
+    s = s.replace(/[\u02DC|\u00A0]/g, ' ');
+
+    return s;
+};
+
+/**
+ * Strip all attributes from content (if it's an element), and every element contained within
+ * Strip loop taken from <a href="http://stackoverflow.com/a/1870487/187954">Remove all attributes</a>
+ * @param  {String|Element} content The string / element to be cleaned
+ * @return {String} The cleaned string
+ */
+PastePlugin.prototype.stripAttributes = function(content) {
+    content = $('<div/>').html(content);
+    var allowedAttributes = this.options.allowedAttributes;
+
+    $(content.find('*')).each(function() {
+        // First copy the attributes to remove if we don't do this it causes problems iterating over the array
+        // we're removing elements from
+        var attributes = [];
+        $.each(this.attributes, function(index, attribute) {
+            // Do not remove allowed attributes
+            if (-1 !== $.inArray(attribute.nodeName, allowedAttributes)) {
+                return;
+            }
+            attributes.push(attribute.nodeName);
+        });
+
+        // now remove the attributes
+        for (var attributeIndex = 0; attributeIndex < attributes.length; attributeIndex++) {
+            $(this).attr(attributes[attributeIndex], null);
+        }
+    });
+    return content.html();
+};
+
+/**
+ * Remove empty tags.
+ * @param  {String} content The HTML containing empty elements to be removed
+ * @return {String} The cleaned HTML
+ */
+PastePlugin.prototype.stripEmpty = function(content) {
+    var wrapper = $('<div/>').html(content);
+    var allowedEmptyTags = this.options.allowedEmptyTags;
+    wrapper.find('*').filter(function() {
+        // Do not strip elements in allowedEmptyTags
+        if (-1 !== $.inArray(this.tagName.toLowerCase(), allowedEmptyTags)) {
+            return false;
+        }
+        // If the element has at least one child element that exists in allowedEmptyTags, do not strip it
+        if ($(this).find(allowedEmptyTags.join(',')).length) {
+            return false;
+        }
+        return $.trim($(this).text()) === '';
+    }).remove();
+    return wrapper.html();
+};
+
+/**
+ * Update text input content
+ * @param  {Element} target The input being edited
+ * @param  {Element} dialog The paste dialog
+ */
+PastePlugin.prototype.updateAreas = function() {
+    var markup = $('.raptorPasteBin').html();
+    markup = this.filterAttributes(markup);
+    markup = this.filterChars(markup);
+    markup = this.stripEmpty(markup);
+    markup = this.stripAttributes(markup);
+    markup = stringStripTags(markup, this.options.allowedTags);
+
+    var plain = $('<div/>').html($('.raptorPasteBin').html()).text();
+    var html = $('.raptorPasteBin').html();
+
+    pasteDialog.find('.' + this.options.baseClass + '-plain').val($('<div/>').html(plain).text());
+    pasteDialog.find('.' + this.options.baseClass + '-rich').html(markup);
+    pasteDialog.find('.' + this.options.baseClass + '-source').html(html);
+    pasteDialog.find('.' + this.options.baseClass + '-markup').html(this.stripAttributes(html));
+};
+
+Raptor.registerPlugin(new PastePlugin());
+
+
+                /* End of file: temp/default/src/plugins/paste/paste.js */
+            
+                /* File: temp/default/src/plugins/save/save.js */
                 Raptor.registerUi(new Button({
     name: 'save',
 
@@ -10936,9 +13603,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/save/save.js */
+                /* End of file: temp/default/src/plugins/save/save.js */
             
-                /* File: build/default/src/plugins/save/save-rest.js */
+                /* File: temp/default/src/plugins/save/save-rest.js */
                 function SaveRestPlugin(name, overrides) {
     this.method = 'put';
     RaptorPlugin.call(this, name || 'saveRest', overrides);
@@ -10946,8 +13613,7 @@ Raptor.registerUi(new Button({
 
 SaveRestPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
-SaveRestPlugin.prototype.init = function(raptor) {
-    this.raptor = raptor;
+SaveRestPlugin.prototype.init = function() {
     // <strict/>
 };
 
@@ -10995,11 +13661,11 @@ SaveRestPlugin.prototype.always = function() {
             }), {
                 delay: 1000,
                 hide: function() {
-                    this.editor.unify(function(editor) {
-                        editor.disableEditing();
-                        editor.hideLayout();
+                    this.raptor.unify(function(raptor) {
+                        raptor.disableEditing();
+                        raptor.hideLayout();
                     });
-                }
+                }.bind(this)
             });
         }
     }
@@ -11011,7 +13677,7 @@ SaveRestPlugin.prototype.sendRequest = function() {
         url = this.raptor.getPlugin('saveRest').getURL();
     return $.ajax({
         type: this.options.type || 'post',
-        dataType: this.options.type || 'json',
+        dataType: this.options.dataType || 'json',
         headers: headers,
         data: data,
         url: url
@@ -11027,8 +13693,10 @@ SaveRestPlugin.prototype.getHeaders = function() {
 
 SaveRestPlugin.prototype.getData = function() {
     // Get the data to send to the server
-    var content = this.raptor.getHtml();
-    return this.options.data.call(this, content);
+    var content = this.raptor.getHtml(),
+        data = this.options.data.call(this, content);
+    data._method = this.method;
+    return data;
 };
 
 SaveRestPlugin.prototype.getURL = function() {
@@ -11040,19 +13708,21 @@ SaveRestPlugin.prototype.getURL = function() {
 
 Raptor.registerPlugin(new SaveRestPlugin());
 
-                /* End of file: build/default/src/plugins/save/save-rest.js */
+                /* End of file: temp/default/src/plugins/save/save-rest.js */
             
-                /* File: build/default/src/plugins/statistics/statistics.js */
+                /* File: temp/default/src/plugins/statistics/statistics.js */
                 var statisticsDialog = null;
 
 Raptor.registerUi(new Button({
     name: 'statistics',
-    maximum: 100,
-    showCountInButton: true,
+    options: {
+        maximum: 100,
+        showCountInButton: true
+    },
 
-    init: function(raptor) {
-        if (this.showCountInButton) {
-            raptor.bind('change', this.updateButton.bind(this));
+    init: function() {
+        if (this.options.showCountInButton) {
+            this.raptor.bind('change', this.updateButton.bind(this));
         }
         return Button.prototype.init.apply(this, arguments);
     },
@@ -11072,8 +13742,8 @@ Raptor.registerUi(new Button({
             characters = this.getCharacters();
 
         // Cases where maximum has been provided
-        if (this.maximum) {
-            charactersRemaining = this.maximum - characters;
+        if (this.options.maximum) {
+            charactersRemaining = this.options.maximum - characters;
             if (charactersRemaining >= 0) {
                 label = _('statisticsButtonCharacterRemaining', {
                     charactersRemaining: charactersRemaining
@@ -11091,7 +13761,7 @@ Raptor.registerUi(new Button({
 
         aButtonSetLabel(this.button, label);
 
-        if (!this.maximum) {
+        if (!this.options.maximum) {
             return;
         }
 
@@ -11114,7 +13784,7 @@ Raptor.registerUi(new Button({
             aButton(this.button, {
                 text: true
             });
-            if (this.showCountInButton) {
+            if (this.options.showCountInButton) {
                 this.updateButton();
             }
         }
@@ -11123,7 +13793,7 @@ Raptor.registerUi(new Button({
 
     getDialog: function() {
         if (!statisticsDialog) {
-            statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'))
+            statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'));
             aDialog(statisticsDialog, {
                 modal: true,
                 resizable: false,
@@ -11153,12 +13823,12 @@ Raptor.registerUi(new Button({
      */
     processDialog: function() {
         var dialog = this.getDialog();
-        var content = $('<div/>').html(this.editor.getHtml()).text();
+        var content = $('<div/>').html(this.raptor.getHtml()).text();
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';
-        if (typeIsNumber(charactersRemaining)) {
-            dialog.find('[data-name=truncation]').html(_('statisticsDialogNotTruncated', {
+        if (typeIsNumber(charactersRemaining) && charactersRemaining < 0) {
+            dialog.find('[data-name=truncation]').html(_('statisticsDialogTruncated', {
                 'limit': this.options.maximum
             }));
         } else {
@@ -11202,9 +13872,9 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/statistics/statistics.js */
+                /* End of file: temp/default/src/plugins/statistics/statistics.js */
             
-                /* File: build/default/src/plugins/table/table-cell-button.js */
+                /* File: temp/default/src/plugins/table/table-cell-button.js */
                 function TableCellButton(options) {
     FilteredPreviewButton.call(this, options);
 }
@@ -11220,9 +13890,9 @@ TableCellButton.prototype.getElement = function(range) {
     return null;
 };
 
-                /* End of file: build/default/src/plugins/table/table-cell-button.js */
+                /* End of file: temp/default/src/plugins/table/table-cell-button.js */
             
-                /* File: build/default/src/plugins/table/table-create.js */
+                /* File: temp/default/src/plugins/table/table-create.js */
                 function TableMenu(options) {
     Menu.call(this, {
         name: 'tableCreate'
@@ -11247,12 +13917,12 @@ TableMenu.prototype.highlight = function(event) {
             x: event.target.cellIndex,
             y: event.target.parentNode.rowIndex
         });
-        
+
     // highlight cells in menu
     this.highlightRemove(event);
     $(cells).addClass(this.options.baseClass + '-menu-hover');
-    
-    // Preview create 
+
+    // Preview create
     this.raptor.actionPreview(function() {
         selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
@@ -11269,7 +13939,7 @@ TableMenu.prototype.highlightRemove = function(event) {
 
 TableMenu.prototype.getMenu = function() {
     if (!this.menu) {
-        this.menuContent = this.editor.getTemplate('table.create-menu', this.options);
+        this.menuContent = this.raptor.getTemplate('table.create-menu', this.options);
         Menu.prototype.getMenu.call(this)
             .on('click', 'td', this.createTable.bind(this))
             .on('mouseenter', 'td', this.highlight.bind(this))
@@ -11281,9 +13951,9 @@ TableMenu.prototype.getMenu = function() {
 
 Raptor.registerUi(new TableMenu());
 
-                /* End of file: build/default/src/plugins/table/table-create.js */
+                /* End of file: temp/default/src/plugins/table/table-create.js */
             
-                /* File: build/default/src/plugins/table/table-delete-column.js */
+                /* File: temp/default/src/plugins/table/table-delete-column.js */
                 Raptor.registerUi(new TableCellButton({
     name: 'tableDeleteColumn',
     applyToElement: function(cell) {
@@ -11291,9 +13961,9 @@ Raptor.registerUi(new TableMenu());
     }
 }));
 
-                /* End of file: build/default/src/plugins/table/table-delete-column.js */
+                /* End of file: temp/default/src/plugins/table/table-delete-column.js */
             
-                /* File: build/default/src/plugins/table/table-delete-row.js */
+                /* File: temp/default/src/plugins/table/table-delete-row.js */
                 Raptor.registerUi(new TableCellButton({
     name: 'tableDeleteRow',
     applyToElement: function(cell) {
@@ -11301,33 +13971,33 @@ Raptor.registerUi(new TableMenu());
     }
 }));
 
-                /* End of file: build/default/src/plugins/table/table-delete-row.js */
+                /* End of file: temp/default/src/plugins/table/table-delete-row.js */
             
-                /* File: build/default/src/plugins/table/table-insert-column.js */
+                /* File: temp/default/src/plugins/table/table-insert-column.js */
                 Raptor.registerUi(new TableCellButton({
     name: 'tableInsertColumn',
     applyToElement: function(cell) {
-        tableInsertColumn(cell.parentNode.parentNode.parentNode, tableGetCellIndex(cell).x, {
+        tableInsertColumn(cell.parentNode.parentNode.parentNode, tableGetCellIndex(cell).x + 1, {
             placeHolder: '&nbsp;'
         });
     }
 }));
 
-                /* End of file: build/default/src/plugins/table/table-insert-column.js */
+                /* End of file: temp/default/src/plugins/table/table-insert-column.js */
             
-                /* File: build/default/src/plugins/table/table-insert-row.js */
+                /* File: temp/default/src/plugins/table/table-insert-row.js */
                 Raptor.registerUi(new TableCellButton({
     name: 'tableInsertRow',
     applyToElement: function(cell) {
-        tableInsertRow(cell.parentNode.parentNode.parentNode, tableGetCellIndex(cell).x, {
+        tableInsertRow(cell.parentNode.parentNode.parentNode, tableGetCellIndex(cell).y + 1, {
             placeHolder: '&nbsp;'
         });
     }
 }));
 
-                /* End of file: build/default/src/plugins/table/table-insert-row.js */
+                /* End of file: temp/default/src/plugins/table/table-insert-row.js */
             
-                /* File: build/default/src/plugins/tag-menu/tag-menu.js */
+                /* File: temp/default/src/plugins/tag-menu/tag-menu.js */
                 function TagMenu(options) {
     SelectMenu.call(this, {
         name: 'tagMenu'
@@ -11336,8 +14006,8 @@ Raptor.registerUi(new TableMenu());
 
 TagMenu.prototype = Object.create(SelectMenu.prototype);
 
-TagMenu.prototype.init = function(raptor) {
-    raptor.bind('selectionChange', this.updateButton.bind(this));
+TagMenu.prototype.init = function() {
+    this.raptor.bind('selectionChange', this.updateButton.bind(this));
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
@@ -11347,37 +14017,10 @@ TagMenu.prototype.changeTag = function(tag) {
         return;
     }
 
-    var editingElement = this.raptor.getElement()[0];
-    var selectedElement = selectionGetElements();
-    if (!selectionGetHtml() || selectionGetHtml() === '') {
-        // Do not attempt to modify editing element's tag
-        if ($(selectedElement)[0] === $(editingElement)[0]) {
-            return;
-        }
-        selectionSave();
-        var replacementElement = $('<' + tag + '>').html(selectedElement.html());
-        selectedElement.replaceWith(replacementElement);
-        selectionRestore();
-    } else {
-        var selectedElementParent = $(selectionGetElements()[0]).parent();
-        var temporaryClass = this.options.baseClass + '-selection';
-        var replacementHtml = $('<' + tag + '>').html(selectionGetHtml()).addClass(temporaryClass);
-
-        /*
-         * Replace selection if the selected element parent or the selected element is the editing element,
-         * instead of splitting the editing element.
-         */
-        if (selectedElementParent === editingElement ||
-            selectionGetElements()[0] === editingElement) {
-            selectionReplace(replacementHtml);
-        } else {
-            selectionReplaceWithinValidTags(replacementHtml, this.validParents);
-        }
-
-        selectionSelectInner(this.raptor.getElement().find('.' + temporaryClass).removeClass(temporaryClass));
-    }
-
-    this.raptor.checkChange();
+    selectionChangeTags(tag, [
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'p', 'div', 'pre', 'address'
+    ], this.raptor.getElement());
 };
 
 TagMenu.prototype.apply = function(event) {
@@ -11403,10 +14046,10 @@ TagMenu.prototype.previewRestore = function(event) {
 TagMenu.prototype.updateButton = function() {
     var tag = selectionGetElements()[0],
         button = this.getButton().getButton();
-    if (!tag) {
-        aButtonDisable(button);
-        return;
-    }
+//    if (!tag) {
+//        aButtonDisable(button);
+//        return;
+//    }
     var tagName = tag.tagName.toLowerCase(),
         option = this.getMenu().find('[data-value=' + tagName + ']');
     if (option.length) {
@@ -11414,28 +14057,29 @@ TagMenu.prototype.updateButton = function() {
     } else {
         aButtonSetLabel(button, _('tagMenuTagNA'));
     }
-    if (this.editor.getElement()[0] === tag) {
-        aButtonDisable(button);
-    } else {
-        aButtonEnable(button);
-    }
+//    if (this.raptor.getElement()[0] === tag) {
+//        aButtonDisable(button);
+//    } else {
+//        aButtonEnable(button);
+//    }
 };
 
-TagMenu.prototype.getButton = function() {
-    if (!this.button) {
-        this.button = new Button({
-            name: this.name,
-            action: this.show.bind(this),
-            preview: false,
-            options: this.options,
-            icon: false
-        });
-    }
-    return this.button;
-};
+//TagMenu.prototype.getButton = function() {
+//    if (!this.button) {
+//        this.button = new Button({
+//            name: this.name,
+//            action: this.show.bind(this),
+//            preview: false,
+//            options: this.options,
+//            icon: false,
+//            raptor: this.raptor
+//        });
+//    }
+//    return this.button;
+//};
 
 TagMenu.prototype.getMenuItems = function() {
-    return $(this.editor.getTemplate('tag-menu.menu', this.options))
+    return $(this.raptor.getTemplate('tag-menu.menu', this.options))
         .click(this.apply.bind(this))
         .mouseenter(this.preview.bind(this))
         .mouseleave(this.previewRestore.bind(this));
@@ -11443,140 +14087,183 @@ TagMenu.prototype.getMenuItems = function() {
 
 Raptor.registerUi(new TagMenu());
 
-                /* End of file: build/default/src/plugins/tag-menu/tag-menu.js */
+                /* End of file: temp/default/src/plugins/tag-menu/tag-menu.js */
             
-                /* File: build/default/src/plugins/text-align/center.js */
-                Raptor.registerUi(new PreviewButton({
+                /* File: temp/default/src/plugins/text-align/text-align-button.js */
+                function TextAlignButton(options) {
+    PreviewToggleButton.call(this, $.extend({
+        action: function() {
+            selectionToggleBlockClasses([
+                this.getClass()
+            ], [
+                this.options.cssPrefix + 'center',
+                this.options.cssPrefix + 'left',
+                this.options.cssPrefix + 'right',
+                this.options.cssPrefix + 'justify'
+            ], this.raptor.getElement());
+            this.selectionChange();
+        },
+        selectionToggle: function() {
+            var result = true;
+            selectionEachRange(function(range) {
+                // Check if selection only contains valid children
+                var children = $(range.commonAncestorContainer).find('*');
+                if ($(range.commonAncestorContainer).parentsUntil(this.raptor.getElement(), '.' + this.getClass()).length === 0 &&
+                        children.length !== children.filter('.' + this.getClass()).length) {
+                    result = false;
+                }
+            }.bind(this));
+            return result;
+        }
+    }, options));
+}
+
+TextAlignButton.prototype = Object.create(PreviewToggleButton.prototype);
+
+                /* End of file: temp/default/src/plugins/text-align/text-align-button.js */
+            
+                /* File: temp/default/src/plugins/text-align/center.js */
+                Raptor.registerUi(new TextAlignButton({
     name: 'alignCenter',
-    action: function() {
-        selectionToggleBlockStyle({
-            'text-align': 'center'
-        }, this.raptor.getElement());
+    getClass: function() {
+        return this.options.cssPrefix + 'center'
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-align/center.js */
+                /* End of file: temp/default/src/plugins/text-align/center.js */
             
-                /* File: build/default/src/plugins/text-align/justify.js */
-                Raptor.registerUi(new PreviewButton({
+                /* File: temp/default/src/plugins/text-align/justify.js */
+                Raptor.registerUi(new TextAlignButton({
     name: 'alignJustify',
-    action: function() {
-        selectionToggleBlockStyle({
-            'text-align': 'justify'
-        }, this.raptor.getElement());
+    getClass: function() {
+        return this.options.cssPrefix + 'justify'
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-align/justify.js */
+                /* End of file: temp/default/src/plugins/text-align/justify.js */
             
-                /* File: build/default/src/plugins/text-align/left.js */
-                Raptor.registerUi(new PreviewButton({
+                /* File: temp/default/src/plugins/text-align/left.js */
+                Raptor.registerUi(new TextAlignButton({
     name: 'alignLeft',
-    action: function() {
-        selectionToggleBlockStyle({
-            'text-align': 'left'
-        }, this.raptor.getElement());
+    getClass: function() {
+        return this.options.cssPrefix + 'left'
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-align/left.js */
+                /* End of file: temp/default/src/plugins/text-align/left.js */
             
-                /* File: build/default/src/plugins/text-align/right.js */
-                Raptor.registerUi(new PreviewButton({
+                /* File: temp/default/src/plugins/text-align/right.js */
+                Raptor.registerUi(new TextAlignButton({
     name: 'alignRight',
-    action: function() {
-        selectionToggleBlockStyle({
-            'text-align': 'right'
-        }, this.raptor.getElement());
+    getClass: function() {
+        return this.options.cssPrefix + 'right'
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-align/right.js */
+                /* End of file: temp/default/src/plugins/text-align/right.js */
             
-                /* File: build/default/src/plugins/text-style/block-quote.js */
-                Raptor.registerUi(new PreviewButton({
+                /* File: temp/default/src/plugins/text-style/block-quote.js */
+                Raptor.registerUi(new PreviewToggleButton({
     name: 'textBlockQuote',
     action: function() {
-        selectionToggleWrapper('blockquote', { 
-            classes: this.options.classes || this.options.cssPrefix + 'blockquote' 
-        });
+        listToggle('blockquote', 'p', this.raptor.getElement());
+        this.selectionChange();
+    },
+    selectionToggle: function() {
+        var result = true;
+        selectionEachRange(function(range) {
+            if ($(range.commonAnsestor).parentsUntil(this.raptor.getElement(), 'blockquote').length === 0) {
+                result = false;
+            }
+        }.bind(this));
+        return result;
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-style/block-quote.js */
+                /* End of file: temp/default/src/plugins/text-style/block-quote.js */
             
-                /* File: build/default/src/plugins/text-style/bold.js */
+                /* File: temp/default/src/plugins/text-style/bold.js */
                 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textBold',
     hotkey: 'ctrl+b',
-    tag: 'strong'
+    tag: 'strong',
+    classes: ['bold']
 }));
 
-                /* End of file: build/default/src/plugins/text-style/bold.js */
+                /* End of file: temp/default/src/plugins/text-style/bold.js */
             
-                /* File: build/default/src/plugins/text-style/italic.js */
+                /* File: temp/default/src/plugins/text-style/italic.js */
                 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textItalic',
     hotkey: 'ctrl+i',
-    tag: 'em'
+    tag: 'em',
+    classes: ['italic']
 }));
 
-                /* End of file: build/default/src/plugins/text-style/italic.js */
+                /* End of file: temp/default/src/plugins/text-style/italic.js */
             
-                /* File: build/default/src/plugins/text-style/size-decrease.js */
+                /* File: temp/default/src/plugins/text-style/size-decrease.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'textSizeDecrease',
     action: function() {
+        selectionExpandToWord();
         selectionInverseWrapWithTagClass('small', this.options.cssPrefix + 'small', 'big', this.options.cssPrefix + 'big');
+        this.raptor.getElement().find('small.' + this.options.cssPrefix + 'small:empty, big.' + this.options.cssPrefix + 'big:empty').remove();
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-style/size-decrease.js */
+                /* End of file: temp/default/src/plugins/text-style/size-decrease.js */
             
-                /* File: build/default/src/plugins/text-style/size-increase.js */
+                /* File: temp/default/src/plugins/text-style/size-increase.js */
                 Raptor.registerUi(new PreviewButton({
     name: 'textSizeIncrease',
     action: function() {
+        selectionExpandToWord();
         selectionInverseWrapWithTagClass('big', this.options.cssPrefix + 'big', 'small', this.options.cssPrefix + 'small');
+        this.raptor.getElement().find('small.' + this.options.cssPrefix + 'small:empty, big.' + this.options.cssPrefix + 'big:empty').remove();
     }
 }));
 
-                /* End of file: build/default/src/plugins/text-style/size-increase.js */
+                /* End of file: temp/default/src/plugins/text-style/size-increase.js */
             
-                /* File: build/default/src/plugins/text-style/strike.js */
+                /* File: temp/default/src/plugins/text-style/strike.js */
                 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textStrike',
-    tag: 'strike'
+    tag: 'del',
+    classes: ['strike']
 }));
 
-                /* End of file: build/default/src/plugins/text-style/strike.js */
+                /* End of file: temp/default/src/plugins/text-style/strike.js */
             
-                /* File: build/default/src/plugins/text-style/sub.js */
+                /* File: temp/default/src/plugins/text-style/sub.js */
                 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textSub',
-    tag: 'sub'
+    tag: 'sub',
+    classes: ['sub']
 }));
 
-                /* End of file: build/default/src/plugins/text-style/sub.js */
+                /* End of file: temp/default/src/plugins/text-style/sub.js */
             
-                /* File: build/default/src/plugins/text-style/super.js */
+                /* File: temp/default/src/plugins/text-style/super.js */
                 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textSuper',
-    tag: 'sup'
+    tag: 'sup',
+    classes: ['sup']
 }));
 
-                /* End of file: build/default/src/plugins/text-style/super.js */
+                /* End of file: temp/default/src/plugins/text-style/super.js */
             
-                /* File: build/default/src/plugins/text-style/underline.js */
+                /* File: temp/default/src/plugins/text-style/underline.js */
                 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textUnderline',
     hotkey: 'ctrl+u',
-    tag: 'u'
+    tag: 'u',
+    classes: ['underline']
 }));
 
-                /* End of file: build/default/src/plugins/text-style/underline.js */
+                /* End of file: temp/default/src/plugins/text-style/underline.js */
             
-                /* File: build/default/src/plugins/unsaved-edit-warning/unsaved-edit-warning.js */
+                /* File: temp/default/src/plugins/unsaved-edit-warning/unsaved-edit-warning.js */
                 var unsavedEditWarningDirty = 0,
     unsavedEditWarningElement = null;
 
@@ -11626,9 +14313,9 @@ UnsavedEditWarningPlugin.prototype.getElement = function(instance) {
 
 Raptor.registerPlugin(new UnsavedEditWarningPlugin());
 
-                /* End of file: build/default/src/plugins/unsaved-edit-warning/unsaved-edit-warning.js */
+                /* End of file: temp/default/src/plugins/unsaved-edit-warning/unsaved-edit-warning.js */
             
-                /* File: build/default/src/plugins/view-source/view-source.js */
+                /* File: temp/default/src/plugins/view-source/view-source.js */
                 var viewSourceDialog = null;
 
 Raptor.registerUi(new Button({
@@ -11639,7 +14326,7 @@ Raptor.registerUi(new Button({
     },
     getDialog: function() {
         if (!viewSourceDialog) {
-            viewSourceDialog = $('<div>').html(this.editor.getTemplate('view-source.dialog', this.options));
+            viewSourceDialog = $('<div>').html(this.raptor.getTemplate('view-source.dialog', this.options));
             aDialog(viewSourceDialog, {
                 modal: true,
                 width: 600,
@@ -11679,1468 +14366,8 @@ Raptor.registerUi(new Button({
     }
 }));
 
-                /* End of file: build/default/src/plugins/view-source/view-source.js */
+                /* End of file: temp/default/src/plugins/view-source/view-source.js */
             
-            // Raptor wrapper
-            })(jQuery, window, rangy);
-        jQuery('<style type="text/css">\n\
-                /* File: build/default/src/theme/theme.css */\n\
-                /* Non styles */\n\
-/**\n\
- * Style global variables\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-/* Base style */\n\
-/**\n\
- * Main editor layout\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-/******************************************************************************\\n\
- * Editor toolbar\n\
-\******************************************************************************/\n\
-.raptor-wrapper {\n\
-  overflow: visible;\n\
-  z-index: 1001;\n\
-  position: fixed;\n\
-  font-size: 12px;\n\
-  -webkit-user-select: none;\n\
-  -moz-user-select: none;\n\
-  user-select: none; }\n\
-  .raptor-wrapper * {\n\
-    -webkit-user-select: none;\n\
-    -moz-user-select: none;\n\
-    user-select: none; }\n\
-  .raptor-wrapper .raptor-toolbar {\n\
-    padding: 6px 0 0 5px;\n\
-    overflow: visible; }\n\
-  .raptor-wrapper .ui-dialog-titlebar .raptor-element-path:first-child {\n\
-    margin-left: 5px; }\n\
-  .raptor-wrapper .ui-dialog-titlebar .raptor-element-path {\n\
-    min-width: 10px;\n\
-    min-height: 15px;\n\
-    display: inline-block; }\n\
-\n\
-.raptor-dock-docked-to-element .raptor-toolbar {\n\
-  padding: 5px 0 0 5px!important; }\n\
-  .raptor-dock-docked-to-element .raptor-toolbar .raptor-group {\n\
-    margin: 0 5px 5px 0; }\n\
-\n\
-.raptor-dock-docked-element {\n\
-  display: block !important;\n\
-  border: 0 none transparent;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-\n\
-/******************************************************************************\\n\
- * Inputs\n\
-\******************************************************************************/\n\
-.raptor-wrapper textarea,\n\
-.raptor-wrapper input {\n\
-  padding: 5px; }\n\
-\n\
-/******************************************************************************\\n\
- * Dialogs\n\
-\******************************************************************************/\n\
-.raptor-wrapper .ui-dialog-content {\n\
-  font-size: 13px; }\n\
-.raptor-wrapper textarea {\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1; }\n\
-\n\
-html body div.ui-dialog div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
-  margin-top: 0!important; }\n\
-\n\
-/**\n\
- * Main editor styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-.raptor-editing {\n\
-  outline: none; }\n\
-\n\
-/******************************************************************************\\n\
- * Inputs\n\
-\******************************************************************************/\n\
-.raptor-wrapper textarea,\n\
-.raptor-wrapper input {\n\
-  border: 1px solid #D4D4D4; }\n\
-\n\
-/******************************************************************************\\n\
- * Dialogs\n\
-\******************************************************************************/\n\
-.raptor-wrapper .ui-dialog-content {\n\
-  font-size: 13px; }\n\
-\n\
-html body div.ui-wrapper div.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {\n\
-  margin-top: 0!important; }\n\
-\n\
-/* Components */\n\
-/**\n\
- * Path selection bar\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-path {\n\
-  padding: 5px;\n\
-  font-size: 13px; }\n\
-\n\
-/**\n\
- * Select menu UI widget styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-selectmenu {\n\
-  overflow: visible;\n\
-  position: relative; }\n\
-\n\
-.raptor-selectmenu-button {\n\
-  text-align: left;\n\
-  padding: 3px 18px 5px 5px !important;\n\
-  float: none !important; }\n\
-  .raptor-selectmenu-button .ui-icon {\n\
-    position: absolute;\n\
-    right: 1px;\n\
-    top: 8px; }\n\
-  .raptor-selectmenu-button .raptor-selectmenu-text {\n\
-    font-size: 13px; }\n\
-\n\
-.raptor-selectmenu-wrapper {\n\
-  position: relative; }\n\
-\n\
-.raptor-selectmenu-button .ui-button-text {\n\
-  padding: 0 25px 0 5px; }\n\
-\n\
-.raptor-selectmenu-button .ui-icon {\n\
-  background-repeat: no-repeat; }\n\
-\n\
-.raptor-selectmenu-menu {\n\
-  position: absolute;\n\
-  top: 100%;\n\
-  left: 0;\n\
-  right: auto;\n\
-  display: none;\n\
-  margin-top: -1px !important; }\n\
-\n\
-.raptor-selectmenu-visible .raptor-selectmenu-menu {\n\
-  display: block;\n\
-  z-index: 1; }\n\
-\n\
-.raptor-selectmenu-menu-item {\n\
-  padding: 5px;\n\
-  margin: 3px;\n\
-  z-index: 1;\n\
-  text-align: left;\n\
-  font-size: 13px;\n\
-  font-weight: normal !important;\n\
-  border: 1px solid transparent;\n\
-  cursor: pointer;\n\
-  background-color: inherit; }\n\
-\n\
-.raptor-selectmenu-button {\n\
-  background: #f5f5f5;\n\
-  border: 1px solid #ccc; }\n\
-\n\
-.raptor-buttonset .raptor-selectmenu-visible .raptor-selectmenu-button {\n\
-  -moz-border-radius-bottomleft: 0;\n\
-  -webkit-border-bottom-left-radius: 0;\n\
-  border-bottom-left-radius: 0;\n\
-  -moz-border-radius-bottomright: 0;\n\
-  -webkit-border-bottom-right-radius: 0;\n\
-  border-bottom-right-radius: 0; }\n\
-\n\
-/**\n\
- * Button UI widget styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-buttonset {\n\
-  float: left;\n\
-  margin: 0 5px 4px 0;\n\
-  display: inline-block; }\n\
-  .raptor-buttonset > .ui-button {\n\
-    float: left;\n\
-    display: block;\n\
-    margin: 0 -1px 0 0;\n\
-    font-size: 13px; }\n\
-  .raptor-buttonset .ui-button:hover {\n\
-    z-index: 1; }\n\
-  .raptor-buttonset .raptor-selectmenu {\n\
-    display: block; }\n\
-    .raptor-buttonset .raptor-selectmenu .ui-button {\n\
-      margin: 0 -1px 0 0; }\n\
-\n\
-.raptor-ff .raptor-buttonset {\n\
-  float: none;\n\
-  vertical-align: top; }\n\
-\n\
-.raptor-wrapper .raptor-buttonset > .ui-button {\n\
-  -webkit-border-radius: 0;\n\
-  -moz-border-radius: 0;\n\
-  -ms-border-radius: 0;\n\
-  -o-border-radius: 0;\n\
-  border-radius: 0; }\n\
-  .raptor-wrapper .raptor-buttonset > .ui-button:first-child {\n\
-    -moz-border-radius-topleft: 5px;\n\
-    -webkit-border-top-left-radius: 5px;\n\
-    border-top-left-radius: 5px;\n\
-    -moz-border-radius-bottomleft: 5px;\n\
-    -webkit-border-bottom-left-radius: 5px;\n\
-    border-bottom-left-radius: 5px; }\n\
-  .raptor-wrapper .raptor-buttonset > .ui-button:last-child {\n\
-    -moz-border-radius-topright: 5px;\n\
-    -webkit-border-top-right-radius: 5px;\n\
-    border-top-right-radius: 5px;\n\
-    -moz-border-radius-bottomright: 5px;\n\
-    -webkit-border-bottom-right-radius: 5px;\n\
-    border-bottom-right-radius: 5px; }\n\
-\n\
-.raptor-menu {\n\
-  z-index: 10000; }\n\
-\n\
-/**\n\
- * Unsupported warning styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-/* Layout */\n\
-.raptor-unsupported {\n\
-  position: relative; }\n\
-\n\
-.raptor-unsupported-overlay {\n\
-  position: fixed;\n\
-  top: 0;\n\
-  left: 0;\n\
-  bottom: 0;\n\
-  right: 0;\n\
-  background-color: black;\n\
-  filter: alpha(opacity=50);\n\
-  opacity: 0.5; }\n\
-\n\
-.raptor-unsupported-content {\n\
-  position: fixed;\n\
-  top: 50%;\n\
-  left: 50%;\n\
-  margin: -200px 0 0 -300px;\n\
-  width: 600px;\n\
-  height: 400px; }\n\
-\n\
-.raptor-unsupported-input {\n\
-  position: absolute;\n\
-  bottom: 10px; }\n\
-\n\
-/* Style */\n\
-.raptor-unsupported-content {\n\
-  padding: 10px;\n\
-  background-color: white;\n\
-  border: 1px solid #777; }\n\
-\n\
-/**\n\
- * Message widget styles\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-/******************************************************************************\\n\
- * Messages\n\
-\******************************************************************************/\n\
-.raptor-messages {\n\
-  margin: 0;\n\
-  /* Error */\n\
-  /* Confirm */\n\
-  /* Information */\n\
-  /* Warning */\n\
-  /* Loading */ }\n\
-  .raptor-messages .raptor-message-close {\n\
-    cursor: pointer;\n\
-    float: right; }\n\
-  .raptor-messages .ui-icon {\n\
-    margin: 0 0 3px 3px; }\n\
-  .raptor-messages .ui-icon,\n\
-  .raptor-messages .raptor-message {\n\
-    display: inline-block;\n\
-    vertical-align: top; }\n\
-  .raptor-messages .raptor-message-wrapper {\n\
-    padding: 3px 3px 3px 1px;\n\
-    -webkit-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
-    -moz-box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5);\n\
-    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.5); }\n\
-  .raptor-messages .raptor-message-wrapper:first-child {\n\
-    -moz-border-radius-topright: 5px;\n\
-    -webkit-border-top-right-radius: 5px;\n\
-    border-top-right-radius: 5px;\n\
-    -moz-border-radius-topleft: 5px;\n\
-    -webkit-border-top-left-radius: 5px;\n\
-    border-top-left-radius: 5px; }\n\
-  .raptor-messages .raptor-message-wrapper:last-child {\n\
-    -moz-border-radius-bottomright: 5px;\n\
-    -webkit-border-bottom-right-radius: 5px;\n\
-    border-bottom-right-radius: 5px;\n\
-    -moz-border-radius-bottomleft: 5px;\n\
-    -webkit-border-bottom-left-radius: 5px;\n\
-    border-bottom-left-radius: 5px; }\n\
-  .raptor-messages .raptor-message-circle-close {\n\
-    /* Red */\n\
-    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmNWQ0YiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZhMWMxYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff5d4b), color-stop(100%, #fa1c1c));\n\
-    background: -webkit-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -moz-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: -o-linear-gradient(top, #ff5d4b, #fa1c1c);\n\
-    background: linear-gradient(top, #ff5d4b, #fa1c1c); }\n\
-  .raptor-messages .raptor-message-circle-check {\n\
-    /* Green */\n\
-    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NkZWI4ZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2E1Yzk1NiIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #cdeb8e), color-stop(100%, #a5c956));\n\
-    background: -webkit-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -moz-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: -o-linear-gradient(top, #cdeb8e, #a5c956);\n\
-    background: linear-gradient(top, #cdeb8e, #a5c956); }\n\
-  .raptor-messages .raptor-message-info {\n\
-    /* Blue */\n\
-    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2E5ZTRmNyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBmYjRlNyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a9e4f7), color-stop(100%, #0fb4e7));\n\
-    background: -webkit-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -moz-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: -o-linear-gradient(top, #a9e4f7, #0fb4e7);\n\
-    background: linear-gradient(top, #a9e4f7, #0fb4e7); }\n\
-  .raptor-messages .raptor-message-alert {\n\
-    /* Yellow */\n\
-    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZDY1ZSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2ZlYmYwNCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffd65e), color-stop(100%, #febf04));\n\
-    background: -webkit-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -moz-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: -o-linear-gradient(top, #ffd65e, #febf04);\n\
-    background: linear-gradient(top, #ffd65e, #febf04); }\n\
-  .raptor-messages .raptor-message-clock {\n\
-    /* Purple */\n\
-    background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZiODNmYSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2U5M2NlYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fb83fa), color-stop(100%, #e93cec));\n\
-    background: -webkit-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -moz-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: -o-linear-gradient(top, #fb83fa, #e93cec);\n\
-    background: linear-gradient(top, #fb83fa, #e93cec); }\n\
-  .raptor-messages .raptor-message-clock .ui-icon.ui-icon-clock {\n\
-    background: transparent url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOXRFWHRTb2Z0d2FyZQBBbmltYXRlZCBQTkcgQ3JlYXRvciB2MS42LjIgKHd3dy5waHBjbGFzc2VzLm9yZyl0zchKAAAAOnRFWHRUZWNobmljYWwgaW5mb3JtYXRpb25zADUuMi4xNzsgYnVuZGxlZCAoMi4wLjM0IGNvbXBhdGlibGUpCBSqhQAAAAhhY1RMAAAACAAAAAC5PYvRAAAAGmZjVEwAAAAAAAAAEAAAABAAAAAAAAAAAAA8A+gAAIIkGDIAAACsSURBVDiNtZLBCcMwDEUfJgOUjhAyQsmp9FA8TgfISj6F4gl66jSdIIf00G9wnLjYKf3w0Qch6Us2fMdVLMYx0haYRZsrMJEegZdiDj3gFFeT54jBiU2mO+XdVvdRyV0OYidVMEAH3AEPHGoboMKwuy+seYqLV9iNTpM90P7S6AQMitXogYnPHSbyz2SAC9HqQVigkW7If90z8FAsctCyvMvKQdpkSOzfxP/hDd++JCi8XmbFAAAAGmZjVEwAAAABAAAAEAAAABAAAAAAAAAAAAA8A+gAABlX8uYAAAC3ZmRBVAAAAAI4jaWQsQ3CQBAEB4cECFGCI1fiAlyFKwARWgSIeqjCNTh0gIjIkBw9gffFSfz74VlpdX/W3Xr3YBmlmIUSmMSoSGHee+CmGsMGaFU/cAecqnVh/95qpg0J/O0gCytgDRzUX4DnryIn5lwO6L7c6fxskRhMwkc4qj+TEcFjC9SqWcsj8x3GhMgu9LHmfUinvgKuYmWWp5BIyEFvBPuUAy9ibzAYgWEhUhQN8BCb2NALKY4q8wCrG7AAAAAaZmNUTAAAAAMAAAAQAAAAEAAAAAAAAAAAADwD6AAA9MEhDwAAAKhmZEFUAAAABDiNY2CgMTgNxTgBExLbh4GB4SCUxgeMcEkcZmBg+A+lcQETqBoTbJI+UM1ku4AiEATFZIEQBoi//kPZxIAAKEaJBYpACAm24wUSBORVGBgYUqA0BtjKAAmHrXg0f4aq+YxuiAQDIiD/Q/k8DAwMdVDMw8DAkIamJo2QCyYjKZ4MtfErlP8VlzeQw2AlkgErkbyBMwzQgRoDA8N+KMapAQDdvyovpG6D8gAAABpmY1RMAAAABQAAABAAAAAQAAAAAAAAAAAAPAPoAAAZC1N1AAAAsWZkQVQAAAAGOI21kkEOgjAURF9YGBbGtYcwLowrwxk8BMcg3XACD9djGJaujKmLTkMRCiXEl0ympYX8+Xz4M62UpIjWR8DI59inDgzg5CkOwEs+YnMFmzhJOdwAK1UAZ+ANfLRewuJ75QAb/kKRvp/HmggVPxHWsAMu8hEN8JRPUdLnt9oP6HTYRc/uEsCVvnlO+wFGFYRJrKPLdU4FU5HCB0KsEt+DxZfBj+xDSo7vF9AbJ9PxYV81AAAAGmZjVEwAAAAHAAAAEAAAABAAAAAAAAAAAAA8A+gAAPSdgJwAAADDZmRBVAAAAAg4jaWSTQrCMBCFP6NIT5AjCF6gJ6jbUnoCL1biDTyF5AAueoZu3LkSrAtHTEJiIn3wmCTz92YILMQ64++BPTDKXQMH4AbcAZQTvAEasTFo4AqcxeowoAFmsSk1s8M+DChRMEnyFFNQAg10sWSFv49cESPUn+RRWFLE8N2DKe2axaIR/sU25eiAi9gUBt6zDzGnFad13nZCgAr/I1UxBdZRUAMPYV2iIETrdGudd28Hqx8FFHCU8wl4xoJeZnUrSRiyCSsAAAAaZmNUTAAAAAkAAAAQAAAAEAAAAAAAAAAAADwD6AAAGe6xwAAAALtmZEFUAAAACjiNpZJBCsIwEEWfpUsPULoSl55Beh4J7nqCHkDceR3pIaSr4Ak8Qq2L/khomlrig+FPhszwJy3EqYCHolq4F6UDBkWnWgbspN+CT7EwMAPuwFM67aUAem/IdIW952jQOeCXg1bN7ZyDNQRvsEkYkgNG+S1XcpHWKwacgatzlLLH2z/8vUJCf5wSaKQxToCVBjSM37jxaluFw+qOXeOgBF4KVzNqNkH3DAfGX7tXnsRREeUD4f8lQGjw+ycAAAAaZmNUTAAAAAsAAAAQAAAAEAAAAAAAAAAAADwD6AAA9HhiKQAAAJ9mZEFUAAAADDiNtZDLCcMwEEQfIUcXoDpCKgg6qIRUEtKB6wg6poDgalyFTj7YBw+2QyRlCc6DYVm0n9FCGQc8JFepWzgBN0WACIxS/NZ8BgYVD8pzA1ogKb5x3xSPyp0a4+YLSe/J4iBH0QF83uCvXKSFq2TBs97KH/Y1ZsdL+3IEgmJt86u0PTAfJlQGdKrprA6ekslBjl76mUYqMgFhpStJaQVr0gAAABpmY1RMAAAADQAAABAAAAAQAAAAAAAAAAAAPAPoAAAZshBTAAAAu2ZkQVQAAAAOOI21kCEOwkAQRR8rKkkFCtmjkJ4ARTgBArViT4LjLJwBgUZUr8NBQlrR38Am3XYEvOTnT7PzuzO7IE8BHFWfgNdELwBLYCMH8EAr+VzIyUvgBlzkZaZ/D1zlCfXXba2+C93sVaNwK08ogUaHzcQEu9wE0O9e83kDEw7YAhG4K/ww5CoJFB52j8bwU6rcTLOJYYWo2kKywk9Zz5yvgCAfDb9nfhLoHztYJzhIpgnGOEv/owMnkSfarUXVlAAAAABJRU5ErkJggg==\') no-repeat center center; }\n\
-\n\
-/* Layouts */\n\
-/**\n\
- * Toolbar layout.\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-layout-toolbar-group {\n\
-  float: left; }\n\
-\n\
-.raptor-layout-toolbar-group .ui-button {\n\
-  padding: 0;\n\
-  margin-top: 0;\n\
-  margin-right: 0;\n\
-  margin-bottom: 3px;\n\
-  height: 32px;\n\
-  float: left;\n\
-  -webkit-border-radius: 0;\n\
-  -moz-border-radius: 0;\n\
-  -ms-border-radius: 0;\n\
-  -o-border-radius: 0;\n\
-  border-radius: 0;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-\n\
-.raptor-layout-toolbar-group .ui-button-icon-only {\n\
-  width: 32px; }\n\
-\n\
-.raptor-layout-toolbar-group .ui-button:first-child {\n\
-  -moz-border-radius-topleft: 5px;\n\
-  -webkit-border-top-left-radius: 5px;\n\
-  border-top-left-radius: 5px;\n\
-  -moz-border-radius-bottomleft: 5px;\n\
-  -webkit-border-bottom-left-radius: 5px;\n\
-  border-bottom-left-radius: 5px; }\n\
-\n\
-.raptor-layout-toolbar-group .ui-button:last-child {\n\
-  margin-right: 2px;\n\
-  -moz-border-radius-topright: 5px;\n\
-  -webkit-border-top-right-radius: 5px;\n\
-  border-top-right-radius: 5px;\n\
-  -moz-border-radius-bottomright: 5px;\n\
-  -webkit-border-bottom-right-radius: 5px;\n\
-  border-bottom-right-radius: 5px; }\n\
-\n\
-/* Plugins */\n\
-/**\n\
- * Blockquote plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-quote-block-button .ui-icon-quote {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGVJREFUeNpi/P//PwMlgImBQjAcDWBhYZEA4r1AHA/EKHxiXQBS+BKIF+LgEzTAG4h3I0UvOh+/AUCFbECcDmROA2lC5mMzgAWLGDuUtsTBJ+iFeUDMC6Wx8VEA42hSptwAgAADAO3wKLgntfGkAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-quote-block-button:hover .ui-icon-quote {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Clean content plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-clean-button .ui-icon-clean {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABNVBMVEUAAAAAAAAgSocgSocgPnAAAABxcXFPT09YWFggSocgSocoToUbPXgSN3kyYZw0ZqT///8iUZkgSoc1Z6UiUJaJrNkwXpZIeLiOvO03a6s4b7JekNUjUpqCp9eNr9pSjeAwX5g2aqquxuV8otPB1euOsNv8/f6gveFgkdVnkMmbuuVfk9lkk9fK3Pbs8vmWtd5Vjs98odCHqNWkv+Jzms6Qt+xnmNuzyudVidS90u6hwe5mmuQtXKCow+OqxepNg82Xtd3C1Ox0m89vl8x3oNl4n9NSjuDi7PqlxO+MtOyWtt2fwO60y+dUjt5zm8/L2+9qneT3+f7g6/qDrelRi95snuWowuSfvOGPr9uwyeqRsdqUs9qat92OrtmDptN5ns9Rh8hqk8uXuehwnt1vl83e6vmZu+gBAK69AAAADXRSTlMbAKM01gogSSmAy7W1OP1GaAAAAM1JREFUeF5VzNN2A1EAQNE7TIrrsSe0Udu2zf//hHZWk672PO6HAySR/UmUwBjT9XyzeJlZuGpe60wE474TxxghhHEcOz4DzLcxRoZhJGT/AOcoiiKEOE9AZEGw291fOcpNdZeD74fEqKZ5lFLP0+YplIDAzBfXrTQKNyW3bEIhgV51QD5fyVv1fQir0zOzcxfW4tLaCGqkHoYWWR/BxubW9k5/7+PgcAjZ8JicnJKz82wC6gRstTu3d/cPj0/PcFIF6ZQMf5NTaaCAfylf1j4ecCeyzckAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-clean-button:hover .ui-icon-clean {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Clear formatting style plugin.\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-clear-formatting .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wGGxcPH7KJ9wUAAAEKSURBVDjL3ZG9SgNBFIW/I76D1RIEazEIFitWNguxUPANUkUIKG4jYiEBC7WwUFJZiNssFvoOFipMFx/AoIVVEAvxB7w2MyBhV5Iq4IHLPecy9zBzBv4nJLUltQc5O1awXAE+gAnPhzMAFoE7YNzzoQ0WgBvg1vPBDSRNAl9m9gC4ebPpc+jkkADkkOTggi4KryFpV9KMpHgfXr/T1DJwGWxn4IIuM7iQdB1qDu73oPder9spuNDPYLZoeUrSZd9saQUej6DzUqvZCbhj2Pjr+pu/ZzuwnMLbc7Vqh+BCPyjIIAaefMVhuA69bhTZGnyuwlULXDeKrFWWQT+akDTAbfk3B90s+4WR4Acs5VZuyM1J1wAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-clear-formatting:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Click to edit plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-click-button-to-edit-button {\n\
-  z-index: 4000; }\n\
-\n\
-.raptor-click-button-to-edit {\n\
-  outline: 1px solid transparent; }\n\
-\n\
-.raptor-click-button-to-edit-highlight {\n\
-  outline: 1px dotted rgba(0, 0, 0, 0.5);\n\
-  -webkit-transition: all 0.5s;\n\
-  -webkit-transition-delay: 0s;\n\
-  -moz-transition: all 0.5s 0s;\n\
-  -o-transition: all 0.5s 0s;\n\
-  transition: all 0.5s 0s; }\n\
-\n\
-/**\n\
- * Basic color picker plugin.\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-color-picker-basic-menu > div {\n\
-  min-width: 100px; }\n\
-\n\
-.raptor-ui-color-picker-basic-menu span {\n\
-  padding-left: 2px; }\n\
-\n\
-.raptor-ui-color-picker-basic-swatch {\n\
-  width: 16px;\n\
-  height: 16px;\n\
-  float: left;\n\
-  margin-top: 2px;\n\
-  border: 1px solid rgba(0, 0, 0, 0.2); }\n\
-\n\
-.raptor-ui-color-picker-basic .ui-icon-swatch {\n\
-  background-image: none;\n\
-  border: 1px solid rgba(0, 0, 0, 0.35); }\n\
-\n\
-/**\n\
- * Debug plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-debug-reinit-button .ui-icon-reload {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAqBJREFUeNqkU01PE2EQnrfdtmyLpbRNA/ULGyAhRi+NHkTk5sEEiRyMEi+evHszJh5I/AF613ho9EIwhEiMB4kSjQcWSDxgIAhJoZV26dd2t/v17jqzkoLGG5vM7rvzzPPsfOww13XhOJdAt8vPN0EIBEAQBPD5/UHGWALdnWgW2iO07H+40sL91APhH2ev4HOH+tJiZzoZCia7guXpj8XsnevprGX9yVQMM8i9K0jA2GI7A+9y3Uwo4I6Mj6aijToHzl2nXrNk27bBMDg0FQ7dcQFezeYljH6PlmsLuI4T8zF+e+zqqZ69ggaKZrH13WaxXDcUwm2LQ6xbgOKOCreu9WTfLuQVy3bSCBV8XoBpjmR6xYvFfKNflpuZTyuF1q+y8sHhXLINA7q6g/Byek06ERWgUlJh8EykHzkTxPUETMMYTcWCQ/Wqllnb3hct0/yM01nWVZUwePZiWcLnt0Vpd1NvmZCMBuL4PtwuwdL1S37GMqpuQaFUL+Mk5rllgeM41BuqeZH5/bmNzdJSbzQEiUggjJyBtgCqRVTDjqrc9c6YOjbRhlCHSON9YKMYGQpDrWVDh2F7mR2WoOsbezVdU30CdMXEGNY3abZ0rLcEVVkGpVqlPk0SRjEUS5y2gGUYX7byckURgnB66OxJ7MFD7MHkAQZ0Jh9hFEOxxDkUMM2ZrR/bMo+IsA3hjuzN4fPpvtQUjneJjM7kI4xiKJY4xGW0C9F7bwDrHvNHwk8T4zcutGz0hRjEQp4+1AwHGoYLosBgf3b+O1e1x9iPuUbu7uGfiEJzerUGu6+npwKDA8lm5lx8J54Ie2lWapr7c6tSWd+QwTSfYGPn/lqmoyKOpkn2yuoErKxeQdfgAbSO9hWXbAa/XDjKYcdd598CDAAkzn7JYhVZYAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-debug-reinit-button:hover .ui-icon-reload {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-debug-destroy-button .ui-icon-close {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAtFBMVEX///+nAABhAACnAACjAACCAACgAACHAACjAAByAAB1AAByAACDAACnAACCAACHAACgAACNAACbAACXAACMAACSAABfAACYAACRAACjAACbAAChAACqAACNAACcAACHAACqAADEERGsERHQERG+NjaiERHUTEzYERG4ERGlFBSfFRX/d3f6cnK0JSWoHh7qYmLkXFyvFRXmXl7vZ2fNRUX4cHDXT0/+dnbbU1O3Li7GPT26MTG2f8oMAAAAIXRSTlMASEjMzADMzAAASMxIAMwAAMzMzEjMzEhISABIzABISEg/DPocAAAAj0lEQVR4Xo3PVw6DMBBF0RgXTO+hBYhtILX3sv99RRpvgPcxVzp/M5syb7lYepxDABDeYcQ5wg+MAMhr3JOyJKfxTABqduuvjD37O6sBwjZ+f76/7TFuQw1VnhyGYZPklYagKbKLlDIrmkBDGq1hUaqhM4UQJpwOwFdK+a4LAbCdlWNTCgGwjLlhUQqZ8uofSk8NKY1Fm8EAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-debug-destroy-button:hover .ui-icon-close {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Dock plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-dock-to-screen .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAZ5JREFUeNqkUj1Lw1AUPXlJY0FLraWguGWxgyC6KOLkIGjn6h9wqyBYoRYcCoJVigiiU3+BGbo4CB1EUApuDoIudqwOGgMdSs2X7z5M6cfS6oGbk5d77sl9710pmUxqAOZ5hNA/6jwedF2vKq7rLqTT6WwsFpt2HAe2bYmwLJuzDdclPeOhgLEAZDkAwzCeisXTPP9YlTYPPzz8EcVsVFLq9TpS6xMDF1/ob/wZBTNNA9SC53n9B9dTHUHh+8Hu0R3+jEQikWo2m16j0eiIUvnVi6+VBHfnSE911I3CT5rR6VP4uL5/x97JI85zy9jK3cB2XKwujbfysizTDTGxBd+AroxQrnxi/+xFFBOItw8q8FwJK4vRlolvwCzLYnwWhAHF1a2JYDCCTOFZCIlpTd99DempTnRAL+0dFHYmBW9kvvjgAJHwGC6PI/5fW1voMWg/A8JMPIzhIVdwd47W7QYytdQtmptSMRK0ODOe++7I/W5BFgamaaqM96qqaodoNi5hNCRxRk+O9FTnG9Q0TcsPOj/cpEYs0TD8Bz8CDAAbOyccWI3vMQAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-dock-to-screen:hover .ui-icon-pin-s {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-dock-to-element .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAWJJREFUeNqck7FKxEAQhmc3eyGFWhzkBWxs7LUTQa48sLgnEH2Ba0xplUax93yCExRSW9haCBY2NlcLYjiT3B1HkllnJp4YsEgcmCy72f9j9p9dNRgMNgFgh3IdmkdK+TgejycGEXeHw2Hg+/52WZZQFLlknhc0FoDI+zWlAa074DgdiOP4ZTS6DGlxoo7DDwv/jKvTrjKLxRxODv324rt3+nbBZFkGFghgWxSiFLCOwyTJJ1g6qG0BUARgnQDSNAEksbXYHECmsk4As9lcxIjNAZqawjoBLJe5iLHEViayTgDWagJYKFtUwCayTgCO44mJSJeo8REIwDoBuO6amIjfJgYXr40grBOA521UFWDVRp7fnndrm/v9fhBFUbiae54HvV4vAHiuANxXOssPwHXdGmA6nbq/1zS1gdfEjv2jtwca9lY/rS3Pnm62agRjzD09rIN6K/WEINeqzQ38K74EGAB7PKOxn63x3wAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-dock-to-element:hover .ui-icon-pin-s {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Dialog docked to body\n\
- */\n\
-.raptor-dock-docked {\n\
-  z-index: 10000; }\n\
-  .raptor-dock-docked .raptor-toolbar-wrapper {\n\
-    position: fixed;\n\
-    top: 0;\n\
-    left: 0;\n\
-    right: 0;\n\
-    border-top: none;\n\
-    display: -webkit-box;\n\
-    display: -moz-box;\n\
-    display: -ms-box;\n\
-    display: box;\n\
-    -webkit-box-pack: center;\n\
-    -moz-box-pack: center;\n\
-    -ms-box-pack: center;\n\
-    box-pack: center;\n\
-    -webkit-box-align: center;\n\
-    -moz-box-align: center;\n\
-    -ms-box-align: center;\n\
-    box-align: center; }\n\
-  .raptor-dock-docked .raptor-toolbar {\n\
-    text-align: center; }\n\
-  .raptor-dock-docked .raptor-path {\n\
-    position: fixed;\n\
-    bottom: 0;\n\
-    left: 0;\n\
-    right: 0; }\n\
-\n\
-.raptor-ios .raptor-dock-docked .raptor-path {\n\
-  display: none; }\n\
-\n\
-/**\n\
- * Dialog docked to element\n\
- */\n\
-.raptor-dock-docked-to-element-wrapper {\n\
-  font-size: inherit;\n\
-  color: inherit;\n\
-  font-family: inherit; }\n\
-\n\
-.raptor-dock-docked-to-element-wrapper .raptor-wrapper {\n\
-  /* Removed fixed position from the editor */\n\
-  position: relative !important;\n\
-  top: auto !important;\n\
-  left: auto !important;\n\
-  border: 0 none !important;\n\
-  padding: 0 !important;\n\
-  margin: 0 !important;\n\
-  z-index: auto !important;\n\
-  width: 100% !important;\n\
-  font-size: inherit !important;\n\
-  color: inherit !important;\n\
-  font-family: inherit !important;\n\
-  float: none !important;\n\
-  width: auto !important;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-  .raptor-dock-docked-to-element-wrapper .raptor-wrapper .raptor-toolbar {\n\
-    margin: 0;\n\
-    z-index: 2;\n\
-    -webkit-box-ordinal-group: 1;\n\
-    -moz-box-ordinal-group: 1;\n\
-    -ms-box-ordinal-group: 1;\n\
-    box-ordinal-group: 1; }\n\
-  .raptor-dock-docked-to-element-wrapper .raptor-wrapper .raptor-toolbar .ui-widget-header {\n\
-    border-top: 0;\n\
-    border-left: 0;\n\
-    border-right: 0; }\n\
-  .raptor-dock-docked-to-element-wrapper .raptor-wrapper .raptor-path {\n\
-    border: 0 none;\n\
-    margin: 0;\n\
-    -webkit-box-ordinal-group: 3;\n\
-    -moz-box-ordinal-group: 3;\n\
-    -ms-box-ordinal-group: 3;\n\
-    box-ordinal-group: 3;\n\
-    -webkit-border-radius: 0;\n\
-    -moz-border-radius: 0;\n\
-    -ms-border-radius: 0;\n\
-    -o-border-radius: 0;\n\
-    border-radius: 0; }\n\
-  .raptor-dock-docked-to-element-wrapper .raptor-wrapper .raptor-messages {\n\
-    margin: 0; }\n\
-\n\
-.raptor-dock-docked-element {\n\
-  /* Override margin so toolbars sit flush next to element */\n\
-  margin: 0 !important;\n\
-  display: block;\n\
-  z-index: 1;\n\
-  position: relative !important;\n\
-  top: auto !important;\n\
-  left: auto !important;\n\
-  border: 0 none;\n\
-  padding: 0;\n\
-  margin: 0;\n\
-  z-index: auto;\n\
-  width: 100%;\n\
-  font-size: inherit;\n\
-  color: inherit;\n\
-  font-family: inherit;\n\
-  float: none;\n\
-  width: auto;\n\
-  -webkit-box-ordinal-group: 2;\n\
-  -moz-box-ordinal-group: 2;\n\
-  -ms-box-ordinal-group: 2;\n\
-  box-ordinal-group: 2; }\n\
-\n\
-/**\n\
- * Messages\n\
- */\n\
-.raptor-dock-docked .raptor-messages {\n\
-  position: fixed;\n\
-  top: 0;\n\
-  left: 50%;\n\
-  margin: 0 -400px 10px;\n\
-  padding: 0;\n\
-  text-align: left; }\n\
-  .raptor-dock-docked .raptor-messages .raptor-message-wrapper {\n\
-    width: 800px; }\n\
-  .raptor-dock-docked .raptor-messages .raptor-message-wrapper:first-child {\n\
-    -moz-border-radius-topright: 0;\n\
-    -webkit-border-top-right-radius: 0;\n\
-    border-top-right-radius: 0;\n\
-    -moz-border-radius-topleft: 0;\n\
-    -webkit-border-top-left-radius: 0;\n\
-    border-top-left-radius: 0; }\n\
-\n\
-/**\n\
- * Embed plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-embed .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAxlBMVEX////////fNzfaMTHVLCzKISHFGxvvR0flPDzpSEjdMTH4Y2PaKyvtTk7PJibXIyOnLi7lQECkKyvSHR3mPj6eJCSUGhqRFxfqQkL0XFziOTmOFBSBBwehKCiHDQ3PFRWaISGXHR3wVlaECgqqMTGLEBDGHR365eW1ICDaXFz139/LDg7NLi6tNDTSKSnMNzd9AwP1TEy/Fhbwxsbqv7+7EhKzFBS6EBDonZ3akJDkhISxBwf8a2vLIiLPcHD88fH67+/fYGAnLmvBAAAAAXRSTlMAQObYZgAAAJtJREFUeF5Vx0WShFAUBMB631F3afdxd7v/pQaiN5C7BK4mgM3nxAahczfihIgrrfVTqs+qGN2qLMvHwy4tB6sOmWeMIXp7/jI9L8PCYowR0e/3xzVj1gLLiHNOg9OR82iJvBZC0GD/J0Sdo7B93+/78+737AKNK6Uker2UA7fBNlBKPdyos2CLWXI/ksywnr+MzNdoLyZa4HYC/3EAHWTN0A0YAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-embed:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-embed-panel-tabs {\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical;\n\
-  height: 100%;\n\
-  width: 100%; }\n\
-  .raptor-ui-embed-panel-tabs .raptor-ui-embed-code-tab,\n\
-  .raptor-ui-embed-panel-tabs .raptor-ui-embed-preview-tab {\n\
-    display: -webkit-box;\n\
-    display: -moz-box;\n\
-    display: -ms-box;\n\
-    display: box;\n\
-    -webkit-box-orient: vertical;\n\
-    -moz-box-orient: vertical;\n\
-    -ms-box-orient: vertical;\n\
-    box-orient: vertical;\n\
-    -webkit-box-flex: 1;\n\
-    -moz-box-flex: 1;\n\
-    -ms-box-flex: 1;\n\
-    box-flex: 1;\n\
-    -webkit-box-sizing: border-box;\n\
-    -moz-box-sizing: border-box;\n\
-    box-sizing: border-box; }\n\
-    .raptor-ui-embed-panel-tabs .raptor-ui-embed-code-tab p,\n\
-    .raptor-ui-embed-panel-tabs .raptor-ui-embed-preview-tab p {\n\
-      padding-top: 10px; }\n\
-    .raptor-ui-embed-panel-tabs .raptor-ui-embed-code-tab textarea,\n\
-    .raptor-ui-embed-panel-tabs .raptor-ui-embed-preview-tab textarea {\n\
-      display: -webkit-box;\n\
-      display: -moz-box;\n\
-      display: -ms-box;\n\
-      display: box;\n\
-      -webkit-box-flex: 4;\n\
-      -moz-box-flex: 4;\n\
-      -ms-box-flex: 4;\n\
-      box-flex: 4; }\n\
-\n\
-/**\n\
- * Float block plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-float-left .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAS5JREFUeNpi/P//PwMlgImBQsACY1zaIH4A6Bp7dAUzV31jnLHy22YgkxFqIQhf/vfvXymKAQ8eidtra35lYAQqY+FgZWBmZ2X49fk7AxvbX6DsN1+CLlgwn5khMECAwcLiL4OogiIDj6QEw9uLZ4AGfAVJ70BzAQg7ohigrnaP4cEDLoY3bzkYzL6/ZVA34ma4ev07w/sPv0HSHgRdoKICUvgR6IWPDK8evWb49+8iw/1bfxhevwYbsBfNdhC2BkkwwqLRxRhuFgM3HyMDrwAjw8vH/xj2nvuH1WZgIDKgGMDExLQNiz9xYWagASboBpAU/zAXsCCJ7SbCZjaghexAmgOIFUh2AXKyh7GRXTARiI2w2MoKVMwBtRVkOysQHwNiPxQXDFhmotgAgAADAKYzbYynfqX2AAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-float-left:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-float-none .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAkFBMVEUAAAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAABAQEAAADRrxbRsBYBAQEBAQEBAQEBAQEBAQEBAQEBAQEAAAAAAAAAAACcegnCrQ6ffgqukQv+/GixkS3duyLhwyfkyizevSNRMDCigDLauC/y41DcuiLrzTTQrhWCYBiObSDErz3r4VvApCt4Vg6dewnDaH3NAAAAGHRSTlMAycfDxcu9v8HYu+DAwIm3uZnRkdDn7LIyy/h+AAAAWklEQVR4Xp2KRwqFMBQAYzfGXmPtvfx//9spgvAWQcRZzgx6gz6dGEDkQ1FWNRBN2/XZCMRvXtZtB4LSfxon6AHTsjVZUQWR5xz2cWfJxYR9eFf2MQnCCH3hAIfwBUXJe8YuAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-float-none:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-float-right .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAS1JREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzZYRzBaaHcWE4kZGJ8aCe/0sHFAOAoB5d4avXfAwPH4swaGt+ZWAEGsnCwcrAzM7K8Ovzd3sMFwDBWpjNMPrK5b++C94yMwQGCDBYWPxlEFVQZOCRlGB4e/EMAzYDgtFdICr6kUFd7QfDgwdcDG/ecjCYfX/LoG7EzXD1+ncGeyNMAzYiuQDsCmHhf54qKr+BzI9AL3xkePXoNcO/fxcZ7t/6wwDzAyMsGoGBiDWUnQwR4tx8jAy8AowMLx//Y9h95g+GAdvQXIAPM//798+EKBfgAkADMMJgNxE2swEtZAfSHECsQLILkJM9jI3sgolAbITFVlagYg6orSDbWYH4GBD7obhgwDITxQYABBgAdBpg+9sXURwAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-float-right:hover .ui-icon- {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Show guides plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-guides .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHZJREFUeNpi/P//PwNFAGQAIyMjDK9BYqNgXHqZ0MSYcFmEyxBGsClMTGS5+t+/fxg2biLGAGTXoBvATGoYkuUFGMDmhd2kGjL4vHCUUi9cIjcpnwPi2UAsBaXPQZPwOXxscD5Cy0xLSbUc3YDnJLue0uwMEGAA2O1APJOrHFQAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-guides:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-guides-visible * {\n\
-  outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
-\n\
-/**\n\
- * History plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-history-undo .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAe1JREFUeNrEUzFrFEEU/mazu7d3x8U9g0ROwkHEwrSrNmksJBxok1RRwUIEz0awFStZoqQw5B9ok1jYiRDBwl4PSaFJVLCMMfHWS7zb3ZndGd9ssgdXiVzhwGNnH+/75n3vm2FKKQyzDAy5zKmHLRSKRdiOA6tQgGlZDcrPUme3dcFBEPSLlZQQcZyFTFN8WZiGOUCnVCMRws9/4zD8BwkEFpz7N66c8vQJUbeLNEn+LuEQqxo8jv0716e8/f0UPIp0+n1OTbFLsUF1z+n7boAgA0eRf/em521tdeE4BuYunfa0OYehEMUJ3wt6Fza+7s4EkVwh3DJFLyPgYejfa0576+u/MsZe70g/tX8QRujSHDgXtpTpmOvarkjYrZ97Qg/xUTYDOv3B46U3rcnJMqRUUKaBtsXwzWDYJmfax1y0x07gx/FxfLbckd+1Wj0dYddI8vlcwhp1gcUnr/z55mXvbcfA99WXrVwjMwzGHNs0yiWbVSpFXqtVMTFxkrU+zOt55ENc04N7tvTCP9O86mn76D6cIzDSODYRhhUEnXFguy4/bs6gWr1IubN9F3KShHN8Wn6a3QNtZaFU0lvtZXAUm1LK13Jn5z7Vzw0Q9EmE0NvZDNnpoDw6OuC7voFUs0C19Uzif39MQxP8EWAA91//GdkHdYEAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-history-undo:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-history-redo .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAd9JREFUeNrEU89LG0EUfjP7KyvEGsRorRhoySGCuSyht0IPgicFQZCcvXsvHoP/Q8FDKZRCpQityKIHvZT2YI6t6MUfCJqQKpt1d7Ozu7N9O9vWhIIUcvDBt/OY4X3z3vfNkjiOoZ+g0GfIyaf46gtQSQJF0wQIvePN5nJiJYS8xmUzDAIz8H1gnQ74npcS3BeubYOm60lqCKQjm/89QhSG0HEcSG6tzo4bAWM1JJntGaE7UNQKcL6EaQkxknQfcS6Imk0GizOTxrvPx7Xf4pvdBAOc85VBnVTLU6OPhx8NZBVZUjmPIYpStNsMGo0I5l8+NT5sfxckggCFAYrFzyaHlo1yoYDdSs2WD9e2A/atC4wFooMkJBT79EqBF88Lxu7eYU0QMN+v5Eey1enSRKF1y6ULFoKFAFUDntMgwpsiDuAEMbgBhydDKmxtH9TRmdWUwPOWSsXi2Fmr7RyfNG6sa9vzbI+FHT+MI3730hbmjIwEcLTxSRSrup5qgH6Wvn39cd76ae9TSndw6wzRQNiSooQxiohjHij4Pqy379PiTMb86wJalL+6ZB+pLK9RSv+x0XddkQfrb9K2VdXssRHZk4M1mRDc6XXWsaw/aT15ibKimN3n5MF/pr4JfgkwANDA599q/NhJAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-history-redo:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Horizontal rule plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-hr-create .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXhJREFUeNpi/P//PwMTExMDEmgEYi0gZsSCrwJxNUzhv3//GBixGEA0ABnAgkV8LZqtTFDaF6aAX8KCwdBrA4QDckFq+1sGSUVrBkZGRqKwvEEhg2PyS7BeuAv07AsZXjw4BmJuQLIV5gImJLYrv7g53LlwA8TkLRgCi28wXDzQF/Dr10+G379/M/z58wfoz/9gfUxMrAzMzGwMsnr5DBwcvBgGHABiexBDyTiV4cuXTwxfv35j+PHjB9CQ/0BnszCwsHAysLHxIofVQSB2gBlgnxogAqREiI6B+ikf7ZFdcHD2hjf2X79+Zfj8+TNeF7Cz84K9wMrKdRDZAAcQ8fbJaYYndw4zYAsDHlFjBjZxKwyXwAPx1cMTDIdWxoKY+5BCHo7f31tp8VM9iUFQ0oaBQ9YBYQIoLo1dygmmA2QgIGHJoGhUCtaLLSkfweICVqA6diDNAcQKyJYTlRdAanCJY8sL04HYFM3WM0Acgs0QRlymEwsAAgwAwwCYinucCRoAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-hr-create:hover .ui-icon-hr {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Internationalisation plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-wrapper .raptor-i18n-select {\n\
-  height: 23px;\n\
-  top: -8px;\n\
-  text-align: left; }\n\
-\n\
-.raptor-wrapper .raptor-i18n-select .raptor-selectmenu-status {\n\
-  font-size: 13px;\n\
-  line-height: 10px; }\n\
-\n\
-.raptor-selectmenu-menu li a, .raptor-selectmenu-status {\n\
-  line-height: 12px; }\n\
-\n\
-.raptor-wrapper .raptor-i18n-select .raptor-selectmenu-item-icon {\n\
-  height: 24px;\n\
-  width: 24px; }\n\
-\n\
-.raptor-selectmenu-menu .ui-icon.raptor-i18n-en,\n\
-.raptor-wrapper .ui-icon.raptor-i18n-en {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAflJREFUeNpinDRzn5qN3uFDt16+YWBg+Pv339+KGN0rbVP+//2rW5tf0Hfy/2+mr99+yKpyOl3Ydt8njEWIn8f9zj639NC7j78eP//8739GVUUhNUNuhl8//ysKeZrJ/v7z10Zb2PTQTIY1XZO2Xmfad+f7XgkXxuUrVB6cjPVXef78JyMjA8PFuwyX7gAZj97+T2e9o3d4BWNp84K1NzubTjAB3fH0+fv6N3qP/ir9bW6ozNQCijB8/8zw/TuQ7r4/ndvN5mZgkpPXiis3Pv34+ZPh5t23//79Rwehof/9/NDEgMrOXHvJcrllgpoRN8PFOwy/fzP8+gUlgZI/f/5xcPj/69e/37//AUX+/mXRkN555gsOG2xt/5hZQMwF4r9///75++f3nz8nr75gSms82jfvQnT6zqvXPjC8e/srJQHo9P9fvwNtAHmG4f8zZ6dDc3bIyM2LTNlsbtfM9OPHH3FhtqUz3eXX9H+cOy9ZMB2o6t/Pn0DHMPz/b+2wXGTvPlPGFxdcD+mZyjP8+8MUE6sa7a/xo6Pykn1s4zdzIZ6///8zMGpKM2pKAB0jqy4UE7/msKat6Jw5mafrsxNtWZ6/fjvNLW29qv25pQd///n+5+/fxDDVbcc//P/zx/36m5Ub9zL8+7t66yEROcHK7q5bldMBAgwADcRBCuVLfoEAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-selectmenu-menu .ui-icon.raptor-i18n-zh_CN,\n\
-.raptor-wrapper .ui-icon.raptor-i18n-zh_CN {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFqSURBVHjaYrzOwPAPjJgYQEDAleHVbhADIvgHLPgHiQ0QQCxAlkR9NW8sw+cV/1gV/7Gb/hV4+vfzhj8Mv/78//Pn/+/f/8AkhH1t0yaAAAJp4I37zyz2lDfu79uqv/++/WYz+cuq/vvLxt8gdb+A5K9/v34B2SyyskBLAAII5JAva/7/+/z367a/f3/8ZuT9+//Pr78vQUrB6n4CSSj6/RuoASCAWEDO/fD3ddEfhv9/OE3/sKj8/n7k9/fDQNUIs/+DVf8HawAIIJCT/v38C3Hr95N/GDh/f94AVvT7N8RUBpjxQAVADQABBNLw/y/Ifwy/f/399ufTOpDBEPf8g5sN0QBEDAwAAQTWABEChgOSA9BVA00E2wAQQCANQBbEif/AzoCqgLkbbBYwWP/+//sXqBYggFhAkfL7D7OkJFCOCSj65zfUeFjwg8z++/ffX5AGoGKAAGI8jhSRyIw/SJH9D4aAYQoQYAA6rnMw1jU2vQAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-/**\n\
- * Image resize plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-image-resize-in-progress {\n\
-  outline: 1px dashed rgba(0, 0, 0, 0.5); }\n\
-\n\
-/**\n\
- * Statistics plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Micharl Robinson <michael@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-statistics .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhFJREFUeNrEk7tv01AUxr/4kcRO7Fh1HghFgSAeYglDlIfUbGEBhaWoUxFiQWJGMDDyhzB2ZmANYmAoIvQPaIHIkVJjKyWkcdzYSR1zbhSGQhFDB47007333PN9V/cVCcMQ5wkO54wIxe+5q8Rt4gaRW+VsYo9oE1/+ZpAktjKZzL1arXatWCzmFEVhOYzH40m327U7nc7nwWDwhlLbxITN8SsDVvisXq9vtVqtuqZp2XK5HDcMg5vNZlylUon7vq+XSqXLi8WiYJqmTvWfiNkvg8e06gMqLDmOI5AIvV4P8/l8CeuzHMHn8/kcmeiWZQWk6zCD67quP280GuXNdlv4qKrwTk6WwpXoFNVqNTKdTtf6/X7C87wPzOAhrX4nCIK195KEp4aBtxyHKRm4roujozGdwQSO49LYx/7+VzIPeVEUOcsyh+wab9Ge0+SKGW3nhSzj5WiEoWlhMvHolKOIRmVIkgpZVhGPKxAEGdlsIc20zOASz/NSs9lkl4IwJuOJH+CVksDi2APPx0iYIgNlCTNYXy8hmdQkpmUGCfag2u134DgJipKGdqGAR6NjbKdVOAMbQRAiRsaCEKMaHru7XdYutRw95R+Hh0NXVTNIpXQy0KDrOVy8chOb34Z4XcjCMvZoO86p12bbBy7Tsv5dYoc4OAtFFM3BxkZ4xtzOSvvPuE98X7V//oX//ht/CjAAagzmsnB4V5cAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-statistics:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Link plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-link-create .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAilBMVEX///8EBARUVFRUVFQEBARTU1MqKiwfHx5MTEzGxsZNTU1FRUWAgH8SEhJnZ2fd3d06Ojrg4ODIyMgODg4DAwMSEhLCwsGcnKXExNEvLy+ysrh+foMQEBBBQUEEBATJydeenqcDAwPT09OIiIjj4+OZmZl3d3fU1OPCwsHW1tXq6urr6+va2trGxsaRnmwcAAAAI3RSTlMAimdfRTOWgDXbAGXFj339cv3dAHtC3OP8bt+2cnuA/OMA+Akct2IAAABoSURBVHhetcVZFoIgGAbQ7wcVwyEKtBi01OZh/9urw2EJdV8ufkHmnDHG85RE2a7Wp812GGJtiaqvG1rOXws1dV9BzWKi2/3xfL1pErOCdT6YS2SCdxZdsdtfD8ci1UFnIxGNWUrjHz6V6QhqNdQf6wAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-link-create:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-link-remove .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAA2FBMVEX///8WFhYvLy9LS0sEBAQODg4EBARNTU0DAwNVVVVUVFQtLS1nZ2cfHx46OjoSEhLGxsZTU1OAgH/T09NUVFQEBAQ6OjpMTEwvLy+4uMDCwsEQEBCvr7sSEhIEBAR+foMqKixFRUUEBARDQ0MBAQEBAQG5ucQiIiICAgIODg7Z2dlAQEBMTEwsLCxGRkYAAABPT0/e3t4mJiYqKiopKSlUVFQiIiJJSUkjIyNFRUU5OTkBAQEoKCi/v8zCws+qgFWFZkY7MSbc3Nzj4+Pm5ubOztzU1OTQ0N6IE/7FAAAAQ3RSTlMAAAAAigAAAAAAZwB9gACP2zPF+F9ocjVu39xy40KAtpZlRQBrUPx9AIb8AE8AAAAA/AAAAAAAAAAAAAAA/PwAAAD8PWHlxQAAALtJREFUeF5dzsVWxEAQheHqpGPEPeMWGXfcmQHe/42oC+ewmH95F1UfGWFyhZLQUBHlTvBxOp92gZP/DaN25Esp/ag9ukeUxa5p6qbpxpmHqGgNOtWm6gxahaIokwX1ht16ps3q7rAn9utrg7RxX6Z6KvtjbWJZGHTuuLLtw8P2f/CAWd4uGYNBqCpj5s1NM2cMPd3xc2D4EDDkIWCmj1NgSEHAlGUJDAnEmOfPr+8XxtDr27sQwHDA0GU/2RcVwEV78WkAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-link-remove:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/* Dialog */\n\
-.raptor-ui-link-panel .raptor-ui-link-menu {\n\
-  height: 100%;\n\
-  width: 200px;\n\
-  float: left;\n\
-  border-right: 1px dashed #D4D4D4;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-  .raptor-ui-link-panel .raptor-ui-link-menu p {\n\
-    font-weight: bold;\n\
-    margin: 12px 0 8px; }\n\
-  .raptor-ui-link-panel .raptor-ui-link-menu fieldset {\n\
-    -webkit-box-flex: 2;\n\
-    -moz-box-flex: 2;\n\
-    -ms-box-flex: 2;\n\
-    box-flex: 2;\n\
-    margin: 2px 4px;\n\
-    padding: 7px 4px;\n\
-    font-size: 13px; }\n\
-    .raptor-ui-link-panel .raptor-ui-link-menu fieldset label {\n\
-      display: block;\n\
-      margin-bottom: 10px; }\n\
-      .raptor-ui-link-panel .raptor-ui-link-menu fieldset label span {\n\
-        display: inline-block;\n\
-        width: 150px;\n\
-        font-size: 13px;\n\
-        vertical-align: top; }\n\
-\n\
-.raptor-ui-link-panel .raptor-ui-link-menu fieldset,\n\
-.raptor-ui-link-panel .raptor-ui-link-wrap fieldset {\n\
-  border: none; }\n\
-\n\
-.raptor-ui-link-panel .raptor-ui-link-wrap {\n\
-  margin-left: 200px;\n\
-  padding-left: 20px;\n\
-  min-height: 200px;\n\
-  position: relative; }\n\
-  .raptor-ui-link-panel .raptor-ui-link-wrap.raptor-ui-link-loading:after {\n\
-    content: \'Loading...\';\n\
-    position: absolute;\n\
-    top: 60px;\n\
-    left: 200px;\n\
-    padding-left: 20px;\n\
-    background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAOXRFWHRTb2Z0d2FyZQBBbmltYXRlZCBQTkcgQ3JlYXRvciB2MS42LjIgKHd3dy5waHBjbGFzc2VzLm9yZyl0zchKAAAAOnRFWHRUZWNobmljYWwgaW5mb3JtYXRpb25zADUuMi4xNzsgYnVuZGxlZCAoMi4wLjM0IGNvbXBhdGlibGUpCBSqhQAAAAhhY1RMAAAACAAAAAC5PYvRAAAAGmZjVEwAAAAAAAAAEAAAABAAAAAAAAAAAAA8A+gAAIIkGDIAAACsSURBVDiNtZLBCcMwDEUfJgOUjhAyQsmp9FA8TgfISj6F4gl66jSdIIf00G9wnLjYKf3w0Qch6Us2fMdVLMYx0haYRZsrMJEegZdiDj3gFFeT54jBiU2mO+XdVvdRyV0OYidVMEAH3AEPHGoboMKwuy+seYqLV9iNTpM90P7S6AQMitXogYnPHSbyz2SAC9HqQVigkW7If90z8FAsctCyvMvKQdpkSOzfxP/hDd++JCi8XmbFAAAAGmZjVEwAAAABAAAAEAAAABAAAAAAAAAAAAA8A+gAABlX8uYAAAC3ZmRBVAAAAAI4jaWQsQ3CQBAEB4cECFGCI1fiAlyFKwARWgSIeqjCNTh0gIjIkBw9gffFSfz74VlpdX/W3Xr3YBmlmIUSmMSoSGHee+CmGsMGaFU/cAecqnVh/95qpg0J/O0gCytgDRzUX4DnryIn5lwO6L7c6fxskRhMwkc4qj+TEcFjC9SqWcsj8x3GhMgu9LHmfUinvgKuYmWWp5BIyEFvBPuUAy9ibzAYgWEhUhQN8BCb2NALKY4q8wCrG7AAAAAaZmNUTAAAAAMAAAAQAAAAEAAAAAAAAAAAADwD6AAA9MEhDwAAAKhmZEFUAAAABDiNY2CgMTgNxTgBExLbh4GB4SCUxgeMcEkcZmBg+A+lcQETqBoTbJI+UM1ku4AiEATFZIEQBoi//kPZxIAAKEaJBYpACAm24wUSBORVGBgYUqA0BtjKAAmHrXg0f4aq+YxuiAQDIiD/Q/k8DAwMdVDMw8DAkIamJo2QCyYjKZ4MtfErlP8VlzeQw2AlkgErkbyBMwzQgRoDA8N+KMapAQDdvyovpG6D8gAAABpmY1RMAAAABQAAABAAAAAQAAAAAAAAAAAAPAPoAAAZC1N1AAAAsWZkQVQAAAAGOI21kkEOgjAURF9YGBbGtYcwLowrwxk8BMcg3XACD9djGJaujKmLTkMRCiXEl0ympYX8+Xz4M62UpIjWR8DI59inDgzg5CkOwEs+YnMFmzhJOdwAK1UAZ+ANfLRewuJ75QAb/kKRvp/HmggVPxHWsAMu8hEN8JRPUdLnt9oP6HTYRc/uEsCVvnlO+wFGFYRJrKPLdU4FU5HCB0KsEt+DxZfBj+xDSo7vF9AbJ9PxYV81AAAAGmZjVEwAAAAHAAAAEAAAABAAAAAAAAAAAAA8A+gAAPSdgJwAAADDZmRBVAAAAAg4jaWSTQrCMBCFP6NIT5AjCF6gJ6jbUnoCL1biDTyF5AAueoZu3LkSrAtHTEJiIn3wmCTz92YILMQ64++BPTDKXQMH4AbcAZQTvAEasTFo4AqcxeowoAFmsSk1s8M+DChRMEnyFFNQAg10sWSFv49cESPUn+RRWFLE8N2DKe2axaIR/sU25eiAi9gUBt6zDzGnFad13nZCgAr/I1UxBdZRUAMPYV2iIETrdGudd28Hqx8FFHCU8wl4xoJeZnUrSRiyCSsAAAAaZmNUTAAAAAkAAAAQAAAAEAAAAAAAAAAAADwD6AAAGe6xwAAAALtmZEFUAAAACjiNpZJBCsIwEEWfpUsPULoSl55Beh4J7nqCHkDceR3pIaSr4Ak8Qq2L/khomlrig+FPhszwJy3EqYCHolq4F6UDBkWnWgbspN+CT7EwMAPuwFM67aUAem/IdIW952jQOeCXg1bN7ZyDNQRvsEkYkgNG+S1XcpHWKwacgatzlLLH2z/8vUJCf5wSaKQxToCVBjSM37jxaluFw+qOXeOgBF4KVzNqNkH3DAfGX7tXnsRREeUD4f8lQGjw+ycAAAAaZmNUTAAAAAsAAAAQAAAAEAAAAAAAAAAAADwD6AAA9HhiKQAAAJ9mZEFUAAAADDiNtZDLCcMwEEQfIUcXoDpCKgg6qIRUEtKB6wg6poDgalyFTj7YBw+2QyRlCc6DYVm0n9FCGQc8JFepWzgBN0WACIxS/NZ8BgYVD8pzA1ogKb5x3xSPyp0a4+YLSe/J4iBH0QF83uCvXKSFq2TBs97KH/Y1ZsdL+3IEgmJt86u0PTAfJlQGdKrprA6ekslBjl76mUYqMgFhpStJaQVr0gAAABpmY1RMAAAADQAAABAAAAAQAAAAAAAAAAAAPAPoAAAZshBTAAAAu2ZkQVQAAAAOOI21kCEOwkAQRR8rKkkFCtmjkJ4ARTgBArViT4LjLJwBgUZUr8NBQlrR38Am3XYEvOTnT7PzuzO7IE8BHFWfgNdELwBLYCMH8EAr+VzIyUvgBlzkZaZ/D1zlCfXXba2+C93sVaNwK08ogUaHzcQEu9wE0O9e83kDEw7YAhG4K/ww5CoJFB52j8bwU6rcTLOJYYWo2kKywk9Zz5yvgCAfDb9nfhLoHztYJzhIpgnGOEv/owMnkSfarUXVlAAAAABJRU5ErkJggg==\') no-repeat left center; }\n\
-  .raptor-ui-link-panel .raptor-ui-link-wrap h2 {\n\
-    margin: 10px 0 0; }\n\
-  .raptor-ui-link-panel .raptor-ui-link-wrap fieldset {\n\
-    margin: 2px 4px;\n\
-    padding: 7px 4px;\n\
-    font-size: 13px; }\n\
-    .raptor-ui-link-panel .raptor-ui-link-wrap fieldset input[type=text] {\n\
-      width: 400px; }\n\
-    .raptor-ui-link-panel .raptor-ui-link-wrap fieldset.raptor-external-href {\n\
-      width: 365px; }\n\
-    .raptor-ui-link-panel .raptor-ui-link-wrap fieldset.raptor-ui-link-email label {\n\
-      display: inline-block;\n\
-      width: 115px; }\n\
-    .raptor-ui-link-panel .raptor-ui-link-wrap fieldset.raptor-ui-link-email input {\n\
-      width: 340px; }\n\
-  .raptor-ui-link-panel .raptor-ui-link-wrap ol li {\n\
-    list-style: decimal inside; }\n\
-\n\
-.raptor-ui-link-panel .raptor-ui-link-wrap\n\
-.raptor-ui-link-panel .raptor-ui-link-wrap fieldset #raptor-ui-link-external-target {\n\
-  vertical-align: middle; }\n\
-\n\
-.raptor-ui-link-error-message div {\n\
-  padding: 0 .7em; }\n\
-  .raptor-ui-link-error-message div p {\n\
-    margin: 0; }\n\
-    .raptor-ui-link-error-message div p .ui-icon {\n\
-      margin-top: 2px;\n\
-      float: left;\n\
-      margin-right: 2px; }\n\
-\n\
-/**\n\
- * List plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-list-unordered .ui-icon-list-unordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAMlJREFUeNpi/P//PwNFAGQAIyNjGBCvgdIMxGKQXhaoORFlZWWBXV1dTED2KqjYGiBmRMJMaOwrQFwOc0EEEG+A0iS5gBFEMDExkeX9f//+MTAxUAhgBsQC8U4oTRKABWJ8Rkae84wZk5iB7MVQsW1IAYYLW8MCMRGID0Bp+gYiC46EhTPR4QrEdCA+A6VJT8pAcDMsLB3EuAniQP14BIiPAfEJID4FxGehqe8OED8B4vVgvVADioH4GZTGGWhYvUtpbqQ4JQIEGABjeFYu055ToAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-list-unordered:hover .ui-icon-list-unordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-list-ordered .ui-icon-list-ordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAM1JREFUeNpi/P//PwNFAGQAIyNjIxCvAWJBIGYgFoP0skDNqQfidUDMiGT2GigfhpnQ2FeAuJwFSQMTmuNCiPEBTFMblF1CahAwgvzBxMREVvj9+/cP7oIuIN4Bpcl2gRMQJwFxDFRuG1KAYcVAF1jDojEBiGcAsQSp0QjzgiEQawLxSiibNoGInmqRE9J0IJaEYnNSXAAzYC4QNwJxIJLcEbRAYwZidiDmgOLTYPVIzgJpPgD2F45Aw+olqAFrgfg5EBeTagAjpdkZIMAAg/ZGwsH5qkAAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-list-ordered:hover .ui-icon-list-ordered {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Paste plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-.raptor-paste-panel-tabs {\n\
-  height: 100%;\n\
-  width: 100%;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box; }\n\
-\n\
-.raptor-paste .ui-tabs a {\n\
-  outline: none; }\n\
-\n\
-.raptor-paste-panel-tabs {\n\
-  position: relative;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-\n\
-.raptor-paste-panel-tabs > div {\n\
-  overflow: auto;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical;\n\
-  -webkit-box-sizing: border-box;\n\
-  -moz-box-sizing: border-box;\n\
-  box-sizing: border-box;\n\
-  border: 1px solid #C2C2C2;\n\
-  border-top: none; }\n\
-\n\
-.raptor-paste-panel-tabs > div > textarea.raptor-paste-area {\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box; }\n\
-\n\
-.raptor-paste-panel-tabs > div > textarea,\n\
-.raptor-paste-panel-tabs > div > .raptor-paste-area {\n\
-  border: none;\n\
-  padding: 2px; }\n\
-\n\
-/**\n\
- * Raptorize plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-raptorize-button .ui-icon-raptorize {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAABDlBMVEX///9NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU1NTU0Y/iVtAAAAWXRSTlMA/v1mTvW+WQFF+nGpsyPlDhXL1GvZHduk48LslL2a7tadwee772kEfqD8+OGCXWJ2+bQ9pt7xCme4iQU4iNH0mCEPEd82Ocxj4De2HoMaq3MHZJsDeGwCG8H1fioAAAC1SURBVHheNchFlsMwEADRlmRkSDKmMDMMMjMz9P0vkifLrl194F3NW0qtugV5Wt1FHpnloGKRmr3TK96YDjiMxFGCONngcJ1De4GNDJqhvd2VkbzsY+eDw2efMTYsjRFxd4+DZx6ajC1xhXTTB560EyfWASJW2FEG3vGJElZOz4xzH6QLKLqMgpvbu3sxD+4jPBFJe05fBby9ly0S6ADxl4BviGjp5xd0Of0TUqaUEPs/kR1YA96IIUDtx93SAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-raptorize-button:hover .ui-icon-raptorize {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Save plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-save .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVNJREFUeNqkU71ugzAQPowtwdAdqRLK3odg6161a+cukZonoGrElgWWDqhb16oP0AfoytStirows0QRMj/unQsohAQi5aTD5vju4/Pd2VBKwTnG6cEYe8bl6s73P09Jel8ur3H5ruv6CUiBYRgfQRAosnrCyQhLOZTLG1ImpYQSA1VVjf7dNE0gLOV0R6AXlAMSk4uiGCUQ6ITdJzDpz0SQTxAoxlqVZo+gLEuQyDxFwIQAwg4IiPV3vYbL2WyUgDBHFbxG0Um9t237sIIkSeDYYGHbur3neQMCTgqoRWEYDToh8NyLxSO4rgtpmrY14D0CUsA5h80mh/n8QQdXq7CTTN/ILMtqa9AjEDjOGrTdSnAcRwdpr1unzB5BMweiGwY8tx/H8U+WZbmUSoPJlfr3NrZLgDkXujbNXaD9DfoLAt8OFRHPfb8X+sLcW+Pc6/wnwABHMdnKf4KT4gAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-save:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-cancel .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAtFBMVEX///+nAABhAACnAACjAACCAACgAACHAACjAAByAAB1AAByAACDAACnAACCAACHAACgAACNAACbAACXAACMAACSAABfAACYAACRAACjAACbAAChAACqAACNAACcAACHAACqAADEERGsERHQERG+NjaiERHUTEzYERG4ERGlFBSfFRX/d3f6cnK0JSWoHh7qYmLkXFyvFRXmXl7vZ2fNRUX4cHDXT0/+dnbbU1O3Li7GPT26MTG2f8oMAAAAIXRSTlMASEjMzADMzAAASMxIAMwAAMzMzEjMzEhISABIzABISEg/DPocAAAAj0lEQVR4Xo3PVw6DMBBF0RgXTO+hBYhtILX3sv99RRpvgPcxVzp/M5syb7lYepxDABDeYcQ5wg+MAMhr3JOyJKfxTABqduuvjD37O6sBwjZ+f76/7TFuQw1VnhyGYZPklYagKbKLlDIrmkBDGq1hUaqhM4UQJpwOwFdK+a4LAbCdlWNTCgGwjLlhUQqZ8uofSk8NKY1Fm8EAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-cancel:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Table plugin.\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-table-create-menu td {\n\
-  width: 14px;\n\
-  height: 14px;\n\
-  border: 1px solid #000; }\n\
-\n\
-.raptor-ui-table-create-menu .raptor-ui-table-create-menu-hover {\n\
-  border: 1px solid #f00; }\n\
-\n\
-.raptor-ui-table-create .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAb1JREFUeNqck8tKw1AQhv/E1LTe0KWISlNqS1vFCyK4bXXnSnwE8QXcFt/EF3Enoqh47YViaUVUXBU3oq3NSZyZNullJR045D8n55/55iRH2zs62gEwjcHiA7vZ7IE7YLDXcJTSXEq1fQPQmj8cx5Hh8rN73n5/lZ4Ee3WllM4bOLYimjwzVkenSafDrr/uafaw11C2rSlJoOGk4sIy6tTZt1TOhKjihwON3rN2fE1mdwLsNWzb7iFw3n5wmJiS+fXTE9YXFkSfFwrYTCZFnz48EMEc2NtFACFIm8BdtSr9jgaDuCyVpOexUAhnuZxoDvb4BIo2dwiA1Py8zO8rFaxGoy0aSrSRSIi+yOfBHiGQBH0E+ZcXIQiZJm7LZak6wjTFYg9BK0Gz6bfgEcRnZ2Wef37GUiQi+o7OYy0eb9FQIklA3p5D9AhKr69CYA4P45Ha4KpBorlpn4f3GdmrUxZd9f0H0ZkZxIii8fuLZDiMlGWh3mhgmb7ISizWaYG8RqNeH+onKL+/CwFHgdrwqt5TG90E7DU+azUzEAjgOPbVvh/mv+4We9irjS8u7lM1a5CrqOt6VfOQBo0/AQYADu2BHPVXcUgAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-table-create:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-table-insert-row .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAeZJREFUeNqcU0FrE0EU/mYyIaRoaNOQJlGSbjy0FuxR8VIoUcGDN4X+gUJ/QA899dBf0V76CwTBS6EVIsVLBQ8hLdbiRgrRCKE2JmmTNtmZvre7WVBEGx+83fd23vfN997MiuerqxBCPAOQxvBWU8YYkGderq2tD4umzZeUdhyOhaHHkw+ATwitdeB/yt8XRkFYoRyPQGrDFAKP7whsfzbuW2tyWt62gYLFJJ6/qQBcT1ipnH7fVeD4BDu2QV51Yb6dwfBu5I+iBPyuIbTnnDsmBsIK1fcIfAXwdq52sDwTD3rdOzzEg+npIN8tlUhBFoSV6ufDL7j5LvuVFbxI9ICmgTWmcFyvB/Ow0mlUarUgTycS4HpXweVY25zet+cdkrbx6em1T6CY2vIUnLdaxxhpFZmRYtydu/dP8MfdsqvAJWienORudJPz9KFIMfZevb2WApeg1xNK1qMidmAt6EWDlcI+qEvkQx1YqhP0/LuzaV+BTJRmOMgx4+tGFJ34CMotIBOP49b4OG7TwJrtNrLJJHITE5hMpfCj0RgokOqi22XC0OAY+R4UIsBRtRrcPLaybf+Scz1hQ+qU+iaLhMNhbE61/Q6JAZm/zoDrCRsRsdlZ7muRmPPD/kxSyooYDOV/7UqAAQBguExUpw0RrAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-table-insert-row:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-table-insert-column .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhRJREFUeNqck81rE0EYxp9dE5IQaDWBBNOQhAiGGERNPYg3qR8ICkrx5B/gXXot7U3/Cg9681SqFz8Q8VQsFqMHwZpQS2ysJV+7+VjtzozzvvkwrnjQF4Zndud9nvnNsGvcWFq6CuAwPJU9cejxk9DKFz39rEf6Uv/aTKXUvDLRUnu4vPwI84uLt9Rfam13XWXuF1i9NfTBJ4UwlI67+AagFzSklEgHFa7HT+Ll/DtstARurnexabu8/nruIMhHGD4hhCkVRRi4cMTA00+K9WwQWFi7POa9M7uKFy2F5xWA+slH703huobgAOBZWSHrc6B2GpDtHu2C4myRVVl9GF9bOB9qgvrJxwSu6w4JwDvLah8LxyL8LN66cJRDzTiXnObxqlTSBCmQb3AED8FcANgolxGdmmJjV3RZy7Uadvb2BsETBCYlCX1pIwKq45kMEpEIGzuyw5qKxXCmUBgE6P4xAQd4CN5vbWE6HIa7vw9b2KwVTfCt0RgTjAJMvTg+woggn0ohEY2y0ZIWayoex+l8/leA9v1xiSOCD9vbCIdCbKQ7GBE0Wi3ukx4C00twNJnEjCb40e+jJ3usaU1wKpebJBjcwXfHOeAl+FitIhgIoF2vAw/qvEYEbcsaE5CPA5r1esDv9+NerjP85nQCEjzbvL372w8W0xRU1E8+DujadjVbLN7FP5ZpmlVSQw3x/7d+CjAAQKSJ51sBGcgAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-table-insert-column:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-table-delete-row .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAfhJREFUeNqcU0FrE0EU/mbdEHpQJA1tk0hs4iGttIgUKhVvsaIWL2L/QMHizYvnFvoLehEKgtScPemt5lTQkkICxVaKNAElJEKJhhib1N2Z8b3Z7EJFAvHBx74H833zvfdmxeLq6gMAMQweda31W1spFX+9trYxKPvRysoT/tpKSqEpuVMESNGARAP8q97NXgTzjICU0lKaJQTmrwhsHWnzVYogga0ykE2xiId8BeDzzPMEXFfInsC7skba7kLXfkHzbYTbQ0T8piCUB66lvgDmGQHXdXsO4N1c7eDZ1UjQa+HwEDcmJoJ6e2+PHCTBvDMOFqMODuoWUuEwvhwfB/NIxWKo1OtBHYtGweev7+zsKt+BJGvjD+cwv76Or5kZVO4t9N1AlXCtVHpOvoueACn+PDlBaXkZNwsFfKB8YXa2/x6npmZe5XLkwHFMC41WC3ObmzhoC5Pn8vn+r6hWK9q+Ax7i6fYRNjo20q0O7pILv+e/wZGgudxfWnqa2d9/b5ED08Kb5hCSiRB+Ow7ikQgSw8O4RANrtdtIjozg8ugoxsfG8L3ZNEOkd3Dr0+Qk7NNu95y/Rn4H2TDwuVoNXh7Hx3L5TG0cE8+s8UejEQ6FQniZafe6IwXE+/bP55nHuTg/Pf2YlNOD/kyWZVWEEC+EP5j/jT8CDADTO03xCBe9dwAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-table-delete-row:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-table-delete-column .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAjZJREFUeNqUU0trE2EUPTNJjCXiIw0pDSXUCi1x0EVTrAt3ie50VcGV4Eo3XQguXLWlq/6Cogj+ABE3LsWFL+iDCKlFayBa28GAefSR1CSdl/feyUzbuOoHkzNfvnvOd+65jHJ7evomgH4cf5VezMy8Dtq2nXg5O/vkuOyJqakHjEHbshSHXm7kAMdx5CFR3E0o6L815hM2Xy3g2c+WnC9lzoJ5/L9qWZZqO44UXb+g+Bg45eDy/DzK29uC6DGROe/WcT3zxIFlmoolAgreFB0MBemW33uonghjcziNiUIB+R0bW6U6lEYD2R4iO6fBPBEwTfOIA1tv4tHFqOzfjY/jU6eFh4uL9HsO7/N5cpAE89wWfAcQB7w+F4v4VS7Doiyy2axgsVTCh5UVOed6z4HKSlxwOINLg4NIRKNCdExTMBmP46qmuQK09xxIC4cdZMLAl/V1nIlEOCjY+/uCP8jBn1rNd+C3YBqG34LnIJVMItHbC7MjwJjs68NYKnUgQLz/QvQcfNvYQDAQcAXabcGv5Opvs+mP8aAFw1CtI1MAhgcGZP+diBYJGIQj5EoCXlvzHLgC7VYr0O2goOs4GQ7zLa4DQs5gZ3fXd8A8EdiqVsOhUAjPRxqdiZMCEvJmdDJgjFMG/PDieuaJwF69rg+Njs51fyx3NO3tiK7P2ZqWrul67t7k5OOF5eWMd66qqs6oRGi2PKbuda1SwZVK5WkbSNNVuaVY7P7HWMw/D1DIjdVV/BNgAMtiagbFZitEAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-table-delete-column:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-table-merge-cells .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAdJJREFUeNqck89LG0EUx7+z3RAtVvxxabUxmKiNWkOlBEqvUfGSm/4HLQhevQkGPHsVehDBu1706M2D0JYmTWkkRBtdkhAQgpeiEXd2nPeym8ScJA+G+b6Z+c583oMRy8lkAsAbdBYV03Gcof3NzW+duJc2NlZMR0qhdLLwC1BKNYa+mIeiuTV393/E+0BeQ0pp0AGK+bDgeS7U1HGt46Oqse5p8pDXlLYtJF8gcPxPIWTWdGW3/PJct36x4kDofdJOQ2uz6gV5Tdu2nxA4pTusTfVz/jOfR2xigvVpNovP09OsTzIZTTAC8rYQgAnifiBdKHC9OweD2EHVbdlr7B16+i0+RVWTQOrDTQLgfTDIuWWlcbQ9W6fJ5RCLRFgnVtOQTl+dgC9oI/hrWUxQKpWROu/hrr/s6sL3szPWtC7VB/eCh4dGCR5BJBDgXIgrRMNh1mndj48ugRDXIA95nzTRI8gVi0wwMBDC4peiW3e3HnVN6+TxCIx2gvHhYc631i1Muv34c3GB6NgY65Tuh0tgmPe12ot2gvNymQkospeXXDfFb12Gp8lDXvOmWvX7fD7svvvvovqf9bfIQ17xambmq34t1MlnMgyjIDykTuNRgAEAGx8+v9rCYzwAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-table-merge-cells:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-table-split-cells .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAbdJREFUeNqck7tLA0EQxmfPC8FCidr4Fs/4fqCFIjYWiWIjguh/oCDY2gkK1raChQj2aqGllRYWEY2KgRA18UgOq2AjGsntrjvj3eVRSQaW/eZ2v9nf7t6y5e3teQBogsriXRdCNB/v7OxX4l7a2lrTBedMqmT2FkBK6TVVmJrEvjh3xiOhAKBX45xrOAFjpotRHzYKOqR0qFN6312NHvTq3LYZpwIMLl4lGHpO7eyLVg5XqxXfBTA1jlp4WpllLaBXt227hEBkvmFjoI7ym0QCxnt6SF/HYjA1OEj66uFBEbQDeosIgAhCfoBoMkn7PThpgAPIOkfWCEdnrm6FyRFZIOBqcoEAYKijg3LTjML53hjp+fVSzUXgj4AKlBE8mSYRZDIWjC1Y3rUVay5HnQL5vLcFl6CvrY1yxt4gcjpNemLxskSjB70lh+gSxNNpIqivN2BuJU1j5Ro9LoFWTtDd0kL57qYJ/c55PL68wEgwSPouHncJNP0nl6sqJ3i2LCLAiKVS9Odh3KtrdTV60Kt/ZLN+n88Hh72fzvH4//W20INeVjM8vKpWMyp5TJqmJZmLVGn8CjAAKgs3IcwKIpQAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-table-split-cells:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Tag menu plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- */\n\
-.raptor-wrapper .raptor-selectmenu .raptor-selectmenu-button .ui-icon {\n\
-  text-align: left; }\n\
-\n\
-.raptor-wrapper .raptor-selectmenu .raptor-selectmenu-button .raptor-selectmenu-text {\n\
-  font-size: 13px;\n\
-  line-height: 22px; }\n\
-\n\
-.raptor-selectmenu-menu li a, .raptor-selectmenu-status {\n\
-  line-height: 12px; }\n\
-\n\
-/**\n\
- * Text alignment plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-align-left .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAItJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAjWYrEN2VYPbAZR1QUb0WxEZmPD1lR3wTYCttpSJQxg6mE0sgt2E/AzCLMBMTsQcwCxAskuQE722FwwEYiNsNjKClR8EUjH4w2DActMFBsAEGAAnS84DrgEl1wAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-align-left:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-align-right .ui-icon {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIxJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAvYjGYrMhuEHanugo0EbETH1jQPg714bGcGYhOqu2A3AT+DMBvQQnYgzQHECiS7ADnZw9j4wmA61J+sQMUcUFtBtrMC8TEg9kNxwYBlJooNAAgwAJo0OAu5XKT8AAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-align-right:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-align-center .ui-icon {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAI1JREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAlswGErjO2KrJiqLtiIw0Zc2JpmYbCTgM2WFIUBTD2MRnbBbgI2gzAbELMDMQcQK5DsAuRkj80FMDAFiI2RbGUFKuaA2noGiEOwhsGAZSaKDQAIMAB/BzgOq8akNwAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-align-center:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-align-justify .ui-icon {\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJFJREFUeNpi/P//PwMlgImBQsACN4mJqRFIaQExIxQzYWEzQfHlf//+lYL0McK8ADSAJJuBBqC6AAjWYrEN2VZkNgg7Ut0FGwnYiI6tqe6CbUTYCsPMQGxCdRfsJsJmNqCF7ECaA4gVSHYBcrKHsZFdMBGIjbDYygpUzAG1FWQ7KxAfA2I/FBcMWGai2ACAAAMAvPA4C7ttvJ4AAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-align-justify:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Font size plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-text-size-increase .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAOhJREFUeNpi/P//PwMlgImBQkCxASxgU5gwzJkOpTORBZ2ilzO8+MjFwMIixnBhnTlOF8gD8U8gFoey4UBSyZooLzgD8Umo65xhgsYu5USHgS0QHwfiE1A2TtuxGaAIxL+B+AEQnwFiaagYg6Qi2AAHIP4PpbEa4AHEz4HYAIi/QL3hgSS/H4gfQmlELCAHNBBLQGlksenP7x9l4Bc3YMTnBRWogbZIuBOIZUFyW2b5EQwDVyA+giYPcionSA6U5Jc0yTK8vrUcVQU0L1gB8RMotkKSXoMkXgQT5BM3A+sDYcahn5kAAgwArro7Z1GYijsAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-text-size-increase:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-size-decrease .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKxJREFUeNpi/P//PwMlgImBQjAMDGBBMY0Jbp4JEFcAcQcQnwEJpLa/Zfj27SvD+fPnGVhYxBgurDPH6wI9IP4DpRmMXcpJ9oIZELcBcRiaOCjOH0BpnAYoAbE6EE8EYnYgtjq7pxMm5wjE8lAapwFOQLwFiIuB+AQ0PBi2zvYHUQeAmBFKYxoATJWWQOwLxJJAfA6I5YE4FyT+9O5hBiSXwAHjaFKm3ACAAAMA85o8WKYZErQAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-text-size-decrease:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Basic text style plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-text-bold .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKRJREFUeNpi/P//PwMlgImBQjDwBrCgmMbEpA2kGnGofQ3E9UD86t+/fzhdcBWIpwExMxQ3AHEIEK8BYgkgdsLrAih4A8SsaBYwQcWYiDGAEcmAbiwuJBiIIAPYoLgfiMuBeBmUXwHEXIQMYEIy4BUQXwDiy1C+HBBrEPKCDBCzwwwDpVRGRkZksU8ozkVOykCFVkBqOZ5oB3lpAoqe0bzAABBgANfuIyxmXKp/AAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-text-bold:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-block-quote .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGVJREFUeNpi/P//PwMlgImBQjAcDWBhYZEA4r1AHA/EKHxiXQBS+BKIF+LgEzTAG4h3I0UvOh+/AUCFbECcDmROA2lC5mMzgAWLGDuUtsTBJ+iFeUDMC6Wx8VEA42hSptwAgAADAO3wKLgntfGkAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-text-block-quote:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-italic .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAH1JREFUeNpi/P//PwMlgImBQjDwBrBgmMgEN1MbiBvRpOv//ft3FUUEFIjImJGRERnrAPF6IO6BiaGrZyLCi6xAvJDcMLAA4j9AfJlcA/yBeCe5sWAExAJAfIKkWIAFJBAUATE7kM+M143ooQoEVkD8EA1b4Yy10bzAABBgAC7mS5rTXrDAAAAAAElFTkSuQmCC\') 0 0; }\n\
-\n\
-.raptor-ui-text-italic:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-underline .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKZJREFUeNpi/P//PwMlgImBQkCxASwopjExhQGpMCSheijdiCz279+/q3AeKAxgmJGREYSdgHgdlIaJ6SCLIevB5oXXUJe9RhK7gkUMZxgwAjEzlEYG2MRwGsCKRTErKQawYFHMQqwBn6G2qSCJGULFPmPYhpwSgdEIY6YCcTKa2rlAPBvEAEYjdgNAUYRMowOYWmQ9LFjUPSGQP2RwemFoZiaAAAMAlEI7bVBRJkoAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-text-underline:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-strike .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAL5JREFUeNpi/P//PwMlgImBQkCxASwopjHBzbMB4nQg5oTyrwKxNhAXAfGjf//+EXRBFhC/BOI0KAapYwZpxusCJPASquEdlD8FiHWwKWREjgUkL4gDcQ0QfwfiXqiBcIDsBXQD9hATcEADXOAckAEwzMjIiI4lgHgiEM8GYkmYOLIeXAZ4I2sA4vlQjGEArkBsAeJzQAUVYH8yMnIAKTmC6QAaHhpALALEPCBDoOJfgFQ5wVgYmnmBYgMAAgwAEGZWNyZpBykAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-text-strike:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-sub .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKZJREFUeNpi/P//PwMlgImBQjDwBrDATWJCMWs6lM7Ep/nfv39YXSAPxL+AWALKJtkLLkB8EohZoWySDbAH4uNQQ+xJNUAJiH8DMT8QPwZiWagYDEwA4v1QGgJACQmEGRkZQTgXiI+i4VyoHAy7AfEaEBucCNEM2AzEKkiKu6BiYMuAdAYQLwZiKQwDgGAVED+E0iBgBeUjiy1HErMCWzyaFxgAAgwA5Gw9vTeiCqoAAAAASUVORK5CYII=\') 0 0; }\n\
-\n\
-.raptor-ui-text-sub:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-text-super .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALdJREFUeNpi/P//PwMlgImBQjDwBrCgmMaEYt50KJ0JpRuBWBuIrwJx/b9///C6QB6IfwGxBJQNAvVAPAkqRtALLkB8EohZoWwQiAbiICCuI8YAeyA+DjXEHiqmD8SaQLwIysYMAyhQAuLfQMwPxI+B2AkqVkZsLHgDsQYQTwXiVCBmg4phB6CUCMOMjIwgvBmIVaBsEO6CijEgY5geFAOAYBUQP4TSIGAF5SOLoVjMOJoXGAACDACTRz3jjn6PnwAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-text-super:hover .ui-icon {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-/**\n\
- * Basic text style plugin\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-wrapper [data-title]:after {\n\
-  opacity: 0;\n\
-  content: attr(data-title);\n\
-  display: block;\n\
-  position: absolute;\n\
-  top: 100%;\n\
-  font-size: 12px;\n\
-  font-weight: normal;\n\
-  color: white;\n\
-  padding: 11px 16px 7px;\n\
-  white-space: nowrap;\n\
-  text-shadow: none;\n\
-  overflow: visible;\n\
-  z-index: 1000;\n\
-  -webkit-pointer-events: none;\n\
-  -moz-pointer-events: none;\n\
-  pointer-events: none;\n\
-  -webkit-border-radius: 9px 9px 2px 2px;\n\
-  -moz-border-radius: 9px 9px 2px 2px;\n\
-  -ms-border-radius: 9px 9px 2px 2px;\n\
-  -o-border-radius: 9px 9px 2px 2px;\n\
-  border-radius: 9px 9px 2px 2px;\n\
-  -webkit-transition: opacity 0.23s;\n\
-  -webkit-transition-delay: 0s;\n\
-  -moz-transition: opacity 0.23s 0s;\n\
-  -o-transition: opacity 0.23s 0s;\n\
-  transition: opacity 0.23s 0s;\n\
-  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSI1cHgiIHN0b3AtY29sb3I9InJnYmEoNDAsIDQwLCA0MCwgMCkiLz48c3RvcCBvZmZzZXQ9IjZweCIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\'), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0;\n\
-  background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 10px 0; }\n\
-\n\
-.raptor-wrapper [data-title]:hover:after {\n\
-  opacity: 1; }\n\
-\n\
-.raptor-wrapper .raptor-select-element {\n\
-  position: relative; }\n\
-\n\
-.raptor-wrapper .raptor-select-element:after {\n\
-  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSI1cHgiIHN0b3AtY29sb3I9InJnYmEoNDAsIDQwLCA0MCwgMCkiLz48c3RvcCBvZmZzZXQ9IjZweCIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI4MjgyOCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\'), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(5px, rgba(40, 40, 40, 0)), color-stop(6px, #282828), color-stop(100%, #282828)), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -webkit-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -moz-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: -o-linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0;\n\
-  background: linear-gradient(rgba(40, 40, 40, 0) 5px, #282828 6px, #282828), url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAGAgMAAACKgJcSAAAADFBMVEUAAAAoKCgoKCgoKCj7f2xyAAAAA3RSTlMATLP00ibhAAAAJklEQVR4XgXAMRUAEBQF0GtSwK6KYrKpIIz5P4eBTcvSc808J/UBPj4IdoCAGiAAAAAASUVORK5CYII=\') no-repeat 3px 0; }\n\
-\n\
-/**\n\
- * Unsaved edit warning plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-unsaved-edit-warning {\n\
-  position: fixed;\n\
-  bottom: 0;\n\
-  right: 0;\n\
-  height: 30px;\n\
-  line-height: 30px;\n\
-  border-radius: 5px 0 0 0;\n\
-  border: 1px solid #D4D4D4;\n\
-  padding-right: 7px;\n\
-  background: url(\'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjUwJSIgeTE9IjAlIiB4Mj0iNTAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmMiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2VkZWNiZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==\');\n\
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fffff2), color-stop(100%, #edecbd));\n\
-  background: -webkit-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: -moz-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: -o-linear-gradient(top, #fffff2, #edecbd);\n\
-  background: linear-gradient(top, #fffff2, #edecbd);\n\
-  -webkit-transition: opacity 0.5s;\n\
-  -moz-transition: opacity 0.5s;\n\
-  -o-transition: opacity 0.5s;\n\
-  transition: opacity 0.5s;\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);\n\
-  opacity: 0; }\n\
-  .raptor-unsaved-edit-warning .ui-icon {\n\
-    display: inline-block;\n\
-    float: left;\n\
-    margin: 8px 5px 0 5px; }\n\
-\n\
-.raptor-unsaved-edit-warning-visible {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-unsaved-edit-warning-dirty {\n\
-  outline: 1px dotted #aaa;\n\
-  background-image: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoAQMAAAC2MCouAAAABlBMVEUAAACfn5/FQV4CAAAAAnRSTlMAG/z2BNQAAABPSURBVHhexc2xEYAgEAXRdQwILYFSKA1LsxRKIDRwOG8LMDb9++aO8tAvjps4qXMLaGNf5JglxyyEhWVBXpAfyCvyhrwjD74OySfy8dffFyMcWadc9txXAAAAAElFTkSuQmCC\') !important; }\n\
-\n\
-/**\n\
- * View source plugin\n\
- *\n\
- * @author Michael Robinson <michael@panmedia.co.nz>\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.raptor-ui-view-source .ui-icon-view-source {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);\n\
-  opacity: 0.85;\n\
-  background: url(\'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAKtJREFUeNpi/P//PwMlgImBQkCxAQwgLzAyMqLjMCCehsSfBhVDUQf2PhYDIoB4JhCLIYmJQcUiCBkQBcRzgFgci6vEoXJRuAyIAeIFODQjG7IAqhbFAAMg3gOlGQhguFp0FyQC8UoglgTx0QFUjSRUTSKuMEgG4nUghVgMkITKJROKhXQg3gbUI42kXxokBpUjGI0gDYVAfBzJABC7EFs6YBz6eYFiAwACDAADJlDtLE22CAAAAABJRU5ErkJggg==\') 0 0; }\n\
-\n\
-.raptor-ui-view-source:hover .ui-icon-view-source {\n\
-  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);\n\
-  opacity: 1; }\n\
-\n\
-.raptor-ui-view-source-dialog .ui-dialog-content {\n\
-  overflow: visible; }\n\
-\n\
-.raptor-ui-view-source-inner-wrapper {\n\
-  width: 100%;\n\
-  height: 100%;\n\
-  display: -webkit-box;\n\
-  display: -moz-box;\n\
-  display: -ms-box;\n\
-  display: box;\n\
-  -webkit-box-orient: vertical;\n\
-  -moz-box-orient: vertical;\n\
-  -ms-box-orient: vertical;\n\
-  box-orient: vertical; }\n\
-\n\
-.raptor-ui-view-source-dialog textarea {\n\
-  width: 100%;\n\
-  height: 100%;\n\
-  -webkit-box-flex: 1;\n\
-  -moz-box-flex: 1;\n\
-  -ms-box-flex: 1;\n\
-  box-flex: 1; }\n\
-\n\
-/**\n\
- * Basic color picker plugin default colors.\n\
- *\n\
- * @author David Neilsen <david@panmedia.co.nz>\n\
- */\n\
-.cms-white {\n\
-  color: #ffffff; }\n\
-\n\
-.cms-black {\n\
-  color: #000000; }\n\
-\n\
-.cms-blue {\n\
-  color: #4f81bd; }\n\
-\n\
-.cms-red {\n\
-  color: #c0504d; }\n\
-\n\
-.cms-green {\n\
-  color: #9bbb59; }\n\
-\n\
-.cms-purple {\n\
-  color: #8064a2; }\n\
-\n\
-.cms-orange {\n\
-  color: #f79646; }\n\
-\n\
-.cms-grey {\n\
-  color: #999; }\n\
-\n\
-                /* End of file: build/default/src/theme/theme.css */\n\
-            </style>').appendTo('head');
+                    })(jQuery);
+                    /* End of wrapper. */
+                jQuery('<style type="text/css"></style>').appendTo('head');

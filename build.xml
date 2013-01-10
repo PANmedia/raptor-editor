@@ -42,22 +42,22 @@
     </target>
 
     <target name="0deps">
-        <property file="build.0deps.properties" override="true" />
+        <property file="build/build.0deps.properties" override="true" />
         <phingcall target="build" />
     </target>
 
     <target name="nc">
-        <property file="build.0deps.nc.properties" override="true" />
+        <property file="build/build.0deps.nc.properties" override="true" />
         <phingcall target="build" />
     </target>
 
     <target name="light">
-        <property file="build.light.properties" override="true" />
+        <property file="build/build.light.properties" override="true" />
         <phingcall target="build" />
     </target>
 
     <target name="debug">
-        <property file="build.debug.properties" override="true" />
+        <property file="build/build.debug.properties" override="true" />
         <phingcall target="build" />
     </target>
 
