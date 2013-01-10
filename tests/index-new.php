@@ -15,6 +15,13 @@
         <script src="../src/dependencies/jquery.js"></script>
 
         <script>
+
+            function runTest(path){
+                $('<iframe>')
+                        .attr('src', path)
+                        .appendTo('.iframes');
+            }
+
             $(function() {
                 $('.group-header').click(function() {
                     var item = $(this).siblings('.item');
@@ -24,74 +31,62 @@
                         item.hide();
                     }
                 });
+                runTest('cases/alignment/center-align-button.php');
             });
         </script>
 
         <?php
-            $groups = [
-                [
-                    'name' => 'alignment',
-                    'description' => 'Tests the functionality of the alignment attributes of the toobar',
-                    'tests' => [
-                        [
-                            'name' => 'center align',
-                            'filename' => 'center-align-button.php',
-                            'description' => 'Tests the functionality of the center align text button on the toolbar',
-                            'status' => 'pass',
-                        ],
-                        [
-                            'name' => 'left align',
-                            'filename' => 'left-align-button.php',
-                            'description' => 'Tests the functionality of the left align text button on the toolbar',
-                            'status' => 'fail',
-                        ],
-                        [
-                            'name' => 'right align',
-                            'filename' => 'right-align-button.php',
-                            'description' => 'Tests the functionality of the right align text button on the toolbar',
-                            'status' => 'pass',
-                        ],
-                    ],
-                ],
-                [
-                    'name' => 'basic formatting',
-                    'description' => 'Tests the functionality of the basic formatting attributes of the toobar',
-                    'tests' => [
-                        [
-                            'name' => 'bold button',
-                            'filename' => 'bold-button.php',
-                            'description' => 'Tests the bold button turns text bold',
-                            'status' => 'pass',
-                        ],
-                        [
-                            'name' => 'italic button',
-                            'filename' => 'italic-button.php',
-                            'description' => 'Tests the bold button turns text bold',
-                            'status' => 'fail',
-                        ],
-                        [
-                            'name' => 'strike button',
-                            'filename' => 'strike-button.php',
-                            'description' => 'Tests the bold button turns text bold',
-                            'status' => 'pass',
-                        ],
-                    ],
-                ],
-            ];
+
+            $csv_file_content = file_get_contents('tests.csv');
+            $lines = explode("\n", $csv_file_content);
+            $head = str_getcsv(array_shift($lines));
+
+            $csv_data = array();
+            foreach ($lines as $line) {
+                $row_data = array_combine($head, str_getcsv($line));
+                $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
+            }
+
+            $groups = [];
+            $findTests = function($case) use($csv_data) {
+                $tests = [];
+                foreach (glob($case . '/*.*') as $file) {
+                    $index = basename($case) . '/' . basename($file);
+                    $tests[] = [
+                        'name' => $csv_data[$index]['Name'],
+                        'filename' => basename($file),
+                        'description' => $csv_data[$index]['Description'],
+                        'status' => $csv_data[$index]['Status'],
+                    ];
+                }
+                return $tests;
+            };
+            foreach (glob(__DIR__ . '/cases/*') as $case) {
+                $groups[] = [
+                    'name' => basename($case),
+                    'description' => '',
+                    'tests' => $findTests($case),
+                ];
+            }
+
+            $j = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
         ?>
 
     </head>
     <body>
         <h2>Tests: </h2>
         <div class="content">
+            <div class="iframes"></div>
             <button name="run-all">Run All Tests</button>
             <button name="run-selected">Run Selected Tests</button>
             This may take several minutes
             <div class="tests">
-                <?php foreach ($groups as $group): ?>
+                <?php
+                $i=1;
+                foreach ($groups as $group): ?>
                 <div class="group">
                     <div class="number">
-                        <input type="checkbox" name="" value="">1
+                        <input type="checkbox" name="" value=""><?= $i ?>
                     </div>
                     <div class="group-header">
                         <div class="ui-widget ui-notification">
@@ -109,10 +104,12 @@
                             </div>
                         </div>
                     </div>
-                    <?php foreach ($group["tests"] as $item): ?>
+                    <?php
+                    $k = 0;
+                    foreach ($group["tests"] as $item): ?>
                     <div class="item" style="display: none;">
                         <div class="number">
-                            <input type="checkbox" name="" value="">1a
+                            <input type="checkbox" name="" value=""><?= $i . $j[$k] ?>
                         </div>
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
@@ -130,10 +127,10 @@
                             </div>
                         </div>
                     </div>
-                    <?php endforeach; ?>
+                    <?php $k ++; endforeach; ?>
                 </div>
                 <div class="clear"></div>
-                <?php endforeach; ?>
+                <?php $i++; endforeach; ?>
             </div>
 
             <button name="run-all">Run All Tests</button>
