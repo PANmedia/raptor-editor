@@ -1,4 +1,8 @@
 function testEditor(container, action, format) {
+    if (typeof window.testResults === 'undefined') {
+        window.testResults = [];
+    }
+
     var input = $(container).find('.test-input');
     var html = input.html();
     var output = $('<div>').addClass('test-output').html(html).appendTo(container);
@@ -56,15 +60,30 @@ function testEditor(container, action, format) {
         if (error) {
             $('<pre>').text(error).appendTo(diff);
             $('<pre>').text(error.stack).appendTo(diff);
+            window.testResults.push({
+                status: 'fail',
+                type: 'error',
+                error: error
+            });
             fail(container);
         } else {
-            var expHTML = style_html(expected.find('.editible').html());
-            var outHTML = style_html(output.find('.editible').html());
+            var expectedHTML = style_html(expected.find('.editible').html());
+            var actualHTML = style_html(output.find('.editible').html());
 
-            diff.html(diffstr(expHTML, outHTML));
-            if (outHTML !== expHTML) {
+            diff.html(diffstr(expectedHTML, actualHTML));
+            if (actualHTML !== expectedHTML) {
+                window.testResults.push({
+                    status: 'fail',
+                    type: 'diff',
+                    diff: diff,
+                    expectedHTML: expectedHTML,
+                    actualHTML: actualHTML
+                });
                 fail(container);
             } else {
+                window.testResults.push({
+                    status: 'pass'
+                });
                 pass(container);
             }
         }
