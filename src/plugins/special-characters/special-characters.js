@@ -1,0 +1,281 @@
+var specialCharactersDialog = null;
+
+Raptor.registerUi(new Button({
+    name: 'specialCharacters',
+    options: {
+        setOrder: [
+            'symbols',
+            'mathematics',
+            'arrows',
+            'greekAlphabet'
+        ],
+        characterSets: {
+            symbols: {
+                name: 'Symbols',
+                characters: [
+                    ['<', '&lt;', 'less than'],
+                    ['>', '&gt;', 'greater than'],
+                    ['&', '&amp;', 'ampersand'],
+                    ['"', '&quot;', 'quotation mark'],
+                    ['&nbsp;', 'non-breaking space: \' \''],
+                    ['&emsp;', 'em space: \'  \''],
+                    ['&ensp;', 'en space: \' \''],
+                    ['&thinsp;', 'thin space: \'\''],
+                    ['&mdash;', 'em dash'],
+                    ['&ndash;', 'en dash'],
+                    ['&minus;', 'minus'],
+                    ['-', 'hyphen'],
+                    ['&oline;', 'overbar space'],
+                    ['&cent;', 'cent'],
+                    ['&pound;', 'pound'],
+                    ['&euro;', 'euro'],
+                    ['&sect;', 'section'],
+                    ['&dagger;', 'dagger'],
+                    ['&Dagger;', 'double dagger'],
+                    ['&lsquo;', 'left single quotes'],
+                    ['&rsquo;', 'right single quotes'],
+                    ['\'', 'single quotes'],
+                    ['&#x263a;', 'smiley face'],
+                    ['&#x2605;', 'black star'],
+                    ['&#x2606;', 'white star'],
+                    ['&#x2610;', 'check box'],
+                    ['&middot;', 'middle dot'],
+                    ['&bull;', 'bullet'],
+                    ['&copy;', 'copyright'],
+                    ['&reg;', 'registered'],
+                    ['&trade;', 'trade'],
+                    ['&iquest;', 'inverted question mark'],
+                    ['&iexcl;', 'inverted exclamation mark'],
+                    ['&Aring;', 'Angström'],
+                    ['&hellip;', 'ellipsis'],
+                    ['&#x2295;', 'earth'],
+                    ['&#x2299;', 'sun'],
+                    ['&#x2640;', 'female'],
+                    ['&#x2642;', 'male'],
+                    ['&clubs;', 'clubs or shamrock'],
+                    ['&spades;', 'spades'],
+                    ['&hearts;', 'hearts or valentine'],
+                    ['&diams;', 'diamonds'],
+                    ['&loz;', 'diamond']
+                ]
+            },
+            mathematics: {
+                name: 'Mathematics',
+                characters: [
+                    ['&lt;', 'less than'],
+                    ['&le;', 'less than or equal to'],
+                    ['&gt;', 'greater than'],
+                    ['&ge;', 'greater than or equal to'],
+                    ['&ne;', 'not equal'],
+                    ['&asymp;', 'approximately equal to'],
+                    ['&equiv;', 'identically equal to'],
+                    ['&cong;', 'congruent to'],
+                    ['&prop;', 'proportional'],
+                    ['&there4;', 'therefore'],
+                    ['&sum;', 'summation'],
+                    ['&prod;', 'product'],
+                    ['&prime;', 'prime or minutes'],
+                    ['&Prime;', 'double prime or seconds'],
+                    ['&Delta;', 'delta'],
+                    ['&nabla;', 'del'],
+                    ['&part;', 'partial'],
+                    ['&int;', 'integral'],
+                    ['&middot;', 'middle dot'],
+                    ['&sdot;', 'dot operator'],
+                    ['&bull;', 'bullet'],
+                    ['&minus;', 'minus sign'],
+                    ['&times;', 'multipllcation sign'],
+                    ['&divide;', 'division sign'],
+                    ['&frasl;', 'fraction slash, (ordinary / \\)'],
+                    ['&plusmn;', 'plus or minus'],
+                    ['&deg;', 'degree sign'],
+                    ['&lfloor;', 'floor function'],
+                    ['&rfloor;', 'floor function'],
+                    ['&lceil;', 'ceiling function'],
+                    ['&rceil;', 'ceiling function'],
+                    ['&lowast;', 'asterisk operator, (ordinary *)'],
+                    ['&oplus;', 'circled plus'],
+                    ['&otimes;', 'circled times'],
+                    ['&ordm;', 'masculine ordinal'],
+                    ['&lang;', 'bra'],
+                    ['&rang;', 'ket'],
+                    ['&infin;', 'infinity'],
+                    ['&pi;', 'pi'],
+                    ['&frac12;', 'half'],
+                    ['&alefsym;', 'aleph'],
+                    ['&radic;', 'radical'],
+                    ['&ang;', 'angle'],
+                    ['&perp;', 'perpendicular'],
+                    ['&real;', 'real'],
+                    ['&isin;', 'is an element of'],
+                    ['&notin;', 'not an element of'],
+                    ['&empty;', 'null set'],
+                    ['&sub;', 'subset of'],
+                    ['&sube;', 'subset or or equal to'],
+                    ['&nsub;', 'not a subset'],
+                    ['&cap;', 'intersection'],
+                    ['&cup;', 'union'],
+                    ['&sim;', 'tilde operator (ordinary ~)'],
+                    ['&Oslash;', 'slash O'],
+                    ['&and;', 'logical and'],
+                    ['&Lambda;', 'lambda (and)'],
+                    ['&or;', 'logical or'],
+                    ['&not;', 'not sign'],
+                    ['&sim;', 'tilde operator (ordinary ~)'],
+                    ['&rarr;', 'right arrow'],
+                    ['&rArr;', 'double right arrow'],
+                    ['&larr;', 'left arrow'],
+                    ['&lArr;', 'left double arrow'],
+                    ['&harr;', 'left right arrow'],
+                    ['&hArr;', 'left right double arrow']
+                ]
+            },
+            arrows: {
+                name: 'Arrows',
+                characters: [
+                    ['&darr;', 'down arrow'],
+                    ['&dArr;', 'down double arrow'],
+                    ['&uarr;', 'up arrow'],
+                    ['&uArr;', 'up double arrow'],
+                    ['&crarr;', 'arriage return arrow'],
+                    ['&rarr;', 'right arrow'],
+                    ['&rArr;', 'double right arrow'],
+                    ['&larr;', 'left arrow'],
+                    ['&lArr;', 'left double arrow'],
+                    ['&harr;', 'left right arrow'],
+                    ['&hArr;', 'left right double arrow']
+                ]
+            },
+            greekAlphabet: {
+                name: 'Greek Alphabet',
+                characters: [
+                    ['&alpha;', 'alpha'],
+                    ['&beta;', 'beta'],
+                    ['&gamma;', 'gamma'],
+                    ['&delta;', 'delta'],
+                    ['&epsilon;', 'epsilon'],
+                    ['&zeta;', 'zeta'],
+                    ['&eta;', 'eta'],
+                    ['&theta;', 'theta'],
+                    ['&iota;', 'iota'],
+                    ['&kappa;', 'kappa'],
+                    ['&lambda;', 'lambda'],
+                    ['&mu;', 'mu'],
+                    ['&nu;', 'nu'],
+                    ['&xi;', 'xi'],
+                    ['&omicron;', 'omicron'],
+                    ['&pi;', 'pi'],
+                    ['&rho;', 'rho'],
+                    ['&sigma;', 'sigma'],
+                    ['&tau;', 'tau'],
+                    ['&upsilon;', 'upsilon'],
+                    ['&phi;', 'phi'],
+                    ['&chi;', 'chi'],
+                    ['&psi;', 'psi'],
+                    ['&omega;', 'omega'],
+                    ['&Alpha;', 'alpha'],
+                    ['&Beta;', 'beta'],
+                    ['&Gamma;', 'gamma'],
+                    ['&Delta;', 'delta'],
+                    ['&Epsilon;', 'epsilon'],
+                    ['&Zeta;', 'zeta'],
+                    ['&Eta;', 'eta'],
+                    ['&Theta;', 'theta'],
+                    ['&Iota;', 'iota'],
+                    ['&Kappa;', 'kappa'],
+                    ['&Lambda;', 'lambda'],
+                    ['&Mu;', 'mu'],
+                    ['&Nu;', 'nu'],
+                    ['&Xi;', 'xi'],
+                    ['&Omicron;', 'omicron'],
+                    ['&Pi;', 'pi'],
+                    ['&Rho;', 'rho'],
+                    ['&Sigma;', 'sigma'],
+                    ['&Tau;', 'tau'],
+                    ['&Upsilon;', 'upsilon'],
+                    ['&Phi;', 'phi'],
+                    ['&Chi;', 'chi'],
+                    ['&Psi;', 'psi'],
+                    ['&Omega;', 'omega']
+                ]
+            }
+        }
+    },
+
+    action: function() {
+        selectionSave();
+        aDialogOpen(this.getDialog());
+    },
+
+    prepareDialogHtml: function() {
+        var html = $(this.raptor.getTemplate('special-characters.dialog')).appendTo('body').hide();
+        var setKey, tabContent, character, characterButton;
+        for (var setOrderIndex = 0; setOrderIndex < this.options.setOrder.length; setOrderIndex++) {
+            setKey = this.options.setOrder[setOrderIndex];
+
+            html.find('ul').append(this.raptor.getTemplate('special-characters.tab-li', {
+                baseClass: this.options.baseClass,
+                name: this.options.characterSets[setKey].name,
+                key: setKey
+            }));
+
+            tabContent = $(this.raptor.getTemplate('special-characters.tab-content', {
+                baseClass: this.options.baseClass,
+                key: setKey
+            }));
+
+            for (var charactersIndex = 0; charactersIndex < this.options.characterSets[setKey].characters.length; charactersIndex++) {
+                character = this.options.characterSets[setKey].characters[charactersIndex];
+                characterButton = $(this.raptor.getTemplate('special-characters.tab-button', {
+                    htmlEntity: character[0],
+                    description: character[1],
+                    setKey: setKey,
+                    charactersIndex: charactersIndex
+                }));
+                tabContent.append(characterButton);
+            }
+            html.find('ul').after(tabContent);
+        }
+        html.show();
+
+        var ui = this;
+        html.find('button').each(function() {
+            aButton(this);
+        }).click(function() {
+            var setKey = $(this).attr('data-setKey');
+            var charactersIndex = $(this).attr('data-charactersIndex');
+            selectionRestore();
+            var htmlEntity = ui.options.characterSets[setKey].characters[charactersIndex][0];
+            selectionReplace(htmlEntity);
+            selectionSave();
+        });
+        aTabs(html);
+        return html;
+    },
+
+    getDialog: function() {
+        if (!specialCharactersDialog) {
+            specialCharactersDialog = this.prepareDialogHtml();
+            aDialog(specialCharactersDialog, {
+                resizable: false,
+                autoOpen: false,
+                width: 500,
+                title: _('specialCharactersDialogTitle'),
+                dialogClass: this.options.dialogClass,
+                buttons: [
+                    {
+                        text: _('specialCharactersDialogOKButton'),
+                        click: function() {
+                            selectionRestore();
+                            aDialogClose(specialCharactersDialog);
+                        }.bind(this),
+                        icons: {
+                            primary: 'ui-icon-circle-check'
+                        }
+                    }
+                ]
+            });
+        }
+        return specialCharactersDialog;
+    }
+}));
