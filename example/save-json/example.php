@@ -29,21 +29,19 @@
     <?php endif; ?>
     <script type="text/javascript">
         jQuery(function($) {
-            $('.editable').editor({
+            $('.editable').raptor({
                 urlPrefix: '../../src/',
                 ui: {
                     save: {
-                      plugin: 'saveJson'
+                        plugin: 'saveJson'
                     }
                 },
                 plugins: {
                     saveJson: {
+                        url: 'save.php',
                         postName: 'raptor-content',
-                        id: {
-                            attr: 'data-id'
-                        },
-                        ajax: {
-                            url: 'save.php'
+                        id: function() {
+                            return this.raptor.getElement().data('id');
                         }
                     }
                 }

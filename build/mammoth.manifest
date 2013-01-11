@@ -40,7 +40,6 @@ src/tools/types.js
 
 src/raptor.js
 src/raptor-widget.js
-src/expose.js
 
 src/components/plugin.js
 src/components/ui/button.js
@@ -55,12 +54,13 @@ src/components/ui/custom-menu.js
 src/components/layout/toolbar.js
 
 src/presets/base.js
-src/presets/rails.js
+src/presets/mammoth.js
 
 src/plugins/cancel/cancel.js
 src/plugins/clear-formatting/clear-formatting.js
 src/plugins/click-button-to-edit/click-button-to-edit.js
 src/plugins/color-menu-basic/color-menu-basic.js
+src/plugins/dock/dock-plugin.js
 src/plugins/dock/dock-to-element.js
 src/plugins/dock/dock-to-screen.js
 src/plugins/embed/embed.js
@@ -82,7 +82,7 @@ src/plugins/list/list-unordered.js
 src/plugins/logo/logo.js
 src/plugins/paste/paste.js
 src/plugins/save/save.js
-src/plugins/save/save-rest.js
+src/plugins/save/save-json.js
 src/plugins/statistics/statistics.js
 src/plugins/table/table-cell-button.js
 src/plugins/table/table-create.js
