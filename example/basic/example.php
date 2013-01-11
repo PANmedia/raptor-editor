@@ -36,10 +36,12 @@
         jQuery(function($) {
             $('.editable').raptor({
                 urlPrefix: '../../src/',
-                ui: {
-                    dockToScreen: {
+                plugins: {
+                    dock: {
                         docked: true
-                    },
+                    }
+                },
+                ui: {
                     classMenu: {
                         classes: {
                             'Blue background': 'cms-blue-bg',
