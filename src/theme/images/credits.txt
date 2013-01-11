@@ -30,6 +30,7 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - edit-strike.png
  - edit-subscript.png
  - edit-superscript.png
+ - edit-symbol.png
  - edit-underline.png
  - guide.png
  - image.png

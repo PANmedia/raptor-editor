@@ -20,6 +20,7 @@ function aButtonEnable(element) {
 function aButtonDisable(element) {
     return $(element).button('option', 'disabled', true);
 }
+
 function aButtonActive(element) {
     return $(element).addClass('ui-state-highlight');
 }
@@ -53,7 +54,10 @@ function aDialogOpen(element) {
     return $(element).dialog('open');
 }
 
-
 function aDialogClose(element) {
     return $(element).dialog('close');
+}
+
+function aTabs(element, options) {
+    return $(element).tabs(options);
 }
