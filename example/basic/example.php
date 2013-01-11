@@ -29,6 +29,11 @@
         <script src="../../src/dependencies/jquery.js"></script>
         <script src="../../src/dependencies/jquery-ui.js"></script>
         <script src="../../packages/raptor.rails.js"></script>
+    <?php elseif ($type === 'mammoth'): ?>
+        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
+        <script src="../../src/dependencies/jquery.js"></script>
+        <script src="../../src/dependencies/jquery-ui.js"></script>
+        <script src="../../packages/raptor.mammoth.js"></script>
     <?php elseif ($type === 'include'): ?>
         <?php $uri = '../../src/'; include '../../src/include.php'; ?>
     <?php endif; ?>
@@ -80,6 +85,7 @@
         <a href="?type=default">Default</a>
         <a href="?type=light">Light</a>
         <a href="?type=rails">Rails</a>
+        <a href="?type=mammoth">Mammoth</a>
         <a href="?type=0deps">0 dependencies</a>
         <a href="?type=0depsnc">0 dependencies, no conflict</a>
     </nav>
