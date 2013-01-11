@@ -42,6 +42,7 @@
 <script type="text/javascript" src="<?= $uri ?>tools/element.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/fragment.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/list.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/node.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/persist.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/range.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/selection.js"></script>
@@ -76,6 +77,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/click-button-to-edit/click-button-to-edit.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/color-menu-basic/color-menu-basic.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-plugin.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-screen.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-element.js"></script>
 
