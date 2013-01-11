@@ -58,9 +58,11 @@ src/expose.js
 src/components/plugin.js
 src/components/ui/button.js
 src/components/ui/preview-button.js
+src/components/ui/preview-toggle-button.js
 src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
 src/components/ui/menu.js
+src/components/ui/menu-button.js
 src/components/ui/select-menu.js
 src/components/ui/custom-menu.js
 src/components/layout/toolbar.js
