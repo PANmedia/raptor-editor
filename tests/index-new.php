@@ -15,14 +15,42 @@
         <script src="../src/dependencies/jquery.js"></script>
 
         <script>
+            var timerID = null;
 
             function runTest(path){
                 $('<iframe>')
                     .attr('src', path)
                     .load(function() {
-                        console.log(this.contentWindow.testResults);
+                        timerId = setInterval(checkStatus, 100, this.contentWindow.testResults);
                     })
                     .appendTo('.iframes');
+            }
+
+            function checkStatus(testResults) {
+                if (testResults.count === testResults.tests.length) {
+                    clearInterval(timerId);
+                    timerId = null;
+
+                    for(var i=0; i <= testResults.count; i++){
+                        //for each result in the set of results check vv and if there is one fail then set group header to .ui-state-error and the cross icon
+                        if(testResults.tests[i]['status'] === 'pass'){
+                            //set the first item header to have the class .ui-state-confirmation and the check icon
+                            document.getElementById('item').className() = 'ui-state-confirmation ui-corner-all';
+                            console.log('test ' + i + ' passed');
+                        }else if(testResults.tests[i]['status'] === 'fail'){
+                            //set the first item header to have the class .ui-state-error and the cross icon
+                            document.getElementById('item').className() = 'ui-state-error ui-corner-all';
+                            console.log('test ' + i + ' failed');
+                        }//else if (the test is processing){
+                            //set the first item header to have the class .ui-state-warning and a refresh icon??
+                        //}
+                        //else if (the test hasn't been processed yet){
+                            //set the first item header to have the class .ui-state-default
+                        //}
+                        ;
+                    }
+                }
+                return;
             }
 
             $(function() {
@@ -34,7 +62,7 @@
                         item.hide();
                     }
                 });
-                runTest('cases/alignment/center-align-button.php');
+                runTest('cases/block-quote/insert-blockquote-button.php');
             });
         </script>
 
@@ -106,7 +134,7 @@
                     </div>
                     <div class="group-header">
                         <div class="ui-widget ui-notification">
-                            <div class="ui-state-default ui-corner-all">
+                            <div id ="group" class="ui-state-default ui-corner-all">
                                 <p>
                                     <!--<span class="ui-icon ui-icon-circle-check"></span>-->
                                     <strong><?= $group['name'] ?></strong>
@@ -129,7 +157,7 @@
                         </div>
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
-                                <div class="ui-state-default ui-corner-all">
+                                <div id ="item" class="ui-state-default ui-corner-all">
                                     <p>
                                         <!--<span class="ui-icon ui-icon-circle-check"></span>-->
                                         <strong><?= $item['name'] ?></strong>
