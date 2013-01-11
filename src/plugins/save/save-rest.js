@@ -5,16 +5,16 @@ function SaveRestPlugin(name, overrides) {
 
 SaveRestPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+// <strict>
 SaveRestPlugin.prototype.init = function() {
-    // <strict>
     if (typeof this.options.url !== 'string' && !$.isFunction(this.options.url)) {
         handleError('Expected save REST URL option to be a string or a function.');
     }
     if (!$.isFunction(this.options.data)) {
         handleError('Expected save REST data option to be a function.');
     }
-    // </strict>
 };
+// </strict>
 
 SaveRestPlugin.prototype.save = function() {
     this.requests = 0;
