@@ -26,20 +26,21 @@
                     .appendTo('.iframes');
             }
 
-            function checkStatus(testResults) {
+            function checkStatus(testResults) {   //array is not getting any info into it for some weird reason
                 if (testResults.count === testResults.tests.length) {
                     clearInterval(timerId);
                     timerId = null;
-
-                    for(var i=0; i <= testResults.count; i++){
+                    var i;
+                    for(i=0; i <= testResults.tests.length; i++){
+                        console.log(testResults);
                         //for each result in the set of results check vv and if there is one fail then set group header to .ui-state-error and the cross icon
                         if(testResults.tests[i]['status'] === 'pass'){
                             //set the first item header to have the class .ui-state-confirmation and the check icon
-                            document.getElementById('item').className() = 'ui-state-confirmation ui-corner-all';
+//                            document.getElementById('item').className = 'ui-state-confirmation ui-corner-all';
                             console.log('test ' + i + ' passed');
                         }else if(testResults.tests[i]['status'] === 'fail'){
                             //set the first item header to have the class .ui-state-error and the cross icon
-                            document.getElementById('item').className() = 'ui-state-error ui-corner-all';
+//                            document.getElementById('item').className = 'ui-state-error ui-corner-all';
                             console.log('test ' + i + ' failed');
                         }//else if (the test is processing){
                             //set the first item header to have the class .ui-state-warning and a refresh icon??
@@ -62,7 +63,7 @@
                         item.hide();
                     }
                 });
-                runTest('cases/block-quote/insert-blockquote-button.php');
+                runTest('cases/alignment/center-align-button.php');
             });
         </script>
 
