@@ -22,6 +22,10 @@ src/dependencies/rangy/rangy-applier.js
 src/dependencies/rangy/rangy-cssclassapplier.js
 src/dependencies/rangy/rangy-selectionsaverestore.js
 src/dependencies/rangy/rangy-serializer.js
+src/dependencies/rangy/rangy-textrange.js
+src/dependencies/jquery-hotkeys.js
+src/dependencies/resizetable.js
+src/dependencies/goog-table.js
 
 src/dependencies/jquery.js
 src/dependencies/jquery-ui.js
@@ -84,6 +88,7 @@ src/plugins/guides/guides.js
 src/plugins/history/history-redo.js
 src/plugins/history/history-undo.js
 src/plugins/hr/hr-create.js
+src/plugins/insert-file/insert-file.js
 src/plugins/link/link-type-email.js
 src/plugins/link/link-type-external.js
 src/plugins/link/link-type-internal.js
@@ -92,7 +97,9 @@ src/plugins/link/link-remove.js
 src/plugins/list/list-ordered.js
 src/plugins/list/list-unordered.js
 src/plugins/logo/logo.js
+src/plugins/paste/paste.js
 src/plugins/save/save.js
+src/plugins/save/save-json.js
 src/plugins/statistics/statistics.js
 src/plugins/table/table-cell-button.js
 src/plugins/table/table-create.js
@@ -101,6 +108,7 @@ src/plugins/table/table-delete-row.js
 src/plugins/table/table-insert-column.js
 src/plugins/table/table-insert-row.js
 src/plugins/tag-menu/tag-menu.js
+src/plugins/text-align/text-align-button.js
 src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
@@ -120,11 +128,13 @@ src/plugins/view-source/view-source.js
 src/plugins/click-button-to-edit/templates/button.html
 src/plugins/color-menu-basic/templates/menu.html
 src/plugins/embed/templates/dialog.html
+src/plugins/insert-file/templates/dialog.html
 src/plugins/link/templates/dialog.html
 src/plugins/link/templates/email.html
 src/plugins/link/templates/external.html
 src/plugins/link/templates/internal.html
 src/plugins/link/templates/label.html
+src/plugins/paste/templates/dialog.html
 src/plugins/statistics/templates/dialog.html
 src/plugins/table/templates/create-menu.html
 src/plugins/tag-menu/templates/menu.html

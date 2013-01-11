@@ -60,6 +60,7 @@ src/plugins/cancel/cancel.js
 src/plugins/clear-formatting/clear-formatting.js
 src/plugins/click-button-to-edit/click-button-to-edit.js
 src/plugins/color-menu-basic/color-menu-basic.js
+src/plugins/dock/dock-plugin.js
 src/plugins/dock/dock-to-element.js
 src/plugins/dock/dock-to-screen.js
 src/plugins/embed/embed.js
