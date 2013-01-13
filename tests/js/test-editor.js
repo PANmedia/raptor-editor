@@ -1,6 +1,9 @@
 function testEditor(container, action, format) {
     if (typeof window.testResults === 'undefined') {
-        window.testResults = [];
+        window.testResults = {
+            count: 0,
+            tests: []
+        };
     }
 
     var input = $(container).find('.test-input');
@@ -60,7 +63,7 @@ function testEditor(container, action, format) {
         if (error) {
             $('<pre>').text(error).appendTo(diff);
             $('<pre>').text(error.stack).appendTo(diff);
-            window.testResults.push({
+            window.testResults.tests.push({
                 status: 'fail',
                 type: 'error',
                 error: error
@@ -72,7 +75,7 @@ function testEditor(container, action, format) {
 
             diff.html(diffstr(expectedHTML, actualHTML));
             if (actualHTML !== expectedHTML) {
-                window.testResults.push({
+                window.testResults.tests.push({
                     status: 'fail',
                     type: 'diff',
                     diff: diff,
@@ -81,7 +84,7 @@ function testEditor(container, action, format) {
                 });
                 fail(container);
             } else {
-                window.testResults.push({
+                window.testResults.tests.push({
                     status: 'pass'
                 });
                 pass(container);
@@ -89,6 +92,7 @@ function testEditor(container, action, format) {
         }
     }, 100);
 
+    window.testResults.count++;
 }
 
 
