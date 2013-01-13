@@ -12,3 +12,23 @@
 function typeIsNumber(object) {
     return !isNaN(object - 0) && object !== null;
 }
+
+function typeIsNode(object) {
+    return object instanceof Node;
+}
+
+function typeIsElement(object) {
+    return object instanceof jQuery;
+}
+
+function typeIsRange(object) {
+    return object instanceof rangy.WrappedRange;
+}
+
+function typeIsSelection(object) {
+    return object instanceof rangy.WrappedSelection;
+}
+
+function typeIsString(object) {
+    return typeof object === 'string';
+}
