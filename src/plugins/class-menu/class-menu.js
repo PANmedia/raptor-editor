@@ -12,7 +12,7 @@ ClassMenu.prototype.init = function() {
 };
 
 ClassMenu.prototype.changeClass = function(classes) {
-    selectionToggleBlockClasses(classes, this.raptor.getElement());
+    selectionToggleBlockClasses(classes, [], this.raptor.getElement());
 };
 
 ClassMenu.prototype.apply = function(event) {
@@ -64,4 +64,3 @@ ClassMenu.prototype.getMenuItems = function() {
 };
 
 Raptor.registerUi(new ClassMenu());
-    
