@@ -30,12 +30,6 @@
 .raptor-dock-docked {
     z-index: 10000;
     .raptor-toolbar-wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        border-top: none;
-
         @include display-box();
         @include box-pack(center);
         @include box-align(center);
@@ -46,10 +40,7 @@
     }
 
     .raptor-path {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        display: none;
     }
 }
 

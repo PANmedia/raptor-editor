@@ -31,12 +31,10 @@
         jQuery(function($) {
             $('.editable').raptor({
                 urlPrefix: '../../src/',
-                ui: {
+                plugins: {
                     save: {
                         plugin: 'saveJson'
-                    }
-                },
-                plugins: {
+                    },
                     saveJson: {
                         url: 'save.php',
                         postName: 'raptor-content',

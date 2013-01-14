@@ -44,7 +44,11 @@ SaveJsonPlugin.prototype.save = function() {
 
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     this.raptor.saved();
-    this.raptor.showConfirm(_('saveJsonSaved'), {
+    var message = _('saveJsonSaved');
+    if ($.isFunction(this.options.formatResponse)) {
+        message = this.options.formatResponse(data);
+    }
+    this.raptor.showConfirm(message, {
         delay: 1000,
         hide: function() {
             this.raptor.unify(function(raptor) {

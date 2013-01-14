@@ -110,9 +110,9 @@ registerLocale('en', 'English', {
     alignLeftTitle: 'Align text left',
     alignRightTitle: 'Align text right',
 
-    cancelDialogCancelButton: 'Close',
+    cancelDialogCancelButton: 'Continue Editing',
     cancelDialogContent: 'Are you sure you want to cancel editing? All changes will be lost!',
-    cancelDialogOKButton: 'Ok',
+    cancelDialogOKButton: 'Cancel Editing',
     cancelDialogTitle: 'Cancel Editing',
     cancelTitle: 'Cancel editing',
 
@@ -214,6 +214,8 @@ registerLocale('en', 'English', {
     pasteDialogSource: 'Source Code',
 
     saveTitle: 'Save content',
+    saveJsonFail: 'Failed to save {{failed}} content block(s)',
+    saveJsonSaved: 'Successfully saved {{saved}} content block(s).',
     saveRestFail: 'Failed to save {{failed}} content block(s).',
     saveRestPartial: 'Saved {{saved}} out of {{failed}} content blocks.',
     saveRestSaved: 'Successfully saved {{saved}} content block(s).',

@@ -110,7 +110,7 @@ DockPlugin.prototype.undockFromScreen = function() {
     this.marker.replaceWith(layoutElement);
     this.raptor.getLayout().enableDragging();
     this.dockState = null;
-    layoutElement.css({ backgroundColor: 'red' });
+    layoutElement.removeClass(this.options.baseClass + '-docked');
 };
 
 Raptor.registerPlugin(new DockPlugin());
