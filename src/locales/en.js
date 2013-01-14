@@ -110,9 +110,9 @@ registerLocale('en', 'English', {
     alignLeftTitle: 'Align text left',
     alignRightTitle: 'Align text right',
 
-    cancelDialogCancelButton: 'Close',
+    cancelDialogCancelButton: 'Continue Editing',
     cancelDialogContent: 'Are you sure you want to cancel editing? All changes will be lost!',
-    cancelDialogOKButton: 'Ok',
+    cancelDialogOKButton: 'Cancel Editing',
     cancelDialogTitle: 'Cancel Editing',
     cancelTitle: 'Cancel editing',
 
