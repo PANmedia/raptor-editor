@@ -8,35 +8,11 @@
             $content = [];
         }
     }
-
-    $type = isset($_GET['type']) ? $_GET['type'] : 'include';
 ?>
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Raptor Editor - Basic Example</title>
-    <link rel="stylesheet" href="../assets/style.css" />
-    <?php if ($type === 'light'): ?>
-        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
-        <link rel="stylesheet" href="../../src/theme/theme.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.light.min.js"></script>
-    <?php elseif ($type === 'rails'): ?>
-        <link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/redmond/jquery-ui.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.rails.js"></script>
-    <?php elseif ($type === 'mammoth'): ?>
-        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.mammoth.js"></script>
-    <?php elseif ($type === 'include'): ?>
-        <?php $uri = '../../src/'; include '../../src/include.php'; ?>
-    <?php endif; ?>
+    <?php include __DIR__ . '/../include/head.php'; ?>
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
@@ -80,15 +56,7 @@
     </style>
 </head>
 <body>
-    <nav>
-        <a href="?">Include</a>
-        <a href="?type=default">Default</a>
-        <a href="?type=light">Light</a>
-        <a href="?type=rails">Rails</a>
-        <a href="?type=mammoth">Mammoth</a>
-        <a href="?type=0deps">0 dependencies</a>
-        <a href="?type=0depsnc">0 dependencies, no conflict</a>
-    </nav>
+    <?php include __DIR__ . '/../include/nav.php'; ?>
     <header class="editable" data-id="header">
         <?php ob_start(); ?>
         <h1>Raptor Editor - Basic Example</h1>
