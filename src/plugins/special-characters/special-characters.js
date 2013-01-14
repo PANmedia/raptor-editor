@@ -9,6 +9,9 @@ Raptor.registerUi(new Button({
             'arrows',
             'greekAlphabet'
         ],
+        /**
+         * Character sets available for display. From {@link http://turner.faculty.swau.edu/webstuff/htmlsymbols.html}
+         */
         characterSets: {
             symbols: {
                 name: 'Symbols',
@@ -207,6 +210,10 @@ Raptor.registerUi(new Button({
         aDialogOpen(this.getDialog());
     },
 
+    /**
+     * Prepare tabs and add buttons to tab content.
+     * @return {jQuery}
+     */
     prepareDialogHtml: function() {
         var html = $(this.raptor.getTemplate('special-characters.dialog')).appendTo('body').hide();
         var setKey, tabContent, character, characterButton;

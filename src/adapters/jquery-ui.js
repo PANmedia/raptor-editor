@@ -58,6 +58,13 @@ function aDialogClose(element) {
     return $(element).dialog('close');
 }
 
+/**
+ * Wrap the jQuery UI tabs function.
+ *
+ * @param  {Element|jQuery|selector} element
+ * @param  {Object|null} options
+ * @return {jQuery}
+ */
 function aTabs(element, options) {
     return $(element).tabs(options);
 }
