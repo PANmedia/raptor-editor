@@ -6,6 +6,14 @@ function SnippetMenu(options) {
 
 SnippetMenu.prototype = Object.create(SelectMenu.prototype);
 
+SnippetMenu.prototype.init = function() {
+    var result = SelectMenu.prototype.init.call(this);
+    if (typeof this.options.snippets !== 'undefined' &&
+            Object.keys(this.options.snippets).length > 0) {
+        return result;
+    }
+};
+
 SnippetMenu.prototype.insertSnippet = function(name) {
     selectionReplace(this.options.snippets[name]);
 };
