@@ -21,6 +21,7 @@ $.extend(Raptor, {
     aDialogClose: aDialogClose,
     aDialogOpen: aDialogOpen,
     aMenu: aMenu,
+    aTabs: aTabs,
     actionApply: actionApply,
     actionPreview: actionPreview,
     actionPreviewRestore: actionPreviewRestore,
@@ -56,6 +57,7 @@ $.extend(Raptor, {
     listToggle: listToggle,
     listUnwrapSelection: listUnwrapSelection,
     listWrapSelection: listWrapSelection,
+    nodeFindParent: nodeFindParent,
     persistGet: persistGet,
     persistSet: persistSet,
     rangeDeserialize: rangeDeserialize,
@@ -126,7 +128,12 @@ $.extend(Raptor, {
     templateConvertTokens: templateConvertTokens,
     templateGet: templateGet,
     templateGetVariables: templateGetVariables,
+    typeIsElement: typeIsElement,
+    typeIsNode: typeIsNode,
     typeIsNumber: typeIsNumber,
+    typeIsRange: typeIsRange,
+    typeIsSelection: typeIsSelection,
+    typeIsString: typeIsString,
     undockFromElement: undockFromElement,
     undockFromScreen: undockFromScreen
 });
