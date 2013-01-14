@@ -12,6 +12,7 @@ Raptor.registerUi(new Button({
                 modal: true,
                 resizable: false,
                 autoOpen: false,
+                width: 400,
                 title: _('cancelDialogTitle'),
                 dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
                 buttons: [
