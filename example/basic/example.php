@@ -20,9 +20,7 @@
                 plugins: {
                     dock: {
                         docked: true
-                    }
-                },
-                ui: {
+                    },
                     classMenu: {
                         classes: {
                             'Blue background': 'cms-blue-bg',
@@ -32,7 +30,7 @@
                     },
                     snippetMenu: {
                         snippets: {
-                            'Grey Box': '<div>Grey Box</div>'
+                            'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
                         }
                     }
                 }
