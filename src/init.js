@@ -103,6 +103,10 @@ function handleError(errorMessage) {
     }
 }
 
+function handleInvalidArgumentError(errorMessage, argument) {
+    handleError(errorMessage + ', got: ', argument);
+}
+
 // Ensure jQuery has been included
 if (typeof $ === 'undefined') handleError('jQuery is required');
 

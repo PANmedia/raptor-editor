@@ -124,7 +124,7 @@ Raptor.registerLayout('toolbar', {
 
                     var options = $.extend(true, {}, this.raptor.options, {
                         baseClass: this.raptor.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, this.raptor.options.ui[uiGroup[ii]]);
+                    }, uiObject.options, this.raptor.options.plugins[uiGroup[ii]]);
 
                     uiObject.raptor = this.raptor;
                     uiObject.options = options;
