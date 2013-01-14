@@ -13,9 +13,9 @@ Raptor.registerUi(new Button({
             handleError('Cannot find save plugin for UI.');
         }
         // </strict>
-        
-        this.raptor.bind('dirty', this.dirty.bind(this))
-        this.raptor.bind('cleaned', this.clean.bind(this))
+
+        this.raptor.bind('dirty', this.dirty.bind(this));
+        this.raptor.bind('cleaned', this.clean.bind(this));
         this.clean();
         return result;
     },
