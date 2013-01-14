@@ -17,42 +17,68 @@
         <script>
             var timerID = null;
 
-            function runTest(path){
+            function setGroupStatus(path, state, icon) {
+                var group = $('.group[data-path="' + path + '"]').find('.group-content'),
+                    groupIcon = group.find('.icon');
+
+                    checkState(group, groupIcon, state, icon);
+            }
+
+            function setItemStatus(path, fileName, state, icon) {
+                var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
+                    itemIcon = item.find('.icon');
+
+                    checkState(item, itemIcon, state, icon);
+            }
+
+            function checkState(content, currentIcon, state, icon){
+                content
+                    .removeClass('ui-state-default ui-state-warning ui-state-error ui-state-confirmation')
+                    .addClass(state);
+                currentIcon
+                    .removeClass('ui-icon-clock ui-icon-circle-check ui-icon-circle-close')
+                    .addClass(icon);
+            }
+
+            function runTest(path, fileName) {
+                setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
+                setItemStatus(path, fileName, 'ui-state-warning', 'ui-icon-clock');
+
                 $('<iframe>')
-                    .attr('src', path)
+                    .attr('src', 'cases/' + path + '/' + fileName)
                     .load(function() {
-                        timerId = setInterval(checkStatus, 100, this.contentWindow.testResults);
+                        timerId = setInterval(checkStatus, 100, this.contentWindow.testResults, path, fileName);
                     })
                     .appendTo('.iframes');
             }
 
-            function checkStatus(testResults) {   //array is not getting any info into it for some weird reason
+            function checkStatus(testResults, path, fileName) {
                 if (testResults.count === testResults.tests.length) {
                     clearInterval(timerId);
                     timerId = null;
-                    var i;
-                    for(i=0; i <= testResults.tests.length; i++){
-                        console.log(testResults);
-                        //for each result in the set of results check vv and if there is one fail then set group header to .ui-state-error and the cross icon
-                        if(testResults.tests[i]['status'] === 'pass'){
-                            //set the first item header to have the class .ui-state-confirmation and the check icon
-//                            document.getElementById('item').className = 'ui-state-confirmation ui-corner-all';
-                            console.log('test ' + i + ' passed');
-                        }else if(testResults.tests[i]['status'] === 'fail'){
-                            //set the first item header to have the class .ui-state-error and the cross icon
-//                            document.getElementById('item').className = 'ui-state-error ui-corner-all';
-                            console.log('test ' + i + ' failed');
-                        }//else if (the test is processing){
-                            //set the first item header to have the class .ui-state-warning and a refresh icon??
-                        //}
-                        //else if (the test hasn't been processed yet){
-                            //set the first item header to have the class .ui-state-default
-                        //}
-                        ;
+
+                    var pass = true;
+                    for (var i = 0; i < testResults.tests.length; i++) {
+                        if (testResults.tests[i]['status'] !== 'pass') {
+                            pass = false;
+                            break;
+                        }
                     }
+                    //need to add in counter to check how many have passed and display it in the group header and the item header
+                    if (pass) {
+                        setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check');
+                    } else {
+                        setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close');
+                    }
+
+                        $('iframe').remove();
                 }
-                return;
             }
+            $(document).ready(function(){
+                $('.run-test').click(function(){
+                  runTest('',''); //get path and filename of test
+                });
+              });
 
             $(function() {
                 $('.group-header').click(function() {
@@ -63,7 +89,6 @@
                         item.hide();
                     }
                 });
-                runTest('cases/alignment/center-align-button.php');
             });
         </script>
 
@@ -101,6 +126,7 @@
             foreach (glob(__DIR__ . '/cases/*') as $case) {
                 $groups[] = [
                     'name' => basename($case),
+                    'path' => basename($case),
                     'description' => '',
                     'tests' => $findTests($case),
                 ];
@@ -129,19 +155,18 @@
                 <?php
                 $i=1;
                 foreach ($groups as $group): ?>
-                <div class="group">
+                <div class="group" data-path="<?= $group['path'] ?>">
                     <div class="number">
-                        <input type="checkbox" name="" value=""><?= $i ?>
+                        <input type="checkbox"><?= $i ?>
                     </div>
                     <div class="group-header">
                         <div class="ui-widget ui-notification">
-                            <div id ="group" class="ui-state-default ui-corner-all">
+                            <div class="group-content ui-state-default ui-corner-all">
                                 <p>
-                                    <!--<span class="ui-icon ui-icon-circle-check"></span>-->
+                                    <span class="icon ui-icon"></span>
                                     <strong><?= $group['name'] ?></strong>
-                                    <!--<span style="margin-left: 15.5em;" class="ui-icon ui-icon-information"></span>-->
-                                    <strong>x/y tests passed</strong>
-                                    <button name="run-group" class="test-button">Run Group Test</button>
+                                    <span class="pass-fail-ratio">x/y items passed</span>
+                                    <button class="test-button run-group">Run Group Test</button>
                                 </p>
                                 <div class="description">
                                     <?= $group['description'] ?>
@@ -152,18 +177,18 @@
                     <?php
                     $k = 0;
                     foreach ($group["tests"] as $item): ?>
-                    <div class="item" style="display: none;">
+                    <div class="item" style="display: none;" data-file-name="">
                         <div class="number">
-                            <input type="checkbox" name="" value=""><?= $i . $j[$k] ?>
+                            <input type="checkbox"><?= $i . $j[$k] ?>
                         </div>
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
-                                <div id ="item" class="ui-state-default ui-corner-all">
+                                <div class="item-content ui-state-default ui-corner-all" >
                                     <p>
-                                        <!--<span class="ui-icon ui-icon-circle-check"></span>-->
+                                        <span class="icon ui-icon"></span>
                                         <strong><?= $item['name'] ?></strong>
-                                        <button name="run-test" class="test-button">Run Test</button>
-                                        <!--<span style="margin-left: 19em;" class="ui-icon ui-icon-information"></span>-->
+                                        <span class="pass-fail-ratio">x/y tests passed</span>
+                                        <button class="test-button run-test">Run Test</button>
                                     </p>
                                     <div class="description">
                                         <?= $item['description'] ?>
