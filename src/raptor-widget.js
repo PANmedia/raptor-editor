@@ -422,7 +422,9 @@ var RaptorWidget = {
                 document.execCommand('enableInlineTableEditing', false, false);
                 document.execCommand('styleWithCSS', true, true);
             } catch (error) {
+                // <strict>
                 handleError(error);
+                // </strict>
             }
 
             for (var name in this.plugins) {
