@@ -31,6 +31,26 @@
                     itemIcon = item.find('.icon');
 
                 checkState(item, itemIcon, state, icon);
+
+                var status = 'pass';
+                item.closest('.group').find('.item-content').each(function() {
+                    if ($(this).hasClass('ui-state-warning')) {
+                        status = 'loading';
+                        return false;
+                    } else if ($(this).hasClass('ui-state-error')) {
+                        status = 'fail';
+                    }
+                });
+
+console.log(status);
+                if (status === 'pass') {
+                    setGroupStatus(path, 'ui-state-confirmation', 'ui-icon-circle-check');
+                } else if (status === 'fail') {
+                    setGroupStatus(path, 'ui-state-error', 'ui-icon-circle-close');
+                } else if (status === 'loading') {
+                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-circle-clock');
+                }
+
             }
 
             function checkState(content, currentIcon, state, icon) {
@@ -44,9 +64,6 @@
 
             function runTest(path, fileName) {
                 testRunning = true;
-                setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
-                setItemStatus(path, fileName, 'ui-state-warning', 'ui-icon-clock');
-
                 $('<iframe>')
                     .attr('src', 'cases/' + path + '/' + fileName)
                     .load(function() {
@@ -92,6 +109,14 @@
                         }
             }, 500);
 
+            function queueTest(path, fileName) {
+                setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
+                setItemStatus(path, fileName, 'ui-state-warning', 'ui-icon-clock');
+                queue.push({
+                    path: path,
+                    fileName: fileName
+                });
+            }
 
             $(function() {
                 $('.run-test').click(function() {
@@ -99,10 +124,7 @@
                         path = group.data('path'),
                         item = $($(this).parentsUntil($('.group'))).last(),
                         fileName = item.data('fileName');
-                        queue.push({
-                            path: path,
-                            fileName: fileName
-                        });
+                        queueTest(path, fileName);
                 });
 
                 $('.run-group').click(function() {
@@ -110,10 +132,7 @@
                         path = group.data('path');
 
                         $(group).find('.item').each(function() {
-                            queue.push({
-                                path: path,
-                                fileName: $(this).data('fileName')
-                            });
+                            queueTest(path, $(this).data('fileName'));
                         });
                         return false;
                 });
