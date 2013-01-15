@@ -7,12 +7,16 @@ function ClassMenu(options) {
 ClassMenu.prototype = Object.create(SelectMenu.prototype);
 
 ClassMenu.prototype.init = function() {
-    this.raptor.bind('selectionChange', this.updateButton.bind(this));
-    return SelectMenu.prototype.init.apply(this, arguments);
+    var result = SelectMenu.prototype.init.call(this);
+    if (typeof this.options.classes !== 'undefined' &&
+            Object.keys(this.options.classes).length > 0) {
+        this.raptor.bind('selectionChange', this.updateButton.bind(this));
+        return result;
+    }
 };
 
 ClassMenu.prototype.changeClass = function(classes) {
-    selectionToggleBlockClasses(classes, this.raptor.getElement());
+    selectionToggleBlockClasses(classes, [], this.raptor.getElement());
 };
 
 ClassMenu.prototype.apply = function(event) {
@@ -64,4 +68,3 @@ ClassMenu.prototype.getMenuItems = function() {
 };
 
 Raptor.registerUi(new ClassMenu());
-    
