@@ -1,4 +1,11 @@
 function test(container, action, format) {
+    if (typeof window.testResults === 'undefined') {
+        window.testResults = {
+            count: 0,
+            tests: []
+        };
+    }
+
     var output = $(container).find('.test-output'),
         input = $(container).find('.test-input'),
         diff = $(container).find('.test-diff'),
@@ -58,6 +65,11 @@ function test(container, action, format) {
     if (error) {
         $('<pre>').text(error).appendTo(diff);
         $('<pre>').text(error.stack).appendTo(diff);
+        window.testResults.tests.push({
+                status: 'fail',
+                type: 'error',
+                error: error
+            });
         fail(container);
     } else {
         sortAttributes(expected.find('*'));
@@ -66,9 +78,20 @@ function test(container, action, format) {
         var outputHTML = style_html(output.html());
         diff.html(diffstr(expectedHTML, outputHTML));
         if (expectedHTML !== outputHTML) {
+            window.testResults.tests.push({
+                    status: 'fail',
+                    type: 'diff',
+                    diff: diff,
+                    expectedHTML: expectedHTML,
+                    actualHTML: actualHTML
+            });
             fail(container);
         } else {
+            window.testResults.tests.push({
+                    status: 'pass'
+                });
             pass(container);
         }
     }
+    window.testResults.count++;
 }
