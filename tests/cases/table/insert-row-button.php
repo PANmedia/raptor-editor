@@ -8,47 +8,51 @@
     <div class="test-1">
         <h1>Insert Row 1</h1>
         <div class="test-input">
-            <table>
-                <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
-                    <td>Cell 2,0</td>
-                </tr>
-                <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
-                </tr>
-                <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
-                </tr>
-            </table>
+            <div class="editible">
+                <table>
+                    <tr>
+                        <td>Cell 0,0{}</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div class="test-expected">
-            <table>
-                <tr>
-                    <td>Cell 0,0</td>
-                    <td>Cell 1,0</td>
-                    <td>Cell 2,0</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Cell 0,1</td>
-                    <td>Cell 1,1</td>
-                    <td>Cell 2,1</td>
-                </tr>
-                <tr>
-                    <td>Cell 0,2</td>
-                    <td>Cell 1,2</td>
-                    <td>Cell 2,2</td>
-                </tr>
-            </table>
+            <div class="editible">
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
    <script type="text/javascript">
@@ -61,150 +65,154 @@
     <div class="test-2">
         <h1>Insert Row 2</h1>
         <div class="test-input">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Header</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="editible">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
         <div class="test-expected">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Header</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="editible">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell{}</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
    <script type="text/javascript">
@@ -217,132 +225,136 @@
     <div class="test-3">
         <h1>Insert Header 1</h1>
         <div class="test-input">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Header</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="editible">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
         <div class="test-expected">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Header</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="editible">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
    <script type="text/javascript">
@@ -355,132 +367,136 @@
     <div class="test-4">
         <h1>Insert Footer 1</h1>
         <div class="test-input">
-             <table>
-                <thead>
-                    <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="editible">
+                <table>
+                   <thead>
+                       <tr>
+                           <th>Header</th>
+                           <th>Header</th>
+                           <th>Header</th>
+                           <th>Header</th>
+                           <th>Header</th>
+                           <th>Header</th>
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <tr>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td rowspan="2">Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                       </tr>
+                       <tr>
+                           <td>Cell</td>
+                           <td colspan="2">Cell</td>
+                           <td rowspan="2">Cell</td>
+                           <td>Cell</td>
+                       </tr>
+                       <tr>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td colspan="2">Cell</td>
+                           <td>Cell</td>
+                       </tr>
+                       <tr>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                       </tr>
+                       <tr>
+                           <td>Cell</td>
+                           <td colspan="2">Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                       </tr>
+                       <tr>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                           <td>Cell</td>
+                       </tr>
+                   </tbody>
+               </table>
+            </div>
         </div>
         <div class="test-expected">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                        <th>Header</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td rowspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td colspan="2">Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                    <tr>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Header</th>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                        <td>Cell</td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="editible">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
     </div>
     <script type="text/javascript">
