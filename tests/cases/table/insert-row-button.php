@@ -32,14 +32,14 @@
             <div class="editible">
                 <table>
                     <tr>
-                        <td>Cell 0,0</td>
+                        <td>Cell 0,0{}</td>
                         <td>Cell 1,0</td>
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
                         <td>Cell 0,1</td>
@@ -107,7 +107,7 @@
                             <td>Cell</td>
                         </tr>
                         <tr>
-                            <td>Cell</td>
+                            <td>Cell{}</td>
                             <td colspan="2">Cell</td>
                             <td>Cell</td>
                             <td>Cell</td>
@@ -164,33 +164,33 @@
                             <td>Cell</td>
                         </tr>
                         <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
                             <td>Cell{}</td>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
                             <td colspan="2">Cell</td>
                             <td>Cell</td>
                             <td>Cell</td>
                             <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Cell</td>
