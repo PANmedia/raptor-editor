@@ -16,24 +16,26 @@
 
         <script>
             var timerID = null;
+            var queue = [];
+            var testRunning = false;
 
             function setGroupStatus(path, state, icon) {
                 var group = $('.group[data-path="' + path + '"]').find('.group-content'),
                     groupIcon = group.find('.icon');
 
-                    checkState(group, groupIcon, state, icon);
+                checkState(group, groupIcon, state, icon);
             }
 
             function setItemStatus(path, fileName, state, icon) {
                 var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
                     itemIcon = item.find('.icon');
 
-                    checkState(item, itemIcon, state, icon);
+                checkState(item, itemIcon, state, icon);
             }
 
-            function checkState(content, currentIcon, state, icon){
+            function checkState(content, currentIcon, state, icon) {
                 content
-                    .removeClass('ui-state-default ui-state-warning ui-state-error ui-state-confirmation')
+                    .removeClass('ui-state-default ui-state-warning ui-state-error ui-state-confirmation ui-state-highlight')
                     .addClass(state);
                 currentIcon
                     .removeClass('ui-icon-clock ui-icon-circle-check ui-icon-circle-close')
@@ -41,6 +43,7 @@
             }
 
             function runTest(path, fileName) {
+                testRunning = true;
                 setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
                 setItemStatus(path, fileName, 'ui-state-warning', 'ui-icon-clock');
 
@@ -53,34 +56,86 @@
             }
 
             function checkStatus(testResults, path, fileName) {
-                if (testResults.count === testResults.tests.length) {
-                    clearInterval(timerId);
-                    timerId = null;
-
-                    var pass = true;
-                    for (var i = 0; i < testResults.tests.length; i++) {
-                        if (testResults.tests[i]['status'] !== 'pass') {
-                            pass = false;
-                            break;
+                console.log(testResults);
+                if (typeof testResults !== 'undefined') {
+                    if (testResults.count === testResults.tests.length) {
+                        var pass = true;
+                        for (var i = 0; i < testResults.tests.length; i++) {
+                            if (testResults.tests[i]['status'] !== 'pass') {
+                                pass = false;
+                                break;
+                            }
+                        }
+                        //need to add in counter to check how many have passed and display it in the group header and the item header
+                        if (pass) {
+                            setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check');
+                        } else {
+                            setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close');
                         }
                     }
-                    //need to add in counter to check how many have passed and display it in the group header and the item header
-                    if (pass) {
-                        setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check');
-                    } else {
-                        setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close');
-                    }
-
-                        $('iframe').remove();
+                } else {
+                    setItemStatus(path, fileName, 'ui-state-highlight',  'ui-icon-circle-close');
                 }
+                clearInterval(timerId);
+                timerId = null;
+                $('iframe').remove();
+                testRunning = false;
             }
-            $(document).ready(function(){
-                $('.run-test').click(function(){
-                  runTest('',''); //get path and filename of test
-                });
-              });
+
+            var queueTimer = setInterval(function() {
+                // If there is a test running, do nothing
+                if (testRunning) {
+                    return;
+                }// Else, if there is a test in the queue, start it
+                else if (queue.length !==0) {
+                    runTest(queue[0].path, queue[0].fileName);
+                    queue.splice(0,1);
+                        }
+            }, 500);
+
 
             $(function() {
+                $('.run-test').click(function() {
+                    var group = $($(this).parentsUntil($('.tests'))).last(),
+                        path = group.data('path'),
+                        item = $($(this).parentsUntil($('.group'))).last(),
+                        fileName = item.data('fileName');
+                        queue.push({
+                            path: path,
+                            fileName: fileName
+                        });
+                });
+
+                $('.run-group').click(function() {
+                    var group = $($(this).parentsUntil($('.tests'))).last(),
+                        path = group.data('path');
+
+                        $(group).find('.item').each(function() {
+                            queue.push({
+                                path: path,
+                                fileName: $(this).data('fileName')
+                            });
+                        });
+                        return false;
+                });
+
+                $('.run-all').click(function(){
+                    var tests = $(this).siblings('.tests');
+
+                        $(tests).find('.group').each(function() {
+                            var path = $(this).data('path');
+
+                            $(this).find('.item').each(function() {
+                                var fileName = ($(this).data('fileName'));
+                                //put each file name into an array
+                                queue.push({
+                                    path: path,
+                                    fileName: fileName
+                                });
+                            });
+                        });
+                });
+
                 $('.group-header').click(function() {
                     var item = $(this).siblings('.item');
                     if (!item.is(':visible')) {
@@ -147,9 +202,8 @@
         <?php endif; ?>
         <h2>Tests: </h2>
         <div class="content">
-            <div class="iframes"></div>
-            <button name="run-all">Run All Tests</button>
-            <button name="run-selected">Run Selected Tests</button>
+            <button class="run-all">Run All Tests</button>
+            <button class="run-selected">Run Selected Tests</button>
             This may take several minutes
             <div class="tests">
                 <?php
@@ -177,7 +231,7 @@
                     <?php
                     $k = 0;
                     foreach ($group["tests"] as $item): ?>
-                    <div class="item" style="display: none;" data-file-name="">
+                    <div class="item" style="display: none;" data-file-name="<?= $item['filename'] ?>">
                         <div class="number">
                             <input type="checkbox"><?= $i . $j[$k] ?>
                         </div>
@@ -203,9 +257,10 @@
                 <?php $i++; endforeach; ?>
             </div>
 
-            <button name="run-all">Run All Tests</button>
-            <button name="run-selected">Run Selected Tests</button>
+            <button class="run-all">Run All Tests</button>
+            <button class="run-selected">Run Selected Tests</button>
             This may take several minutes
+            <div class="iframes"></div>
         </div>
     </body>
 </html>
