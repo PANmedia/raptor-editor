@@ -42,7 +42,6 @@
                     }
                 });
 
-console.log(status);
                 if (status === 'pass') {
                     setGroupStatus(path, 'ui-state-confirmation', 'ui-icon-circle-check');
                 } else if (status === 'fail') {
@@ -145,11 +144,7 @@ console.log(status);
 
                             $(this).find('.item').each(function() {
                                 var fileName = ($(this).data('fileName'));
-                                //put each file name into an array
-                                queue.push({
-                                    path: path,
-                                    fileName: fileName
-                                });
+                                queueTest(path, fileName);
                             });
                         });
                 });
