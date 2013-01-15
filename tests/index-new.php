@@ -56,7 +56,6 @@
             }
 
             function checkStatus(testResults, path, fileName) {
-                console.log(testResults);
                 if (typeof testResults !== 'undefined') {
                     if (testResults.count === testResults.tests.length) {
                         var pass = true;
@@ -135,6 +134,8 @@
                             });
                         });
                 });
+
+                //make run selected tests button work
 
                 $('.group-header').click(function() {
                     var item = $(this).siblings('.item');
