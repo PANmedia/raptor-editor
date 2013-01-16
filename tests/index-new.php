@@ -51,7 +51,9 @@
                         return false;
                     } else if ($(this).hasClass('ui-state-error')) {
                         status = 'fail';
-                    } else {
+                    } else if ($(this).hasClass('ui-state-highlight') && status === 'pass') {
+                        status = 'highlight';
+                    } else if ($(this).hasClass('ui-state-confirmed')) {
                         itemsPassed++;
                     }
                 });
@@ -62,6 +64,8 @@
                     setGroupStatus(path, 'ui-state-error', 'ui-icon-circle-close', itemsPassed);
                 } else if (status === 'loading') {
                     setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
+                } else if (status === 'highlight') {
+                    setGroupStatus(path, 'ui-state-highlight', 'ui-icon-info');
                 }
 
             }
@@ -106,10 +110,11 @@
 
                         } else {
                             setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
+                            $($('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content').find('.error-message')).css('display','');
                         }
                     }
                 } else {
-                    setItemStatus(path, fileName, 'ui-state-highlight',  'ui-icon-circle-close');
+                    setItemStatus(path, fileName, 'ui-state-highlight',  'ui-icon-info');
                 }
                 clearInterval(timerId);
                 timerId = null;
@@ -307,6 +312,7 @@
                                         <span class="icon ui-icon"></span>
                                         <strong><?= $item['name'] ?></strong>
                                         <span class="items-pass-fail-ratio" style="display: none;">x/y tests passed</span>
+                                        <span class="error-message" style="display: none;">sample error message</span>
                                         <button class="test-button run-test">Run Test</button>
                                         <button class="test-button view-test">View Test</button>
                                     </p>
