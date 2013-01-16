@@ -19,19 +19,31 @@
             var queue = [];
             var testRunning = false;
 
-            function setGroupStatus(path, state, icon) {
-                var group = $('.group[data-path="' + path + '"]').find('.group-content'),
-                    groupIcon = group.find('.icon');
+            function setGroupStatus(path, state, icon, itemsPassed)  {
+                var group = $('.group[data-path="' + path + '"]'),
+                    groupContent = group.find('.group-content'),
+                    groupIcon = groupContent.find('.icon'),
+                    groupRatio = groupContent.find('.group-pass-fail-ratio'),
+                    passed = groupRatio.find('.group-passes');
 
-                checkState(group, groupIcon, state, icon);
+                 $(groupRatio).css('display','');
+
+                passed.html(itemsPassed);
+
+                checkState(groupContent, groupIcon, state, icon);
             }
 
-            function setItemStatus(path, fileName, state, icon) {
+
+            function setItemStatus(path, fileName, state, icon, passes, testLength) {
                 var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
-                    itemIcon = item.find('.icon');
+                    itemIcon = item.find('.icon'),
+                    itemRatio = item.find('.items-pass-fail-ratio');
+
+                itemRatio.html( passes + '/' + testLength + ' tests passed');
 
                 checkState(item, itemIcon, state, icon);
 
+                var itemsPassed = 0; //needs to count how many items in that group have passed
                 var status = 'pass';
                 item.closest('.group').find('.item-content').each(function() {
                     if ($(this).hasClass('ui-state-warning')) {
@@ -39,15 +51,17 @@
                         return false;
                     } else if ($(this).hasClass('ui-state-error')) {
                         status = 'fail';
+                    } else {
+                        itemsPassed++;
                     }
                 });
 
                 if (status === 'pass') {
-                    setGroupStatus(path, 'ui-state-confirmation', 'ui-icon-circle-check');
+                    setGroupStatus(path, 'ui-state-confirmation', 'ui-icon-circle-check', itemsPassed);
                 } else if (status === 'fail') {
-                    setGroupStatus(path, 'ui-state-error', 'ui-icon-circle-close');
+                    setGroupStatus(path, 'ui-state-error', 'ui-icon-circle-close', itemsPassed);
                 } else if (status === 'loading') {
-                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-circle-clock');
+                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
                 }
 
             }
@@ -74,18 +88,24 @@
             function checkStatus(testResults, path, fileName) {
                 if (typeof testResults !== 'undefined') {
                     if (testResults.count === testResults.tests.length) {
-                        var pass = true;
-                        for (var i = 0; i < testResults.tests.length; i++) {
+                        var pass = true,
+                            testLength = testResults.tests.length,
+                            fails = 0,
+                            passes = 0;
+                        for (var i = 0; i < testLength; i++) {
                             if (testResults.tests[i]['status'] !== 'pass') {
                                 pass = false;
-                                break;
+                                fails ++;
                             }
                         }
+                        $($('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content').find('.items-pass-fail-ratio')).css('display','');
+                        passes = testLength - fails;
                         //need to add in counter to check how many have passed and display it in the group header and the item header
                         if (pass) {
-                            setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check');
+                            setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check', passes, testLength);
+
                         } else {
-                            setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close');
+                            setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
                         }
                     }
                 } else {
@@ -95,6 +115,7 @@
                 timerId = null;
                 $('iframe').remove();
                 testRunning = false;
+
             }
 
             var queueTimer = setInterval(function() {
@@ -149,7 +170,10 @@
                         });
                 });
 
-                //make run selected tests button work
+                 //make run selected tests button work
+                $('.run-selected').click(function(){
+                    alert('this button does not work yet.');
+                });
 
                 $('.group-header').click(function() {
                     var item = $(this).siblings('.item');
@@ -226,7 +250,7 @@
                 foreach ($groups as $group): ?>
                 <div class="group" data-path="<?= $group['path'] ?>">
                     <div class="number">
-                        <input type="checkbox"><?= $i ?>
+                        <input class="group-check" type="checkbox"><?= $i ?>
                     </div>
                     <div class="group-header">
                         <div class="ui-widget ui-notification">
@@ -234,7 +258,7 @@
                                 <p>
                                     <span class="icon ui-icon"></span>
                                     <strong><?= $group['name'] ?></strong>
-                                    <span class="pass-fail-ratio">x/y items passed</span>
+                                    <span class="group-pass-fail-ratio" style="display: none;"><span class="group-passes">0</span>/<?= sizeof($group['tests']) ?> items passed</span>
                                     <button class="test-button run-group">Run Group Test</button>
                                 </p>
                                 <div class="description">
@@ -248,7 +272,7 @@
                     foreach ($group["tests"] as $item): ?>
                     <div class="item" style="display: none;" data-file-name="<?= $item['filename'] ?>">
                         <div class="number">
-                            <input type="checkbox"><?= $i . $j[$k] ?>
+                            <input class="item-check" type="checkbox"><?= $i . $j[$k] ?>
                         </div>
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
@@ -256,7 +280,7 @@
                                     <p>
                                         <span class="icon ui-icon"></span>
                                         <strong><?= $item['name'] ?></strong>
-                                        <span class="pass-fail-ratio">x/y tests passed</span>
+                                        <span class="items-pass-fail-ratio" style="display: none;">x/y tests passed</span>
                                         <button class="test-button run-test">Run Test</button>
                                     </p>
                                     <div class="description">
