@@ -1,4 +1,4 @@
-function testEditor(container, action, format) {
+function testEditor(container, action) {
     if (typeof window.testResults === 'undefined') {
         window.testResults = {
             count: 0,

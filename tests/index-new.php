@@ -63,7 +63,7 @@
                 } else if (status === 'fail') {
                     setGroupStatus(path, 'ui-state-error', 'ui-icon-circle-close', itemsPassed);
                 } else if (status === 'loading') {
-                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
+                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock', itemsPassed);
                 } else if (status === 'highlight') {
                     setGroupStatus(path, 'ui-state-highlight', 'ui-icon-info');
                 }
@@ -103,10 +103,7 @@
                             if (testResults.tests[i]['status'] !== 'pass') {
                                 pass = false;
                                 fails ++;
-                                //work to append all the errors to the span error message
-
                                 $('<span>' + String(testResults.tests[i]['error']) +'<br /></span>').appendTo(errorSpan);
-
                             }
                         }
                         itemContent.find('.items-pass-fail-ratio').css('display','');
@@ -114,11 +111,9 @@
                         //need to add in counter to check how many have passed and display it in the group header and the item header
                         if (pass) {
                             setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check', passes, testLength);
-
                         } else {
                             setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
                             itemContent.find('.error-message').css('display','');
-
                         }
                     }
                 } else {
@@ -128,7 +123,6 @@
                 timerId = null;
                 $('iframe').remove();
                 testRunning = false;
-
             }
 
             var queueTimer = setInterval(function() {
@@ -170,7 +164,7 @@
                         return false;
                 });
 
-                $('.run-all').click(function(){
+                $('.run-all').click(function() {
                     var tests = $(this).siblings('.tests');
 
                         $(tests).find('.group').each(function() {
@@ -184,7 +178,7 @@
                 });
 
                  //make run selected tests button work
-                $('.run-selected').click(function(){
+                $('.run-selected').click(function() {
                     var tests = $(this).siblings('.tests');
 
                     $(tests).find('.group').each(function() {
@@ -207,7 +201,7 @@
                     }
                 });
 
-                $('.view-test').click(function(){
+                $('.view-test').click(function() {
                     var path = $(this).closest('.group').data('path'),
                         filename = $(this).closest('.item').data('fileName');
 
