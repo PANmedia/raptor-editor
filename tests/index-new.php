@@ -194,6 +194,13 @@
                     }
                 });
 
+                $('.view-test').click(function(){
+                    var path = $(this).closest('.group').data('path'),
+                        filename = $(this).closest('.item').data('fileName');
+
+                    window.open('cases/' + path + '/' + filename );
+                });
+
                 $('.group-header').click(function() {
                     var item = $(this).siblings('.item');
                     if (!item.is(':visible')) {
@@ -301,6 +308,7 @@
                                         <strong><?= $item['name'] ?></strong>
                                         <span class="items-pass-fail-ratio" style="display: none;">x/y tests passed</span>
                                         <button class="test-button run-test">Run Test</button>
+                                        <button class="test-button view-test">View Test</button>
                                     </p>
                                     <div class="description">
                                         <?= $item['description'] ?>
