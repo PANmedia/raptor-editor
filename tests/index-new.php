@@ -175,6 +175,16 @@
                     alert('this button does not work yet.');
                 });
 
+                $('.group-check').change(function() {
+                    //check all of the checkboxes in that group
+                    if ($(this).is(':checked')) {
+                        $($(this).closest('.group').find('.item-check')).attr('checked', true); // will check the checkbox with id check1
+                    }else {
+                        $($(this).closest('.group').find('.item-check')).attr('checked', false); // will uncheck the checkbox with id check1
+                    }
+
+                });
+
                 $('.group-header').click(function() {
                     var item = $(this).siblings('.item');
                     if (!item.is(':visible')) {
