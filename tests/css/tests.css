@@ -53,3 +53,14 @@ h2 {
 .clear {
     clear: both;
 }
+
+.error-message{
+    float: right;
+    margin-right: 1%;
+}
+iframe {
+    position: fixed;
+    top: 1px;
+    height: 10px;
+    overflow: hidden;
+}
