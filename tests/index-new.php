@@ -172,17 +172,26 @@
 
                  //make run selected tests button work
                 $('.run-selected').click(function(){
-                    alert('this button does not work yet.');
+                    var tests = $(this).siblings('.tests');
+
+                    $(tests).find('.group').each(function() {
+                        var groupCheckbox = $(this).find('.group-check');
+
+                        if (groupCheckbox.is(':checked')){
+                            var path = $(this).data('path');
+
+                            $(this).find('.item').each(function() {
+                                queueTest(path, $(this).data('fileName'));
+                            });}
+                    });
                 });
 
                 $('.group-check').change(function() {
-                    //check all of the checkboxes in that group
                     if ($(this).is(':checked')) {
                         $($(this).closest('.group').find('.item-check')).attr('checked', true); // will check the checkbox with id check1
                     }else {
                         $($(this).closest('.group').find('.item-check')).attr('checked', false); // will uncheck the checkbox with id check1
                     }
-
                 });
 
                 $('.group-header').click(function() {
