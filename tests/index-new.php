@@ -26,7 +26,7 @@
                     groupRatio = groupContent.find('.group-pass-fail-ratio'),
                     passed = groupRatio.find('.group-passes');
 
-                 $(groupRatio).css('display','');
+                $(groupRatio).css('display','');
 
                 passed.html(itemsPassed);
 
@@ -53,7 +53,7 @@
                         status = 'fail';
                     } else if ($(this).hasClass('ui-state-highlight') && status === 'pass') {
                         status = 'highlight';
-                    } else if ($(this).hasClass('ui-state-confirmed')) {
+                    } else if ($(this).hasClass('ui-state-confirmation')) {
                         itemsPassed++;
                     }
                 });
@@ -92,17 +92,24 @@
             function checkStatus(testResults, path, fileName) {
                 if (typeof testResults !== 'undefined') {
                     if (testResults.count === testResults.tests.length) {
+                        var itemContent = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content');
                         var pass = true,
                             testLength = testResults.tests.length,
                             fails = 0,
-                            passes = 0;
+                            passes = 0,
+                            errorSpan = $(itemContent).find('.error-message');
+                    errorSpan.text('');
                         for (var i = 0; i < testLength; i++) {
                             if (testResults.tests[i]['status'] !== 'pass') {
                                 pass = false;
                                 fails ++;
+                                //work to append all the errors to the span error message
+
+                                $('<span>' + String(testResults.tests[i]['error']) +'<br /></span>').appendTo(errorSpan);
+
                             }
                         }
-                        $($('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content').find('.items-pass-fail-ratio')).css('display','');
+                        itemContent.find('.items-pass-fail-ratio').css('display','');
                         passes = testLength - fails;
                         //need to add in counter to check how many have passed and display it in the group header and the item header
                         if (pass) {
@@ -110,7 +117,8 @@
 
                         } else {
                             setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
-                            $($('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content').find('.error-message')).css('display','');
+                            itemContent.find('.error-message').css('display','');
+
                         }
                     }
                 } else {
@@ -312,9 +320,9 @@
                                         <span class="icon ui-icon"></span>
                                         <strong><?= $item['name'] ?></strong>
                                         <span class="items-pass-fail-ratio" style="display: none;">x/y tests passed</span>
-                                        <span class="error-message" style="display: none;">sample error message</span>
                                         <button class="test-button run-test">Run Test</button>
                                         <button class="test-button view-test">View Test</button>
+                                        <span class="error-message" style="display: none;"></span>
                                     </p>
                                     <div class="description">
                                         <?= $item['description'] ?>
