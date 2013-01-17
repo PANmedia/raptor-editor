@@ -49,9 +49,9 @@ DockPlugin.prototype.toggleState = function() {
  */
 DockPlugin.prototype.toggleDockToElement = function() {
     if (this.dockState) {
-        this.dockToElement();
-    } else {
         this.undockFromElement();
+    } else {
+        this.dockToElement();
     }
 };
 
@@ -59,20 +59,22 @@ DockPlugin.prototype.toggleDockToElement = function() {
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.dockToElement = function() {
-    this.marker.replaceWith(undockFromElement(this.dockState));
-    this.dockState = null;
+    var element = this.raptor.getElement();
+    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
+    this.raptor.getLayout().getElement().addClass(this.options.baseClass + '-docked-to-element');
+    this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
+        position: this.options.position,
+        spacer: this.options.spacer
+    });
 };
 
 /**
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.undockFromElement = function() {
-    var element = this.raptor.getElement();
-    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
-    this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
-        position: this.options.position,
-        spacer: this.options.spacer
-    });
+    this.marker.replaceWith(undockFromElement(this.dockState));
+    this.dockState = null;
+    this.raptor.getLayout().getElement().removeClass(this.options.baseClass + '-docked-to-element');
 };
 
 /**
