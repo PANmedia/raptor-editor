@@ -1,3 +1,18 @@
+/**
+ * Select menu UI widget styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
 .raptor-menu {
     z-index: 10000;
+    padding: 6px;
+}
+
+.raptor-menu .ui-menu-item:before {
+    display: none;
+}
+
+.raptor-menu .ui-menu-item a,
+.raptor-menu .ui-menu-item a:hover {
+    padding: 3px 10px;
 }
