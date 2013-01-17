@@ -32,8 +32,10 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - edit-superscript.png
  - edit-symbol.png
  - edit-underline.png
+ - edit.png
  - guide.png
  - image.png
+ - palette-paint-brush.png
  - pin-in.png (modified by David Neilsen)
  - pin.png
  - table-delete-column.png
