@@ -33,18 +33,17 @@
                 checkState(groupContent, groupIcon, state, icon);
             }
 
-
             function setItemStatus(path, fileName, state, icon, passes, testLength) {
                 var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
                     itemIcon = item.find('.icon'),
-                    itemRatio = item.find('.items-pass-fail-ratio');
+                    itemRatio = item.find('.items-pass-fail-ratio'),
+                    itemsPassed = 0,
+                    status = 'pass';
 
                 itemRatio.html( passes + '/' + testLength + ' tests passed');
 
                 checkState(item, itemIcon, state, icon);
 
-                var itemsPassed = 0; //needs to count how many items in that group have passed
-                var status = 'pass';
                 item.closest('.group').find('.item-content').each(function() {
                     if ($(this).hasClass('ui-state-warning')) {
                         status = 'loading';
@@ -92,28 +91,31 @@
             function checkStatus(testResults, path, fileName) {
                 if (typeof testResults !== 'undefined') {
                     if (testResults.count === testResults.tests.length) {
-                        var itemContent = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content');
-                        var pass = true,
+                        var itemContent = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
+                            pass = true,
                             testLength = testResults.tests.length,
                             fails = 0,
-                            passes = 0,
-                            errorSpan = $(itemContent).find('.error-message');
+                            passes = 0;
+                        var errorSpan = $(itemContent).find('.error-message');
+
                         errorSpan.text('');
+
                         for (var i = 0; i < testLength; i++) {
                             if (testResults.tests[i]['status'] !== 'pass') {
+                                var error = String(testResults.tests[i]['error']);
                                 pass = false;
                                 fails ++;
-                                var error = String(testResults.tests[i]['error']);
-                                if (error === 'undefined' ){
+
+                                if (error === 'undefined' ) {
                                     $('<span>Expected output does not match actual output<br /></span>').appendTo(errorSpan);
-                                }else {
+                                } else {
                                     $('<span>' + error +'<br /></span>').appendTo(errorSpan);
                                 }
                             }
                         }
                         itemContent.find('.items-pass-fail-ratio').css('display','');
                         passes = testLength - fails;
-                        //need to add in counter to check how many have passed and display it in the group header and the item header
+
                         if (pass) {
                             setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check', passes, testLength);
                         } else {
@@ -131,14 +133,12 @@
             }
 
             var queueTimer = setInterval(function() {
-                // If there is a test running, do nothing
                 if (testRunning) {
                     return;
-                }// Else, if there is a test in the queue, start it
-                else if (queue.length !==0) {
+                } else if (queue.length !==0) {
                     runTest(queue[0].path, queue[0].fileName);
                     queue.splice(0,1);
-                        }
+                }
             }, 500);
 
             function queueTest(path, fileName) {
@@ -182,26 +182,27 @@
                         });
                 });
 
-                 //make run selected tests button work
+
                 $('.run-selected').click(function() {
                     var tests = $(this).siblings('.tests');
 
                     $(tests).find('.group').each(function() {
                         var groupCheckbox = $(this).find('.group-check');
 
-                        if (groupCheckbox.is(':checked')){
+                        if (groupCheckbox.is(':checked')) {
                             var path = $(this).data('path');
 
                             $(this).find('.item').each(function() {
                                 queueTest(path, $(this).data('fileName'));
-                            });}
+                            });
+                        }
                     });
                 });
 
                 $('.group-check').change(function() {
                     if ($(this).is(':checked')) {
                         $($(this).closest('.group').find('.item-check')).attr('checked', true); // will check the checkbox with id check1
-                    }else {
+                    } else {
                         $($(this).closest('.group').find('.item-check')).attr('checked', false); // will uncheck the checkbox with id check1
                     }
                 });
