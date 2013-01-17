@@ -252,7 +252,7 @@
                 $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
             }
 
-            $findTests = function($case) use($csv_data, &$warnings) {
+            $findTests = function($case) use($csv_data, &$test_warnings) {
                 $tests = [];
                 foreach (glob($case . '/*.*') as $file) {
                     $index = basename($case) . '/' . basename($file);
@@ -289,10 +289,18 @@
 
     </head>
     <body>
-        <?php if (!empty($warnings)): ?>
-            <h2>Warnings: </h2>
+        <?php if (!empty($group_warnings)): ?>
+            <h2>Group Warnings: </h2>
             <ul>
-                <?php foreach ($warnings as $warning): ?>
+                <?php foreach ($group_warnings as $warning): ?>
+                    <li><?= $warning ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <?php if (!empty($test_warnings)): ?>
+            <h2>Test Warnings: </h2>
+            <ul>
+                <?php foreach ($test_warnings as $warning): ?>
                     <li><?= $warning ?></li>
                 <?php endforeach; ?>
             </ul>
