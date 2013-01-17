@@ -98,12 +98,17 @@
                             fails = 0,
                             passes = 0,
                             errorSpan = $(itemContent).find('.error-message');
-                    errorSpan.text('');
+                        errorSpan.text('');
                         for (var i = 0; i < testLength; i++) {
                             if (testResults.tests[i]['status'] !== 'pass') {
                                 pass = false;
                                 fails ++;
-                                $('<span>' + String(testResults.tests[i]['error']) +'<br /></span>').appendTo(errorSpan);
+                                var error = String(testResults.tests[i]['error']);
+                                if (error === 'undefined' ){
+                                    $('<span>Expected output does not match actual output<br /></span>').appendTo(errorSpan);
+                                }else {
+                                    $('<span>' + error +'<br /></span>').appendTo(errorSpan);
+                                }
                             }
                         }
                         itemContent.find('.items-pass-fail-ratio').css('display','');
