@@ -96,9 +96,9 @@
                             testLength = testResults.tests.length,
                             fails = 0,
                             passes = 0;
-                        var errorSpan = $(itemContent).find('.error-message');
+                        var errorDiv = $(itemContent).find('.error-message');
 
-                        errorSpan.text('');
+                        errorDiv.text('');
 
                         for (var i = 0; i < testLength; i++) {
                             if (testResults.tests[i]['status'] !== 'pass') {
@@ -107,9 +107,9 @@
                                 fails ++;
 
                                 if (error === 'undefined' ) {
-                                    $('<span>Expected output does not match actual output<br /></span>').appendTo(errorSpan);
+                                    $('<div>Expected output does not match actual output<br /></div>').appendTo(errorDiv);
                                 } else {
-                                    $('<span>' + error +'<br /></span>').appendTo(errorSpan);
+                                    $('<div>' + error +'</div>').appendTo(errorDiv);
                                 }
                             }
                         }
@@ -120,7 +120,7 @@
                             setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check', passes, testLength);
                         } else {
                             setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
-                            itemContent.find('.error-message').css('display','');
+                            errorDiv.css('display','');
                         }
                     }
                 } else {
@@ -294,15 +294,16 @@
                     <div class="group-header">
                         <div class="ui-widget ui-notification">
                             <div class="group-content ui-state-default ui-corner-all">
-                                <p>
-                                    <span class="icon ui-icon"></span>
+                                <button class="test-button run-group">Run Group Test</button>
+                                <span class="icon ui-icon"></span>
+                                <div class="title">
                                     <strong><?= $group['name'] ?></strong>
                                     <span class="group-pass-fail-ratio" style="display: none;"><span class="group-passes">0</span>/<?= sizeof($group['tests']) ?> items passed</span>
-                                    <button class="test-button run-group">Run Group Test</button>
-                                </p>
-                                <div class="description">
-                                    <?= $group['description'] ?>
                                 </div>
+                                <div class="description">
+                                    <p><?= $group['description'] ?></p>
+                                </div>
+                                <div class="clear"></div>
                             </div>
                         </div>
                     </div>
@@ -316,17 +317,18 @@
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
                                 <div class="item-content ui-state-default ui-corner-all" >
-                                    <p>
-                                        <span class="icon ui-icon"></span>
+                                    <button class="test-button run-test">Run Test</button>
+                                    <button class="test-button view-test">View Test</button>
+                                    <span class="icon ui-icon"></span>
+                                    <div class="title">
                                         <strong><?= $item['name'] ?></strong>
-                                        <span class="items-pass-fail-ratio" style="display: none;">x/y tests passed</span>
-                                        <button class="test-button run-test">Run Test</button>
-                                        <button class="test-button view-test">View Test</button>
-                                        <span class="error-message" style="display: none;"></span>
-                                    </p>
+                                        <span class="items-pass-fail-ratio" style="display: none;"></span>
+                                    </div>
                                     <div class="description">
                                         <?= $item['description'] ?>
                                     </div>
+                                    <div class="error-message" style="display: none;"></div>
+                                    <div class="clear"></div>
                                 </div>
                             </div>
                         </div>
