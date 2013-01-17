@@ -1,0 +1,34 @@
+Name,Folder,Description
+Application Tests,applier,"Tests the application of attributes, classes and tags to a selected range"
+Basic Formatting,basic-formatting,Tests the core text formatting buttons on the editor toolbar.
+Block Class Application,selection-toggle-block-class,Tests the application of different block classes in various types of word selections.
+Block Quote,block-quote,Tests the application and removal of block quotes.
+Cancel All Formatting,cancel,Applies the cancel all formatting button to remove all styles recently applied styles.
+Clear Selected Formatting,clear-formatting,Checks that the clear formatting button removes all formatting from a selected portion of text.
+Click to Begin Editing,click-to-edit,Checks that the click to edit button is working correctly.
+Custom Classes,class-menu,Tests the application of user defined classes.
+Custom Tags,custom-tags,Tests the application and removal of customised tags.
+Docking Toolbar ,dock,Tests that the toolbars docking buttons set the dock state correctly.
+Element Guides,guides,Checks that the guides button on the toolbar displays and removes the element guides.
+Embed Object,embed-dialog,Tests the various components of the embed object dialog opened from a button on the toolbar.
+HTML Tag Menu,tag-menu,Tests the inate functioning of the tag menu.
+Image Positioning,image-float,Tests the float image buttons position the selected image appropriately.
+Insert Horizontal Rule,horizontal-rule,Tests the insertion of a horizontal line from a button on the editor toolbar.
+Links,links,"Tests the creation of email, internal and external links."
+Lists,list,Tests the creation and removal of ordered and unordered lists.
+NAME REQ,actions,DESC REQ
+NAME REQ,clean,DESC REQ
+NAME REQ,css-class-applier,DESC REQ
+NAME REQ,save-state,DESC REQ
+NAME REQ,toggle-wrapper-1,DESC REQ
+Raptor Initialisation,initialising-raptor,Tests what happens when Raptor is intialised in various situations.
+Save Changes,save-changes,Tests the save button on the editors toolbar is active when changes have been made and saves those changes when clicked.
+Selection,tokens-to-ranges,Checks that the editor maintains user selection after applying a class.
+Subscript,subscript,Tests the application and removal of the subscript class in various selection situations.
+Superscript,superscript,Tests the application and removal of the superscript class in various selection situations.
+Table,table,"Tests all of the buttons relating to the creation, manipulation and deletion of various components of a table."
+Text Alignment,alignment,Tests the text alignment buttons on the editor toolbar.
+Text Area Replacement,textareas,Tests that raptor automatically replaces textareas.
+Text Colour,color-picker,Checks that the colour tags are being inserted and removed correctly.
+Text Size,text-size,Checks the editor toolbar buttons for the manipulation of font size.
+Toolbar Boundaries,toolbar-positioning,Checks that the toolbar does not exceed the screens boundaries.

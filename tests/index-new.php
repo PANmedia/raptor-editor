@@ -227,6 +227,21 @@
 
         <?php
 
+            $group_warnings = [];
+            $test_warnings = [];
+            $groups = [];
+            //read in groups file
+            $csv_group_file_content = file_get_contents('groups.csv');
+            $group_lines = explode("\n", $csv_group_file_content);
+            $group_head = str_getcsv(array_shift($group_lines));
+
+            $group_csv_data = array();
+            foreach ($group_lines as $group_line) {
+                $group_row_data = array_combine($group_head, str_getcsv($group_line));
+                $group_csv_data[$group_row_data['Folder']] = $group_row_data;
+            }
+
+            //read in tests file
             $csv_file_content = file_get_contents('tests.csv');
             $lines = explode("\n", $csv_file_content);
             $head = str_getcsv(array_shift($lines));
@@ -237,14 +252,12 @@
                 $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
             }
 
-            $warnings = [];
-            $groups = [];
             $findTests = function($case) use($csv_data, &$warnings) {
                 $tests = [];
                 foreach (glob($case . '/*.*') as $file) {
                     $index = basename($case) . '/' . basename($file);
                     if (!isset($csv_data[$index])) {
-                        $warnings[] = 'No description found for: ' . $index;
+                        $test_warnings[] = 'No description found for: ' . $index;
                         continue;
                     }
                     $tests[] = [
@@ -256,11 +269,17 @@
                 }
                 return $tests;
             };
+
             foreach (glob(__DIR__ . '/cases/*') as $case) {
-                $groups[] = [
-                    'name' => basename($case),
+                $index = basename($case);
+                    if (!isset($group_csv_data[$index])) {
+                        $group_warnings[] = 'No description found for: ' . $index;
+                        continue;
+                    }
+                    $groups[] = [
+                    'name' => $group_csv_data[$index]['Name'],
                     'path' => basename($case),
-                    'description' => '',
+                    'description' => $group_csv_data[$index]['Description'],
                     'tests' => $findTests($case),
                 ];
             }
