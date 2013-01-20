@@ -74,7 +74,7 @@ function selectionSet(mixed) {
 function selectionReplace(html, selection) {
     var result = [];
     selectionEachRange(function(range) {
-        result.concat(rangeReplace(html, range));
+        result = result.concat(rangeReplace(range, html));
     }, selection, this);
     return result;
 }
