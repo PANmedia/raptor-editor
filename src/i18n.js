@@ -58,6 +58,28 @@ function setLocale(key) {
 }
 
 /**
+ * Return the localised string for the current locale if present, else the
+ * localised string for the first available locale, failing that return the
+ * string.
+ *
+ * @param  {string} string
+ * @return {string}
+ */
+function getLocalizedString(string) {
+    if (typeof locales[currentLocale] !== 'undefined') {
+        return locales[currentLocale][string];
+    }
+
+    for (var localeName in localeNames) {
+        if (typeof locales[localeName][string] !== 'undefined') {
+            return locales[localeName][string];
+        }
+    }
+
+    return string;
+}
+
+/**
  * Internationalisation function. Translates a string with tagged variable
  * references to the current locale.
  *
@@ -72,11 +94,7 @@ function setLocale(key) {
  */
 function _(string, variables) {
     // Get the current locale translated string
-    if (currentLocale &&
-            locales[currentLocale] &&
-            typeof locales[currentLocale][string] === 'string') {
-        string = locales[currentLocale][string];
-    }
+    string = getLocalizedString(string);
 
     // Convert the variables
     if (!variables) {
