@@ -9,7 +9,7 @@
     width: 90%;
     border: 2px solid #b3b3b3;
     margin-right: 5%;
-    margin-top: 2%;
+    margin-top: 1%;
     margin-bottom: 2%;
 }
 
@@ -51,6 +51,14 @@ h2 {
     margin-left: 4.5em;
     margin-top: 1em;
     margin-bottom: 1em;
+}
+.summary{
+    float: right;
+    margin-right: 10%;
+
+}
+.buttons{
+    float: left;
 }
 
 iframe {
