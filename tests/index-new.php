@@ -15,9 +15,9 @@
         <script src="../src/dependencies/jquery.js"></script>
 
         <script>
-            var timerID = null;
-            var queue = [];
-            var testRunning = false;
+            var timerID = null,
+                queue = [],
+                testRunning = false;
 
             function setGroupStatus(path, state, icon, itemsPassed)  {
                 var group = $('.group[data-path="' + path + '"]'),
@@ -129,6 +129,7 @@
                 clearInterval(timerId);
                 timerId = null;
                 $('iframe').remove();
+                getSummary();
                 testRunning = false;
             }
 
@@ -148,15 +149,34 @@
                     path: path,
                     fileName: fileName
                 });
+                getSummary();
+            }
+
+            function getSummary(){
+                var testsFailed = $('.item .ui-state-error').length,
+                    testsPending = $('.item .ui-state-warning').length,
+                    testsPassed = $('.item .ui-state-confirmation').length,
+                    tests = $('.item').length,
+                    testsUntested = tests - (testsFailed + testsPassed + testsPending),
+                    summary = $('.content').find('.summary');
+
+                summary.html(testsUntested + '/' + tests +' test(s) are yet to be tested  '
+                    + testsPending + '/' + tests +' test(s) are pending <br />'
+                    + testsPassed +'/' + tests +' test(s) have passed  '
+                    + testsFailed +'/' + tests +' test(s) have failed');
             }
 
             $(function() {
+
+                getSummary();
+
                 $('.run-test').click(function() {
                     var group = $($(this).parentsUntil($('.tests'))).last(),
                         path = group.data('path'),
                         item = $($(this).parentsUntil($('.group'))).last(),
                         fileName = item.data('fileName');
                         queueTest(path, fileName);
+
                 });
 
                 $('.run-group').click(function() {
@@ -201,9 +221,9 @@
 
                 $('.group-check').change(function() {
                     if ($(this).is(':checked')) {
-                        $($(this).closest('.group').find('.item-check')).attr('checked', true); // will check the checkbox with id check1
+                        $($(this).closest('.group').find('.item-check')).attr('checked', true);
                     } else {
-                        $($(this).closest('.group').find('.item-check')).attr('checked', false); // will uncheck the checkbox with id check1
+                        $($(this).closest('.group').find('.item-check')).attr('checked', false);
                     }
                 });
 
@@ -285,10 +305,12 @@
             }
 
             $j = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
         ?>
 
     </head>
     <body>
+
         <?php if (!empty($group_warnings)): ?>
             <h2>Group Warnings: </h2>
             <ul>
@@ -296,8 +318,8 @@
                     <li><?= $warning ?></li>
                 <?php endforeach; ?>
             </ul>
-        <?php endif; ?>
-        <?php if (!empty($test_warnings)): ?>
+        <?php endif;
+             if (!empty($test_warnings)): ?>
             <h2>Test Warnings: </h2>
             <ul>
                 <?php foreach ($test_warnings as $warning): ?>
@@ -307,9 +329,18 @@
         <?php endif; ?>
         <h2>Tests: </h2>
         <div class="content">
-            <button class="run-all">Run All Tests</button>
-            <button class="run-selected">Run Selected Tests</button>
-            This may take several minutes
+            <div class="summary">
+                <?= $itemCount?>/<?= $itemCount?> test(s) are yet to be tested
+                0/<?= $itemCount?> test(s) are pending <br />
+                0/<?= $itemCount?> test(s) have passed
+                0/<?= $itemCount?> test(s) have failed
+            </div>
+            <div class="buttons">
+                <button class="run-all">Run All Tests</button>
+                <button class="run-selected">Run Selected Tests</button><br/>
+                This may take several minutes
+            </div>
+            <div class="clear"></div>
             <div class="tests">
                 <?php
                 $i=1;
