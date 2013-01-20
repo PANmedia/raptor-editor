@@ -8,9 +8,39 @@ function listToggle(listType, listItem, wrapper) {
     }
 };
 
-function listWrapSelection(listType, listItem, wrapper) {
+function listWrapSelection(listType, listItem, wrapper, selectFirstListItem) {
+    var validChildren = [
+            'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn',
+            'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd', 'label', 'map', 'object', 'p', 'q', 's',  'samp',
+            'select', 'small', 'span', 'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
+        ],
+        validParents = [
+            'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li',
+            'noframes', 'noscript', 'object', 'td', 'th'
+        ];
+
+        // Valid block quote parents
+        validParents = [
+            'body', 'center', 'dd', 'div', 'dt', 'fieldset', 'form', 'iframe', 'li', 'td', 'th'
+        ];
+    var range = rangy.getSelection().getRangeAt(0);
+    if (rangeIsEmpty(range)) {
+        range.selectNode(elementClosestBlock($(range.commonAncestorContainer), wrapper).get(0));
+    }
+    var contents = fragmentToHtml(range.extractContents());
+    if (!$(contents).is(listItem)) {
+        contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
+    }
+    var replacement = rangeReplaceSplit(range, '<' + listType + '>' + contents + '</' + listType + '>');
+    console.log(replacement);
+    selectionSelectInner($(replacement).get(0));
+    return;
+
+
+
+
     if ($.trim(selectionGetHtml()) === '') {
-        selectionSelectInner(selectionGetElements());
+        selectionSelectInner(selectionGetElements().get(0));
     }
 
     var validChildren = [
@@ -55,11 +85,15 @@ function listWrapSelection(listType, listItem, wrapper) {
             || selectionGetElements()[0] === editingElement) {
         replacement = selectionReplace(replacementHtml);
     } else {
-        replacement = selectionReplaceWithinValidTags(replacementHtml, validParents);
+        replacement = rangeReplaceWithinValidTags(rangy.getSelection().getRangeAt(0), replacementHtml, validParents);
     }
 
     // Select the first list element of the inserted list
-    selectionSelectInner(replacement.find(listItem + ':first')[0]);
+    if (selectFirstListItem) {
+        selectionSelectInner($(replacement).find(listItem + ':first').get(0));
+    } else {
+        selectionSelectInner($(replacement).get(0));
+    }
 };
 
 function listUnwrapSelection(listItem) {

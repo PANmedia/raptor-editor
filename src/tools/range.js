@@ -34,12 +34,24 @@ function rangeExpandTo(range, elements) {
  * @param  {RangyRange} range The range to replace.
  * @return {Node[]} Array of new nodes inserted.
  */
-function rangeReplace(html, range) {
+function rangeReplace(range, html) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Paramter 1 to rangeReplace is expected to be a range', range);
+        return;
+    }
+    if (!typeIsString(html)) {
+        handleInvalidArgumentError('Paramter 2 to rangeReplace is expected to be a string', html);
+        return;
+    }
+    // <strict>
+
     var result = [],
         nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
     if (nodes.length === undefined || nodes.length === 1) {
-        range.insertNode(nodes[0].cloneNode(true));
+        result.unshift(nodes[0].cloneNode(true));
+        range.insertNode(result[0]);
     } else {
         $.each(nodes, function(i, node) {
             result.unshift(node.cloneNode(true));
@@ -153,4 +165,13 @@ function rangeDeserialize(serialized) {
         ranges[i] = rangy.deserializeRange(serializedRanges[i]);
     }
     return ranges;
+}
+
+function rangeExpandWhiteSpace(range) {
+    if (/^[\t\n\r ]+$/.test(range.startContainer.data.substring(0, range.startOffset))) {
+        range.setStartBefore(range.startContainer.parentNode);
+    }
+    if (/^[\t\n\r ]+$/.test(range.endContainer.data.substring(range.endOffset), range.endContainer.data.length)) {
+        range.setEndAfter(range.endContainer.parentNode);
+    }
 }

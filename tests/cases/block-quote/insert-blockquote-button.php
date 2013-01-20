@@ -8,6 +8,7 @@
     <script type="text/javascript">
         rangy.init();
     </script>
+    <?php //goto test; ?>
     <div class="test-1">
         <h1>Block Quote Button 1: Word Group Selection</h1>
         <div class="test-input">
@@ -148,9 +149,7 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    This is paragraph 1.
                 </p>
                 <p>
                     Aliquam gravida mauris at
@@ -240,33 +239,26 @@
         });
     </script>
 
+    <?php test: ?>
     <div class="test-6">
         <h1>Block Quote Button 6: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    This is paragraph 1.
                 </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    This is para{}graph 2.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    This is paragraph 1.
                 </p>
                 <blockquote>
                     <p>
-                        {Aliquam gravida mauris at
-                        ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                        {This is paragraph 2.}
                     </p>
                 </blockquote>
 
@@ -284,7 +276,7 @@
             }
         });
     </script>
-
+<?php //return; ?>
     <div class="test-7">
         <h1>Block Quote Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
