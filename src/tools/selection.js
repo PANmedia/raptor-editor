@@ -267,7 +267,7 @@ function selectionToggleWrapper(tag, options) {
                 .addClass(options.classes)
                 .attr(options.attributes || {})
                 .append(fragmentToHtml(range.cloneContents()));
-            rangeReplace(element, range);
+            rangeReplace(range, element);
         } else {
             applier.toggleRange(range);
         }
