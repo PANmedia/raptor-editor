@@ -17,6 +17,7 @@ Raptor.defaults = $.extend(basePreset, {
                 ['linkCreate', 'linkRemove'],
                 ['embed', 'insertFile'],
                 ['floatLeft', 'floatNone', 'floatRight'],
+                ['colorMenuBasic'],
                 ['tagMenu'],
                 ['classMenu'],
                 ['snippetMenu'],
