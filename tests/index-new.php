@@ -15,9 +15,9 @@
         <script src="../src/dependencies/jquery.js"></script>
 
         <script>
-            var timerID = null;
-            var queue = [];
-            var testRunning = false;
+            var timerID = null,
+                queue = [],
+                testRunning = false;
 
             function setGroupStatus(path, state, icon, itemsPassed)  {
                 var group = $('.group[data-path="' + path + '"]'),
@@ -33,18 +33,17 @@
                 checkState(groupContent, groupIcon, state, icon);
             }
 
-
             function setItemStatus(path, fileName, state, icon, passes, testLength) {
                 var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
                     itemIcon = item.find('.icon'),
-                    itemRatio = item.find('.items-pass-fail-ratio');
+                    itemRatio = item.find('.items-pass-fail-ratio'),
+                    itemsPassed = 0,
+                    status = 'pass';
 
                 itemRatio.html( passes + '/' + testLength + ' tests passed');
 
                 checkState(item, itemIcon, state, icon);
 
-                var itemsPassed = 0; //needs to count how many items in that group have passed
-                var status = 'pass';
                 item.closest('.group').find('.item-content').each(function() {
                     if ($(this).hasClass('ui-state-warning')) {
                         status = 'loading';
@@ -63,7 +62,7 @@
                 } else if (status === 'fail') {
                     setGroupStatus(path, 'ui-state-error', 'ui-icon-circle-close', itemsPassed);
                 } else if (status === 'loading') {
-                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
+                    setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock', itemsPassed);
                 } else if (status === 'highlight') {
                     setGroupStatus(path, 'ui-state-highlight', 'ui-icon-info');
                 }
@@ -92,33 +91,36 @@
             function checkStatus(testResults, path, fileName) {
                 if (typeof testResults !== 'undefined') {
                     if (testResults.count === testResults.tests.length) {
-                        var itemContent = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content');
-                        var pass = true,
+                        var itemContent = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
+                            pass = true,
                             testLength = testResults.tests.length,
                             fails = 0,
-                            passes = 0,
-                            errorSpan = $(itemContent).find('.error-message');
-                    errorSpan.text('');
+                            passes = 0;
+                        var errorDiv = $(itemContent).find('.error-message');
+
+                        errorDiv.text('');
+
                         for (var i = 0; i < testLength; i++) {
                             if (testResults.tests[i]['status'] !== 'pass') {
+                                var error = String(testResults.tests[i]['error']);
                                 pass = false;
                                 fails ++;
-                                //work to append all the errors to the span error message
 
-                                $('<span>' + String(testResults.tests[i]['error']) +'<br /></span>').appendTo(errorSpan);
-
+                                if (error === 'undefined' ) {
+                                    $('<div>Expected output does not match actual output<br /></div>').appendTo(errorDiv);
+                                } else {
+                                    $('<div>' + error +'</div>').appendTo(errorDiv);
+                                }
                             }
                         }
                         itemContent.find('.items-pass-fail-ratio').css('display','');
                         passes = testLength - fails;
-                        //need to add in counter to check how many have passed and display it in the group header and the item header
+
                         if (pass) {
                             setItemStatus(path, fileName, 'ui-state-confirmation', 'ui-icon-circle-check', passes, testLength);
-
                         } else {
                             setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
-                            itemContent.find('.error-message').css('display','');
-
+                            errorDiv.css('display','');
                         }
                     }
                 } else {
@@ -127,19 +129,17 @@
                 clearInterval(timerId);
                 timerId = null;
                 $('iframe').remove();
+                getSummary();
                 testRunning = false;
-
             }
 
             var queueTimer = setInterval(function() {
-                // If there is a test running, do nothing
                 if (testRunning) {
                     return;
-                }// Else, if there is a test in the queue, start it
-                else if (queue.length !==0) {
+                } else if (queue.length !==0) {
                     runTest(queue[0].path, queue[0].fileName);
                     queue.splice(0,1);
-                        }
+                }
             }, 500);
 
             function queueTest(path, fileName) {
@@ -149,15 +149,34 @@
                     path: path,
                     fileName: fileName
                 });
+                getSummary();
+            }
+
+            function getSummary(){
+                var testsFailed = $('.item .ui-state-error').length,
+                    testsPending = $('.item .ui-state-warning').length,
+                    testsPassed = $('.item .ui-state-confirmation').length,
+                    tests = $('.item').length,
+                    testsUntested = tests - (testsFailed + testsPassed + testsPending),
+                    summary = $('.content').find('.summary');
+
+                summary.html(testsUntested + '/' + tests +' test(s) are yet to be tested  '
+                    + testsPending + '/' + tests +' test(s) are pending <br />'
+                    + testsPassed +'/' + tests +' test(s) have passed  '
+                    + testsFailed +'/' + tests +' test(s) have failed');
             }
 
             $(function() {
+
+                getSummary();
+
                 $('.run-test').click(function() {
                     var group = $($(this).parentsUntil($('.tests'))).last(),
                         path = group.data('path'),
                         item = $($(this).parentsUntil($('.group'))).last(),
                         fileName = item.data('fileName');
                         queueTest(path, fileName);
+
                 });
 
                 $('.run-group').click(function() {
@@ -170,7 +189,7 @@
                         return false;
                 });
 
-                $('.run-all').click(function(){
+                $('.run-all').click(function() {
                     var tests = $(this).siblings('.tests');
 
                         $(tests).find('.group').each(function() {
@@ -183,31 +202,32 @@
                         });
                 });
 
-                 //make run selected tests button work
-                $('.run-selected').click(function(){
+
+                $('.run-selected').click(function() {
                     var tests = $(this).siblings('.tests');
 
                     $(tests).find('.group').each(function() {
                         var groupCheckbox = $(this).find('.group-check');
 
-                        if (groupCheckbox.is(':checked')){
+                        if (groupCheckbox.is(':checked')) {
                             var path = $(this).data('path');
 
                             $(this).find('.item').each(function() {
                                 queueTest(path, $(this).data('fileName'));
-                            });}
+                            });
+                        }
                     });
                 });
 
                 $('.group-check').change(function() {
                     if ($(this).is(':checked')) {
-                        $($(this).closest('.group').find('.item-check')).attr('checked', true); // will check the checkbox with id check1
-                    }else {
-                        $($(this).closest('.group').find('.item-check')).attr('checked', false); // will uncheck the checkbox with id check1
+                        $($(this).closest('.group').find('.item-check')).attr('checked', true);
+                    } else {
+                        $($(this).closest('.group').find('.item-check')).attr('checked', false);
                     }
                 });
 
-                $('.view-test').click(function(){
+                $('.view-test').click(function() {
                     var path = $(this).closest('.group').data('path'),
                         filename = $(this).closest('.item').data('fileName');
 
@@ -227,6 +247,21 @@
 
         <?php
 
+            $group_warnings = [];
+            $test_warnings = [];
+            $groups = [];
+            //read in groups file
+            $csv_group_file_content = file_get_contents('groups.csv');
+            $group_lines = explode("\n", $csv_group_file_content);
+            $group_head = str_getcsv(array_shift($group_lines));
+
+            $group_csv_data = array();
+            foreach ($group_lines as $group_line) {
+                $group_row_data = array_combine($group_head, str_getcsv($group_line));
+                $group_csv_data[$group_row_data['Folder']] = $group_row_data;
+            }
+
+            //read in tests file
             $csv_file_content = file_get_contents('tests.csv');
             $lines = explode("\n", $csv_file_content);
             $head = str_getcsv(array_shift($lines));
@@ -237,14 +272,12 @@
                 $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
             }
 
-            $warnings = [];
-            $groups = [];
-            $findTests = function($case) use($csv_data, &$warnings) {
+            $findTests = function($case) use($csv_data, &$test_warnings) {
                 $tests = [];
                 foreach (glob($case . '/*.*') as $file) {
                     $index = basename($case) . '/' . basename($file);
                     if (!isset($csv_data[$index])) {
-                        $warnings[] = 'No description found for: ' . $index;
+                        $test_warnings[] = 'No description found for: ' . $index;
                         continue;
                     }
                     $tests[] = [
@@ -256,33 +289,58 @@
                 }
                 return $tests;
             };
+
             foreach (glob(__DIR__ . '/cases/*') as $case) {
-                $groups[] = [
-                    'name' => basename($case),
+                $index = basename($case);
+                    if (!isset($group_csv_data[$index])) {
+                        $group_warnings[] = 'No description found for: ' . $index;
+                        continue;
+                    }
+                    $groups[] = [
+                    'name' => $group_csv_data[$index]['Name'],
                     'path' => basename($case),
-                    'description' => '',
+                    'description' => $group_csv_data[$index]['Description'],
                     'tests' => $findTests($case),
                 ];
             }
 
             $j = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
         ?>
 
     </head>
     <body>
-        <?php if (!empty($warnings)): ?>
-            <h2>Warnings: </h2>
+
+        <?php if (!empty($group_warnings)): ?>
+            <h2>Group Warnings: </h2>
             <ul>
-                <?php foreach ($warnings as $warning): ?>
+                <?php foreach ($group_warnings as $warning): ?>
+                    <li><?= $warning ?></li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif;
+             if (!empty($test_warnings)): ?>
+            <h2>Test Warnings: </h2>
+            <ul>
+                <?php foreach ($test_warnings as $warning): ?>
                     <li><?= $warning ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>
         <h2>Tests: </h2>
         <div class="content">
-            <button class="run-all">Run All Tests</button>
-            <button class="run-selected">Run Selected Tests</button>
-            This may take several minutes
+            <div class="summary">
+                <?= $itemCount?>/<?= $itemCount?> test(s) are yet to be tested
+                0/<?= $itemCount?> test(s) are pending <br />
+                0/<?= $itemCount?> test(s) have passed
+                0/<?= $itemCount?> test(s) have failed
+            </div>
+            <div class="buttons">
+                <button class="run-all">Run All Tests</button>
+                <button class="run-selected">Run Selected Tests</button><br/>
+                This may take several minutes
+            </div>
+            <div class="clear"></div>
             <div class="tests">
                 <?php
                 $i=1;
@@ -294,15 +352,16 @@
                     <div class="group-header">
                         <div class="ui-widget ui-notification">
                             <div class="group-content ui-state-default ui-corner-all">
-                                <p>
-                                    <span class="icon ui-icon"></span>
+                                <button class="test-button run-group">Run Group Test</button>
+                                <span class="icon ui-icon"></span>
+                                <div class="title">
                                     <strong><?= $group['name'] ?></strong>
                                     <span class="group-pass-fail-ratio" style="display: none;"><span class="group-passes">0</span>/<?= sizeof($group['tests']) ?> items passed</span>
-                                    <button class="test-button run-group">Run Group Test</button>
-                                </p>
-                                <div class="description">
-                                    <?= $group['description'] ?>
                                 </div>
+                                <div class="description">
+                                    <p><?= $group['description'] ?></p>
+                                </div>
+                                <div class="clear"></div>
                             </div>
                         </div>
                     </div>
@@ -316,17 +375,18 @@
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
                                 <div class="item-content ui-state-default ui-corner-all" >
-                                    <p>
-                                        <span class="icon ui-icon"></span>
+                                    <button class="test-button run-test">Run Test</button>
+                                    <button class="test-button view-test">View Test</button>
+                                    <span class="icon ui-icon"></span>
+                                    <div class="title">
                                         <strong><?= $item['name'] ?></strong>
-                                        <span class="items-pass-fail-ratio" style="display: none;">x/y tests passed</span>
-                                        <button class="test-button run-test">Run Test</button>
-                                        <button class="test-button view-test">View Test</button>
-                                        <span class="error-message" style="display: none;"></span>
-                                    </p>
+                                        <span class="items-pass-fail-ratio" style="display: none;"></span>
+                                    </div>
                                     <div class="description">
                                         <?= $item['description'] ?>
                                     </div>
+                                    <div class="error-message" style="display: none;"></div>
+                                    <div class="clear"></div>
                                 </div>
                             </div>
                         </div>

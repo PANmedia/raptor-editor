@@ -174,7 +174,7 @@
         <exec command="sass --compass theme.scss ${project.basedir}/${dir.package}/raptor-theme.css" dir="src/theme" level="info" logOutput="true" />
         <exec command="sass --compass front-end.scss ${project.basedir}/${dir.package}/raptor-front-end.css" dir="src/theme" level="info" logOutput="true" />
         <exec command="yui-compressor --type css -o ${dir.package}/raptor-theme.min.css ${dir.package}/raptor-theme.css" level="info" logOutput="true" />
-        <exec command="yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css" level="info" logOutput="true" />
+        <exec command="yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.min.css" level="info" logOutput="true" />
         <exec command="cat ${dir.package}/raptor-theme.min.css | gzip -9 -c > ${dir.package}/raptor-theme.min.css.gz" level="info" logOutput="true" />
         <exec command="cat ${dir.package}/raptor-front-end.min.css | gzip -9 -c > ${dir.package}/raptor-front-end.min.css.gz" level="info" logOutput="true" />
     </target>
