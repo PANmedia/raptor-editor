@@ -30,8 +30,8 @@ function rangeExpandTo(range, elements) {
 /**
  * Replaces the content of range with the given html.
  *
- * @param  {jQuery|String} html The html to use when replacing range.
  * @param  {RangyRange} range The range to replace.
+ * @param  {jQuery|String} html The html to use when replacing range.
  * @return {Node[]} Array of new nodes inserted.
  */
 function rangeReplace(range, html) {
@@ -72,21 +72,12 @@ function rangeEmptyTag(range) {
 
 /**
  * Works for single ranges only.
+ *
+ * @param {RangyRange} range
  * @return {Element} The selected range's common ancestor.
  */
-function rangeGetCommonAncestor(selection) {
-    selection = selection || rangy.getSelection();
-
-    var commonAncestor;
-    $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
-            commonAncestor = $(range.commonAncestorContainer).parent()[0];
-        } else {
-            commonAncestor = range.commonAncestorContainer;
-        }
-    });
-
-    return commonAncestor;
+function rangeGetCommonAncestor(range) {
+    return nodeFindParent(range.commonAncestorContainer);
 }
 
 /**
@@ -105,34 +96,6 @@ function rangeIsContainedBy(range, node) {
     nodeRange.selectNodeContents(node);
     return nodeRange.containsRange(range);
 }
-
-//function rangesToggleWrapper(ranges, tag, options) {
-//    var applier = rangy.createCssClassApplier(options.classes || '', {
-//        normalize: true,
-//        elementTagName: tag,
-//        elementProperties: options.attributes || {},
-//        ignoreWhiteSpace: false
-//    });
-//    applier.applyToRanges(ranges);
-//}
-//
-//function rangeToggleWrapper(range, tag, options) {
-//    options = options || {};
-//    var applier = rangy.createCssClassApplier(options.classes || '', {
-//        normalize: true,
-//        elementTagName: tag,
-//        elementProperties: options.attributes || {}
-//    });
-//    if (rangeEmptyTag(range)) {
-//        var element = $('<' + tag + '/>')
-//            .addClass(options.classes)
-//            .attr(options.attributes || {})
-//            .append(fragmentToHtml(range.cloneContents()));
-//        rangeReplace(element, range);
-//    } else {
-//        applier.toggleRange(range);
-//    }
-//}
 
 function rangeTrim(range) {
     var selectedText = range.text();
@@ -174,4 +137,70 @@ function rangeExpandWhiteSpace(range) {
     if (/^[\t\n\r ]+$/.test(range.endContainer.data.substring(range.endOffset), range.endContainer.data.length)) {
         range.setEndAfter(range.endContainer.parentNode);
     }
+}
+
+/**
+ * Split the selection container and insert the given html between the two elements created.
+ *
+ * @param  {RangyRange}
+ * @param  {jQuery|Element|string} html The html to replace selection with.
+ */
+function rangeReplaceSplitInvalidTags(range, html, wrapper, validTagNames) {
+    var commonAncestor = rangeGetCommonAncestor(range);
+
+    if (!elementIsValid(commonAncestor, validTagNames)) {
+        commonAncestor = elementFirstInvalidElementOfValidParent(commonAncestor, validTagNames, wrapper);
+    }
+
+    // Select from start of selected element to start of selection
+    var startRange = rangy.createRange();
+    startRange.setStartBefore(commonAncestor);
+    startRange.setEnd(range.startContainer, range.startOffset);
+    var startFragment = startRange.cloneContents();
+
+    // Select from end of selected element to end of selection
+    var endRange = rangy.createRange();
+    endRange.setStart(range.endContainer, range.endOffset);
+    endRange.setEndAfter(commonAncestor);
+    var endFragment = endRange.cloneContents();
+
+    // Replace the start element's html with the content that was not selected, append html & end element's html
+    var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
+    replacement += elementOuterHtml($(html).attr('data-replacement', true));
+    replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
+
+    replacement = $(replacement);
+
+    $(commonAncestor).replaceWith(replacement);
+    return replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
+}
+
+/**
+ * Replace the given range, splitting the parent elements such that the given html
+ * is contained only by valid tags.
+ *
+ * @param  {RangyRange} range
+ * @param  {string} html
+ * @param  {Element} wrapper
+ * @param  {string[]} validTagNames
+ * @return {Element}
+ */
+function rangeReplaceWithinValidTags(range, html, wrapper, validTagNames) {
+    // rangeExpandWhiteSpace(range);
+
+    var startElement = nodeFindParent(range.startContainer);
+    var endElement = nodeFindParent(range.endContainer);
+    var selectedElement = rangeGetCommonAncestor(range);
+
+    var selectedElementValid = elementIsValid(selectedElement, validTagNames);
+    var startElementValid = elementIsValid(startElement, validTagNames);
+    var endElementValid = elementIsValid(endElement, validTagNames);
+
+    // The html may be inserted within the selected element & selection start / end.
+    if (selectedElementValid && startElementValid && endElementValid) {
+        return rangeReplace(range, html);
+    }
+
+    // Context is invalid. Split containing element and insert list in between.
+    return rangeReplaceSplitInvalidTags(range, html, wrapper, validTagNames);
 }
