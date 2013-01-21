@@ -305,7 +305,17 @@ function elementUniqueId() {
     return id;
 }
 
+/**
+ * @param  {Element} element
+ * @param  {string} newTag
+ * @return {Element}
+ */
 function elementChangeTag(element, newTag) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleError('Parameter 1 to elementChangeTag must be a jQuery element');
+    }
+    // </strict>
     var tags = [];
     for (var i = element.length - 1; 0 <= i ; i--) {
         var node = document.createElement(newTag);
