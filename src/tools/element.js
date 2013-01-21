@@ -217,7 +217,6 @@ function elementSwapStyles(element1, element2, style) {
     }
 }
 
-
 function elementIsEmpty(element) {
     return $($.parseHTML(element)).is(':empty');
 }
@@ -254,9 +253,9 @@ function elementClosestBlock(element, limitElement) {
         return;
     }
     // </strict>
-    while (element.length > 0
-            && element[0] !== limitElement[0]
-            && (element[0].nodeType === Node.TEXT_NODE || element.css('display') === 'inline')) {
+    while (element.length > 0 &&
+        element[0] !== limitElement[0] &&
+        (element[0].nodeType === Node.TEXT_NODE || element.css('display') === 'inline')) {
         element = element.parent();
     }
     if (element[0] === limitElement[0]) {
