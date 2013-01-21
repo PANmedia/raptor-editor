@@ -167,7 +167,18 @@ function rangeReplaceSplitInvalidTags(range, html, wrapper, validTagNames) {
     replacement = $(replacement);
 
     $(commonAncestor).replaceWith(replacement);
-    return replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
+    replacement = replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
+
+    // Remove empty surrounding tags only if they're of the same type as the split element
+    if (replacement.prev().is(commonAncestor.tagName.toLowerCase()) &&
+        !replacement.prev().html().trim()) {
+        replacement.prev().remove();
+    }
+    if (replacement.next().is(commonAncestor.tagName.toLowerCase()) &&
+        !replacement.next().html().trim()) {
+        replacement.next().remove();
+    }
+    return replacement;
 }
 
 /**
