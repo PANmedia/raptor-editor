@@ -100,6 +100,39 @@ function elementIsValid(element, validTags) {
 }
 
 /**
+ * According to the given array of valid tags, find and return the first invalid
+ * element of a valid parent. Recursively search parents until the wrapper is
+ * encountered.
+ *
+ * @param  {Node} element
+ * @param  {string[]} validTags
+ * @param  {Element} wrapper
+ * @return {Node}           [description]
+ */
+function elementFirstInvalidElementOfValidParent(element, validTags, wrapper) {
+    // <strict>
+    if (!typeIsNode(element)) {
+        handleError('Parameter 1 to elementFirstInvalidElementOfValidParent must be a node');
+        return;
+    }
+    // </strict>
+    var parent = element.parentNode;
+    if (parent[0] === wrapper[0]) {
+        // <strict>
+        if (!elementIsValid(parent, validTags)) {
+            handleError('elementFirstInvalidElementOfValidParent requires a valid wrapper');
+            return;
+        }
+        // </strict>
+        return element;
+    }
+    if (elementIsValid(parent, validTags)) {
+        return element;
+    }
+    return elementFirstInvalidElementOfValidParent(parent, validTags, wrapper);
+}
+
+/**
  * Calculate and return the visible rectangle for the element.
  *
  * @param  {jQuery|Element} element The element to calculate the visible rectangle for.
