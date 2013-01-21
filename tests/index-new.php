@@ -190,9 +190,9 @@
                 });
 
                 $('.run-all').click(function() {
-                    var tests = $(this).siblings('.tests');
+                    var content = $(this).parents('.content');
 
-                        $(tests).find('.group').each(function() {
+                        $(content).find('.group').each(function() {
                             var path = $(this).data('path');
 
                             $(this).find('.item').each(function() {
@@ -204,9 +204,9 @@
 
 
                 $('.run-selected').click(function() {
-                    var tests = $(this).siblings('.tests');
+                    var content = $(this).parents('.content');
 
-                    $(tests).find('.group').each(function() {
+                    $(content).find('.group').each(function() {
                         var groupCheckbox = $(this).find('.group-check');
 
                         if (groupCheckbox.is(':checked')) {
@@ -247,44 +247,37 @@
 
         <?php
 
-            $group_warnings = [];
-            $test_warnings = [];
+            $warnings = [];
             $groups = [];
-            //read in groups file
-            $csv_group_file_content = file_get_contents('groups.csv');
-            $group_lines = explode("\n", $csv_group_file_content);
-            $group_head = str_getcsv(array_shift($group_lines));
+            $group_csv_data = [];
+            $csv_data = [];
 
-            $group_csv_data = array();
-            foreach ($group_lines as $group_line) {
-                $group_row_data = array_combine($group_head, str_getcsv($group_line));
-                $group_csv_data[$group_row_data['Folder']] = $group_row_data;
+
+            $csv_total_file_content = file_get_contents('tests.csv');
+            $total_lines = explode("\n", $csv_total_file_content);
+            $total_head = str_getcsv(array_shift($total_lines));
+
+            foreach ($total_lines as $total_line) {
+                $total_row_data = array_combine($total_head, str_getcsv($total_line));
+                if($total_row_data['File Name'] === '') {
+                    $group_csv_data[$total_row_data['Folder']] = $total_row_data;
+                } else {
+                    $csv_data[$total_row_data['Folder'] . '/' . $total_row_data['File Name']] = $total_row_data;
+                }
             }
 
-            //read in tests file
-            $csv_file_content = file_get_contents('tests.csv');
-            $lines = explode("\n", $csv_file_content);
-            $head = str_getcsv(array_shift($lines));
-
-            $csv_data = array();
-            foreach ($lines as $line) {
-                $row_data = array_combine($head, str_getcsv($line));
-                $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
-            }
-
-            $findTests = function($case) use($csv_data, &$test_warnings) {
+            $findTests = function($case) use($csv_data, &$warnings) {
                 $tests = [];
                 foreach (glob($case . '/*.*') as $file) {
                     $index = basename($case) . '/' . basename($file);
-                    if (!isset($csv_data[$index])) {
-                        $test_warnings[] = 'No description found for: ' . $index;
+                    if (!isset($csv_data[$index]["Description"])) {
+                        $warnings[] = 'No description found for: ' . $index;
                         continue;
                     }
                     $tests[] = [
                         'name' => $csv_data[$index]['Name'],
                         'filename' => basename($file),
                         'description' => $csv_data[$index]['Description'],
-                        'status' => $csv_data[$index]['Status'],
                     ];
                 }
                 return $tests;
@@ -293,7 +286,7 @@
             foreach (glob(__DIR__ . '/cases/*') as $case) {
                 $index = basename($case);
                     if (!isset($group_csv_data[$index])) {
-                        $group_warnings[] = 'No description found for: ' . $index;
+                        $warnings[] = 'No description found for: ' . $index;
                         continue;
                     }
                     $groups[] = [
@@ -311,30 +304,17 @@
     </head>
     <body>
 
-        <?php if (!empty($group_warnings)): ?>
-            <h2>Group Warnings: </h2>
+        <?php if (!empty($warnings)): ?>
+            <h2>Warnings: </h2>
             <ul>
-                <?php foreach ($group_warnings as $warning): ?>
+                <?php foreach ($warnings as $warning): ?>
                     <li><?= $warning ?></li>
                 <?php endforeach; ?>
             </ul>
-        <?php endif;
-             if (!empty($test_warnings)): ?>
-            <h2>Test Warnings: </h2>
-            <ul>
-                <?php foreach ($test_warnings as $warning): ?>
-                    <li><?= $warning ?></li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
+        <?php endif;?>
         <h2>Tests: </h2>
         <div class="content">
-            <div class="summary">
-                <?= $itemCount?>/<?= $itemCount?> test(s) are yet to be tested
-                0/<?= $itemCount?> test(s) are pending <br />
-                0/<?= $itemCount?> test(s) have passed
-                0/<?= $itemCount?> test(s) have failed
-            </div>
+            <div class="summary"></div>
             <div class="buttons">
                 <button class="run-all">Run All Tests</button>
                 <button class="run-selected">Run Selected Tests</button><br/>
@@ -396,10 +376,11 @@
                 <div class="clear"></div>
                 <?php $i++; endforeach; ?>
             </div>
-
-            <button class="run-all">Run All Tests</button>
-            <button class="run-selected">Run Selected Tests</button>
-            This may take several minutes
+            <div class="buttons">
+                <button class="run-all">Run All Tests</button>
+                <button class="run-selected">Run Selected Tests</button>
+                This may take several minutes
+            </div>
             <div class="iframes"></div>
         </div>
     </body>
