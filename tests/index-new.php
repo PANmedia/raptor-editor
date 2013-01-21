@@ -249,59 +249,28 @@
 
             $warnings = [];
             $groups = [];
-            $raw_groups = [];
-            $raw_tests = [];
+            $group_csv_data = [];
+            $csv_data = [];
 
-            //read in combined file
-            $csv_total_file_content = file_get_contents('groupsAndTests.csv');
+
+            $csv_total_file_content = file_get_contents('tests.csv');
             $total_lines = explode("\n", $csv_total_file_content);
             $total_head = str_getcsv(array_shift($total_lines));
 
-            $total_csv_data = array();
             foreach ($total_lines as $total_line) {
                 $total_row_data = array_combine($total_head, str_getcsv($total_line));
-                $total_csv_data[] = $total_row_data;
-            }
-
-            foreach($total_csv_data as $array)
-            {
-              if($array['File Name'] === '')
-              {
-                $raw_groups[] = $array;
-              }
-              else
-              {
-               $raw_tests[] = $array;
-              }
-            }
-
-            //read in groups file
-            $csv_group_file_content = file_get_contents('groups.csv');
-            $group_lines = explode("\n", $csv_group_file_content);
-            $group_head = str_getcsv(array_shift($group_lines));
-
-            $group_csv_data = array();
-            foreach ($group_lines as $group_line) {
-                $group_row_data = array_combine($group_head, str_getcsv($group_line));
-                $group_csv_data[$group_row_data['Folder']] = $group_row_data;
-            }
-
-            //read in tests file
-            $csv_file_content = file_get_contents('tests.csv');
-            $lines = explode("\n", $csv_file_content);
-            $head = str_getcsv(array_shift($lines));
-
-            $csv_data = array();
-            foreach ($lines as $line) {
-                $row_data = array_combine($head, str_getcsv($line));
-                $csv_data[$row_data['Folder'] . '/' . $row_data['File Name']] = $row_data;
+                if($total_row_data['File Name'] === '') {
+                    $group_csv_data[$total_row_data['Folder']] = $total_row_data;
+                } else {
+                    $csv_data[$total_row_data['Folder'] . '/' . $total_row_data['File Name']] = $total_row_data;
+                }
             }
 
             $findTests = function($case) use($csv_data, &$warnings) {
                 $tests = [];
                 foreach (glob($case . '/*.*') as $file) {
                     $index = basename($case) . '/' . basename($file);
-                    if (!isset($csv_data[$index])) {
+                    if (!isset($csv_data[$index]["Description"])) {
                         $warnings[] = 'No description found for: ' . $index;
                         continue;
                     }
@@ -309,7 +278,6 @@
                         'name' => $csv_data[$index]['Name'],
                         'filename' => basename($file),
                         'description' => $csv_data[$index]['Description'],
-                        'status' => $csv_data[$index]['Status'],
                     ];
                 }
                 return $tests;
