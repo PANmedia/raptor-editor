@@ -74,7 +74,7 @@ function selectionSet(mixed) {
 function selectionReplace(html, selection) {
     var result = [];
     selectionEachRange(function(range) {
-        result.concat(rangeReplace(html, range));
+        result = result.concat(rangeReplace(range, html));
     }, selection, this);
     return result;
 }
@@ -267,7 +267,7 @@ function selectionToggleWrapper(tag, options) {
                 .addClass(options.classes)
                 .attr(options.attributes || {})
                 .append(fragmentToHtml(range.cloneContents()));
-            rangeReplace(element, range);
+            rangeReplace(range, element);
         } else {
             applier.toggleRange(range);
         }

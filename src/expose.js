@@ -137,5 +137,5 @@ $.extend(Raptor, {
     undockFromElement: undockFromElement,
     undockFromScreen: undockFromScreen
 });
-window.Raptor = Raptor;
+window['Raptor'] = Raptor;
 // </expose>

@@ -48,6 +48,7 @@ loadJS('../src/tools/dock.js');
 loadJS('../src/tools/element.js');
 loadJS('../src/tools/fragment.js');
 loadJS('../src/tools/list.js');
+loadJS('../src/tools/node.js');
 loadJS('../src/tools/range.js');
 loadJS('../src/tools/selection.js');
 loadJS('../src/tools/state.js');
