@@ -149,8 +149,9 @@ function getSummary() {
     var testsFailed = $('.item .ui-state-error').length,
             testsPending = $('.item .ui-state-warning').length,
             testsPassed = $('.item .ui-state-confirmation').length,
+            testsHighlighted = $('.item .ui-state-highlight').length,
             tests = $('.item').length,
-            testsUntested = tests - (testsFailed + testsPassed + testsPending),
+            testsUntested = tests - (testsFailed + testsPassed + testsPending +testsHighlighted),
             summary = $('.content').find('.summary');
 
     summary.html(testsUntested + '/' + tests + ' test(s) are yet to be tested  '
