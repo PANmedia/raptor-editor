@@ -83,7 +83,7 @@ function test(container, action, format) {
                     type: 'diff',
                     diff: diff,
                     expectedHTML: expectedHTML,
-                    actualHTML: actualHTML
+                    outputHTML: outputHTML
             });
             fail(container);
         } else {
