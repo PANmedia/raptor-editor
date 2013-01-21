@@ -16,6 +16,10 @@ function rangeExpandToParent(range) {
     range.setEndAfter(range.endContainer);
 }
 
+function rangeSelectElement(range, element) {
+    range.selectNode($(element)[0]);
+}
+
 function rangeExpandTo(range, elements) {
     do {
         rangeExpandToParent(range);
