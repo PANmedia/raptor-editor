@@ -1,8 +1,13 @@
+/**
+ * @param  {string} listType List type, e.g. ul, ol or blockquote
+ * @param  {string} listItem List item, e.g. li or p
+ * @param  {Element} wrapper
+ */
 function listToggle(listType, listItem, wrapper) {
     // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
     if ($(selectionGetElements()).is(listItem) &&
         $(selectionGetElements()).parent().is(listType)) {
-        listUnwrapSelection(listItem);
+        listUnwrapSelection(listType, listItem, wrapper);
     } else {
         listWrapSelection(listType, listItem, wrapper);
     }
