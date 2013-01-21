@@ -196,8 +196,7 @@
                             var path = $(this).data('path');
 
                             $(this).find('.item').each(function() {
-                                var fileName = ($(this).data('fileName'));
-                                queueTest(path, fileName);
+                                queueTest(path, $(this).data('fileName'));
                             });
                         });
                 });
@@ -207,15 +206,13 @@
                     var content = $(this).parents('.content');
 
                     $(content).find('.group').each(function() {
-                        var groupCheckbox = $(this).find('.group-check');
+                           var path = $(this).data('path');
 
-                        if (groupCheckbox.is(':checked')) {
-                            var path = $(this).data('path');
-
-                            $(this).find('.item').each(function() {
+                        $(this).find('.item').each(function() {
+                            if (($(this).find('.item-check')).is(':checked')) {
                                 queueTest(path, $(this).data('fileName'));
-                            });
-                        }
+                            }
+                        });
                     });
                 });
 
@@ -246,7 +243,6 @@
         </script>
 
         <?php
-
             $warnings = [];
             $groups = [];
             $group_csv_data = [];
@@ -259,7 +255,7 @@
 
             foreach ($total_lines as $total_line) {
                 $total_row_data = array_combine($total_head, str_getcsv($total_line));
-                if($total_row_data['File Name'] === '') {
+                if (trim($total_row_data['File Name']) === '') {
                     $group_csv_data[$total_row_data['Folder']] = $total_row_data;
                 } else {
                     $csv_data[$total_row_data['Folder'] . '/' . $total_row_data['File Name']] = $total_row_data;
@@ -285,7 +281,7 @@
 
             foreach (glob(__DIR__ . '/cases/*') as $case) {
                 $index = basename($case);
-                    if (!isset($group_csv_data[$index])) {
+                    if (!isset($group_csv_data[$index]['Description'])) {
                         $warnings[] = 'No description found for: ' . $index;
                         continue;
                     }
@@ -296,9 +292,6 @@
                     'tests' => $findTests($case),
                 ];
             }
-
-            $j = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-
         ?>
 
     </head>
@@ -350,7 +343,7 @@
                     foreach ($group["tests"] as $item): ?>
                     <div class="item" style="display: none;" data-file-name="<?= $item['filename'] ?>">
                         <div class="number">
-                            <input class="item-check" type="checkbox"><?= $i . $j[$k] ?>
+                            <input class="item-check" type="checkbox"><?= $i . chr(97 + $k++) ?>
                         </div>
                         <div class="item-header">
                             <div class="ui-widget ui-notification">
@@ -371,7 +364,7 @@
                             </div>
                         </div>
                     </div>
-                    <?php $k ++; endforeach; ?>
+                    <?php endforeach; ?>
                 </div>
                 <div class="clear"></div>
                 <?php $i++; endforeach; ?>
