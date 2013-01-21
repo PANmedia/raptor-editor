@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>List 1: listToggle within p</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis
+            </p>
+            <ul>
+                <li>dui id erat pellentesque et rhoncus</li>
+            </ul>
+            <p>
+                nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-2">
+        <h1>List 2: listToggle within a</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis</a>
+            </p>
+            <ul>
+                <li>dui id erat pellentesque et rhoncus</li>
+            </ul>
+            <p>
+                <a href="#">nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-3">
+        <h1>List 2: listToggle crossing from an h2 to an a inside a p</h1>
+        <div class="test-input">
+            <h2>Lorem ipsum {dolor sit amet</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis dui id erat pellentesque et rhoncus} nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <h2>Lorem ipsum </h2>
+            <ul>
+                <li><p>dolor sit amet</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis dui id erat pellentesque et rhoncus</a>
+                    </p>
+                </li>
+            </ul>
+            <p>
+                <a href="#"> nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+</body>
+</html>
