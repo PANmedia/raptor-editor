@@ -74,8 +74,8 @@ function setItemStatus(path, fileName, state, icon, passes, testLength) {
 /**
  * Removes any current classes assigned to the supplied content and adds the supplied state.
  *
- * @param {string} content This is the part of the html that is to have it's class changed.
- * @param {string} currentIcon This is the current icon of the content which is to be replaced.
+ * @param {jQuery} content This is the part of the html that is to have it's class changed.
+ * @param {jQuery} currentIcon This is the current icon of the content which is to be replaced.
  * @param {string} state This is the class to add to the content.
  * @param {string} icon Thsi is the icon that the currentIcon should be changed to.
  * @returns {undefined}
@@ -92,8 +92,8 @@ function checkState(content, currentIcon, state, icon) {
 /**
  * Creates an iframe to run the test in, runs the test, and calls the checkStatus method.
  *
- * @param {type} path This is the folder name of the test to be run.
- * @param {type} fileName This is the file name of the test to be run.
+ * @param {string} path This is the folder name of the test to be run.
+ * @param {string} fileName This is the file name of the test to be run.
  * @returns {undefined}
  */
 function runTest(path, fileName) {
