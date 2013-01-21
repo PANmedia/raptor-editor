@@ -134,15 +134,6 @@ function rangeDeserialize(serialized) {
     return ranges;
 }
 
-function rangeExpandWhiteSpace(range) {
-    if (/^[\t\n\r ]+$/.test(range.startContainer.data.substring(0, range.startOffset))) {
-        range.setStartBefore(range.startContainer.parentNode);
-    }
-    if (/^[\t\n\r ]+$/.test(range.endContainer.data.substring(range.endOffset), range.endContainer.data.length)) {
-        range.setEndAfter(range.endContainer.parentNode);
-    }
-}
-
 /**
  * Split the selection container and insert the given html between the two elements created.
  *
@@ -190,8 +181,6 @@ function rangeReplaceSplitInvalidTags(range, html, wrapper, validTagNames) {
  * @return {Element}
  */
 function rangeReplaceWithinValidTags(range, html, wrapper, validTagNames) {
-    // rangeExpandWhiteSpace(range);
-
     var startElement = nodeFindParent(range.startContainer);
     var endElement = nodeFindParent(range.endContainer);
     var selectedElement = rangeGetCommonAncestor(range);
