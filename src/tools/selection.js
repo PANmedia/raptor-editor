@@ -200,11 +200,10 @@ function selectionGetElement(range) {
 }
 
 /**
- * Gets all elements that contain a selection (excluding text nodes) and
+ * Gets all elements within and including the selection's common ancestor
  * returns them as a jQuery array.
  *
- * @public @static
- * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
+ * @param {RangySelection|null} A RangySelection, or by default, the current selection.
  */
 function selectionGetElements(selection) {
     var result = new jQuery();
