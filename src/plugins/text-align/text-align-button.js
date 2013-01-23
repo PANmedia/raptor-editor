@@ -12,16 +12,7 @@ function TextAlignButton(options) {
             this.selectionChange();
         },
         selectionToggle: function() {
-            var result = true;
-            selectionEachRange(function(range) {
-                // Check if selection only contains valid children
-                var children = $(range.commonAncestorContainer).find('*');
-                if ($(range.commonAncestorContainer).parentsUntil(this.raptor.getElement(), '.' + this.getClass()).length === 0 &&
-                        children.length !== children.filter('.' + this.getClass()).length) {
-                    result = false;
-                }
-            }.bind(this));
-            return result;
+            return selectionContains('.' + this.getClass(), this.raptor.getElement());
         }
     }, options));
 }
