@@ -66,7 +66,8 @@ function setLocale(key) {
  * @return {string}
  */
 function getLocalizedString(string) {
-    if (typeof locales[currentLocale] !== 'undefined') {
+    if (typeof locales[currentLocale] !== 'undefined' &&
+            typeof locales[currentLocale][string] !== 'undefined') {
         return locales[currentLocale][string];
     }
 

@@ -17,7 +17,7 @@ Button.prototype.getButton = function() {
         this.button = $('<div>')
             .html(this.text)
             .addClass(this.options.baseClass)
-            .attr('title', this.getTitle() || '')
+            .attr('title', this.getTitle())
             .click(this.click.bind(this));
         aButton(this.button, {
             icons: {
