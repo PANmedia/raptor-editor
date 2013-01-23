@@ -34,7 +34,7 @@ function rangeExpandTo(range, elements) {
  * @param  {RangyRange} range The range to replace.
  * @return {Node[]} Array of new nodes inserted.
  */
-function rangeReplace(html, range) {
+function rangeReplace(range, html) {
     var result = [],
         nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
