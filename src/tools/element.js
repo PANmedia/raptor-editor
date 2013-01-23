@@ -30,7 +30,7 @@ function elementRemoveAttributes(parent, allowedAttributes) {
 /**
  * Sets the z-index CSS property on an element to 1 above all its sibling elements.
  *
- * @param {jQuery} element The jQuery element to cleanse of attributes.
+ * @param {jQuery} element The jQuery element to have it's z index increased.
  */
 function elementBringToTop(element) {
     var zIndex = 1;
