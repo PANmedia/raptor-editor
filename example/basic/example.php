@@ -19,7 +19,8 @@
                 urlPrefix: '../../src/',
                 plugins: {
                     dock: {
-                        docked: true
+                        docked: true,
+                        under: '.switcher'
                     },
                     classMenu: {
                         classes: {

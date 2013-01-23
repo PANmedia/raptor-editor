@@ -1,4 +1,4 @@
-<nav>
+<nav class="switcher">
     <a href="?">Include</a>
     <a href="?type=default">Default</a>
     <a href="?type=light">Light</a>
