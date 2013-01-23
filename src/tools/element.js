@@ -44,6 +44,8 @@ function elementBringToTop(element) {
 }
 
 /**
+ * Retrieve outer html from an element.
+ *
  * @param  {jQuery} element The jQuery element to retrieve the outer HTML from.
  * @return {String} The outer HTML.
  */
@@ -52,6 +54,8 @@ function elementOuterHtml(element) {
 }
 
 /**
+ * Retrieve outer text from an element.
+ *
  * @param  {jQuery} element The jQuery element to retrieve the outer text from.
  * @return {String} The outer text.
  */
@@ -92,7 +96,7 @@ function elementDefaultDisplay(tag) {
  * Check that the given element is one of the the given tags.
  *
  * @param  {jQuery|Element} element The element to be tested.
- * @param  {Array}  validTagNames An array of valid tag names.
+ * @param  {Array}  validTags An array of valid tag names.
  * @return {Boolean} True if the given element is one of the give valid tags.
  */
 function elementIsValid(element, validTags) {
@@ -160,8 +164,11 @@ function elementGetAttributes(element) {
 }
 
 /**
- * FIXME: this function needs reviewing
- * @param {jQuerySelector|jQuery|Element} element
+ * Gets the styles of an element.
+ * @todo the type for result.
+ * FIXME: this function needs reviewing.
+ * @param {jQuerySelector|jQuery|Element} element This is the element to get the style from.
+ * @returns {unresolved} The style(s) of the element.
  */
 function elementGetStyles(element) {
     var result = {};
@@ -173,10 +180,11 @@ function elementGetStyles(element) {
 }
 
 /**
- * Wraps the inner content of an element with a tag
+ * Wraps the inner content of an element with a tag.
  *
- * @param {jQuerySelector|jQuery|Element} element The element(s) to wrap
+ * @param {jQuerySelector|jQuery|Element} element The element(s) to wrap.
  * @param {String} tag The wrapper tag name
+ * @returns {jQuery} The wrapped element.
  */
 function elementWrapInner(element, tag) {
     var result = new jQuery();
@@ -191,9 +199,13 @@ function elementWrapInner(element, tag) {
 }
 
 /**
+ * Toggles the styles of an element.
+ *
  * FIXME: this function needs reviewing
  * @public @static
- * @param {jQuerySelector|jQuery|Element} element The jQuery element to insert
+ * @param {jQuerySelector|jQuery|Element} element The jQuery element to have it's style changed.
+ * @param {type} styles The styles to add or remove from the element.
+ * @returns {undefined}
  */
 function elementToggleStyle(element, styles) {
     $.each(styles, function(property, value) {
@@ -206,9 +218,11 @@ function elementToggleStyle(element, styles) {
 }
 
 /**
- * @param {jQuerySelector|jQuery|Element} element1
- * @param {jQuerySelector|jQuery|Element} element2
- * @param {Object} style
+ * Swaps the styles of two elements.
+ *
+ * @param {jQuery|Element} element1 The element for element 2 to get its styles from.
+ * @param {jQuery|Element} element2 The element for element 1 to get its styles from.
+ * @param {Object} style The style to be swapped between the two elements.
  */
 function elementSwapStyles(element1, element2, style) {
     for (var name in style) {
@@ -217,12 +231,18 @@ function elementSwapStyles(element1, element2, style) {
     }
 }
 
-
+/**
+ * Checks if an element is empty.
+ *
+ * @param {jQuery|Element} element The element to be checked.
+ * @returns {Boolean} Returns true if element is empty.
+ */
 function elementIsEmpty(element) {
     return $($.parseHTML(element)).is(':empty');
 }
 
 /**
+ * Positions an element underneath another element.
  *
  * @param {jQuery} element Element to position.
  * @param {jQuery} under Element to position under.
@@ -236,6 +256,12 @@ function elementPositionUnder(element, under) {
     });
 }
 
+/**
+ * Removes the element from the DOM to manipulate it using a function passed to the method, then replaces it back to it's origional position.
+ * @todo desc and type for manip
+ * @param {jQuery|Element} element The element to be manipulated.
+ * @param {type} manip A function used to manipulate the element i think.
+ */
 function elementDetachedManip(element, manip) {
     var parent = $(element).parent();
     $(element).detach();
@@ -243,6 +269,14 @@ function elementDetachedManip(element, manip) {
     parent.append(element);
 }
 
+/**
+ * Finds the closest parent, up to a limit element, to the supplied element that is not an display inline or null.
+ * If the parent element is the same as the limit element then it returns null.
+ *
+ * @param {jQuery} element The element to find the closest parent of.
+ * @param {jQuery} limitElement The element to stop looking for the closest parent at.
+ * @returns {jQuery} Closest element that is not display inline or null, or null if the parent element is the same as the limit element.
+ */
 function elementClosestBlock(element, limitElement) {
     // <strict>
     if (!typeIsElement(element)) {
@@ -265,6 +299,11 @@ function elementClosestBlock(element, limitElement) {
     return element;
 }
 
+/**
+ * Generates a unique id.
+ *
+ * @returns {String} The unique id.
+ */
 function elementUniqueId() {
     var id = 'ruid-' + new Date().getTime() + '-' + Math.floor(Math.random() * 100000);
     while ($('#' + id).length) {
@@ -273,6 +312,13 @@ function elementUniqueId() {
     return id;
 }
 
+/**
+ * Changes the tags on a given element.
+ * @todo not sure of details of return
+ * @param {jQuerySelector|jQuery|Element} element The element(s) to have it's tags changed
+ * @param {Element} newTag The new tag for the element(s)
+ * @returns {type}
+ */
 function elementChangeTag(element, newTag) {
     var tags = [];
     for (var i = element.length - 1; 0 <= i ; i--) {
