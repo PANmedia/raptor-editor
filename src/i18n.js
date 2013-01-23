@@ -108,6 +108,6 @@ function _(string, variables) {
         for (var key in variables) {
             string = string.replace('{{' + key + '}}', variables[key]);
         }
-        return string;
     }
+    return string;
 }
