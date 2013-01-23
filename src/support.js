@@ -1,4 +1,4 @@
-var supported, ios, hotkeys;
+var supported, ios, hotkeys, firefox, ie;
 
 function isSupported(editor) {
     if (supported === undefined) {
@@ -20,12 +20,30 @@ function isSupported(editor) {
         }
         // </ios>
 
-        if ($.browser.mozilla) {
+        firefox = /Firefox/i.test(navigator.userAgent);
+        if (firefox) {
             $('html').addClass(editor.options.baseClass + '-ff');
         }
 
         // <ie>
-        if ($.browser.msie && $.browser.version < 9) {
+        /**
+         * Returns the version of Internet Explorer or a -1 (indicating the use of another browser).
+         * http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
+         */
+        var ieVersion = (function() {
+            var rv = -1; // Return value assumes failure.
+            if (navigator.appName == 'Microsoft Internet Explorer') {
+                var ua = navigator.userAgent;
+                var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+                if (re.exec(ua) != null) {
+                    rv = parseFloat(RegExp.$1);
+                }
+            }
+            return rv;
+        })();
+
+        ie = ieVersion !== -1;
+        if (ie && ieVersion < 9) {
             supported = false;
 
             // Create message modal

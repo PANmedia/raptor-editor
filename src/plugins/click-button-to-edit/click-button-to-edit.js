@@ -1,6 +1,5 @@
 var clickButtonToEditButton = null,
-    clickButtonToEditInstance = null,
-    clickButtonToEditHover = false;
+    clickButtonToEditInstance = null;
 
 function ClickButtonToEditPlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'clickButtonToEdit', overrides);
@@ -38,9 +37,7 @@ ClickButtonToEditPlugin.prototype.hide = function(event) {
              button.get(0) === $(event.relatedTarget).parent().get(0)))) {
         return;
     }
-    if (!button.is(':hover')) {
-        button.hide();
-    }
+    button.hide();
 };
 
 ClickButtonToEditPlugin.prototype.edit = function() {
