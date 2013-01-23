@@ -29,6 +29,16 @@ DockPlugin.prototype.init = function() {
         this.raptor.bind('layoutReady', function() {
             this.toggleState();
         }.bind(this));
+        this.raptor.bind('layoutHide', function() {
+            if (this.dockState && this.dockState.spacer) {
+                this.dockState.spacer.hide();
+            }
+        }.bind(this));
+        this.raptor.bind('layoutShow', function() {
+            if (this.dockState && this.dockState.spacer) {
+                this.dockState.spacer.show();
+            }
+        }.bind(this));
     }
 };
 
