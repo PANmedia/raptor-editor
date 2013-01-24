@@ -1,3 +1,16 @@
+/**
+ * @fileOverview List manipulation helper functions.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
+/**
+ * Checks whether the selection is fully encased by ul or ol tags, if it is then unwrap the parent ul/ol.
+ * @todo can't work out what wrapper is.
+ * @param {String} listType This is the type of list to check the selection against.
+ * @param {Object} listItem This is the list item to use as the selection.
+ * @param {Array} wrapper An array of something i can't work out.
+ */
 function listToggle(listType, listItem, wrapper) {
     // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
     if ($(selectionGetElements()).is(listItem)
@@ -8,6 +21,13 @@ function listToggle(listType, listItem, wrapper) {
     }
 };
 
+/**
+ * Wraps the selected element(s) in list tags
+ * @todo not sure what wrapper is.
+ * @param {String} listType The type of list that the selection is to be transformed into.
+ * @param {String} listItem The list item to be used in creating the list.
+ * @param {Array} wrapper An array of something i can't work out.
+ */
 function listWrapSelection(listType, listItem, wrapper) {
     if ($.trim(selectionGetHtml()) === '') {
         selectionSelectInner(selectionGetElements());
@@ -62,6 +82,11 @@ function listWrapSelection(listType, listItem, wrapper) {
     selectionSelectInner(replacement.find(listItem + ':first')[0]);
 };
 
+/**
+ * Unwraps the selected list item(s) and puts it into <p> tags.
+ *
+ * @param {Object} listItem
+ */
 function listUnwrapSelection(listItem) {
     // Array containing the html contents of each of the selected li elements.
     var listElementsContent = [];
