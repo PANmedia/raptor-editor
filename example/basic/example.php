@@ -96,6 +96,12 @@
             <em class="cms-italic">This text is italic.</em>
         </p>
 
+        <p>
+            Text above the image.
+            <img src="../full-suite/images/orange.jpg" />
+            Text below the image.
+        </p>
+
         <table>
             <tr>
                 <td>Cell</td>
