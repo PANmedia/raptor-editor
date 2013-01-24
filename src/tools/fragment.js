@@ -31,7 +31,7 @@ function fragmentToHtml(domFragment, tag) {
 }
 
 /**
- * Insert a DOMFragment before an element and wrap them both in a tag.
+ * Insert a DOMFragment before an element and wraps them both in a tag.
  *
  * @public @static
  * @param {DOMFragment} domFragment This is the DOMFragment to be inserted.
