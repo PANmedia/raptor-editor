@@ -764,7 +764,6 @@ rangy.createModule("Applier", function(api, module) {
             if (nodes.length) {
                 for (var i = 0, textNode; textNode = nodes[i++]; ) {
                     if (!this.isIgnorableWhiteSpaceNode(textNode)
-                            && !this.getSelfOrAncestor(textNode)
                             && this.isModifiable(textNode)) {
                         this.applyToTextNode(textNode, positionsToPreserve);
                     }
