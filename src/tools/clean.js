@@ -43,6 +43,12 @@ function cleanUnwrapElements(selector) {
     $(selector).unwrap();
 }
 
+/**
+ * Takes a supplied element and removes all of the empty attributes from it.
+ *
+ * @param {jQuery} element This is the element to remove all the empty attributes from.
+ * @param {array} attributes This is an array of the elements attributes.
+ */
 function cleanEmptyAttributes(element, attributes) {
     for (i = 0; i < attributes.length; i++) {
         if (!$.trim(element.attr(attributes[i]))) {
