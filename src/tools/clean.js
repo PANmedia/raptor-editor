@@ -50,6 +50,13 @@ function cleanUnwrapElements(selector) {
  * @param {array} attributes This is an array of the elements attributes.
  */
 function cleanEmptyAttributes(element, attributes) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Paramter 1 to cleanEmptyAttributes is expected a jQuery element');
+        return;
+    }
+    // </strict>
+
     for (i = 0; i < attributes.length; i++) {
         if (!$.trim(element.attr(attributes[i]))) {
             element.removeAttr(attributes[i]);
@@ -70,6 +77,13 @@ function cleanEmptyAttributes(element, attributes) {
  * @return {jQuery} The modified parent.
  */
 function cleanRemoveComments(parent) {
+    // <strict>
+    if (!typeIsElement(parent)) {
+        handleInvalidArgumentError('Paramter 1 to cleanRemoveComments is expected a jQuery element');
+        return;
+    }
+    // </strict>
+
     parent.contents().each(function() {
         if (this.nodeType == Node.COMMENT_NODE) {
             $(this).remove();
@@ -79,4 +93,64 @@ function cleanRemoveComments(parent) {
         cleanRemoveComments($(this));
     });
     return parent;
+}
+
+
+/**
+ * Removed empty elements whose tag name matches the list of supplied tags.
+ *
+ * @param  {jQuery} parent The jQuery element to have empty element removed from.
+ * @param  {String[]} tags The list of tags to clean.
+ * @return {jQuery} The modified parent.
+ */
+function cleanEmptyElements(parent, tags) {
+    // <strict>
+    if (!typeIsElement(parent)) {
+        handleInvalidArgumentError('Paramter 1 to cleanEmptyElements is expected a jQuery element');
+        return;
+    }
+    // </strict>
+
+    parent.find(tags.join(',')).each(function() {
+        if ($.trim($(this).html()) == '') {
+            $(this).remove();
+        }
+    });
+    return parent;
+}
+
+/**
+ * Wraps any text nodes in the element with the supplied tag. This does not scan child elements.
+ *
+ * @param  {jQuery} element The jQuery element to scan for text ndoes.
+ * @param  {String} tag The tag to use from wrapping the text nodes.
+ */
+function cleanWrapTextNodes(node, tag) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Paramter 1 to cleanWrapTextNodes is expected a node.');
+        return;
+    }
+    // </strict>
+
+    var textNodes = elementFindTextNodes(node);
+    for (var i = 0, l = textNodes.length; i < l; i++) {
+        var clone = textNodes[i].cloneNode(),
+            wrapper = document.createElement(tag);
+        wrapper.appendChild(clone);
+        node.insertBefore(wrapper, textNodes[i]);
+        node.removeChild(textNodes[i]);
+    }
+}
+
+function elementFindTextNodes(node) {
+    var textNodes = [], whitespace = /^\s*$/;
+    for (var i = 0, l = node.childNodes.length; i < l; i++) {
+        if (node.childNodes[i].nodeType == 3) {
+            if (!whitespace.test(node.childNodes[i].nodeValue)) {
+                textNodes.push(node.childNodes[i]);
+            }
+        }
+    }
+    return textNodes;
 }
