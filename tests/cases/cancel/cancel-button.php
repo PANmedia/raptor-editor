@@ -7,6 +7,9 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+        function clickCancelDialogButton() {
+            $('.raptor-ui-cancel-dialog .ui-dialog-buttonpane .ui-button:eq(0)').trigger('click');
+        }
     </script>
     <div class="test-1">
         <h1>Cancel Formatting Button 1: Basic</h1>
@@ -35,10 +38,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+            clickButton(input, '.raptor-ui-text-italic');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -69,11 +71,10 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+            clickButton(input, '.raptor-ui-text-italic');
+            clickButton(input, '.raptor-ui-align-center');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -110,10 +111,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-text-strike');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -130,7 +130,6 @@
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse <u class="underline">interdum, nisi</u>} nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
                 </p>
             </div>
         </div>
@@ -151,11 +150,10 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-align-right');
+            clickButton(input, '.raptor-ui-list-unordered');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -190,11 +188,10 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-text-strike');
+            clickButton(input, '.raptor-ui-align-right');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -229,11 +226,10 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-underline').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-text-bold');
+            clickButton(input, '.raptor-ui-text-underline');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -268,11 +264,10 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-left').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-text-strike');
+            clickButton(input, '.raptor-ui-align-left');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -295,7 +290,7 @@
             <div class="editible">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </p><p class="cms-center">
                     Aliquam gravida mauris at
@@ -307,14 +302,12 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-left').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-align-right');
+            clickButton(input, '.raptor-ui-align-left');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
-
 
     <div class="test-9">
         <h1>Cancel Formatting Button 9: Image Float</h1>
@@ -335,10 +328,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-9', function(input) {
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right').trigger('click');
-             input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-             var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-             okButton.trigger('click');
+            clickButton(input, '.raptor-ui-float-right');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -367,12 +359,11 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-10', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-bold').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+            clickButton(input, '.raptor-ui-float-right');
+            clickButton(input, '.raptor-ui-align-right');
+            clickButton(input, '.raptor-ui-text-bold');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
 
@@ -401,12 +392,12 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-11', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+            clickButton(input, '.raptor-ui-guides');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
         });
     </script>
+<?php return; ?>
 
     <div class="test-12">
         <h1>Cancel Formatting Button 12: Spacer Div Disappears</h1>
@@ -433,14 +424,13 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-12', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-screen').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-cancel').trigger('click');
-            var okButton = $('.raptor-ui-cancel-dialog button:contains(Ok)');
-            okButton.trigger('click');
+            clickButton(input, '.raptor-ui-dock-to-screen');
+            clickButton(input, '.raptor-ui-cancel');
+            clickCancelDialogButton();
 
             if (input.find('.spacer')) {
-                    throw new Error('Spacer still displayed');
-                }
+                throw new Error('Spacer still displayed');
+            }
         });
     </script>
 
