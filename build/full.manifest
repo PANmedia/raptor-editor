@@ -63,6 +63,7 @@ src/components/plugin.js
 src/components/ui/button.js
 src/components/ui/preview-button.js
 src/components/ui/preview-toggle-button.js
+src/components/ui/toggle-button.js
 src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
 src/components/ui/menu.js
