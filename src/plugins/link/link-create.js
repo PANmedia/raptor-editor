@@ -1,7 +1,7 @@
 var linkDialog = null
     linkDialogInstance = null;
 
-Raptor.registerUi(new Button({
+Raptor.registerUi(new ToggleButton({
     name: 'linkCreate',
     state: null,
 
@@ -13,12 +13,23 @@ Raptor.registerUi(new Button({
     applyLink: function(attributes) {
         this.raptor.stateRestore(this.state);
         this.raptor.actionApply(function() {
+            selectionExpandToWord();
             var applier = rangy.createApplier({
                 tag: 'a',
                 attributes: attributes
             });
-            applier.applyToSelection();
+            if (attributes !== null && $.trim(attributes.href) !== '') {
+                applier.applyToSelection();
+                cleanEmptyElements(this.raptor.getElement(), ['a']);
+            }
+        }.bind(this));
+    },
+
+    selectionToggle: function() {
+        var applier = rangy.createApplier({
+            tag: 'a'
         });
+        return applier.isAppliedToSelection();
     },
 
     getDialog: function(instance) {
