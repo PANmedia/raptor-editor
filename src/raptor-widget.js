@@ -286,6 +286,8 @@ var RaptorWidget = {
                     this.fire('cleaned');
                 }
             }
+
+            this.checkSelectionChange();
         }
     },
 
@@ -357,9 +359,15 @@ var RaptorWidget = {
 
     actionApply: function(action) {
         this.actionPreviewRestore();
+        var state = this.stateSave();
         selectionConstrain(this.target);
-        actionApply(action, this.history);
-        this.checkChange();
+        try {
+            actionApply(action, this.history);
+            this.checkChange();
+        } catch (exception) {
+            this.stateRestore(state);
+            handleError(exception);
+        }
     },
 
     actionUndo: function() {
