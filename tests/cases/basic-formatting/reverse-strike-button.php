@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -73,7 +73,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -111,7 +111,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -154,7 +154,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -196,7 +196,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -237,7 +237,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -278,7 +278,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var strikeButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-strike');
+            var strikeButton = getLayoutElement(input).find('.raptor-ui-text-strike');
             strikeButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

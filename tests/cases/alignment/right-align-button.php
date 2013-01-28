@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -72,7 +72,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-           var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+           var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -109,7 +109,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -150,7 +150,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -191,7 +191,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -232,7 +232,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -273,7 +273,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -314,7 +314,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var alignRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignRightButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignRightButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -357,7 +357,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-9', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-right');
+            var alignCenterButton = getLayoutElement(input).find('.raptor-ui-align-right');
             alignCenterButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

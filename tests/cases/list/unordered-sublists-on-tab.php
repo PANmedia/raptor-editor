@@ -57,7 +57,7 @@
         testEditor('.test-1', function(input) {
             var e = jQuery.Event("keydown");
             e.which = 9; //key code
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -99,7 +99,7 @@
         testEditor('.test-2', function(input) {
             var e = jQuery.Event("keydown");
             e.which = 9; //key code
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -137,7 +137,7 @@
         testEditor('.test-3', function(input) {
             var e = jQuery.Event("keydown");
             e.which = 9; //key code
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -173,7 +173,7 @@
         testEditor('.test-4', function(input) {
             var e = jQuery.Event("keydown");
             e.which = 9; //key code
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>

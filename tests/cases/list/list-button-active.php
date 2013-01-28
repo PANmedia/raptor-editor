@@ -34,7 +34,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
+            var orderedListButton = getLayoutElement(input).find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -71,7 +71,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
+            var orderedListButton = getLayoutElement(input).find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -108,7 +108,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
+            var unorderedListButton = getLayoutElement(input).find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -143,7 +143,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
+            var unorderedListButton = getLayoutElement(input).find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -178,7 +178,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
+            var orderedListButton = getLayoutElement(input).find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -211,7 +211,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
+            var unorderedListButton = getLayoutElement(input).find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -244,7 +244,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var orderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
+            var orderedListButton = getLayoutElement(input).find('.raptor-ui-list-ordered');
             orderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -281,7 +281,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
+            var unorderedListButton = getLayoutElement(input).find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -318,7 +318,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-9', function(input) {
-            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered');
+            var unorderedListButton = getLayoutElement(input).find('.raptor-ui-list-unordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

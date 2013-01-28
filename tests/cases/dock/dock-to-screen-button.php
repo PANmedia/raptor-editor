@@ -61,7 +61,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var dockToScreen = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-screen');
+            var dockToScreen = getLayoutElement(input).find('.raptor-ui-dock-to-screen');
             dockToScreen.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -123,7 +123,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var dockToScreen = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-screen');
+            var dockToScreen = getLayoutElement(input).find('.raptor-ui-dock-to-screen');
             dockToScreen.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
