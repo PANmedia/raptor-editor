@@ -880,6 +880,9 @@ rangy.createModule("Applier", function(api, module) {
 
         isAppliedToRanges: function(ranges) {
             var i = ranges.length;
+            if (i === 0) {
+                return false;
+            }
             while (i--) {
                 if (!this.isAppliedToRange(ranges[i])) {
                     return false;
