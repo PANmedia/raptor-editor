@@ -1,11 +1,16 @@
-var cancelDialog = null;
+var cancelDialog = null,
+    cancelInstance;
 
 Raptor.registerUi(new Button({
     name: 'cancel',
     action: function() {
         aDialogOpen(this.getDialog());
     },
+    cancelEditing: function() {
+        this.raptor.cancelEditing();
+    },
     getDialog: function() {
+        cancelInstance = this;
         if (!cancelDialog) {
             cancelDialog = $('<div>').html(_('cancelDialogContent'));
             aDialog(cancelDialog, {
@@ -19,9 +24,9 @@ Raptor.registerUi(new Button({
                     {
                         text: _('cancelDialogOKButton'),
                         click: function() {
-                            this.raptor.cancelEditing();
+                            cancelInstance.cancelEditing();
                             aDialogClose(cancelDialog);
-                        }.bind(this),
+                        },
                         icons: {
                             primary: 'ui-icon-circle-check'
                         }
