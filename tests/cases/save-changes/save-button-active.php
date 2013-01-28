@@ -35,8 +35,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-italic').trigger('click');
-            var saveButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-save');
+            clickButton(input, '.raptor-ui-text-italic');
+            var saveButton = getLayoutElement(input).find('.raptor-ui-save');
             if(!saveButton.is('.ui-button-disabled' && '.ui-state-disabled')) {
                 saveButton.trigger('click');}
             else {
