@@ -135,12 +135,24 @@ function listConvertListItem(listItem, listType, tag, validTagChildren) {
         handleInvalidArgumentError('Parameter 1 for listConvertListItem must be a jQuery element', listItem);
     }
     // </strict>
-    var listItemChildren = listItem.find('> *');
-    var r = null;
+    var listItemChildren = listItem.contents().filter(function() {
+        if (!typeIsTextNode(this)) {
+            return true;
+        }
+        if ($(this).text().trim() !== '') {
+            return true;
+        }
+    });
     if (listItemChildren.length) {
         listItemChildren.each(function() {
+            if ($(this).text().trim() === '') {
+                return $(this).remove();
+            }
+            if (typeIsTextNode(this)) {
+                return $(this).wrap('<' + tag + '>');
+            }
             if (!elementIsBlock(this)) {
-                elementChangeTag($(this), tag);
+                return elementChangeTag($(this), tag);
             }
         });
         return listItem.contents().unwrap();
