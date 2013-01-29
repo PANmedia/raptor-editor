@@ -71,7 +71,7 @@ var listValidPParents = [
 function listEnforceValidChildren(list, listItem, validChildren) {
     // <strict>
     if (!typeIsElement(list)) {
-        handleError('Parameter 1 for listEnforceValidChildren must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
     list.find(listItem).each(function() {
@@ -99,14 +99,15 @@ function listEnforceValidChildren(list, listItem, validChildren) {
 function listWrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
     if (rangeIsEmpty(range)) {
-        range.selectNode(elementClosestBlock($(range.commonAncestorContainer), wrapper).get(0));
+        var commonAncestor = rangeGetCommonAncestor(range);
+        range.selectNode(elementClosestBlock($(commonAncestor), wrapper).get(0));
     }
     var contents = fragmentToHtml(range.extractContents());
 
     if (!$($.parseHTML(contents)).is(listItem)) {
         contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
     }
-    var validParents = listType === 'blockquote' ? listValidLiParents : listValidBlockQuoteParents;
+    var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var replacementHtml = '<' + listType + '>' + contents + '</' + listType + '>';
 
     var replacement = rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
@@ -131,15 +132,15 @@ function listWrapSelection(listType, listItem, wrapper) {
 function listConvertListItem(listItem, listType, tag, validTagChildren) {
      // <strict>
     if (!typeIsElement(listItem)) {
-        handleError('Parameter 1 of listUnwrapListItem must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 for listConvertListItem must be a jQuery element', listItem);
     }
     // </strict>
-    var listItemChildren = listItem.children();
+    var listItemChildren = listItem.find('> *');
     var r = null;
     if (listItemChildren.length) {
         listItemChildren.each(function() {
             if (!elementIsBlock(this)) {
-                elementChangeTag(this, tag);
+                elementChangeTag($(this), tag);
             }
         });
         return listItem.contents().unwrap();
@@ -158,7 +159,7 @@ function listConvertListItem(listItem, listType, tag, validTagChildren) {
 function listUnwrap(list, listItem, listType) {
     // <strict>
     if (!typeIsElement(list)) {
-        handleError('Parameter 1 to listTidyModified must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 for listUnwrap must be a jQuery element', list);
     }
     // </strict>
     var convertedItem = null;
@@ -179,7 +180,7 @@ function listUnwrap(list, listItem, listType) {
 function listTidyModified(list, listType, listItem) {
     // <strict>
     if (!typeIsElement(list)) {
-        handleError('Parameter 1 to listTidyModified must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 for listTidyModified must be a jQuery element', list);
     }
     // </strict>
     listRemoveEmptyItems(list, listType, listItem);
@@ -196,7 +197,7 @@ function listTidyModified(list, listType, listItem) {
 function listRemoveEmptyItems(list, listType, listItem) {
     // <strict>
     if (!typeIsElement(list)) {
-        handleError('Parameter 1 to listRemoveEmptyItems must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 for listRemoveEmptyItems must be a jQuery element', list);
     }
     // </strict>
     if (!list.is(listType)) {
@@ -219,7 +220,7 @@ function listRemoveEmptyItems(list, listType, listItem) {
 function listRemoveEmpty(list, listType, listItem) {
     // <strict>
     if (!typeIsElement(list)) {
-        handleError('Parameter 1 to listRemoveEmpty must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 for listRemoveEmpty must be a jQuery element', list);
     }
     // </strict>
     if (!list.is(listType)) {
@@ -238,7 +239,7 @@ function listRemoveEmpty(list, listType, listItem) {
 function listUnwrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
     if (rangeIsEmpty(range)) {
-        range = rangeExpandTo(range, [listItem]);
+        rangeExpandTo(range, [listItem]);
     }
 
     var commonAncestor = $(rangeGetCommonAncestor(range));
@@ -298,7 +299,6 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (!commonAncestor.prev().length && !commonAncestor.next().length) {
-        console.log('here 3');
         return listUnwrap(commonAncestor.closest(listType), listItem, listType);
     }
 
@@ -310,7 +310,6 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (commonAncestor.next().length && commonAncestor.prev().length) {
-        console.log('here 4');
         rangeSelectElement(range, commonAncestor);
         var replacement = listConvertListItem(commonAncestor, listType, 'p', listValidPChildren);
         return rangeReplaceWithinValidTags(range, replacement, wrapper, listValidPParents);
@@ -323,7 +322,6 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (commonAncestor.next().length && !commonAncestor.prev().length) {
-        console.log('here 5');
         commonAncestor.parent().before(listConvertListItem(commonAncestor, listType, 'p', listValidPChildren));
         commonAncestor.remove();
         return;
@@ -336,7 +334,6 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (!commonAncestor.next().length && commonAncestor.prev().length) {
-        console.log('here 6');
         commonAncestor.parent().after(listConvertListItem(commonAncestor, 'p', listType, listValidPChildren));
         commonAncestor.remove();
         return;
