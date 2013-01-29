@@ -116,6 +116,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/snippet-menu/snippet-menu.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/special-characters/special-characters.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/statistics/statistics.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-cell-button.js"></script>
