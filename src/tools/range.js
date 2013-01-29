@@ -33,8 +33,8 @@ function rangeSelectElement(range, element) {
         handleInvalidArgumentError('Parameter 1 to rangeSelectElement is expected to be a range', range);
         return;
     }
-    if (!typeIsElement(elements)) {
-        handleInvalidArgumentError('Parameter 2 to rangeSelectElement is expected to be a jQuery element', elements);
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 2 to rangeSelectElement is expected to be a jQuery element', element);
         return;
     }
     // </strict>
