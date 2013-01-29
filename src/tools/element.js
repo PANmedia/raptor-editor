@@ -352,7 +352,7 @@ function elementUniqueId() {
  * @todo not sure of details of return
  * @param {jQuerySelector|jQuery|Element} element The element(s) to have it's tags changed
  * @param {Element} newTag The new tag for the element(s)
- * @returns {type}
+ * @returns {Element}
  */
 function elementChangeTag(element, newTag) {
     // <strict>
