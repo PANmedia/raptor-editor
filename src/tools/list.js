@@ -5,146 +5,340 @@
  */
 
 /**
- * Checks whether the selection is fully encased by ul or ol tags, if it is then unwrap the parent ul/ol.
- * @todo can't work out what wrapper is.
+ * Checks whether the selection is fully enclosed by ul or ol tags, if it is then
+ * unwrap the parent ul/ol.
+ *
  * @param {String} listType This is the type of list to check the selection against.
  * @param {Object} listItem This is the list item to use as the selection.
- * @param {Array} wrapper An array of something i can't work out.
+ * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
-    // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
-    if ($(selectionGetElements()).is(listItem)
-        && $(selectionGetElements()).parent().is(listType)) {
-        listUnwrapSelection(listItem);
-    } else {
-        listWrapSelection(listType, listItem, wrapper);
+    // Check whether selection is fully contained by a ul/ol. If so, unwrap
+    // parent ul/ol
+    var selectedElements = $(selectionGetElements());
+    if (selectedElements.is(listItem) || selectedElements.is(listType)) {
+        return listUnwrapSelection(listType, listItem, wrapper);
     }
-};
+
+    return listWrapSelection(listType, listItem, wrapper);
+}
 
 /**
- * Wraps the selected element(s) in list tags
- * @todo not sure what wrapper is.
+ * @type {String[]} Tags allowed within an li.
+ */
+var listValidLiChildren = [
+    'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button',
+    'cite', 'code', 'dfn', 'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd',
+    'label', 'map', 'object', 'p', 'q', 's',  'samp', 'select', 'small', 'span',
+    'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
+];
+
+/**
+ * @type {String][]} Tags ol & ul are allowed within.
+ */
+var listValidUlOlParents =  [
+    'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form',
+    'iframe', 'li', 'noframes', 'noscript', 'object', 'td', 'th'
+];
+
+/**
+ * @type {String][]} Tags blockquote is allowed within.
+ */
+var listValidBlockQuoteParents = [
+    'body', 'center', 'dd', 'div', 'dt', 'fieldset', 'form', 'iframe', 'li', 'td', 'th'
+];
+
+ var listValidPChildren = [
+    'a', 'abbr', 'acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br',
+    'button', 'cite', 'code', 'dfn', 'em', 'font', 'i', 'iframe', 'img',
+    'input', 'kbd', 'label', 'map', 'object', 'q', 's', 'samp', 'script',
+    'select', 'small', 'span', 'strike', 'strong', 'sub', 'sup', 'textarea',
+    'u'
+];
+
+var listValidPParents = [
+    'address', 'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset',
+    'form', 'iframe', 'li', 'noframes', 'noscript', 'object', 'td', 'th'
+];
+
+/**
+ * Convert tags invalid within the context of listItem.
+ *
+ * @param  {Element} list
+ * @param  {String} listItem
+ * @param  {String[]} validChildren
+ */
+function listEnforceValidChildren(list, listItem, validChildren) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 for listEnforceValidChildren must be a jQuery element');
+    }
+    // </strict>
+    list.find(listItem).each(function() {
+        if (!$(this).html().trim()) {
+            $(this).remove();
+            return;
+        }
+        $(this).find(' *').each(function() {
+            if (!typeIsTextNode(this)) {
+                if (!elementIsValid(this, listValidLiChildren)) {
+                    elementChangeTag($(this), 'p');
+                }
+            }
+        });
+    });
+}
+
+/**
+ * Wraps the selected element(s) in list tags.
+ *
  * @param {String} listType The type of list that the selection is to be transformed into.
  * @param {String} listItem The list item to be used in creating the list.
- * @param {Array} wrapper An array of something i can't work out.
+ * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listWrapSelection(listType, listItem, wrapper) {
-    if ($.trim(selectionGetHtml()) === '') {
-        selectionSelectInner(selectionGetElements());
+    var range = rangy.getSelection().getRangeAt(0);
+    if (rangeIsEmpty(range)) {
+        range.selectNode(elementClosestBlock($(range.commonAncestorContainer), wrapper).get(0));
     }
+    var contents = fragmentToHtml(range.extractContents());
 
-    var validChildren = [
-            'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button', 'cite', 'code', 'dfn',
-            'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd', 'label', 'map', 'object', 'p', 'q', 's',  'samp',
-            'select', 'small', 'span', 'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
-        ],
-        validParents = [
-            'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li',
-            'noframes', 'noscript', 'object', 'td', 'th'
-        ],
-        selectedHtml = $('<div>').html(selectionGetHtml()),
-        listElements = [];
+    if (!$($.parseHTML(contents)).is(listItem)) {
+        contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
+    }
+    var validParents = listType === 'blockquote' ? listValidLiParents : listValidBlockQuoteParents;
+    var replacementHtml = '<' + listType + '>' + contents + '</' + listType + '>';
 
-    // Convert child block elements to list elements
-    $(selectedHtml).contents().each(function() {
-        var liContent;
-        // Use only content of block elements
-        if ('block' === elementDefaultDisplay(this.tagName)) {
-            liContent = stringStripTags($(this).html(), validChildren);
-        } else {
-            liContent = stringStripTags(elementOuterHtml($(this)), validChildren);
-        }
+    var replacement = rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
-        // Avoid inserting blank lists
-        var listElement = $('<' + listItem + '>' + liContent + '</' + listItem + '>');
-        if ($.trim(listElement.text()) !== '') {
-            listElements.push(elementOuterHtml(listElement));
+    listEnforceValidChildren($(replacement), listItem, listValidLiChildren);
+
+    if (replacement.length) {
+        selectionSelectInner($(replacement)[0]);
+    }
+}
+
+/**
+ * Convert the given list item to the given tag. If the listItem has children,
+ * convert them and unwrap the containing list item.
+ *
+ * @param  {Element} listItem
+ * @param  {string} listType
+ * @param  {string} tag
+ * @param  {string[]} validTagChildren Array of valid child tag names.
+ * @return {Element|null} Result of the final conversion.
+ */
+function listConvertListItem(listItem, listType, tag, validTagChildren) {
+     // <strict>
+    if (!typeIsElement(listItem)) {
+        handleError('Parameter 1 of listUnwrapListItem must be a jQuery element');
+    }
+    // </strict>
+    var listItemChildren = listItem.children();
+    var r = null;
+    if (listItemChildren.length) {
+        listItemChildren.each(function() {
+            if (!elementIsBlock(this)) {
+                elementChangeTag(this, tag);
+            }
+        });
+        return listItem.contents().unwrap();
+    } else {
+        return elementChangeTag(listItem, tag);
+    }
+}
+
+/**
+ * Convert listItems to paragraphs and unwrap the containing listType.
+ *
+ * @param  {Element} list
+ * @param  {string} listItem
+ * @param  {string} listType
+ */
+function listUnwrap(list, listItem, listType) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listTidyModified must be a jQuery element');
+    }
+    // </strict>
+    var convertedItem = null;
+    list.find(listItem).each(function() {
+        listConvertListItem($(this), listType, 'p', listValidPChildren);
+    });
+    return list.contents().unwrap();
+}
+
+/**
+ * Tidy lists that have been modified, including removing empty listItems and
+ * removing the list if it is completely empty.
+ *
+ * @param  {Element} list
+ * @param  {string} listType
+ * @param  {string} listItem
+ */
+function listTidyModified(list, listType, listItem) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listTidyModified must be a jQuery element');
+    }
+    // </strict>
+    listRemoveEmptyItems(list, listType, listItem);
+    listRemoveEmpty(list, listType, listItem);
+}
+
+/**
+ * Remove empty listItems from within the list.
+ *
+ * @param  {Element} list
+ * @param  {string} listType
+ * @param  {string} listItem
+ */
+function listRemoveEmptyItems(list, listType, listItem) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listRemoveEmptyItems must be a jQuery element');
+    }
+    // </strict>
+    if (!list.is(listType)) {
+        return;
+    }
+    list.find(listItem).each(function() {
+        if ($(this).text().trim() === '') {
+            $(this).remove();
         }
     });
+}
 
-    var replacementHtml = '<' + listType + '>' + listElements.join('') + '</' + listType + '>',
-        selectedElementParent = $(selectionGetElements()[0]).parent(),
-        editingElement = wrapper[0];
-
-    /*
-     * Replace selection if the selected element parent or the selected element is the editing element,
-     * instead of splitting the editing element.
-     */
-    var replacement;
-    if (selectedElementParent === editingElement
-            || selectionGetElements()[0] === editingElement) {
-        replacement = selectionReplace(replacementHtml);
-    } else {
-        replacement = selectionReplaceWithinValidTags(replacementHtml, validParents);
+/**
+ * Remove list if it is of listType and empty.
+ *
+ * @param  {Element} list
+ * @param  {string} listType
+ * @param  {string} listItem
+ */
+function listRemoveEmpty(list, listType, listItem) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listRemoveEmpty must be a jQuery element');
     }
-
-    // Select the first list element of the inserted list
-    selectionSelectInner(replacement.find(listItem + ':first')[0]);
-};
+    // </strict>
+    if (!list.is(listType)) {
+        return;
+    }
+    if (list.text().trim() === '') {
+        list.remove();
+    }
+}
 
 /**
  * Unwraps the selected list item(s) and puts it into <p> tags.
  *
  * @param {Object} listItem
  */
-function listUnwrapSelection(listItem) {
-    // Array containing the html contents of each of the selected li elements.
-    var listElementsContent = [];
-    // Array containing the selected li elements themselves.
-    var listElements = [];
-
-    // The element within which selection begins.
-    var startElement = selectionGetStartElement();
-    // The element within which ends.
-    var endElement = selectionGetEndElement();
-
-    // Collect the first selected list element's content
-    listElementsContent.push($(startElement).html());
-    listElements.push(startElement);
-
-    // Collect the remaining list elements' content
-    if ($(startElement)[0] !== $(endElement)[0]) {
-        var currentElement = startElement;
-        do  {
-            currentElement = $(currentElement).next();
-            listElementsContent.push($(currentElement).html());
-            listElements.push(currentElement);
-        } while($(currentElement)[0] !== $(endElement)[0]);
+function listUnwrapSelection(listType, listItem, wrapper) {
+    var range = rangy.getSelection().getRangeAt(0);
+    if (rangeIsEmpty(range)) {
+        range = rangeExpandTo(range, [listItem]);
     }
 
-    // Boolean values used to determine whether first / last list element of the parent is selected.
-    var firstLISelected = $(startElement).prev().length === 0;
-    var lastLISelected = $(endElement).next().length === 0;
+    var commonAncestor = $(rangeGetCommonAncestor(range));
 
-    // The parent list container, e.g. the parent ul / ol
-    var parentListContainer = $(startElement).parent();
+    /**
+     * Selection contains more than one <listItem>, or the whole <listType>
+     */
+    if (commonAncestor.is(listType)) {
+        var startElement = rangeGetStartElement(range);
+        var endElement = rangeGetEndElement(range);
 
-    // Remove the list elements from the DOM.
-    for (listElementsIndex = 0; listElementsIndex < listElements.length; listElementsIndex++) {
-        $(listElements[listElementsIndex]).remove();
-    }
-
-    // Wrap list element content in p tags if the list element parent's parent is not a li.
-    for (var listElementsContentIndex = 0; listElementsContentIndex < listElementsContent.length; listElementsContentIndex++) {
-        if (!parentListContainer.parent().is(listItem)) {
-            listElementsContent[listElementsContentIndex] = '<p>' + listElementsContent[listElementsContentIndex] + '</p>';
+        /**
+         * {<listType>
+         *     <listItem>list content</listItem>
+         * </listType>}
+         */
+        if ($(endElement).is(listType) && $(startElement).is(listType)) {
+            return listUnwrap(commonAncestor, listItem, listType);
         }
+
+        /**
+         * <listType>
+         *     <listItem>{list content</listItem>
+         *     <listItem>list content}</listItem>
+         *     <listItem>list content</listItem>
+         * </listType>
+         */
+        var replacementPlaceholderId = elementUniqueId();
+        rangeExpandToParent(range);
+        rangeReplaceWithinValidTags(range, $('<strong/>').attr('id', replacementPlaceholderId), wrapper, listValidPParents);
+        var replacementPlaceholder = $('#' + replacementPlaceholderId);
+
+        listTidyModified(replacementPlaceholder.prev(), listType, listItem);
+        listTidyModified(replacementPlaceholder.next(), listType, listItem);
+
+        var toUnwrap = $(startElement).add($(startElement).nextUntil(endElement))
+                            .add(endElement)
+                            .get()
+                            .reverse();
+
+        $(toUnwrap).each(function() {
+            replacementPlaceholder.after(this);
+            listConvertListItem($(this), listType, 'p', listValidPChildren);
+        });
+        replacementPlaceholder.remove();
+
+        return listEnforceValidChildren($(commonAncestor), listItem, listValidLiChildren);
     }
 
-    // Every li of the list has been selected, replace the entire list
-    if (firstLISelected && lastLISelected) {
-        parentListContainer.replaceWith(listElementsContent.join(''));
-        selectionRestore();
-        var selectedElement = selectionGetElements()[0];
-        selectionSelectOuter(selectedElement);
+    if (!commonAncestor.is(listItem)) {
+        commonAncestor = commonAncestor.closest(listItem);
+    }
+
+    /**
+     * <listType>
+     *     <li>{list content}</li>
+     * </listType>
+     */
+    if (!commonAncestor.prev().length && !commonAncestor.next().length) {
+        console.log('here 3');
+        return listUnwrap(commonAncestor.closest(listType), listItem, listType);
+    }
+
+    /**
+     * <listType>
+     *     <listItem>list content</listItem>
+     *     <listItem>{list content}</listItem>
+     *     <listItem>list content</listItem>
+     * </listType>
+     */
+    if (commonAncestor.next().length && commonAncestor.prev().length) {
+        console.log('here 4');
+        rangeSelectElement(range, commonAncestor);
+        var replacement = listConvertListItem(commonAncestor, listType, 'p', listValidPChildren);
+        return rangeReplaceWithinValidTags(range, replacement, wrapper, listValidPParents);
+    }
+
+    /**
+     * <listType>
+     *     <listItem>{list content}</listItem>
+     *     <listItem>list content</listItem>
+     * </listType>
+     */
+    if (commonAncestor.next().length && !commonAncestor.prev().length) {
+        console.log('here 5');
+        commonAncestor.parent().before(listConvertListItem(commonAncestor, listType, 'p', listValidPChildren));
+        commonAncestor.remove();
         return;
     }
 
-    if (firstLISelected) {
-        $(parentListContainer).before(listElementsContent.join(''));
-    } else if (lastLISelected) {
-        $(parentListContainer).after(listElementsContent.join(''));
-    } else {
-        selectionReplaceSplittingSelectedElement(listElementsContent.join(''));
+    /**
+     * <listType>
+     *     <listItem>list content</listItem>
+     *     <listItem>{list content}</listItem>
+     * </listType>
+     */
+    if (!commonAncestor.next().length && commonAncestor.prev().length) {
+        console.log('here 6');
+        commonAncestor.parent().after(listConvertListItem(commonAncestor, 'p', listType, listValidPChildren));
+        commonAncestor.remove();
+        return;
     }
-};
+}
