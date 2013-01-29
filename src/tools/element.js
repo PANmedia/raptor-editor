@@ -314,11 +314,11 @@ function elementDetachedManip(element, manip) {
 function elementClosestBlock(element, limitElement) {
     // <strict>
     if (!typeIsElement(element)) {
-        handleError('Parameter 1 to elementClosestBlock must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 to elementClosestBlock must be a jQuery element', element);
         return;
     }
     if (!typeIsElement(limitElement)) {
-        handleError('Parameter 2 to elementClosestBlock must be a jQuery element');
+        handleInvalidArgumentError('Parameter 2 to elementClosestBlock must be a jQuery element', limitElement);
         return;
     }
     // </strict>
