@@ -8,15 +8,36 @@
  * Expands a range to to surround all of the content from its start container
  * to its end container.
  *
- * @public @static
  * @param {RangyRange} range The range to expand.
  */
 function rangeExpandToParent(range) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeExpandToParent is expected to be a range', range);
+        return;
+    }
+    // </strict>
     range.setStartBefore(range.startContainer);
     range.setEndAfter(range.endContainer);
 }
 
+/**
+ * Ensure range selects entire element.
+ *
+ * @param  {RangyRange} range
+ * @param  {Element} element
+ */
 function rangeSelectElement(range, element) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeSelectElement is expected to be a range', range);
+        return;
+    }
+    if (!typeIsElement(elements)) {
+        handleInvalidArgumentError('Parameter 2 to rangeSelectElement is expected to be a jQuery element', elements);
+        return;
+    }
+    // </strict>
     range.selectNode($(element)[0]);
 }
 
@@ -29,11 +50,11 @@ function rangeSelectElement(range, element) {
 function rangeExpandTo(range, elements) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Paramter 1 to rangeReplace is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeReplace is expected to be a range', range);
         return;
     }
     if (!typeIsElement(elements)) {
-        handleInvalidArgumentError('Paramter 2 to rangeExpandTo is expected to be a jQuery element', elements);
+        handleInvalidArgumentError('Parameter 2 to rangeExpandTo is expected to be a jQuery element', elements);
         return;
     }
     // </strict>
@@ -57,11 +78,11 @@ function rangeExpandTo(range, elements) {
 function rangeReplace(range, html) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Paramter 1 to rangeReplace is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeReplace is expected to be a range', range);
         return;
     }
     if (!typeIsString(html)) {
-        handleInvalidArgumentError('Paramter 2 to rangeReplace is expected to be a string', html);
+        handleInvalidArgumentError('Parameter 2 to rangeReplace is expected to be a string', html);
         return;
     }
     // </strict>
@@ -95,19 +116,27 @@ function rangeEmptyTag(range) {
     return elementIsEmpty(html);
 }
 
+/**
+ * @param  {RangyRange} range
+ * @return {Node} The range's start element.
+ */
 function rangeGetStartElement(range) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Paramter 1 to rangeGetStartElement is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeGetStartElement is expected to be a range', range);
     }
     // </strict>
     return nodeFindParent(range.startContainer);
 }
 
+/**
+ * @param  {RangyRange} range
+ * @return {Node} The range's end element.
+ */
 function rangeGetEndElement(range) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Paramter 1 to rangeGetEndElement is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeGetEndElement is expected to be a range', range);
     }
     // </strict>
     return nodeFindParent(range.endContainer);
@@ -123,7 +152,7 @@ function rangeGetEndElement(range) {
 function rangeGetCommonAncestor(range) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Paramter 1 to rangeGetCommonAncestor is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeGetCommonAncestor is expected to be a range', range);
     }
     // </strict>
     return nodeFindParent(range.commonAncestorContainer);
@@ -138,14 +167,27 @@ function rangeGetCommonAncestor(range) {
 function rangeIsEmpty(range) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Paramter 1 to rangeGetCommonAncestor is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeGetCommonAncestor is expected to be a range', range);
     }
     // </strict>
     return range.startOffset === range.endOffset &&
            range.startContainer === range.endContainer;
 }
 
+/**
+ * @param  {RangyRange} range
+ * @param  {Node} node
+ * @return {boolean} True if the range is entirely contained by the given node.
+ */
 function rangeIsContainedBy(range, node) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeIsContainedBy is expected to be a range', range);
+    }
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to rangeIsContainedBy is expected to be a node', node);
+    }
+    // </strict>
     var nodeRange = range.cloneRange();
     nodeRange.selectNodeContents(node);
     return nodeRange.containsRange(range);
@@ -157,6 +199,11 @@ function rangeIsContainedBy(range, node) {
  * @param {RangyRange} range This is the range of selected text.
  */
 function rangeTrim(range) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeTrim is expected to be a range', range);
+    }
+    // </strict>
     var selectedText = range.text();
 
     // Trim start
@@ -174,12 +221,20 @@ function rangeTrim(range) {
 
 /**
  * Serializes supplied ranges.
- * @todo not sure of the description for rootNode.
+ *
  * @param {RangyRange} ranges This is the set of ranges to be serialized.
  * @param {Node} rootNode
  * @returns {String} A string of the serialized ranges separated by '|'.
  */
 function rangeSerialize(ranges, rootNode) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be a range', range);
+    }
+    if (!typeIsNode(rootNode)) {
+        handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be a node', rootNode);
+    }
+    // </strict>
     var serializedRanges = [];
     for (var i = 0, l = ranges.length; i < l; i++) {
         serializedRanges[i] = rangy.serializeRange(ranges[i], true);
@@ -194,6 +249,11 @@ function rangeSerialize(ranges, rootNode) {
  * @returns {Array} An array of deserialized ranges.
  */
 function rangeDeserialize(serialized) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeDeserialize is expected to be a string', range);
+    }
+    // </strict>
     var serializedRanges = serialized.split("|"),
         ranges = [];
     for (var i = 0, l = serializedRanges.length; i < l; i++) {
@@ -209,6 +269,11 @@ function rangeDeserialize(serialized) {
  * @param  {jQuery|Element|string} html The html to replace selection with.
  */
 function rangeReplaceSplitInvalidTags(range, html, wrapper, validTagNames) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeReplaceSplitInvalidTags is expected to be a range', range);
+    }
+    // </strict>
     var commonAncestor = rangeGetCommonAncestor(range);
 
     if (!elementIsValid(commonAncestor, validTagNames)) {
