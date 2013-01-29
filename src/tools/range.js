@@ -21,13 +21,22 @@ function rangeSelectElement(range, element) {
 }
 
 /**
- * While there are common ancestors, check to see if they match an element.
- * @todo Not sure of return
+ * Expand range to contain given elements.
+ *
  * @param {RangyRange} range The range to expand.
  * @param {array} elements An array of elements to check the current range against.
- * @returns {unresolved}
  */
 function rangeExpandTo(range, elements) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Paramter 1 to rangeReplace is expected to be a range', range);
+        return;
+    }
+    if (!typeIsElement(elements)) {
+        handleInvalidArgumentError('Paramter 2 to rangeExpandTo is expected to be a jQuery element', elements);
+        return;
+    }
+    // </strict>
     do {
         rangeExpandToParent(range);
         for (var i = 0, l = elements.length; i < l; i++) {
@@ -55,7 +64,7 @@ function rangeReplace(range, html) {
         handleInvalidArgumentError('Paramter 2 to rangeReplace is expected to be a string', html);
         return;
     }
-    // <strict>
+    // </strict>
 
     var result = [],
         nodes = $('<div/>').append(html)[0].childNodes;
@@ -72,10 +81,10 @@ function rangeReplace(range, html) {
 }
 
 /**
- * Emptys a supplied range of all the html tags.
- * @todo check decription please and not sure what it returns.
+ * Empties a supplied range of all the html tags.
+ *
  * @param {RangyRange} range This is the range to remove tags from.
- * @returns {unresolved}
+ * @returns {boolean} True if the range is empty.
  */
 function rangeEmptyTag(range) {
     var contents = range.cloneContents();
@@ -87,21 +96,36 @@ function rangeEmptyTag(range) {
 }
 
 function rangeGetStartElement(range) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Paramter 1 to rangeGetStartElement is expected to be a range', range);
+    }
+    // </strict>
     return nodeFindParent(range.startContainer);
 }
 
 function rangeGetEndElement(range) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Paramter 1 to rangeGetEndElement is expected to be a range', range);
+    }
+    // </strict>
     return nodeFindParent(range.endContainer);
 }
 
 /**
- * Returns a single selected ranges common ancestor.
+ * Returns a single selected range's common ancestor.
  * Works for single ranges only.
  *
  * @param {RangyRange} range
  * @return {Element} The range's common ancestor.
  */
 function rangeGetCommonAncestor(range) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Paramter 1 to rangeGetCommonAncestor is expected to be a range', range);
+    }
+    // </strict>
     return nodeFindParent(range.commonAncestorContainer);
 }
 
@@ -112,6 +136,11 @@ function rangeGetCommonAncestor(range) {
  * @param {RangyRange} range The range to check if it is empty
  */
 function rangeIsEmpty(range) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Paramter 1 to rangeGetCommonAncestor is expected to be a range', range);
+    }
+    // </strict>
     return range.startOffset === range.endOffset &&
            range.startContainer === range.endContainer;
 }
