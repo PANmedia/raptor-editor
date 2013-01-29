@@ -111,12 +111,10 @@ function selectionSelectInner(node, selection) {
         return;
     }
     // </strict>
-    selection = selection || rangy.getSelection()
+    selection = selection || rangy.getSelection();
     var range = rangy.createRange();
     range.selectNodeContents(node);
     selection.setSingleRange(range);
-//    range.setStart(element.get(0), 0)
-//    range.setEnd(element.last().get(0), 1)
 }
 
 /**
