@@ -86,26 +86,23 @@ function rangeEmptyTag(range) {
     return elementIsEmpty(html);
 }
 
+function rangeGetStartElement(range) {
+    return nodeFindParent(range.startContainer);
+}
+
+function rangeGetEndElement(range) {
+    return nodeFindParent(range.endContainer);
+}
+
 /**
  * Returns a single selected ranges common ancestor.
  * Works for single ranges only.
  *
- * @param {RangyRange} selection
- * @return {Element} The selected range's common ancestor.
+ * @param {RangyRange} range
+ * @return {Element} The range's common ancestor.
  */
-function rangeGetCommonAncestor(selection) {
-    selection = selection || rangy.getSelection();
-
-    var commonAncestor;
-    $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
-            commonAncestor = $(range.commonAncestorContainer).parent()[0];
-        } else {
-            commonAncestor = range.commonAncestorContainer;
-        }
-    });
-
-    return commonAncestor;
+function rangeGetCommonAncestor(range) {
+    return nodeFindParent(range.commonAncestorContainer);
 }
 
 /**
