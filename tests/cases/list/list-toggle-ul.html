@@ -7,7 +7,8 @@
     <script type="text/javascript">
         rangy.init();
     </script>
-    <h1>List 1: simple listToggle within p</h1>
+    <div class="test-1">
+        <h1>List 1: simple listToggle within p</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -414,6 +415,13 @@
             </ul>
         </div>
     </div>
+    <script type="text/javascript">
+        test('.test-11', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
     <div class="test-12">
         <h1>List 12: empty selection</h1>
         <div class="test-input">
