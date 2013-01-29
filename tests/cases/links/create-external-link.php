@@ -31,7 +31,7 @@
             }
         }
     </script>
-    
+
     <div class="test-1">
         <h1>Create Link Button 1: Word Group Selection</h1>
         <div class="test-input">
@@ -89,7 +89,7 @@
     <script type="text/javascript">
         testEditor('.test-2', testLink);
     </script>
-
+    
     <div class="test-3">
         <h1>Create Link Button 3: Part Word Selection</h1>
         <div class="test-input">

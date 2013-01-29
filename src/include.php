@@ -59,6 +59,8 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-toggle-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-toggle-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/filtered-preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/menu-button.js"></script>

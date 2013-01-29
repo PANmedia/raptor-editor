@@ -1,22 +1,30 @@
 var statisticsDialog = null;
 
-Raptor.registerUi(new Button({
+Raptor.registerUi(new DialogButton({
     name: 'statistics',
     options: {
         maximum: 100,
         showCountInButton: true
+    },
+    dialogOptions: {
+        width: 350
     },
 
     init: function() {
         if (this.options.showCountInButton) {
             this.raptor.bind('change', this.updateButton.bind(this));
         }
-        return Button.prototype.init.apply(this, arguments);
+        return DialogButton.prototype.init.apply(this, arguments);
     },
 
-    action: function() {
+    openDialog: function() {
         this.processDialog();
-        aDialogOpen(this.getDialog());
+    },
+
+    applyAction: function() {
+    },
+
+    getCancelButton: function() {
     },
 
     getCharacters: function() {
@@ -78,38 +86,16 @@ Raptor.registerUi(new Button({
         return this.button;
     },
 
-    getDialog: function() {
-        if (!statisticsDialog) {
-            statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'));
-            aDialog(statisticsDialog, {
-                modal: true,
-                resizable: false,
-                autoOpen: false,
-                width: 350,
-                title: _('statisticsDialogTitle'),
-                dialogClass: this.options.dialogClass,
-                buttons: [
-                    {
-                        text: _('statisticsDialogOKButton'),
-                        click: function() {
-                            aDialogClose(statisticsDialog);
-                        }.bind(this),
-                        icons: {
-                            primary: 'ui-icon-circle-check'
-                        }
-                    }
-                ]
-            });
-        }
-        return statisticsDialog;
+    getDialogTemplate: function() {
+        return $(this.raptor.getTemplate('statistics.dialog', this.options));
     },
 
     /**
      * Process and return the statistics dialog template.
+     *
      * @return {jQuery} The processed statistics dialog template
      */
-    processDialog: function() {
-        var dialog = this.getDialog();
+    openDialog: function(dialog) {
         var content = $('<div/>').html(this.raptor.getHtml()).text();
 
         // If maximum has not been set, use infinity

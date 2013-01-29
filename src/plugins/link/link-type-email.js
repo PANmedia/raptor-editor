@@ -15,7 +15,7 @@ LinkTypeEmail.prototype.getAttributes = function(panel) {
         subject = '?Subject=' + encodeURIComponent(subject);
     }
     if ($.trim(address) === '') {
-        return null;
+        return false;
     }
     return {
         href: 'mailto:' + address + subject

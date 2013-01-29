@@ -20,7 +20,7 @@ LinkTypeExternal.prototype.getAttributes = function(panel) {
     }
 
     if ($.trim(result.href) === 'http://') {
-        return null;
+        return false;
     }
 
     return result;
