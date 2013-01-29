@@ -5,7 +5,6 @@ Raptor.registerUi(new PreviewToggleButton({
         this.selectionChange();
     },
     selectionToggle: function() {
-        var elements = selectionFindWrappingAndInnerElements('blockquote', this.raptor.getElement());
-        return elements.length > 0;
+        return selectionContains('blockquote', this.raptor.getElement());
     }
 }));

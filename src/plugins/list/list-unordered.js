@@ -9,6 +9,6 @@ Raptor.registerUi(new PreviewButton({
         return;
     },
     action: function() {
-        listToggle('ul', this.raptor.getElement());
+        listToggle('ul', 'li', this.raptor.getElement());
     }
 }));

@@ -39,9 +39,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -84,9 +83,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -129,9 +127,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -177,9 +174,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -224,9 +220,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -272,9 +267,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -319,9 +313,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -366,9 +359,8 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var h1Tag = input.find('.raptor-ui-tag-menu-menu [data-value=h1]');
+            var tagMenu = clickButton(input, '.raptor-ui-tag-menu');
+            var h1Tag = $('.raptor-ui-tag-menu-menu [data-value=h1]');
             h1Tag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

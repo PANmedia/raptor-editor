@@ -95,6 +95,7 @@ var RaptorWidget = {
 
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
+        this.historyPush(this.getOriginalHtml());
 
         // Replace textareas/inputs with a div
         if (this.element.is(':input')) {
@@ -286,6 +287,8 @@ var RaptorWidget = {
                     this.fire('cleaned');
                 }
             }
+
+            this.checkSelectionChange();
         }
     },
 
@@ -357,9 +360,15 @@ var RaptorWidget = {
 
     actionApply: function(action) {
         this.actionPreviewRestore();
+        var state = this.stateSave();
         selectionConstrain(this.target);
-        actionApply(action, this.history);
-        this.checkChange();
+        try {
+            actionApply(action, this.history);
+            this.checkChange();
+        } catch (exception) {
+            this.stateRestore(state);
+            handleError(exception);
+        }
     },
 
     actionUndo: function() {
@@ -699,13 +708,14 @@ var RaptorWidget = {
     /*========================================================================*\
      * History functions
     \*========================================================================*/
+
     /**
      *
      */
     historyPush: function() {
         if (!this.historyEnabled) return;
         var html = this.getHtml();
-        if (html !== this.historyPeak()) {
+        if (html !== this.historyPeek()) {
             // Reset the future on change
             if (this.present !== this.history.length - 1) {
                 this.history = this.history.splice(0, this.present + 1);
@@ -716,13 +726,15 @@ var RaptorWidget = {
 
             // Mark the persent as the end of the history
             this.present = this.history.length - 1;
+
+            this.fire('historychange');
         }
     },
 
     /**
      * @returns {String|null}
      */
-    historyPeak: function() {
+    historyPeek: function() {
         if (!this.history.length) return null;
         return this.history[this.present];
     },
@@ -737,6 +749,7 @@ var RaptorWidget = {
             this.historyEnabled = false;
             this.change();
             this.historyEnabled = true;
+            this.fire('historychange');
         }
     },
 
@@ -750,6 +763,7 @@ var RaptorWidget = {
             this.historyEnabled = false;
             this.change();
             this.historyEnabled = true;
+            this.fire('historychange');
         }
     },
 

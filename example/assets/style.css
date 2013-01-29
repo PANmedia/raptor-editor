@@ -1,3 +1,9 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
 .cms-blue-bg {
     background-color: #2e6e9e;
 }
@@ -21,4 +27,10 @@
     -moz-border-radius: 10px;
     border-radius: 10px;
     background-color: #bfbfbf;
+}
+
+.switcher {
+    border: 1px solid #999;
+    padding: 10px;
+    background-color: #eee;
 }

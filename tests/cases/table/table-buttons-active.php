@@ -57,7 +57,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var createTableButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-create');
+            var createTableButton = getLayoutElement(input).find('.raptor-ui-table-create');
             createTableButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -116,7 +116,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var insertColumnButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-column');
+            var insertColumnButton = getLayoutElement(input).find('.raptor-ui-table-insert-column');
             insertColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -175,7 +175,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var insertRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-row');
+            var insertRowButton = getLayoutElement(input).find('.raptor-ui-table-insert-row');
             insertRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -234,7 +234,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var deleteColumnButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-delete-column');
+            var deleteColumnButton = getLayoutElement(input).find('.raptor-ui-table-delete-column');
             deleteColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -293,7 +293,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-delete-row');
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-delete-row');
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -352,7 +352,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var createTableButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-create');
+            var createTableButton = getLayoutElement(input).find('.raptor-ui-table-create');
             createTableButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -411,7 +411,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var insertColumnButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-column');
+            var insertColumnButton = getLayoutElement(input).find('.raptor-ui-table-insert-column');
             insertColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -470,7 +470,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var insertRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-insert-row');
+            var insertRowButton = getLayoutElement(input).find('.raptor-ui-table-insert-row');
             insertRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -529,7 +529,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-9', function(input) {
-            var deleteColumnButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-delete-column');
+            var deleteColumnButton = getLayoutElement(input).find('.raptor-ui-table-delete-column');
             deleteColumnButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -588,7 +588,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-10', function(input) {
-            var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-delete-row');
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-delete-row');
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -648,7 +648,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-11', function(input) {
-            var mergeCellsButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-merge-cells');
+            var mergeCellsButton = getLayoutElement(input).find('.raptor-ui-table-merge-cells');
             mergeCellsButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -707,7 +707,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-12', function(input) {
-            var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-merge-cells');
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-merge-cells');
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -774,7 +774,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-13', function(input) {
-            var mergeCellsButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-split-cells');
+            var mergeCellsButton = getLayoutElement(input).find('.raptor-ui-table-split-cells');
             mergeCellsButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -840,7 +840,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-14', function(input) {
-            var deleteRowButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-split-cells');
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-split-cells');
             deleteRowButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

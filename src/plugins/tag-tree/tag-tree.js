@@ -57,7 +57,7 @@ TagTreePlugin.prototype.update = function() {
     }, null, this);
 
     if (!title) {
-        title = this.raptor.getTemplate('tag-tree.root');
+        title = this.raptor.getTemplate('tag-tree.root', this.options);
     }
     this.raptor.getLayout().path
         .html(title)

@@ -7,6 +7,30 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+
+        function testLink(input) {
+            var createLinkButton = getLayoutElement(input).find('.raptor-ui-link-create');
+            var removeLinkButton = getLayoutElement(input).find('.raptor-ui-link-remove');
+
+            createLinkButton.trigger('click');
+
+            $('.raptor-ui-link-create-menu :input[value=2]').trigger('click');
+
+            document.getElementById('raptor-email').value = "test@test.com";
+            document.getElementById('raptor-email-subject').value = "Test subject";
+
+            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
+            insertLinkButton.trigger('click');
+
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!createLinkButton.is('.ui-state-highlight')){
+                throw new Error('Create link button is not active');
+            }
+            if (!removeLinkButton.is('.ui-state-highlight')){
+                throw new Error('Remove link button is not active');
+            }
+        }
     </script>
     <div class="test-1">
         <h1>Create Link Button 1: Word Group Selection</h1>
@@ -25,7 +49,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <a href=".">{dui id erat pellentesque et rhoncus}</a> nunc semper. Suspendisse
+                    convallis <a href="mailto:test@test.com?Subject=Test%20subject">{dui id erat pellentesque et rhoncus}</a> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -34,30 +58,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-1', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-1', testLink);
     </script>
 
     <div class="test-2">
@@ -76,7 +77,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <a href=".">{adipiscing}</a> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur <a href="mailto:test@test.com?Subject=Test%20subject">{adipiscing}</a> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -86,30 +87,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-2', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-2', testLink);
     </script>
 
     <div class="test-3">
@@ -129,7 +107,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<a href=".">{lentesqu}</a>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel<a href="mailto:test@test.com?Subject=Test%20subject">{lentesqu}</a>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -138,30 +116,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-3', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-3', testLink);
     </script>
 
      <div class="test-4">
@@ -184,10 +139,10 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <a href=".">{id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui <a href="mailto:test@test.com?Subject=Test%20subject">{id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </a></p>
-                <p><a href=".">
+                <p><a href="mailto:test@test.com?Subject=Test%20subject">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</a> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -196,30 +151,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-4', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-4', testLink);
     </script>
 
     <div class="test-5">
@@ -240,11 +172,11 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <a href=".">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <a href="mailto:test@test.com?Subject=Test%20subject">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </a></p>
-                <p><a href=".">
+                <p><a href="mailto:test@test.com?Subject=Test%20subject">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</a>
@@ -253,30 +185,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-5', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-5', testLink);
     </script>
 
     <div class="test-6">
@@ -302,37 +211,14 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. <a href=".">{Suspendisse}</a> interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. <a href="mailto:test@test.com?Subject=Test%20subject">{Suspendisse}</a> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-6', testLink);
     </script>
 
     <div class="test-7">
@@ -355,7 +241,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <a href=".">{hendrerit}</a> velit nec tristique.
+                    malesuada <a href="mailto:test@test.com?Subject=Test%20subject">{hendrerit}</a> velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -365,30 +251,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-7', testLink);
     </script>
 
     <div class="test-8">
@@ -409,30 +272,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-8', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-8', testLink);
     </script>
 
     <div class="test-9">
@@ -451,7 +291,7 @@
             <div class="editible">
                 <ol>
                     <li>Item 1</li>
-                    <li><a href=".">Item 2 is a link</a></li>
+                    <li><a href="mailto:test@test.com?Subject=Test%20subject">{Item 2 is a link}</a></li>
                     <li>Item 3</li>
                     <li>Item 4</li>
                 </ol>
@@ -459,30 +299,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-9', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-9', testLink);
     </script>
 
     <div class="test-10">
@@ -501,7 +318,7 @@
             <div class="editible">
                 <ul>
                     <li>Item 1</li>
-                    <li><a href=".">Item 2 is a link</a></li>
+                    <li><a href="mailto:test@test.com?Subject=Test%20subject">{Item 2 is a link}</a></li>
                     <li>Item 3</li>
                     <li>Item 4</li>
                 </ul>
@@ -509,80 +326,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-10', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "test@test.com";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
-    </script>
-
-    <div class="test-11">
-        <h1>Create Link Button 11: Empty Link</h1>
-        <div class="test-input">
-            <div class="editible">
-                <ul>
-                    <li>Item 1</li>
-                    <li>{Item 2}</li>
-                    <li>Item 3</li>
-                    <li>Item 4</li>
-                </ul>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <ul>
-                    <li>Item 1</li>
-                    <li>{Item 2}</li>
-                    <li>Item 3</li>
-                    <li>Item 4</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-11', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            createLinkButton.trigger('click');
-
-            var linkType = $('.raptor-ui-link-create-menu');
-            linkType.value = 2;
-
-            var linkInput = document.getElementById('raptor-external-href');
-            linkInput.value = "";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        });
+        testEditor('.test-10', testLink);
     </script>
 </body>
 </html>

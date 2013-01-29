@@ -37,7 +37,7 @@
             applier.toggleRanges(ranges);
         });
     </script>
-    
+
     <div class="test-2">
         <h1>Rangy Applier - Attributes 2: Undo single attribute to range</h1>
         <div class="test-input">
@@ -56,6 +56,28 @@
         test('.test-2', function(input) {
             var ranges = tokensToRanges(input);
             applier.undoToRanges(ranges);
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Rangy Applier - Attributes 3</h1>
+        <div class="test-input">
+            <a href="/">{Lorem ipsum dolor sit amet.}</a>
+        </div>
+        <div class="test-expected">
+            <a href="http://www.google.com">Lorem ipsum dolor sit amet.</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+        applier = rangy.createApplier({
+            tag: 'a',
+            attributes: {
+                href: 'http://www.google.com'
+            }
+        });
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            applier.applyToRanges(ranges);
         });
     </script>
 </body>

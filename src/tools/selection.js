@@ -616,3 +616,17 @@ function selectionChangeTags(changeTo, changeFrom, limitElement) {
     }
     selectionRestore();
 }
+
+
+function selectionContains(selector, limit) {
+    var result = true;
+    selectionEachRange(function(range) {
+        // Check if selection only contains valid children
+        var children = $(range.commonAncestorContainer).find('*');
+        if ($(range.commonAncestorContainer).parentsUntil(limit, selector).length === 0 &&
+                (children.length === 0 || children.length !== children.filter(selector).length)) {
+            result = false;
+        }
+    }.bind(this));
+    return result;
+}

@@ -37,7 +37,7 @@
         testEditor('.test-1', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
 
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            var tagMenu = getLayoutElement(input).find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
 
             if (!tagMenuValue === 'N/A') {
@@ -75,7 +75,7 @@
         testEditor('.test-2', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
 
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            var tagMenu = getLayoutElement(input).find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
 
             if (!tagMenuValue === 'Paragraph') {
@@ -113,7 +113,7 @@
         testEditor('.test-3', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
 
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            var tagMenu = getLayoutElement(input).find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
 
             if (!tagMenuValue === 'Headung 1') {
@@ -151,7 +151,7 @@
         testEditor('.test-4', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
 
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            var tagMenu = getLayoutElement(input).find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
 
             if (!tagMenuValue === 'Heading 2') {
@@ -189,7 +189,7 @@
         testEditor('.test-5', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
 
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
+            var tagMenu = getLayoutElement(input).find('.raptor-ui-tag-menu');
             var tagMenuValue = tagMenu.toString();
 
             if (!tagMenuValue === 'Heading 3') {

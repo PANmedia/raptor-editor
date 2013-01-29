@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="verbose">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>Clear Formatting 1: Basic</h1>
+        <div class="test-input">
+            <div>
+                <p><a href="/">Test link</a> inside a paragraph</p>
+                <ul>
+                    <li>This is a list</li>
+                    <li>This is a list</li>
+                    <li>This is a list</li>
+                </ul>
+            </div>
+        </div>
+        <div class="test-expected"><div>
+    <p><a href="/">Test link</a> inside a paragraph</p>
+    <ul>
+        <li>This is a list</li>
+        <li>This is a list</li>
+        <li>This is a list</li>
+    </ul>
+</div></div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+//            console.log(input.html());
+        });
+    </script>
+</body>
+</html>

@@ -162,9 +162,18 @@ rangy.createModule("Applier", function(api, module) {
         return text != "";
     }
 
-    function getEffectiveTextNodes(range) {
-        return range.getNodes([3], function(textNode) {
-            return rangeSelectsAnyText(range, textNode);
+    function rangeSelectsAnySelfClosing(range) {
+        var clonedRange = range.cloneRange();
+        return /<img/.test(fragmentToHtml(clonedRange.cloneContents()));
+    }
+
+    function getEffectiveNodes(range) {
+        return range.getNodes([], function(node) {
+            if (node.nodeType === 3 && rangeSelectsAnyText(range, node)) {
+                return node;
+            } else if (node.nodeType === 1 && node.tagName === 'IMG') {
+                return node;
+            }
         });
     }
 
@@ -617,7 +626,6 @@ rangy.createModule("Applier", function(api, module) {
         // Normalizes nodes after applying a CSS class to a Range.
         postApply: function(textNodes, range, positionsToPreserve, isUndo) {
             var firstNode = textNodes[0], lastNode = textNodes[textNodes.length - 1];
-
             var merges = [], currentMerge;
 
             var rangeStartNode = firstNode, rangeEndNode = lastNode;
@@ -752,21 +760,19 @@ rangy.createModule("Applier", function(api, module) {
             var positionsToPreserve = getRangeBoundaries(rangesToPreserve || []);
 
             range.splitBoundariesPreservingPositions(positionsToPreserve);
-            var textNodes = getEffectiveTextNodes(range);
-
-            if (textNodes.length) {
-                for (var i = 0, textNode; textNode = textNodes[i++]; ) {
+            var nodes = getEffectiveNodes(range);
+            if (nodes.length) {
+                for (var i = 0, textNode; textNode = nodes[i++]; ) {
                     if (!this.isIgnorableWhiteSpaceNode(textNode)
-                            && !this.getSelfOrAncestor(textNode)
                             && this.isModifiable(textNode)) {
                         this.applyToTextNode(textNode, positionsToPreserve);
                     }
                 }
-                range.setStart(textNodes[0], 0);
-                textNode = textNodes[textNodes.length - 1];
+                range.setStart(nodes[0], 0);
+                textNode = nodes[nodes.length - 1];
                 range.setEnd(textNode, textNode.length);
                 if (this.normalize) {
-                    this.postApply(textNodes, range, positionsToPreserve, false);
+                    this.postApply(nodes, range, positionsToPreserve, false);
                 }
 
                 // Update the ranges from the preserved boundary positions
@@ -794,7 +800,7 @@ rangy.createModule("Applier", function(api, module) {
             var positionsToPreserve = getRangeBoundaries(rangesToPreserve);
 
             range.splitBoundariesPreservingPositions(positionsToPreserve);
-            var textNodes = getEffectiveTextNodes(range);
+            var textNodes = getEffectiveNodes(range);
             var textNode, validAncestor;
             var lastTextNode = textNodes[textNodes.length - 1];
 
@@ -858,11 +864,14 @@ rangy.createModule("Applier", function(api, module) {
             } else {
                 var textNodes = range.getNodes( [3] );
                 for (var i = 0, textNode; textNode = textNodes[i++]; ) {
-                    if (!this.isIgnorableWhiteSpaceNode(textNode)
-                            && rangeSelectsAnyText(range, textNode)
-                            && this.isModifiable(textNode)
-                            && !this.getSelfOrAncestor(textNode)) {
-                        return false;
+                    if (!this.isIgnorableWhiteSpaceNode(textNode)) {
+                        if (rangeSelectsAnyText(range, textNode)
+                                && this.isModifiable(textNode)
+                                && !this.getSelfOrAncestor(textNode)) {
+                            return false;
+                        } else if (rangeSelectsAnySelfClosing(range)) {
+                            return false;
+                        }
                     }
                 }
                 return true;
@@ -871,6 +880,9 @@ rangy.createModule("Applier", function(api, module) {
 
         isAppliedToRanges: function(ranges) {
             var i = ranges.length;
+            if (i === 0) {
+                return false;
+            }
             while (i--) {
                 if (!this.isAppliedToRange(ranges[i])) {
                     return false;

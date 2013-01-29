@@ -9,7 +9,7 @@
  * to its end container.
  *
  * @public @static
- * @param {RangyRange} range The range to expand
+ * @param {RangyRange} range The range to expand.
  */
 function rangeExpandToParent(range) {
     range.setStartBefore(range.startContainer);
@@ -20,6 +20,13 @@ function rangeSelectElement(range, element) {
     range.selectNode($(element)[0]);
 }
 
+/**
+ * While there are common ancestors, check to see if they match an element.
+ * @todo Not sure of return
+ * @param {RangyRange} range The range to expand.
+ * @param {array} elements An array of elements to check the current range against.
+ * @returns {unresolved}
+ */
 function rangeExpandTo(range, elements) {
     do {
         rangeExpandToParent(range);
@@ -54,8 +61,7 @@ function rangeReplace(range, html) {
         nodes = $('<div/>').append(html)[0].childNodes;
     range.deleteContents();
     if (nodes.length === undefined || nodes.length === 1) {
-        result.unshift(nodes[0].cloneNode(true));
-        range.insertNode(result[0]);
+        range.insertNode(nodes[0].cloneNode(true));
     } else {
         $.each(nodes, function(i, node) {
             result.unshift(node.cloneNode(true));
@@ -65,6 +71,12 @@ function rangeReplace(range, html) {
     return result;
 }
 
+/**
+ * Emptys a supplied range of all the html tags.
+ * @todo check decription please and not sure what it returns.
+ * @param {RangyRange} range This is the range to remove tags from.
+ * @returns {unresolved}
+ */
 function rangeEmptyTag(range) {
     var contents = range.cloneContents();
     var html = fragmentToHtml(contents);
@@ -75,13 +87,25 @@ function rangeEmptyTag(range) {
 }
 
 /**
+ * Returns a single selected ranges common ancestor.
  * Works for single ranges only.
  *
- * @param {RangyRange} range
+ * @param {RangyRange} selection
  * @return {Element} The selected range's common ancestor.
  */
-function rangeGetCommonAncestor(range) {
-    return nodeFindParent(range.commonAncestorContainer);
+function rangeGetCommonAncestor(selection) {
+    selection = selection || rangy.getSelection();
+
+    var commonAncestor;
+    $(selection.getAllRanges()).each(function(i, range){
+        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
+            commonAncestor = $(range.commonAncestorContainer).parent()[0];
+        } else {
+            commonAncestor = range.commonAncestorContainer;
+        }
+    });
+
+    return commonAncestor;
 }
 
 /**
@@ -101,6 +125,11 @@ function rangeIsContainedBy(range, node) {
     return nodeRange.containsRange(range);
 }
 
+/**
+ * Removes the white space at the start and the end of the selection.
+ *
+ * @param {RangyRange} range This is the range of selected text.
+ */
 function rangeTrim(range) {
     var selectedText = range.text();
 
@@ -117,6 +146,13 @@ function rangeTrim(range) {
     }
 }
 
+/**
+ * Serializes supplied ranges.
+ * @todo not sure of the description for rootNode.
+ * @param {RangyRange} ranges This is the set of ranges to be serialized.
+ * @param {Node} rootNode
+ * @returns {String} A string of the serialized ranges separated by '|'.
+ */
 function rangeSerialize(ranges, rootNode) {
     var serializedRanges = [];
     for (var i = 0, l = ranges.length; i < l; i++) {
@@ -125,6 +161,12 @@ function rangeSerialize(ranges, rootNode) {
     return serializedRanges.join('|');
 }
 
+/**
+ * Deseralizes supplied ranges.
+ *
+ * @param {string} serialized This is the already serailized range to be deserialized.
+ * @returns {Array} An array of deserialized ranges.
+ */
 function rangeDeserialize(serialized) {
     var serializedRanges = serialized.split("|"),
         ranges = [];

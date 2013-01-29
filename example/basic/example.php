@@ -19,7 +19,8 @@
                 urlPrefix: '../../src/',
                 plugins: {
                     dock: {
-                        docked: true
+                        docked: true,
+                        under: '.switcher'
                     },
                     classMenu: {
                         classes: {
@@ -93,6 +94,12 @@
             <a href=".">This is a link.</a>
             <strong class="cms-bold">This text is bold.</strong>
             <em class="cms-italic">This text is italic.</em>
+        </p>
+
+        <p>
+            Text above the image.
+            <img src="../full-suite/images/orange.jpg" />
+            Text below the image.
         </p>
 
         <table>

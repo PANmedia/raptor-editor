@@ -63,7 +63,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var dockToElement = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-element');
+            var dockToElement = getLayoutElement(input).find('.raptor-ui-dock-to-element');
             dockToElement.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

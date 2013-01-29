@@ -13,29 +13,25 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id <strong class="cms-bold">erat pellentesque</strong> et rhoncus} nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Test 1 {paragraph 1 start.
+                    <strong class="cms-bold">Some bold text.</strong>
+                    Test 1 paragraph} 1 end.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Test 1 {paragraph 1 start.
+                    Some bold text.
+                    Test 1 paragraph} 1 end.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -45,39 +41,37 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <em class="cms-italic">{pellentesque et rhoncus nunc semper.</em>
+                    Paragraph 1
+                    <em class="cms-italic">{Some italic text</em>
                 </p>
                 <ol>
                     <li>
-                        <del class="cms-strike">Suspendisse malesuada</del>
+                        <del class="cms-strike">Some strike text in a list</del>
                     </li>
                 </ol>
                 <p>
-                    <em class="cms-italic">hendrerit velit nec tristique.</em> A}liquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    <em class="cms-italic">Some more italic text</em>
+                    Paragraph} 2
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat {pellentesque et rhoncus nunc semper.
+                    Paragraph 1
+                    {Some italic text
                 </p><p>
-                    Suspendisse malesuada
+                    Some strike text in a list
                 </p><p>
-                    hendrerit velit nec tristique. A}liquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Some more italic text
+                    Paragraph} 2
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -109,7 +103,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -147,7 +141,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -189,7 +183,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -225,7 +219,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -261,7 +255,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -283,21 +277,21 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                <p class="cms-center">
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit
+                    <span class="cms-underline">
+                        } nec tristique.
+                    </span>
+                </p>
                 <p>
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit} nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Aliquam gravida mauris at ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -333,7 +327,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-9', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -369,7 +363,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-10', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -378,22 +372,20 @@
         <h1>Clear Formatting Button 11: Image Float</h1>
         <div class="test-input">
             <div class="editible">
-                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right"  />}
-                    <div style="clear: both">
-                    </div>
+                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right" />}
+                <div style="clear: both"></div>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
-                    <div style="clear: both">
-                    </div>
+                <div style="clear: both"></div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-11', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -425,7 +417,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-12', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>

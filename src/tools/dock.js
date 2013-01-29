@@ -1,5 +1,16 @@
+/**
+ * @fileOverview Docking to screen and element helper functions.
+ * @author David Neilsen - david@panmedia.co.nz
+ * @author Michael Robinson - michael@panmedia.co.nz
+ */
 
-
+/**
+ * Docks a specified element to the screen.
+ *
+ * @param {jQuery} element The element to dock.
+ * @param {string} options Any options to further specify the docking state.
+ * @returns {Object} An object containing the docked element, a spacer div and the style state.
+ */
 function dockToScreen(element, options) {
     var position,
         spacer = $('<div>')
@@ -71,12 +82,26 @@ function dockToScreen(element, options) {
     };
 }
 
+/**
+ * Undocks a docked element from the screen.
+ * @todo not sure of description for dockState
+ * @param {jQuery} dockState
+ * @returns {unresolved}
+ */
 function undockFromScreen(dockState) {
     styleRestoreState(dockState.dockedElement, dockState.styleState);
     dockState.spacer.remove();
     return dockState.dockedElement.detach();
 }
 
+/**
+ * Docks an element to a another element.
+ *
+ * @param {jQuery} elementToDock This is the element to be docked.
+ * @param {jQuery} dockTo This is the element to which the elementToDock will be docked to.
+ * @param {string} options These are any options to refine the docking position.
+ * @returns {Object} An object containing the docked element, what it has been docked to, and their style states.
+ */
 function dockToElement(elementToDock, dockTo, options) {
     var wrapper = dockTo.wrap('<div>').parent(),
         innerStyleState = styleSwapWithWrapper(wrapper, dockTo, {
@@ -115,6 +140,12 @@ function dockToElement(elementToDock, dockTo, options) {
     };
 }
 
+/**
+ * Undocks an element from the screen.
+ *@todo not sure of description for dockState
+ * @param {jQuery} dockState
+ * @returns {Object} The undocked element.
+ */
 function undockFromElement(dockState) {
     styleRestoreState(dockState.dockedTo, dockState.innerStyleState);
     styleRestoreState(dockState.dockedElement, dockState.dockedElementStyleState);

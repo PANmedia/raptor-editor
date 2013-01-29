@@ -58,7 +58,7 @@
             var e = jQuery.Event("keydown");
             e.which = 9; //key code for tab
             e.shiftKey = true;
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -102,7 +102,7 @@
             var e = jQuery.Event("keydown");
             e.which = 9; //key code for tab
             e.shiftKey = true;
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -143,7 +143,7 @@
             var e = jQuery.Event("keydown");
             e.which = 9; //key code for tab
             e.shiftKey = true;
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -180,7 +180,7 @@
             var e = jQuery.Event("keydown");
             e.which = 9; //key code for tab
             e.shiftKey = true;
-            $(input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-unordered')).trigger(e);
+            $(getLayoutElement(input).find('.raptor-ui-list-unordered')).trigger(e);
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>

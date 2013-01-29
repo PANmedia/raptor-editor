@@ -7,7 +7,22 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+
+        function testTagMenu(input) {
+            var tagMenu = getLayoutElement(input).find('.raptor-ui-tag-menu');
+            tagMenu.trigger('click');
+            var pTag = input.find('.editible').data('raptor').uiObjects.tagMenu.menu.find('[data-value=p] a');
+            pTag.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            var tagMenuValue = tagMenu.toString();
+
+            if (!tagMenuValue === 'Paragraph'){
+                throw new Error('Button is not active');
+            }
+        }
     </script>
+
     <div class="test-1">
         <h1>Paragraph Tag Button 1: Word Group Selection</h1>
         <div class="test-input">
@@ -38,20 +53,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-1', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-
-        });
+        testEditor('.test-1', testTagMenu);
     </script>
 
     <div class="test-2">
@@ -84,19 +86,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-2', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-2', testTagMenu);
     </script>
 
     <div class="test-3">
@@ -129,22 +119,10 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-3', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-3', testTagMenu);
     </script>
-
-     <div class="test-4">
+    
+    <div class="test-4">
         <h1>Paragraph Tag Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
             <div class="editible">
@@ -177,20 +155,9 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-4', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-4', testTagMenu);
     </script>
+<?php return; ?>
 
     <div class="test-5">
         <h1>Paragraph Tag Button 5: Multi-Paragraph Selection</h1>
@@ -224,19 +191,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-5', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-5', testTagMenu);
     </script>
 
 
@@ -272,19 +227,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-6', testTagMenu);
     </script>
 
     <div class="test-7">
@@ -319,19 +262,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-7', testTagMenu);
     </script>
 
     <div class="test-8">
@@ -366,19 +297,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-8', function(input) {
-            var tagMenu = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-tag-menu');
-            tagMenu.trigger('click');
-            var pTag = input.find('.raptor-ui-tag-menu-menu [data-value=p]');
-            pTag.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var tagMenuValue = tagMenu.toString();
-
-            if (!tagMenuValue === 'Paragraph'){
-                throw new Error('Button is not active');
-            }
-        });
+        testEditor('.test-8', testTagMenu);
     </script>
 </body>
 </html>

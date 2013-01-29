@@ -41,7 +41,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -79,7 +79,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -112,7 +112,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -144,7 +144,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -174,7 +174,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -205,7 +205,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -236,7 +236,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered').trigger('click');
+            clickButton(input, '.raptor-ui-list-ordered');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -264,7 +264,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var unorderedListButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-list-ordered');
+            var unorderedListButton = getLayoutElement(input).find('.raptor-ui-list-ordered');
             unorderedListButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

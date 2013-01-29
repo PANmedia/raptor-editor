@@ -1,15 +1,22 @@
 /**
- * @param  {string} listType List type, e.g. ul, ol or blockquote
- * @param  {string} listItem List item, e.g. li or p
- * @param  {Element} wrapper
+ * @fileOverview List manipulation helper functions.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
+/**
+ * Checks whether the selection is fully encased by ul or ol tags, if it is then unwrap the parent ul/ol.
+ * @todo can't work out what wrapper is.
+ * @param {String} listType This is the type of list to check the selection against.
+ * @param {Object} listItem This is the list item to use as the selection.
+ * @param {Array} wrapper An array of something i can't work out.
  */
 function listToggle(listType, listItem, wrapper) {
-    console.log($(selectionGetElements()));
     // Check whether selection is fully contained by a ul/ol. If so, unwrap parent ul/ol
     var selectedElements = $(selectionGetElements());
-    if (selectedElements.is(listItem) &&
-        selectedElements.parent().is(listType)) {
-        return listUnwrapSelection(listType, listItem, wrapper);
+    if ($(selectionGetElements()).is(listItem)
+        && $(selectionGetElements()).parent().is(listType)) {
+        listWrapSelection(listType, listItem, wrapper);
     }
 
     if (selectedElements.is(listType)) {
@@ -80,11 +87,12 @@ function listEnforceValidChildren(list, listItem, validChildren) {
 }
 
 /**
- * Wrap the selection with a list of the given type, ensuring HTML remains valid.
+ * Wraps the selected element(s) in list tags.
  *
- * @param  {string} listType
- * @param  {string} listItem
- * @param  {Element} wrapper
+ * @todo not sure what wrapper is.
+ * @param {String} listType The type of list that the selection is to be transformed into.
+ * @param {String} listItem The list item to be used in creating the list.
+ * @param {Array} wrapper An array of something i can't work out.
  */
 function listWrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
@@ -133,9 +141,9 @@ function listUnwrap(list, listItem) {
 }
 
 /**
- * @param  {string} listType
- * @param  {string} listItem
- * @param  {Element} wrapper
+ * Unwraps the selected list item(s) and puts it into <p> tags.
+ *
+ * @param {Object} listItem
  */
 function listUnwrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);

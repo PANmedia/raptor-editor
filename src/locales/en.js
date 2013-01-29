@@ -158,6 +158,8 @@ registerLocale('en', 'English', {
 
     historyRedoTitle: 'Redo',
     historyUndoTitle: 'Undo',
+    
+    hrCreateTitle: "Insert Horizontal Rule",
 
     insertFileDialogOKButton: 'Insert file',
     insertFileDialogCancelButton: 'Cancel',

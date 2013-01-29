@@ -44,7 +44,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -89,7 +89,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -134,7 +134,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -184,7 +184,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -229,7 +229,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -267,7 +267,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -311,7 +311,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -358,7 +358,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

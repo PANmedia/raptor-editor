@@ -164,6 +164,7 @@ Raptor.registerLayout('toolbar', {
 
     hide: function() {
         this.wrapper.css('display', 'none');
+        this.raptor.fire('layoutHide');
     },
 
     enableDragging: function() {
