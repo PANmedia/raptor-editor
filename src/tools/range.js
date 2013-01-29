@@ -53,8 +53,8 @@ function rangeExpandTo(range, elements) {
         handleInvalidArgumentError('Parameter 1 to rangeReplace is expected to be a range', range);
         return;
     }
-    if (!typeIsElement(elements)) {
-        handleInvalidArgumentError('Parameter 2 to rangeExpandTo is expected to be a jQuery element', elements);
+    if (!typeIsArray(elements)) {
+        handleInvalidArgumentError('Parameter 2 to rangeExpandTo is expected to be an array', elements);
         return;
     }
     // </strict>
@@ -228,8 +228,8 @@ function rangeTrim(range) {
  */
 function rangeSerialize(ranges, rootNode) {
     // <strict>
-    if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be a range', range);
+    if (!typeIsArray(ranges)) {
+        handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be an array', ranges);
     }
     if (!typeIsNode(rootNode)) {
         handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be a node', rootNode);
@@ -250,8 +250,8 @@ function rangeSerialize(ranges, rootNode) {
  */
 function rangeDeserialize(serialized) {
     // <strict>
-    if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Parameter 1 to rangeDeserialize is expected to be a string', range);
+    if (!typeIsString(serialized)) {
+        handleInvalidArgumentError('Parameter 1 to rangeDeserialize is expected to be a string', serialized);
     }
     // </strict>
     var serializedRanges = serialized.split("|"),
