@@ -615,6 +615,17 @@ function selectionConstrain(element, selection) {
     });
 }
 
+function rangeClearFormatting(range, limitNode) {
+    // <strict>
+    if (!typeIsElement(limitNode)) {
+        handleError('Parameter 1 to rangeClearFormatting must be a jQuery element');
+        return;
+    }
+    // </strict>
+
+    // Expand empty range
+}
+
 /**
  * Clears the formatting on a supplied selection.
  *
