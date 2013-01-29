@@ -4,8 +4,8 @@
  *
  * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.3alpha.738
- * Build date: 21 January 2013
+ * Version: 1.3alpha.755
+ * Build date: 29 January 2013
  */
 
 var rangy;
@@ -68,8 +68,10 @@ rangy = rangy || (function() {
         return range && areHostMethods(range, textRangeMethods) && areHostProperties(range, textRangeProperties);
     }
 
+    var modules = {};
+    
     var api = {
-        version: "1.3alpha.738",
+        version: "1.3alpha.755",
         initialized: false,
         supported: true,
 
@@ -85,7 +87,7 @@ rangy = rangy || (function() {
 
         features: {},
 
-        modules: {},
+        modules: modules,
         config: {
             alertOnFail: true,
             alertOnWarn: false,
@@ -182,7 +184,16 @@ rangy = rangy || (function() {
     api.util.addListener = addListener;
 
     var initListeners = [];
-    var moduleInitializers = [];
+    
+    function consoleLog(msg) {
+        if (isHostObject(window, "console") && isHostMethod(window.console, "log")) {
+            window.console.log(msg);
+        }
+    }
+    
+    function getErrorDesc(ex) {
+        return ex.message || ex.description || String(ex);
+    }
 
     // Initialization
     function init() {
@@ -226,15 +237,21 @@ rangy = rangy || (function() {
             implementsTextRange: implementsTextRange
         };
 
-        // Initialize modules and call init listeners
-        var allListeners = moduleInitializers.concat(initListeners);
-        for (var i = 0, len = allListeners.length; i < len; ++i) {
+        // Initialize modules
+        var module, errorMessage;
+        for (var moduleName in modules) {
+            if ( (module = modules[moduleName]) instanceof Module ) {
+                module.init();
+            }
+        }
+        
+        // Call init listeners
+        for (var i = 0, len = initListeners.length; i < len; ++i) {
             try {
-                allListeners[i](api);
+                initListeners[i](api);
             } catch (ex) {
-                if (isHostObject(window, "console") && isHostMethod(window.console, "log")) {
-                    window.console.log("Rangy init listener threw an exception. Continuing.", ex);
-                }
+                errorMessage = "Rangy init listener threw an exception. Continuing. Detail: " + getErrorDesc(ex);
+                consoleLog(errorMessage);
             }
         }
     }
@@ -269,10 +286,11 @@ rangy = rangy || (function() {
 
     api.createMissingNativeApi = createMissingNativeApi;
 
-    function Module(name) {
+    function Module(name, initializer) {
         this.name = name;
         this.initialized = false;
         this.supported = false;
+        this.init = initializer;
     }
 
     Module.prototype = {
@@ -297,25 +315,34 @@ rangy = rangy || (function() {
     };
 
     api.createModule = function(name, initFunc) {
-        var module = new Module(name);
-        api.modules[name] = module;
-
-        moduleInitializers.push(function(api) {
-            initFunc(api, module);
-            module.initialized = true;
-            module.supported = true;
+        var module = new Module(name, function() {
+            if (!module.initialized) {
+                module.initialized = true;
+                try {
+                    initFunc(api, module);
+                    module.supported = true;
+                } catch (ex) {
+                    var errorMessage = "Module '" + name + "' failed to load: " + getErrorDesc(ex);
+                    consoleLog(errorMessage);
+                }
+            }
         });
+        modules[name] = module;
     };
 
-    api.requireModules = function(modules) {
-        for (var i = 0, len = modules.length, module, moduleName; i < len; ++i) {
-            moduleName = modules[i];
-            module = api.modules[moduleName];
+    api.requireModules = function(moduleNames) {
+        for (var i = 0, len = moduleNames.length, module, moduleName; i < len; ++i) {
+            moduleName = moduleNames[i];
+            
+            module = modules[moduleName];
             if (!module || !(module instanceof Module)) {
-                throw new Error("Module '" + moduleName + "' not found");
+                throw new Error("required module '" + moduleName + "' not found");
             }
+
+            module.init();
+            
             if (!module.supported) {
-                throw new Error("Module '" + moduleName + "' not supported");
+                throw new Error("required module '" + moduleName + "' not supported");
             }
         }
     };
@@ -1612,7 +1639,7 @@ rangy.createModule("DomRange", function(api, module) {
         isValid: function() {
             return isRangeValid(this);
         },
-
+        
         inspect: function() {
             return inspect(this);
         }
@@ -2143,7 +2170,7 @@ rangy.createModule("WrappedRange", function(api, module) {
                 };
             } else {
                 rangeProto.selectNodeContents = function(node) {
-                    this.setStartAndEnd(node, 0, DomRange.getEndOffset(node));
+                    this.setStartAndEnd(node, 0, dom.getNodeLength(node));
                 };
             }
 
@@ -3387,27 +3414,12 @@ rangy.createModule("WrappedSelection", function(api, module) {
         this.addRange(range, direction);
     };
 
-    selProto.eachRange = function(func, returnValue) {
-        for (var i = 0, len = this._ranges.length; i < len; ++i) {
-            if (func(this.getRangeAt(i))) {
-                return returnValue;
-            }
-        }
-        return null;
-    };
-
     selProto.callMethodOnEachRange = function(methodName, params) {
         var results = [];
-        this.eachRange(function(range) {
-            results[i] = range[methodName](params);
-        });
+        this.eachRange( function(range) {
+            results.push( range[methodName](params) );
+        } );
         return results;
-    };
-
-    selProto.setStartAndEnd = function() {
-        var range = this.rangeCount ? this.getRangeAt(0) : api.createRange(this.win.document);
-        range.setStartAndEnd.apply(range, util.toArray(arguments));
-        this.setSingleRange(range);
     };
     
     function createStartOrEndSetter(isStart) {
@@ -3426,6 +3438,11 @@ rangy.createModule("WrappedSelection", function(api, module) {
 
     selProto.setStart = createStartOrEndSetter(true);
     selProto.setEnd = createStartOrEndSetter(false);
+    
+    // Add cheeky select() method to Range prototype
+    api.rangePrototype.select = function(direction) {
+        getSelection( this.getDocument() ).setSingleRange(this, direction);
+    };
 
     selProto.changeEachRange = function(func) {
         var ranges = [];
@@ -3445,9 +3462,9 @@ rangy.createModule("WrappedSelection", function(api, module) {
     };
 
     selProto.containsNode = function(node, allowPartial) {
-        return this.eachRange(function(range) {
+        return this.eachRange( function(range) {
             return range.containsNode(node, allowPartial)
-        }, true);
+        }, true );
     };
 
     selProto.toHtml = function() {
@@ -3496,7 +3513,7 @@ rangy.createModule("WrappedSelection", function(api, module) {
     api.addCreateMissingNativeApiListener(function(win) {
         if (typeof win.getSelection == "undefined") {
             win.getSelection = function() {
-                return api.getSelection(win);
+                return getSelection(win);
             };
         }
         win = null;
