@@ -27,7 +27,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
+            var floatLeftButton = getLayoutElement(input).find('.raptor-ui-float-left');
             floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -66,7 +66,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
+            var floatLeftButton = getLayoutElement(input).find('.raptor-ui-float-left');
             floatLeftButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

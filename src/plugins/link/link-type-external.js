@@ -19,5 +19,9 @@ LinkTypeExternal.prototype.getAttributes = function(panel) {
         result.target = '_blank';
     }
 
+    if ($.trim(result.href) === 'http://') {
+        return false;
+    }
+
     return result;
 };

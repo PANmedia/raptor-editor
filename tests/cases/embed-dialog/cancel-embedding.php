@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var embedObjectButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedObjectButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedObjectButton.trigger('click');
 
             var cancelEmbeddingButton = $('.raptor-ui-embed-dialog button:contains(Cancel)');

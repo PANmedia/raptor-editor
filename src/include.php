@@ -58,6 +58,9 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-toggle-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/filtered-preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/menu-button.js"></script>
@@ -112,6 +115,8 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/save/save-rest.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/snippet-menu/snippet-menu.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/special-characters/special-characters.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/statistics/statistics.js"></script>
 

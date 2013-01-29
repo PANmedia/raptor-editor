@@ -1,70 +1,32 @@
-var embedDialog = null,
-    embedInstance = null;
-
-Raptor.registerUi(new Button({
+Raptor.registerUi(new DialogButton({
     name: 'embed',
     state: null,
-
-    action: function() {
-        this.state = this.raptor.stateSave();
-        aDialogOpen(this.getDialog(this));
+    dialogOptions: {
+        width: 600,
+        height: 400
     },
 
-    embedObject: function(object) {
-        this.raptor.stateRestore(this.state);
+    applyAction: function(dialog) {
         this.raptor.actionApply(function() {
-            selectionReplace(object);
+            selectionReplace(dialog.find('textarea').val());
         });
     },
 
-    getDialog: function(instance) {
-        embedInstance = instance;
-        if (!embedDialog) {
-            embedDialog = $('<div>').html(this.raptor.getTemplate('embed.dialog', this.options));
-            aDialog(embedDialog, {
-                modal: true,
-                width: 600,
-                height: 400,
-                resizable: true,
-                autoOpen: false,
-                title: _('embedDialogTitle'),
-                dialogClass: this.options.baseClass + '-dialog',
-                buttons: [
-                    {
-                        text: _('embedDialogOKButton'),
-                        click: function() {
-                            embedInstance.embedObject(embedDialog.find('textarea').val());
-                            embedDialog.dialog('close');
-                        },
-                        icons: {
-                            primary: 'ui-icon-circle-check'
-                        }
-                    },
-                    {
-                        text: _('embedDialogCancelButton'),
-                        click: function() {
-                            aDialogClose(embedDialog);
-                        },
-                        icons: {
-                            primary: 'ui-icon-circle-close'
-                        }
-                    }
-                ]
+    getDialogTemplate: function() {
+        var template = $('<div>').html(this.raptor.getTemplate('embed.dialog', this.options));
+
+        template.find('textarea').change(function(event) {
+            template.find('.' + this.options.baseClass + '-preview').html($(event.target).val());
+        }.bind(this));
+
+        // Create fake jQuery UI tabs (to prevent hash changes)
+        var tabs = template.find('.' + this.options.baseClass + '-panel-tabs');
+        tabs.find('li')
+            .click(function() {
+                tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
+                $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
+                tabs.children('div').hide().eq($(this).index()).show();
             });
-
-            embedDialog.find('textarea').change(function(event) {
-                embedDialog.find('.' + this.options.baseClass + '-preview').html($(event.target).val());
-            }.bind(this));
-
-            // Create fake jQuery UI tabs (to prevent hash changes)
-            var tabs = embedDialog.find('.' + this.options.baseClass + '-panel-tabs');
-            tabs.find('li')
-                .click(function() {
-                    tabs.find('ul li').removeClass('ui-state-active').removeClass('ui-tabs-selected');
-                    $(this).addClass('ui-state-active').addClass('ui-tabs-selected');
-                    tabs.children('div').hide().eq($(this).index()).show();
-                });
-        }
-        return embedDialog;
+        return template;
     }
 }));

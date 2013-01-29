@@ -14,7 +14,7 @@
  */
 function actionPreview(previewState, target, action) {
     // <strict>
-    if (!(target instanceof $)) {
+    if (!typeIsElement(target)) {
         handleError("Target must be a jQuery instance when previewing an action", target);
     }
     // </strict>

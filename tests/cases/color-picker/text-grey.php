@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             console.log(grey);
@@ -77,7 +77,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             grey.trigger('click');
@@ -118,7 +118,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             grey.trigger('click');
@@ -165,7 +165,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             grey.trigger('click');
@@ -211,7 +211,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             grey.trigger('click');
@@ -256,7 +256,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             grey.trigger('click');
@@ -301,7 +301,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var grey = $('.raptor-ui-color-menu-basic-menu [data-color=grey]');
             grey.trigger('click');

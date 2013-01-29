@@ -158,7 +158,7 @@ registerLocale('en', 'English', {
 
     historyRedoTitle: 'Redo',
     historyUndoTitle: 'Undo',
-    
+
     hrCreateTitle: "Insert Horizontal Rule",
 
     insertFileDialogOKButton: 'Insert file',
@@ -167,10 +167,10 @@ registerLocale('en', 'English', {
     listOrderedTitle: 'Ordered list',
     listUnorderedTitle: 'Unordered list',
 
-    linkDialogTitle: 'Insert Link',
-    linkDialogOKButton: 'Insert Link',
-    linkDialogCancelButton: 'Cancel',
-    linkDialogMenuHeader: 'Choose a link type',
+    linkCreateDialogTitle: 'Insert Link',
+    linkCreateDialogOKButton: 'Insert Link',
+    linkCreateDialogCancelButton: 'Cancel',
+    linkCreateDialogMenuHeader: 'Choose a link type',
 
     linkTypeEmailLabel: 'Email address',
     linkTypeEmailHeader: 'Link to an email address',

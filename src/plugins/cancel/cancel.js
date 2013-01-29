@@ -1,43 +1,15 @@
-var cancelDialog = null;
+var cancelDialog = null,
+    cancelInstance;
 
-Raptor.registerUi(new Button({
+Raptor.registerUi(new DialogButton({
     name: 'cancel',
-    action: function() {
-        aDialogOpen(this.getDialog());
+    dialogOptions: {
+        width: 500
     },
-    getDialog: function() {
-        if (!cancelDialog) {
-            cancelDialog = $('<div>').html(_('cancelDialogContent'));
-            aDialog(cancelDialog, {
-                modal: true,
-                resizable: false,
-                autoOpen: false,
-                width: 400,
-                title: _('cancelDialogTitle'),
-                dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
-                buttons: [
-                    {
-                        text: _('cancelDialogOKButton'),
-                        click: function() {
-                            this.raptor.cancelEditing();
-                            aDialogClose(cancelDialog);
-                        }.bind(this),
-                        icons: {
-                            primary: 'ui-icon-circle-check'
-                        }
-                    },
-                    {
-                        text: _('cancelDialogCancelButton'),
-                        click: function() {
-                            aDialogClose(cancelDialog);
-                        },
-                        icons: {
-                            primary: 'ui-icon-circle-close'
-                        }
-                    }
-                ]
-            });
-        }
-        return cancelDialog;
+    applyAction: function() {
+        this.raptor.cancelEditing();
+    },
+    getDialogTemplate: function() {
+        return $('<div>').html(_('cancelDialogContent'));
     }
 }));

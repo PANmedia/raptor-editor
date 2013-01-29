@@ -33,7 +33,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
+            var floatLeftButton = getLayoutElement(input).find('.raptor-ui-float-left');
             rangesToTokens(rangy.getSelection().getAllRanges());
             input.find('.editible').data('raptor').checkSelectionChange();
             if (!floatLeftButton.hasClass('ui-button-disabled')) {
@@ -68,7 +68,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var floatRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right');
+            var floatRightButton = getLayoutElement(input).find('.raptor-ui-float-right');
             rangesToTokens(rangy.getSelection().getAllRanges());
             input.find('.editible').data('raptor').checkSelectionChange();
             if (!floatRightButton.hasClass('ui-button-disabled')) {
@@ -102,7 +102,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var floatNoneButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none');
+            var floatNoneButton = getLayoutElement(input).find('.raptor-ui-float-none');
             rangesToTokens(rangy.getSelection().getAllRanges());
             input.find('.editible').data('raptor').checkSelectionChange();
             if (!floatNoneButton.hasClass('ui-button-disabled')) {

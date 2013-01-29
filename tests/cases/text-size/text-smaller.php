@@ -9,7 +9,7 @@
         rangy.init();
 
         function testSizeButton(input) {
-            var sizeDecreaseButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-size-decrease');
+            var sizeDecreaseButton = getLayoutElement(input).find('.raptor-ui-text-size-decrease');
             sizeDecreaseButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

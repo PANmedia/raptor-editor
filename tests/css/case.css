@@ -144,3 +144,8 @@ body {
 .fail {
     border: 2px solid #CB2402;
 }
+
+
+.error-output {
+    font-weight: bold;
+}

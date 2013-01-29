@@ -46,10 +46,9 @@ TagMenu.prototype.previewRestore = function(event) {
 TagMenu.prototype.updateButton = function() {
     var tag = selectionGetElements()[0],
         button = this.getButton().getButton();
-//    if (!tag) {
-//        aButtonDisable(button);
-//        return;
-//    }
+    if (!tag) {
+        return;
+    }
     var tagName = tag.tagName.toLowerCase(),
         option = this.getMenu().find('[data-value=' + tagName + ']');
     if (option.length) {

@@ -91,7 +91,7 @@ function templateConvertTokens(template, variables) {
     template = template.replace(/\{\{(.*?)\}\}/g, function(match, variable) {
         // <debug>
         if (typeof variables[variable] === 'undefined') {
-            handleError('Missing template variable: ' + variable);
+            handleError(new Error('Missing template variable: ' + variable));
         }
         // </debug>
         return variables[variable];

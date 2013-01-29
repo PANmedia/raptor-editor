@@ -101,7 +101,7 @@ function runTest(path, fileName) {
     $('<iframe>')
             .attr('src', 'cases/' + path + '/' + fileName)
             .load(function() {
-        timerId = setInterval(checkStatus, 100, this.contentWindow.testResults, path, fileName);
+        timerId = setInterval(checkStatus, 50, this.contentWindow.testResults, path, fileName);
     })
     .appendTo('.iframes');
 }
@@ -118,7 +118,7 @@ function runTest(path, fileName) {
  */
 function checkStatus(testResults, path, fileName) {
     if (typeof testResults !== 'undefined') {
-        if (testResults.count === testResults.tests.length) {
+        if (testResults.finished === true) {
             var itemContent = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
                     pass = true,
                     testLength = testResults.tests.length,
@@ -152,10 +152,15 @@ function checkStatus(testResults, path, fileName) {
                 setItemStatus(path, fileName, 'ui-state-error', 'ui-icon-circle-close', passes, testLength);
                 errorDiv.css('display', '');
             }
+            finishTest();
         }
     } else {
         setItemStatus(path, fileName, 'ui-state-highlight', 'ui-icon-info'); //if the test results are undefined set the item status to highlight
+        finishTest();
     }
+}
+
+function finishTest() {
     clearInterval(timerId);
     timerId = null;
     $('iframe').remove();
@@ -173,7 +178,7 @@ var queueTimer = setInterval(function() {
         runTest(queue[0].path, queue[0].fileName);
         queue.splice(0, 1);
     }
-}, 500);
+}, 50);
 
 /**
  * Adds an item to the queue and updates the summary.

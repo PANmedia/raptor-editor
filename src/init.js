@@ -97,7 +97,12 @@ function handleError(errorMessage) {
         }
         // </ie>
 
+
         console.error.apply(console, args);
+        if (args[0] instanceof Error) {
+            console.error.apply(console, [args[0].toString()]);
+            console.error.apply(console, [args[0].stack]);
+        }
     } else {
         throw errorMessage;
     }

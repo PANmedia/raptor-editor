@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
+            var guidesButton = getLayoutElement(input).find('.raptor-ui-guides');
             guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -98,7 +98,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
+            var guidesButton = getLayoutElement(input).find('.raptor-ui-guides');
             guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -141,7 +141,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var guidesButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-guides');
+            var guidesButton = getLayoutElement(input).find('.raptor-ui-guides');
             guidesButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

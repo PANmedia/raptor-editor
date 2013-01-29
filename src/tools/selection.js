@@ -100,6 +100,7 @@ function selectionReplace(html, selection) {
  * @param {jQuerySelector|jQuery|Element} element
  * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
  */
+ /*
 function selectionSelectInner(element, selection) {
     selection = selection || rangy.getSelection();
     selection.removeAllRanges();
@@ -108,6 +109,26 @@ function selectionSelectInner(element, selection) {
         range.selectNodeContents(this);
         selection.addRange(range);
     });
+}
+*/
+/**
+ * Selects all the contents of the supplied node, excluding the node itself.
+ *
+ * @public @static
+ * @param {Node} node
+ * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ */
+function selectionSelectInner(node, selection) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleError('Paramter 1 to selectionSelectInner is expected a Node, got:', node);
+        return;
+    }
+    // </strict>
+    selection = selection || rangy.getSelection();
+    var range = rangy.createRange();
+    range.selectNodeContents(node);
+    selection.setSingleRange(range);
 }
 
 /**
@@ -200,11 +221,11 @@ function selectionGetElement(range) {
 }
 
 /**
- * Gets all elements that contain a selection (excluding text nodes) and
+ * Gets all elements within and including the selection's common ancestor that contain a selection (excluding text nodes) and
  * returns them as a jQuery array.
  *
  * @public @static
- * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ * @param {RangySelection|null} A RangySelection, or by default, the current selection.
  */
 function selectionGetElements(selection) {
     var result = new jQuery();
@@ -692,9 +713,6 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
 function selectionExpandToWord() {
     var ranges = rangy.getSelection().getAllRanges();
     if (ranges.length === 1) {
-        if (!$.isFunction(rangy.getSelection().expand)) {
-            return;
-        }
         if (ranges[0].toString() === '') {
             rangy.getSelection().expand('word');
         }

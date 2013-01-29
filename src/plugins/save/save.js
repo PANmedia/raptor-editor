@@ -6,6 +6,10 @@ Raptor.registerUi(new Button({
     },
 
     init: function() {
+        if (this.options.plugin === null) {
+            return;
+        }
+
         var result = Button.prototype.init.apply(this, arguments);
 
         // <strict>

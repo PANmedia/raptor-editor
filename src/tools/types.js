@@ -22,6 +22,18 @@ function typeIsNode(object) {
     return object instanceof Node;
 }
 
+function typeIsTextNode(object) {
+    if (typeIsNode(object)) {
+        return object.nodeType === Node.TEXT_NODE;
+    }
+
+    if (typeIsElement(object)) {
+        return typeIsNode(object[0]);
+    }
+
+    return false;
+}
+
 /**
  * Determines whether object is an element.
  * @param {mixed} object The object to be tested.

@@ -34,7 +34,7 @@
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
             input.find('img').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left').trigger('click');
+            clickButton(input, '.raptor-ui-float-left');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -65,7 +65,7 @@
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
             input.find('img').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right').trigger('click');
+            clickButton(input, '.raptor-ui-float-right');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -96,7 +96,7 @@
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
             input.find('img').trigger('click');
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none').trigger('click');
+            clickButton(input, '.raptor-ui-float-none');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
