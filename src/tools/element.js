@@ -104,6 +104,39 @@ function elementIsValid(element, validTags) {
 }
 
 /**
+ * According to the given array of valid tags, find and return the first invalid
+ * element of a valid parent. Recursively search parents until the wrapper is
+ * encountered.
+ *
+ * @param  {Node} element
+ * @param  {string[]} validTags
+ * @param  {Element} wrapper
+ * @return {Node}           [description]
+ */
+function elementFirstInvalidElementOfValidParent(element, validTags, wrapper) {
+    // <strict>
+    if (!typeIsNode(element)) {
+        handleError('Parameter 1 to elementFirstInvalidElementOfValidParent must be a node');
+        return;
+    }
+    // </strict>
+    var parent = element.parentNode;
+    if (parent[0] === wrapper[0]) {
+        // <strict>
+        if (!elementIsValid(parent, validTags)) {
+            handleError('elementFirstInvalidElementOfValidParent requires a valid wrapper');
+            return;
+        }
+        // </strict>
+        return element;
+    }
+    if (elementIsValid(parent, validTags)) {
+        return element;
+    }
+    return elementFirstInvalidElementOfValidParent(parent, validTags, wrapper);
+}
+
+/**
  * Calculate and return the visible rectangle for the element.
  *
  * @param  {jQuery|Element} element The element to calculate the visible rectangle for.
@@ -258,6 +291,7 @@ function elementPositionUnder(element, under) {
 
 /**
  * Removes the element from the DOM to manipulate it using a function passed to the method, then replaces it back to it's origional position.
+ *
  * @todo desc and type for manip
  * @param {jQuery|Element} element The element to be manipulated.
  * @param {type} manip A function used to manipulate the element i think.
@@ -288,9 +322,9 @@ function elementClosestBlock(element, limitElement) {
         return;
     }
     // </strict>
-    while (element.length > 0
-            && element[0] !== limitElement[0]
-            && (element[0].nodeType === Node.TEXT_NODE || element.css('display') === 'inline')) {
+    while (element.length > 0 &&
+        element[0] !== limitElement[0] &&
+        (element[0].nodeType === Node.TEXT_NODE || element.css('display') === 'inline')) {
         element = element.parent();
     }
     if (element[0] === limitElement[0]) {
@@ -314,12 +348,18 @@ function elementUniqueId() {
 
 /**
  * Changes the tags on a given element.
+ *
  * @todo not sure of details of return
  * @param {jQuerySelector|jQuery|Element} element The element(s) to have it's tags changed
  * @param {Element} newTag The new tag for the element(s)
  * @returns {type}
  */
 function elementChangeTag(element, newTag) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleError('Parameter 1 to elementChangeTag must be a jQuery element');
+    }
+    // </strict>
     var tags = [];
     for (var i = element.length - 1; 0 <= i ; i--) {
         var node = document.createElement(newTag);

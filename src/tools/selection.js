@@ -86,6 +86,7 @@ function selectionReplace(html, selection) {
  * @param {jQuerySelector|jQuery|Element} element
  * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
  */
+ /*
 function selectionSelectInner(element, selection) {
     selection = selection || rangy.getSelection();
     selection.removeAllRanges();
@@ -94,6 +95,26 @@ function selectionSelectInner(element, selection) {
         range.selectNodeContents(this);
         selection.addRange(range);
     });
+}
+*/
+/**
+ * Selects all the contents of the supplied node, excluding the node itself.
+ *
+ * @public @static
+ * @param {Node} node
+ * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ */
+function selectionSelectInner(node, selection) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleError('Paramter 1 to selectionSelectInner is expected a Node, got:', node);
+        return;
+    }
+    // </strict>
+    selection = selection || rangy.getSelection();
+    var range = rangy.createRange();
+    range.selectNodeContents(node);
+    selection.setSingleRange(range);
 }
 
 /**
@@ -177,11 +198,10 @@ function selectionGetElement(range) {
 }
 
 /**
- * Gets all elements that contain a selection (excluding text nodes) and
+ * Gets all elements within and including the selection's common ancestor
  * returns them as a jQuery array.
  *
- * @public @static
- * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
+ * @param {RangySelection|null} A RangySelection, or by default, the current selection.
  */
 function selectionGetElements(selection) {
     var result = new jQuery();
@@ -304,72 +324,6 @@ function selectionExists(sel) {
         }
     }, sel, this);
     return exists;
-}
-
-/**
- * Split the selection container and insert the given html between the two elements created.
- * @param  {jQuery|Element|string} html The html to replace selection with.
- * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
- */
-function selectionReplaceSplittingSelectedElement(html, selection) {
-    selection = selection || rangy.getSelection();
-
-    var selectionRange = selection.getRangeAt(0);
-    var selectedElement = selectionGetElements()[0];
-
-    // Select from start of selected element to start of selection
-    var startRange = rangy.createRange();
-    startRange.setStartBefore(selectedElement);
-    startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
-    var startFragment = startRange.cloneContents();
-
-    // Select from end of selected element to end of selection
-    var endRange = rangy.createRange();
-    endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
-    endRange.setEndAfter(selectedElement);
-    var endFragment = endRange.cloneContents();
-
-    // Replace the start element's html with the content that was not selected, append html & end element's html
-    var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
-    replacement += elementOuterHtml($(html).attr('data-replacement', true));
-    replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
-
-    replacement = $(replacement);
-
-    $(selectedElement).replaceWith(replacement);
-    return replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
-}
-
-/**
- * Replace current selection with given html, ensuring that selection container is split at
- * the start & end of the selection in cases where the selection starts / ends within an invalid element.
- *
- * @param  {jQuery|Element|string} html The html to replace current selection with.
- * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
- * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
- */
-function selectionReplaceWithinValidTags(html, validTagNames, selection) {
-    selection = selection || rangy.getSelection();
-
-    if (selection.rangeCount === 0) {
-        return;
-    }
-
-    var startElement = selectionGetStartElement()[0];
-    var endElement = selectionGetEndElement()[0];
-    var selectedElement = selectionGetElements()[0];
-
-    var selectedElementValid = elementIsValid(selectedElement, validTagNames);
-    var startElementValid = elementIsValid(startElement, validTagNames);
-    var endElementValid = elementIsValid(endElement, validTagNames);
-
-    // The html may be inserted within the selected element & selection start / end.
-    if (selectedElementValid && startElementValid && endElementValid) {
-        return selectionReplace(html);
-    }
-
-    // Context is invalid. Split containing element and insert list in between.
-    return selectionReplaceSplittingSelectedElement(html, selection);
 }
 
 /**
@@ -605,9 +559,6 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
 function selectionExpandToWord() {
     var ranges = rangy.getSelection().getAllRanges();
     if (ranges.length === 1) {
-        if (!$.isFunction(rangy.getSelection().expand)) {
-            return;
-        }
         if (ranges[0].toString() === '') {
             rangy.getSelection().expand('word');
         }

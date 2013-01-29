@@ -17,6 +17,18 @@ function typeIsNode(object) {
     return object instanceof Node;
 }
 
+function typeIsTextNode(object) {
+    if (typeIsNode(object)) {
+        return object.nodeType === Node.TEXT_NODE;
+    }
+
+    if (typeIsElement(object)) {
+        return typeIsNode(object[0]);
+    }
+
+    return false;
+}
+
 function typeIsElement(object) {
     return object instanceof jQuery;
 }
