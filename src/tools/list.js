@@ -5,11 +5,12 @@
  */
 
 /**
- * Checks whether the selection is fully encased by ul or ol tags, if it is then unwrap the parent ul/ol.
- * @todo can't work out what wrapper is.
+ * Checks whether the selection is fully enclosed by ul or ol tags, if it is then
+ * unwrap the parent ul/ol.
+ *
  * @param {String} listType This is the type of list to check the selection against.
  * @param {Object} listItem This is the list item to use as the selection.
- * @param {Array} wrapper An array of something i can't work out.
+ * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
     // Check whether selection is fully contained by a ul/ol. If so, unwrap
@@ -23,7 +24,7 @@ function listToggle(listType, listItem, wrapper) {
 }
 
 /**
- * @return {string[]} Tags allowed within an li.
+ * @type {String[]} Tags allowed within an li.
  */
 var listValidLiChildren = [
     'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button',
@@ -33,7 +34,7 @@ var listValidLiChildren = [
 ];
 
 /**
- * @var {string][]} Tags ol & ul are allowed within.
+ * @type {String][]} Tags ol & ul are allowed within.
  */
 var listValidUlOlParents =  [
     'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form',
@@ -41,7 +42,7 @@ var listValidUlOlParents =  [
 ];
 
 /**
- * @return {string][]} Tags blockquote is allowed within.
+ * @type {String][]} Tags blockquote is allowed within.
  */
 var listValidBlockQuoteParents = [
     'body', 'center', 'dd', 'div', 'dt', 'fieldset', 'form', 'iframe', 'li', 'td', 'th'
@@ -64,8 +65,8 @@ var listValidPParents = [
  * Convert tags invalid within the context of listItem.
  *
  * @param  {Element} list
- * @param  {string} listItem
- * @param  {string[]} validChildren
+ * @param  {String} listItem
+ * @param  {String[]} validChildren
  */
 function listEnforceValidChildren(list, listItem, validChildren) {
     // <strict>
@@ -91,10 +92,9 @@ function listEnforceValidChildren(list, listItem, validChildren) {
 /**
  * Wraps the selected element(s) in list tags.
  *
- * @todo not sure what wrapper is.
  * @param {String} listType The type of list that the selection is to be transformed into.
  * @param {String} listItem The list item to be used in creating the list.
- * @param {Array} wrapper An array of something i can't work out.
+ * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listWrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
@@ -118,6 +118,16 @@ function listWrapSelection(listType, listItem, wrapper) {
     }
 }
 
+/**
+ * Convert the given list item to the given tag. If the listItem has children,
+ * convert them and unwrap the containing list item.
+ *
+ * @param  {Element} listItem
+ * @param  {string} listType
+ * @param  {string} tag
+ * @param  {string[]} validTagChildren Array of valid child tag names.
+ * @return {Element|null} Result of the final conversion.
+ */
 function listConvertListItem(listItem, listType, tag, validTagChildren) {
      // <strict>
     if (!typeIsElement(listItem)) {
@@ -132,16 +142,25 @@ function listConvertListItem(listItem, listType, tag, validTagChildren) {
                 elementChangeTag(this, tag);
             }
         });
-        r = listItem.contents().unwrap();
-        // return;
+        return listItem.contents().unwrap();
     } else {
-        // return
-        r = elementChangeTag(listItem, tag);
+        return elementChangeTag(listItem, tag);
     }
-    return r;
 }
 
+/**
+ * Convert listItems to paragraphs and unwrap the containing listType.
+ *
+ * @param  {Element} list
+ * @param  {string} listItem
+ * @param  {string} listType
+ */
 function listUnwrap(list, listItem, listType) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listTidyModified must be a jQuery element');
+    }
+    // </strict>
     var convertedItem = null;
     list.find(listItem).each(function() {
         listConvertListItem($(this), listType, 'p', listValidPChildren);
@@ -149,12 +168,37 @@ function listUnwrap(list, listItem, listType) {
     return list.contents().unwrap();
 }
 
+/**
+ * Tidy lists that have been modified, including removing empty listItems and
+ * removing the list if it is completely empty.
+ *
+ * @param  {Element} list
+ * @param  {string} listType
+ * @param  {string} listItem
+ */
 function listTidyModified(list, listType, listItem) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listTidyModified must be a jQuery element');
+    }
+    // </strict>
     listRemoveEmptyItems(list, listType, listItem);
     listRemoveEmpty(list, listType, listItem);
 }
 
+/**
+ * Remove empty listItems from within the list.
+ *
+ * @param  {Element} list
+ * @param  {string} listType
+ * @param  {string} listItem
+ */
 function listRemoveEmptyItems(list, listType, listItem) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listRemoveEmptyItems must be a jQuery element');
+    }
+    // </strict>
     if (!list.is(listType)) {
         return;
     }
@@ -165,7 +209,19 @@ function listRemoveEmptyItems(list, listType, listItem) {
     });
 }
 
+/**
+ * Remove list if it is of listType and empty.
+ *
+ * @param  {Element} list
+ * @param  {string} listType
+ * @param  {string} listItem
+ */
 function listRemoveEmpty(list, listType, listItem) {
+    // <strict>
+    if (!typeIsElement(list)) {
+        handleError('Parameter 1 to listRemoveEmpty must be a jQuery element');
+    }
+    // </strict>
     if (!list.is(listType)) {
         return;
     }
@@ -195,14 +251,21 @@ function listUnwrapSelection(listType, listItem, wrapper) {
         var endElement = rangeGetEndElement(range);
 
         /**
-         * {<ul>
-         *     <li>list content</li>
-         * </ul>}
+         * {<listType>
+         *     <listItem>list content</listItem>
+         * </listType>}
          */
         if ($(endElement).is(listType) && $(startElement).is(listType)) {
             return listUnwrap(commonAncestor, listItem, listType);
         }
 
+        /**
+         * <listType>
+         *     <listItem>{list content</listItem>
+         *     <listItem>list content}</listItem>
+         *     <listItem>list content</listItem>
+         * </listType>
+         */
         var replacementPlaceholderId = elementUniqueId();
         rangeExpandToParent(range);
         rangeReplaceWithinValidTags(range, $('<strong/>').attr('id', replacementPlaceholderId), wrapper, listValidPParents);
@@ -230,9 +293,9 @@ function listUnwrapSelection(listType, listItem, wrapper) {
     }
 
     /**
-     * <ul>
+     * <listType>
      *     <li>{list content}</li>
-     * </ul>
+     * </listType>
      */
     if (!commonAncestor.prev().length && !commonAncestor.next().length) {
         console.log('here 3');
@@ -240,11 +303,11 @@ function listUnwrapSelection(listType, listItem, wrapper) {
     }
 
     /**
-     * <ul>
-     *     <li>list content</li>
-     *     <li>{list content}</li>
-     *     <li>list content</li>
-     * </ul>
+     * <listType>
+     *     <listItem>list content</listItem>
+     *     <listItem>{list content}</listItem>
+     *     <listItem>list content</listItem>
+     * </listType>
      */
     if (commonAncestor.next().length && commonAncestor.prev().length) {
         console.log('here 4');
@@ -254,10 +317,10 @@ function listUnwrapSelection(listType, listItem, wrapper) {
     }
 
     /**
-     * <ul>
-     *     <li>{list content}</li>
-     *     <li>list content</li>
-     * </ul>
+     * <listType>
+     *     <listItem>{list content}</listItem>
+     *     <listItem>list content</listItem>
+     * </listType>
      */
     if (commonAncestor.next().length && !commonAncestor.prev().length) {
         console.log('here 5');
@@ -267,10 +330,10 @@ function listUnwrapSelection(listType, listItem, wrapper) {
     }
 
     /**
-     * <ul>
-     *     <li>list content</li>
-     *     <li>{list content}</li>
-     * </ul>
+     * <listType>
+     *     <listItem>list content</listItem>
+     *     <listItem>{list content}</listItem>
+     * </listType>
      */
     if (!commonAncestor.next().length && commonAncestor.prev().length) {
         console.log('here 6');
