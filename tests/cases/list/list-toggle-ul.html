@@ -7,8 +7,7 @@
     <script type="text/javascript">
         rangy.init();
     </script>
-    <div class="test-1">
-        <h1>List 1: simple listToggle within p</h1>
+    <h1>List 1: simple listToggle within p</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -415,8 +414,112 @@
             </ul>
         </div>
     </div>
+    <div class="test-12">
+        <h1>List 12: empty selection</h1>
+        <div class="test-input">
+            <ul>
+                <li>dui {}id erat pellentesque et rhoncus</li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <p>
+                dui id erat pellentesque et rhoncus
+            </p>
+        </div>
+    </div>
     <script type="text/javascript">
-        test('.test-11', function(input) {
+        test('.test-12', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-13">
+        <h1>List 13: complicated list #1</h1>
+        <div class="test-input">
+            <ul>
+                <li>
+                    Click {}to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </li>
+                <li>
+                    Dock<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </li>
+                <li>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <p>
+                Click to Edit
+            </p>
+            <p>
+                Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.
+            </p>
+            <ul>
+                <li>
+                    Dock<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </li>
+                <li>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-13', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-14">
+        <h1>List 14: complicated list #2</h1>
+        <div class="test-input">
+            <ul>
+                <li>
+                    Click to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </li>
+                <li>
+                    Dock{}<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </li>
+                <li>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>
+                    Click to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </li>
+            </ul>
+            <p>
+                Dock
+            <p/>
+            <p>
+                Allows the editor to be docked to the top of the body, or in place of the element.
+            </p>
+            <ul>
+                </li>
+                <li>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-14', function(input) {
             var ranges = tokensToRanges(input);
             rangy.getSelection().setRanges(ranges);
             listToggle('ul', 'li', input);
