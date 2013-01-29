@@ -1,5 +1,6 @@
 Raptor.registerUi(new ToggleButton({
     name: 'linkRemove',
+    disable: true,
 
     action: function() {
         this.raptor.actionApply(function() {
