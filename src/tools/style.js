@@ -1,3 +1,15 @@
+/**
+ * @fileOverview Style helper functions.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
+/**
+ * @todo desc all
+ * @param {jQuerySelector|jQuery|Element} element This is the element to have its styles swapped.
+ * @param {array} newState The new state to be applied to the element.
+ * @returns {array}
+ */
 function styleSwapState(element, newState) {
     var node = element.get(0),
         previousState = {};
@@ -11,6 +23,13 @@ function styleSwapState(element, newState) {
     return previousState;
 }
 
+/**
+ * @todo type for wrapper and inner and descriptions
+ * @param {type} wrapper
+ * @param {type} inner
+ * @param {array} newState
+ * @returns {unresolved}
+ */
 function styleSwapWithWrapper(wrapper, inner, newState) {
     var innerNode = inner.get(0),
         previousState = {};
@@ -25,6 +44,12 @@ function styleSwapWithWrapper(wrapper, inner, newState) {
     return previousState;
 }
 
+/**
+ * @todo all
+ * @param {jQuery} element
+ * @param {array} state
+ * @returns {undefined}
+ */
 function styleRestoreState(element, state) {
     for (var key in state) {
         element.css(key, state[key] || '');

@@ -6,29 +6,54 @@
 
 /**
  * Determine whether object is a number {@link http://stackoverflow.com/a/1421988/187954}.
- * @param  {mixed} object The object to be tested
+ * @param  {mixed} object The object to be tested.
  * @return {Boolean} True if the object is a number.
  */
 function typeIsNumber(object) {
     return !isNaN(object - 0) && object !== null;
 }
 
+/**
+ * Determines whether object is a node.
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a node.
+ */
 function typeIsNode(object) {
     return object instanceof Node;
 }
 
+/**
+ * Determines whether object is an element.
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is an element.
+ */
 function typeIsElement(object) {
     return object instanceof jQuery;
 }
 
+/**
+ * Determines whether object is a range.
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a range.
+ */
 function typeIsRange(object) {
     return object instanceof rangy.WrappedRange;
 }
 
+/**
+ * Determines whether object is a selection.
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a selection.
+ */
 function typeIsSelection(object) {
     return object instanceof rangy.WrappedSelection;
 }
 
+/**
+ * Determines whether object is a string.
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a string.
+ */
 function typeIsString(object) {
     return typeof object === 'string';
 }
