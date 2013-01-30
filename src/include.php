@@ -139,7 +139,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/justify.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/bold.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script>
+<?php /* <script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script> */ ?>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/italic.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-decrease.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-increase.js"></script>
@@ -147,6 +147,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/sub.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/super.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/tool-tip/tool-tip.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/view-source/view-source.js"></script>
