@@ -139,7 +139,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/justify.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/bold.js"></script>
-<?php /* <script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script> */ ?>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/italic.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-decrease.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-increase.js"></script>
