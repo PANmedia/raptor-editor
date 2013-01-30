@@ -38,6 +38,9 @@ class CombineTask extends Task {
             if (!$file) {
                 continue;
             }
+            if (strpos($file, '//') === 0) {
+                continue;
+            }
             if (preg_match('/^\(function\(/', $file)) {
                 $this->log($file, Project::MSG_INFO);
                 $data = "

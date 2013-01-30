@@ -43,7 +43,8 @@ class CloneTask extends Task {
                 continue;
             }
             if (preg_match('/^\(function\(/', $file) ||
-                    preg_match('/^}\)\(.*\);/', $file)) {
+                    preg_match('/^}\)\(.*\);/', $file) ||
+                    strpos($file, '//') === 0) {
                 continue;
             }
             if (!is_file($file)) {
