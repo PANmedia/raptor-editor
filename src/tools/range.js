@@ -81,8 +81,8 @@ function rangeReplace(range, html) {
         handleInvalidArgumentError('Parameter 1 to rangeReplace is expected to be a range', range);
         return;
     }
-    if (!typeIsString(html)) {
-        handleInvalidArgumentError('Parameter 2 to rangeReplace is expected to be a string', html);
+    if (!typeIsElement(html) && !typeIsString(html)) {
+        handleInvalidArgumentError('Parameter 2 to rangeReplace is expected to be a string or jQuery element', html);
         return;
     }
     // </strict>

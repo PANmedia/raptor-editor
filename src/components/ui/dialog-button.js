@@ -1,7 +1,7 @@
 var dialogs = {};
 
 function DialogButton(options) {
-    state = null;
+    this.state = null;
     Button.call(this, options);
 }
 
