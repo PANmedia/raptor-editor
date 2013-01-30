@@ -14,6 +14,13 @@ Raptor.registerUi(new PreviewButton({
         }
     },
 
+    init: function() {
+        this.raptor.bind('cancel', function() {
+            this.raptor.getElement().removeClass(this.getClassName());
+        }.bind(this));
+        return Button.prototype.init.call(this);
+    },
+
     getClassName: function() {
         return this.options.baseClass + '-visible';
     },
