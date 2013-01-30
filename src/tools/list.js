@@ -135,14 +135,7 @@ function listConvertListItem(listItem, listType, tag, validTagChildren) {
         handleInvalidArgumentError('Parameter 1 for listConvertListItem must be a jQuery element', listItem);
     }
     // </strict>
-    var listItemChildren = listItem.contents().filter(function() {
-        if (!typeIsTextNode(this)) {
-            return true;
-        }
-        if ($(this).text().trim() !== '') {
-            return true;
-        }
-    });
+    var listItemChildren = listItem.contents();
     if (listItemChildren.length) {
         listItemChildren.each(function() {
             if ($(this).text().trim() === '') {
@@ -244,6 +237,44 @@ function listRemoveEmpty(list, listType, listItem) {
 }
 
 /**
+ * Unwrap the list items between the range's startElement & endElement.
+ *
+ * @param  {RangyRange} range
+ * @param  {string} listType
+ * @param  {string} listItem
+ * @param  {Element} wrapper
+ */
+function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
+    var startElement = rangeGetStartElement(range);
+    var endElement = rangeGetEndElement(range);
+    var replacementPlaceholderId = elementUniqueId();
+
+    rangeExpandToParent(range);
+    rangeReplaceWithinValidTags(range, $('<p/>').attr('id', replacementPlaceholderId), wrapper, $.grep(listValidPParents, function(item) { return item !== 'li'; }));
+
+    var replacementPlaceholder = $('#' + replacementPlaceholderId);
+
+    listTidyModified(replacementPlaceholder.prev(), listType, listItem);
+    listTidyModified(replacementPlaceholder.next(), listType, listItem);
+    var toUnwrap = $(startElement);
+    if (startElement === endElement) {
+        toUnwrap.add($(startElement).nextUntil(endElement))
+                        .add(endElement);
+    }
+    toUnwrap.get()
+        .reverse();
+
+    $(toUnwrap).each(function() {
+        replacementPlaceholder.after(this);
+        listConvertListItem($(this), listType, 'p', listValidPChildren);
+    });
+
+    replacementPlaceholder.remove();
+
+    return listEnforceValidChildren($(rangeGetCommonAncestor(range)), listItem, listValidLiChildren);
+}
+
+/**
  * Unwraps the selected list item(s) and puts it into <p> tags.
  *
  * @param {Object} listItem
@@ -279,26 +310,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
          *     <listItem>list content</listItem>
          * </listType>
          */
-        var replacementPlaceholderId = elementUniqueId();
-        rangeExpandToParent(range);
-        rangeReplaceWithinValidTags(range, $('<strong/>').attr('id', replacementPlaceholderId), wrapper, listValidPParents);
-        var replacementPlaceholder = $('#' + replacementPlaceholderId);
-
-        listTidyModified(replacementPlaceholder.prev(), listType, listItem);
-        listTidyModified(replacementPlaceholder.next(), listType, listItem);
-
-        var toUnwrap = $(startElement).add($(startElement).nextUntil(endElement))
-                            .add(endElement)
-                            .get()
-                            .reverse();
-
-        $(toUnwrap).each(function() {
-            replacementPlaceholder.after(this);
-            listConvertListItem($(this), listType, 'p', listValidPChildren);
-        });
-        replacementPlaceholder.remove();
-
-        return listEnforceValidChildren($(commonAncestor), listItem, listValidLiChildren);
+         return listUnwrapSelectedListItems(range, listType, listItem, wrapper);
     }
 
     if (!commonAncestor.is(listItem)) {
@@ -322,9 +334,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (commonAncestor.next().length && commonAncestor.prev().length) {
-        rangeSelectElement(range, commonAncestor);
-        var replacement = listConvertListItem(commonAncestor, listType, 'p', listValidPChildren);
-        return rangeReplaceWithinValidTags(range, replacement, wrapper, listValidPParents);
+        return listUnwrapSelectedListItems(range, listType, listItem, wrapper);
     }
 
     /**
