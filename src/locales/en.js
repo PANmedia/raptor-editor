@@ -167,6 +167,9 @@ registerLocale('en', 'English', {
     listOrderedTitle: 'Ordered list',
     listUnorderedTitle: 'Unordered list',
 
+    linkCreateTitle: 'Insert Link',
+    linkRemoveTitle: 'Remove Link',
+
     linkCreateDialogTitle: 'Insert Link',
     linkCreateDialogOKButton: 'Insert Link',
     linkCreateDialogCancelButton: 'Cancel',

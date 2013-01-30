@@ -5,6 +5,7 @@ var linkMenu,
 
 Raptor.registerUi(new DialogToggleButton({
     name: 'linkCreate',
+
     dialogOptions: {
         width: 850
     },
@@ -23,10 +24,21 @@ Raptor.registerUi(new DialogToggleButton({
         }.bind(this));
     },
 
+    openDialog: function() {
+        var element = selectionGetElement();
+        if (element.is('a')) {
+            for (var i = 0, l = linkTypes.length; i < l; i++) {
+                var result = linkTypes[i].updateInputs(element, linkContent.children('div:eq(' + i + ')'));
+                if (result) {
+                    linkMenu.find(':radio:eq(' + i + ')').trigger('click');
+                }
+            }
+        }
+    },
+
     validateDialog: function() {
-        var index = linkMenu.find(':radio:checked').val(),
-            linkType = linkTypes[index];
-        linkAttributes = linkType.getAttributes(linkContent.children('div:eq(' + index + ')'));
+        var i = linkMenu.find(':radio:checked').val();
+        linkAttributes = linkTypes[i].getAttributes(linkContent.children('div:eq(' + i + ')'));
         return linkAttributes !== false;
     },
 

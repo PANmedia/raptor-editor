@@ -50,13 +50,14 @@ Menu.prototype.getMenu = function() {
 };
 
 Menu.prototype.show = function() {
+    $('.raptor-menu').hide();
     elementPositionUnder(this.getMenu().toggle(), this.getButton().getButton());
 };
 
 // Click off close event
 $('html').click(function(event) {
     if (!$(event.target).hasClass('raptor-menu-button') &&
-            !$(event.target).closest('.raptor-menu-button').length) {
+            $(event.target).closest('.raptor-menu-button').length === 0) {
         $('.raptor-menu').hide();
     }
 });
