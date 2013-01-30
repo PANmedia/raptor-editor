@@ -391,8 +391,10 @@ var RaptorWidget = {
         var restoredState = stateRestore(this.target, state),
             selection = rangy.getSelection();
         this.target = restoredState.element;
-        selection.setRanges(restoredState.ranges);
-        selection.refresh();
+        if (restoredState.ranges !== null) {
+            selection.setRanges(restoredState.ranges);
+            selection.refresh();
+        }
     },
 
     /*========================================================================*\
