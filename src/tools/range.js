@@ -41,6 +41,20 @@ function rangeSelectElement(range, element) {
     range.selectNode($(element)[0]);
 }
 
+function rangeSelectElementContent(range, element) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeSelectElement is expected to be a range', range);
+        return;
+    }
+    if (!typeIsElement(element) && !typeIsNode(element)) {
+        handleInvalidArgumentError('Parameter 2 to rangeSelectElement is expected to be a jQuery element or node', element);
+        return;
+    }
+    // </strict>
+    range.selectNodeContents($(element).get(0));
+}
+
 /**
  * Expand range to contain given elements.
  *

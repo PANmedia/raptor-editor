@@ -99,12 +99,20 @@ function listEnforceValidChildren(list, listItem, validChildren) {
  */
 function listWrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
+    var commonAncestor = rangeGetCommonAncestor(range);
+
+    // Having a <td> fully selected is a special case: without intervention
+    // the surrounding <table> would be split, with a <listType> inserted between
+    // the two <tables>.
+    if ($(commonAncestor).is('td')) {
+        rangeSelectElementContent(range, commonAncestor);
+    }
+
     if (rangeIsEmpty(range)) {
-        var commonAncestor = rangeGetCommonAncestor(range);
         range.selectNode(elementClosestBlock($(commonAncestor), wrapper).get(0));
     }
-    var contents = fragmentToHtml(range.extractContents());
 
+    var contents = fragmentToHtml(range.extractContents());
     if (!$($.parseHTML(contents)).is(listItem)) {
         contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
     }
