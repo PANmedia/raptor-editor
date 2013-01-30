@@ -27,6 +27,12 @@ function stringStripTags(content, allowedTags) {
     });
 }
 
+/**
+ * Converts a string in camelcase to lower case words separated with a dash or other supplied delimiter.
+ * @param {String} string The string to be converted from camelcase.
+ * @param {String} delimiter The character to separate the words, '-' if null.
+ * @returns {String} A lowercase string separated by dashes.
+ */
 function stringCamelCaseConvert(string, delimiter) {
     return string.replace(/([A-Z])/g, function(match) {
         return (delimiter || '-') + match.toLowerCase();

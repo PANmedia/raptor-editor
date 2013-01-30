@@ -385,6 +385,9 @@ var RaptorWidget = {
     },
 
     stateRestore: function(state) {
+        if (!this.isEditing()) {
+            return;
+        }
         var restoredState = stateRestore(this.target, state),
             selection = rangy.getSelection();
         this.target = restoredState.element;
@@ -461,6 +464,12 @@ var RaptorWidget = {
     },
 
     cancelEditing: function() {
+        this.unify(function(raptor) {
+            raptor.stopEditing();
+        });
+    },
+
+    stopEditing: function() {
         this.fire('cancel');
         this.resetHtml();
         this.hideLayout();

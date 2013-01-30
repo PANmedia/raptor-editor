@@ -16,8 +16,10 @@ function typeIsNumber(object) {
 }
 
 /**
- * @param  {mixed} object
- * @return {boolean} True if object is an Object.
+ * Determines whether object is a node.
+ *
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a node.
  */
 function typeIsNode(object) {
     return object instanceof Node;
@@ -40,32 +42,40 @@ function typeIsTextNode(object) {
 }
 
 /**
- * @param  {mixed} object
- * @return {boolean} True if object is a jQuery element.
+ * Determines whether object is an element.
+ *
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is an element.
  */
 function typeIsElement(object) {
     return object instanceof jQuery;
 }
 
 /**
- * @param  {mixed} object
- * @return {boolean} True if object is a RangyRange.
+ * Determines whether object is a range.
+ *
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a range.
  */
 function typeIsRange(object) {
     return object instanceof rangy.WrappedRange;
 }
 
 /**
- * @param  {mixed} object
- * @return {boolean} True if object is a RangySelection.
+ * Determines whether object is a selection.
+ *
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a selection.
  */
 function typeIsSelection(object) {
     return object instanceof rangy.WrappedSelection;
 }
 
 /**
- * @param  {mixed} object
- * @return {boolean} True if object is a string.
+ * Determines whether object is a string.
+ *
+ * @param {mixed} object The object to be tested.
+ * @returns {Boolean} True if the object is a string.
  */
 function typeIsString(object) {
     return typeof object === 'string';

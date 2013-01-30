@@ -3,6 +3,7 @@
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
+
 /**
  * @type {Boolean|Object} current saved selection.
  */
@@ -10,6 +11,8 @@ var savedSelection = false;
 
 /**
  * Save selection wrapper, preventing plugins / UI from accessing rangy directly.
+ * @todo check desc and type for overwrite.
+ * @param {Boolean} overwrite True if selection is able to be overwritten.
  */
 function selectionSave(overwrite) {
     if (savedSelection && !overwrite) return;
@@ -36,6 +39,11 @@ function selectionDestroy() {
     savedSelection = false;
 }
 
+/**
+ * Returns whether the selection is saved.
+ *
+ * @returns {Boolean} True if there is a saved selection.
+ */
 function selectionSaved() {
     return savedSelection !== false;
 }
@@ -59,6 +67,11 @@ function selectionEachRange(callback, selection, context) {
     }
 }
 
+/**
+ * Replaces the current selection with the specified range.
+ *
+ * @param {RangySelection} mixed The specified range to replace the current range.
+ */
 function selectionSet(mixed) {
     rangy.getSelection().setSingleRange(mixed);
 }
@@ -66,10 +79,11 @@ function selectionSet(mixed) {
 /**
  * Replaces the given selection (or the current selection if selection is not
  * supplied) with the given html.
- *
+ * @todo type for result
  * @public @static
  * @param  {jQuery|String} html The html to use when replacing.
  * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.
+ * @returns {type} The replaced selection.
  */
 function selectionReplace(html, selection) {
     var result = [];
@@ -174,6 +188,8 @@ function selectionSelectStart(element, selection) {
 }
 
 /**
+ * Gets the HTML from a selection. If no selection is supplied then current selection will be used.
+ *
  * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
  * @return {string} The html content of the selection.
  */
@@ -182,6 +198,13 @@ function selectionGetHtml(selection) {
     return selection.toHtml();
 }
 
+/**
+ * Gets the closest common ancestor container to the given or current selection that isn't a text node.
+ * @todo check please
+ *
+ * @param {RangySelection} range The selection to get the element from.
+ * @returns {jQuery} The common ancestor container that isn't a text node.
+ */
 function selectionGetElement(range) {
     var commonAncestor;
 
@@ -198,9 +221,10 @@ function selectionGetElement(range) {
 }
 
 /**
- * Gets all elements within and including the selection's common ancestor
+ * Gets all elements within and including the selection's common ancestor that contain a selection (excluding text nodes) and
  * returns them as a jQuery array.
  *
+ * @public @static
  * @param {RangySelection|null} A RangySelection, or by default, the current selection.
  */
 function selectionGetElements(selection) {
@@ -211,6 +235,11 @@ function selectionGetElements(selection) {
     return result;
 }
 
+/**
+ * Gets the start element of a selection.
+ * @todo check the type of the return...i guessed and i have a feeling i might be wrong.
+ * @returns {jQuery|Object} If the anchor node is a text node then the parent of the anchor node is returned, otherwise the anchor node is returned.
+ */
 function selectionGetStartElement() {
     var selection = rangy.getSelection();
     if (selection.anchorNode === null) {
@@ -223,6 +252,10 @@ function selectionGetStartElement() {
     return selection.anchorNode.nodeType === Node.TEXT_NODE ? $(selection.anchorNode.parentElement) : $(selection.anchorNode);
 }
 
+/**
+ * Gets the end element of the selection.
+ * @returns {jQuery|Object} If the focus node is a text node then the parent of the focus node is returned, otherwise the focus node is returned.
+ */
 function selectionGetEndElement() {
     var selection = rangy.getSelection();
     if (selection.anchorNode === null) {
@@ -234,6 +267,12 @@ function selectionGetEndElement() {
     return selection.focusNode.nodeType === Node.TEXT_NODE ? $(selection.focusNode.parentElement) : $(selection.focusNode);
 }
 
+/**
+ * Checks to see if the selection is at the end of the element.
+ * @todo check desc please
+ * @returns {Boolean} True if the node immediately after the selection ends does not exist or is empty,
+ *                      false if the whole nodes' text is not selected or it doesn't fit the criteria for the true clause.
+ */
 function selectionAtEndOfElement() {
     var selection = rangy.getSelection();
     var focusNode = selection.isBackwards() ? selection.anchorNode : selection.focusNode;
@@ -249,6 +288,12 @@ function selectionAtEndOfElement() {
     }
 }
 
+/**
+ * Checks to see if the selection is at the start of the element.
+ * @todo check desc please
+ * @returns {Boolean} True if the node immediately before the selection starts does not exist or is empty,
+ *                      false if the whole nodes' text is not selected or it doesn't fit the criteria for the true clause.
+ */
 function selectionAtStartOfElement() {
     var selection = rangy.getSelection();
     var anchorNode = selection.isBackwards() ? selection.focusNode : selection.anchorNode;
@@ -263,16 +308,24 @@ function selectionAtStartOfElement() {
     }
 }
 
+/**
+ * Checks to see if the selection is empty.
+ * @returns {Boolean} Returns true if the selection is empty.
+ */
 function selectionIsEmpty() {
     return rangy.getSelection().toHtml() === '';
 }
 
 /**
- * FIXME: this function needs reviewing
+ * FIXME: this function needs reviewing.
  *
  * This should toggle an inline style, and normalise any overlapping tags, or adjacent (ignoring white space) tags.
- *
+ * @todo apparently this needs fixing and i'm not sure what it returns.
  * @public @static
+ *
+ * @param {String} tag This is the tag to be toggled.
+ * @param {Array} options These are any additional properties to add to the element.
+ * @returns {selectionToggleWrapper}
  */
 function selectionToggleWrapper(tag, options) {
     options = options || {};
@@ -294,6 +347,13 @@ function selectionToggleWrapper(tag, options) {
     }, null, this);
 }
 
+/**
+ * @todo method description and check types
+ *
+ * @param {String} tag The tag for the selection to be wrapped in.
+ * @param {String} attributes The attributes to be added to the selection.
+ * @param {String} classes The classes to be added to the selection
+ */
 function selectionWrapTagWithAttribute(tag, attributes, classes) {
     selectionEachRange(function(range) {
         var element = selectionGetElement(range);
@@ -314,7 +374,8 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
  *
  * @see rangeIsEmpty
  * @public @static
- * @param {RangySelection} [selection] A RangySelection, or by default, the current selection.
+ * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
+ * @returns {Boolean} Returns true if there is at least one range selected and the range is not empty.
  */
 function selectionExists(sel) {
     var exists = false;
@@ -324,6 +385,74 @@ function selectionExists(sel) {
         }
     }, sel, this);
     return exists;
+}
+
+/**
+ * Split the selection container and insert the given html between the two elements created.
+ * @param  {jQuery|Element|string} html The html to replace selection with.
+ * @param  {RangySelection|null} selection The selection to replace, or null for the current selection.
+ * @returns {Object} The selection container with it's new content added.
+ */
+function selectionReplaceSplittingSelectedElement(html, selection) {
+    selection = selection || rangy.getSelection();
+
+    var selectionRange = selection.getRangeAt(0);
+    var selectedElement = selectionGetElements()[0];
+
+    // Select from start of selected element to start of selection
+    var startRange = rangy.createRange();
+    startRange.setStartBefore(selectedElement);
+    startRange.setEnd(selectionRange.startContainer, selectionRange.startOffset);
+    var startFragment = startRange.cloneContents();
+
+    // Select from end of selected element to end of selection
+    var endRange = rangy.createRange();
+    endRange.setStart(selectionRange.endContainer, selectionRange.endOffset);
+    endRange.setEndAfter(selectedElement);
+    var endFragment = endRange.cloneContents();
+
+    // Replace the start element's html with the content that was not selected, append html & end element's html
+    var replacement = elementOuterHtml($(fragmentToHtml(startFragment)));
+    replacement += elementOuterHtml($(html).attr('data-replacement', true));
+    replacement += elementOuterHtml($(fragmentToHtml(endFragment)));
+
+    replacement = $(replacement);
+
+    $(selectedElement).replaceWith(replacement);
+    return replacement.parent().find('[data-replacement]').removeAttr('data-replacement');
+}
+
+/**
+ * Replace current selection with given html, ensuring that selection container is split at
+ * the start & end of the selection in cases where the selection starts / ends within an invalid element.
+ *
+ * @param  {jQuery|Element|string} html The html to replace current selection with.
+ * @param  {Array} validTagNames An array of tag names for tags that the given html may be inserted into without having the selection container split.
+ * @param  {RangySeleciton|null} selection The selection to replace, or null for the current selection.
+ * @returns {Object} The replaced selection if everything is valid or the selection container with it's new content added.
+ */
+function selectionReplaceWithinValidTags(html, validTagNames, selection) {
+    selection = selection || rangy.getSelection();
+
+    if (selection.rangeCount === 0) {
+        return;
+    }
+
+    var startElement = selectionGetStartElement()[0];
+    var endElement = selectionGetEndElement()[0];
+    var selectedElement = selectionGetElements()[0];
+
+    var selectedElementValid = elementIsValid(selectedElement, validTagNames);
+    var startElementValid = elementIsValid(startElement, validTagNames);
+    var endElementValid = elementIsValid(endElement, validTagNames);
+
+    // The html may be inserted within the selected element & selection start / end.
+    if (selectedElementValid && startElementValid && endElementValid) {
+        return selectionReplace(html);
+    }
+
+    // Context is invalid. Split containing element and insert list in between.
+    return selectionReplaceSplittingSelectedElement(html, selection);
 }
 
 /**
@@ -356,6 +485,14 @@ function selectionToggleBlockStyle(styles, limit) {
     }, null, this);
 }
 
+/**
+ * Iterates throught each block in the selection and calls the callback function.
+ *
+ * @todo revise blockContainer parameter!
+ * @param {function} callback The function to be called on each block in the selection.
+ * @param {jQuery} limitElement The element to stop searching for block elements at.
+ * @param {undefined|Sring} blockContainer Thia parameter is unused for some reason.
+ */
 function selectionEachBlock(callback, limitElement, blockContainer) {
     // <strict>
     if (!$.isFunction(callback)) {
@@ -400,12 +537,11 @@ function selectionEachBlock(callback, limitElement, blockContainer) {
  * If any block in the selected text has not got the class applied to it, then
  * the class will be applied to all blocks.
  *
- *
- * @param {string[]} addClasses
- * @param {string[]} removeClasses
- * @param {type} limitElement
- * @param {type} blockContainer
- * @returns {undefined}
+ * @todo revise blockContainer parameter!
+ * @param {string[]} addClasses This is a set of classes to be added.
+ * @param {string[]} removeClasses This is a set of classes to be removed.
+ * @param {jQuery} limitElement The element to stop searching for block elements at.
+ * @param {undefined|String} blockContainer Thia parameter is unused for some reason.
  */
 function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, blockContainer) {
     // <strict>
@@ -454,8 +590,8 @@ function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, bl
  * supplied element.
  *
  * @public @static
- * @param {jQuerySelector|jQuery|Element} element
- * @param {RangySelection} [selection]
+ * @param {jQuerySelector|jQuery|Element} element The element to exclude the removal of ranges.
+ * @param {RangySelection} [selection] The selection from which to remove the ranges.
  */
 function selectionConstrain(element, selection) {
     element = $(element)[0];
@@ -479,6 +615,23 @@ function selectionConstrain(element, selection) {
     });
 }
 
+function rangeClearFormatting(range, limitNode) {
+    // <strict>
+    if (!typeIsElement(limitNode)) {
+        handleError('Parameter 1 to rangeClearFormatting must be a jQuery element');
+        return;
+    }
+    // </strict>
+
+    // Expand empty range
+}
+
+/**
+ * Clears the formatting on a supplied selection.
+ *
+ * @param {Node} limitNode The containing element.
+ * @param {RangySelection} [selection] The selection to have it's formatting cleared.
+ */
 function selectionClearFormatting(limitNode, selection) {
     limitNode = limitNode || document.body;
     selection = selection || rangy.getSelection();
@@ -526,6 +679,15 @@ function selectionClearFormatting(limitNode, selection) {
     }
 }
 
+/**
+ * Replaces specified tags and classes on a selection.
+ *
+ * @todo check descriptions and types please
+ * @param {String} tag1 This is the tag to appear on the selection at the end of the method.
+ * @param {jQuery} class1 This is the class to appear on the selection at the end of the method.
+ * @param {String} tag2 This is the current tag on the selection, which is to be replaced.
+ * @param {jQuery} class2 This is the current class on the selection, which is to be replaced.
+ */
 function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
     selectionSave();
     // Assign a temporary tag name (to fool rangy)
@@ -548,7 +710,7 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
         }
     }, null, this);
 
-    // Replace the temparay tag with the correct tag
+    // Replace the temporay tag with the correct tag
     $(id).each(function() {
         $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
     });
@@ -556,6 +718,9 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
     selectionRestore();
 }
 
+/**
+ * Expands the user selection to encase a whole word.
+ */
 function selectionExpandToWord() {
     var ranges = rangy.getSelection().getAllRanges();
     if (ranges.length === 1) {
@@ -565,6 +730,13 @@ function selectionExpandToWord() {
     }
 }
 
+/**
+ * Finds the inner elements and the wrapping tags for a selector??
+ * @todo check descriptions, not sure what the one for the result is.
+ * @param {string} selector A string containing a selector expression to match the current set of elements against.
+ * @param {jQuery} limitElement The element to stop searching at.
+ * @returns {jQuery}
+ */
 function selectionFindWrappingAndInnerElements(selector, limitElement) {
     var result = new jQuery();
     selectionEachRange(function(range) {
@@ -603,6 +775,13 @@ function selectionFindWrappingAndInnerElements(selector, limitElement) {
     return result;
 }
 
+/**
+ * Changes the tags on a selection.
+ *
+ * @param {String} changeTo The tag to be changed to.
+ * @param {String} changeFrom The tag to be changed from.
+ * @param {jQuery} limitElement The element to stop changing the tags at.
+ */
 function selectionChangeTags(changeTo, changeFrom, limitElement) {
     selectionSave();
     var elements = selectionFindWrappingAndInnerElements(changeFrom.join(','), limitElement);
@@ -615,7 +794,13 @@ function selectionChangeTags(changeTo, changeFrom, limitElement) {
     selectionRestore();
 }
 
-
+/**
+ * Checks that the selecton only contains valid children.
+ *
+ * @param {String} selector A string containing a selector expression to match the current set of elements against.
+ * @param {jQuery} limit The element to stop changing the tags at.
+ * @returns {Boolean} True if the selection contains valid children.
+ */
 function selectionContains(selector, limit) {
     var result = true;
     selectionEachRange(function(range) {

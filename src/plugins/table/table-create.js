@@ -8,9 +8,9 @@ TableMenu.prototype = Object.create(Menu.prototype);
 
 TableMenu.prototype.createTable = function(event) {
     this.raptor.actionApply(function() {
-        selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
+        selectionReplace(elementOuterHtml($(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
-        }));
+        }))));
     });
 };
 
@@ -29,9 +29,9 @@ TableMenu.prototype.highlight = function(event) {
 
     // Preview create
     this.raptor.actionPreview(function() {
-        selectionReplace(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
+        selectionReplace(elementOuterHtml($(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
-        }));
+        }))));
     });
 };
 
