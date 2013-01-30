@@ -149,3 +149,7 @@ body {
 .error-output {
     font-weight: bold;
 }
+
+blockquote {
+    outline: 1px dotted;
+}
