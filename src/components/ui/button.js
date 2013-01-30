@@ -1,3 +1,14 @@
+/**
+ * @fileOverview Contains the core button class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The core button class.
+ * @param {Object} overrides Options hash.
+ */
 function Button(overrides) {
     this.preview = true;
     this.text = false;
@@ -8,10 +19,20 @@ function Button(overrides) {
     }
 }
 
+/**
+ * Initialize the button.
+ *
+ * @return {Element}
+ */
 Button.prototype.init = function() {
     return this.getButton();
 };
 
+/**
+ * Prepare and return the button Element to be used in the Raptor UI.
+ *
+ * @return {Element}
+ */
 Button.prototype.getButton = function() {
     if (!this.button) {
         this.button = $('<div>')
@@ -30,10 +51,18 @@ Button.prototype.getButton = function() {
     return this.button;
 };
 
+/**
+ * @return {String} The button's title property value, or if not present then the
+ *                      localized value for the button's name + Title.
+ */
 Button.prototype.getTitle = function() {
     return this.title || _(this.name + 'Title');
 };
 
+/**
+ * @return {String} The button's icon property value, or the ui-icon- prefix
+ *                      with the button's camel cased name appended.
+ */
 Button.prototype.getIcon = function() {
     if (this.icon === null) {
         return 'ui-icon-' + stringCamelCaseConvert(this.name);
@@ -41,7 +70,11 @@ Button.prototype.getIcon = function() {
     return this.icon;
 };
 
-// FIXME: this probably should not nest actions
+/**
+ * Perform the button's action.
+ *
+ * @todo this probably should not nest actions
+ */
 Button.prototype.click = function() {
     this.raptor.actionApply(this.action.bind(this));
 };
