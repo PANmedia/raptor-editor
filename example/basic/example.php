@@ -56,17 +56,8 @@
 </head>
 <body>
     <?php include __DIR__ . '/../include/nav.php'; ?>
-    <header class="editable" data-id="header">
-        <?php ob_start(); ?>
+    <header>
         <h1>Raptor Editor - Basic Example</h1>
-        <?php
-            $buffer = ob_get_clean();
-            if (isset($content['header'])) {
-                echo $content['header'];
-            } else {
-                echo $buffer;
-            }
-        ?>
     </header>
     <div style="clear: both"></div>
     <div class="editable" data-id="body-1">
@@ -91,7 +82,9 @@
             <span class="cms-blue">This text is blue.</span>
             <span class="cms-red">This text is red.</span>
             <span class="cms-green">This text is green.</span>
-            <a href=".">This is a link.</a>
+            <a href=".">This is an internal link.</a>
+            <a href="http://www.raptor-editor.com" target="_blank">This is an external link.</a>
+            <a href="mailto:info@raptor-editor.com?Subject=Example">This is an email link.</a>
             <strong class="cms-bold">This text is bold.</strong>
             <em class="cms-italic">This text is italic.</em>
         </p>

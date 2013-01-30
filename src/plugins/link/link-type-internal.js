@@ -24,3 +24,19 @@ LinkTypeInternal.prototype.getAttributes = function(panel) {
 
     return result;
 };
+
+LinkTypeInternal.prototype.updateInputs = function(link, panel) {
+    var href = link.attr('href');
+    if (href.indexOf('http://') === -1 &&
+            href.indexOf('mailto:') === -1) {
+        panel.find('[name=location]').val(href);
+    } else {
+        panel.find('[name=location]').val('');
+    }
+    if (link.attr('target') === '_blank') {
+        panel.find('[name=blank]').prop('checked', true);
+    } else {
+        panel.find('[name=blank]').prop('checked', false);
+    }
+    return false;
+};

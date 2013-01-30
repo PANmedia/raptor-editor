@@ -25,3 +25,20 @@ LinkTypeExternal.prototype.getAttributes = function(panel) {
 
     return result;
 };
+
+LinkTypeExternal.prototype.updateInputs = function(link, panel) {
+    var result = false,
+        href = link.attr('href');
+    if (href.indexOf('http://') === 0) {
+        panel.find('[name=location]').val(href);
+        result = true;
+    } else {
+        panel.find('[name=location]').val('http://');
+    }
+    if (link.attr('target') === '_blank') {
+        panel.find('[name=blank]').prop('checked', true);
+    } else {
+        panel.find('[name=blank]').prop('checked', false);
+    }
+    return result;
+};
