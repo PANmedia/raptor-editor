@@ -250,19 +250,28 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
     var replacementPlaceholderId = elementUniqueId();
 
     rangeExpandToParent(range);
-    rangeReplaceWithinValidTags(range, $('<p/>').attr('id', replacementPlaceholderId), wrapper, $.grep(listValidPParents, function(item) { return item !== 'li'; }));
+    var breakOutValidityList = $.grep(listValidPParents, function(item) {
+        return item !== 'li';
+    });
+    rangeReplaceWithinValidTags(range, $('<p/>').attr('id', replacementPlaceholderId), wrapper, breakOutValidityList);
 
     var replacementPlaceholder = $('#' + replacementPlaceholderId);
 
     listTidyModified(replacementPlaceholder.prev(), listType, listItem);
     listTidyModified(replacementPlaceholder.next(), listType, listItem);
-    var toUnwrap = $(startElement);
-    if (startElement === endElement) {
-        toUnwrap.add($(startElement).nextUntil(endElement))
-                        .add(endElement);
+
+    var toUnwrap = [startElement];
+    if (startElement !== endElement) {
+        $(startElement).nextUntil(endElement).each(function() {
+            if (this === endElement) {
+                return;
+            }
+            toUnwrap.push(this);
+        });
+        toUnwrap.push(endElement);
     }
-    toUnwrap.get()
-        .reverse();
+
+    toUnwrap.reverse();
 
     $(toUnwrap).each(function() {
         replacementPlaceholder.after(this);
