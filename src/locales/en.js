@@ -116,6 +116,7 @@ registerLocale('en', 'English', {
     cancelDialogTitle: 'Cancel Editing',
     cancelTitle: 'Cancel editing',
 
+    classMenuTitle: 'Style picker',
     clearFormattingTitle: 'Clear formatting',
     clickButtonToEditPluginButton: 'Click to begin editing',
 
@@ -225,6 +226,8 @@ registerLocale('en', 'English', {
     saveRestPartial: 'Saved {{saved}} out of {{failed}} content blocks.',
     saveRestSaved: 'Successfully saved {{saved}} content block(s).',
 
+    snippetMenuTitle: 'Snippets',
+
     specialCharactersDialogOKButton: 'OK',
     specialCharactersDialogTitle: 'Insert Special Characters',
     specialCharactersHelp: 'Click a special character to add it. Click "OK" when done to close this dialog',
@@ -250,6 +253,8 @@ registerLocale('en', 'English', {
     tableDeleteRowTitle: 'Delete table row',
     tableInsertColumnTitle: 'Insert table column',
     tableInsertRowTitle: 'Insert table row',
+    tableMergeCellsTitle: 'Merge table cells',
+    tableSplitCellsTitle: 'Split table cells',
 
     tagMenuTagH1: 'Heading&nbsp;1',
     tagMenuTagH2: 'Heading&nbsp;2',
@@ -274,6 +279,8 @@ registerLocale('en', 'English', {
     textSubTitle: 'Sub-script',
     textSuperTitle: 'Super-script',
     textUnderlineTitle: 'Underline',
+    textSizeDecreaseTitle: 'Decrease text size',
+    textSizeIncreaseTitle: 'Increase text size',
 
     unsavedEditWarningText: 'There are unsaved changes on this page',
 
