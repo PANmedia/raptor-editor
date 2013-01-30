@@ -16,7 +16,8 @@ function listToggle(listType, listItem, wrapper) {
     // Check whether selection is fully contained by a ul/ol. If so, unwrap
     // parent ul/ol
     var selectedElements = $(selectionGetElements());
-    if (selectedElements.is(listItem) || selectedElements.is(listType)) {
+    if (selectedElements.is(listType) ||
+        (selectedElements.is(listItem) && selectedElements.parent().is(listType))) {
         return listUnwrapSelection(listType, listItem, wrapper);
     }
 
@@ -141,11 +142,8 @@ function listConvertListItem(listItem, listType, tag, validTagChildren) {
             if ($(this).text().trim() === '') {
                 return $(this).remove();
             }
-            if (typeIsTextNode(this)) {
+            if (typeIsTextNode(this) || !elementIsBlock(this)) {
                 return $(this).wrap('<' + tag + '>');
-            }
-            if (!elementIsBlock(this)) {
-                return elementChangeTag($(this), tag);
             }
         });
         return listItem.contents().unwrap();
