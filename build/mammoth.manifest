@@ -48,6 +48,8 @@ src/components/ui/preview-toggle-button.js
 src/components/ui/toggle-button.js
 src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
+src/components/ui/dialog-button.js
+src/components/ui/dialog-toggle-button.js
 src/components/ui/menu.js
 src/components/ui/menu-button.js
 src/components/ui/select-menu.js
@@ -99,7 +101,7 @@ src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
 src/plugins/text-align/right.js
-src/plugins/text-style/block-quote.js
+// src/plugins/text-style/block-quote.js
 src/plugins/text-style/bold.js
 src/plugins/text-style/italic.js
 src/plugins/text-style/size-decrease.js
@@ -108,6 +110,7 @@ src/plugins/text-style/strike.js
 src/plugins/text-style/sub.js
 src/plugins/text-style/super.js
 src/plugins/text-style/underline.js
+src/plugins/tool-tip/tool-tip.js
 src/plugins/unsaved-edit-warning/unsaved-edit-warning.js
 src/plugins/view-source/view-source.js
 
