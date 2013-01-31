@@ -119,6 +119,8 @@ registerLocale('en', 'English', {
 
     logoTitle: 'Learn More About the Raptor WYSIWYG Editor',
 
+    navigateAway: '\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes',
+
     pasteDialogTitle: 'Paste',
     pasteDialogOKButton: 'Insert',
     pasteDialogCancelButton: 'Cancel',

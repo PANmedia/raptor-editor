@@ -123,7 +123,7 @@ var Raptor = /** @lends $.ui.raptor */ {
             if (instances[i].isDirty() &&
                     instances[i].isEditing() &&
                     instances[i].options.unloadWarning) {
-                return _('\nThere are unsaved changes on this page. \nIf you navigate away from this page you will lose your unsaved changes');
+                return _('navigateAway');
             }
         }
     },
