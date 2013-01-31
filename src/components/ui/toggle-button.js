@@ -1,3 +1,18 @@
+/**
+ * @fileOverview Contains the core button class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The toggle button class.
+ * @constructor
+ * @augments button
+ *
+ * @param {Object} options
+ * @returns {ToggleButton}
+ */
 function ToggleButton(options) {
     this.disable = false;
     Button.call(this, options);
@@ -5,11 +20,19 @@ function ToggleButton(options) {
 
 ToggleButton.prototype = Object.create(Button.prototype);
 
+/**
+ * Initialize the toggle button.
+ *
+ * @returns {Element}
+ */
 ToggleButton.prototype.init = function() {
     this.raptor.bind('selectionChange', this.selectionChange.bind(this));
     return Button.prototype.init.apply(this, arguments);
 };
 
+/**
+ * @todo all
+ */
 ToggleButton.prototype.selectionChange = function() {
     if (this.selectionToggle()) {
         aButtonActive(this.button);

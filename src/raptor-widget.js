@@ -9,12 +9,12 @@
  */
 
 /**
- * @lends $.editor.prototype
+ * @class
  */
 var RaptorWidget = {
 
     /**
-     * Constructor
+     * @constructs RaptorWidget
      */
     _init: function() {
         // Prevent double initialisation
@@ -145,6 +145,7 @@ var RaptorWidget = {
 
     /**
      * Attaches the editors internal events.
+     * @fires RaptorWidget#resize
      */
     attach: function() {
         this.bind('change', this.historyPush);

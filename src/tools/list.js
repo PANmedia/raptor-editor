@@ -5,15 +5,14 @@
  */
 
 /**
- * Checks whether the selection is fully enclosed by ul or ol tags, if it is then
- * unwrap the parent ul/ol.
+ * Determines the appropriate list toggling action then performs it.
  *
  * @param {String} listType This is the type of list to check the selection against.
  * @param {Object} listItem This is the list item to use as the selection.
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
-    if (listShouldConvertType(listType, listItem)) {
+    if (listShouldConvertType(listType, listItem, wrapper)) {
         return listConvertListType(listType, listItem, wrapper);
     }
     if (listShouldUnwrap(listType, listItem)) {
@@ -38,7 +37,6 @@ function listShouldUnwrap(listType, listItem) {
     if (selectedElements.parentsUntil(listType, listItem).length) {
         return true;
     }
-
     return false;
 }
 
@@ -47,12 +45,18 @@ function listShouldUnwrap(listType, listItem) {
  * @param  {String} listItem
  * @return {Boolean}
  */
-function listShouldConvertType(listType, listItem) {
+function listShouldConvertType(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
-    if (rangeIsEmpty(range)) {
-        rangeExpandTo(range, [listItem]);
-    }
     var commonAncestor = $(rangeGetCommonAncestor(range));
+    if (rangeIsEmpty(range)) {
+        var closestListItem = commonAncestor.closest(listItem, wrapper);
+        if (closestListItem.length) {
+            rangeExpandTo(range, [closestListItem]);
+        } else {
+            rangeExpandToParent(range);
+        }
+    }
+    commonAncestor = $(rangeGetCommonAncestor(range));
     if ($(commonAncestor).is(listItem) && !$(commonAncestor).parent().is(listType)) {
         return true;
     }
@@ -110,16 +114,28 @@ function listEnforceValidChildren(list, listItem, validChildren) {
         handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
-    list.find(listItem).each(function() {
-        if (!$(this).html().trim()) {
-            $(this).remove();
-            return;
+    var removeEmpty = function(node) {
+        if (!$(node).text().trim()) {
+            $(node).remove();
+            return true;
         }
-        $(this).find(' *').each(function() {
-            if (!typeIsTextNode(this)) {
-                if (!elementIsValid(this, listValidLiChildren)) {
-                    elementChangeTag($(this), 'p');
-                }
+    };
+
+    list.find(listItem).each(function() {
+        if (removeEmpty(this)) {
+            return true;
+        }
+        $(this).contents().each(function() {
+            if (removeEmpty(this)) {
+                return true;
+            }
+            if (typeIsTextNode(this)) {
+                $(this).wrap('<p/>');
+                return true;
+            }
+            if (!elementIsValid(this, listValidLiChildren)) {
+                elementChangeTag($(this), 'p');
+                return true;
             }
         });
     });

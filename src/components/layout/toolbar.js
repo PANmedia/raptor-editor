@@ -1,4 +1,4 @@
-Raptor.registerLayout('toolbar', {
+Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
     options: {
         /**
          * Each element of the uiOrder should be an array of UI which will be grouped.
@@ -6,6 +6,10 @@ Raptor.registerLayout('toolbar', {
         uiOrder: null
     },
 
+    /**
+     * Inititialise the toolbar layout.
+     * @constructs
+     */
     init: function() {
         // Load all UI components if not supplied
         if (!this.options.uiOrder) {
@@ -157,6 +161,11 @@ Raptor.registerLayout('toolbar', {
         });
     },
 
+    /**
+     * Show the toolbar.
+     *
+     * @fires RaptorWidget#layoutShow
+     */
     show: function() {
         this.wrapper.css('display', '');
         this.raptor.fire('layoutShow');

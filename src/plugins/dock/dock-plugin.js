@@ -1,4 +1,8 @@
-
+/**
+ * @class
+ * @param {String} name
+ * @param {Object} overrides
+ */
 function DockPlugin(name, overrides) {
     this.options = {
         dockToElement: false,

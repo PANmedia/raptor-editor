@@ -7,6 +7,7 @@
 
 /**
  * @class The core button class.
+ * 
  * @param {Object} overrides Options hash.
  */
 function Button(overrides) {

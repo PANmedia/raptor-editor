@@ -1,4 +1,7 @@
-var Raptor = /** @lends $.ui.raptor */ {
+/**
+ * @class
+ */
+var Raptor =  {
 
     /** @type {Boolean} True to enable hotkeys */
     enableHotkeys: true,
