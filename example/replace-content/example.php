@@ -1,81 +1,56 @@
 <?php
-    $file = __DIR__ . '/content.json';
-    $content = [];
-    if (file_exists(__DIR__ . '/content.json')) {
-        $content = file_get_contents($file);
-        $content = json_decode($content, true);
-        if ($content === false) {
-            $content = [];
-        }
-    }
-
-    $type = isset($_GET['type']) ? $_GET['type'] : 'include';
+    include __DIR__ . '/../include/content.php';
+    $content = loadContent(__DIR__ . '/content.json');
 ?>
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>Raptor Editor - Basic Example</title>
-    <link rel="stylesheet" href="../assets/style.css" />
-    <?php if ($type === 'light'): ?>
-        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
-        <link rel="stylesheet" href="../../src/theme/theme.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.light.min.js"></script>
-    <?php elseif ($type === 'rails'): ?>
-        <link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/redmond/jquery-ui.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.rails.js"></script>
-    <?php elseif ($type === 'include'): ?>
-        <?php $uri = '../../src/'; include '../../src/include.php'; ?>
-    <?php endif; ?>
+    <?php include __DIR__ . '/../include/head.php'; ?>
+    <title>Raptor Editor - Replace Content Example</title>
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
                 urlPrefix: '../../src/',
+                plugins: {
+                    dock: {
+                        docked: true,
+                        under: '.switcher'
+                    },
+                    classMenu: {
+                        classes: {
+                            'Blue background': 'cms-blue-bg',
+                            'Round corners': 'cms-round-corners',
+                            'Indent and center': 'cms-indent-center'
+                        }
+                    },
+                    snippetMenu: {
+                        snippets: {
+                            'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
+                        }
+                    }
+                },
                 bind: {
                     enabling: function() {
                         var element = this.getElement();
-                        element.html(element.data('replacement'));
+                        element.html(atob(element.data('replacement')));
                     }
                 }
             });
         });
     </script>
-    <style type="text/css">
-        div.editable {
-            float: left;
-            width: 45%;
-            margin: 0 1%;
-        }
-    </style>
 </head>
 <body>
-    <nav>
-        <a href="?">Include</a>
-        <a href="?type=default">Default</a>
-        <a href="?type=light">Light</a>
-        <a href="?type=rails">Rails</a>
-        <a href="?type=0deps">0 dependencies</a>
-        <a href="?type=0depsnc">0 dependencies, no conflict</a>
-    </nav>
-    <div class="editable" data-id="body-1" data-replacement="This content will replace the original">
-        <?php ob_start(); ?>
-        <h1>This is the original content</h1>
-        <p>This is the original content</p>
-        <p>This is the original content</p>
-        <p>This is the original content</p>
-        <p>This is the original content</p>
+    <?php include __DIR__ . '/../include/nav.php'; ?>
+    <?php
+        $original = '
+            <h1>Welcome to the (fake) login area!</h1>
+            <p>Hello ${first-name} ${last-name}, how are you today?</p>
+        ';
+    ?>
+    <div class="editable half center" data-id="body-1" data-replacement="<?= base64_encode($original) ?>">
         <?php
-            $buffer = ob_get_clean();
-            if (isset($content['body-1'])) {
-                echo $content['body-1'];
-            } else {
-                echo $buffer;
-            }
+            $buffer = str_replace(['${first-name}', '${last-name}'], ['Raptor', 'Editor'], $original);
+            echo renderContent($buffer, $content, 'body-1');
         ?>
     </div>
 

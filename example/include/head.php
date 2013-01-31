@@ -3,7 +3,7 @@
 ?>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<link rel="stylesheet" href="../assets/style.css" />
+<link rel="stylesheet" href="../include/style.css" />
 <?php if ($type === 'light'): ?>
     <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
     <link rel="stylesheet" href="../../src/theme/theme.css" />
