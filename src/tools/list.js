@@ -114,16 +114,28 @@ function listEnforceValidChildren(list, listItem, validChildren) {
         handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
-    list.find(listItem).each(function() {
-        if (!$(this).html().trim()) {
-            $(this).remove();
-            return;
+    var removeEmpty = function(node) {
+        if (!$(node).text().trim()) {
+            $(node).remove();
+            return true;
         }
-        $(this).find(' *').each(function() {
-            if (!typeIsTextNode(this)) {
-                if (!elementIsValid(this, listValidLiChildren)) {
-                    elementChangeTag($(this), 'p');
-                }
+    };
+
+    list.find(listItem).each(function() {
+        if (removeEmpty(this)) {
+            return true;
+        }
+        $(this).contents().each(function() {
+            if (removeEmpty(this)) {
+                return true;
+            }
+            if (typeIsTextNode(this)) {
+                $(this).wrap('<p/>');
+                return true;
+            }
+            if (!elementIsValid(this, listValidLiChildren)) {
+                elementChangeTag($(this), 'p');
+                return true;
             }
         });
     });
