@@ -125,3 +125,9 @@
  * @name $.editor.plugin
  * @namespace Namespace beneath which all plugins reside
  */
+
+/**
+ * @name RaptorWidget#layoutReady
+ * @field
+ * @event
+ */
