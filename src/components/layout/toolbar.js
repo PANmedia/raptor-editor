@@ -157,6 +157,9 @@ Raptor.registerLayout('toolbar', {
         });
     },
 
+    /**
+     * @fires RaptorWidget#layoutShow
+     */
     show: function() {
         this.wrapper.css('display', '');
         this.raptor.fire('layoutShow');
