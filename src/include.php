@@ -130,6 +130,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-insert-row.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-merge-cells.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
