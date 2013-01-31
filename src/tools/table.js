@@ -117,10 +117,20 @@ function tableGetCellIndex(cell) {
  *
  * @param {HTMLTableElement} table This is the table to get the cell from.
  * @param {int} index This is the index to find the cell.
- * @returns {HTMLTableCellElement} The cell at the specified index.
+ * @returns {HTMLTableCellElement|null} The cell at the specified index.
  */
 function tableGetCellByIndex(table, index) {
-    return table.rows[index.y].cells[index.x];
+    var rows = table.tBodies[0].rows;
+    for (var r = 0; r < rows.length; r++) {
+        for (var c = 0; c < rows[r].cells.length; c++) {
+            var currentIndex = tableGetCellIndex(rows[r].cells[c]);
+            if (currentIndex.x === index.x &&
+                    currentIndex.y === index.y) {
+                return rows[r].cells[c];
+            }
+        }
+    }
+    return null;
 }
 
 /**
@@ -140,10 +150,13 @@ function tableCellsInRange(table, startIndex, endIndex) {
         cells = [];
     while (y <= endY) {
         while (x <= endX) {
-            cells.push(tableGetCellByIndex(table, {
+            var cell = tableGetCellByIndex(table, {
                 x: x,
                 y: y
-            }));
+            });
+            if (cell !== null) {
+                cells.push(cell);
+            }
             x++;
         }
         x = startX;
