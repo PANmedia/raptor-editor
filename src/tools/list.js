@@ -12,7 +12,7 @@
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
-    if (listShouldConvertType(listType, listItem)) {
+    if (listShouldConvertType(listType, listItem, wrapper)) {
         return listConvertListType(listType, listItem, wrapper);
     }
     if (listShouldUnwrap(listType, listItem)) {
@@ -37,7 +37,6 @@ function listShouldUnwrap(listType, listItem) {
     if (selectedElements.parentsUntil(listType, listItem).length) {
         return true;
     }
-
     return false;
 }
 
@@ -46,12 +45,18 @@ function listShouldUnwrap(listType, listItem) {
  * @param  {String} listItem
  * @return {Boolean}
  */
-function listShouldConvertType(listType, listItem) {
+function listShouldConvertType(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
-    if (rangeIsEmpty(range)) {
-        rangeExpandTo(range, [listItem]);
-    }
     var commonAncestor = $(rangeGetCommonAncestor(range));
+    if (rangeIsEmpty(range)) {
+        var closestListItem = commonAncestor.closest(listItem, wrapper);
+        if (closestListItem.length) {
+            rangeExpandTo(range, [closestListItem]);
+        } else {
+            rangeExpandToParent(range);
+        }
+    }
+    commonAncestor = $(rangeGetCommonAncestor(range));
     if ($(commonAncestor).is(listItem) && !$(commonAncestor).parent().is(listType)) {
         return true;
     }
