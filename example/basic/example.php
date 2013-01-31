@@ -13,6 +13,7 @@
 <html>
 <head>
     <?php include __DIR__ . '/../include/head.php'; ?>
+    <title>Raptor Editor - Basic Example</title>
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
@@ -93,6 +94,13 @@
             Text above the image.
             <img src="../full-suite/images/orange.jpg" />
             Text below the image.
+        </p>
+        <p>
+            The image below is a link.
+            <a href="http://www.raptor-editor.com">
+                <img src="../full-suite/images/orange.jpg" />
+            </a>
+            The image above is a link.
         </p>
 
         <table>

@@ -97,6 +97,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/hr/hr-create.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/image-resize-button/image-resize-button.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-create.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-remove.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-email.js"></script>
@@ -128,6 +130,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-insert-row.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-merge-cells.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
@@ -139,7 +142,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/justify.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/bold.js"></script>
-<?php /* <script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script> */ ?>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/italic.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-decrease.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-increase.js"></script>

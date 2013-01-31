@@ -27,6 +27,7 @@ src/tools/dock.js
 src/tools/element.js
 src/tools/fragment.js
 src/tools/list.js
+src/tools/node.js
 src/tools/persist.js
 src/tools/range.js
 src/tools/selection.js
@@ -101,7 +102,7 @@ src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
 src/plugins/text-align/right.js
-// src/plugins/text-style/block-quote.js
+src/plugins/text-style/block-quote.js
 src/plugins/text-style/bold.js
 src/plugins/text-style/italic.js
 src/plugins/text-style/size-decrease.js

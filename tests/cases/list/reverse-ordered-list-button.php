@@ -32,9 +32,11 @@
                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
-                 </p><p>
+                 </p>
+                 <p>
                      {dui id erat pellentesque et rhoncus}
-                 </p><p> nunc semper. Suspendisse
+                 </p>
+                 <p> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -72,9 +74,11 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet,
-                </p><p>
+                </p>
+                <p>
                     {consectetur}
-                </p><p>
+                </p>
+                <p>
                     adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
@@ -174,15 +178,20 @@
             <div class="editible">
                 <p>
                     Lor
-                </p><p>
+                </p>
+                <p>
                     {em ipsum dolor sit amet, consectetur adipiscing elit.
-                </p><p>
+                </p>
+                <p>
                     Maecenas convallis dui id erat pellentesque et rhoncus nunc semper.
-                </p><p>
+                </p>
+                <p>
                     Suspendisse malesuada hendrerit velit nec tristique.
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at ligula venenatis rhonc}
-                </p><p>
+                </p>
+                <p>
                     us.
                 </p>
             </div>

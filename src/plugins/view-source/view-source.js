@@ -8,7 +8,7 @@ Raptor.registerUi(new DialogButton({
         var html = dialog.find('textarea').val();
         this.raptor.actionApply(function() {
             this.raptor.setHtml(html);
-        });
+        }.bind(this));
     },
     openDialog: function(dialog) {
         dialog.find('textarea').text(this.raptor.getHtml());

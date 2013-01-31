@@ -17,10 +17,16 @@ TagMenu.prototype.changeTag = function(tag) {
         return;
     }
 
+    var selectedElement = selectionGetElement(),
+        limitElement = selectedElement.closest('td');
+    if (limitElement.length === 0) {
+        limitElement = this.raptor.getElement();
+    }
+
     selectionChangeTags(tag, [
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p', 'div', 'pre', 'address'
-    ], this.raptor.getElement());
+    ], limitElement);
 };
 
 TagMenu.prototype.apply = function(event) {

@@ -615,17 +615,6 @@ function selectionConstrain(element, selection) {
     });
 }
 
-function rangeClearFormatting(range, limitNode) {
-    // <strict>
-    if (!typeIsElement(limitNode)) {
-        handleError('Parameter 1 to rangeClearFormatting must be a jQuery element');
-        return;
-    }
-    // </strict>
-
-    // Expand empty range
-}
-
 /**
  * Clears the formatting on a supplied selection.
  *
@@ -649,7 +638,12 @@ function selectionClearFormatting(limitNode, selection) {
             content = range.extractContents();
         }
 
-        content = $('<div/>').append(fragmentToHtml(content)).text();
+        content = $('<div/>').append(fragmentToHtml(content)).html().replace(/(<\/?.*?>)/gi, function(match) {
+            if (match.substring(0, 4) === '<img') {
+                return match;
+            }
+            return '';
+        });
 
         // Get the containing element
         var parent = range.commonAncestorContainer;
@@ -672,10 +666,14 @@ function selectionClearFormatting(limitNode, selection) {
 
             // Move the caret to the insertion point
             range.collapseAfter(parent);
-            range.insertNode(document.createTextNode(content));
-        } else {
-            range.insertNode(document.createTextNode(content));
         }
+        $($.parseHTML(content).reverse()).each(function() {
+            if ($(this).is('img')) {
+                range.insertNode($(this).removeAttr('width height class style').get(0));
+                return;
+            }
+            range.insertNode(this);
+        });
     }
 }
 

@@ -59,7 +59,6 @@ Menu.prototype.getButton = function() {
 Menu.prototype.setOptions = function() {
     this.options.title = _(this.name + 'Title');
     this.options.icon = 'ui-icon-' + this.name;
-    this.options.text = _(this.name + 'Text');
 };
 
 /**
