@@ -1,5 +1,5 @@
 /**
- * @fileOverview Contains the css class applier button class code.
+ * @fileOverview Contains the filtered preview button class code.
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
