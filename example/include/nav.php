@@ -1,3 +1,4 @@
+<div class="switcher-spacer"></div>
 <nav class="switcher">
     <a href="?">Include</a>
     <a href="?type=default">Default</a>
