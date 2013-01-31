@@ -5,8 +5,7 @@
  */
 
 /**
- * Checks whether the selection is fully enclosed by ul or ol tags, if it is then
- * unwrap the parent ul/ol.
+ * Determines the appropriate list toggling action then performs it.
  *
  * @param {String} listType This is the type of list to check the selection against.
  * @param {Object} listItem This is the list item to use as the selection.
