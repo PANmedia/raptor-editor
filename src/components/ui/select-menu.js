@@ -1,5 +1,5 @@
 /**
- * @fileOverview Contains the menu class code.
+ * @fileOverview Contains the select menu class code.
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
