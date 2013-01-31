@@ -42,7 +42,7 @@
  */
 
 /**
- * jQuery UI Editor
+ * Raptor Editor
  * @name Raptor
  * @namespace jQuery UI Editor
  */
@@ -126,8 +126,14 @@
  * @namespace Namespace beneath which all plugins reside
  */
 
+/** EVENTS */
+
 /**
  * @name RaptorWidget#layoutReady
- * @field
+ * @event
+ */
+
+/**
+ * @name RaptorWidget#layoutShow
  * @event
  */
