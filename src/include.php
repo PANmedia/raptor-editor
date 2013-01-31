@@ -97,6 +97,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/hr/hr-create.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/image-resize-button/image-resize-button.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-create.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-remove.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-email.js"></script>
