@@ -64,6 +64,9 @@ var RaptorWidget = {
         // True if editing is enabled
         this.enabled = false;
 
+        // True if editing is enabled at least once
+        this.initialised = false
+
         // True if the layout has been loaded and displayed
         this.visible = false;
 
@@ -380,14 +383,13 @@ var RaptorWidget = {
                         rangy.getSelection().setSingleRange(ranges[i]);
                         selectionConstrain(this.target);
                         actionApply(action, this.history);
-                        this.checkChange();
                     }
                 }.bind(this), this.history);
             } else {
                 selectionConstrain(this.target);
                 actionApply(action, this.history);
-                this.checkChange();
             }
+            this.checkChange();
         } catch (exception) {
             this.stateRestore(state);
             handleError(exception);
@@ -447,28 +449,31 @@ var RaptorWidget = {
         if (!this.enabled) {
             this.fire('enabling');
             this.enabled = true;
-            this.getElement().addClass(this.options.baseClass + '-editing');
 
+            this.getElement().addClass(this.options.baseClass + '-editing');
             if (this.options.partialEdit) {
                 this.getElement().find(this.options.partialEdit).attr('contenteditable', true);
             } else {
                 this.getElement().attr('contenteditable', true);
             }
 
-            try {
-                document.execCommand('enableInlineTableEditing', false, false);
-                document.execCommand('styleWithCSS', true, true);
-            } catch (error) {
-                // <strict>
-                handleError(error);
-                // </strict>
-            }
+            if (!this.initialised) {
+                this.initialised = true;
+                try {
+                    document.execCommand('enableInlineTableEditing', false, false);
+                    document.execCommand('styleWithCSS', true, true);
+                } catch (error) {
+                    // <strict>
+                    handleError(error);
+                    // </strict>
+                }
 
-            for (var name in this.plugins) {
-                this.plugins[name].enable();
-            }
+                for (var name in this.plugins) {
+                    this.plugins[name].enable();
+                }
 
-            this.bindHotkeys();
+                this.bindHotkeys();
+            }
 
             this.fire('enabled');
             this.fire('resize');
@@ -499,6 +504,7 @@ var RaptorWidget = {
         this.resetHtml();
         this.hideLayout();
         this.disableEditing();
+        this.dirty = false;
         selectionDestroy();
     },
 
@@ -761,7 +767,7 @@ var RaptorWidget = {
             // Mark the persent as the end of the history
             this.present = this.history.length - 1;
 
-            this.fire('historychange');
+            this.fire('historyChange');
         }
     },
 
@@ -783,7 +789,7 @@ var RaptorWidget = {
             this.historyEnabled = false;
             this.change();
             this.historyEnabled = true;
-            this.fire('historychange');
+            this.fire('historyChange');
         }
     },
 
@@ -797,7 +803,7 @@ var RaptorWidget = {
             this.historyEnabled = false;
             this.change();
             this.historyEnabled = true;
-            this.fire('historychange');
+            this.fire('historyChange');
         }
     },
 
@@ -809,49 +815,30 @@ var RaptorWidget = {
      * @param {Array|String} mixed The hotkey name or an array of hotkeys
      * @param {Object} The hotkey object or null
      */
-    registerHotkey: function(mixed, actionData, context) {
-        // Allow array objects, and single plugins
-        if (typeof(mixed) === 'string') {
-
-            // <strict>
-            if (this.hotkeys[mixed]) {
-                handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {hotkey: mixed}));
-            }
-            // </strict>
-
-            this.hotkeys[mixed] = $.extend({}, {
-                context: context,
-                restoreSelection: true
-            }, actionData);
-
-        } else {
-            for (var name in mixed) {
-                this.registerHotkey(name, mixed[name], context);
-            }
+    registerHotkey: function(mixed, action) {
+        // <strict>
+        if (!typeIsString(mixed)) {
+            handleInvalidArgumentError('Expected argument 1 to raptor.registerHotkey to be a string');
+            return;
         }
+        if (this.hotkeys[mixed]) {
+            handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {
+                hotkey: mixed
+            }));
+        }
+        // </strict>
+
+        this.hotkeys[mixed] = action;
     },
 
     bindHotkeys: function() {
         for (var keyCombination in this.hotkeys) {
-            var editor = this,
-                force = this.hotkeys[keyCombination].force || false;
-
-            if (!this.options.enableHotkeys && !force) {
-                continue;
-            }
-
             this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
-                selectionSave();
-                var object = editor.hotkeys[event.data];
-                // Returning true from action will allow event bubbling
-                if (object.action.call(object.context) !== true) {
+                if (this.isEditing()) {
+                    this.hotkeys[event.data]();
                     event.preventDefault();
                 }
-                if (object.restoreSelection) {
-                    selectionRestore();
-                }
-                editor.checkChange();
-            });
+            }.bind(this));
         }
     },
 
@@ -1085,7 +1072,6 @@ var RaptorWidget = {
             debug('Firing event: ' + name, this.getElement());
         }
         // </debug>
-
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
