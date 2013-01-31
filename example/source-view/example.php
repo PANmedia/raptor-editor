@@ -80,15 +80,21 @@
             <em class="cms-italic">This text is italic.</em>
         </p>
 
+        <ul>
+            <li>List item 1</li>
+            <li>List item 2</li>
+            <li>List item 3</li>
+        </ul>
+
         <p>
             Text above the image.
-            <img src="../full-suite/images/orange.jpg" />
+            <img src="../full-suite/images/orange.jpg" width="100" />
             Text below the image.
         </p>
         <p>
             The image below is a link.
             <a href="http://www.raptor-editor.com">
-                <img src="../full-suite/images/orange.jpg" />
+                <img src="../full-suite/images/orange.jpg" width="100" />
             </a>
             The image above is a link.
         </p>
@@ -140,7 +146,6 @@
                     max_char: 0
                 });
                 if (typeof CodeMirror !== 'undefined') {
-                    console.log('test');
                     $('.soure-view-code').html('');
                     CodeMirror($('.soure-view-code').get(0), {
                         value: prettyHtml,
