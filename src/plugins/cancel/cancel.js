@@ -1,5 +1,6 @@
 Raptor.registerUi(new DialogButton({
     name: 'cancel',
+    hotkey: 'esc',
     dialogOptions: {
         width: 500
     },
