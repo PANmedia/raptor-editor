@@ -874,7 +874,7 @@ rangy.createModule("Applier", function(api, module) {
                         }
                     }
                 }
-                return true;
+                return $.trim(fragmentToHtml(range.cloneContents())) === '';
             }
         },
 
