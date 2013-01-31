@@ -1,3 +1,16 @@
+/**
+ * @fileOverview Contains the menu class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The core menu class.
+ *
+ * @param {Object} options
+ * @returns {Menu}
+ */
 function Menu(options) {
     this.menu = null;
     this.menuContent = '';
@@ -7,6 +20,10 @@ function Menu(options) {
     }
 }
 
+/**
+ * Initialize the menu.
+ * @returns {Menu.prototype.init.button}
+ */
 Menu.prototype.init = function() {
     this.setOptions();
     this.bind();
@@ -15,10 +32,18 @@ Menu.prototype.init = function() {
     return button;
 };
 
+/**
+ * Binds events to the menu.
+ */
 Menu.prototype.bind = function() {
     // Bind events
 };
 
+/**
+ * Prepare and return the menu's button Element to be used in the Raptor UI.
+ *
+ * @returns {Element}
+ */
 Menu.prototype.getButton = function() {
     if (!this.button) {
         this.button = new MenuButton(this);
@@ -26,12 +51,22 @@ Menu.prototype.getButton = function() {
     return this.button;
 };
 
+/**
+ * Sets the options for the menu.
+ *
+ * @returns {undefined}
+ */
 Menu.prototype.setOptions = function() {
     this.options.title = _(this.name + 'Title');
     this.options.icon = 'ui-icon-' + this.name;
     this.options.text = _(this.name + 'Text');
 };
 
+/**
+ * Prepare and return the menu Element to be used in the Raptor UI.
+ *
+ * @returns {Element}
+ */
 Menu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<div>')
@@ -49,12 +84,19 @@ Menu.prototype.getMenu = function() {
     return this.menu;
 };
 
+/**
+ * Displays the open menu.
+ */
 Menu.prototype.show = function() {
     $('.raptor-menu').hide();
     elementPositionUnder(this.getMenu().toggle(), this.getButton().getButton());
 };
 
-// Click off close event
+/**
+ * Click off close event.
+ * @todo type for event.
+ * @param {type} event The click event.
+ */
 $('html').click(function(event) {
     if (!$(event.target).hasClass('raptor-menu-button') &&
             $(event.target).closest('.raptor-menu-button').length === 0) {
