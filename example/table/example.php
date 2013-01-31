@@ -14,46 +14,13 @@
 <!doctype html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Raptor Editor - Save Rest Example</title>
-	<link rel="stylesheet" href="css/style.css" />
-    <?php if ($type === 'light'): ?>
-        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
-        <link rel="stylesheet" href="../../src/theme/theme.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.light.min.js"></script>
-    <?php elseif ($type === 'include'): ?>
-        <?php $uri = '../../src/'; include '../../src/include.php'; ?>
-    <?php endif; ?>
+    <?php include __DIR__ . '/../include/head.php'; ?>
+    <title>Raptor Editor - Table Example</title>
     <script type="text/javascript">
         jQuery(function($) {
-            $('.editable').editor({
+            $('.editable').raptor({
                 urlPrefix: '../../src/'
             });
-        });
-    </script>
-    <script type="text/javascript">
-    /*
-        var startIndex;
-        $('td, th').live('mousedown', function() {
-            if (typeof this.cellIndex !== 'undefined') {
-                startIndex = tableGetCellIndex(this);
-            }
-        });
-        $('td, th').live('mouseup', function() {
-            console.log(startIndex, tableGetCellIndex(this));
-            var table = $(this).parents('table').get(0),
-                cells = tableCellsInRange(table, startIndex, tableGetCellIndex(this));
-            $('.cms-table-cell-selected').removeClass('cms-table-cell-selected');
-            $(cells).each(function() {
-                $(this).addClass('cms-table-cell-selected');
-            });
-        });
-    */
-
-        $(function() {
             $('tbody td').each(function() {
                 var index = tableGetCellIndex(this);
                 $(this).text($(this).text() + ' [' + index.x + ', ' + index.y + ']');
@@ -63,30 +30,17 @@
     <style type="text/css">
         table {
             width: 100%;
-            /*-webkit-user-select: none;*/
         }
         td, th {
             border: 1px dotted #777;
         }
-
-        .cms-table-cell-selected {
-            background-color: #aaf;
-        }
     </style>
 </head>
 <body>
-    <div class="editable" data-id="header">
-        <?php ob_start(); ?>
-        <h1>Raptor Editor - Save Rest Example</h1>
-        <?php
-            $buffer = ob_get_clean();
-            if (isset($content['header'])) {
-                echo $content['header'];
-            } else {
-                echo $buffer;
-            }
-        ?>
-    </div>
+    <?php include __DIR__ . '/../include/nav.php'; ?>
+    <header>
+        <h1>Raptor Editor - Table Example</h1>
+    </header>
     <div class="editable" data-id="body">
         <?php ob_start(); ?>
         <table>

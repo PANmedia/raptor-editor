@@ -33,6 +33,14 @@ body {
     border: 1px solid #999;
     padding: 10px;
     background-color: #eee;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+}
+.switcher-spacer {
+    height: 20px;
 }
 
 blockquote {

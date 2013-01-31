@@ -97,6 +97,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/hr/hr-create.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/image-resize-button/image-resize-button.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-create.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-remove.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-email.js"></script>
@@ -128,6 +130,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-insert-row.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-merge-cells.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>

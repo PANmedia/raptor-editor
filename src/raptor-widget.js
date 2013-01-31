@@ -348,8 +348,19 @@ var RaptorWidget = {
 
     actionPreview: function(action) {
         this.actionPreviewRestore();
-        selectionConstrain(this.target);
-        this.previewState = actionPreview(this.previewState, this.target, action);
+        var ranges = this.fire('selectionCustomise');
+        if (ranges.length > 0) {
+            this.previewState = actionPreview(this.previewState, this.target, function() {
+                for (var i = 0, l = ranges.length; i < l; i++) {
+                    rangy.getSelection().setSingleRange(ranges[i]);
+                    selectionConstrain(this.target);
+                    action();
+                }
+            }.bind(this));
+        } else {
+            selectionConstrain(this.target);
+            this.previewState = actionPreview(this.previewState, this.target, action);
+        }
     },
 
     actionPreviewRestore: function() {
@@ -362,10 +373,22 @@ var RaptorWidget = {
     actionApply: function(action) {
         this.actionPreviewRestore();
         var state = this.stateSave();
-        selectionConstrain(this.target);
         try {
-            actionApply(action, this.history);
-            this.checkChange();
+            var ranges = this.fire('selectionCustomise');
+            if (ranges.length > 0) {
+                actionApply(function() {
+                    for (var i = 0, l = ranges.length; i < l; i++) {
+                        rangy.getSelection().setSingleRange(ranges[i]);
+                        selectionConstrain(this.target);
+                        actionApply(action, this.history);
+                        this.checkChange();
+                    }
+                }.bind(this), this.history);
+            } else {
+                selectionConstrain(this.target);
+                actionApply(action, this.history);
+                this.checkChange();
+            }
         } catch (exception) {
             this.stateRestore(state);
             handleError(exception);
@@ -1047,9 +1070,11 @@ var RaptorWidget = {
      * @param {boolean} [sub]
      */
     fire: function(name, global, sub) {
+        var result = [];
+
         // Fire before sub-event
         if (!sub) {
-            this.fire('before:' + name, global, true);
+            result = result.concat(this.fire('before:' + name, global, true));
         }
 
         // <debug>
@@ -1066,7 +1091,10 @@ var RaptorWidget = {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
                 if (typeof event.callback !== 'undefined') {
-                    event.callback.call(event.context || this);
+                    var currentResult = event.callback.call(event.context || this);
+                    if (typeof currentResult !== 'undefined') {
+                        result = result.concat(currentResult);
+                    }
                 }
             }
         }
@@ -1078,8 +1106,10 @@ var RaptorWidget = {
 
         // Fire after sub-event
         if (!sub) {
-            this.fire('after:' + name, global, true);
+            result = result.concat(this.fire('after:' + name, global, true));
         }
+
+        return result;
     }
 };
 

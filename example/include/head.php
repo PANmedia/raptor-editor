@@ -3,7 +3,6 @@
 ?>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>Raptor Editor - Basic Example</title>
 <link rel="stylesheet" href="../assets/style.css" />
 <?php if ($type === 'light'): ?>
     <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />

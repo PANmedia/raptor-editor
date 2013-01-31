@@ -139,9 +139,9 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
     function getEffectiveTextNodes(range) {
         var nodes = range.getNodes([3]);
-        
+
         // Optimization as per issue 145
-        
+
         // Remove non-intersecting text nodes from the start of the range
         var start = 0, node;
         while ( (node = nodes[start]) && !rangeSelectsAnyText(range, node) ) {
@@ -153,7 +153,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
         while ( (node = nodes[end]) && !rangeSelectsAnyText(range, node) ) {
             --end;
         }
-        
+
         return nodes.slice(start, end + 1);
     }
 
@@ -676,13 +676,13 @@ rangy.createModule("CssClassApplier", function(api, module) {
                 && this.isRemovable(el)
                 && (childNodeCount == 0 || (childNodeCount == 1 && this.isEmptyContainer(el.firstChild)));
         },
-        
+
         removeEmptyContainers: function(range) {
             var applier = this;
             var nodesToRemove = range.getNodes([1], function(el) {
                 return applier.isEmptyContainer(el);
             });
-            
+
             for (var i = 0, node; node = nodesToRemove[i++]; ) {
                 node.parentNode.removeChild(node);
             }
@@ -714,10 +714,10 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
             // Create an array of range boundaries to preserve
             var positionsToPreserve = getRangeBoundaries(rangesToPreserve || []);
-            
+
             range.splitBoundariesPreservingPositions(positionsToPreserve);
 
-            // Tidy up the DOM by removing empty containers 
+            // Tidy up the DOM by removing empty containers
             if (this.removeEmptyElements) {
                 this.removeEmptyContainers(range);
             }
@@ -766,7 +766,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
             range.splitBoundariesPreservingPositions(positionsToPreserve);
 
-            // Tidy up the DOM by removing empty containers 
+            // Tidy up the DOM by removing empty containers
             if (this.removeEmptyElements) {
                 this.removeEmptyContainers(range, positionsToPreserve);
             }
@@ -837,7 +837,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
                         return false;
                     }
                 }
-                return true;
+                return $.trim(fragmentToHtml(range.cloneContents())) === '';
             }
         },
 
