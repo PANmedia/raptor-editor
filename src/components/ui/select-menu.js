@@ -1,9 +1,29 @@
+/**
+ * @fileOverview Contains the menu class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The select menu class.
+ *
+ * @constructor
+ * @augments menu
+ *
+ * @param {Object} options
+ */
 function SelectMenu(options) {
     Menu.call(this, options);
 }
 
 SelectMenu.prototype = Object.create(Menu.prototype);
 
+/**
+ * Prepare and return the select menu Element to be used in the Raptor UI.
+ *
+ * @returns {Element} The select menu.
+ */
 SelectMenu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<ul>')
