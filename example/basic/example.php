@@ -13,6 +13,7 @@
 <html>
 <head>
     <?php include __DIR__ . '/../include/head.php'; ?>
+    <title>Raptor Editor - Basic Example</title>
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
