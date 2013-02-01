@@ -58,9 +58,14 @@ function style_html(html) {
             if (i > 0) {
                 result += '<';
             }
+
             result += trim(parts[0]) + ">\n"
             if (trim(parts[1]) !== '') {
                 result += getIndent(indentLevel) + trim(parts[1]).replace(/\s+/g, ' ') + "\n";
+            }
+
+            if (parts[0].match(/^(img|hr|br)/)) {
+                indentLevel--;
             }
         }
     }

@@ -11,9 +11,6 @@ ToolTipPlugin.prototype.init = function() {
                 $(this).attr('data-title', $(this).attr('title'));
                 $(this).removeAttr('title');
             });
-//            .on('mouseover', '[data-title]', function(event) {
-//                console.log($(this).attr('data-title'));;
-//            });
     }.bind(this));
 };
 

@@ -8,7 +8,7 @@
         rangy.init();
     </script>
     <div class="test-11">
-        <h1>List 11: </h1>
+        <h1>List 11: Extracting a list item from a simple list</h1>
         <div class="test-input">
             <ol>
                 <li>
@@ -44,7 +44,7 @@
         });
     </script>
     <div class="test-12">
-        <h1>List 12: </h1>
+        <h1>List 12: Converting a selected list item to a different list type</h1>
         <div class="test-input">
             <ol>
                 <li>
@@ -84,7 +84,7 @@
         });
     </script>
     <div class="test-13">
-        <h1>List 13: listToggle unwrapping selection crossing list items within a single list</h1>
+        <h1>List 13: Unwrapping selection crossing list items within a single list</h1>
         <div class="test-input">
             <ul>
                 <li>Dui id erat pellentesque et rhoncus</li>
@@ -129,7 +129,7 @@
         });
     </script>
     <div class="test-14">
-        <h1>List 14: empty selection</h1>
+        <h1>List 14: Unrawpping a list from an empty selection within a list item</h1>
         <div class="test-input">
             <ul>
                 <li>dui {}id erat pellentesque et rhoncus</li>
@@ -149,7 +149,7 @@
         });
     </script>
     <div class="test-15">
-        <h1>List 15: complicated list #1</h1>
+        <h1>List 15: Complicated list #1</h1>
         <div class="test-input">
             <ul>
                 <li>
@@ -187,53 +187,6 @@
     </div>
     <script type="text/javascript">
         test('.test-15', function(input) {
-            var ranges = tokensToRanges(input);
-            rangy.getSelection().setRanges(ranges);
-            listToggle('ul', 'li', input);
-        });
-    </script>
-    <div class="test-16">
-        <h1>List 16: complicated list #2</h1>
-        <div class="test-input">
-            <ul>
-                <li>
-                    Click to Edit<br/>
-                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
-                </li>
-                <li>
-                    Dock{}<br/>
-                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
-                </li>
-                <li>
-                    Advanced Linking<br/>
-                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
-                </li>
-            </ul>
-        </div>
-        <div class="test-expected">
-            <ul>
-                <li>
-                    Click to Edit<br/>
-                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
-                </li>
-            </ul>
-            <p>
-                Dock
-            </p>
-            <p>
-                <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
-            </p>
-            <ul>
-                </li>
-                <li>
-                    Advanced Linking<br/>
-                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <script type="text/javascript">
-        test('.test-16', function(input) {
             var ranges = tokensToRanges(input);
             rangy.getSelection().setRanges(ranges);
             listToggle('ul', 'li', input);

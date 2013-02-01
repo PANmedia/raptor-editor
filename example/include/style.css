@@ -39,8 +39,9 @@ body {
     right: 0;
     height: 20px;
 }
+
 .switcher-spacer {
-    height: 20px;
+    height: 40px;
 }
 
 blockquote {
@@ -49,3 +50,33 @@ blockquote {
     background-color: #eee;
     overflow: auto;
 }
+
+.half {
+    float: left;
+    width: 45%;
+    margin: 0 1%;
+}
+
+pre {
+    margin: 0;
+}
+
+.center {
+    margin: 0 auto;
+    float: none;
+}
+
+table {
+    width: 100%;
+}
+
+td,
+th {
+    border: 1px dotted #777;
+}
+
+.CodeMirror-scroll {
+    overflow: visible !important;
+    height: auto !important;
+}
+

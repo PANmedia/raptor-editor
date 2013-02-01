@@ -12,7 +12,7 @@
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
-    if (listShouldConvertType(listType, listItem)) {
+    if (listShouldConvertType(listType, listItem, wrapper)) {
         return listConvertListType(listType, listItem, wrapper);
     }
     if (listShouldUnwrap(listType, listItem)) {
@@ -37,7 +37,6 @@ function listShouldUnwrap(listType, listItem) {
     if (selectedElements.parentsUntil(listType, listItem).length) {
         return true;
     }
-
     return false;
 }
 
@@ -46,13 +45,27 @@ function listShouldUnwrap(listType, listItem) {
  * @param  {String} listItem
  * @return {Boolean}
  */
-function listShouldConvertType(listType, listItem) {
+function listShouldConvertType(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
-    if (rangeIsEmpty(range)) {
-        rangeExpandTo(range, [listItem]);
-    }
     var commonAncestor = $(rangeGetCommonAncestor(range));
-    if ($(commonAncestor).is(listItem) && !$(commonAncestor).parent().is(listType)) {
+    if (rangeIsEmpty(range)) {
+        var closestListItem = commonAncestor.closest(listItem, wrapper);
+        if (closestListItem.length) {
+            rangeExpandTo(range, [closestListItem]);
+        } else {
+            rangeExpandToParent(range);
+        }
+    }
+    commonAncestor = $(rangeGetCommonAncestor(range));
+
+    // Do not convert blockquotes that have partial selections
+    if (listType === 'blockquote' &&
+        !rangeContainsNode(range, commonAncestor.get(0))) {
+        return false;
+    }
+
+    if ($(commonAncestor).is(listItem) &&
+        !$(commonAncestor).parent().is(listType)) {
         return true;
     }
     return false;
@@ -109,15 +122,35 @@ function listEnforceValidChildren(list, listItem, validChildren) {
         handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
-    list.find(listItem).each(function() {
-        if (!$(this).html().trim()) {
-            $(this).remove();
-            return;
+    var removeEmpty = function(node) {
+        if (!$(node).text().trim()) {
+            $(node).remove();
+            return true;
         }
-        $(this).find(' *').each(function() {
-            if (!typeIsTextNode(this)) {
-                if (!elementIsValid(this, listValidLiChildren)) {
+    };
+
+    list.find('> ' + listItem).each(function() {
+        if (removeEmpty(this)) {
+            return true;
+        }
+        $(this).contents().each(function() {
+            if (removeEmpty(this)) {
+                return true;
+            }
+            if (listItem === 'p') {
+                if (!typeIsTextNode(this) &&
+                    !elementIsValid(this, validChildren)) {
+                    $(this).contents().unwrap();
+                    return true;
+                }
+            } else {
+                if (typeIsTextNode(this)) {
+                    $(this).wrap('<p/>');
+                    return true;
+                }
+                if (!elementIsValid(this, validChildren)) {
                     elementChangeTag($(this), 'p');
+                    return true;
                 }
             }
         });
@@ -150,12 +183,13 @@ function listWrapSelection(listType, listItem, wrapper) {
     if (!$($.parseHTML(contents)).is(listItem)) {
         contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
     }
+
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var replacementHtml = '<' + listType + '>' + contents + '</' + listType + '>';
-
     var replacement = rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
-    listEnforceValidChildren($(replacement), listItem, listValidLiChildren);
+    var validChildren = listType === 'blockquote' ? listValidPChildren : listValidLiChildren;
+    listEnforceValidChildren($(replacement), listItem, validChildren);
 
     if (replacement.length) {
         selectionSelectInner($(replacement)[0]);

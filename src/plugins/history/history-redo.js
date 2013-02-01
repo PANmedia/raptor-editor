@@ -1,24 +1,18 @@
-function HistoryRedoButton(options) {
-    Button.call(this, options);
-}
-
-HistoryRedoButton.prototype = Object.create(Button.prototype);
-
-HistoryRedoButton.prototype.init = function() {
-    this.raptor.bind('historychange', this.historyChange.bind(this));
-    return Button.prototype.init.apply(this, arguments);
-};
-
-Raptor.registerUi(new HistoryRedoButton({
+Raptor.registerUi(new Button({
     name: 'historyRedo',
+    hotkey: ['ctrl+y', 'ctrl+shift+z'],
+
     action: function() {
         this.raptor.historyForward();
     },
-    getButton: function() {
-        var button = Button.prototype.getButton.call(this);
-        aButtonDisable(button);
-        return button;
+
+    init: function () {
+        this.raptor.bind('historyChange', this.historyChange.bind(this));
+        Button.prototype.init.apply(this, arguments);
+        aButtonDisable(this.butotn);
+        return this.button;
     },
+
     historyChange: function() {
         if (this.raptor.present < this.raptor.history.length - 1) {
             aButtonEnable(this.button);

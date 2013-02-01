@@ -32,9 +32,9 @@ ClickButtonToEditPlugin.prototype.show = function() {
 
 ClickButtonToEditPlugin.prototype.hide = function(event) {
     var button = this.getButton(this);
-    if((event &&
+    if (event &&
             (event.relatedTarget === button.get(0) ||
-             button.get(0) === $(event.relatedTarget).parent().get(0)))) {
+             button.get(0) === $(event.relatedTarget).parent().get(0))) {
         return;
     }
     button.hide();

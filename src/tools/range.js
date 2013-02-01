@@ -208,6 +208,23 @@ function rangeIsContainedBy(range, node) {
 }
 
 /**
+ * @param  {RangyRange} range
+ * @param  {Node} node
+ * @return {Boolean} True if node is contained within the range, false otherwise.
+ */
+function rangeContainsNode(range, node) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeContainsNode is expected to be a range', range);
+    }
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to rangeContainsNode is expected to be a node', node);
+    }
+    // </strict>
+    return range.containsNode(node);
+}
+
+/**
  * Removes the white space at the start and the end of the selection.
  *
  * @param {RangyRange} range This is the range of selected text.

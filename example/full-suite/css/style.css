@@ -37,7 +37,7 @@ sup { top: -0.5em; }
 sub { bottom: -0.25em; }
 ul, ol { margin: 1em 0; padding: 0 0 0 40px; }
 dd { margin: 0 0 0 40px; }
-nav ul, nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
+.site-.site-nav ul, .site-nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0; }
 img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
 svg:not(:root) { overflow: hidden; }
 figure { margin: 0; }
@@ -98,7 +98,7 @@ body{ font:16px/24px Helvetica, Helvetica Neue, Arial, sans-serif; }
     MOBILE: Menu
    ============== */
 
-nav a{
+.site-nav a{
 	display:block;
 	margin-bottom:10px;
 	padding:15px 0;
@@ -111,11 +111,11 @@ nav a{
 	font-weight:bold;
 }
 
-nav a:hover, nav a:visited{
+.site-nav a:hover, .site-nav a:visited{
 	color:white;
 }
 
-nav a:hover{
+.site-nav a:hover{
 	text-decoration:underline;
 }
 
@@ -168,7 +168,7 @@ nav a:hover{
     INTERMEDIATE: Menu
    ==================== */
 
-	nav a{
+	.site-nav a{
 		float:left;
 		width:27%;
 		margin:0 1.7%;
@@ -176,17 +176,17 @@ nav a:hover{
 		margin-bottom:0;
 	}
 
-	nav li:first-child a{ margin-left:0;  }
-	nav li:last-child  a{ margin-right:0; }
+	.site-nav li:first-child a{ margin-left:0;  }
+	.site-nav li:last-child  a{ margin-right:0; }
 
 /* ========================
     INTERMEDIATE: IE Fixes
    ======================== */
 
-	nav ul li{
+	.site-nav ul li{
 		display:inline;
 	}
-	.oldie nav a{
+	.oldie .site-nav a{
 		margin:0 0.7%;
 	}
 }
@@ -212,7 +212,7 @@ nav a:hover{
 		float:left;
 	}
 
-	nav{
+	.site-nav{
 		float:right;
 		width:38%;
 	}

@@ -15,6 +15,7 @@ function Button(overrides) {
     this.text = false;
     this.label = null;
     this.icon = null;
+    this.hotkey = null;
     for (var key in overrides) {
         this[key] = overrides[key];
     }
@@ -26,6 +27,16 @@ function Button(overrides) {
  * @return {Element}
  */
 Button.prototype.init = function() {
+    // Bind hotkeys
+    if (typeof this.hotkey === 'string') {
+        this.raptor.registerHotkey(this.hotkey, this.action.bind(this));
+    } else if (typeIsArray(this.hotkey)) {
+        for (var i = 0, l = this.hotkey.length; i < l; i++) {
+            this.raptor.registerHotkey(this.hotkey[i], this.action.bind(this));
+        }
+    }
+
+    // Return the button
     return this.getButton();
 };
 

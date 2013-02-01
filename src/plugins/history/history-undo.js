@@ -1,24 +1,18 @@
-function HistoryUndoButton(options) {
-    Button.call(this, options);
-}
-
-HistoryUndoButton.prototype = Object.create(Button.prototype);
-
-HistoryUndoButton.prototype.init = function() {
-    this.raptor.bind('historychange', this.historyChange.bind(this));
-    return Button.prototype.init.apply(this, arguments);
-};
-
-Raptor.registerUi(new HistoryUndoButton({
+Raptor.registerUi(new Button({
     name: 'historyUndo',
+    hotkey: 'ctrl+z',
+
     action: function() {
         this.raptor.historyBack();
     },
-    getButton: function() {
-        var button = Button.prototype.getButton.call(this);
-        aButtonDisable(button);
-        return button;
+
+    init: function () {
+        this.raptor.bind('historyChange', this.historyChange.bind(this));
+        Button.prototype.init.apply(this, arguments);
+        aButtonDisable(this.butotn);
+        return this.button;
     },
+
     historyChange: function() {
         if (this.raptor.present === 0) {
             aButtonDisable(this.button);
