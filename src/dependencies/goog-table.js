@@ -121,7 +121,9 @@ GoogTable.prototype.mergeCells = function(
     var cells = [];
     var cell;
     if (startRowIndex == endRowIndex && startColIndex == endColIndex) {
+        // <strict>
         handleError("Can't merge single cell");
+        // </strict>
         return false;
     }
     // Gather cells and do sanity check.
@@ -132,9 +134,11 @@ GoogTable.prototype.mergeCells = function(
                     cell.endRow > endRowIndex ||
                     cell.startCol < startColIndex ||
                     cell.endCol > endColIndex) {
+                // <strict>
                 handleError(
                         "Can't merge cells: the cell in row " + i + ', column ' + j +
                         'extends outside the supplied rectangle.');
+                // </strict>
                 return false;
             }
             // TODO(user): this is somewhat inefficient, as we will add

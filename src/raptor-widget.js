@@ -397,7 +397,9 @@ var RaptorWidget = {
             this.checkChange();
         } catch (exception) {
             this.stateRestore(state);
+            // <strict>
             handleError(exception);
+            // </strict>
         }
     },
 
