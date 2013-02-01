@@ -14,8 +14,8 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
-        var applier;
     </script>
+
     <div class="test-1">
         <h1>Rangy Applier 1: Apply single tag/class to range</h1>
         <div class="test-input">
@@ -28,11 +28,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
-            tag: 'p',
-            classes: ['bold']
-        });
         test('.test-1', function(input) {
+            var applier = rangy.createApplier({
+                tag: 'p',
+                classes: ['bold']
+            });
             var ranges = tokensToRanges(input);
             applier.toggleRanges(ranges);
         });
@@ -41,18 +41,22 @@
     <div class="test-2">
         <h1>Rangy Applier 2: Undo single tag/class to range</h1>
         <div class="test-input">
-            {<p class="bold">Lorem ipsum dolor sit amet.</p>}
+            <div>
+                {<p class="bold">Lorem ipsum dolor sit amet.</p>}
+            </div>
         </div>
         <div class="test-expected">
-            Lorem ipsum dolor sit amet.
+            <div>
+                Lorem ipsum dolor sit amet.
+            </div>
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
-            tag: 'p',
-            classes: ['bold']
-        });
         test('.test-2', function(input) {
+            var applier = rangy.createApplier({
+                tag: 'p',
+                classes: ['bold']
+            });
             var ranges = tokensToRanges(input);
             applier.toggleRanges(ranges);
         });
@@ -68,11 +72,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
+        test('.test-3', function(input) {
+        var applier = rangy.createApplier({
             tag: 'p',
             classes: ['italic']
         });
-        test('.test-3', function(input) {
             var ranges = tokensToRanges(input);
             applier.toggleRanges(ranges);
         });
@@ -88,11 +92,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
-            tag: 'p',
-            classes: ['bold', 'italic']
-        });
         test('.test-4', function(input) {
+            var applier = rangy.createApplier({
+                tag: 'p',
+                classes: ['bold', 'italic']
+            });
             var ranges = tokensToRanges(input);
             applier.toggleRanges(ranges);
         });

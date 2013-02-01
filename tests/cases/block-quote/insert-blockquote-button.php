@@ -149,34 +149,28 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    This is paragraph 1.
+                    This is {paragraph 1.
                 </p>
                 <p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    This is paragraph} 2.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui
+                    This is {
                 </p>
                 <blockquote>
                     <p>
-                        {id erat pellentesque et rhoncus nunc semper. Suspendisse
-                        malesuada hendrerit velit nec tristique.
+                        paragraph 1.
                     </p>
                     <p>
-                        Aliquam gravida mauris at
-                        ligula venenatis rhoncus. Suspendisse}
+                        This is paragraph
                     </p>
                 </blockquote>
                 <p>
-                    interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    } 2.
                 </p>
 
             </div>
@@ -187,7 +181,7 @@
             var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-
+            
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }

@@ -24,10 +24,10 @@
         </div>
     </div>
     <script type="text/javascript">
-//        test('.test-1', function(input) {
-//            var ranges = tokensToRanges(input);
-//            applier.toggleRanges(ranges);
-//        });
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            applier.toggleRanges(ranges);
+        });
     </script>
 
     <div class="test-2">
@@ -40,10 +40,10 @@
         </div>
     </div>
     <script type="text/javascript">
-//        test('.test-2', function(input) {
-//            var ranges = tokensToRanges(input);
-//            applier.toggleRanges(ranges);
-//        });
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            applier.toggleRanges(ranges);
+        });
     </script>
 
     <div class="test-3">
@@ -56,12 +56,12 @@
         </div>
     </div>
     <script type="text/javascript">
-//        test('.test-3', function(input) {
-//            var ranges = tokensToRanges(input);
-//            applier.toggleRanges(ranges);
-//        });
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            applier.toggleRanges(ranges);
+        });
     </script>
-
+    
     <div class="test-4">
         <h1>Rangy Applier 4</h1>
         <div class="test-input">

@@ -35,7 +35,6 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            console.log(getLayoutElement(input));
             var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

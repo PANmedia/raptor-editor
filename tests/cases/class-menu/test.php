@@ -37,7 +37,7 @@
         testEditor('.test-1', function(input) {
             var classMenu = getLayoutElement(input).find('.raptor-ui-class-menu');
             classMenu.trigger('click');
-            var blueBackgroundTag = input.find('.raptor-ui-class-menu-menu [data-value=cms-blue-bg]');
+            var blueBackgroundTag = $('.raptor-ui-class-menu-menu [data-value=cms-blue-bg]');
             blueBackgroundTag.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

@@ -14,68 +14,69 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
-        var applier;
     </script>
     <div class="test-1">
-        <h1>Rangy Applier 1: Apply single tag to range</h1>
+        <h1>Rangy Applier - Attributes 1: Apply single attribute to range</h1>
         <div class="test-input">
             {Lorem ipsum dolor sit amet.}
         </div>
         <div class="test-expected">
-            <custom>Lorem ipsum dolor sit amet.</custom>
+            <span title="Rangy is awesome!">Lorem ipsum dolor sit amet.</span>
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
-            tag: 'custom'
-        });
         test('.test-1', function(input) {
+            var applier = rangy.createApplier({
+                tag: 'span',
+                attributes: {
+                    title: 'Rangy is awesome!'
+                }
+            });
             var ranges = tokensToRanges(input);
             applier.toggleRanges(ranges);
         });
     </script>
     
     <div class="test-2">
-        <h1>Rangy Applier 2: Undo single tag to multiple ranges</h1>
+        <h1>Rangy Applier - Attributes 2: Undo single attribute to range</h1>
         <div class="test-input">
-            {<div>Lorem ipsum dolor sit amet.</div>}
-            <div>{Lorem ipsum dolor sit amet.</div>}
-            {<div>Lorem ipsum dolor sit amet.}</div>
-            <div>{Lorem ipsum dolor sit amet.}</div>
+            <span title="Rangy is awesome!">{Lorem ipsum dolor sit amet.}</span>
         </div>
         <div class="test-expected">
-            Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet.
-            Lorem ipsum dolor sit amet.
+            <span>Lorem ipsum dolor sit amet.</span>
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
-            tag: 'div'
-        });
         test('.test-2', function(input) {
+            var applier = rangy.createApplier({
+                attributes: {
+                    title: 'Rangy is awesome!'
+                }
+            });
             var ranges = tokensToRanges(input);
             applier.undoToRanges(ranges);
         });
     </script>
-    
+
     <div class="test-3">
-        <h1>Rangy Applier 3: Toggle multiple ranges</h1>
+        <h1>Rangy Applier - Attributes 3</h1>
         <div class="test-input">
-            {Test element 1}
+            <a href="/">{Lorem ipsum dolor sit amet.}</a>
         </div>
         <div class="test-expected">
-            <p>Test element 1</p>
+            <a href="http://www.google.com">Lorem ipsum dolor sit amet.</a>
         </div>
     </div>
     <script type="text/javascript">
-        applier = rangy.createApplier({
-            tag: 'p'
-        });
         test('.test-3', function(input) {
+            var applier = rangy.createApplier({
+                tag: 'a',
+                attributes: {
+                    href: 'http://www.google.com'
+                }
+            });
             var ranges = tokensToRanges(input);
-            applier.toggleRanges(ranges);
+            applier.applyToRanges(ranges);
         });
     </script>
 </body>
