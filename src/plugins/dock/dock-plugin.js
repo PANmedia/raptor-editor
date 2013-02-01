@@ -73,8 +73,9 @@ DockPlugin.prototype.toggleDockToElement = function() {
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.dockToElement = function() {
-    var element = this.raptor.getElement();
-    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
+    var element = this.raptor.getElement(),
+        layoutElement = this.raptor.getLayout().getElement();
+    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layoutElement);
     this.raptor.getLayout().getElement().addClass(this.options.baseClass + '-docked-to-element');
     this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
         position: this.options.position,
