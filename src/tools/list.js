@@ -57,7 +57,15 @@ function listShouldConvertType(listType, listItem, wrapper) {
         }
     }
     commonAncestor = $(rangeGetCommonAncestor(range));
-    if ($(commonAncestor).is(listItem) && !$(commonAncestor).parent().is(listType)) {
+
+    // Do not convert blockquotes that have partial selections
+    if (listType === 'blockquote' &&
+        !rangeContainsNode(range, commonAncestor.get(0))) {
+        return false;
+    }
+
+    if ($(commonAncestor).is(listItem) &&
+        !$(commonAncestor).parent().is(listType)) {
         return true;
     }
     return false;
