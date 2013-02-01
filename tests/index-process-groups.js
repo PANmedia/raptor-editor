@@ -37,11 +37,17 @@ function setGroupStatus(path, state, icon, itemsPassed) {
  */
 function setItemStatus(path, fileName, state, icon, passes, testLength) {
     var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
-            itemIcon = item.find('.icon'),
-            itemRatio = item.find('.items-pass-fail-ratio'),
-            itemsPassed = 0,
-            status = 'pass';
+        itemIcon = item.find('.icon'),
+        itemRatio = item.find('.items-pass-fail-ratio'),
+        itemsPassed = 0,
+        status = 'pass';
 
+    if (typeof passes === 'undefined') {
+        passes = '?';
+    }
+    if (typeof testLength === 'undefined') {
+        testLength = '?';
+    }
     itemRatio.html(passes + '/' + testLength + ' tests passed');
 
     checkState(item, itemIcon, state, icon);
@@ -128,17 +134,19 @@ function checkStatus(testResults, path, fileName) {
 
             errorDiv.text('');
 
-            //Checks each test in the item and if it finds one fail then sets tje pass to false and adds one to the fails variable.
+            // Checks each test in the item and if it finds one fail then sets tje pass to false and adds one to the fails variable.
             for (var i = 0; i < testLength; i++) {
                 if (testResults.tests[i]['status'] !== 'pass') {
                     var error = String(testResults.tests[i]['error']);
                     pass = false;
                     fails++;
 
-                    //if there is an undefined error then use default error, otherwise append error to errors div.
-                    if (error === 'undefined') {
-                        $('<div>Expected output does not match actual output<br /></div>').appendTo(errorDiv);
-                    } else {
+                    // If there is an undefined error then use default error, otherwise append error to errors div.
+                    if (testResults.tests[i]['type'] === 'diff') {
+                        if (errorDiv.find(':contains(Expected output does not match actual output)').length === 0) {
+                            $('<div>Expected output does not match actual output<br /></div>').appendTo(errorDiv);
+                        }
+                    } else if (errorDiv.find(':contains("' + error + '")').length === 0) {
                         $('<div>' + error + '</div>').appendTo(errorDiv);
                     }
                 }
