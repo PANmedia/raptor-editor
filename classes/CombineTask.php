@@ -59,6 +59,10 @@ class CombineTask extends Task {
                 continue;
             }
             $file = $this->buildDir . '/' . $file;
+            if (strpos($file, '__DIR__') !== false) {
+                $file = str_replace('__DIR__', dirname($this->file), $file);
+                $file = str_replace(':', '_', $file);
+            }
             if (!is_file($file)) {
                 die("Error processing file manifest: {$file}, does not exist.");
             }
