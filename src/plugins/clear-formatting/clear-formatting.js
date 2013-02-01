@@ -1,3 +1,15 @@
+/**
+ * @fileOverview Contains the clear formatting code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates an instance of the preview button that clears the formatting on a selection.
+ * 
+ * @param {type} param
+ */
 Raptor.registerUi(new PreviewButton({
     name: 'clearFormatting',
     action: function() {
