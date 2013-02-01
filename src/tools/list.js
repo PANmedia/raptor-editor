@@ -129,7 +129,7 @@ function listEnforceValidChildren(list, listItem, validChildren) {
         }
     };
 
-    list.find(listItem).each(function() {
+    list.find('> ' + listItem).each(function() {
         if (removeEmpty(this)) {
             return true;
         }
@@ -137,13 +137,21 @@ function listEnforceValidChildren(list, listItem, validChildren) {
             if (removeEmpty(this)) {
                 return true;
             }
-            if (typeIsTextNode(this)) {
-                $(this).wrap('<p/>');
-                return true;
-            }
-            if (!elementIsValid(this, listValidLiChildren)) {
-                elementChangeTag($(this), 'p');
-                return true;
+            if (listItem === 'p') {
+                if (!typeIsTextNode(this) &&
+                    !elementIsValid(this, validChildren)) {
+                    $(this).contents().unwrap();
+                    return true;
+                }
+            } else {
+                if (typeIsTextNode(this)) {
+                    $(this).wrap('<p/>');
+                    return true;
+                }
+                if (!elementIsValid(this, validChildren)) {
+                    elementChangeTag($(this), 'p');
+                    return true;
+                }
             }
         });
     });
@@ -175,12 +183,13 @@ function listWrapSelection(listType, listItem, wrapper) {
     if (!$($.parseHTML(contents)).is(listItem)) {
         contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
     }
+
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var replacementHtml = '<' + listType + '>' + contents + '</' + listType + '>';
-
     var replacement = rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
-    listEnforceValidChildren($(replacement), listItem, listValidLiChildren);
+    var validChildren = listType === 'blockquote' ? listValidPChildren : listValidLiChildren;
+    listEnforceValidChildren($(replacement), listItem, validChildren);
 
     if (replacement.length) {
         selectionSelectInner($(replacement)[0]);
