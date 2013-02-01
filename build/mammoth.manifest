@@ -96,12 +96,14 @@ src/plugins/table/table-delete-column.js
 src/plugins/table/table-delete-row.js
 src/plugins/table/table-insert-column.js
 src/plugins/table/table-insert-row.js
+src/plugins/table/table-support.js
 src/plugins/tag-menu/tag-menu.js
 src/plugins/text-align/text-align-button.js
 src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
 src/plugins/text-align/right.js
+src/plugins/special-characters/special-characters.js
 src/plugins/text-style/block-quote.js
 src/plugins/text-style/bold.js
 src/plugins/text-style/italic.js
@@ -125,6 +127,11 @@ src/plugins/link/templates/email.html
 src/plugins/link/templates/external.html
 src/plugins/link/templates/internal.html
 src/plugins/link/templates/label.html
+src/plugins/insert-file/templates/dialog.html
+src/plugins/special-characters/templates/dialog.html
+src/plugins/special-characters/templates/tab-li.html
+src/plugins/special-characters/templates/tab-content.html
+src/plugins/special-characters/templates/tab-button.html
 src/plugins/paste/templates/dialog.html
 src/plugins/snippet-menu/templates/item.html
 src/plugins/statistics/templates/dialog.html
