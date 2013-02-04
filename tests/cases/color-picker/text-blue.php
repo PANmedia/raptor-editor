@@ -37,8 +37,7 @@
         testEditor('.test-1', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
-            console.log(blue);
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(0) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -79,7 +78,7 @@
         testEditor('.test-2', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(1) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -120,7 +119,7 @@
         testEditor('.test-3', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(2) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -167,7 +166,7 @@
         testEditor('.test-4', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(3) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -213,7 +212,7 @@
         testEditor('.test-5', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(4) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -258,7 +257,7 @@
         testEditor('.test-6', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(5) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -303,7 +302,7 @@
         testEditor('.test-7', function(input) {
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu [data-color=blue]');
+            var blue = $('.raptor-ui-color-menu-basic-menu:eq(6) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

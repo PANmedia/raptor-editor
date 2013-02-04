@@ -26,7 +26,11 @@ function dockToScreen(element, options) {
             right: 0
         };
         if (options.spacer) {
-            spacer.insertAfter(options.under);
+            if (options.under) {
+                spacer.insertAfter(options.under);
+            } else {
+                spacer.prependTo('body');
+            }
         }
     } else if (options.position === 'topLeft') {
         position = {
@@ -35,7 +39,11 @@ function dockToScreen(element, options) {
             left: 0
         };
         if (options.spacer) {
-            spacer.insertAfter(options.under);
+            if (options.under) {
+                spacer.insertAfter(options.under);
+            } else {
+                spacer.prependTo('body');
+            }
         }
     } else if (options.position === 'topRight') {
         position = {
@@ -44,7 +52,11 @@ function dockToScreen(element, options) {
             right: 0
         };
         if (options.spacer) {
-            spacer.insertAfter(options.under);
+            if (options.under) {
+                spacer.insertAfter(options.under);
+            } else {
+                spacer.prependTo('body');
+            }
         }
     } else if (options.position === 'bottom') {
         position = {

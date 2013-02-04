@@ -66,12 +66,12 @@ pre {
     float: none;
 }
 
-table {
+.editable table {
     width: 100%;
 }
 
-td,
-th {
+.editable td,
+.editable th {
     border: 1px dotted #777;
 }
 

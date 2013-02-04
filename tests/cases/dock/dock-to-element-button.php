@@ -36,7 +36,6 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <marker class="raptor-ui-dock-to-element-marker"></marker>
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

@@ -16,11 +16,6 @@
     <title>Raptor Editor - Live Source View</title>
     <script type="text/javascript">
         jQuery(function($) {
-            $('tbody td').each(function() {
-                var index = tableGetCellIndex(this);
-                $(this).text($(this).text() + ' [' + index.x + ', ' + index.y + ']');
-            });
-
             $('.editable').raptor({
                 urlPrefix: '../../src/',
                 plugins: {

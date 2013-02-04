@@ -83,7 +83,7 @@ ColorMenuBasic.prototype.previewRestore = function() {
     this.raptor.actionPreviewRestore();
 };
 
-ColorMenuBasic.prototype.apply = function() {
+ColorMenuBasic.prototype.apply = function(event) {
     this.raptor.actionApply(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));

@@ -47,13 +47,24 @@ class CloneTask extends Task {
                     strpos($file, '//') === 0) {
                 continue;
             }
-            if (!is_file($file)) {
-                die("Error processing file manifest: {$file}, does not exist.");
-                return;
+            if (strpos($file, '__DIR__') !== false) {
+                $file = str_replace('__DIR__', dirname($this->file), $file);
+                if (!is_file($file)) {
+                    die("Error processing file manifest: {$file}, does not exist.");
+                    return;
+                }
+                $this->log($file, Project::MSG_INFO);
+                $this->mkdir(dirname($this->buildDir . '/' . str_replace(':', '_', $file)));
+                copy($file, $this->buildDir . '/' . str_replace(':', '_', $file));
+            } else {
+                if (!is_file($file)) {
+                    die("Error processing file manifest: {$file}, does not exist.");
+                    return;
+                }
+                $this->log($file, Project::MSG_INFO);
+                $this->mkdir(dirname($this->buildDir . '/' . $file));
+                copy($file, $this->buildDir . '/' . $file);
             }
-            $this->log($file, Project::MSG_INFO);
-            $this->mkdir(dirname($this->buildDir . '/' . $file));
-            copy($file, $this->buildDir . '/' . $file);
         }
     }
 

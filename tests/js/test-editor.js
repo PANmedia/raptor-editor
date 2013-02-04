@@ -1,25 +1,42 @@
+$(function() {
+    if ($('.test-editor-spacer').length === 0) {
+        $('<div>').addClass('test-editor-spacer').height(50).prependTo('body');
+    }
+});
+
 if (typeof window.testResults === 'undefined') {
     window.testResults = {
-        count: 0,
         tests: [],
         finished: false
     };
 }
 
-var testQueue = []
-    running = false;
+var testEditorQueue = [],
+    testEditorQueueTimer = null,
+    testEditorRunning = false;
 
 function testEditor(container, action) {
     if ($(container).length !== 1) {
         throw new Error('Duplicate or missing container: ' + container);
         return;
     }
-    testQueue.push([container, action]);
+    testEditorQueue.push([container, action]);
+    if (testEditorQueueTimer === null) {
+        testEditorQueueTimer = setInterval(function() {
+            if (testEditorRunning === false && testEditorQueue.length > 0) {
+                var test = testEditorQueue.shift();
+                runEditorTest(test[0], test[1]);
+            }
+            if (testEditorRunning === false && testEditorQueue.length === 0) {
+                window.testResults.finished = true;
+                clearInterval(testEditorQueueTimer);
+            }
+        }, 20);
+    }
 }
 
-function runTest(container, action) {
-    running = true;
-
+function runEditorTest(container, action) {
+    testEditorRunning = true;
     var input = $(container).find('.test-input');
     var html = input.html();
     var output = $('<div>').addClass('test-output').html(html).appendTo(container);
@@ -29,6 +46,9 @@ function runTest(container, action) {
         autoEnable: true,
         urlPrefix: '../../../src/',
         plugins: {
+//            dock: {
+//                docked: true
+//            },
             save: {
                 plugin: null
             },
@@ -128,24 +148,9 @@ function runTest(container, action) {
                 pass(container);
             }
         }
-        running = false;
+        testEditorRunning = false;
     }, 50);
-
-    window.testResults.count++;
 }
-
-(function() {
-    var timer;
-    timer = setInterval(function() {
-        if (running === false && testQueue.length > 0) {
-            var test = testQueue.shift();
-            runTest(test[0], test[1]);
-        }
-        if (testQueue.length === 0) {
-            window.testResults.finished = true;
-        }
-    }, 20);
-})();
 
 function getRaptor(input) {
     return input.find('.editible').data('uiRaptor');

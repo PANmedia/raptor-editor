@@ -84,7 +84,7 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
+                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
                     Some text here
                 </p>
@@ -97,7 +97,6 @@
         testEditor('.test-3', function(input) {
             input.find('img').trigger('click');
             clickButton(input, '.raptor-ui-float-none');
-            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 </body>

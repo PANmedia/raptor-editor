@@ -794,7 +794,6 @@ rangy.createModule("Applier", function(api, module) {
         },
 
         undoToRange: function(range, rangesToPreserve) {
-
             // Create an array of range boundaries to preserve
             rangesToPreserve = rangesToPreserve || [];
             var positionsToPreserve = getRangeBoundaries(rangesToPreserve);
@@ -874,7 +873,11 @@ rangy.createModule("Applier", function(api, module) {
                         }
                     }
                 }
-                return $.trim(fragmentToHtml(range.cloneContents())) === '';
+                var html = fragmentToHtml(range.cloneContents());
+                if (html.match(/^<(img)/)) {
+                    return false;
+                }
+                return true;
             }
         },
 

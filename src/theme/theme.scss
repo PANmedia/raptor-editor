@@ -1,5 +1,6 @@
 /* Non styles */
 @import 'variables';
+@import 'z-index';
 @import 'mixins';
 
 /* Base style */
@@ -8,7 +9,7 @@
 
 /* Components */
 @import 'components/path';
-@import 'components/selectmenu';
+@import 'components/select-menu';
 @import 'components/button';
 @import 'components/menu';
 @import 'components/support';
@@ -50,6 +51,6 @@
 @import 'plugins/text-align';
 @import 'plugins/text-size';
 @import 'plugins/text-style';
-@import 'plugins/toolbartip';
+@import 'plugins/tool-tip';
 @import 'plugins/unsaved-edit-warning';
 @import 'plugins/view-source';

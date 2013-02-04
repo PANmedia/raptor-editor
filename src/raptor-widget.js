@@ -150,8 +150,12 @@ var RaptorWidget = {
     attach: function() {
         this.bind('change', this.historyPush);
 
-        this.getElement().find('img').bind('click.' + this.widgetName, function(event){
+        this.getElement().on('click.' + this.widgetName, 'img', function(event){
             selectionSelectOuter(event.target);
+        }.bind(this));
+        this.getElement().focus(function() {
+            this.hideOtherLayouts(true);
+            this.showLayout();
         }.bind(this));
 
         this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
@@ -393,7 +397,9 @@ var RaptorWidget = {
             this.checkChange();
         } catch (exception) {
             this.stateRestore(state);
+            // <strict>
             handleError(exception);
+            // </strict>
         }
     },
 

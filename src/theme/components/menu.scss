@@ -4,7 +4,7 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 .raptor-menu {
-    z-index: 10000;
+    z-index: $z-menu;
     padding: 6px;
 }
 

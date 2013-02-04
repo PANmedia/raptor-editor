@@ -28,7 +28,6 @@
  * Dialog docked to body
  */
 .raptor-dock-docked {
-    z-index: 10000;
     .raptor-toolbar-wrapper {
         @include display-box();
         @include box-pack(center);
@@ -98,7 +97,6 @@
         margin: 0;
 
         @include box-ordinal-group(3);
-        @include border-radius(0);
     }
 
     .raptor-messages {
@@ -145,10 +143,5 @@
 
     .raptor-message-wrapper {
         width: 800px;
-    }
-
-    .raptor-message-wrapper:first-child {
-        @include border-top-right-radius(0);
-        @include border-top-left-radius(0);
     }
 }
