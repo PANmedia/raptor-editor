@@ -79,7 +79,7 @@ DockPlugin.prototype.dockToElement = function() {
     this.raptor.getLayout().getElement().addClass(this.options.baseClass + '-docked-to-element');
     this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
         position: this.options.position,
-        spacer: this.options.spacer
+        spacer: false
     });
 };
 
@@ -114,7 +114,7 @@ DockPlugin.prototype.dockToScreen = function() {
     layout.disableDragging();
     this.dockState = dockToScreen(layoutElement, {
         position: this.options.position,
-        spacer: this.options.spacer,
+        spacer: true,
         under: this.options.under
     });
 };
