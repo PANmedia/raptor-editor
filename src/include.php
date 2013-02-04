@@ -103,6 +103,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-remove.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-email.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-document.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-internal.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/list/list-ordered.js"></script>
