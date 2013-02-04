@@ -134,6 +134,9 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
                     uiObject.options = options;
                     var ui = uiObject.init();
 
+                    // Fix corner classes
+                    ui.removeClass('ui-corner-all');
+
                     // Append the UI object to the group
                     uiGroupContainer.append(ui);
 
@@ -153,6 +156,10 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
             }
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
+
+        // Fix corner classes
+        this.toolbar.find('.ui-button:first-child').addClass('ui-corner-left');
+        this.toolbar.find('.ui-button:last-child').addClass('ui-corner-right');
 
         var layout = this;
         $(function() {
