@@ -1,18 +1,37 @@
+/**
+ * @fileOverview Contains the click butotn to edit plugin code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
 var clickButtonToEditButton = null,
     clickButtonToEditInstance = null;
 
+/**
+ * @class The click button to edit plugin class.
+ *
+ * @param {type} name
+ * @param {Object} overrides Options hash.
+ */
 function ClickButtonToEditPlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'clickButtonToEdit', overrides);
 }
 
 ClickButtonToEditPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+/**
+ * Initialises the click to edit plugin.
+ */
 ClickButtonToEditPlugin.prototype.init = function() {
     this.raptor.getElement()
         .mouseenter(this.show.bind(this))
         .mouseleave(this.hide.bind(this));
 };
 
+/**
+ * Shows the 'click button to edit' button.
+ */
 ClickButtonToEditPlugin.prototype.show = function() {
     if (this.raptor.isEditing()) {
         return;
@@ -30,6 +49,11 @@ ClickButtonToEditPlugin.prototype.show = function() {
     });
 };
 
+/**
+ * Hides the 'click button to edit' button.
+ *
+ * @param event The mouse event to trigger the button's hide state.
+ */
 ClickButtonToEditPlugin.prototype.hide = function(event) {
     var button = this.getButton(this);
     if (event &&
@@ -40,6 +64,9 @@ ClickButtonToEditPlugin.prototype.hide = function(event) {
     button.hide();
 };
 
+/**
+ * Enables the editing state for the selection controlled by the button and the button is hidden.
+ */
 ClickButtonToEditPlugin.prototype.edit = function() {
     this.raptor.enableEditing();
     this.raptor.showLayout();
@@ -49,6 +76,8 @@ ClickButtonToEditPlugin.prototype.edit = function() {
 /**
  * Selects or creates the button and returns it.
  *
+ * @todo type and description for instance.
+ * @param {type} instance
  * @return {jQuery} The "click to edit" button.
  */
 ClickButtonToEditPlugin.prototype.getButton = function(instance) {
