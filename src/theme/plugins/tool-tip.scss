@@ -19,7 +19,6 @@
     white-space: nowrap;
     text-shadow: none;
     overflow: visible;
-    z-index: 1000;
     @include pointer-events(none);
     @include transition(opacity 0.23s 0s);
     @include background(
