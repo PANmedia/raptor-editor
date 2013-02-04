@@ -145,7 +145,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
                 }
                 // <strict>
                 else {
-                    handleError(_('UI identified by key "{{ui}}" does not exist', {ui: uiGroup[ii]}));
+                    handleError('UI identified by key "' + uiGroup[ii] + '" does not exist');
                 }
                 // </strict>
             }
