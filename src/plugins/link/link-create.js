@@ -57,6 +57,7 @@ Raptor.registerUi(new DialogToggleButton({
         linkTypes = [
             new LinkTypeInternal(this.raptor),
             new LinkTypeExternal(this.raptor),
+            new LinkTypeDocument(this.raptor),
             new LinkTypeEmail(this.raptor)
         ];
 
