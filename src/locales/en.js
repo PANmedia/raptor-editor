@@ -183,6 +183,7 @@ registerLocale('en', 'English', {
     tagMenuTagH1: 'Heading&nbsp;1',
     tagMenuTagH2: 'Heading&nbsp;2',
     tagMenuTagH3: 'Heading&nbsp;3',
+    tagMenuTagH4: 'Heading&nbsp;4',
     tagMenuTagNA: 'N/A',
     tagMenuTagP: 'Paragraph',
     tagMenuTagDiv: 'Div',

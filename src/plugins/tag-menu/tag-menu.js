@@ -18,7 +18,7 @@ TagMenu.prototype.changeTag = function(tag) {
     }
 
     var selectedElement = selectionGetElement(),
-        limitElement = selectedElement.closest('td');
+        limitElement = selectedElement.closest('td, li');
     if (limitElement.length === 0) {
         limitElement = this.raptor.getElement();
     }
