@@ -11,6 +11,10 @@
     z-index: 4000;
 }
 
+.raptor-click-button-to-edit-button .ui-icon {
+    background: inline-image('pencil.png') 0 0;
+}
+
 .raptor-click-button-to-edit {
     outline: 1px solid transparent;
 }
