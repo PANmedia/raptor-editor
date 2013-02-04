@@ -85,16 +85,18 @@
         padding: 7px 4px;
         font-size: $font-size;
         input[type=text] {
+            width: 300px;
+            padding: 5px;
+        }
+        input[type=text].raptor-external-href,
+        input[type=text].raptor-document-href {
             width: 400px;
         }
-        &.raptor-external-href {
-            width: 365px;
-        }
-        &.raptor-ui-link-create-email label {
+        &.raptor-email label {
             display: inline-block;
-            width: 115px;
+            width: 140px;
         }
-        &.raptor-ui-link-create-email input {
+        &.raptor-email input {
             width: 340px;
         }
     }
