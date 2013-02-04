@@ -31,7 +31,7 @@ FilteredPreviewButton.prototype.init = function() {
 };
 
 /**
- * @todo desc
+ * Enables or disables the button based.
  */
 FilteredPreviewButton.prototype.selectionChange = function() {
     if (this.isEnabled()) {
@@ -42,7 +42,9 @@ FilteredPreviewButton.prototype.selectionChange = function() {
 };
 
 /**
- * @todo desc and check please
+ * Checks if a button can enable a preview.
+ *
+ * @todo check please
  * @returns {Boolean} True if preview available and if the button is enabled
  */
 FilteredPreviewButton.prototype.canPreview = function() {

@@ -7,6 +7,7 @@
 
 /**
  * @class The core menu class.
+ * @constructor
  *
  * @param {Object} options
  * @returns {Menu}

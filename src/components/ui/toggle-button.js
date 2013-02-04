@@ -31,7 +31,7 @@ ToggleButton.prototype.init = function() {
 };
 
 /**
- * @todo all
+ * Changes the state of the button depending on whether it is active or not.
  */
 ToggleButton.prototype.selectionChange = function() {
     if (this.selectionToggle()) {

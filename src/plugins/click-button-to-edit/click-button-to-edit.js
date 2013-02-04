@@ -10,7 +10,10 @@ var clickButtonToEditButton = null,
 
 /**
  * @class The click button to edit plugin class.
+ * @constructor
+ * @augments Raptor Plugin.
  *
+ * @todo des and type for name.
  * @param {type} name
  * @param {Object} overrides Options hash.
  */

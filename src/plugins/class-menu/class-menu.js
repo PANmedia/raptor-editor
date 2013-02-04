@@ -113,8 +113,4 @@ ClassMenu.prototype.getMenuItems = function() {
         .mouseleave(this.previewRestore.bind(this));
 };
 
-/**
- * @todo no clue
- * @param {type} param
- */
 Raptor.registerUi(new ClassMenu());

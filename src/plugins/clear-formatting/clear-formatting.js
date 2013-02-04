@@ -7,7 +7,8 @@
 
 /**
  * Creates an instance of the preview button that clears the formatting on a selection.
- * 
+ *
+ * @todo des and type for the param.
  * @param {type} param
  */
 Raptor.registerUi(new PreviewButton({

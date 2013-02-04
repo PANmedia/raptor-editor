@@ -9,7 +9,7 @@
  * @class the css class applier button class.
  *
  * @constructor
- * @augments PreviewToggleButton class.
+ * @augments PreviewToggleButton
  *
  * @todo param desc
  * @param {Object} options
