@@ -78,6 +78,7 @@ src/plugins/history/history-undo.js
 src/plugins/hr/hr-create.js
 src/plugins/image-resize-button/image-resize-button.js
 src/plugins/insert-file/insert-file.js
+src/plugins/link/link-type-document.js
 src/plugins/link/link-type-email.js
 src/plugins/link/link-type-external.js
 src/plugins/link/link-type-internal.js
@@ -124,6 +125,7 @@ src/plugins/color-menu-basic/templates/menu.html
 src/plugins/embed/templates/dialog.html
 src/plugins/insert-file/templates/dialog.html
 src/plugins/link/templates/dialog.html
+src/plugins/link/templates/document.html
 src/plugins/link/templates/email.html
 src/plugins/link/templates/external.html
 src/plugins/link/templates/internal.html
