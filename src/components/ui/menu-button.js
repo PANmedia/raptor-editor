@@ -30,6 +30,10 @@ MenuButton.prototype = Object.create(Button.prototype);
  * @param {type} event The click event.
  */
 MenuButton.prototype.click = function(event) {
-    this.menu.show();
+    if (this.menu.getMenu().is(':visible')) {
+        $('.raptor-menu').hide();
+    } else {
+        this.menu.show();
+    }
     event.preventDefault();
 };
