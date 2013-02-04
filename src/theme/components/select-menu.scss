@@ -3,8 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/border-radius';
-
 .raptor-selectmenu {
     overflow: visible;
     position: relative;
@@ -16,7 +14,7 @@
 
     // Pervent floated buttons breaking menu position
     float: none !important;
-    
+
     .ui-icon {
         position: absolute;
         right: 1px;
@@ -67,8 +65,4 @@
 .raptor-selectmenu-button {
     background: #f5f5f5;
     border: 1px solid #ccc;
-}
-
-.raptor-buttonset .raptor-selectmenu-visible .raptor-selectmenu-button {
-    @include border-bottom-radius(0);
 }

@@ -3,7 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/border-radius';
 @import 'compass/css3/images';
 @import 'compass/css3/transition';
 
@@ -22,7 +21,6 @@
     overflow: visible;
     z-index: 1000;
     @include pointer-events(none);
-    @include border-radius(9px 9px 2px 2px);
     @include transition(opacity 0.23s 0s);
     @include background(
         linear-gradient(rgba(40, 40, 40, 0) 5px, rgba(40, 40, 40, 1) 6px, rgba(40, 40, 40, 1)),
