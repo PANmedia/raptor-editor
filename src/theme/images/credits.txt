@@ -37,6 +37,7 @@ Icons by Yusuke Kamiyamane. All rights reserved. Licensed under Creative Commons
  - image.png
  - image-resize.png
  - palette-paint-brush.png
+ - pencil.png
  - pin-in.png (modified by David Neilsen)
  - pin.png
  - table-delete-column.png
