@@ -17,8 +17,9 @@
     <script src="../../src/dependencies/jquery-ui.js"></script>
     <script src="../../packages/raptor.rails.js"></script>
 <?php elseif ($type === 'mammoth'): ?>
-    <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
-    <link rel="stylesheet" href="../../packages/raptor-front-end.css" />
+    <link rel="stylesheet" href="../include/mammoth-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/mammoth/theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/mammoth/theme-icons.css" />
     <script src="../../src/dependencies/jquery.js"></script>
     <script src="../../src/dependencies/jquery-ui.js"></script>
     <script src="../../packages/raptor.mammoth.js"></script>
