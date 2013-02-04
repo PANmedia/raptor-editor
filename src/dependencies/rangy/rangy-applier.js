@@ -874,7 +874,7 @@ rangy.createModule("Applier", function(api, module) {
                     }
                 }
                 var html = fragmentToHtml(range.cloneContents());
-                if (html.match(/^<(img)/)) {
+                if (html.match(/^<(img)/) || trim(html.replace(/<.*?>/g, '')) === '') {
                     return false;
                 }
                 return true;
