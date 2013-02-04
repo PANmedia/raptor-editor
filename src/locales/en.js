@@ -104,6 +104,20 @@ registerLocale('en', 'English', {
         '    <li>Copy the web address from your browser\'s address bar and paste it into the box above.</li>' +
         '</ol>',
 
+    linkTypeDocumentLabel: 'Document or other file',
+    linkTypeDocumentHeader: 'Link to a document or other file',
+    linkTypeDocumentLocationLabel: 'Location:',
+    linkTypeDocumentLocationPlaceHolder: 'Enter a URL',
+    linkTypeDocumentNewWindowHeader: 'New window',
+    linkTypeDocumentNewWindowLabel: 'Check this box to have the file open in a new browser window/tab.',
+    linkTypeDocumentInfo:
+        '<h2>Not sure what to put in the box above?</h2>' +
+        '<ol>' +
+        '    <li>Ensure the file has been uploaded to your website.</li>' +
+        '    <li>Open the uploaded file in your browser.</li>' +
+        '    <li>Copy the file\'s URL from your browser\'s address bar and paste it into the box above.</li>' +
+        '</ol>',
+
     linkTypeInternalLabel: 'Page on this website',
     linkTypeInternalHeader: 'Link to a page on this website',
     linkTypeInternalLocationLabel: '',
