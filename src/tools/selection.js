@@ -667,13 +667,16 @@ function selectionClearFormatting(limitNode, selection) {
             // Move the caret to the insertion point
             range.collapseAfter(parent);
         }
-        $($.parseHTML(content).reverse()).each(function() {
-            if ($(this).is('img')) {
-                range.insertNode($(this).removeAttr('width height class style').get(0));
-                return;
-            }
-            range.insertNode(this);
-        });
+        content = $.parseHTML(content);
+        if (content !== null) {
+            $(content.reverse()).each(function() {
+                if ($(this).is('img')) {
+                    range.insertNode($(this).removeAttr('width height class style').get(0));
+                    return;
+                }
+                range.insertNode(this);
+            });
+        }
     }
 }
 
