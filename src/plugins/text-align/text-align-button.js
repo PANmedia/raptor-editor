@@ -12,7 +12,8 @@ function TextAlignButton(options) {
             this.selectionChange();
         },
         selectionToggle: function() {
-            return selectionContains('.' + this.getClass(), this.raptor.getElement());
+            return rangy.getSelection().getAllRanges().length > 0 &&
+                selectionContains('.' + this.getClass(), this.raptor.getElement());
         }
     }, options));
 }

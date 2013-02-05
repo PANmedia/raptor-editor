@@ -30,10 +30,6 @@ Raptor.registerUi(new DialogButton({
         return DialogButton.prototype.init.apply(this, arguments);
     },
 
-    openDialog: function() {
-        this.processDialog();
-    },
-
     applyAction: function() {
     },
 

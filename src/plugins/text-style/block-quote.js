@@ -5,6 +5,7 @@ Raptor.registerUi(new PreviewToggleButton({
         this.selectionChange();
     },
     selectionToggle: function() {
-        return selectionContains('blockquote', this.raptor.getElement());
+        return rangy.getSelection().getAllRanges().length > 0 &&
+            selectionContains('blockquote', this.raptor.getElement());
     }
 }));

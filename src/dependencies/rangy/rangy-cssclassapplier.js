@@ -838,7 +838,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
                     }
                 }
                 var html = fragmentToHtml(range.cloneContents());
-                if (html.match(/^<(img)/)) {
+                if (html.match(/^<(img)/) || trim(html.replace(/<.*?>/g, '')) === '') {
                     return false;
                 }
                 return true;
@@ -847,6 +847,9 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
         isAppliedToRanges: function(ranges) {
             var i = ranges.length;
+            if (i === 0) {
+                return false;
+            }
             while (i--) {
                 if (!this.isAppliedToRange(ranges[i])) {
                     return false;

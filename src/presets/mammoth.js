@@ -3,6 +3,7 @@ Raptor.defaults = $.extend(basePreset, {
         type: 'toolbar',
         options: {
             uiOrder: [
+                ['logo'],
                 ['save', 'cancel'],
                 ['dockToScreen', 'guides'],
                 ['viewSource'],
@@ -26,4 +27,3 @@ Raptor.defaults = $.extend(basePreset, {
         }
     }
 });
-

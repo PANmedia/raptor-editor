@@ -639,7 +639,7 @@ function selectionClearFormatting(limitNode, selection) {
         }
 
         content = $('<div/>').append(fragmentToHtml(content)).html().replace(/(<\/?.*?>)/gi, function(match) {
-            if (match.substring(0, 4) === '<img') {
+            if (match.match(/^<(img|object|param|embed|iframe)/) !== null) {
                 return match;
             }
             return '';
@@ -667,13 +667,16 @@ function selectionClearFormatting(limitNode, selection) {
             // Move the caret to the insertion point
             range.collapseAfter(parent);
         }
-        $($.parseHTML(content).reverse()).each(function() {
-            if ($(this).is('img')) {
-                range.insertNode($(this).removeAttr('width height class style').get(0));
-                return;
-            }
-            range.insertNode(this);
-        });
+        content = $.parseHTML(content);
+        if (content !== null) {
+            $(content.reverse()).each(function() {
+                if ($(this).is('img')) {
+                    range.insertNode($(this).removeAttr('width height class style').get(0));
+                    return;
+                }
+                range.insertNode(this);
+            });
+        }
     }
 }
 

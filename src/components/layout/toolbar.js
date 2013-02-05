@@ -134,11 +134,13 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
                     uiObject.options = options;
                     var ui = uiObject.init();
 
-                    // Fix corner classes
-                    ui.removeClass('ui-corner-all');
+                    if (typeIsElement(ui)) {
+                        // Fix corner classes
+                        ui.removeClass('ui-corner-all');
 
-                    // Append the UI object to the group
-                    uiGroupContainer.append(ui);
+                        // Append the UI object to the group
+                        uiGroupContainer.append(ui);
+                    }
 
                     // Add the UI object to the editors list
                     this.raptor.uiObjects[uiGroup[ii]] = uiObject;

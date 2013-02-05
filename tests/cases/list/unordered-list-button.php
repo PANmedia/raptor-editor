@@ -28,7 +28,7 @@
                     convallis
                 </p>
                 <ul>
-                    <li>{dui id erat pellentesque et rhoncus}</li>
+                    <li>{<p>dui id erat pellentesque et rhoncus</p>}</li>
                 </ul>
                 <p>
                     nunc semper. Suspendisse
