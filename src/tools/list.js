@@ -192,7 +192,11 @@ function listWrapSelection(listType, listItem, wrapper) {
     listEnforceValidChildren($(replacement), listItem, validChildren);
 
     if (replacement.length) {
-        selectionSelectInner($(replacement)[0]);
+        var select = $(replacement);
+        if (select.is(listType)) {
+            select = select.find(' > ' + listItem);
+        }
+        selectionSelectInner(select.get(0));
     }
 }
 
