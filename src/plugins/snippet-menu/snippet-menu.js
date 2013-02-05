@@ -73,8 +73,10 @@ SnippetMenu.prototype.previewRestore = function() {
 };
 
 /**
+ * Gets the menu items for the snippet menu.
  *
- * @returns {unresolved}
+ * @todo check type for return
+ * @returns {Element} The menu items.
  */
 SnippetMenu.prototype.getMenuItems = function() {
     var items = '';
