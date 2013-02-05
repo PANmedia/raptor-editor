@@ -78,7 +78,8 @@ var listValidLiChildren = [
     'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button',
     'cite', 'code', 'dfn', 'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd',
     'label', 'map', 'object', 'p', 'q', 's',  'samp', 'select', 'small', 'span',
-    'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
+    'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
 ];
 
 /**
