@@ -174,6 +174,11 @@ function listWrapSelection(listType, listItem, wrapper) {
     // the two <tables>.
     if ($(commonAncestor).is('td')) {
         rangeSelectElementContent(range, commonAncestor);
+
+    // Other cases require checking if the range contains the full text of the
+    // common ancestor. In these cases the commonAncestor should be selected
+    } else if (rangeContainsNodeText(range, commonAncestor)) {
+        rangeSelectElement(range, $(commonAncestor));
     }
 
     if (rangeIsEmpty(range)) {
