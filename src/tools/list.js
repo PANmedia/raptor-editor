@@ -185,19 +185,17 @@ function listWrapSelection(listType, listItem, wrapper) {
     }
 
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
-    var replacementHtml = '<' + listType + '>' + contents + '</' + listType + '>';
-    var replacement = rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
+    var uniqueId = elementUniqueId();
+    var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + contents + '</' + listType + '>';
+    rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
+    var replacement = $('#' + uniqueId).removeAttr('id');
     var validChildren = listType === 'blockquote' ? listValidPChildren : listValidLiChildren;
-    listEnforceValidChildren($(replacement), listItem, validChildren);
-
-    if (replacement.length) {
-        var select = $(replacement);
-        if (select.is(listType)) {
-            select = select.find(' > ' + listItem);
-        }
-        selectionSelectInner(select.get(0));
+    listEnforceValidChildren(replacement, listItem, validChildren);
+    if (replacement.is(listType)) {
+        replacement = replacement.find(' > ' + listItem);
     }
+    selectionSelectInner(replacement.get(0));
 }
 
 /**
