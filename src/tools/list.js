@@ -209,7 +209,6 @@ function listWrapSelection(listType, listItem, wrapper) {
  * @return {String} Prepared HTML.
  */
 function listConvertItemsForList(items, listItem) {
-    console.log(items);
     items = $('<div/>').html(items);
 
     items.contents().each(function() {
