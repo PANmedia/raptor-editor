@@ -639,7 +639,7 @@ function selectionClearFormatting(limitNode, selection) {
         }
 
         content = $('<div/>').append(fragmentToHtml(content)).html().replace(/(<\/?.*?>)/gi, function(match) {
-            if (match.substring(0, 4) === '<img') {
+            if (match.match(/^<(img|object|param|embed|iframe)/) !== null) {
                 return match;
             }
             return '';
