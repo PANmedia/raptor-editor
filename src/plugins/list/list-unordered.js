@@ -1,7 +1,7 @@
-Raptor.registerUi(new PreviewButton({
+Raptor.registerUi(new PreviewToggleButton({
     name: 'listUnordered',
     init: function() {
-        var result = Button.prototype.init.apply(this, arguments);
+        var result = PreviewToggleButton.prototype.init.apply(this, arguments);
         if (elementIsValid(this.raptor.getElement(), listValidUlOlParents)) {
             return result;
         }
@@ -9,5 +9,10 @@ Raptor.registerUi(new PreviewButton({
     },
     action: function() {
         listToggle('ul', 'li', this.raptor.getElement());
+    },
+    selectionToggle: function() {
+        var selection = rangy.getSelection();
+        return selection.getAllRanges().length > 0 &&
+            (selectionGetElements(selection).is('ul,li') || selectionContains('li', this.raptor.getElement()));
     }
 }));
