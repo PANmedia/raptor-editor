@@ -185,14 +185,11 @@ function listWrapSelection(listType, listItem, wrapper) {
         range.selectNode(elementClosestBlock($(commonAncestor), wrapper).get(0));
     }
 
-    var contents = fragmentToHtml(range.extractContents());
-    if (!$($.parseHTML(contents)).is(listItem)) {
-        contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
-    }
+    var contents = listConvertItemsForList(fragmentToHtml(range.extractContents()), listItem);
 
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var uniqueId = elementUniqueId();
-    var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + contents + '</' + listType + '>';
+    var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
     rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
     var replacement = $('#' + uniqueId).removeAttr('id');
@@ -202,6 +199,22 @@ function listWrapSelection(listType, listItem, wrapper) {
         replacement = replacement.find(' > ' + listItem);
     }
     selectionSelectInner(replacement.get(0));
+}
+
+function listConvertItemsForList(items, listItem) {
+    console.log(items);
+    items = $('<div/>').html(items);
+
+    items.contents().each(function() {
+        if ($(this).text().trim() === '') {
+            return $(this).remove();
+        }
+        $(this).wrap('<' + listItem + '/>');
+        if (!elementIsBlock(this)) {
+            $(this).wrap('<p>');
+        }
+    });
+    return items.html();
 }
 
 /**
