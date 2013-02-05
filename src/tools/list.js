@@ -201,6 +201,13 @@ function listWrapSelection(listType, listItem, wrapper) {
     selectionSelectInner(replacement.get(0));
 }
 
+/**
+ * Wrap non block elements in <p> tags, then in <li>'s.
+ *
+ * @param  {String} items HTML to be prepared.
+ * @param  {String} listItem
+ * @return {String} Prepared HTML.
+ */
 function listConvertItemsForList(items, listItem) {
     console.log(items);
     items = $('<div/>').html(items);
@@ -227,7 +234,7 @@ function listConvertItemsForList(items, listItem) {
  * @param  {string[]} validTagChildren Array of valid child tag names.
  * @return {Element|null} Result of the final conversion.
  */
-function listConvertListItem(listItem, listType, tag, validTagChildren) {
+function listConvertListItem(listItem, listType, tag) {
      // <strict>
     if (!typeIsElement(listItem)) {
         handleInvalidArgumentError('Parameter 1 for listConvertListItem must be a jQuery element', listItem);
@@ -264,7 +271,7 @@ function listUnwrap(list, listItem, listType) {
     // </strict>
     var convertedItem = null;
     list.find(listItem).each(function() {
-        listConvertListItem($(this), listType, 'p', listValidPChildren);
+        listConvertListItem($(this), listType, 'p');
     });
     return list.contents().unwrap();
 }
@@ -370,7 +377,7 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
 
     $(toUnwrap).each(function() {
         replacementPlaceholder.after(this);
-        listConvertListItem($(this), listType, 'p', listValidPChildren);
+        listConvertListItem($(this), listType, 'p');
     });
 
     replacementPlaceholder.remove();
@@ -448,7 +455,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (commonAncestor.next().length && !commonAncestor.prev().length) {
-        commonAncestor.parent().before(listConvertListItem(commonAncestor, listType, 'p', listValidPChildren));
+        commonAncestor.parent().before(listConvertListItem(commonAncestor, listType, 'p'));
         commonAncestor.remove();
         return;
     }
@@ -460,7 +467,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (!commonAncestor.next().length && commonAncestor.prev().length) {
-        commonAncestor.parent().after(listConvertListItem(commonAncestor, 'p', listType, listValidPChildren));
+        commonAncestor.parent().after(listConvertListItem(commonAncestor, 'p', listType));
         commonAncestor.remove();
         return;
     }
