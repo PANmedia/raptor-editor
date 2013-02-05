@@ -6,8 +6,8 @@
  */
 
 /**
- * Creates the dock to element button for use in the raptor UI.
- * 
+ * Creates an instance of the dock to element button for use in the raptor UI.
+ *
  * @todo not sure how to document this one.
  * @param {type} param
  */

@@ -6,7 +6,7 @@
  */
 
 /**
- * Creates the embed dialog for use in the Raptor UI.
+ * Creates an intance of the embed dialog for use in the Raptor UI.
  *
  * @todo des and type for the param.
  * @param {type} param

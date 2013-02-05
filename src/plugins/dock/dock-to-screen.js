@@ -6,7 +6,7 @@
  */
 
 /**
- * Creates the dock to screen button for use in the Raptor UI.
+ * Creates an instance of the dock to screen button for use in the Raptor UI.
  *
  * @todo des and type for the param.
  * @param {type} param

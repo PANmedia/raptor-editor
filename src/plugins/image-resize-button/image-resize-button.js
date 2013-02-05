@@ -1,19 +1,43 @@
+/**
+ * @fileOverview Contains the image resize button plugin class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
 var imageResizeButton = false,
     imageResizeButtonDialog = false
     imageResizeButtonImage = null;
 
+/**
+ * @class the image resize button plugin class.
+ * @constructor
+ * @augments RaptorPlugin
+ *
+ * @todo name param details
+ * @param {type} name
+ * @param {Object} overrides Options hash.
+ */
 function ImageResizeButtonPlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'imageResizeButton', overrides);
 }
 
 ImageResizeButtonPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+/**
+ * Initialize the image resize button plugin button.
+ */
 ImageResizeButtonPlugin.prototype.init = function() {
     this.raptor.getElement()
         .on('mouseenter', 'img', this.show.bind(this))
         .on('mouseleave', 'img', this.hide.bind(this));
 };
 
+/**
+ * Prepare and return the image resize button Element to be used in the Raptor UI.
+ *
+ * @returns {imageResizeButton}
+ */
 ImageResizeButtonPlugin.prototype.getButton = function() {
     if (imageResizeButton === false) {
         imageResizeButton = $(this.raptor.getTemplate('image-resize-button.button', this.options))
@@ -28,6 +52,11 @@ ImageResizeButtonPlugin.prototype.getButton = function() {
     return imageResizeButton;
 };
 
+/**
+ * Gets the image resize button plugin dialog.
+ *
+ * @returns {imageResizeButtonDialog}
+ */
 ImageResizeButtonPlugin.prototype.getDialog = function() {
     if (imageResizeButtonDialog === false) {
         imageResizeButtonDialog = $(this.raptor.getTemplate('image-resize-button.dialog', this.options));
@@ -83,10 +112,21 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
     return imageResizeButtonDialog;
 };
 
+/**
+ * Opens the image resize button plugin dialog.
+ *
+ * @returns {undefined}
+ */
 ImageResizeButtonPlugin.prototype.openDialog = function() {
     aDialogOpen(this.getDialog());
 };
 
+/**
+ * Displays the image resize tool.
+ *
+ * @todo event type?
+ * @param {type} event Click event to trigger the appearance of the image resize tool.
+ */
 ImageResizeButtonPlugin.prototype.show = function(event) {
     if (!this.raptor.isEditing()) {
         return;
@@ -101,6 +141,11 @@ ImageResizeButtonPlugin.prototype.show = function(event) {
     });
 };
 
+/**
+ * Hides the image resize tool
+ *
+ * @param {type} event Click event to hide the image resize tool.
+ */
 ImageResizeButtonPlugin.prototype.hide = function(event) {
     var button = this.getButton();
     if((event &&

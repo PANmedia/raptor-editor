@@ -1,4 +1,16 @@
+/**
+ * @fileOverview Contains the insert file button code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
 
+/**
+ * Creates an instance of the button class to allow the insertation of files.
+ *
+ * @todo param details?
+ * @param {type} param
+ */
 Raptor.registerUi(new Button({
     name: 'insertFile',
 

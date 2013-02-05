@@ -1,3 +1,16 @@
+/**
+ * @fileOverview Contains the guides button class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates an instance of a preview button to show the guides of the elements.
+ *
+ * @todo des and type for the param.
+ * @param {type} param
+ */
 Raptor.registerUi(new PreviewButton({
     name: 'guides',
 

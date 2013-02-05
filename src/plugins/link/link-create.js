@@ -1,8 +1,21 @@
+/**
+ * @fileOverview Contains the create link button code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
 var linkMenu,
     linkTypes,
     linkContent,
     linkAttributes;
 
+/**
+ * Creates an instance of the dialog toggle button to create links.
+ *
+ * @todo param stuff?
+ * @param {type} param
+ */
 Raptor.registerUi(new DialogToggleButton({
     name: 'linkCreate',
 
