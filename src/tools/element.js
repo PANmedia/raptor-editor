@@ -74,6 +74,23 @@ function elementIsBlock(element) {
 }
 
 /**
+ * Determine whether element contains a block element.
+ *
+ * @param  {Element} element
+ * @return {Boolean} True if the element contains a block element, false otherwise.
+ */
+function elementContainsBlockElement(element) {
+    var containsBlock = false;
+    element.contents().each(function() {
+        if (!typeIsTextNode(this) && elementIsBlock(this)) {
+            containsBlock = true;
+            return;
+        }
+    });
+    return containsBlock;
+}
+
+/**
  * Determine whether element is inline or block.
  *
  * @see http://stackoverflow.com/a/2881008/187954
