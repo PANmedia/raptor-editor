@@ -31,6 +31,9 @@ function listShouldUnwrap(listType, listItem) {
     if (selectedElements.is(listType)) {
         return true;
     }
+    if (listType === 'blockquote' && !selectedElements.parent().is(listType)) {
+        return false;
+    }
     if (selectedElements.is(listItem) && selectedElements.parent().is(listType)) {
         return true;
     }
@@ -124,6 +127,9 @@ function listEnforceValidChildren(list, listItem, validChildren) {
     }
     // </strict>
     var removeEmpty = function(node) {
+        if ($(node).is('img')) {
+            return;
+        }
         if (!$(node).text().trim()) {
             $(node).remove();
             return true;
@@ -212,6 +218,10 @@ function listConvertItemsForList(items, listItem) {
     items = $('<div/>').html(items);
 
     if (!elementContainsBlockElement(items)) {
+        // Do not double wrap p's
+        if (listItem === 'p') {
+            return '<' + listItem + '>' + items.html() + '</' + listItem + '>';
+        }
         return '<' + listItem + '><p>' + items.html() + '</p></' + listItem + '>';
     }
 
