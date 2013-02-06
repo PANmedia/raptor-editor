@@ -211,7 +211,14 @@ function listWrapSelection(listType, listItem, wrapper) {
 function listConvertItemsForList(items, listItem) {
     items = $('<div/>').html(items);
 
+    if (!elementContainsBlockElement(items)) {
+        return '<' + listItem + '><p>' + items.html() + '</p></' + listItem + '>';
+    }
+
     items.contents().each(function() {
+        if ($(this).is('img')) {
+            return true;
+        }
         if ($(this).text().trim() === '') {
             return $(this).remove();
         }
@@ -220,6 +227,7 @@ function listConvertItemsForList(items, listItem) {
             $(this).wrap('<p>');
         }
     });
+
     return items.html();
 }
 
