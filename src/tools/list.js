@@ -359,7 +359,8 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
     var replacementPlaceholderId = elementUniqueId();
 
     rangeExpandToParent(range);
-    var breakOutValidityList = $.grep(listValidPParents, function(item) {
+    var breakOutValidityList = listType === 'blockquote' ? listValidBlockQuoteParents : listValidPParents;
+    breakOutValidityList = $.grep(breakOutValidityList, function(item) {
         return item !== 'li';
     });
     rangeReplaceWithinValidTags(range, $('<p/>').attr('id', replacementPlaceholderId), wrapper, breakOutValidityList);
@@ -434,7 +435,6 @@ function listUnwrapSelection(listType, listItem, wrapper) {
     if (!commonAncestor.is(listItem)) {
         commonAncestor = commonAncestor.closest(listItem);
     }
-
     /**
      * <listType>
      *     <li>{list content}</li>
