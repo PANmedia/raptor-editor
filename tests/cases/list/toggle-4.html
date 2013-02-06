@@ -127,5 +127,37 @@
             listToggle('ul', 'li', input);
         });
     </script>
+    <div class="test-20">
+        <h1>List 20: Selection containing an image and block elements</h1>
+        <div class="test-input">
+            {<p>
+                Here is an image: <img src="http://www.raptor-editor.com/images/favicon.png" title="Raptor Editor" />. It is selected.
+            </p>
+            <p>
+                This is another paragraph.
+            </p>}
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>
+                    <p>
+                        Here is an image: <img src="http://www.raptor-editor.com/images/favicon.png" title="Raptor Editor" />. It is selected.
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        This is another paragraph.
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-20', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
 </body>
 </html>
