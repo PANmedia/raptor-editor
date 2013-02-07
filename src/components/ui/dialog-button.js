@@ -39,12 +39,11 @@ DialogButton.prototype.action = function() {
 };
 
 // <strict>
-
 /**
  * Callback triggered when the user clicks the OK button on the dialog.
  *
  * @param {Object} dialog Dialog to get the ok button from.
- * @throws {Error} This function should be overridden.
+ * @throws {Error} If this function is not overridden.
  */
 DialogButton.prototype.applyAction = function(dialog) {
     throw new Error('Expected child class to override DialogButton.applyAction');
@@ -53,7 +52,7 @@ DialogButton.prototype.applyAction = function(dialog) {
 /**
  * Callback triggered when the user clicks on the dialog button.
  *
- * @throws {Error} This function should be overridden.
+ * @throws {Error} If this function is not overridden.
  */
 DialogButton.prototype.getDialogTemplate = function() {
     throw new Error('Expected child class to override DialogButton.getDialogTemplate');
