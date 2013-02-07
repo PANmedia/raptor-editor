@@ -63,7 +63,7 @@ TagMenu.prototype.apply = function(event) {
 };
 
 /**
- * Generates a preview state for a change of tag
+ * Generates a preview state for a change of tag.
  *
  * @param event The mouse event to trigger the preview.
  */
@@ -76,9 +76,9 @@ TagMenu.prototype.preview = function(event) {
 };
 
 /**
+ * Restores the tag menu from it's preview state.
  *
- * @param {type} event
- * @returns {undefined}
+ * @param event The mouse event to trigger the restoration of the tag menu.
  */
 TagMenu.prototype.previewRestore = function(event) {
     if (this.preview) {
@@ -87,8 +87,7 @@ TagMenu.prototype.previewRestore = function(event) {
 };
 
 /**
- *
- * @returns {unresolved}
+ * Updates the display of the tag menu button.
  */
 TagMenu.prototype.updateButton = function() {
     var tag = selectionGetElements()[0],
@@ -125,8 +124,8 @@ TagMenu.prototype.updateButton = function() {
 //};
 
 /**
- *
- * @returns {unresolved}
+ * Prepares and returns the menu items for use in the raptor UI.
+ * @returns {Element}
  */
 TagMenu.prototype.getMenuItems = function() {
     return $(this.raptor.getTemplate('tag-menu.menu', this.options))

@@ -1,8 +1,12 @@
 /**
- * Default options for Raptor.
- *
+ * @fileOverview Default options for Raptor.
  * @namespace Default options for Raptor.
+ *
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
+
 var basePreset = {
     /**
      * @type Object Default layout to use.
