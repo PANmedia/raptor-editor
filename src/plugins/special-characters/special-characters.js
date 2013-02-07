@@ -5,7 +5,7 @@
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
-var specialCharactersDialog = null;
+var insertCharacter = false;
 
 /**
  * Creates an instance of the button class to insert special characters.
@@ -13,9 +13,12 @@ var specialCharactersDialog = null;
  * @todo param details?
  * @param {type} param
  */
-Raptor.registerUi(new Button({
+Raptor.registerUi(new DialogButton({
     name: 'specialCharacters',
     options: {
+        dialogOptions: {
+            width: 500
+        },
         setOrder: [
             'symbols',
             'mathematics',
@@ -218,17 +221,21 @@ Raptor.registerUi(new Button({
         }
     },
 
-    action: function() {
-        selectionSave();
-        aDialogOpen(this.getDialog());
+    applyAction: function(dialog) {
+        this.raptor.actionApply(function() {
+            if (insertCharacter) {
+                selectionReplace(insertCharacter);
+            }
+            insertCharacter = false;
+        });
     },
 
     /**
      * Prepare tabs and add buttons to tab content.
      *
-     * @return {jQuery}
+     * @return {Element}
      */
-    prepareDialogHtml: function() {
+    getDialogTemplate: function() {
         var html = $(this.raptor.getTemplate('special-characters.dialog')).appendTo('body').hide();
         var setKey, tabContent, character, characterButton;
         for (var setOrderIndex = 0; setOrderIndex < this.options.setOrder.length; setOrderIndex++) {
@@ -244,59 +251,36 @@ Raptor.registerUi(new Button({
                 baseClass: this.options.baseClass,
                 key: setKey
             }));
-
+            var tabCharacters = [];
             for (var charactersIndex = 0; charactersIndex < this.options.characterSets[setKey].characters.length; charactersIndex++) {
                 character = this.options.characterSets[setKey].characters[charactersIndex];
-                characterButton = $(this.raptor.getTemplate('special-characters.tab-button', {
+                characterButton = this.raptor.getTemplate('special-characters.tab-button', {
                     htmlEntity: character[0],
                     description: character[1],
                     setKey: setKey,
                     charactersIndex: charactersIndex
-                }));
-                tabContent.append(characterButton);
+                });
+                tabCharacters.push(characterButton);
             }
+            tabContent.append(tabCharacters.join(''));
             html.find('ul').after(tabContent);
         }
         html.show();
 
-        var ui = this;
+        var _this = this;
         html.find('button').each(function() {
             aButton(this);
         }).click(function() {
             var setKey = $(this).attr('data-setKey');
             var charactersIndex = $(this).attr('data-charactersIndex');
-            selectionRestore();
-            var htmlEntity = ui.options.characterSets[setKey].characters[charactersIndex][0];
-            selectionReplace(htmlEntity);
-            selectionSave();
+            insertCharacter = _this.options.characterSets[setKey].characters[charactersIndex][0];
+            _this.getOkButton(_this.name).click.call(this);
         });
         aTabs(html);
         return html;
     },
 
-    getDialog: function() {
-        if (!specialCharactersDialog) {
-            specialCharactersDialog = this.prepareDialogHtml();
-            aDialog(specialCharactersDialog, {
-                resizable: false,
-                autoOpen: false,
-                width: 500,
-                title: _('specialCharactersDialogTitle'),
-                dialogClass: this.options.dialogClass,
-                buttons: [
-                    {
-                        text: _('specialCharactersDialogOKButton'),
-                        click: function() {
-                            selectionRestore();
-                            aDialogClose(specialCharactersDialog);
-                        }.bind(this),
-                        icons: {
-                            primary: 'ui-icon-circle-check'
-                        }
-                    }
-                ]
-            });
-        }
-        return specialCharactersDialog;
+    getCancelButton: function() {
+        return;
     }
 }));
