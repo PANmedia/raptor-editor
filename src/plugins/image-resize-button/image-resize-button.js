@@ -5,8 +5,19 @@
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
+/**
+ * @type {Element} The shared image resize button.
+ */
 var imageResizeButton = false,
+
+    /**
+     * @type {Element} The shared image resize dialog.
+     */
     imageResizeButtonDialog = false,
+
+    /**
+     * @type {Element} The image currently being resized.
+     */
     imageResizeButtonImage = null;
 
 /**
@@ -14,8 +25,7 @@ var imageResizeButton = false,
  * @constructor
  * @augments RaptorPlugin
  *
- * @todo name param details
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function ImageResizeButtonPlugin(name, overrides) {
@@ -36,7 +46,7 @@ ImageResizeButtonPlugin.prototype.init = function() {
 /**
  * Prepare and return the image resize button Element to be used in the Raptor UI.
  *
- * @returns {imageResizeButton}
+ * @returns {Element}
  */
 ImageResizeButtonPlugin.prototype.getButton = function() {
     if (imageResizeButton === false) {
@@ -55,7 +65,7 @@ ImageResizeButtonPlugin.prototype.getButton = function() {
 /**
  * Gets the image resize button plugin dialog.
  *
- * @returns {imageResizeButtonDialog}
+ * @returns {Element}
  */
 ImageResizeButtonPlugin.prototype.getDialog = function() {
     if (imageResizeButtonDialog === false) {
@@ -124,8 +134,7 @@ ImageResizeButtonPlugin.prototype.openDialog = function() {
 /**
  * Displays the image resize tool.
  *
- * @todo event type?
- * @param {type} event Click event to trigger the appearance of the image resize tool.
+ * @param {Event} event Click event to trigger the appearance of the image resize tool.
  */
 ImageResizeButtonPlugin.prototype.show = function(event) {
     if (!this.raptor.isEditing()) {
@@ -144,7 +153,7 @@ ImageResizeButtonPlugin.prototype.show = function(event) {
 /**
  * Hides the image resize tool
  *
- * @param {type} event Click event to hide the image resize tool.
+ * @param {Event} event Click event to hide the image resize tool.
  */
 ImageResizeButtonPlugin.prototype.hide = function(event) {
     var button = this.getButton();
