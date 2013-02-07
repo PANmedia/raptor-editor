@@ -1,23 +1,22 @@
 /**
  * @fileOverview Contains the dialog button class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author Melissa Richards <melissa@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @todo desc??
- * @type Array
+ * @type {Object} Container for Raptor dialogs.
  */
 var dialogs = {};
 
 /**
- * @class the dialog button class.
+ * @class
  *
  * @constructor
- * @augments button
+ * @augments Button
  *
- * @todo return type check and desc
  * @param {Object} options
  * @returns {DialogButton}
  */
@@ -29,8 +28,8 @@ function DialogButton(options) {
 DialogButton.prototype = Object.create(Button.prototype);
 
 /**
- *
- * @returns {undefined}
+ * A dialog button's action is to open a dialog, no content is modified at this
+ * stage.
  */
 DialogButton.prototype.action = function() {
     this.state = this.raptor.stateSave();
@@ -45,7 +44,7 @@ DialogButton.prototype.action = function() {
  * Callback triggered when the user clicks the OK button on the dialog.
  *
  * @param {Object} dialog Dialog to get the ok button from.
- * @return {boolean} If true is returned, then the dialog is closed, otherwise if false is returned the dialog stays open.
+ * @throws {Error} This function should be overridden.
  */
 DialogButton.prototype.applyAction = function(dialog) {
     throw new Error('Expected child class to override DialogButton.applyAction');
@@ -54,8 +53,7 @@ DialogButton.prototype.applyAction = function(dialog) {
 /**
  * Callback triggered when the user clicks on the dialog button.
  *
- * @todo desc for return
- * @return {Boolean}
+ * @throws {Error} This function should be overridden.
  */
 DialogButton.prototype.getDialogTemplate = function() {
     throw new Error('Expected child class to override DialogButton.getDialogTemplate');
@@ -66,7 +64,7 @@ DialogButton.prototype.getDialogTemplate = function() {
  * Checks the validility of a dialog.
  *
  * @param {type} dialog
- * @returns {Boolean} True if dialof is valid
+ * @returns {Boolean} True if dialog is valid, false otherwise.
  */
 DialogButton.prototype.validateDialog = function(dialog) {
     return true;
@@ -77,15 +75,13 @@ DialogButton.prototype.validateDialog = function(dialog) {
  *
  * @param {Object} dialog The dialog to open.
  */
-DialogButton.prototype.openDialog = function(dialog) {
-};
+DialogButton.prototype.openDialog = function(dialog) { };
 
 /**
- * Prepare and return the dialogs ok button to be used in the Raptor UI.
+ * Prepare and return the dialog's OK button's initialisation object.
  *
- * @todo type for name
- * @param {type} name The name of the dialog to find the ok button of.
- * @returns {Element} The dialogs ok button.
+ * @param {String} name
+ * @returns {Object} The initiialisation object for this dialog's OK button.
  */
 DialogButton.prototype.getOkButton= function(name) {
     return {
@@ -108,11 +104,10 @@ DialogButton.prototype.getOkButton= function(name) {
 };
 
 /**
- * Prepare and return the dialogs cancel button to be used in the Raptor UI.
+ * Prepare and return the dialog's cancel button's initialisation object.
  *
- * @todo type of name
- * @param {type} name The name of the dialog to find the cancel button of.
- * @returns {Element} The cancel button.
+ * @param {String} name
+ * @returns {Object} The initiialisation object for this dialog's cancel button.
  */
 DialogButton.prototype.getCancelButton = function(name) {
     return {
@@ -129,9 +124,8 @@ DialogButton.prototype.getCancelButton = function(name) {
 /**
  * Prepare and return the dialogs default options to be used in the Raptor UI.
  *
- * @todo type of name and return
- * @param {type} name The name of the dialog to have the default options applied to it.
- * @returns {type} the default options for the dialog.
+ * @param {String} name The name of the dialog to have the default options applied to it.
+ * @returns {Object} the default options for the dialog.
  */
 DialogButton.prototype.getDefaultDialogOptions = function(name) {
     var options = {
@@ -162,7 +156,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
  * Prepare and return the dialog to be used in the Raptor UI.
  *
  * @todo the type and description for instance.
- * @param {type} instance
+ * @param {DialogButton} instance
  * @returns {Element} The dialog.
  */
 DialogButton.prototype.getDialog = function(instance) {
