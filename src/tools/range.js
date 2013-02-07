@@ -225,6 +225,28 @@ function rangeContainsNode(range, node) {
 }
 
 /**
+ * Tests whether the range contains all of the text (within text nodes) contained
+ * within node. This is to provide an intuitive means of checking whether a range
+ * "contains" a node if you consider the range as just in terms of the text it
+ * contains without having to worry about niggly details about range boundaries.
+ *
+ * @param  {RangyRange} range
+ * @param  {Node} node
+ * @return {Boolean}
+ */
+function rangeContainsNodeText(range, node) {
+    // <strict>
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeContainsText is expected to be a range', range);
+    }
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to rangeContainsText is expected to be a node', node);
+    }
+    // </strict>
+    return range.containsNodeText(node);
+}
+
+/**
  * Removes the white space at the start and the end of the selection.
  *
  * @param {RangyRange} range This is the range of selected text.

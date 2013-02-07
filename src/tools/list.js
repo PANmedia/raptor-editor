@@ -31,6 +31,9 @@ function listShouldUnwrap(listType, listItem) {
     if (selectedElements.is(listType)) {
         return true;
     }
+    if (listType === 'blockquote' && !selectedElements.parent().is(listType)) {
+        return false;
+    }
     if (selectedElements.is(listItem) && selectedElements.parent().is(listType)) {
         return true;
     }
@@ -78,7 +81,8 @@ var listValidLiChildren = [
     'a', 'abbr','acronym', 'applet', 'b', 'basefont', 'bdo', 'big', 'br', 'button',
     'cite', 'code', 'dfn', 'em', 'font', 'i', 'iframe', 'img', 'input', 'kbd',
     'label', 'map', 'object', 'p', 'q', 's',  'samp', 'select', 'small', 'span',
-    'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var'
+    'strike', 'strong', 'sub', 'sup', 'textarea', 'tt', 'u', 'var',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
 ];
 
 /**
@@ -123,6 +127,9 @@ function listEnforceValidChildren(list, listItem, validChildren) {
     }
     // </strict>
     var removeEmpty = function(node) {
+        if ($(node).is('img')) {
+            return;
+        }
         if (!$(node).text().trim()) {
             $(node).remove();
             return true;
@@ -171,33 +178,67 @@ function listWrapSelection(listType, listItem, wrapper) {
     // Having a <td> fully selected is a special case: without intervention
     // the surrounding <table> would be split, with a <listType> inserted between
     // the two <tables>.
-    if ($(commonAncestor).is('td')) {
+    if ($(commonAncestor).is('td,th')) {
         rangeSelectElementContent(range, commonAncestor);
+
+    // Other cases require checking if the range contains the full text of the
+    // common ancestor. In these cases the commonAncestor should be selected
+    } else if (rangeContainsNodeText(range, commonAncestor)) {
+        rangeSelectElement(range, $(commonAncestor));
     }
 
     if (rangeIsEmpty(range)) {
         range.selectNode(elementClosestBlock($(commonAncestor), wrapper).get(0));
     }
 
-    var contents = fragmentToHtml(range.extractContents());
-    if (!$($.parseHTML(contents)).is(listItem)) {
-        contents = '<' + listItem + '>' + contents + '</' + listItem + '>';
-    }
+    var contents = listConvertItemsForList(fragmentToHtml(range.extractContents()), listItem);
 
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
-    var replacementHtml = '<' + listType + '>' + contents + '</' + listType + '>';
-    var replacement = rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
+    var uniqueId = elementUniqueId();
+    var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
+    rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
+    var replacement = $('#' + uniqueId).removeAttr('id');
     var validChildren = listType === 'blockquote' ? listValidPChildren : listValidLiChildren;
-    listEnforceValidChildren($(replacement), listItem, validChildren);
-
-    if (replacement.length) {
-        var select = $(replacement);
-        if (select.is(listType)) {
-            select = select.find(' > ' + listItem);
-        }
-        selectionSelectInner(select.get(0));
+    listEnforceValidChildren(replacement, listItem, validChildren);
+    if (replacement.is(listType)) {
+        replacement = replacement.find(' > ' + listItem);
     }
+    selectionSelectInner(replacement.get(0));
+}
+
+/**
+ * Wrap non block elements in <p> tags, then in <li>'s.
+ *
+ * @param  {String} items HTML to be prepared.
+ * @param  {String} listItem
+ * @return {String} Prepared HTML.
+ */
+function listConvertItemsForList(items, listItem) {
+    items = $('<div/>').html(items);
+
+    if (!elementContainsBlockElement(items)) {
+        // Do not double wrap p's
+        if (listItem === 'p') {
+            return '<' + listItem + '>' + items.html() + '</' + listItem + '>';
+        }
+        return '<' + listItem + '><p>' + items.html() + '</p></' + listItem + '>';
+    }
+
+    items.contents().each(function() {
+        if ($(this).is('img')) {
+            return true;
+        }
+        if ($(this).text().trim() === '') {
+            return $(this).remove();
+        }
+        $(this).wrap('<' + listItem + '/>');
+        if (!elementIsBlock(this)) {
+            $(this).wrap('<p>');
+        }
+    });
+
+    return items.html();
 }
 
 /**
@@ -210,7 +251,7 @@ function listWrapSelection(listType, listItem, wrapper) {
  * @param  {string[]} validTagChildren Array of valid child tag names.
  * @return {Element|null} Result of the final conversion.
  */
-function listConvertListItem(listItem, listType, tag, validTagChildren) {
+function listConvertListItem(listItem, listType, tag) {
      // <strict>
     if (!typeIsElement(listItem)) {
         handleInvalidArgumentError('Parameter 1 for listConvertListItem must be a jQuery element', listItem);
@@ -247,7 +288,7 @@ function listUnwrap(list, listItem, listType) {
     // </strict>
     var convertedItem = null;
     list.find(listItem).each(function() {
-        listConvertListItem($(this), listType, 'p', listValidPChildren);
+        listConvertListItem($(this), listType, 'p');
     });
     return list.contents().unwrap();
 }
@@ -328,7 +369,8 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
     var replacementPlaceholderId = elementUniqueId();
 
     rangeExpandToParent(range);
-    var breakOutValidityList = $.grep(listValidPParents, function(item) {
+    var breakOutValidityList = listType === 'blockquote' ? listValidBlockQuoteParents : listValidPParents;
+    breakOutValidityList = $.grep(breakOutValidityList, function(item) {
         return item !== 'li';
     });
     rangeReplaceWithinValidTags(range, $('<p/>').attr('id', replacementPlaceholderId), wrapper, breakOutValidityList);
@@ -353,7 +395,7 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
 
     $(toUnwrap).each(function() {
         replacementPlaceholder.after(this);
-        listConvertListItem($(this), listType, 'p', listValidPChildren);
+        listConvertListItem($(this), listType, 'p');
     });
 
     replacementPlaceholder.remove();
@@ -403,7 +445,6 @@ function listUnwrapSelection(listType, listItem, wrapper) {
     if (!commonAncestor.is(listItem)) {
         commonAncestor = commonAncestor.closest(listItem);
     }
-
     /**
      * <listType>
      *     <li>{list content}</li>
@@ -431,7 +472,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (commonAncestor.next().length && !commonAncestor.prev().length) {
-        commonAncestor.parent().before(listConvertListItem(commonAncestor, listType, 'p', listValidPChildren));
+        commonAncestor.parent().before(listConvertListItem(commonAncestor, listType, 'p'));
         commonAncestor.remove();
         return;
     }
@@ -443,7 +484,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
      * </listType>
      */
     if (!commonAncestor.next().length && commonAncestor.prev().length) {
-        commonAncestor.parent().after(listConvertListItem(commonAncestor, 'p', listType, listValidPChildren));
+        commonAncestor.parent().after(listConvertListItem(commonAncestor, 'p', listType));
         commonAncestor.remove();
         return;
     }

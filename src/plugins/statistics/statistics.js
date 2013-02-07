@@ -36,18 +36,22 @@ Raptor.registerUi(new DialogButton({
     getCancelButton: function() {
     },
 
-    getCharacters: function() {
-        return $('<div>').html(this.raptor.getHtml()).text().length;
+    getCharacterCount: function() {
+        return $('<div>').html(this.raptor.getHtml()).text().trim().length;
+    },
+
+    getContent: function() {
+        return $('<div>').html(this.raptor.getHtml()).text().trim();
     },
 
     updateButton: function() {
         var charactersRemaining = null,
             label = null,
-            characters = this.getCharacters();
+            characterCount = this.getCharacterCount();
 
         // Cases where maximum has been provided
         if (this.options.maximum) {
-            charactersRemaining = this.options.maximum - characters;
+            charactersRemaining = this.options.maximum - characterCount;
             if (charactersRemaining >= 0) {
                 label = _('statisticsButtonCharacterRemaining', {
                     charactersRemaining: charactersRemaining
@@ -59,7 +63,7 @@ Raptor.registerUi(new DialogButton({
             }
         } else {
             label = _('statisticsButtonCharacters', {
-                characters: characters
+                characters: characterCount
             });
         }
 
@@ -105,7 +109,7 @@ Raptor.registerUi(new DialogButton({
      * @return {jQuery} The processed statistics dialog template
      */
     openDialog: function(dialog) {
-        var content = $('<div/>').html(this.raptor.getHtml()).text();
+        var content = this.getContent();
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';

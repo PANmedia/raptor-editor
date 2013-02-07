@@ -65,7 +65,7 @@ var RaptorWidget = {
         this.enabled = false;
 
         // True if editing is enabled at least once
-        this.initialised = false
+        this.initialised = false;
 
         // True if the layout has been loaded and displayed
         this.visible = false;

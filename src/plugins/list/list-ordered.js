@@ -26,6 +26,6 @@ Raptor.registerUi(new PreviewToggleButton({
     selectionToggle: function() {
         var selection = rangy.getSelection();
         return selection.getAllRanges().length > 0 &&
-            (selectionGetElements(selection).is('ol,li') || selectionContains('li', this.raptor.getElement()));
+            selectionGetElements(selection).closest('ol').length;
     }
 }));
