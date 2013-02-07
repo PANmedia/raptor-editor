@@ -1,7 +1,24 @@
+/**
+ * @fileOverview Contains the paste plugin class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
 var pasteInProgress = false,
     pasteDialog = null,
     pasteInstance = null;
 
+/**
+ * @class The paste plugin class.
+ * @constructor
+ * @augments RaptorPlugin.
+ *
+ * @todo type and desc for name
+ * @param {type} name
+ * @param {type} overrides Options hash.
+ * @returns {Element}
+ */
 function PastePlugin(name, overrides) {
     this.options = {
         /**
@@ -27,10 +44,18 @@ function PastePlugin(name, overrides) {
 
 PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+/**
+ * Enables pasting.
+ */
 PastePlugin.prototype.enable = function() {
     this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.caputrePaste.bind(this));
 };
 
+/**
+ * Captures the html to be pasted.
+ *
+ * @returns {Boolean} True if paste capture is successful.
+ */
 PastePlugin.prototype.caputrePaste = function() {
     if (pasteInProgress) {
         return false;
@@ -50,10 +75,18 @@ PastePlugin.prototype.caputrePaste = function() {
     return true;
 };
 
+/**
+ * Opens the paste dialog.
+ */
 PastePlugin.prototype.showPasteDialog = function() {
     aDialogOpen(this.getDialog(this));
 };
 
+/**
+ * Inserts the pasted content into the selection.
+ *
+ * @param {HTML} html The html to be pasted into the selection.
+ */
 PastePlugin.prototype.pasteContent = function(html) {
 //    console.log(this.state);
     this.raptor.stateRestore(this.state);
@@ -66,6 +99,13 @@ PastePlugin.prototype.pasteContent = function(html) {
     }.bind(this));
 };
 
+/**
+ * Gets the paste dialog.
+ *
+ * @todo type for instance
+ * @param {type} instance The paste instance
+ * @returns {Object} The paste dialog.
+ */
 PastePlugin.prototype.getDialog = function(instance) {
     pasteInstance = instance;
     if (!pasteDialog) {
@@ -253,9 +293,7 @@ PastePlugin.prototype.stripEmpty = function(content) {
 };
 
 /**
- * Update text input content
- * @param  {Element} target The input being edited
- * @param  {Element} dialog The paste dialog
+ * Update text input content.
  */
 PastePlugin.prototype.updateAreas = function() {
     var markup = $('.raptorPasteBin').html();
