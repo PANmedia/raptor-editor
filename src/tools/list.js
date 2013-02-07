@@ -176,6 +176,13 @@ function listWrapSelection(listType, listItem, wrapper) {
     var range = rangy.getSelection().getRangeAt(0);
     var commonAncestor = rangeGetCommonAncestor(range);
 
+    /**
+     * <wrapper>{}<p>Some content</p></wrapper>
+     */
+    if (rangeIsEmpty(range) && commonAncestor === wrapper.get(0)) {
+        return;
+    }
+
     // Having a <td> fully selected is a special case: without intervention
     // the surrounding <table> would be split, with a <listType> inserted between
     // the two <tables>.
