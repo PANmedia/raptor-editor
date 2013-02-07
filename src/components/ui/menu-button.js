@@ -1,17 +1,18 @@
 /**
  * @fileOverview Contains the menu button class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author Melissa Richards <melissa@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The menu button class.
+ * @class
  * @constructor
- * @augments button
+ * @augments Button
  *
- * @param {type} menu The menu to create the menu button for.
- * @param {Object} options Any extra options to refine the creation of the menu button.
+ * @param {Menu} menu The menu to create the menu button for.
+ * @param {Object} options
  * @returns {MenuButton}
  */
 function MenuButton(menu, options) {
@@ -25,9 +26,9 @@ function MenuButton(menu, options) {
 MenuButton.prototype = Object.create(Button.prototype);
 
 /**
- * Shows the menu on a click event.
+ * Shows the menu when button is clicked.
  *
- * @param {type} event The click event.
+ * @param {Event} event The click event.
  */
 MenuButton.prototype.click = function(event) {
     if (this.menu.getMenu().is(':visible')) {
