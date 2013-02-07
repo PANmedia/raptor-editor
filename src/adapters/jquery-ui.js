@@ -6,21 +6,21 @@
 
 /**
  * Wrap the jQuery UI button function.
- * @todo Check please.
- * @param {Element|jQuery|selector} element The selector for which the button it to be created.
+ *
+ * @param {Element|Node|selector} element
  * @param {Object|null} options The options relating to the creation of the button.
- * @returns {jQuery} A button for the element.
+ * @returns {Element} The modified element.
  */
 function aButton(element, options) {
     return $(element).button(options);
 }
 
 /**
- * Wrap the jQuery set label function.
+ * Wrap the jQuery UI button's set label function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the button.
- * @param {String} text This is the text for the label.
- * @returns {jQuery} The labelled button.
+ * @param {Element|Node|selector} element
+ * @param {String} text The text for the label.
+ * @returns {Element} The labelled button.
  */
 function aButtonSetLabel(element, text) {
     $(element).button('option', 'text', true);
@@ -28,11 +28,11 @@ function aButtonSetLabel(element, text) {
 }
 
 /**
- * Wrap the jQuery set button icon function.
+ * Wrap the jQuery UI button's set icon function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the button.
- * @param {Object} icon The icon which is to be added to the button
- * @returns {jQuery} The iconised button.
+ * @param {Element|Node|selector} element
+ * @param {String} icon The icon name to be added to the button, e.g. 'ui-icon-disk'
+ * @returns {Element} The modified button.
  */
 function aButtonSetIcon(element, icon) {
     return $(element).button('option', 'icons', {
@@ -41,62 +41,62 @@ function aButtonSetIcon(element, icon) {
 }
 
 /**
- * Wrap the jQuery UI enable button function.
+ * Wrap the jQuery UI button's enable function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the button.
- * @returns {jQuery} The enabled button.
+ * @param {Element|Node|selector} element
+ * @returns {Element} The enabled button.
  */
 function aButtonEnable(element) {
     return $(element).button('option', 'disabled', false);
 }
 
 /**
- * Wrap the jQuery UI diable button function.
+ * Wrap the jQuery UI button's disable function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the button.
- * @returns {jQuery} The disabled button.
+ * @param {Element|Node|selector} element
+ * @returns {Element} The disabled button.
  */
 function aButtonDisable(element) {
     return $(element).button('option', 'disabled', true);
 }
 
 /**
- * Wrap the jQuery UI add class function.
+ * Wrap the jQuery UI button's add class function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the button.
- * @returns {jQuery} The highlighted button.
+ * @param {Element|Node|selector} element
+ * @returns {Element} The highlighted button.
  */
 function aButtonActive(element) {
     return $(element).addClass('ui-state-highlight');
 }
 
 /**
- * Wrap the jQuery UI remove class function.
+ * Wrap the jQuery UI button's remove class function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the button.
- * @returns {jQuery} The button back in its normal state.
+ * @param {Element|Node|selector} element
+ * @returns {Element} The button back in its normal state.
  */
 function aButtonInactive(element) {
     return $(element).removeClass('ui-state-highlight');
 }
 
 /**
- * Wrap the jQuery UI initialise menu function.
+ * Wrap the jQuery UI button's initialise menu function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the menu creation.
- * @param {Object|null} options This is the set of options for the menu creation.
- * @returns {jQuery} The menu.
+ * @param {Element|Node|selector} element
+ * @param {Object|null} options The set of options for menu creation.
+ * @returns {Element} The menu.
  */
 function aMenu(element, options) {
     return $(element).menu(options);
 }
 
 /**
- * Initialises a dialog with a given element.
+ * Initialises a dialog with the given element.
  *
- * @param {Element|jQuery|selector} element This is the selector for the dialog creation.
- * @param {Object|null} options This is the set of options for the menu creation.
- * @returns {jQuery} A dialog.
+ * @param {Element|Node|selector} element
+ * @param {Object|null} options The set of options for the menu.
+ * @returns {Element} A dialog.
  */
 function aDialog(element, options) {
     var dialog = $(element).dialog(options);
@@ -118,8 +118,8 @@ function aDialog(element, options) {
 /**
  * Wrap the jQuery UI open dialog function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the dialog opening.
- * @returns {jQuery}
+ * @param {Element|Node|selector} element
+ * @returns {Element}
  */
 function aDialogOpen(element) {
     return $(element).dialog('open');
@@ -128,8 +128,8 @@ function aDialogOpen(element) {
 /**
  * Wrap the jQuery UI close dialog function.
  *
- * @param {Element|jQuery|selector} element This is the selector for the dialog closing.
- * @returns {jQuery}
+ * @param {Element|Node|selector} element
+ * @returns {Element}
  */
 function aDialogClose(element) {
     return $(element).dialog('close');
@@ -137,10 +137,10 @@ function aDialogClose(element) {
 
 /**
  * Wrap the jQuery UI tabs function.
- * @todo not sure what to put for descroption for options
- * @param  {Element|jQuery|selector} element This is the selector for the tabs function.
+ *
+ * @param  {Element|Node|selector} element
  * @param  {Object|null} options
- * @return {jQuery}
+ * @returns {Element}
  */
 function aTabs(element, options) {
     return $(element).tabs(options);
