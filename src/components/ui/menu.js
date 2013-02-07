@@ -1,12 +1,13 @@
 /**
  * @fileOverview Contains the menu class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author Melissa Richards <melissa@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The core menu class.
+ * @class
  * @constructor
  *
  * @param {Object} options
@@ -23,7 +24,8 @@ function Menu(options) {
 
 /**
  * Initialize the menu.
- * @returns {Menu.prototype.init.button}
+ *
+ * @returns {MenuButton}
  */
 Menu.prototype.init = function() {
     this.setOptions();
@@ -34,16 +36,9 @@ Menu.prototype.init = function() {
 };
 
 /**
- * Binds events to the menu.
- */
-Menu.prototype.bind = function() {
-    // Bind events
-};
-
-/**
  * Prepare and return the menu's button Element to be used in the Raptor UI.
  *
- * @returns {Element}
+ * @returns {MenuButton}
  */
 Menu.prototype.getButton = function() {
     if (!this.button) {
@@ -53,9 +48,7 @@ Menu.prototype.getButton = function() {
 };
 
 /**
- * Sets the options for the menu.
- *
- * @returns {undefined}
+ * Applies options to the menu.
  */
 Menu.prototype.setOptions = function() {
     this.options.title = _(this.name + 'Title');
@@ -85,7 +78,7 @@ Menu.prototype.getMenu = function() {
 };
 
 /**
- * Displays the open menu.
+ * Display menu.
  */
 Menu.prototype.show = function() {
     $('.raptor-menu').hide();
@@ -94,8 +87,8 @@ Menu.prototype.show = function() {
 
 /**
  * Click off close event.
- * @todo type for event.
- * @param {type} event The click event.
+ *
+ * @param {Event} event The click event.
  */
 $('html').click(function(event) {
     if (!$(event.target).hasClass('raptor-menu-button') &&

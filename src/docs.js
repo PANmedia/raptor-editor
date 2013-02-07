@@ -137,3 +137,8 @@
  * @name RaptorWidget#layoutShow
  * @event
  */
+
+/**
+ * RaptorWidget#layoutHide
+ * @event
+ */

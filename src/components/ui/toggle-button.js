@@ -8,7 +8,7 @@
 /**
  * @class The toggle button class.
  * @constructor
- * @augments button
+ * @augments Button
  *
  * @param {Object} options
  * @returns {ToggleButton}
