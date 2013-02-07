@@ -1,12 +1,13 @@
 /**
  * @fileOverview Contains the custom menu class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author Melissa Richards <melissa@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class the custom menu class.
+ * @class The custom menu class.
  *
  * @constructor
  * @augments menu class.
