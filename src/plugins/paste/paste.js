@@ -16,7 +16,7 @@ var pasteInProgress = false,
  *
  * @todo type and desc for name
  * @param {type} name
- * @param {type} overrides Options hash.
+ * @param {Object} overrides Options hash.
  * @returns {Element}
  */
 function PastePlugin(name, overrides) {
