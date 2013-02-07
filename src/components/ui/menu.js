@@ -29,7 +29,6 @@ function Menu(options) {
  */
 Menu.prototype.init = function() {
     this.setOptions();
-    this.bind();
     var button = this.getButton().init();
     button.addClass('raptor-menu-button');
     return button;
