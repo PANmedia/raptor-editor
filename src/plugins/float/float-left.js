@@ -7,7 +7,7 @@
 
 /**
  * Creates an instance of a filtered preview button to float an image left.
- * 
+ *
  * @todo des and type for the param.
  * @param {type} param
  */
