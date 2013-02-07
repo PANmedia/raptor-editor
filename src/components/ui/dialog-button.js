@@ -82,7 +82,7 @@ DialogButton.prototype.openDialog = function(dialog) { };
  * @param {String} name
  * @returns {Object} The initiialisation object for this dialog's OK button.
  */
-DialogButton.prototype.getOkButton= function(name) {
+DialogButton.prototype.getOkButton = function(name) {
     return {
         text: _(name + 'DialogOKButton'),
         click: function(event) {
