@@ -5,8 +5,19 @@
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
+/**
+ * @type {Element} The shared image resize button.
+ */
 var imageResizeButton = false,
-    imageResizeButtonDialog = false
+
+    /**
+     * @type {Element} The shared image resize dialog.
+     */
+    imageResizeButtonDialog = false,
+
+    /**
+     * @type {Element} The image currently being resized.
+     */
     imageResizeButtonImage = null;
 
 /**
@@ -14,8 +25,7 @@ var imageResizeButton = false,
  * @constructor
  * @augments RaptorPlugin
  *
- * @todo name param details
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function ImageResizeButtonPlugin(name, overrides) {
@@ -36,7 +46,7 @@ ImageResizeButtonPlugin.prototype.init = function() {
 /**
  * Prepare and return the image resize button Element to be used in the Raptor UI.
  *
- * @returns {imageResizeButton}
+ * @returns {Element}
  */
 ImageResizeButtonPlugin.prototype.getButton = function() {
     if (imageResizeButton === false) {
@@ -55,42 +65,54 @@ ImageResizeButtonPlugin.prototype.getButton = function() {
 /**
  * Gets the image resize button plugin dialog.
  *
- * @returns {imageResizeButtonDialog}
+ * @returns {Element}
  */
 ImageResizeButtonPlugin.prototype.getDialog = function() {
     if (imageResizeButtonDialog === false) {
         imageResizeButtonDialog = $(this.raptor.getTemplate('image-resize-button.dialog', this.options));
-        var widthInput = imageResizeButtonDialog.find('[name=width]'),
-            heightInput = imageResizeButtonDialog.find('[name=height]');
+
+        var originalWidth = imageResizeButtonImage.width,
+            originalHeight = imageResizeButtonImage.height;
+
+        var widthInput = imageResizeButtonDialog.find('[name=width]').val(originalWidth),
+            heightInput = imageResizeButtonDialog.find('[name=height]').val(originalHeight);
+
+        var inputHeight = function() {
+            var height = parseInt($(heightInput).val(), 10);
+            if (isNaN(height)) {
+                return 0;
+            }
+            return height;
+        };
+
+        var inputWidth = function() {
+            var width = parseInt($(widthInput).val(), 10);
+            if (isNaN(width)) {
+                return 0;
+            }
+            return width;
+        };
+
         widthInput.bind('keyup', function() {
-            var width = parseInt($(this).val());
-            if (!isNaN(width)) {
-                heightInput.val(Math.round(Math.abs(imageResizeButtonImage.height / imageResizeButtonImage.width * width)));
-            }
-        });
+            var width = inputWidth();
+            heightInput.val(Math.round(Math.abs(imageResizeButtonImage.height / imageResizeButtonImage.width * width)));
+            this.resizeImage(width, inputHeight());
+        }.bind(this));
+
         heightInput.bind('keyup', function() {
-            var height = parseInt($(this).val());
-            if (!isNaN(height)) {
-                heightInput.val(Math.round(Math.abs(imageResizeButtonImage.width / imageResizeButtonImage.height * height)));
-            }
-        });
+            var height = inputHeight();
+            widthInput.val(Math.round(Math.abs(imageResizeButtonImage.width / imageResizeButtonImage.height * height)));
+            this.resizeImage(inputWidth(), height);
+        }.bind(this));
+
         aDialog(imageResizeButtonDialog, {
             title: _('imageResizeButtonDialogTitle'),
             buttons: [
                 {
                     text: _('imageResizeButtonDialogOKButton'),
                     click: function() {
-                        var width = parseInt(widthInput.val()),
-                            height = parseInt(heightInput.val());
-                        if (!isNaN(width) && !isNaN(height)) {
-                            $(imageResizeButtonImage)
-                                .css({
-                                    width: width,
-                                    height: height
-                                })
-                                .attr('width', width)
-                                .attr('height', height);
-                        }
+                        this.resizeImage(inputWidth(), inputHeight());
+                        this.raptor.checkChange();
                         aDialogClose(imageResizeButtonDialog);
                     }.bind(this),
                     icons: {
@@ -100,8 +122,9 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
                 {
                     text: _('imageResizeButtonDialogCancelButton'),
                     click: function() {
+                        this.resizeImage(originalWidth, originalHeight);
                         aDialogClose(imageResizeButtonDialog);
-                    },
+                    }.bind(this),
                     icons: {
                         primary: 'ui-icon-circle-close'
                     }
@@ -113,9 +136,31 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
 };
 
 /**
- * Opens the image resize button plugin dialog.
+ * Perform the actual image resizing.
  *
- * @returns {undefined}
+ * @param  {Integer} width
+ * @param  {Integer} height
+ */
+ImageResizeButtonPlugin.prototype.resizeImage = function(width, height) {
+    // <strict>
+    if (isNaN(width)) {
+        handleInvalidArgumentError('Parameter 1 to ImageResizeButtonPlugin.resizeImage must be a number', width);
+    }
+    if (isNaN(height)) {
+        handleInvalidArgumentError('Parameter 2 to ImageResizeButtonPlugin.resizeImage must be a number', height);
+    }
+    // </strict>
+    $(imageResizeButtonImage)
+        .css({
+            width: width,
+            height: height
+        })
+        .attr('width', width)
+        .attr('height', height);
+};
+
+/**
+ * Opens the image resize button plugin dialog.
  */
 ImageResizeButtonPlugin.prototype.openDialog = function() {
     aDialogOpen(this.getDialog());
@@ -124,8 +169,7 @@ ImageResizeButtonPlugin.prototype.openDialog = function() {
 /**
  * Displays the image resize tool.
  *
- * @todo event type?
- * @param {type} event Click event to trigger the appearance of the image resize tool.
+ * @param {Event} event Click event to trigger the appearance of the image resize tool.
  */
 ImageResizeButtonPlugin.prototype.show = function(event) {
     if (!this.raptor.isEditing()) {
@@ -144,7 +188,7 @@ ImageResizeButtonPlugin.prototype.show = function(event) {
 /**
  * Hides the image resize tool
  *
- * @param {type} event Click event to hide the image resize tool.
+ * @param {Event} event Click event to hide the image resize tool.
  */
 ImageResizeButtonPlugin.prototype.hide = function(event) {
     var button = this.getButton();
