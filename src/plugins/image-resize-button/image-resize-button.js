@@ -6,7 +6,7 @@
  */
 
 var imageResizeButton = false,
-    imageResizeButtonDialog = false
+    imageResizeButtonDialog = false,
     imageResizeButtonImage = null;
 
 /**
@@ -63,13 +63,13 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
         var widthInput = imageResizeButtonDialog.find('[name=width]'),
             heightInput = imageResizeButtonDialog.find('[name=height]');
         widthInput.bind('keyup', function() {
-            var width = parseInt($(this).val());
+            var width = parseInt($(this).val(), 10);
             if (!isNaN(width)) {
                 heightInput.val(Math.round(Math.abs(imageResizeButtonImage.height / imageResizeButtonImage.width * width)));
             }
         });
         heightInput.bind('keyup', function() {
-            var height = parseInt($(this).val());
+            var height = parseInt($(this).val(), 10);
             if (!isNaN(height)) {
                 heightInput.val(Math.round(Math.abs(imageResizeButtonImage.width / imageResizeButtonImage.height * height)));
             }
@@ -80,8 +80,8 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
                 {
                     text: _('imageResizeButtonDialogOKButton'),
                     click: function() {
-                        var width = parseInt(widthInput.val()),
-                            height = parseInt(heightInput.val());
+                        var width = parseInt(widthInput.val(), 10),
+                            height = parseInt(heightInput.val(), 10);
                         if (!isNaN(width) && !isNaN(height)) {
                             $(imageResizeButtonImage)
                                 .css({
