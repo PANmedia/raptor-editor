@@ -225,6 +225,7 @@ Raptor.registerUi(new Button({
 
     /**
      * Prepare tabs and add buttons to tab content.
+     *
      * @return {jQuery}
      */
     prepareDialogHtml: function() {
