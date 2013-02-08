@@ -49,6 +49,7 @@ function runEditorTest(container, action) {
 //            dock: {
 //                docked: true
 //            },
+            logo: false,
             save: {
                 plugin: null
             },
