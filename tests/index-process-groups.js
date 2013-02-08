@@ -9,7 +9,6 @@ var timerID = null, // Timer to check whether to run a test or not.
  * @param {string} state This is the state that the group should be at the end of the function.
  * @param {string} icon This is the icon the group should dislplay at the end of the function.
  * @param {number} itemsPassed This is the number of items in the group that have passed all their tests.
- * @returns {undefined}
  */
 function setGroupStatus(path, state, icon, itemsPassed) {
     var group = $('.group[data-path="' + path + '"]').find('.group-content'),
@@ -33,7 +32,6 @@ function setGroupStatus(path, state, icon, itemsPassed) {
  * @param {string} icon This is the icon the item should dislplay at the end of the function.
  * @param {number} passes This is the number of tests in the item that have passed.
  * @param {number} testLength This is the total number of tests
- * @returns {undefined}
  */
 function setItemStatus(path, fileName, state, icon, passes, testLength) {
     var item = $('.group[data-path="' + path + '"]').find('.item[data-file-name="' + fileName + '"]').find('.item-content'),
@@ -78,7 +76,6 @@ function setItemStatus(path, fileName, state, icon, passes, testLength) {
  * @param {jQuery} currentIcon This is the current icon of the content which is to be replaced.
  * @param {string} state This is the class to add to the content.
  * @param {string} icon Thsi is the icon that the currentIcon should be changed to.
- * @returns {undefined}
  */
 function checkState(content, currentIcon, state, icon) {
     content
@@ -94,7 +91,6 @@ function checkState(content, currentIcon, state, icon) {
  *
  * @param {string} path This is the folder name of the test to be run.
  * @param {string} fileName This is the file name of the test to be run.
- * @returns {undefined}
  */
 function runTest(path, fileName) {
     testRunning = true;
@@ -114,7 +110,6 @@ function runTest(path, fileName) {
  * @param {array} testResults This is contains all the results of the tests for the specified file.
  * @param {string} path This is the folder name for the specified file.
  * @param {string} fileName This is the file name to be tested.
- * @returns {undefined}
  */
 function checkStatus(testResults, path, fileName) {
     if (typeof testResults !== 'undefined') {
@@ -180,7 +175,6 @@ var queueTimer = setInterval(function() {
  *
  * @param {string} path This is the folder the test is in.
  * @param {string} fileName This is the filename of the test.
- * @returns {undefined}
  */
 function queueTest(path, fileName) {
     setGroupStatus(path, 'ui-state-warning', 'ui-icon-clock');
@@ -194,8 +188,6 @@ function queueTest(path, fileName) {
 
 /**
  * Creates a summary of each of the states of the tests.
- *
- * @returns {undefined}
  */
 function updateSummary() {
     var testsFailed = $('.item .ui-state-error').length,
