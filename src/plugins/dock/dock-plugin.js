@@ -1,4 +1,19 @@
+/**
+ * @fileOverview Contains the dock plugin class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
 
+/**
+ * @class The dock plugin class.
+ * @constructor
+ * @augments Raptor plugin.
+ *
+ * @todo not sure of desc for the params
+ * @param {String} name
+ * @param {Object} overrides
+ */
 function DockPlugin(name, overrides) {
     this.options = {
         dockToElement: false,
@@ -15,6 +30,9 @@ function DockPlugin(name, overrides) {
 
 DockPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+/**
+ * Initialize the dock plugin.
+ */
 DockPlugin.prototype.init = function() {
     var docked;
     if (this.options.persist) {
@@ -55,6 +73,8 @@ DockPlugin.prototype.toggleState = function() {
 };
 
 /**
+ * Gets the dock state on toggle dock to element.
+ *
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.toggleDockToElement = function() {
@@ -66,19 +86,24 @@ DockPlugin.prototype.toggleDockToElement = function() {
 };
 
 /**
+ * Gets the dock state on dock to element.
+ *
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.dockToElement = function() {
-    var element = this.raptor.getElement();
-    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(element);
+    var element = this.raptor.getElement(),
+        layoutElement = this.raptor.getLayout().getElement();
+    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layoutElement);
     this.raptor.getLayout().getElement().addClass(this.options.baseClass + '-docked-to-element');
     this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
         position: this.options.position,
-        spacer: this.options.spacer
+        spacer: false
     });
 };
 
 /**
+ * Gets the dock state on undocking from an element.
+ *
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.undockFromElement = function() {
@@ -88,6 +113,8 @@ DockPlugin.prototype.undockFromElement = function() {
 };
 
 /**
+ * Gets the dock state on toggle dock to screen.
+ *
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.toggleDockToScreen = function() {
@@ -99,6 +126,8 @@ DockPlugin.prototype.toggleDockToScreen = function() {
 };
 
 /**
+ * Gets the dock state on dock to screen.
+ *
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.dockToScreen = function() {
@@ -109,12 +138,14 @@ DockPlugin.prototype.dockToScreen = function() {
     layout.disableDragging();
     this.dockState = dockToScreen(layoutElement, {
         position: this.options.position,
-        spacer: this.options.spacer,
+        spacer: true,
         under: this.options.under
     });
 };
 
 /**
+ * Gets the dock state on undocking from the screen.
+ *
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.undockFromScreen = function() {

@@ -103,10 +103,10 @@
         test('.test-3', function(input) {
             var ranges = tokensToRanges(input);
             // console.log(ranges, input);
-            // rangy.getSelection().setRanges(ranges);
-            // tagCustomRemoveFromSelection('custom', 'some-class');
-            // applier.toggleSelection();
-            // applier.undoToRanges(ranges);
+             rangy.getSelection().setRanges(ranges);
+             tagCustomRemoveFromSelection('custom', 'some-class');
+//             applier.toggleSelection();
+             applier.undoToRanges(ranges);
         });
     </script>
 </body>

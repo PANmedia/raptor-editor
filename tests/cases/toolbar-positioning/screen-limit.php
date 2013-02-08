@@ -37,12 +37,10 @@
         testEditor('.test-1', function(input) {
             var raptorWrapper = input.find('.raptor-wrapper');
             var toolbarTop = raptorWrapper.offset();
-
+            
             if (toolbarTop <= raptorWrapper) {
-
                 alert ('Toolbar inside viewport');
-            }
-            else {
+            } else {
                 throw new Error('Toolbar outside viewport');
             }
             rangesToTokens(rangy.getSelection().getAllRanges());

@@ -112,10 +112,35 @@ function tableGetCellIndex(cell) {
     }
 }
 
+/**
+ * Gets a table cell by a given index.
+ *
+ * @param {HTMLTableElement} table This is the table to get the cell from.
+ * @param {int} index This is the index to find the cell.
+ * @returns {HTMLTableCellElement|null} The cell at the specified index.
+ */
 function tableGetCellByIndex(table, index) {
-    return table.rows[index.y].cells[index.x];
+    var rows = table.tBodies[0].rows;
+    for (var r = 0; r < rows.length; r++) {
+        for (var c = 0; c < rows[r].cells.length; c++) {
+            var currentIndex = tableGetCellIndex(rows[r].cells[c]);
+            if (currentIndex.x === index.x &&
+                    currentIndex.y === index.y) {
+                return rows[r].cells[c];
+            }
+        }
+    }
+    return null;
 }
 
+/**
+ * Returns an array of cells found within the supplied indexes.
+ *
+ * @param {HTMLTableElement} table
+ * @param {int} startIndex This is the index to start searching at.
+ * @param {int} endIndex This is the index to stop searching at.
+ * @returns {Array} An array of the cells in the range supplied.
+ */
 function tableCellsInRange(table, startIndex, endIndex) {
     var startX = Math.min(startIndex.x, endIndex.x),
         x = startX,
@@ -125,10 +150,13 @@ function tableCellsInRange(table, startIndex, endIndex) {
         cells = [];
     while (y <= endY) {
         while (x <= endX) {
-            cells.push(tableGetCellByIndex(table, {
+            var cell = tableGetCellByIndex(table, {
                 x: x,
                 y: y
-            }));
+            });
+            if (cell !== null) {
+                cells.push(cell);
+            }
             x++;
         }
         x = startX;
@@ -137,17 +165,49 @@ function tableCellsInRange(table, startIndex, endIndex) {
     return cells;
 }
 
+/**
+ * Checks if the cells selected can be merged.
+ *
+ * @param {HTMLTableElement} table The table to check the selection with.
+ * @param {int} startX Selection's start x position.
+ * @param {int} startY Selection's start y position.
+ * @param {int} endX Selection's end x position.
+ * @param {int} endY Selection's end y position.
+ */
 function tableCanMergeCells(table, startX, startY, endX, endY) {
 }
 
+/**
+ * Merges the selected cells of a table.
+ *
+ * @param {HTMLTableElement} table This is the table that is going to have cells merged.
+ * @param {int} startX This is the X coordinate to start merging the cells at.
+ * @param {int} startY This is the Y coordinate to start merging the cells at.
+ * @param {int} endX This is the X coordinate to stop merging the cells at.
+ * @param {int} endY This is the Y coordinate to stop merging the cells at.
+ */
 function tableMergeCells(table, startX, startY, endX, endY) {
     var googTable = new GoogTable(table);
     googTable.mergeCells(startX, startY, endX, endY);
 }
 
+/**
+ * Checks if the cell at the given index can be split.
+ *
+ * @param {HTMLTableElement} table Table to check the seleciton with.
+ * @param {int} x The X coordinate of the cell to be checked.
+ * @param {int} y Ths Y coordinate of the cell to be checked.
+ */
 function tableCanSplitCells(table, x, y) {
 }
 
+/**
+ * Splits the selected cell of a table.
+ *
+ * @param {HTMLTableElement} table The table to find the cell to be split on.
+ * @param {int} x The X coordinate of the cell to be split.
+ * @param {int} y The Y coordinate of the cell to be split.
+ */
 function tableSplitCells(table, x, y) {
     var googTable = new GoogTable(table);
     googTable.splitCell(x, y);

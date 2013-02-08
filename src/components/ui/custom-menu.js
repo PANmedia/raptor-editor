@@ -1,3 +1,21 @@
+/**
+ * @fileOverview Contains the custom menu class code.
+ *
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The custom menu class.
+ *
+ * @constructor
+ * @augments menu class.
+ *
+ * Prepares and returns the custom menu Element to be used in the Raptor UI.
+ *
+ * @returns {Element}
+ */
 Menu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<div>')
@@ -13,3 +31,4 @@ Menu.prototype.getMenu = function() {
     }
     return this.menu;
 };
+

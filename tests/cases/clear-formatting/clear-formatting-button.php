@@ -1,3 +1,4 @@
+<?php $i = 0; ?>
 <!doctype html>
 <html>
 <head>
@@ -8,82 +9,77 @@
     <script type="text/javascript">
         rangy.init();
     </script>
-    <div class="test-1">
-        <h1>Clear Formatting Button 1: Basic</h1>
+
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Basic</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id <strong class="cms-bold">erat pellentesque</strong> et rhoncus} nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Test 1 {paragraph 1 start.
+                    <strong class="cms-bold">Some bold text.</strong>
+                    Test 1 paragraph} 1 end.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Test 1 {paragraph 1 start.
+                    Some bold text.
+                    Test 1 paragraph} 1 end.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-    <div class="test-2">
-        <h1>Clear Formatting Button 2: Complex</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Complex</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <em class="cms-italic">{pellentesque et rhoncus nunc semper.</em>
+                    Paragraph 1
+                    <em class="cms-italic">{Some italic text</em>
                 </p>
                 <ol>
                     <li>
-                        <del class="cms-strike">Suspendisse malesuada</del>
+                        <del class="cms-strike">Some strike text in a list</del>
                     </li>
                 </ol>
                 <p>
-                    <em class="cms-italic">hendrerit velit nec tristique.</em> A}liquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    <em class="cms-italic">Some more italic text</em>
+                    Paragraph} 2
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat {pellentesque et rhoncus nunc semper.
-                </p><p>
-                    Suspendisse malesuada
-                </p><p>
-                    hendrerit velit nec tristique. A}liquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Paragraph 1 {
+                </p>
+                <p>
+                    Some italic text Some strike text in a list Some more italic text Paragraph
+                </p>
+                <p>
+                    } 2
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-    <div class="test-3">
-        <h1>Clear Formatting Button 3: Multi Basic</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Multi Basic</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -108,14 +104,14 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-3', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-     <div class="test-4">
-        <h1>Clear Formatting Button 4: Multi Paragraph Basic</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Multi Paragraph Basic</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -133,27 +129,26 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui {
                 </p>
                 <p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse}interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus. Suspendisse
+                </p>
+                <p>
+                    } interdum, nisi nec consectetur pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-4', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-    <div class="test-5">
-        <h1>Clear Formatting Button 5: Multi Paragraph Complex</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Multi Paragraph Complex</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -173,101 +168,29 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum {dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula
+                    Lorem ipsum {
                 </p>
-                <p>venenatis rhoncus.</p>
-                <p> Suspendisse}<span class="cms-underline"> interdum, nisi</span> nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                <p>
+                    dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus. Suspendisse
+                </p>
+                <p>
+                    <span class="cms-underline">
+                        } interdum, nisi
+                    </span>
+                    nec consectetur pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-5', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-    <div class="test-6">
-        <h1>Clear Formatting Button 6: Empty Selection in Word</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula <del class="cms-strike">venenatis rhoncus. Suspen{}disse interdum,</del> nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula <del class="cms-strike">venenatis rhoncus. </del>Suspen{}disse<del class="cms-strike"> interdum,</del> nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-        });
-    </script>
-
-    <div class="test-7">
-        <h1>Clear Formatting Button 7: Empty Selection at the Beginning of a Word</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</span>
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</span>
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-        });
-    </script>
-
-    <div class="test-8">
-        <h1>Clear Formatting Button 8: Alignment</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Alignment</h1>
         <div class="test-input">
             <div class="editible">
                 <p class="cms-center">
@@ -283,27 +206,27 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                <p class="cms-center">
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit
+                    <span class="cms-underline">
+                        } nec tristique.
+                    </span>
+                </p>
                 <p>
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit} nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    Aliquam gravida mauris at ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-8', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-    <div class="test-9">
-        <h1>Clear Formatting Button 9: Two Different Alignments</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Two Different Alignments</h1>
         <div class="test-input">
             <div class="editible">
                 <p class="cms-right">
@@ -319,27 +242,28 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                {
                 <p>
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
+                }
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-9', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
-    <div class="test-10">
-        <h1>Clear Formatting Button 10: Alignment and Other Formatting</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Alignment and Other Formatting</h1>
         <div class="test-input">
             <div class="editible">
                 <p class="cms-right">
@@ -355,77 +279,22 @@
         </div>
         <div class="test-expected">
             <div class="editible">
+                {
                 <p>
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
-                </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
+                }
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-10', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-        });
-    </script>
-
-    <div class="test-11">
-        <h1>Clear Formatting Button 11: Image Float</h1>
-        <div class="test-input">
-            <div class="editible">
-                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right"  />}
-                    <div style="clear: both">
-                    </div>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
-                    <div style="clear: both">
-                    </div>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-11', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-        });
-    </script>
-
-    <div class="test-12">
-        <h1>Clear Formatting Button 12: Image Float and text and alignment</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p class="cms-right">
-                    {Some text that can be <strong class="cms-bold">bold</strong> and <span class="cms-underline">underlined</span> and <em class="cms-italic">italic</em> as
-                    well as being right aligned before clearing the formatting.
-                </p>
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right"  />}
-                    <div style="clear: both">
-                    </div>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p>
-                    {Some text that can be bold and underlined and italic as
-                    well as being right aligned before clearing the formatting.
-                </p>
-                <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
-                    <div style="clear: both">
-                    </div>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-12', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>

@@ -35,10 +35,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
-            console.log(black);
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(0) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -77,9 +76,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(1) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -90,6 +89,7 @@
             }
         });
     </script>
+<?php return; ?>
 
     <div class="test-3">
         <h1>Text Black Button 3: Part Word Selection</h1>
@@ -118,9 +118,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(2) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -165,9 +165,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(3) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -211,9 +211,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(4) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -256,9 +256,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(5) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -301,9 +301,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var colorMenuBasic = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-color-menu-basic');
+            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu [data-color=black]');
+            var black = $('.raptor-ui-color-menu-basic-menu:eq(6) [data-color=black]');
             black.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

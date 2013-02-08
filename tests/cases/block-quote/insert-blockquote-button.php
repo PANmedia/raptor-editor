@@ -8,6 +8,7 @@
     <script type="text/javascript">
         rangy.init();
     </script>
+    <?php //goto test; ?>
     <div class="test-1">
         <h1>Block Quote Button 1: Word Group Selection</h1>
         <div class="test-input">
@@ -43,7 +44,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -88,7 +89,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -133,7 +134,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -148,36 +149,28 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    This is {paragraph 1.
                 </p>
                 <p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    This is paragraph} 2.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui
+                    This is {
                 </p>
                 <blockquote>
                     <p>
-                        {id erat pellentesque et rhoncus nunc semper. Suspendisse
-                        malesuada hendrerit velit nec tristique.
+                        paragraph 1.
                     </p>
                     <p>
-                        Aliquam gravida mauris at
-                        ligula venenatis rhoncus. Suspendisse}
+                        This is paragraph
                     </p>
                 </blockquote>
                 <p>
-                    interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    } 2.
                 </p>
 
             </div>
@@ -185,10 +178,10 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-
+            
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }
@@ -230,7 +223,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -240,33 +233,26 @@
         });
     </script>
 
+    <?php test: ?>
     <div class="test-6">
         <h1>Block Quote Button 6: Empty Selection in Word</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    This is paragraph 1.
                 </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                    This is para{}graph 2.
                 </p>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique.
+                    This is paragraph 1.
                 </p>
                 <blockquote>
                     <p>
-                        {Aliquam gravida mauris at
-                        ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                        pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                        {This is paragraph 2.}
                     </p>
                 </blockquote>
 
@@ -275,7 +261,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -284,7 +270,7 @@
             }
         });
     </script>
-
+<?php //return; ?>
     <div class="test-7">
         <h1>Block Quote Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
@@ -319,7 +305,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
@@ -366,7 +352,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var blockquoteButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-text-block-quote');
+            var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

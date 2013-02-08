@@ -1,3 +1,16 @@
+/**
+ * @fileOverview Contains the float right button class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates an instance of a filtered preview button to float an image right.
+ *
+ * @todo des and type for the param.
+ * @param {type} param
+ */
 Raptor.registerUi(new FilteredPreviewButton({
     name: 'floatRight',
     applyToElement: function(element) {

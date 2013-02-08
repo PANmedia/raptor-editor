@@ -1,3 +1,20 @@
+/**
+ * @fileOverview Contains the menu button class code.
+ *
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class
+ * @constructor
+ * @augments Button
+ *
+ * @param {Menu} menu The menu to create the menu button for.
+ * @param {Object} options
+ * @returns {MenuButton}
+ */
 function MenuButton(menu, options) {
     this.menu = menu;
     this.name = menu.name;
@@ -8,7 +25,16 @@ function MenuButton(menu, options) {
 
 MenuButton.prototype = Object.create(Button.prototype);
 
+/**
+ * Shows the menu when button is clicked.
+ *
+ * @param {Event} event The click event.
+ */
 MenuButton.prototype.click = function(event) {
-    this.menu.show();
+    if (this.menu.getMenu().is(':visible')) {
+        $('.raptor-menu').hide();
+    } else {
+        this.menu.show();
+    }
     event.preventDefault();
-}
+};

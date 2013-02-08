@@ -8,6 +8,5 @@ translation-status.html
 /src/plugins-extra/
 /vendor/
 /composer.lock
-/codemirror/
 /jscover/
 /temp/

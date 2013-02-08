@@ -1,3 +1,18 @@
+/**
+ * @fileOverview Contains the text align button class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The text align button class.
+ * @constructor
+ * @augments PreviewToggleButton
+ *
+ * @param {Object} options Options hash.
+ * @returns {Element}
+ */
 function TextAlignButton(options) {
     PreviewToggleButton.call(this, $.extend({
         action: function() {
@@ -12,7 +27,8 @@ function TextAlignButton(options) {
             this.selectionChange();
         },
         selectionToggle: function() {
-            return selectionContains('.' + this.getClass(), this.raptor.getElement());
+            return rangy.getSelection().getAllRanges().length > 0 &&
+                selectionContains('.' + this.getClass(), this.raptor.getElement());
         }
     }, options));
 }

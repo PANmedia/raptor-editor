@@ -1,11 +1,35 @@
-function test(container, action, format) {
-    if (typeof window.testResults === 'undefined') {
-        window.testResults = {
-            count: 0,
-            tests: []
-        };
-    }
+if (typeof window.testResults === 'undefined') {
+    window.testResults = {
+        tests: [],
+        finished: false
+    };
+}
 
+var testQueue = [],
+    testQueueTimer = null,
+    testRunning = false;
+
+function test(container, action) {
+    if ($(container).length !== 1) {
+        throw new Error('Duplicate or missing container: ' + container);
+        return;
+    }
+    testQueue.push([container, action]);
+    if (testQueueTimer === null) {
+        testQueueTimer = setInterval(function() {
+            if (testRunning === false && testQueue.length > 0) {
+                var test = testQueue.shift();
+                runTest(test[0], test[1]);
+            }
+            if (testRunning === false && testQueue.length === 0) {
+                window.testResults.finished = true;
+                clearInterval(testQueueTimer);
+            }
+        }, 20);
+    }
+}
+
+function runTest(container, action, format) {
     var output = $(container).find('.test-output'),
         input = $(container).find('.test-input'),
         diff = $(container).find('.test-diff'),
@@ -93,5 +117,4 @@ function test(container, action, format) {
             pass(container);
         }
     }
-    window.testResults.count++;
 }

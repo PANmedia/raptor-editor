@@ -38,6 +38,9 @@ class CombineTask extends Task {
             if (!$file) {
                 continue;
             }
+            if (strpos($file, '//') === 0) {
+                continue;
+            }
             if (preg_match('/^\(function\(/', $file)) {
                 $this->log($file, Project::MSG_INFO);
                 $data = "
@@ -56,6 +59,10 @@ class CombineTask extends Task {
                 continue;
             }
             $file = $this->buildDir . '/' . $file;
+            if (strpos($file, '__DIR__') !== false) {
+                $file = str_replace('__DIR__', dirname($this->file), $file);
+                $file = str_replace(':', '_', $file);
+            }
             if (!is_file($file)) {
                 die("Error processing file manifest: {$file}, does not exist.");
             }

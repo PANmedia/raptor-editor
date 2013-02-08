@@ -35,13 +35,12 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
-            } 
+            }
         });
     </script>
 
@@ -72,10 +71,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -109,10 +107,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -152,10 +149,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -195,10 +191,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -238,10 +233,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -281,10 +275,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
@@ -324,16 +317,15 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-8', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }
         });
     </script>
-    
+
     <div class="test-9">
         <h1>Center Align Button 9: More Than One Paragraph Selection with one already aligned</h1>
         <div class="test-input">
@@ -367,10 +359,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-9', function(input) {
-            var alignCenterButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-align-center');
-            alignCenterButton.trigger('click');
+            var alignCenterButton = clickButton(input, '.raptor-ui-align-center');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!alignCenterButton.is('.ui-state-highlight')) {
                 throw new Error('Button is not active');
             }

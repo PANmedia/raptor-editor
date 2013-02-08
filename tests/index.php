@@ -40,7 +40,7 @@
                 <?php foreach ($groups as $group): ?>
                     <div class="group" data-path="<?= $group['path'] ?>">
                         <div class="number">
-                            <input class="group-check" type="checkbox"><?= $i ?>
+                            <label><input class="group-check" type="checkbox"><?= $i ?></label>
                         </div>
                         <div class="group-header">
                             <div class="ui-widget ui-notification">

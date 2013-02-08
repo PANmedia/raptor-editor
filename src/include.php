@@ -58,6 +58,9 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-toggle-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/filtered-preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/css-class-applier-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/menu-button.js"></script>
@@ -65,8 +68,8 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/select-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/custom-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/layout/toolbar.js"></script>
-<script type="text/javascript" src="<?= $uri ?>components/layout/word.js"></script>
-<script type="text/javascript" src="<?= $uri ?>components/layout/aloha.js"></script>
+
+<!-- Preset -->
 <script type="text/javascript" src="<?= $uri ?>presets/base.js"></script>
 <script type="text/javascript" src="<?= $uri ?>presets/full.js"></script>
 
@@ -82,6 +85,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-element.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/embed/embed.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/insert-file/insert-file.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-left.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-none.js"></script>
@@ -94,10 +98,13 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/hr/hr-create.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/image-resize-button/image-resize-button.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-create.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-remove.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-email.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-document.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-internal.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/list/list-ordered.js"></script>
@@ -113,6 +120,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/snippet-menu/snippet-menu.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/special-characters/special-characters.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/statistics/statistics.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-cell-button.js"></script>
@@ -123,6 +132,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-insert-row.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-merge-cells.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
@@ -142,6 +152,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/sub.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/super.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/tool-tip/tool-tip.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/view-source/view-source.js"></script>

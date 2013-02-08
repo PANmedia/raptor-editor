@@ -7,6 +7,22 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+
+        function testRemoveLink(input) {
+            var createLinkButton = getLayoutElement(input).find('.raptor-ui-link-create');
+            var removeLinkButton = getLayoutElement(input).find('.raptor-ui-link-remove');
+
+            removeLinkButton.trigger('click');
+
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (createLinkButton.is('.ui-state-highlight')){
+                throw new Error('Create link button is active');
+            }
+            if (removeLinkButton.is('.ui-state-highlight')){
+                throw new Error('Remove link button is active');
+            }
+        }
     </script>
     <div class="test-1">
         <h1>Remove Link Button 1: Word Group Selection</h1>
@@ -34,21 +50,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-1', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-1', testRemoveLink);
     </script>
 
     <div class="test-2">
@@ -77,21 +79,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-2', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-2', testRemoveLink);
     </script>
 
     <div class="test-3">
@@ -120,21 +108,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-3', function(input) {
-           var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-3', testRemoveLink);
     </script>
 
      <div class="test-4">
@@ -169,21 +143,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-4', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-4', testRemoveLink);
     </script>
 
     <div class="test-5">
@@ -217,21 +177,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-5', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-5', testRemoveLink);
     </script>
 
     <div class="test-6">
@@ -257,28 +203,14 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-6', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-6', testRemoveLink);
     </script>
 
     <div class="test-7">
@@ -288,7 +220,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <a href=".">{hendrerit}</a> velit nec tristique.
+                    malesuada <a href=".">{}hendrerit</a> velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -301,7 +233,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
+                    malesuada {hendrerit} velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -311,21 +243,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-7', testRemoveLink);
     </script>
 
     <div class="test-8">
@@ -346,21 +264,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-8', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-8', testRemoveLink);
     </script>
 
     <div class="test-9">
@@ -369,7 +273,7 @@
             <div class="editible">
                 <ol>
                     <li>Item 1</li>
-                    <li><a href=".">Item 2 was a link</a></li>
+                    <li><a href=".">{Item 2 was a link}</a></li>
                     <li>Item 3</li>
                     <li>Item 4</li>
                 </ol>
@@ -387,21 +291,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-9', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-9', testRemoveLink);
     </script>
 
     <div class="test-10">
@@ -410,7 +300,7 @@
             <div class="editible">
                 <ul>
                     <li>Item 1</li>
-                    <li><a href=".">Item 2 was a link</a></li>
+                    <li><a href=".">{Item 2 was a link}</a></li>
                     <li>Item 3</li>
                     <li>Item 4</li>
                 </ul>
@@ -428,20 +318,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-10', function(input) {
-            var createLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-create');
-            var removeLinkButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-link-remove');
-
-            removeLinkButton.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
-            }
-            if (removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is active');
-            }
-        });
+        testEditor('.test-10', testRemoveLink);
     </script>
 </body>
 </html>

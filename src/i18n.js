@@ -77,6 +77,11 @@ function getLocalizedString(string) {
         }
     }
 
+    // <debug>
+    if (debugLevel >= MIN) {
+        handleError('Missing locale string: ' + string);
+    }
+    // </debug>
     return string;
 }
 
@@ -99,11 +104,6 @@ function _(string, variables) {
 
     // Convert the variables
     if (!variables) {
-        // <debug>
-        if (debugLevel >= MID) {
-            debug('Missing locale string: ' + string);
-        }
-        // </debug>
         return string;
     } else {
         for (var key in variables) {

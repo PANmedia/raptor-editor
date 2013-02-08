@@ -1,5 +1,21 @@
+/**
+ * @fileOverview Template helper functions.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
+/**
+ *
+ * @type type
+ */
 var templateCache = { /* <templates/> */ };
 
+/**
+ *
+ * @param {type} name
+ * @param {type} urlPrefix
+ * @returns {templateGet.name}
+ */
 function templateGet(name, urlPrefix) {
     if (templateCache[name]) {
         return templateCache[name];
@@ -23,7 +39,7 @@ function templateGet(name, urlPrefix) {
         type: 'GET',
         async: false,
         // <debug>
-        cache: false,
+        // cache: false,
         // </debug>
         // 15 seconds
         timeout: 15000,
@@ -41,7 +57,12 @@ function templateGet(name, urlPrefix) {
     return template;
 };
 
-
+/**
+ *
+ * @param {type} template
+ * @param {type} variables
+ * @returns {unresolved}
+ */
 function templateConvertTokens(template, variables) {
     // Translate template
     template = template.replace(/_\(['"]{1}(.*?)['"]{1}\)/g, function(match, key) {
@@ -70,7 +91,7 @@ function templateConvertTokens(template, variables) {
     template = template.replace(/\{\{(.*?)\}\}/g, function(match, variable) {
         // <debug>
         if (typeof variables[variable] === 'undefined') {
-            handleError('Missing template variable: ' + variable);
+            handleError(new Error('Missing template variable: ' + variable));
         }
         // </debug>
         return variables[variable];
@@ -79,6 +100,13 @@ function templateConvertTokens(template, variables) {
     return template;
 };
 
+/**
+ *
+ * @param {type} variables
+ * @param {type} prefix
+ * @param {type} depth
+ * @returns {unresolved}
+ */
 function templateGetVariables(variables, prefix, depth) {
     prefix = prefix ? prefix + '.' : '';
     var maxDepth = 5;

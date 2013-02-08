@@ -1,36 +1,57 @@
+/**
+ * @fileOverview Contains the statistics code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
 var statisticsDialog = null;
 
-Raptor.registerUi(new Button({
+/**
+ * Creates an instance of a dialog button to display the pages statistics.
+ *
+ * @todo param details?
+ * @param {type} param
+ */
+Raptor.registerUi(new DialogButton({
     name: 'statistics',
     options: {
         maximum: 100,
         showCountInButton: true
+    },
+    dialogOptions: {
+        width: 350
     },
 
     init: function() {
         if (this.options.showCountInButton) {
             this.raptor.bind('change', this.updateButton.bind(this));
         }
-        return Button.prototype.init.apply(this, arguments);
+        return DialogButton.prototype.init.apply(this, arguments);
     },
 
-    action: function() {
-        this.processDialog();
-        aDialogOpen(this.getDialog());
+    applyAction: function() {
     },
 
-    getCharacters: function() {
-        return $('<div>').html(this.raptor.getHtml()).text().length;
+    getCancelButton: function() {
+    },
+
+    getCharacterCount: function() {
+        return $('<div>').html(this.raptor.getHtml()).text().trim().length;
+    },
+
+    getContent: function() {
+        return $('<div>').html(this.raptor.getHtml()).text().trim();
     },
 
     updateButton: function() {
         var charactersRemaining = null,
             label = null,
-            characters = this.getCharacters();
+            characterCount = this.getCharacterCount();
 
         // Cases where maximum has been provided
         if (this.options.maximum) {
-            charactersRemaining = this.options.maximum - characters;
+            charactersRemaining = this.options.maximum - characterCount;
             if (charactersRemaining >= 0) {
                 label = _('statisticsButtonCharacterRemaining', {
                     charactersRemaining: charactersRemaining
@@ -42,7 +63,7 @@ Raptor.registerUi(new Button({
             }
         } else {
             label = _('statisticsButtonCharacters', {
-                characters: characters
+                characters: characterCount
             });
         }
 
@@ -78,39 +99,17 @@ Raptor.registerUi(new Button({
         return this.button;
     },
 
-    getDialog: function() {
-        if (!statisticsDialog) {
-            statisticsDialog = $(this.raptor.getTemplate('statistics.dialog'));
-            aDialog(statisticsDialog, {
-                modal: true,
-                resizable: false,
-                autoOpen: false,
-                width: 350,
-                title: _('statisticsDialogTitle'),
-                dialogClass: this.options.dialogClass,
-                buttons: [
-                    {
-                        text: _('statisticsDialogOKButton'),
-                        click: function() {
-                            aDialogClose(statisticsDialog);
-                        }.bind(this),
-                        icons: {
-                            primary: 'ui-icon-circle-check'
-                        }
-                    }
-                ]
-            });
-        }
-        return statisticsDialog;
+    getDialogTemplate: function() {
+        return $(this.raptor.getTemplate('statistics.dialog', this.options));
     },
 
     /**
      * Process and return the statistics dialog template.
+     *
      * @return {jQuery} The processed statistics dialog template
      */
-    processDialog: function() {
-        var dialog = this.getDialog();
-        var content = $('<div/>').html(this.raptor.getHtml()).text();
+    openDialog: function(dialog) {
+        var content = this.getContent();
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';

@@ -8,7 +8,11 @@
 @import 'compass/css3/transition';
 
 .raptor-click-button-to-edit-button {
-    z-index: 4000;
+    z-index: $z-click-to-edit-button;
+}
+
+.raptor-click-button-to-edit-button .ui-icon {
+    background: inline-image('pencil.png') 0 0;
 }
 
 .raptor-click-button-to-edit {

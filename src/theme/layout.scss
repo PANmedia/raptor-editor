@@ -14,7 +14,7 @@
 
 .raptor-wrapper {
     overflow: visible;
-    z-index: 1001;
+    z-index: $z-toolbar;
     position: fixed;
     font-size: 12px;
     @include user-select(none);

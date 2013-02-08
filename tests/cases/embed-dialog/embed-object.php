@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
@@ -77,7 +77,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
@@ -120,7 +120,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
@@ -167,7 +167,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-4', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
@@ -207,7 +207,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-5', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
@@ -253,7 +253,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-6', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';
@@ -299,7 +299,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-7', function(input) {
-            var embedButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-embed');
+            var embedButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedButton.trigger('click');
 
             var video = 'http://www.youtube.com/watch?v=KQbySwxU8L4';

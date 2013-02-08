@@ -1,4 +1,15 @@
+/**
+ * @fileOverview Save state helper functions.
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
 
+
+/**
+ * Saves the state of an element.
+ * @param {jQuery} element The element to have its current state saved.
+ * @returns {Object} The saved state of the element.
+ */
 function stateSave(element) {
     // <strict>
     if (!(element instanceof $)) {
@@ -13,6 +24,12 @@ function stateSave(element) {
     };
 }
 
+/**
+ * Restores an element from its saved state.
+ * @param {jQuery} element The element to have its state restored.
+ * @param {jQuery} state The state to restore the element to.
+ * @returns {Object} The restored element.
+ */
 function stateRestore(element, state) {
     // <strict>
     if (!(element instanceof $)) {

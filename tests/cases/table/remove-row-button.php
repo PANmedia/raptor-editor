@@ -57,7 +57,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-remove-row').trigger('click');
+            clickButton(input, '.raptor-ui-table-remove-row');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
@@ -219,7 +219,7 @@
     </div>
      <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-table-remove-row').trigger('click');
+            clickButton(input, '.raptor-ui-table-remove-row');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>

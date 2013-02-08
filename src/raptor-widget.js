@@ -9,12 +9,12 @@
  */
 
 /**
- * @lends $.editor.prototype
+ * @class
  */
 var RaptorWidget = {
 
     /**
-     * Constructor
+     * @constructs RaptorWidget
      */
     _init: function() {
         // Prevent double initialisation
@@ -64,6 +64,9 @@ var RaptorWidget = {
         // True if editing is enabled
         this.enabled = false;
 
+        // True if editing is enabled at least once
+        this.initialised = false;
+
         // True if the layout has been loaded and displayed
         this.visible = false;
 
@@ -95,6 +98,7 @@ var RaptorWidget = {
 
         // Store the original HTML
         this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
+        this.historyPush(this.getOriginalHtml());
 
         // Replace textareas/inputs with a div
         if (this.element.is(':input')) {
@@ -141,12 +145,17 @@ var RaptorWidget = {
 
     /**
      * Attaches the editors internal events.
+     * @fires RaptorWidget#resize
      */
     attach: function() {
         this.bind('change', this.historyPush);
 
-        this.getElement().find('img').bind('click.' + this.widgetName, function(event){
+        this.getElement().on('click.' + this.widgetName, 'img', function(event){
             selectionSelectOuter(event.target);
+        }.bind(this));
+        this.getElement().focus(function() {
+            this.hideOtherLayouts(true);
+            this.showLayout();
         }.bind(this));
 
         this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
@@ -286,6 +295,8 @@ var RaptorWidget = {
                     this.fire('cleaned');
                 }
             }
+
+            this.checkSelectionChange();
         }
     },
 
@@ -344,8 +355,19 @@ var RaptorWidget = {
 
     actionPreview: function(action) {
         this.actionPreviewRestore();
-        selectionConstrain(this.target);
-        this.previewState = actionPreview(this.previewState, this.target, action);
+        var ranges = this.fire('selectionCustomise');
+        if (ranges.length > 0) {
+            this.previewState = actionPreview(this.previewState, this.target, function() {
+                for (var i = 0, l = ranges.length; i < l; i++) {
+                    rangy.getSelection().setSingleRange(ranges[i]);
+                    selectionConstrain(this.target);
+                    action();
+                }
+            }.bind(this));
+        } else {
+            selectionConstrain(this.target);
+            this.previewState = actionPreview(this.previewState, this.target, action);
+        }
     },
 
     actionPreviewRestore: function() {
@@ -357,9 +379,28 @@ var RaptorWidget = {
 
     actionApply: function(action) {
         this.actionPreviewRestore();
-        selectionConstrain(this.target);
-        actionApply(action, this.history);
-        this.checkChange();
+        var state = this.stateSave();
+        try {
+            var ranges = this.fire('selectionCustomise');
+            if (ranges.length > 0) {
+                actionApply(function() {
+                    for (var i = 0, l = ranges.length; i < l; i++) {
+                        rangy.getSelection().setSingleRange(ranges[i]);
+                        selectionConstrain(this.target);
+                        actionApply(action, this.history);
+                    }
+                }.bind(this), this.history);
+            } else {
+                selectionConstrain(this.target);
+                actionApply(action, this.history);
+            }
+            this.checkChange();
+        } catch (exception) {
+            this.stateRestore(state);
+            // <strict>
+            handleError(exception);
+            // </strict>
+        }
     },
 
     actionUndo: function() {
@@ -376,11 +417,16 @@ var RaptorWidget = {
     },
 
     stateRestore: function(state) {
+        if (!this.isEditing()) {
+            return;
+        }
         var restoredState = stateRestore(this.target, state),
             selection = rangy.getSelection();
         this.target = restoredState.element;
-        selection.setRanges(restoredState.ranges);
-        selection.refresh();
+        if (restoredState.ranges !== null) {
+            selection.setRanges(restoredState.ranges);
+            selection.refresh();
+        }
     },
 
     /*========================================================================*\
@@ -410,28 +456,31 @@ var RaptorWidget = {
         if (!this.enabled) {
             this.fire('enabling');
             this.enabled = true;
-            this.getElement().addClass(this.options.baseClass + '-editing');
 
+            this.getElement().addClass(this.options.baseClass + '-editing');
             if (this.options.partialEdit) {
                 this.getElement().find(this.options.partialEdit).attr('contenteditable', true);
             } else {
                 this.getElement().attr('contenteditable', true);
             }
 
-            try {
-                document.execCommand('enableInlineTableEditing', false, false);
-                document.execCommand('styleWithCSS', true, true);
-            } catch (error) {
-                // <strict>
-                handleError(error);
-                // </strict>
-            }
+            if (!this.initialised) {
+                this.initialised = true;
+                try {
+                    document.execCommand('enableInlineTableEditing', false, false);
+                    document.execCommand('styleWithCSS', true, true);
+                } catch (error) {
+                    // <strict>
+                    handleError(error);
+                    // </strict>
+                }
 
-            for (var name in this.plugins) {
-                this.plugins[name].enable();
-            }
+                for (var name in this.plugins) {
+                    this.plugins[name].enable();
+                }
 
-            this.bindHotkeys();
+                this.bindHotkeys();
+            }
 
             this.fire('enabled');
             this.fire('resize');
@@ -452,10 +501,17 @@ var RaptorWidget = {
     },
 
     cancelEditing: function() {
+        this.unify(function(raptor) {
+            raptor.stopEditing();
+        });
+    },
+
+    stopEditing: function() {
         this.fire('cancel');
         this.resetHtml();
         this.hideLayout();
         this.disableEditing();
+        this.dirty = false;
         selectionDestroy();
     },
 
@@ -699,13 +755,14 @@ var RaptorWidget = {
     /*========================================================================*\
      * History functions
     \*========================================================================*/
+
     /**
      *
      */
     historyPush: function() {
         if (!this.historyEnabled) return;
         var html = this.getHtml();
-        if (html !== this.historyPeak()) {
+        if (html !== this.historyPeek()) {
             // Reset the future on change
             if (this.present !== this.history.length - 1) {
                 this.history = this.history.splice(0, this.present + 1);
@@ -716,13 +773,15 @@ var RaptorWidget = {
 
             // Mark the persent as the end of the history
             this.present = this.history.length - 1;
+
+            this.fire('historyChange');
         }
     },
 
     /**
      * @returns {String|null}
      */
-    historyPeak: function() {
+    historyPeek: function() {
         if (!this.history.length) return null;
         return this.history[this.present];
     },
@@ -737,6 +796,7 @@ var RaptorWidget = {
             this.historyEnabled = false;
             this.change();
             this.historyEnabled = true;
+            this.fire('historyChange');
         }
     },
 
@@ -750,6 +810,7 @@ var RaptorWidget = {
             this.historyEnabled = false;
             this.change();
             this.historyEnabled = true;
+            this.fire('historyChange');
         }
     },
 
@@ -761,49 +822,30 @@ var RaptorWidget = {
      * @param {Array|String} mixed The hotkey name or an array of hotkeys
      * @param {Object} The hotkey object or null
      */
-    registerHotkey: function(mixed, actionData, context) {
-        // Allow array objects, and single plugins
-        if (typeof(mixed) === 'string') {
-
-            // <strict>
-            if (this.hotkeys[mixed]) {
-                handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {hotkey: mixed}));
-            }
-            // </strict>
-
-            this.hotkeys[mixed] = $.extend({}, {
-                context: context,
-                restoreSelection: true
-            }, actionData);
-
-        } else {
-            for (var name in mixed) {
-                this.registerHotkey(name, mixed[name], context);
-            }
+    registerHotkey: function(mixed, action) {
+        // <strict>
+        if (!typeIsString(mixed)) {
+            handleInvalidArgumentError('Expected argument 1 to raptor.registerHotkey to be a string');
+            return;
         }
+        if (this.hotkeys[mixed]) {
+            handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {
+                hotkey: mixed
+            }));
+        }
+        // </strict>
+
+        this.hotkeys[mixed] = action;
     },
 
     bindHotkeys: function() {
         for (var keyCombination in this.hotkeys) {
-            var editor = this,
-                force = this.hotkeys[keyCombination].force || false;
-
-            if (!this.options.enableHotkeys && !force) {
-                continue;
-            }
-
             this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
-                selectionSave();
-                var object = editor.hotkeys[event.data];
-                // Returning true from action will allow event bubbling
-                if (object.action.call(object.context) !== true) {
+                if (this.isEditing()) {
+                    this.hotkeys[event.data]();
                     event.preventDefault();
                 }
-                if (object.restoreSelection) {
-                    selectionRestore();
-                }
-                editor.checkChange();
-            });
+            }.bind(this));
         }
     },
 
@@ -1021,9 +1063,11 @@ var RaptorWidget = {
      * @param {boolean} [sub]
      */
     fire: function(name, global, sub) {
+        var result = [];
+
         // Fire before sub-event
         if (!sub) {
-            this.fire('before:' + name, global, true);
+            result = result.concat(this.fire('before:' + name, global, true));
         }
 
         // <debug>
@@ -1035,12 +1079,14 @@ var RaptorWidget = {
             debug('Firing event: ' + name, this.getElement());
         }
         // </debug>
-
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
                 if (typeof event.callback !== 'undefined') {
-                    event.callback.call(event.context || this);
+                    var currentResult = event.callback.call(event.context || this);
+                    if (typeof currentResult !== 'undefined') {
+                        result = result.concat(currentResult);
+                    }
                 }
             }
         }
@@ -1052,8 +1098,10 @@ var RaptorWidget = {
 
         // Fire after sub-event
         if (!sub) {
-            this.fire('after:' + name, global, true);
+            result = result.concat(this.fire('after:' + name, global, true));
         }
+
+        return result;
     }
 };
 

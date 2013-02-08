@@ -1,4 +1,4 @@
-Raptor.registerLayout('toolbar', {
+Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
     options: {
         /**
          * Each element of the uiOrder should be an array of UI which will be grouped.
@@ -6,6 +6,10 @@ Raptor.registerLayout('toolbar', {
         uiOrder: null
     },
 
+    /**
+     * Inititialise the toolbar layout.
+     * @constructs
+     */
     init: function() {
         // Load all UI components if not supplied
         if (!this.options.uiOrder) {
@@ -114,6 +118,11 @@ Raptor.registerLayout('toolbar', {
 
                 // Check the UI has been registered
                 if (Raptor.ui[uiGroup[ii]]) {
+                    var uiOptions = this.raptor.options.plugins[uiGroup[ii]];
+                    if (uiOptions === false) {
+                        continue;
+                    }
+
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, Raptor.ui[uiGroup[ii]]);
 
@@ -124,21 +133,26 @@ Raptor.registerLayout('toolbar', {
 
                     var options = $.extend(true, {}, this.raptor.options, {
                         baseClass: this.raptor.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, this.raptor.options.plugins[uiGroup[ii]]);
+                    }, uiObject.options, uiOptions);
 
                     uiObject.raptor = this.raptor;
                     uiObject.options = options;
                     var ui = uiObject.init();
 
-                    // Append the UI object to the group
-                    uiGroupContainer.append(ui);
+                    if (typeIsElement(ui)) {
+                        // Fix corner classes
+                        ui.removeClass('ui-corner-all');
+
+                        // Append the UI object to the group
+                        uiGroupContainer.append(ui);
+                    }
 
                     // Add the UI object to the editors list
                     this.raptor.uiObjects[uiGroup[ii]] = uiObject;
                 }
                 // <strict>
                 else {
-                    handleError(_('UI identified by key "{{ui}}" does not exist', {ui: uiGroup[ii]}));
+                    handleError('UI identified by key "' + uiGroup[ii] + '" does not exist');
                 }
                 // </strict>
             }
@@ -150,6 +164,10 @@ Raptor.registerLayout('toolbar', {
         }
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
 
+        // Fix corner classes
+        this.toolbar.find('.ui-button:first-child').addClass('ui-corner-left');
+        this.toolbar.find('.ui-button:last-child').addClass('ui-corner-right');
+
         var layout = this;
         $(function() {
             wrapper.appendTo('body');
@@ -157,11 +175,21 @@ Raptor.registerLayout('toolbar', {
         });
     },
 
+    /**
+     * Show the toolbar.
+     *
+     * @fires RaptorWidget#layoutShow
+     */
     show: function() {
         this.wrapper.css('display', '');
         this.raptor.fire('layoutShow');
     },
 
+    /**
+     * Hide the toolbar.
+     *
+     * @fires RaptorWidget#layoutHide
+     */
     hide: function() {
         this.wrapper.css('display', 'none');
         this.raptor.fire('layoutHide');
@@ -179,10 +207,16 @@ Raptor.registerLayout('toolbar', {
         }
     },
 
+    /**
+     * @return {Element} The toolbar's wrapping element.
+     */
     getElement: function() {
         return this.wrapper;
     },
 
+    /**
+     * Clean up.
+     */
     destruct: function() {
         if (this.wrapper) {
             this.wrapper.remove();

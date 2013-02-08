@@ -1,3 +1,19 @@
+/**
+ * @fileOverview Contains the save rest class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class Thes save rest class.
+ * @constructor
+ * @augments RaptorPlugin
+ *
+ * @param {type} name
+ * @param {type} overrides Options hash.
+ * @returns {SaveRestPlugin}
+ */
 function SaveRestPlugin(name, overrides) {
     this.method = 'put';
     RaptorPlugin.call(this, name || 'saveRest', overrides);
@@ -5,6 +21,11 @@ function SaveRestPlugin(name, overrides) {
 
 SaveRestPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+/**
+ * Initializes the save rest plugin.
+ *
+ * @returns {Element}
+ */
 // <strict>
 SaveRestPlugin.prototype.init = function() {
     if (typeof this.options.url !== 'string' && !$.isFunction(this.options.url)) {
@@ -16,6 +37,9 @@ SaveRestPlugin.prototype.init = function() {
 };
 // </strict>
 
+/**
+ * Saves the selection.
+ */
 SaveRestPlugin.prototype.save = function() {
     this.requests = 0;
     this.errors = [];
@@ -33,15 +57,30 @@ SaveRestPlugin.prototype.save = function() {
     }.bind(this));
 };
 
+/**
+ * @todo this confuses me greatly, could you please do it?
+ * @param {type} data
+ * @param {type} status
+ * @param {type} xhr
+ */
 SaveRestPlugin.prototype.done = function(data, status, xhr) {
     xhr.raptor.saved();
     this.messages.push(data);
 };
 
+/**
+ * @todo same with this one
+ * @param {type} xhr
+ * @returns {undefined}
+ */
 SaveRestPlugin.prototype.fail = function(xhr) {
     this.errors.push(xhr.responseText);
 };
 
+/**
+ * @todo and this one
+ * @returns {undefined}
+ */
 SaveRestPlugin.prototype.always = function() {
     this.requests--;
     if (this.requests === 0) {
@@ -70,6 +109,10 @@ SaveRestPlugin.prototype.always = function() {
     }
 };
 
+/**
+ * @todo and this one
+ * @returns {unresolved}
+ */
 SaveRestPlugin.prototype.sendRequest = function() {
     var headers = this.raptor.getPlugin('saveRest').getHeaders(),
         data = this.raptor.getPlugin('saveRest').getData(),
@@ -83,6 +126,10 @@ SaveRestPlugin.prototype.sendRequest = function() {
     });
 };
 
+/**
+ * @todo and this one
+ * @returns {SaveRestPlugin.prototype.getHeaders.Anonym$5}
+ */
 SaveRestPlugin.prototype.getHeaders = function() {
     if (this.options.headers) {
         return this.options.headers.call(this);
@@ -90,6 +137,10 @@ SaveRestPlugin.prototype.getHeaders = function() {
     return {};
 };
 
+/**
+ * @todo and this one
+ * @returns {SaveRestPlugin.prototype.getData.data}
+ */
 SaveRestPlugin.prototype.getData = function() {
     // Get the data to send to the server
     var content = this.raptor.getHtml(),
@@ -98,6 +149,10 @@ SaveRestPlugin.prototype.getData = function() {
     return data;
 };
 
+/**
+ * @todo and this one 
+ * @returns {unresolved}
+ */
 SaveRestPlugin.prototype.getURL = function() {
     if (typeof this.options.url === 'string') {
         return this.options.url;

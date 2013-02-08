@@ -5,7 +5,7 @@ $group_csv_data = []; // An array which holds all the raw group information.
 $csv_data = []; // An array which holds all the raw test information.
 
 
-$csv_total_file_content = file_get_contents('tests.csv'); // Gets the content of the tests file.
+$csv_total_file_content = file_get_contents(__DIR__ . '/tests.csv'); // Gets the content of the tests file.
 $total_lines = explode("\n", $csv_total_file_content); // Splits the content up based on where the new lines are.
 $total_head = str_getcsv(array_shift($total_lines)); // Gets the keys for the raw data array from the header cells.
 

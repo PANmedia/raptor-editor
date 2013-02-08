@@ -16,8 +16,7 @@
                 <p>
                     {Some text here}
                 </p>
-                <div style="clear: both">
-                </div>
+                <div style="clear: both"></div>
             </div>
         </div>
         <div class="test-expected">
@@ -26,16 +25,15 @@
                 <p>
                     {Some text here}
                 </p>
-                <div style="clear: both">
-                </div>
+                <div style="clear: both"></div>
             </div>
         </div>
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var floatLeftButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-left');
+            var floatLeftButton = getLayoutElement(input).find('.raptor-ui-float-left');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            input.find('.editible').data('raptor').checkSelectionChange();
+            getRaptor(input).checkSelectionChange();
             if (!floatLeftButton.hasClass('ui-button-disabled')) {
                 throw new Error('Button is not disabled');
             }
@@ -68,9 +66,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            var floatRightButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-right');
+            var floatRightButton = getLayoutElement(input).find('.raptor-ui-float-right');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            input.find('.editible').data('raptor').checkSelectionChange();
+            getRaptor(input).checkSelectionChange();
             if (!floatRightButton.hasClass('ui-button-disabled')) {
                 throw new Error('Button is not disabled');
             }
@@ -102,9 +100,9 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-3', function(input) {
-            var floatNoneButton = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-float-none');
+            var floatNoneButton = getLayoutElement(input).find('.raptor-ui-float-none');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            input.find('.editible').data('raptor').checkSelectionChange();
+            getRaptor(input).checkSelectionChange();
             if (!floatNoneButton.hasClass('ui-button-disabled')) {
                 throw new Error('Button is not disabled');
             }

@@ -1,13 +1,36 @@
+/**
+ * @fileOverview Contains the tag tree plugin class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The tag tree plugin class.
+ * @constructor
+ * @augments RaptorPlugin
+ *
+ * @todo type and desc for name.
+ * @param {type} name
+ * @param {Object} overrides Options hash.
+ * @returns {Element}
+ */
 function TagTreePlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'tagTree', overrides);
 }
 
 TagTreePlugin.prototype = Object.create(RaptorPlugin.prototype);
 
+/**
+ * Enables the tag tree plugin.
+ */
 TagTreePlugin.prototype.enable = function() {
     this.raptor.bind('selectionChange', this.update.bind(this));
 };
 
+/**
+ * Updates the tag tree plugin.
+ */
 TagTreePlugin.prototype.update = function() {
     var title = '';
 
@@ -57,7 +80,7 @@ TagTreePlugin.prototype.update = function() {
     }, null, this);
 
     if (!title) {
-        title = this.raptor.getTemplate('tag-tree.root');
+        title = this.raptor.getTemplate('tag-tree.root', this.options);
     }
     this.raptor.getLayout().path
         .html(title)

@@ -1,11 +1,42 @@
-function testEditor(container, action) {
-    if (typeof window.testResults === 'undefined') {
-        window.testResults = {
-            count: 0,
-            tests: []
-        };
+$(function() {
+    if ($('.test-editor-spacer').length === 0) {
+        $('<div>').addClass('test-editor-spacer').height(50).prependTo('body');
     }
+});
 
+if (typeof window.testResults === 'undefined') {
+    window.testResults = {
+        tests: [],
+        finished: false
+    };
+}
+
+var testEditorQueue = [],
+    testEditorQueueTimer = null,
+    testEditorRunning = false;
+
+function testEditor(container, action) {
+    if ($(container).length !== 1) {
+        throw new Error('Duplicate or missing container: ' + container);
+        return;
+    }
+    testEditorQueue.push([container, action]);
+    if (testEditorQueueTimer === null) {
+        testEditorQueueTimer = setInterval(function() {
+            if (testEditorRunning === false && testEditorQueue.length > 0) {
+                var test = testEditorQueue.shift();
+                runEditorTest(test[0], test[1]);
+            }
+            if (testEditorRunning === false && testEditorQueue.length === 0) {
+                window.testResults.finished = true;
+                clearInterval(testEditorQueueTimer);
+            }
+        }, 20);
+    }
+}
+
+function runEditorTest(container, action) {
+    testEditorRunning = true;
     var input = $(container).find('.test-input');
     var html = input.html();
     var output = $('<div>').addClass('test-output').html(html).appendTo(container);
@@ -14,7 +45,30 @@ function testEditor(container, action) {
     output.find('.editible').raptor({
         autoEnable: true,
         urlPrefix: '../../../src/',
-        ui: {
+        plugins: {
+//            dock: {
+//                docked: true
+//            },
+            logo: false,
+            save: {
+                plugin: null
+            },
+            saveJson: {
+                url: 'save.php',
+                postName: 'raptor-content',
+                id: function() {
+                    return this.raptor.getElement().data('id');
+                }
+            },
+            saveRest: {
+                url: 'save.php',
+                data: function(html) {
+                    return {
+                        id: this.raptor.getElement().data('id'),
+                        content: html
+                    };
+                }
+            },
             classMenu: {
                 classes: {
                     'Blue background': 'cms-blue-bg',
@@ -61,8 +115,13 @@ function testEditor(container, action) {
         $('<div>').addClass('test-clear').insertAfter(outputSource);
 
         if (error) {
-            $('<pre>').text(error).appendTo(diff);
-            $('<pre>').text(error.stack).appendTo(diff);
+            var expectedHTML = style_html(expected.find('.editible').html());
+            var actualHTML = style_html(output.find('.editible').html());
+            if (actualHTML !== expectedHTML) {
+                diff.html(diffstr(expectedHTML, actualHTML));
+            }
+            $('<pre class="error-output">').text(error).appendTo(diff);
+            $('<pre class="error-output">').text(error.stack).appendTo(diff);
             window.testResults.tests.push({
                 status: 'fail',
                 type: 'error',
@@ -90,9 +149,18 @@ function testEditor(container, action) {
                 pass(container);
             }
         }
-    }, 100);
-
-    window.testResults.count++;
+        testEditorRunning = false;
+    }, 50);
 }
 
+function getRaptor(input) {
+    return input.find('.editible').data('uiRaptor');
+}
 
+function getLayoutElement(input) {
+    return getRaptor(input).getLayout().getElement();
+}
+
+function clickButton(input, button) {
+    return getLayoutElement(input).find(button).trigger('click');
+}

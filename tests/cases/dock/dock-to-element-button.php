@@ -36,7 +36,6 @@
         </div>
         <div class="test-expected">
             <div class="editible">
-                <marker class="raptor-ui-dock-to-element-marker"></marker>
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -63,7 +62,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var dockToElement = input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-dock-to-element');
+            var dockToElement = getLayoutElement(input).find('.raptor-ui-dock-to-element');
             dockToElement.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 

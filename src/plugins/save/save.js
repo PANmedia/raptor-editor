@@ -1,3 +1,16 @@
+/**
+ * @fileOverview Contains the save class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates an instance of the button class to save any changes.
+ *
+ * @todo param details?
+ * @param {type} param
+ */
 Raptor.registerUi(new Button({
     name: 'save',
 
@@ -6,6 +19,10 @@ Raptor.registerUi(new Button({
     },
 
     init: function() {
+        if (this.options.plugin === null) {
+            return;
+        }
+
         var result = Button.prototype.init.apply(this, arguments);
 
         // <strict>

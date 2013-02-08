@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-6">
+        <h1>List 6: listToggle unwrapping list crossing from an h2 to an a inside a &lt;p&gt;</h1>
+        <div class="test-input">
+            <h2>Lorem ipsum </h2>
+            <ul>
+                <li>
+                    <p>
+                        {dolor sit amet
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                        convallis dui id erat pellentesque et rhoncus</a>}
+                    </p>
+                </li>
+            </ul>
+            <p>
+                <a href="#"> nunc semper</a>. Suspendisse malesuada hendrerit velit
+                nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus.
+                Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue
+                ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <h2>Lorem ipsum </h2>
+            <p>dolor sit amet</p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis dui id erat pellentesque et rhoncus</a>
+            </p>
+            <p>
+                <a href="#">nunc semper</a>. Suspendisse malesuada hendrerit velit
+                nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus.
+                Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue
+                ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-6', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-7">
+        <h1>List 7: listToggle unwrapping selected list item that has n siblings below</h1>
+        <div class="test-input">
+            <ul>
+                <li>{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</li>
+                <li>Dui id erat pellentesque et rhoncus</li>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <ul>
+                <li>Dui id erat pellentesque et rhoncus</li>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-7', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-8">
+        <h1>List 8: listToggle unwrapping selected list item that has n siblings above and below</h1>
+        <div class="test-input">
+            <ul>
+                <li>Dui id erat pellentesque et rhoncus</li>
+                <li>{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</li>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>Dui id erat pellentesque et rhoncus</li>
+            </ul>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <ul>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-8', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-9">
+        <h1>List 9: listToggle unwrapping selected list item that has n siblings above</h1>
+        <div class="test-input">
+            <ul>
+                <li>Dui id erat pellentesque et rhoncus</li>
+                <li>{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</li>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>Dui id erat pellentesque et rhoncus</li>
+            </ul>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <ul>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-9', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-10">
+        <h1>List 10: listToggle unwrapping selection crossing list items within a single list</h1>
+        <div class="test-input">
+            <ul>
+                <li>Dui id erat{ pellentesque et rhoncus</li>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</li>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <p>
+                Dui id erat pellentesque et rhoncus
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <ul>
+                <li>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-10', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+</body>
+</html>

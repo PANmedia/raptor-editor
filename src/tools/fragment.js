@@ -6,7 +6,10 @@
 
 /**
  * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
- *
+ * @todo type for domFragment and tag.
+ * @param {type} domFragment The fragment to be converted to a HTML string.
+ * @param {type} tag The tag that the string may be wrapped in.
+ * @returns {String} The DOMFragment as a string, optionally wrapped in a tag.
  */
 function fragmentToHtml(domFragment, tag) {
     var html = '';
@@ -28,12 +31,12 @@ function fragmentToHtml(domFragment, tag) {
 }
 
 /**
- *
+ * Insert a DOMFragment before an element and wraps them both in a tag.
  *
  * @public @static
- * @param {DOMFragment} domFragment
- * @param {jQuerySelector|jQuery|Element} beforeElement
- * @param {String} wrapperTag
+ * @param {DOMFragment} domFragment This is the DOMFragment to be inserted.
+ * @param {jQuerySelector|jQuery|Element} beforeElement This is the element the DOMFragment is to be inserted before.
+ * @param {String} wrapperTag This is the tag to wrap the domFragment and the beforeElement in.
  */
 function fragmentInsertBefore(domFragment, beforeElement, wrapperTag) {
     // Get all nodes in the extracted content

@@ -42,7 +42,7 @@
  */
 
 /**
- * jQuery UI Editor
+ * Raptor Editor
  * @name Raptor
  * @namespace jQuery UI Editor
  */
@@ -124,4 +124,127 @@
 /**
  * @name $.editor.plugin
  * @namespace Namespace beneath which all plugins reside
+ */
+
+/** EVENTS */
+
+/**
+ * RaptorWidget#after:
+ * @event
+ */
+
+/**
+ * RaptorWidget#before:
+ * @event
+ */
+
+/**
+ * RaptorWidget#cancel
+ * @event
+ */
+
+/**
+ * RaptorWidget#change
+ * @event
+ */
+
+/**
+ * RaptorWidget#clean
+ * @event
+ */
+
+/**
+ * RaptorWidget#cleaned
+ * @event
+ */
+
+/**
+ * RaptorWidget#destroy
+ * @event
+ */
+
+/**
+ * RaptorWidget#dirty
+ * @event
+ */
+
+/**
+ * RaptorWidget#disabled
+ * @event
+ */
+
+/**
+ * RaptorWidget#enabled
+ * @event
+ */
+
+/**
+ * RaptorWidget#enabling
+ * @event
+ */
+
+/**
+ * RaptorWidget#hide
+ * @event
+ */
+
+/**
+ * RaptorWidget#historyChange
+ * @event
+ */
+
+/**
+ * RaptorWidget#html
+ * @event
+ */
+
+/**
+ * RaptorWidget#layoutHide
+ * @event
+ */
+
+/**
+ * @name RaptorWidget#layoutReady
+ * @event
+ */
+
+/**
+ * @name RaptorWidget#layoutShow
+ * @event
+ */
+
+/**
+ * RaptorWidget#ready
+ * @event
+ */
+
+/**
+ * RaptorWidget#resize
+ * @event
+ */
+
+/**
+ * RaptorWidget#restore
+ * @event
+ */
+
+/**
+ * RaptorWidget#saved
+ * @event
+ */
+
+/**
+ * RaptorWidget#selectionChange
+ * @event
+ */
+
+
+/**
+ * RaptorWidget#selectionCustomise
+ * @event
+ */
+
+/**
+ * RaptorWidget#show
+ * @event
  */

@@ -44,6 +44,7 @@ src/tools/dock.js
 src/tools/element.js
 src/tools/fragment.js
 src/tools/list.js
+src/tools/node.js
 src/tools/persist.js
 src/tools/range.js
 src/tools/selection.js
@@ -63,6 +64,7 @@ src/components/plugin.js
 src/components/ui/button.js
 src/components/ui/preview-button.js
 src/components/ui/preview-toggle-button.js
+src/components/ui/toggle-button.js
 src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
 src/components/ui/menu.js
@@ -122,6 +124,7 @@ src/plugins/text-style/strike.js
 src/plugins/text-style/sub.js
 src/plugins/text-style/super.js
 src/plugins/text-style/underline.js
+src/plugins/tool-tip/tool-tip.js
 src/plugins/unsaved-edit-warning/unsaved-edit-warning.js
 src/plugins/view-source/view-source.js
 
