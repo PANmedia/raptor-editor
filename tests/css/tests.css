@@ -68,6 +68,11 @@ iframe {
     overflow: hidden;
 }
 
+.group-header,
+.number label {
+    cursor: pointer;
+}
+
 .group-header .ui-state-confirmation .ui-icon,
 .group-header .ui-state-highlight .ui-icon,
 .group-header .ui-state-error .ui-icon,
