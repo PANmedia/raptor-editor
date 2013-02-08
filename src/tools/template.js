@@ -39,7 +39,7 @@ function templateGet(name, urlPrefix) {
         type: 'GET',
         async: false,
         // <debug>
-        cache: false,
+        // cache: false,
         // </debug>
         // 15 seconds
         timeout: 15000,
