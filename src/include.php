@@ -68,8 +68,8 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/select-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/custom-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/layout/toolbar.js"></script>
-<script type="text/javascript" src="<?= $uri ?>components/layout/word.js"></script>
-<script type="text/javascript" src="<?= $uri ?>components/layout/aloha.js"></script>
+
+<!-- Preset -->
 <script type="text/javascript" src="<?= $uri ?>presets/base.js"></script>
 <script type="text/javascript" src="<?= $uri ?>presets/full.js"></script>
 
