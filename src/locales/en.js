@@ -70,6 +70,7 @@ registerLocale('en', 'English', {
     imageResizeButtonDialogOKButton: 'Resize',
     imageResizeButtonDialogCancelButton: 'Cancel',
 
+    insertFileTitle: 'Insert file',
     insertFileDialogOKButton: 'Insert file',
     insertFileDialogCancelButton: 'Cancel',
 
