@@ -118,6 +118,11 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
 
                 // Check the UI has been registered
                 if (Raptor.ui[uiGroup[ii]]) {
+                    var uiOptions = this.raptor.options.plugins[uiGroup[ii]];
+                    if (uiOptions === false) {
+                        continue;
+                    }
+
                     // Clone the UI object (which should be extended from the defaultUi object)
                     var uiObject = $.extend({}, Raptor.ui[uiGroup[ii]]);
 
@@ -128,7 +133,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
 
                     var options = $.extend(true, {}, this.raptor.options, {
                         baseClass: this.raptor.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, this.raptor.options.plugins[uiGroup[ii]]);
+                    }, uiObject.options, uiOptions);
 
                     uiObject.raptor = this.raptor;
                     uiObject.options = options;
