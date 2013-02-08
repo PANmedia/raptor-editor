@@ -1,3 +1,18 @@
+/**
+ * @fileOverview Contains the table menu class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * @class The table menu class.
+ * @constructor
+ * @augments Menu
+ *
+ * @param {Object} options Options hash.
+ * @returns {Element}
+ */
 function TableMenu(options) {
     Menu.call(this, {
         name: 'tableCreate'
@@ -6,6 +21,11 @@ function TableMenu(options) {
 
 TableMenu.prototype = Object.create(Menu.prototype);
 
+/**
+ * Creates the menu table.
+ *
+ * @param event The mouse event to create the table.
+ */
 TableMenu.prototype.createTable = function(event) {
     this.raptor.actionApply(function() {
         selectionReplace(elementOuterHtml($(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
@@ -14,6 +34,11 @@ TableMenu.prototype.createTable = function(event) {
     });
 };
 
+/**
+ * Highlights the cells inside the table menu.
+ *
+ * @param event The mouse event to trigger the function.
+ */
 TableMenu.prototype.highlight = function(event) {
     var cells = tableCellsInRange(this.menuTable.get(0), {
             x: 0,
@@ -35,6 +60,11 @@ TableMenu.prototype.highlight = function(event) {
     });
 };
 
+/**
+ * Removes the highlight from the table menu.
+ *
+ * @param event The mouse event to trigger the function.
+ */
 TableMenu.prototype.highlightRemove = function(event) {
     this.menuTable
         .find('.' + this.options.baseClass + '-menu-hover')
@@ -42,6 +72,10 @@ TableMenu.prototype.highlightRemove = function(event) {
     this.raptor.actionPreviewRestore();
 };
 
+/**
+ * Prepares and returns the menu for use in the Raptor UI.
+ * @returns {Element}
+ */
 TableMenu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menuContent = this.raptor.getTemplate('table.create-menu', this.options);
@@ -52,6 +86,6 @@ TableMenu.prototype.getMenu = function() {
         this.menuTable = this.menu.find('table:eq(0)');
     }
     return this.menu;
-}
+};
 
 Raptor.registerUi(new TableMenu());

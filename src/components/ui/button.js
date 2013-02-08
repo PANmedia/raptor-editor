@@ -1,13 +1,14 @@
 /**
  * @fileOverview Contains the core button class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author Melissa Richards <melissa@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * @class The core button class.
- * 
+ *
  * @param {Object} overrides Options hash.
  */
 function Button(overrides) {

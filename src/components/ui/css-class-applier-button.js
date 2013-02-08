@@ -1,17 +1,16 @@
 /**
- * @fileOverview Contains the css class applier button class code.
+ * @fileOverview Contains the CSS class applier button class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class the css class applier button class.
+ * @class The CSS class applier button.
  *
  * @constructor
- * @augments PreviewToggleButton class.
- *
- * @todo param desc
+ * @augments PreviewToggleButton
  * @param {Object} options
  */
 function CSSClassApplierButton(options) {
@@ -21,7 +20,7 @@ function CSSClassApplierButton(options) {
 CSSClassApplierButton.prototype = Object.create(PreviewToggleButton.prototype);
 
 /**
- * Applies the css class from the button to a selection.
+ * Applies the class from the button to a selection.
  */
 CSSClassApplierButton.prototype.action = function() {
     selectionExpandToWord();
@@ -35,10 +34,9 @@ CSSClassApplierButton.prototype.action = function() {
 };
 
 /**
- * Checks if a class has been applied to a selection.
+ * Checks whether a class has been applied to a selection.
  *
- * @todo check please
- * @returns {Boolean} True if the css has been applied to the selection.
+ * @returns {Boolean} True if the css has been applied to the selection, false otherwise.
  */
 CSSClassApplierButton.prototype.selectionToggle = function() {
     for (var i = 0, l = this.classes.length; i < l; i++) {

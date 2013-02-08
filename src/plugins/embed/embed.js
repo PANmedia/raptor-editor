@@ -1,3 +1,16 @@
+/**
+ * @fileOverview Contains the embed dialog button code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates an intance of the embed dialog for use in the Raptor UI.
+ *
+ * @todo des and type for the param.
+ * @param {type} param
+ */
 Raptor.registerUi(new DialogButton({
     name: 'embed',
     state: null,

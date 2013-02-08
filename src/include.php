@@ -85,6 +85,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-element.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/embed/embed.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/insert-file/insert-file.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-left.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-none.js"></script>

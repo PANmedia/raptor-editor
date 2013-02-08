@@ -1,17 +1,18 @@
 /**
  * @fileOverview Contains the filtered preview button class code.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author Melissa Richards <melissa@panmedia.co.nz>
+ * @author  Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * @class the filtered preview button class.
  *
  * @constructor
- * @augments Button
+ * @augments PreviewButton
  *
- * @param {type} options
+ * @param {Object} options
  */
 function FilteredPreviewButton(options) {
     Button.call(this, options);
@@ -31,7 +32,7 @@ FilteredPreviewButton.prototype.init = function() {
 };
 
 /**
- * @todo desc
+ * Toggles the button's disabled state.
  */
 FilteredPreviewButton.prototype.selectionChange = function() {
     if (this.isEnabled()) {
@@ -41,18 +42,28 @@ FilteredPreviewButton.prototype.selectionChange = function() {
     }
 };
 
+// <strict>
 /**
- * @todo desc and check please
- * @returns {Boolean} True if preview available and if the button is enabled
+ * Get the element according to the button's filtereing strategy.
+ * @throws {Error} If this function is not overridden.
+ * @param  {RangyRange} range
+ * @return {Element} The filtered element.
+ */
+FilteredPreviewButton.prototype.getElement = function(range) {
+    throw new Error('Expected child class to override FilteredPreviewButton.getElement');
+};
+// <strict>
+
+
+/**
+ * @returns {Boolean} True if preview available and if the button is enabled, false otherwise.
  */
 FilteredPreviewButton.prototype.canPreview = function() {
     return PreviewButton.prototype.canPreview.call(this) && this.isEnabled();
 };
 
 /**
- * Checks if the button is enabled.
- *
- * @returns {Boolean} True if button is enabled.
+ * @returns {Boolean} True if button is enabled, false otherwise.
  */
 FilteredPreviewButton.prototype.isEnabled = function() {
     var result = false;
@@ -65,8 +76,7 @@ FilteredPreviewButton.prototype.isEnabled = function() {
 };
 
 /**
- * @todo no clue what this one does
- * @returns {undefined}
+ * Perform the button's action.
  */
 FilteredPreviewButton.prototype.action = function() {
     selectionEachRange(function(range) {

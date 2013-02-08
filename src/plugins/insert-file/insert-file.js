@@ -1,7 +1,19 @@
+/**
+ * @fileOverview Contains the insert file button code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
 
+/**
+ * Creates an instance of the button class to allow the insertation of files.
+ *
+ * @todo param details?
+ * @param {type} param
+ */
 Raptor.registerUi(new Button({
     name: 'insertFile',
-
+    state: false,
     /** @type {string[]} Image extensions*/
     imageTypes: [
         'jpeg',
@@ -19,7 +31,7 @@ Raptor.registerUi(new Button({
         customAction: false
     },
     action: function() {
-        selectionSave();
+        this.state = this.raptor.stateSave();
         // If a customAction has been specified, use it instead of the default dialog.
         if (!this.options.customAction) {
             return this.showDialog();
@@ -114,12 +126,13 @@ Raptor.registerUi(new Button({
      * @param  {Object[]} files Array of files to be inserted.
      */
     insertFiles: function(files) {
+        this.raptor.stateRestore(this.state);
+        this.state = null;
 
         if (!files.length) {
             return;
         }
 
-        selectionRestore();
         var file;
         if (files.length === 1) {
             file = files.shift();

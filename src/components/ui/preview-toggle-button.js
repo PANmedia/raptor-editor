@@ -9,8 +9,8 @@
  * @class the preview toggle button class.
  *
  * @constructor
- * @augments button class.
- * 
+ * @augments preview button.
+ *
  * @param {Object} options
  */
 function PreviewToggleButton(options) {

@@ -180,6 +180,11 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
         this.raptor.fire('layoutShow');
     },
 
+    /**
+     * Hide the toolbar.
+     *
+     * @fires RaptorWidget#layoutHide
+     */
     hide: function() {
         this.wrapper.css('display', 'none');
         this.raptor.fire('layoutHide');
@@ -197,10 +202,16 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
         }
     },
 
+    /**
+     * @return {Element} The toolbar's wrapping element.
+     */
     getElement: function() {
         return this.wrapper;
     },
 
+    /**
+     * Clean up.
+     */
     destruct: function() {
         if (this.wrapper) {
             this.wrapper.remove();

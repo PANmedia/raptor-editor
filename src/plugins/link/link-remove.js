@@ -1,3 +1,16 @@
+/**
+ * @fileOverview Contains the remove link class code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates an instance of teh toggle button to remove links.
+ *
+ * @todo param details?
+ * @param {type} param
+ */
 Raptor.registerUi(new ToggleButton({
     name: 'linkRemove',
     disable: true,

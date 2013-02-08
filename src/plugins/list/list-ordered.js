@@ -1,7 +1,20 @@
-Raptor.registerUi(new PreviewButton({
+/**
+ * @fileOverview Contains the ordered list button code.
+ * @author  David Neilsen <david@panmedia.co.nz>
+ * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Creates a new instance of the preview toggle button to create ordered lists.
+ *
+ * @todo param details?
+ * @param {type} param
+ */
+Raptor.registerUi(new PreviewToggleButton({
     name: 'listOrdered',
     init: function() {
-        var result = Button.prototype.init.apply(this, arguments);
+        var result = PreviewToggleButton.prototype.init.apply(this, arguments);
         if (elementIsValid(this.raptor.getElement(), listValidUlOlParents)) {
             return result;
         }
@@ -9,5 +22,10 @@ Raptor.registerUi(new PreviewButton({
     },
     action: function() {
         listToggle('ol', 'li', this.raptor.getElement());
+    },
+    selectionToggle: function() {
+        var selection = rangy.getSelection();
+        return selection.getAllRanges().length > 0 &&
+            selectionGetElements(selection).closest('ol').length;
     }
 }));
