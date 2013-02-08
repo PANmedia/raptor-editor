@@ -9,7 +9,7 @@
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Initialise Raptor Twice</h1>
+        <h1>Initialise Raptor Normally</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -38,19 +38,6 @@
             clickButton(input, '.raptor-ui-align-center').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
-        this.find('.test-output').raptor({
-                autoEnable: true,
-                urlPrefix: '../../../src/',
-                ui: {
-                    classMenu: {
-                        classes: {
-                            'Blue background': 'cms-blue-bg',
-                            'Round corners': 'cms-round-corners',
-                            'Indent and center': 'cms-indent-center'
-                        }
-                    }
-                }
-            });
     </script>
 </body>
 </html>
