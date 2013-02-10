@@ -749,6 +749,12 @@ var RaptorWidget = {
         if (!this.templates[name]) {
             this.templates[name] = templateGet(name, this.options.urlPrefix);
         }
+        // <strict>
+        if (!this.templates[name]) {
+            handleError('Missing template: ' + name);
+            return '**MISSING TEMPLATE: ' + name + '**';
+        }
+        // </strict>
         return templateConvertTokens(this.templates[name], variables);
     },
 
