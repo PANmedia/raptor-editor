@@ -21,7 +21,6 @@
         <phingcall target="merge" />
         <phingcall target="merge-min" />
         <phingcall target="package" />
-        <phingcall target="gz" />
     </target>
 
     <target name="test-build">
@@ -175,8 +174,6 @@
         <exec command="sass --compass front-end.scss ${project.basedir}/${dir.package}/raptor-front-end.css" dir="src/theme" level="info" logOutput="true" />
         <exec command="yui-compressor --type css -o ${dir.package}/raptor-theme.min.css ${dir.package}/raptor-theme.css" level="info" logOutput="true" />
         <exec command="yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.min.css" level="info" logOutput="true" />
-        <exec command="cat ${dir.package}/raptor-theme.min.css | gzip -9 -c > ${dir.package}/raptor-theme.min.css.gz" level="info" logOutput="true" />
-        <exec command="cat ${dir.package}/raptor-front-end.min.css | gzip -9 -c > ${dir.package}/raptor-front-end.min.css.gz" level="info" logOutput="true" />
     </target>
 
     <!-- =================================================================== -->
@@ -336,10 +333,6 @@
         <echo>${dir.package}/${filename}.js</echo>
         <copy file="${dir.build}/merge.min.js" tofile="${dir.package}/${filename}.min.js" />
         <echo>${dir.package}/${filename}.min.js</echo>
-    </target>
-
-    <target name="gz">
-        <exec command="cat ${dir.package}/${filename}.min.js | gzip -9 -c > ${dir.package}/${filename}.min.js.gz" />
     </target>
 
     <!-- =================================================================== -->
