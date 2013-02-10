@@ -89,7 +89,7 @@
     <script type="text/javascript">
         testEditor('.test-2', testLink);
     </script>
-    
+
     <div class="test-3">
         <h1>Create Link Button 3: Part Word Selection</h1>
         <div class="test-input">
@@ -266,7 +266,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <a href=". ">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
+                    <a href="http://www.google.com">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
                 </p>
             </div>
         </div>
