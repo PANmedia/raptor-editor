@@ -6,218 +6,143 @@
 </head>
 <body class="simple">
     <div class="test-1">
-        <h1>Insert Row 1</h1>
+        <h1>Insert Header 1</h1>
         <div class="test-input">
             <div class="editible">
                 <table>
-                    <tr>
-                        <td>Cell 0,0{}</td>
-                        <td>Cell 1,0</td>
-                        <td>Cell 2,0</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 0,1</td>
-                        <td>Cell 1,1</td>
-                        <td>Cell 2,1</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
-                        <td>Cell 2,2</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
                 <table>
-                    <tr>
-                        <td>Cell 0,0{}</td>
-                        <td>Cell 1,0</td>
-                        <td>Cell 2,0</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 0,1</td>
-                        <td>Cell 1,1</td>
-                        <td>Cell 2,1</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
-                        <td>Cell 2,2</td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                            <th>Header</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td rowspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td colspan="2">Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                        <tr>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Header</th>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                            <td>Cell</td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
     </div>
    <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            clickButton(input, '.raptor-ui-table-insert-row');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-        });
-    </script>
-
-    <div class="test-2">
-        <h1>Insert Row 2</h1>
-        <div class="test-input">
-            <div class="editible">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell{}</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Header</th>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell{}</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Header</th>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-   <script type="text/javascript">
-        testEditor('.test-2', function(input) {
-            clickButton(input, '.raptor-ui-table-insert-row');
+            clickButton(input, '.raptor-ui-table-insert-header-row');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
