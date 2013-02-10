@@ -299,8 +299,8 @@
         });
     </script>
 
-    <div class="test-13">
-        <h1>Clear Formatting Button 13: Image Float and text and alignment</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Removing bold</h1>
         <div class="test-input">
             <div class="editible">
                 <p><strong>{Some bold text.}</strong></p>
@@ -313,8 +313,8 @@
         </div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-13', function(input) {
-            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
