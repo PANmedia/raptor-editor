@@ -14,7 +14,7 @@
 
             createLinkButton.trigger('click');
 
-            $('.raptor-ui-link-create-menu :input[value=2]').trigger('click');
+            $('.raptor-ui-link-create-menu :input[value=3]').trigger('click');
 
             document.getElementById('raptor-email').value = "test@test.com";
             document.getElementById('raptor-email-subject').value = "Test subject";

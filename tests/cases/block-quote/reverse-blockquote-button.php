@@ -82,7 +82,7 @@
                 <p>
                     Lorem ipsum dolor sit amet, consectetur
                 </p><p>
-                    adipiscing}
+                    {adipiscing}
                 </p><p>
                     elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

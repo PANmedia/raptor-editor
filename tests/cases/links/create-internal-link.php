@@ -267,7 +267,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <a href=".">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
+                    <a href="http://www.google.com">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
                 </p>
             </div>
         </div>

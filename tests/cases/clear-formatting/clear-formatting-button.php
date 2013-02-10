@@ -298,5 +298,25 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
+
+    <div class="test-13">
+        <h1>Clear Formatting Button 13: Image Float and text and alignment</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p><strong>{Some bold text.}</strong></p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{Some bold text.}</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-13', function(input) {
+            input.find('.editible').data('raptor').getLayout().getElement().find('.raptor-ui-clear-formatting').trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
 </body>
 </html>
