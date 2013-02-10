@@ -9,7 +9,7 @@
         rangy.init();
     </script>
     <div class="test-1">
-        <h1>Initialise Raptor Normally</h1>
+        <h1>Initialise Raptor After Saving</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -36,8 +36,22 @@
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
             clickButton(input, '.raptor-ui-align-center');
+            clickButton(input, '.raptor-ui-save');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
+        this.find('.test-output').raptor({
+                autoEnable: true,
+                urlPrefix: '../../../src/',
+                ui: {
+                    classMenu: {
+                        classes: {
+                            'Blue background': 'cms-blue-bg',
+                            'Round corners': 'cms-round-corners',
+                            'Indent and center': 'cms-indent-center'
+                        }
+                    }
+                }
+            });
     </script>
 </body>
 </html>
