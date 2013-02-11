@@ -62,7 +62,7 @@ dock,dock-to-screen-under.html,Dock Editor Toolbar to Screen Under Element,Tests
 dock,dock-to-screen.html,Dock Editor Toolbar to Screen Function,Tests that the toolbar docks to the screen,Yes,Pass,,
 embed-dialog,,Embedding,Tests the various components of the embed object dialog opened from a button on the toolbar.,,,,
 embed-dialog,cancel-embedding.php,Cancel embedding object,Tests that the user clicking on the embed button of the toolbar and then cancelling the dialog window does not embed anything,Incomplete,Fail,Clauses need to be added to check what happens if the user inserts a url into the textarea and then selects cancel. Selection also disappears,
-embed-dialog,embed-object.php,Embed object,Tests the embed function works correctly,Incomplete,Fail,Not quite sure what is wrong here but the output doesn't look like it's inserting anything,Tests are incorrect. 
+embed-dialog,embed-object.php,Embed object,Tests the embed function works correctly,Incomplete,Fail,,Tests are incorrect. 
 guides,,Element guides,Checks that the guides button on the toolbar displays and removes the element guides.,,,,
 guides,remove-guides.php,Remove element guides,Removes the guides from the document by clicking the show guides button again,Yes,Pass,,
 guides,show-guides.php,Show element guides,Enables the guides around the elements of the document by clicking the show guides button,Yes,Pass,,
@@ -87,8 +87,8 @@ links,create-internal-link.php,Create internal link,Tests the creation of an int
 links,remove-link.php,Remove link,Tests that the remove link button removes the link for the selection,Yes,Fail,Test 8 selection dissapears.,
 list,,Lists,Tests the creation and removal of ordered and unordered lists.,,,,
 list,base-create-lists.html,Create list function,Tests that lists can be created from multiple text selections,Yes,Fail,"Tests are throwing a ""cannot read property of '0' of undefined"" error",
-list,convert-lists-ordered-to-unordered-button.php,Convert an Ordered List to an Unordered List,Checks that the selected ordered list is converted to an unordered list when the unordered list button is clicked,Yes,Fail,"Tests are throwing a ""cannot read property of '0' of undefined"" error",
-list,convert-lists-unordered-to-ordered-button.php,Convert an Unordered List to an Ordered List,Checks that the selected unordered list is converted to an ordered list when the ordered list button is clicked,Yes,Fail,"Tests are throwing a ""cannot read property of '0' of undefined"" error",
+list,convert-lists-ordered-to-unordered-button.php,Convert an Ordered List to an Unordered List,Checks that the selected ordered list is converted to an unordered list when the unordered list button is clicked,Yes,Fail,"Tests are returning an empty ordered list item followed by an unordered list item containing the correct content followed by another empty ordered list item, unless the whole paragraph is turned into a list item then it works properly.",
+list,convert-lists-unordered-to-ordered-button.php,Convert an Unordered List to an Ordered List,Checks that the selected unordered list is converted to an ordered list when the ordered list button is clicked,Yes,Fail,"Tests are returning an empty unrdered list item followed by an ordered list item containing the correct content followed by another empty unordered list item, unless the whole paragraph is turned into a list item then it works properly.",
 list,list-button-active.php,List buttons active,Checks that the respective list button is active while selection is inside a list,Yes,Fail,"Tests are throwing a ""cannot call method 'getElement' of null""",
 list,ordered-list-button.php,Ordered list,Tests the creation of ordered lists in various types of word selections using the ordered list toolbar button,Yes,Fail,"Tests are throwing a ""cannot call method 'getElement' of null"" error and multiple ""cannot read property of '0' of undefined"" errors",
 list,ordered-sublists-on-tab.php,Ordered sublist,Tests the creation of an ordered sublist when the user presses the tab key,Incomplete,Fail,"Template for test exists, javascript needs to be refined",
@@ -121,9 +121,9 @@ table,create-table.html,Create table function,Tests that a table can be created,
 table,index-cells.html,Index cells function,Tests that the index position of each cell can be displayed accurately ,Yes,Pass,,
 table,insert-column-button.php,Insert column,Tests that the insert column button inserts a new column at the selection,Yes,Fail,A large number of undefined tags (<undefined>) are encasing the table,
 table,insert-column.html,Insert column function,Checks that the insertation of a column works correctly,Yes,Pass,,
-table,insert-header-row.php,Insert header row,Test that the insert header row button (when it exists) inserts a header row ,Yes,Fail,No insert header row button to test ,
+table,insert-header-row-button.php,Insert header row,Test that the insert header row button (when it exists) inserts a header row ,Yes,Fail,No insert header row button to test ,
 table,insert-footer-row-button.php,Insert footer row,Test that the insert footer row button (when it exists) inserts a footer row,Yes,Fail,No insert footer row button to test  ,
-table,insert-row-button-button.php,Insert row,Tests that the insert row button inserts a row at the selection,Yes,Fail,"Test one passes, test two is doing funny things with row spans and 3&4 are header, footer insertations",
+table,insert-row-button.php,Insert row,Tests that the insert row button inserts a row at the selection,Yes,Fail,"Test one passes, test two is doing funny things with row spans and 3&4 are header, footer insertations",
 table,insert-row.html,Insert row function,Checks that the insertation of a row works correctly,Yes,Fail,Insert header and insert footer tests are failing,
 table,merge-cell.html,Merge cells function,Checks that merging and splitting cells is possible,Yes,Pass,,
 table,merge-cells-button.php,Merge cells,Tests that the merge cells button combines all selected cells,Yes,Fail,A large number of undefined tags (<undefined>) are encasing the table,
@@ -151,4 +151,4 @@ toggle-wrapper-1,test.html,Toggle wrapper,Test low level functions for toggle wr
 tokens-to-ranges,,Selection,Checks that the editor maintains user selection after applying a class.,,,,
 tokens-to-ranges,test.html,Range selection,checks the range selection is working as expected,Yes,Pass,,
 toolbar-positioning,,Toolbar boundaries,Checks that the toolbar does not exceed the screens boundaries.,,,,
-toolbar-positioning,screen-limit.php,Toolbar remains within screen limits,Checks that the toolbar does not exceed the screen,Incomplete,,Not sure how to get this test going,Test is incorrect
+toolbar-positioning,screen-limit.php,Toolbar remains within screen limits,Checks that the toolbar does not exceed the screen,Incomplete,,Not sure how write this test,Test is incorrect
