@@ -14,16 +14,16 @@
  */
 Raptor.registerUi(new Button({
     name: 'logo',
+    // <usage-statistics>
     init: function() {
         var button = Button.prototype.init.apply(this, arguments);
-
         button.find('.ui-button-icon-primary').css({
-            'background-image': 'url(http://www.raptor-editor.com/logo/VERSION?json=' +
+            'background-image': 'url(http://www.raptor-editor.com.dave/logo/VERSION?json=' +
                 encodeURIComponent(JSON.stringify(this.raptor.options)) + ')'
         });
-
         return button;
     },
+    // </usage-statistics>
     action: function() {
         window.open('http://www.raptor-editor.com/about/VERSION', '_blank');
     }
