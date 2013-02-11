@@ -127,10 +127,10 @@ class CombineTask extends Task {
     public function getNoConflictBottom() {
         return "
             // No conflict wrapper
-            })( window );
             var jQuery = window.jQuery.noConflict(true);
             var $ = jQuery;
             window['raptor'] = jQuery;
+            })(window);
         ";
     }
 
