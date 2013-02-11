@@ -257,7 +257,7 @@
         </append>
 
         <!-- Append the style inserter -->
-        <echo file="${dir.build}/merge.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[document.write('<style type="text/css">]]></echo>
 
         <reflexive>
             <fileset dir="${dir.build}">
@@ -277,7 +277,7 @@
                 <include name="${dir.build}/concat.css" />
             </fileset>
         </append>
-        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>');]]></echo>
     </target>
 
     <target name="merge-min">
@@ -302,7 +302,7 @@
         </append>
 
         <!-- Append the style inserter -->
-        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[jQuery('<style type="text/css">]]></echo>
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[document.write('<style type="text/css">]]></echo>
 
         <reflexive>
             <fileset dir="${dir.build}">
@@ -321,7 +321,7 @@
                 <include name="${dir.build}/concat.min.css" />
             </fileset>
         </append>
-        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[</style>').appendTo('head');]]></echo>
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[</style>');]]></echo>
     </target>
 
     <!-- =================================================================== -->
