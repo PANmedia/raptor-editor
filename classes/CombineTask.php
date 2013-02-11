@@ -80,8 +80,11 @@ class CombineTask extends Task {
                 if (basename($file) === 'jquery.js' && $this->noConflict) {
                     $noConflict = true;
                     fwrite($jsOutputHandle, $this->getNoConflictTop());
+                    fwrite($jsOutputHandle, $data);
+                    fwrite($jsOutputHandle, $this->getNoConflictTopUnder());
+                } else {
+                    fwrite($jsOutputHandle, $data);
                 }
-                fwrite($jsOutputHandle, $data);
             }
         }
 
@@ -124,11 +127,17 @@ class CombineTask extends Task {
         ";
     }
 
-    public function getNoConflictBottom() {
+    public function getNoConflictTopUnder() {
         return "
             // No conflict wrapper
             var jQuery = window.jQuery.noConflict(true);
             var $ = jQuery;
+        ";
+    }
+
+    public function getNoConflictBottom() {
+        return "
+            // No conflict wrapper
             window['raptor'] = jQuery;
             })(window);
         ";
