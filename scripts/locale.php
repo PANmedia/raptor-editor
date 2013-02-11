@@ -50,5 +50,5 @@ foreach ($files as $file) {
         return $string;
     }, $contents);
 
-    echo($contents);
+    file_put_contents($file, $contents);
 }
