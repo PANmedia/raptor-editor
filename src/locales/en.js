@@ -59,7 +59,7 @@ registerLocale('en', 'English', {
     historyRedoTitle: 'Redo',
     historyUndoTitle: 'Undo',
 
-    hrCreateTitle: "Insert Horizontal Rule",
+    hrCreateTitle: 'Insert Horizontal Rule',
 
     imageResizeButtonText: 'Resize Image',
     imageResizeButtonDialogWidth: 'Image width',
