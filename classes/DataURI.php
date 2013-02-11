@@ -10,7 +10,7 @@ class DataURI extends Task {
                 foreach ($files as $file) {
                     $content = file_get_contents($file);
 //                    $content = preg_replace('/background\:\s*url\(images.*\)\s*0 0\;/', '', $content);
-                    $content = preg_replace_callback('/url\((.*?)\.(png|jpe?g|gif)\)/i', function($matches) use($file) {
+                    $content = preg_replace_callback('/url\(\'?(.*?)\.(png|jpe?g|gif)\'?\)/i', function($matches) use($file) {
                         $image = dirname($file).'/'.$matches[1].'.'.$matches[2];
                         if (!file_exists($image)) {
                             return $matches[0];
