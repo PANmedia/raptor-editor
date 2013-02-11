@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/glob.php';
+require_once __DIR__ . '/functions.php';
 
 $result = [];
 foreach (glob_recursive(__DIR__ . '/../src/tools/*.js') as $file) {

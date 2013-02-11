@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/glob.php';
+require_once __DIR__ . '/functions.php';
 
 $files = array();
 usort($files, function($a, $b) {

@@ -8,3 +8,11 @@ function glob_recursive($pattern, $flags = 0) {
 
     return $files;
 }
+
+function loose_decode($s) {
+    $s = str_replace('"', '\"', $s);
+    $s = str_replace('\'', '"', $s);
+    $s = preg_replace('/"\s*\+\s*"/i', '', $s);
+    $s = preg_replace('/^\s+(\w+):/im', '"\1":', $s);
+    return json_decode($s);
+}
