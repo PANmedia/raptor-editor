@@ -114,7 +114,12 @@
     <!-- Prepare for build                                                   -->
     <!-- =================================================================== -->
     <target name="clean">
-        <delete dir="${dir.build}" includeemptydirs="true" failonerror="true" />
+        <if>
+            <available file="${dir.build}" type="dir" />
+            <then>
+                <delete dir="${dir.build}" includeemptydirs="true" failonerror="true" />
+            </then>
+        </if>
         <mkdir dir="${dir.build}" />
         <mkdir dir="${dir.package}" />
     </target>
