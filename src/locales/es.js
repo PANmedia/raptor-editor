@@ -3,18 +3,18 @@
  * @author Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
  */
 registerLocale('es', 'Español', {
-    
+
     alignCenterTitle: 'Centrar',
     alignJustifyTitle: 'Justificar',
     alignLeftTitle: 'Alinear a la Izquierda',
     alignRightTitle: 'Alinear a la Derecha',
-    
+
     cancelDialogCancelButton: 'Cerrar',
     cancelDialogContent: '¿Está seguro de que desea detener la edición? ¡Todos los cambios serán perdidos!',
     cancelDialogOKButton: 'Aceptar',
     cancelDialogTitle: 'Cancel Editing',
     cancelTitle: 'Cancel editing',
-    
+
     clearFormattingTitle: 'Limpiar Formato',
     clickButtonToEditPluginButton: 'Haga clic para empezar a editar',
 
@@ -28,7 +28,7 @@ registerLocale('es', 'Español', {
     colorMenuBasicRed: 'Red',
     colorMenuBasicTitle: 'Cambiar el color del texto seleccionado.',
     colorMenuBasicWhite: 'White',
-    
+
     dockToElementTitle: 'Dock editor to element',
     dockToScreenTitle: 'Dock editor to screen',
 
@@ -37,7 +37,7 @@ registerLocale('es', 'Español', {
     errorPluginNoName: 'Plugin "{{plugin}}" is invalid (must have a name property)',
     errorPluginNotObject: 'Plugin "{{plugin}}" is invalid (must be an object)',
     errorPluginOverride: 'Plugin "{{name}}" has already been registered, and will be overwritten',
-    
+
     errorUINoName: 'UI "{{ui}}" is invalid (must have a name property)',
     errorUINotObject: 'UI "{{ui}}" is invalid (must be an object)',
     errorUIOverride: 'UI "{{name}}" has already been registered, and will be overwritten',
@@ -58,14 +58,14 @@ registerLocale('es', 'Español', {
     linkDialogOKButton: 'Insertar Enlace',
     linkDialogCancelButton: 'Cancelar',
     linkDialogMenuHeader: 'Escoja un tipo de enlace:',
-    
+
     linkTypeEmailLabel: 'Dirección de correo electrónico',
     linkTypeEmailHeader: 'Enlazar a una dirección de correo electrónico',
     linkTypeEmailToLabel: 'Correo electrónico:',
     linkTypeEmailToPlaceHolder: 'Introduzca una dirección de correo electrónico',
     linkTypeEmailSubjectLabel: 'Sujeto (opcional):',
     linkTypeEmailSubjectPlaceHolder: 'Introduzca un sujeto',
-    
+
     linkTypeExternalLabel: 'Page on another website',
     linkTypeExternalHeader: 'Link to a page on another website',
     linkTypeExternalLocationLabel: 'Localización',
@@ -89,7 +89,7 @@ registerLocale('es', 'Español', {
         '    <li>Find the page on this site link to.</li>' +
         '    <li>Copy the web address from your browser\'s address bar, excluding "{{domain}}" and paste it into the box above.</li>' +
         '</ol>',
-    
+
     logoTitle: 'Saber más sobre el editor WYSIWYG Raptor',
     saveTitle: 'Guardar',
 
@@ -107,7 +107,7 @@ registerLocale('es', 'Español', {
     statisticsDialogWord: '{{words}} palabra',
     statisticsDialogWords: '{{words}} palabras',
     statisticsTitle: 'Haga clic para ver las estadísticas',
-    
+
     tableCreateTitle: 'Create table',
     tableDeleteColumnTitle: 'Delete table column',
     tableDeleteRowTitle: 'Delete table row',
@@ -120,7 +120,7 @@ registerLocale('es', 'Español', {
     tagMenuTagNA: false,
     tagMenuTagP: 'Párrafo',
     tagMenuTitle: 'Change element style',
-    
+
     tagTreeElementLink: 'Seleccionar el elemento {{element}}',
     tagTreeElementTitle: 'Haga clic para selecionar el contenido del elemento "{{element}}"',
     tagTreeRoot: 'orígen',
@@ -134,14 +134,14 @@ registerLocale('es', 'Español', {
     textSubTitle: 'Subíndice',
     textSuperTitle: 'Superíndice',
     textUnderlineTitle: 'Subrayar',
-    
+
     unsavedEditWarningText: 'Hay cambios sin guardar en esta página.',
 
     viewSourceDialogCancelButton: 'Cerrar',
     viewSourceDialogOKButton: 'Aplicar Fuente',
     viewSourceDialogTitle: 'Content source code',
-    viewSourceTitle: 'Ver / Editar Código Fuente',
-    
+    viewSourceTitle: 'Ver / Editar Código Fuente'
+
 //    "A preview of your embedded object is displayed below.": "A continuación se muestra una vista previa de su objeto incrustado.",
 //    "Added link: {{link}}": "Enlace añadido: {{link}}",
 //    "All changes will be lost!": "¡Todos los cambios serán perdidos!",

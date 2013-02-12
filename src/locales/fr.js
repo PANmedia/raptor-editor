@@ -3,21 +3,21 @@
  * @author SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
  */
 registerLocale('fr', 'Français', {
-    
+
     alignCenterTitle: 'Aligner au centre',
     alignJustifyTitle: 'Justifier',
     alignLeftTitle: 'Aligner à gauche',
     alignRightTitle: 'Aligner à droite',
-    
+
     cancelDialogCancelButton: 'Fermer',
     cancelDialogContent: 'Êtes-vous sûr(e) de vouloir arrêter la modification ? Toutes les modifications seront perdues !',
     cancelDialogOKButton: 'OK',
     cancelDialogTitle: 'Cancel Editing',
     cancelTitle: 'Cancel editing',
-    
+
     clearFormattingTitle: 'Clear Formatting',
     clickButtonToEditPluginButton: 'Cliquer pour commencer la modification',
-    
+
     colorMenuBasicAutomatic: 'Automatic',
     colorMenuBasicBlack: 'Black',
     colorMenuBasicBlue: 'Blue',
@@ -28,12 +28,12 @@ registerLocale('fr', 'Français', {
     colorMenuBasicRed: 'Red',
     colorMenuBasicTitle: 'Change text color',
     colorMenuBasicWhite: 'White',
-    
+
     dockToElementTitle: 'Dock editor to element',
     dockToScreenTitle: 'Dock editor to screen',
-    
+
     embedTitle: 'Object intégré',
-    
+
     errorPluginNoName: 'Plugin "{{plugin}}" is invalid (must have a name property)',
     errorPluginNotObject: 'Plugin "{{plugin}}" is invalid (must be an object)',
     errorPluginOverride: 'Plugin "{{name}}" has already been registered, and will be overwritten',
@@ -41,16 +41,16 @@ registerLocale('fr', 'Français', {
     errorUINoName: 'UI "{{ui}}" is invalid (must have a name property)',
     errorUINotObject: 'UI "{{ui}}" is invalid (must be an object)',
     errorUIOverride: 'UI "{{name}}" has already been registered, and will be overwritten',
-    
+
     floatLeftTitle: 'Float Image Left',
     floatNoneTitle: 'Remove image align',
     floatRightTitle: 'Float Image Right',
-    
+
     guidesTitle: 'Afficher les guides',
-    
+
     historyRedoTitle: 'Redo',
     historyUndoTitle: 'Undo',
-    
+
     listOrderedTitle: 'Liste ordonnée',
     listUnorderedTitle: 'Liste non ordonnée',
 
@@ -58,14 +58,14 @@ registerLocale('fr', 'Français', {
     linkDialogOKButton: 'Insérer un lien',
     linkDialogCancelButton: 'Annuler',
     linkDialogMenuHeader: 'Choisissez un type de lien :',
-    
+
     linkTypeEmailLabel: 'Adresse e-mail',
     linkTypeEmailHeader: 'Lier une adresse e-mail',
     linkTypeEmailToLabel: 'E-mail:',
     linkTypeEmailToPlaceHolder: 'Saisir l\'adresse e-mail',
     linkTypeEmailSubjectLabel: 'Sujet (facultatif):',
     linkTypeEmailSubjectPlaceHolder: 'Saisir le sujet',
-    
+
     linkTypeExternalLabel: 'Page on another website',
     linkTypeExternalHeader: 'Link to a page on another website',
     linkTypeExternalLocationLabel: 'Emplacement',
@@ -92,7 +92,7 @@ registerLocale('fr', 'Français', {
 
     logoTitle: 'En savoir plus sur l\'éditeur WYSIWYG Raptor',
     saveTitle: 'Enregistrer le contenu',
-    
+
     statisticsButtonCharacterOverLimit: '{{charactersRemaining}} caractères au-dessus de la limite',
     statisticsButtonCharacterRemaining: '{{charactersRemaining}} caractères restants',
     statisticsButtonCharacters: '{{characters}} caractères',
@@ -107,7 +107,7 @@ registerLocale('fr', 'Français', {
     statisticsDialogWord: '{{words}} mot',
     statisticsDialogWords: '{{words}} mots',
     statisticsTitle: 'Click to view statistics',
-    
+
     tableCreateTitle: 'Create table',
     tableDeleteColumnTitle: 'Delete table column',
     tableDeleteRowTitle: 'Delete table row',
@@ -120,13 +120,13 @@ registerLocale('fr', 'Français', {
     tagMenuTagNA: 'N/A',
     tagMenuTagP: 'Paragraphe',
     tagMenuTitle: 'Change element style',
-    
+
     tagTreeElementLink: 'Sélectionner l\'élément {{element}}',
     tagTreeElementTitle: 'Cliquer pour sélectionner le contenu de l\'élément "{{element}}"',
     tagTreeRoot: 'racine',
     tagTreeRootLink: 'Sélectionner tout le contenu modifiable',
     tagTreeRootTitle: 'Cliquer pour sélectionner tout le contenu modifiable',
-    
+
     textBlockQuoteTitle: 'Citation',
     textBoldTitle: 'Gras',
     textItalicTitle: 'Italique',
@@ -134,14 +134,14 @@ registerLocale('fr', 'Français', {
     textSubTitle: 'Indice',
     textSuperTitle: 'Exposant',
     textUnderlineTitle: 'Souligné',
-    
+
     unsavedEditWarningText: 'There are unsaved changes on this page',
-    
+
     viewSourceDialogCancelButton: 'Fermer',
     viewSourceDialogOKButton: 'Appliquer la source code',
     viewSourceDialogTitle: 'Content source code',
-    viewSourceTitle: 'Voir / Modifier la source code',
-    
+    viewSourceTitle: 'Voir / Modifier la source code'
+
 //    "A preview of your embedded object is displayed below.": "Un aperçu de votre objet intégré est affiché ci-dessous.",
 //    "Added link: {{link}}": "Lien ajouté : {{link}}",
 //    "All changes will be lost!": "Toutes les modifications seront perdues !",
