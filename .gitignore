@@ -10,3 +10,4 @@ translation-status.html
 /composer.lock
 /jscover/
 /temp/
+/packages/
