@@ -17,6 +17,7 @@ src/dependencies/themes/redmond/images/ui-icons_cd0a0a_256x240.png
 src/dependencies/themes/redmond/images/ui-icons_d8e7f3_256x240.png
 src/dependencies/themes/redmond/images/ui-icons_f9bd01_256x240.png
 
+// Rangy
 src/dependencies/rangy/rangy-core.js
 src/dependencies/rangy/rangy-applier.js
 src/dependencies/rangy/rangy-cssclassapplier.js
@@ -27,6 +28,7 @@ src/dependencies/jquery-hotkeys.js
 src/dependencies/resizetable.js
 src/dependencies/goog-table.js
 
+// jQuery
 src/dependencies/jquery.js
 src/dependencies/jquery-ui.js
 src/dependencies/jquery-hotkeys.js
@@ -38,6 +40,7 @@ src/locales/en.js
 src/init.js
 src/support.js
 
+// Tools
 src/tools/action.js
 src/tools/clean.js
 src/tools/dock.js
@@ -56,6 +59,7 @@ src/tools/tag.js
 src/tools/template.js
 src/tools/types.js
 
+// Raptor
 src/raptor.js
 src/raptor-widget.js
 src/expose.js
