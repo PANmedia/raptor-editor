@@ -19,7 +19,7 @@ v0.5.0
 *API Changes:*
 
  - Renamed variables from 'editor' to 'raptor' to prevent conflicts
- - Decoupled layout (messaging system still need decoupling)
+ - Decoupled layout (messaging system still needs decoupling)
  - Rewrote plugin/UI architecture
    - Adjusted exiting plugins/UI
  - Updated translations to use keys instead of english strings
