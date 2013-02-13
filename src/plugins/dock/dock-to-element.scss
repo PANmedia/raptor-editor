@@ -16,9 +16,7 @@
 }
 
 .raptor-dock-docked-to-element {
-    .raptor-path {
-        display: none;
-    }
+    @extend %raptor-dock-path;
 }
 
 /**
@@ -60,13 +58,6 @@
         border-top: 0;
         border-left: 0;
         border-right: 0;
-    }
-
-    .raptor-path {
-        border: 0 none;
-        margin: 0;
-
-        @include box-ordinal-group(3);
     }
 
     .raptor-messages {
