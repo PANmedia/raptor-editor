@@ -1,0 +1,24 @@
+/**
+ * Dock plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+
+%raptor-dock-path {
+    .raptor-path {
+        display: none;
+    }
+}
+
+.raptor-dock-docked .raptor-messages {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    margin: 0 -400px 10px;
+    padding: 0;
+    text-align: left;
+
+    .raptor-message-wrapper {
+        width: 800px;
+    }
+}

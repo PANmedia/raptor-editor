@@ -1,0 +1,15 @@
+/**
+ * Italic text style plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.raptor-ui-text-italic .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-italic.png') 0 0;
+}
+
+.raptor-ui-text-italic:hover .ui-icon {
+    @include opacity(1);
+}
