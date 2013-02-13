@@ -27,7 +27,7 @@
 <script type="text/javascript" src="<?= $uri ?>dependencies/goog-table.js"></script>
 
 <!-- Theme -->
-<link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor-theme.css"/>
+<link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor.css"/>
 <link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor-front-end.css"/>
 
 <!-- Editor -->
