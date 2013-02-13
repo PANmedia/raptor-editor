@@ -1,8 +1,4 @@
-src/dependencies/themes/mammoth/theme.css
-src/dependencies/themes/mammoth/theme-icons.css
-src/dependencies/themes/mammoth/theme-icons.png
-src/dependencies/themes/mammoth/theme-icons-hover.png
-packages/raptor-theme.css
+[src/style/raptor.css]
 
 (function($) {
 
@@ -17,6 +13,7 @@ src/dependencies/jquery-hotkeys.js
 src/dependencies/resizetable.js
 src/dependencies/goog-table.js
 
+// jQuery
 src/dependencies/jquery-hotkeys.js
 
 src/adapters/jquery-ui.js
@@ -49,25 +46,42 @@ src/tools/types.js
 src/raptor.js
 src/raptor-widget.js
 
+src/style/config.rb
+src/style/loading-small.png
+src/style/messages.scss
+src/style/mixins.scss
+src/style/raptor.scss
+src/style/style.scss
+src/style/support.scss
+src/style/variables.scss
+src/style/z-index.scss
+
 src/templates/message.html
 src/templates/messages.html
 src/templates/unsupported.html
 
 // Components
 src/components/plugin.js
+
+src/components/layout/toolbar.js
+src/components/layout/toolbar.scss
+
 src/components/ui/button.js
 src/components/ui/preview-button.js
-src/components/ui/preview-toggle-button.js
 src/components/ui/toggle-button.js
+src/components/ui/preview-toggle-button.js
 src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
+
 src/components/ui/dialog-button.js
 src/components/ui/dialog-toggle-button.js
-src/components/ui/menu.js
+
 src/components/ui/menu-button.js
-src/components/ui/select-menu.js
+src/components/ui/menu.js
 src/components/ui/custom-menu.js
-src/components/layout/toolbar.js
+src/components/ui/select-menu.js
+src/components/ui/menu.scss
+src/components/ui/select-menu.scss
 
 // Preset
 src/presets/base.js
@@ -217,6 +231,8 @@ src/plugins/table/style/images/table-delete-column.png
 src/plugins/table/style/images/table-delete-row.png
 src/plugins/table/style/images/table-insert-column.png
 src/plugins/table/style/images/table-insert-row.png
+src/plugins/table/style/images/table-join.png
+src/plugins/table/style/images/table-split.png
 src/plugins/table/style/images/table.png
 src/plugins/table/templates/create-menu.html
 
@@ -225,11 +241,11 @@ src/plugins/tag-menu/edit.png
 src/plugins/tag-menu/tag-menu.scss
 src/plugins/tag-menu/templates/menu.html
 
+src/plugins/text-align/text-align-button.js
 src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
 src/plugins/text-align/right.js
-src/plugins/text-align/text-align-button.js
 
 src/plugins/text-align/style/text-align-front-end.scss
 src/plugins/text-align/style/text-align.scss

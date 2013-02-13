@@ -13,7 +13,7 @@
     <target name="build">
         <phingcall target="clean" />
         <phingcall target="clone" />
-        <phingcall target="theme" />
+        <phingcall target="theme-build" />
         <phingcall target="strip-blocks" />
         <phingcall target="version" />
         <phingcall target="combine" />
@@ -174,7 +174,13 @@
     <!-- =================================================================== -->
     <!-- Compile theme                                                       -->
     <!-- =================================================================== -->
-    <target name="theme" depends="clone">
+    <target name="theme">
+        <phingcall target="clean" />
+        <phingcall target="clone" />
+        <phingcall target="theme-build" />
+    </target>
+
+    <target name="theme-build">
         <theme file="${files.manifest}" builddir="${dir.build}" />
         <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
             compass compile raptor.scss

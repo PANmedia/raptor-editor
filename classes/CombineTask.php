@@ -58,6 +58,9 @@ class CombineTask extends Task {
                 fwrite($jsOutputHandle, $data);
                 continue;
             }
+            if (preg_match('/^\[.*\]$/', $file)) {
+                $file = substr($file, 1, strlen($file) - 2);
+            }
             $file = $this->buildDir . '/' . $file;
             if (strpos($file, '__DIR__') !== false) {
                 $file = str_replace('__DIR__', dirname($this->file), $file);
