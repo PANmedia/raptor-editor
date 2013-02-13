@@ -100,7 +100,6 @@ src/presets/base.js
 src/presets/full.js
 
 // Plugins
-
 src/plugins/cancel/cancel.js
 src/plugins/cancel/cross.png
 src/plugins/cancel/cancel.scss
