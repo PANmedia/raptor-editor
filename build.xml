@@ -12,8 +12,8 @@
     <!-- =================================================================== -->
     <target name="build">
         <phingcall target="clean" />
-        <phingcall target="theme" />
         <phingcall target="clone" />
+        <phingcall target="theme" />
         <phingcall target="strip-blocks" />
         <phingcall target="version" />
         <phingcall target="combine" />
@@ -174,11 +174,22 @@
     <!-- =================================================================== -->
     <!-- Compile theme                                                       -->
     <!-- =================================================================== -->
-    <target name="theme">
-        <exec command="sass --compass theme.scss ${project.basedir}/${dir.package}/raptor-theme.css" dir="src/theme" level="info" logOutput="true" />
-        <exec command="sass --compass front-end.scss ${project.basedir}/${dir.package}/raptor-front-end.css" dir="src/theme" level="info" logOutput="true" />
-        <exec command="yui-compressor --type css -o ${dir.package}/raptor-theme.min.css ${dir.package}/raptor-theme.css" level="info" logOutput="true" />
-        <exec command="yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.min.css" level="info" logOutput="true" />
+    <target name="theme" depends="clone">
+        <theme file="${files.manifest}" builddir="${dir.build}" />
+        <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
+            compass compile raptor.scss
+        " />
+        <copy file="${dir.build}/src/style/raptor.css" tofile="${project.basedir}/${dir.package}/raptor.css" />
+        <exec level="info" logOutput="true" command="
+            yui-compressor --type css -o ${dir.package}/raptor.min.css ${dir.package}/raptor.css
+        " />
+        <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
+            compass compile front-end.scss
+        " />
+        <copy file="${dir.build}/src/style/front-end.css" tofile="${project.basedir}/${dir.package}/raptor-front-end.css" />
+        <exec level="info" logOutput="true" command="
+            yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css
+        " />
     </target>
 
     <!-- =================================================================== -->
@@ -365,6 +376,10 @@
 
     <adhoc-task name="clone">
         require_once '${project.basedir}/classes/CloneTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="theme">
+        require_once '${project.basedir}/classes/ThemeTask.php';
     </adhoc-task>
 
 </project>
