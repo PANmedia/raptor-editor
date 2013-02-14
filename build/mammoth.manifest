@@ -48,6 +48,7 @@ src/raptor-widget.js
 
 src/style/config.rb
 src/style/loading-small.png
+src/style/raptor.scss
 
 src/templates/message.html
 src/templates/messages.html
