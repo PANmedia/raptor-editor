@@ -1,5 +1,6 @@
+[src/style/raptor.css]
+
 src/dependencies/themes/redmond/jquery-ui.css
-packages/raptor-theme.css
 
 src/dependencies/themes/redmond/images/ui-bg_flat_0_aaaaaa_40x100.png
 src/dependencies/themes/redmond/images/ui-bg_flat_55_fbec88_40x100.png
@@ -66,13 +67,6 @@ src/expose.js
 
 src/style/config.rb
 src/style/loading-small.png
-src/style/messages.scss
-src/style/mixins.scss
-src/style/raptor.scss
-src/style/style.scss
-src/style/support.scss
-src/style/variables.scss
-src/style/z-index.scss
 
 src/templates/message.html
 src/templates/messages.html

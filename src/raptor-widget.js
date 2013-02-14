@@ -91,7 +91,7 @@ var RaptorWidget = {
         this.historyEnabled = true;
 
         // Check for browser support
-        if (!isSupported(this)) {
+        if (!isSupported()) {
             // @todo If element isn't a textarea, replace it with one
             return;
         }

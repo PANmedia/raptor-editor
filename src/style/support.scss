@@ -3,11 +3,12 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
+@import 'compass/css3/opacity';
 
-/* Layout */
 .raptor-unsupported {
     position: relative;
 }
+
 .raptor-unsupported-overlay {
     position: fixed;
     top: 0;
@@ -15,9 +16,7 @@
     bottom: 0;
     right: 0;
     background-color: black;
-
-    filter: alpha(opacity=50);
-	opacity: 0.5;
+    @include opacity(0.5);
 }
 
 .raptor-unsupported-content {
@@ -34,7 +33,6 @@
     bottom: 10px;
 }
 
-/* Style */
 .raptor-unsupported-content {
     padding: 10px;
     background-color: white;
