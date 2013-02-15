@@ -25,7 +25,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <span class="cms-blue">{dui id erat pellentesque et rhoncus}</span> nunc semper. Suspendisse
+                    convallis <span class="cms-color cms-blue">{dui id erat pellentesque et rhoncus}</span> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -65,7 +65,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur <span class="cms-blue">{adipiscing}</span> elit. Maecenas
+                    Lorem ipsum dolor sit amet, consectetur <span class="cms-color cms-blue">{adipiscing}</span> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -107,7 +107,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<span class="cms-blue">{lentesqu}</span>e et rhoncus nunc semper. Suspendisse
+                    convallis dui id erat pel<span class="cms-color cms-blue">{lentesqu}</span>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -151,10 +151,10 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui <span class="cms-blue">{id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    convallis dui <span class="cms-color cms-blue">{id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </span></p>
-                <p><span class="cms-blue">
+                <p><span class="cms-color cms-blue">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse}</span> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -196,11 +196,11 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </span></p>
-                <p><span class="cms-blue">
+                <p><span class="cms-color cms-blue">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</span>
@@ -247,7 +247,7 @@
                     malesuada hendrerit velit nec tristique.
                 </p><p>
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. <span class="cms-blue">{Suspendisse}</span> interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. <span class="cms-color cms-blue">{Suspendisse}</span> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
                 </p>
             </div>
@@ -258,51 +258,6 @@
             var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
             colorMenuBasic.trigger('click');
             var blue = $('.raptor-ui-color-menu-basic-menu:eq(5) [data-color=blue]');
-            blue.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var colorMenuBasicValue = colorMenuBasic.toString();
-
-            if (!colorMenuBasicValue === 'Blue'){
-                throw new Error('Button is not active');
-            }
-        });
-    </script>
-
-    <div class="test-7">
-        <h1>Text Blue Button 7: Empty Selection at the Beginning of a Word</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada <span class="cms-blue">{hendrerit}</span> velit nec tristique.
-                </p><p>
-                    Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
-            colorMenuBasic.trigger('click');
-            var blue = $('.raptor-ui-color-menu-basic-menu:eq(6) [data-color=blue]');
             blue.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
 
