@@ -9,12 +9,12 @@
         <h1>Create Table 1: No Text</h1>
         <div class="test-input">
             <div class="editible">
-                {}
+                Some text.{}
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
-                {}
+                Some text.{}
                 <table>
                     <tr>
                         <td>&nbsp;</td>
