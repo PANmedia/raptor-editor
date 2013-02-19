@@ -6,48 +6,33 @@
 </head>
 <body class="simple">
     <div class="test-1">
-        <h1>Insert Column 1</h1>
+        <h1>Create Table 1: No Text</h1>
         <div class="test-input">
             <div class="editible">
-                <table>
-                    <tr>
-                        <td>Cell 0,0</td>
-                        <td>Cell 1,0</td>
-                        <td>Cell 2,0</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 0,1</td>
-                        <td>Cell 1,1</td>
-                        <td>Cell 2,1</td>
-                    </tr>
-                    <tr>
-                        <td>Cell 0,2</td>
-                        <td>Cell 1,2</td>
-                        <td>Cell 2,2</td>
-                    </tr>
-                </table>
+                {}
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
+                {}
                 <table>
                     <tr>
-                        <td>Cell 0,0</td>
-                        <td></td>
-                        <td>Cell 1,0</td>
-                        <td>Cell 2,0</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td>Cell 0,1</td>
-                        <td></td>
-                        <td>Cell 1,1</td>
-                        <td>Cell 2,1</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr>
-                        <td>Cell 0,2</td>
-                        <td></td>
-                        <td>Cell 1,2</td>
-                        <td>Cell 2,2</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
             </table>
             </div>
@@ -57,171 +42,66 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            clickButton(input, '.raptor-ui-table-insert-column');
+            clickButton(input, '.raptor-ui-table-create');
+
+            var table = $('.raptor-ui-table-create-menu').find('tbody')[0];
+            var rows = table.getElementsByTagName('tr');
+            var cols = rows[2].getElementsByTagName('td');
+            $(cols[3]).mouseover();
+            $(cols[3]).click();
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
     <div class="test-2">
-        <h1>Insert Column 2</h1>
+        <h1>Create Table 2: With Text</h1>
         <div class="test-input">
             <div class="editible">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Header</th>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                Some text.{}
             </div>
         </div>
         <div class="test-expected">
             <div class="editible">
+                Some text.{}
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th></th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                            <th>Header</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td></td>
-                            <td>Cell</td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td></td>
-                            <td rowspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td></td>
-                            <td colspan="2">Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td></td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td colspan="2">Cell</td>
-                            <td></td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                        <tr>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td></td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Header</th>
-                            <td>Cell</td>
-                            <td></td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                            <td>Cell</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+            </table>
             </div>
         </div>
         <div class="test-output"></div>
         <div class="test-diff"></div>
     </div>
-     <script type="text/javascript">
+    <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            clickButton(input, '.raptor-ui-table-insert-column');
+            clickButton(input, '.raptor-ui-table-create');
+
+            var table = $('.raptor-ui-table-create-menu').find('tbody')[0];
+            var rows = table.getElementsByTagName('tr');
+            var cols = rows[2].getElementsByTagName('td');
+            $(cols[3]).mouseover();
+            $(cols[3]).click();
+
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
+
 </body>
 </html>
