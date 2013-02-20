@@ -1,1 +1,1 @@
-For license information, see http://www.raptor-editor.com/license
+For license information, see http://www.raptor-editor.com/license.
