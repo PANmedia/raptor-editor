@@ -31,5 +31,33 @@
             listToggle('blockquote', 'p', input);
         });
     </script>
+    <div class="test-23">
+        <h1>List 23: Toggle block quote inside an &lt;h2&gt; (do nothing)</h1>
+        <div class="test-input"><h2><span>Introducing {}a better way</span><span>to edit online content</span></h2></div>
+        <div class="test-expected">
+            <h2><span>Introducing a better way</span><span>to edit online content</span></h2>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-23', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input.find('h2'));
+        });
+    </script>
+    <div class="test-24">
+        <h1>List 24: Toggle block quote inside an &lt;div&gt;</h1>
+        <div class="test-input"><p>Introducing {}a better way to edit online content</p></div>
+        <div class="test-expected">
+            <blockquote><p>Introducing a better way to edit online content</p></blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-24', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
 </body>
 </html>

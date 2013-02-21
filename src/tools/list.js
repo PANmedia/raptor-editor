@@ -19,7 +19,9 @@ function listToggle(listType, listItem, wrapper) {
     if (listShouldUnwrap(listType, listItem)) {
         return listUnwrapSelection(listType, listItem, wrapper);
     }
-    return listWrapSelection(listType, listItem, wrapper);
+    if (listShouldWrap(listType, listItem, wrapper)) {
+       return listWrapSelection(listType, listItem, wrapper);
+    }
 }
 
 /**
@@ -73,6 +75,13 @@ function listShouldConvertType(listType, listItem, wrapper) {
         return true;
     }
     return false;
+}
+
+function listShouldWrap(listType, listItem, wrapper) {
+    if (listType === 'blockquote') {
+        return elementIsValid(wrapper, listValidBlockQuoteParents);
+    }
+    return elementIsValid(wrapper, listValidUlOlParents);
 }
 
 /**
