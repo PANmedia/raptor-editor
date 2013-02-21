@@ -37,6 +37,7 @@ SelectMenu.prototype.getMenu = function() {
             })
             .on('click', 'a', function(event) {
                 aButtonSetLabel(this.button.button, $(event.target).html());
+                $(this.menu).closest('ul').hide();
                 // Prevent jQuery UI focusing the menu
                 return false;
             }.bind(this))
