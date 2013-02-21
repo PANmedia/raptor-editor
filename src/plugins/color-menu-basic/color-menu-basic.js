@@ -82,11 +82,15 @@ ColorMenuBasic.prototype.changeColor = function(color) {
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
                 var classes = $(this).attr('class');
-                if (classes) {
-                    classes = classes.match(/(cms-(.*?))( |$)/ig);
-                    for (var i = 0, l = classes.length; i < l; i++) {
-                        $(this).removeClass($.trim(classes[i]));
-                    }
+                if (classes === null || typeof classes === 'undefined') {
+                    return;
+                }
+                classes = classes.match(/(cms-(.*?))( |$)/ig);
+                if (classes === null || typeof classes === 'undefined') {
+                    return;
+                }
+                for (var i = 0, l = classes.length; i < l; i++) {
+                    $(this).removeClass($.trim(classes[i]));
                 }
             });
         } else {
