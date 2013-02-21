@@ -78,7 +78,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
             heightInput = imageResizeButtonDialog.find('[name=height]').val(originalHeight);
 
         var inputHeight = function() {
-            var height = parseInt($(heightInput).val(), 10);
+            var height = parseInt(heightInput.val(), 10);
             if (isNaN(height)) {
                 return 0;
             }
@@ -86,7 +86,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
         };
 
         var inputWidth = function() {
-            var width = parseInt($(widthInput).val(), 10);
+            var width = parseInt(widthInput.val(), 10);
             if (isNaN(width)) {
                 return 0;
             }
