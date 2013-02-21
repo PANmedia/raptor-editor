@@ -48,7 +48,7 @@ PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
  * Enables pasting.
  */
 PastePlugin.prototype.enable = function() {
-    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.caputrePaste.bind(this));
+    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.capturePaste.bind(this));
 };
 
 /**
@@ -56,14 +56,12 @@ PastePlugin.prototype.enable = function() {
  *
  * @returns {Boolean} True if paste capture is successful.
  */
-PastePlugin.prototype.caputrePaste = function() {
+PastePlugin.prototype.capturePaste = function() {
     if (pasteInProgress) {
         return false;
     }
     this.state = this.raptor.stateSave();
     pasteInProgress = true;
-
-    //selectionSave();
 
     // Make a contentEditable div to capture pasted text
     $('.raptorPasteBin').remove();
@@ -88,7 +86,6 @@ PastePlugin.prototype.showPasteDialog = function() {
  * @param {HTML} html The html to be pasted into the selection.
  */
 PastePlugin.prototype.pasteContent = function(html) {
-//    console.log(this.state);
     this.raptor.stateRestore(this.state);
     this.raptor.actionApply(function() {
         html = this.filterAttributes(html);
