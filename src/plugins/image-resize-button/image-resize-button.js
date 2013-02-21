@@ -18,7 +18,12 @@ var imageResizeButton = false,
     /**
      * @type {Element} The image currently being resized.
      */
-    imageResizeButtonImage = null;
+    imageResizeButtonImage = null,
+
+    imageOriginalSize = {
+        width: null,
+        height: null
+    };
 
 /**
  * @class the image resize button plugin class.
@@ -71,14 +76,11 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
     if (imageResizeButtonDialog === false) {
         imageResizeButtonDialog = $(this.raptor.getTemplate('image-resize-button.dialog', this.options));
 
-        var originalWidth = imageResizeButtonImage.width,
-            originalHeight = imageResizeButtonImage.height;
-
-        var widthInput = imageResizeButtonDialog.find('[name=width]').val(originalWidth),
-            heightInput = imageResizeButtonDialog.find('[name=height]').val(originalHeight);
+        var widthInput = imageResizeButtonDialog.find('[name=width]');
+            heightInput = imageResizeButtonDialog.find('[name=height]');
 
         var inputHeight = function() {
-            var height = parseInt($(heightInput).val(), 10);
+            var height = parseInt(heightInput.val(), 10);
             if (isNaN(height)) {
                 return 0;
             }
@@ -86,7 +88,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
         };
 
         var inputWidth = function() {
-            var width = parseInt($(widthInput).val(), 10);
+            var width = parseInt(widthInput.val(), 10);
             if (isNaN(width)) {
                 return 0;
             }
@@ -122,7 +124,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
                 {
                     text: _('imageResizeButtonDialogCancelButton'),
                     click: function() {
-                        this.resizeImage(originalWidth, originalHeight);
+                        this.resizeImage(imageOriginalSize.width, imageOriginalSize.height);
                         aDialogClose(imageResizeButtonDialog);
                     }.bind(this),
                     icons: {
@@ -164,6 +166,9 @@ ImageResizeButtonPlugin.prototype.resizeImage = function(width, height) {
  */
 ImageResizeButtonPlugin.prototype.openDialog = function() {
     aDialogOpen(this.getDialog());
+
+    imageResizeButtonDialog.find('[name=width]').val(imageOriginalSize.width),
+    imageResizeButtonDialog.find('[name=height]').val(imageOriginalSize.height);
 };
 
 /**
@@ -176,6 +181,10 @@ ImageResizeButtonPlugin.prototype.show = function(event) {
         return;
     }
     imageResizeButtonImage = event.target;
+
+    imageOriginalSize.width = imageResizeButtonImage.width;
+    imageOriginalSize.height = imageResizeButtonImage.height;
+
     var visibleRect = elementVisibleRect(imageResizeButtonImage),
         button = this.getButton();
     button.show().css({
