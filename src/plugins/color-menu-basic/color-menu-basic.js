@@ -56,10 +56,10 @@ ColorMenuBasic.prototype.updateButton = function() {
         return;
     }
     tag = $(tag);
-    for (var i = 0, l = this.colors.length; i < l; i++) {
-        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[i]);
+    for (var colorsIndex = 0; colorsIndex < this.colors.length; colorsIndex++) {
+        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[colorsIndex]);
         if (closest.length) {
-            color = this.colors[i];
+            color = this.colors[colorsIndex];
             break;
         }
     }
