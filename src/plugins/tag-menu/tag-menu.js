@@ -109,20 +109,6 @@ TagMenu.prototype.updateButton = function() {
 //    }
 };
 
-//TagMenu.prototype.getButton = function() {
-//    if (!this.button) {
-//        this.button = new Button({
-//            name: this.name,
-//            action: this.show.bind(this),
-//            preview: false,
-//            options: this.options,
-//            icon: false,
-//            raptor: this.raptor
-//        });
-//    }
-//    return this.button;
-//};
-
 /**
  * Prepares and returns the menu items for use in the raptor UI.
  * @returns {Element}
