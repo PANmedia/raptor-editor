@@ -7,7 +7,8 @@
 
 var pasteInProgress = false,
     pasteDialog = null,
-    pasteInstance = null;
+    pasteInstance = null,
+    selection = null;
 
 /**
  * @class The paste plugin class.
@@ -60,7 +61,7 @@ PastePlugin.prototype.caputrePaste = function() {
     if (pasteInProgress) {
         return false;
     }
-    this.state = this.raptor.stateSave();
+    selection = selectionSave();
     pasteInProgress = true;
 
     // Make a contentEditable div to capture pasted text
@@ -86,7 +87,7 @@ PastePlugin.prototype.showPasteDialog = function() {
  * @param {HTML} html The html to be pasted into the selection.
  */
 PastePlugin.prototype.pasteContent = function(html) {
-    this.raptor.stateRestore(this.state);
+    selectionRestore(selection);
     this.raptor.actionApply(function() {
         html = this.filterAttributes(html);
         html = this.filterChars(html);
