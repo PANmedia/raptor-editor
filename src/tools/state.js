@@ -26,6 +26,7 @@ function stateSave(element) {
 
 /**
  * Restores an element from its saved state.
+ *
  * @param {jQuery} element The element to have its state restored.
  * @param {jQuery} state The state to restore the element to.
  * @returns {Object} The restored element.
