@@ -7,6 +7,25 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+
+        function insertFile(input) {
+            var insertFileButton = getLayoutElement(input).find('.raptor-ui-insert-file');
+            insertFileButton.trigger('click');
+
+            var dialog = $('.ui-dialog');
+
+            dialog.find('input[name="location"]').val('../../images/raptor.png');
+            dialog.find('input[name="name"]').val('Raptor Image');
+
+            var acceptButton = dialog.find('button:contains(Insert file)');
+            acceptButton.trigger('click');
+
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (insertFileButton.is('.ui-state-highlight')){
+                throw new Error('Insert File button is active');
+            }
+        }
     </script>
 
     <div class="test-1">
@@ -36,30 +55,10 @@
         </div>
     </div>
     <script type="text/javascript">
-       testEditor('.test-1', function(input) {
-            var location = '../../images/raptor.png';
-            var name = 'Raptor Image';
-
-            var insertFileButton = getLayoutElement(input).find('.raptor-ui-insert-file');
-            insertFileButton.trigger('click');
-
-            var dialog = $('.ui-dialog');
-
-            dialog.find('input[name="location"]').val(location);
-            dialog.find('input[name="name"]').val(name);
-
-            var acceptButton = dialog.find('button:contains(Insert file)');
-            acceptButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (insertFileButton.is('.ui-state-highlight')){
-                throw new Error('Insert File button is active');
-            }
-       });
+       testEditor('.test-1', insertFile);
     </script>
 
-<!--    <div class="test-2">
+    <div class="test-2">
         <h1>Insert File Button 2: Insert Image File With Selection</h1>
         <div class="test-input">
             <div class="editible">
@@ -85,28 +84,8 @@
         </div>
     </div>
     <script type="text/javascript">
-       testEditor('.test-2', function(input) {
-            var location = '../../images/raptor.png';
-            var name = 'Raptor Image';
-
-            var insertFileButton = getLayoutElement(input).find('.raptor-ui-insert-file');
-            insertFileButton.trigger('click');
-
-            var dialog = $('.ui-dialog');
-
-            dialog.find('input[name="location"]').val(location);
-            dialog.find('input[name="name"]').val(name);
-
-            var acceptButton = dialog.find('button:contains(Insert file)');
-            acceptButton.trigger('click');
-
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            if (insertFileButton.is('.ui-state-highlight')){
-                throw new Error('Insert File button is active');
-            }
-       });
-    </script>-->
+       testEditor('.test-2', insertFile);
+    </script>
 
 </body>
 </html>
