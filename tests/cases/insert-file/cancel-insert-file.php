@@ -7,68 +7,51 @@
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+    </script>
 
-        function testLink(input) {
-            var createLinkButton = getLayoutElement(input).find('.raptor-ui-link-create');
-            var removeLinkButton = getLayoutElement(input).find('.raptor-ui-link-remove');
+    <div class="test-1">
+        <h1>Cancel Insert File Button 1: Cancel Insert File Without Details</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+       testEditor('.test-1', function(input){
+            var insertFileButton = getLayoutElement(input).find('.raptor-ui-insert-file');
+            insertFileButton.trigger('click');
 
-            createLinkButton.trigger('click');
-
-            $('.raptor-ui-link-create-menu :input[value=3]').trigger('click');
-
-            document.getElementById('raptor-email').value = "test@test.com";
-            document.getElementById('raptor-email-subject').value = "Test subject";
-
-            var insertLinkButton = $('.raptor-ui-link-create-dialog button:contains(Insert Link)');
-            insertLinkButton.trigger('click');
+            var cancelButton = $('button:contains(Cancel)');
+            cancelButton.trigger('click');
 
             rangesToTokens(rangy.getSelection().getAllRanges());
 
-            if (!createLinkButton.is('.ui-state-highlight')){
-                throw new Error('Create link button is not active');
+            if (insertFileButton.is('.ui-state-highlight')){
+                throw new Error('Insert File button is active');
             }
-            if (!removeLinkButton.is('.ui-state-highlight')){
-                throw new Error('Remove link button is not active');
-            }
-        }
+       });
     </script>
-    <div class="test-1">
-        <h1>Insert File Button 1: Insert Text File</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <a href="mailto:test@test.com?Subject=Test%20subject">{dui id erat pellentesque et rhoncus}</a> nunc semper. Suspendisse
-                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
-                </p>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-       testEditor('.test-1', function(input) {
-           clickButton(input, '.raptor-ui-insert-file');
 
-           //insert some information into the input fields
-
-           //click insert file
-
-        });
-    </script>
     <div class="test-2">
-        <h1>Insert File Button 2: Insert Text File</h1>
+        <h1>Cancel Insert File Button 2: Cancel Insert File With Details</h1>
         <div class="test-input">
             <div class="editible">
                 <p>
@@ -84,7 +67,7 @@
             <div class="editible">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis <a href="mailto:test@test.com?Subject=Test%20subject">{dui id erat pellentesque et rhoncus}</a> nunc semper. Suspendisse
+                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -93,12 +76,28 @@
         </div>
     </div>
     <script type="text/javascript">
-       testEditor('.test-2', function(input) {
+       testEditor('.test-2', function(input){
+            var location = '../../images/raptor.png';
+            var name = 'Raptor Image';
 
+            var insertFileButton = getLayoutElement(input).find('.raptor-ui-insert-file');
+            insertFileButton.trigger('click');
 
-        });
+            var dialog = $('.ui-dialog');
+
+            dialog.find('input[name="location"]').val(location);
+            dialog.find('input[name="name"]').val(name);
+
+            var cancelButton = $('button:contains(Cancel)');
+            cancelButton.trigger('click');
+
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (insertFileButton.is('.ui-state-highlight')){
+                throw new Error('Insert File button is active');
+            }
+       });
     </script>
-
 
 </body>
 </html>
