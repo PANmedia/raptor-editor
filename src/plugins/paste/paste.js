@@ -48,7 +48,7 @@ PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
  * Enables pasting.
  */
 PastePlugin.prototype.enable = function() {
-    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.capturePaste.bind(this));
+    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.caputrePaste.bind(this));
 };
 
 /**
@@ -56,7 +56,7 @@ PastePlugin.prototype.enable = function() {
  *
  * @returns {Boolean} True if paste capture is successful.
  */
-PastePlugin.prototype.capturePaste = function() {
+PastePlugin.prototype.caputrePaste = function() {
     if (pasteInProgress) {
         return false;
     }
