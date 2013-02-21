@@ -139,6 +139,7 @@ PastePlugin.prototype.getDialog = function(instance) {
                     text: _('pasteDialogCancelButton'),
                     click: function() {
                         pasteInProgress = false;
+                        selectionDestroy();
                         $('.raptorPasteBin').remove();
                         aDialogClose(pasteDialog);
                     },
