@@ -97,13 +97,13 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
 
         widthInput.bind('keyup', function() {
             var width = inputWidth();
-            heightInput.val(Math.round(Math.abs(imageResizeButtonImage.height / imageResizeButtonImage.width * width)));
+            heightInput.val(Math.round(Math.abs(imageOriginalSize.height / imageOriginalSize.width * width)));
             this.resizeImage(width, inputHeight());
         }.bind(this));
 
         heightInput.bind('keyup', function() {
             var height = inputHeight();
-            widthInput.val(Math.round(Math.abs(imageResizeButtonImage.width / imageResizeButtonImage.height * height)));
+            widthInput.val(Math.round(Math.abs(imageOriginalSize.width / imageOriginalSize.height * height)));
             this.resizeImage(inputWidth(), height);
         }.bind(this));
 
