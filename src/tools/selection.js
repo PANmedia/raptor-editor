@@ -121,7 +121,7 @@ function selectionSelectInner(element, selection) {
 function selectionSelectInner(node, selection) {
     // <strict>
     if (!typeIsNode(node)) {
-        handleError('Paramter 1 to selectionSelectInner is expected a Node, got:', node);
+        handleInvalidArgumentError('Paramter 1 to selectionSelectInner is expected a Node, got:', node);
         return;
     }
     // </strict>
@@ -496,15 +496,15 @@ function selectionToggleBlockStyle(styles, limit) {
 function selectionEachBlock(callback, limitElement, blockContainer) {
     // <strict>
     if (!$.isFunction(callback)) {
-        handleError('Paramter 1 to selectionEachBlock is expected to be a function');
+        handleInvalidArgumentError('Paramter 1 to selectionEachBlock is expected to be a function', callback);
         return;
     }
     if (!(limitElement instanceof jQuery)) {
-        handleError('Paramter 2 to selectionEachBlock is expected a jQuery element');
+        handleInvalidArgumentError('Paramter 2 to selectionEachBlock is expected a jQuery element', limitElement);
         return;
     }
     if (typeof blockContainer !== 'undefined' && typeof blockContainer !== 'string') {
-        handleError('Paramter 3 to selectionEachBlock is expected be undefined or a string');
+        handleInvalidArgumentError('Paramter 3 to selectionEachBlock is expected be undefined or a string', blockContainer);
         return;
     }
     // </strict>
@@ -546,19 +546,19 @@ function selectionEachBlock(callback, limitElement, blockContainer) {
 function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, blockContainer) {
     // <strict>
     if (!$.isArray(addClasses)) {
-        handleError('Paramter 1 to selectionToggleBlockClasses is expected to be an array of classes');
+        handleInvalidArgumentError('Paramter 1 to selectionToggleBlockClasses is expected to be an array of classes', addClasses);
         return;
     }
     if (!$.isArray(removeClasses)) {
-        handleError('Paramter 2 to selectionToggleBlockClasses is expected to be an array of classes');
+        handleInvalidArgumentError('Paramter 2 to selectionToggleBlockClasses is expected to be an array of classes', removeClasses);
         return;
     }
     if (!(limitElement instanceof jQuery)) {
-        handleError('Paramter 3 to selectionToggleBlockClasses is expected a jQuery element');
+        handleInvalidArgumentError('Paramter 3 to selectionToggleBlockClasses is expected a jQuery element', limitElement);
         return;
     }
     if (typeof blockContainer !== 'undefined' && typeof blockContainer !== 'string') {
-        handleError('Paramter 4 to selectionToggleBlockClasses is expected be undefined or a string');
+        handleInvalidArgumentError('Paramter 4 to selectionToggleBlockClasses is expected be undefined or a string', blockContainer);
         return;
     }
     // </strict>
