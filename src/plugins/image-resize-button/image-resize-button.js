@@ -115,6 +115,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
                     click: function() {
                         this.resizeImage(inputWidth(), inputHeight());
                         this.raptor.checkChange();
+                        this.resized = true;
                         aDialogClose(imageResizeButtonDialog);
                     }.bind(this),
                     icons: {
@@ -124,14 +125,19 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
                 {
                     text: _('imageResizeButtonDialogCancelButton'),
                     click: function() {
-                        this.resizeImage(imageOriginalSize.width, imageOriginalSize.height);
                         aDialogClose(imageResizeButtonDialog);
                     }.bind(this),
                     icons: {
                         primary: 'ui-icon-circle-close'
                     }
                 }
-            ]
+            ],
+            close: function() {
+                if (!this.resized) {
+                    this.resizeImage(imageOriginalSize.width, imageOriginalSize.height);
+                }
+                this.resized = false;
+            }.bind(this)
         });
     }
     return imageResizeButtonDialog;
