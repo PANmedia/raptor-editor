@@ -133,7 +133,7 @@ function elementIsValid(element, validTags) {
 function elementFirstInvalidElementOfValidParent(element, validTags, wrapper) {
     // <strict>
     if (!typeIsNode(element)) {
-        handleError('Parameter 1 to elementFirstInvalidElementOfValidParent must be a node');
+        handleInvalidArgumentError('Parameter 1 to elementFirstInvalidElementOfValidParent must be a node', element);
         return;
     }
     // </strict>
@@ -374,7 +374,7 @@ function elementUniqueId() {
 function elementChangeTag(element, newTag) {
     // <strict>
     if (!typeIsElement(element)) {
-        handleError('Parameter 1 to elementChangeTag must be a jQuery element');
+        handleInvalidArgumentError('Parameter 1 to elementChangeTag must be a jQuery element', element);
     }
     // </strict>
     var tags = [];

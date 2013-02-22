@@ -44,11 +44,11 @@ function rangeSelectElement(range, element) {
 function rangeSelectElementContent(range, element) {
     // <strict>
     if (!typeIsRange(range)) {
-        handleInvalidArgumentError('Parameter 1 to rangeSelectElement is expected to be a range', range);
+        handleInvalidArgumentError('Parameter 1 to rangeSelectElementContent is expected to be a range', range);
         return;
     }
     if (!typeIsElement(element) && !typeIsNode(element)) {
-        handleInvalidArgumentError('Parameter 2 to rangeSelectElement is expected to be a jQuery element or node', element);
+        handleInvalidArgumentError('Parameter 2 to rangeSelectElementContent is expected to be a jQuery element or node', element);
         return;
     }
     // </strict>
