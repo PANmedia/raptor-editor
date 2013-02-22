@@ -622,6 +622,13 @@ function selectionConstrain(element, selection) {
  * @param {RangySelection} [selection] The selection to have it's formatting cleared.
  */
 function selectionClearFormatting(limitNode, selection) {
+    // <strict>
+    if (limitNode && !typeIsNode(limitNode)) {
+        handleInvalidArgumentError('Parameter 1 to selectionClearFormatting must be a node', limitNode);
+        return;
+    }
+    // </strict>
+
     limitNode = limitNode || document.body;
     selection = selection || rangy.getSelection();
     if (selection.rangeCount > 0) {
@@ -632,8 +639,9 @@ function selectionClearFormatting(limitNode, selection) {
         var content = range.extractContents();
 
         // Expand the range to the parent if there is no selected content
+        // and the range's ancestor is not the limitNode
         if (fragmentToHtml(content) === '') {
-            rangeExpandToParent(range);
+            rangeSelectElementContent(range, range.commonAncestorContainer);
             selection.setSingleRange(range);
             content = range.extractContents();
         }
@@ -647,7 +655,7 @@ function selectionClearFormatting(limitNode, selection) {
 
         // Get the containing element
         var parent = range.commonAncestorContainer;
-        while (parent && parent.parentNode != limitNode) {
+        while (parent && parent.parentNode !== limitNode) {
             parent = parent.parentNode;
         }
 
