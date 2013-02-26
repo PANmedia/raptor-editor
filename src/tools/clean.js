@@ -110,12 +110,17 @@ function cleanEmptyElements(parent, tags) {
         return;
     }
     // </strict>
-
-    parent.find(tags.join(',')).each(function() {
-        if ($.trim($(this).html()) == '') {
-            $(this).remove();
-        }
-    });
+    var found;
+    // Need to loop incase removing an empty element, leaves another one.
+    do {
+        found = false;
+        parent.find(tags.join(',')).each(function() {
+            if ($.trim($(this).html()) == '') {
+                $(this).remove();
+                found = true;
+            }
+        });
+    } while (found);
     return parent;
 }
 
