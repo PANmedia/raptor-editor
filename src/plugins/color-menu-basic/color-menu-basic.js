@@ -56,10 +56,10 @@ ColorMenuBasic.prototype.updateButton = function() {
         return;
     }
     tag = $(tag);
-    for (var i = 0, l = this.colors.length; i < l; i++) {
-        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[i]);
+    for (var colorsIndex = 0; colorsIndex < this.colors.length; colorsIndex++) {
+        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[colorsIndex]);
         if (closest.length) {
-            color = this.colors[i];
+            color = this.colors[colorsIndex];
             break;
         }
     }
@@ -82,22 +82,27 @@ ColorMenuBasic.prototype.changeColor = function(color) {
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
                 var classes = $(this).attr('class');
-                if (classes) {
-                    classes = classes.match(/(cms-(.*?))( |$)/ig);
-                    for (var i = 0, l = classes.length; i < l; i++) {
-                        $(this).removeClass($.trim(classes[i]));
-                    }
+                if (classes === null || typeof classes === 'undefined') {
+                    return;
+                }
+                classes = classes.match(/(cms-(.*?))( |$)/ig);
+                if (classes === null || typeof classes === 'undefined') {
+                    return;
+                }
+                for (var i = 0, l = classes.length; i < l; i++) {
+                    $(this).removeClass($.trim(classes[i]));
                 }
             });
         } else {
+            var uniqueId = elementUniqueId();
             selectionToggleWrapper('span', {
-                classes: this.options.classes || this.options.cssPrefix + 'color ' + this.options.cssPrefix + color
+                classes: this.options.classes || this.options.cssPrefix + 'color ' + this.options.cssPrefix + color,
+                attributes: {
+                    id: uniqueId
+                }
             });
+            selectionSelectInner($('#' + uniqueId).removeAttr('id').get(0));
         }
-//        var applier = rangy.createCssClassApplier('cms-' + color, {
-//            elementTagName: 'span'
-//        });
-//        applier.toggleSelection(this.raptor.getSelection());
     }.bind(this));
 };
 
@@ -129,22 +134,6 @@ ColorMenuBasic.prototype.apply = function(event) {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
 };
-
-//ColorMenuBasic.prototype.getButton = function() {
-//    if (!this.button) {
-//        this.button = new Button({
-//            name: this.name,
-//            action: this.show.bind(this),
-//            preview: false,
-//            options: this.options,
-//            text: true,
-//            icon: false,
-//            label: _('colorMenuBasicAutomatic'),
-//            raptor: this.raptor
-//        });
-//    }
-//    return this.button;
-//};
 
 /**
  * Prepare and return the menu items to be used in the Raptor UI.

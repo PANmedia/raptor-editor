@@ -115,7 +115,7 @@ function cleanEmptyElements(parent, tags) {
     do {
         found = false;
         parent.find(tags.join(',')).each(function() {
-            if ($.trim($(this).html()) == '') {
+            if ($.trim($(this).html()) === '') {
                 $(this).remove();
                 found = true;
             }

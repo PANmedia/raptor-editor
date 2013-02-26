@@ -159,18 +159,18 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    This is {
+                    This is
                 </p>
                 <blockquote>
                     <p>
-                        paragraph 1.
+                        {paragraph 1.
                     </p>
                     <p>
-                        This is paragraph
+                        This is paragraph}
                     </p>
                 </blockquote>
                 <p>
-                    } 2.
+                    2.
                 </p>
 
             </div>
@@ -181,7 +181,7 @@
             var blockquoteButton = getLayoutElement(input).find('.raptor-ui-text-block-quote');
             blockquoteButton.trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
-            
+
             if (!blockquoteButton.is('.ui-state-highlight')){
                 throw new Error('Button is not active');
             }

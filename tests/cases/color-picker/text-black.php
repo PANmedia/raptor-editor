@@ -13,7 +13,7 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -24,8 +24,8 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis</span><span class="cms-black">{dui id erat pellentesque et rhoncus}</span><span class="cms-blue"> nunc semper. Suspendisse
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis<span class="cms-color cms-black">{dui id erat pellentesque et rhoncus}</span> nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
@@ -54,7 +54,7 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -65,7 +65,7 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur </span><span class="cms-black">{adipiscing}</span><span class="cms-blue"> elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur <span class="cms-color cms-black">{adipiscing}</span> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -96,7 +96,7 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
@@ -107,8 +107,8 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pel<span class="cms-black">{lentesqu}</span>e et rhoncus nunc semper. Suspendisse
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pel<span class="cms-color cms-black">{lentesqu}</span>e et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
@@ -137,12 +137,12 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.</span>
                 </p>
                 <p>
-                    <span class="cms-blue">Aliquam gravida mauris at
+                    <span class="cms-color cms-blue">Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
                 </p>
@@ -151,13 +151,13 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui </span><span class="cms-black">{id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui </span><span class="cms-color cms-black">{id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </span></p>
                 <p><span class="cms-black">
                     Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse}</span><span class="cms-blue"> interdum, nisi nec consectetur
+                    ligula venenatis rhoncus. Suspendisse}</span><span class="cms-color cms-blue"> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
                 </p>
             </div>
@@ -184,11 +184,11 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.</span>
                 </p><p>
-                    <span class="cms-blue">Aliquam gravida mauris at
+                    <span class="cms-color cms-blue">Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</span>
                 </p>
@@ -197,11 +197,11 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-black">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-black">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.
                 </span></p>
-                <p><span class="cms-black">
+                <p><span class="cms-color cms-black">
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</span>
@@ -230,11 +230,11 @@
         <div class="test-input">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.</span>
                 </p><p>
-                    <span class="cms-blue">Aliquam gravida mauris at
+                    <span class="cms-color cms-blue">Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspen{}disse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
                 </p>
@@ -243,12 +243,12 @@
         <div class="test-expected">
             <div class="editible">
                 <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    <span class="cms-color cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit nec tristique.</span>
                 </p><p>
-                    <span class="cms-blue">Aliquam gravida mauris at
-                    ligula venenatis rhoncus. </span><span class="cms-black">{Suspendisse}</span><span class="cms-blue"> interdum, nisi nec consectetur
+                    <span class="cms-color cms-blue">Aliquam gravida mauris at
+                    ligula venenatis rhoncus. </span><span class="cms-color cms-black">{Suspendisse}</span><span class="cms-color cms-blue"> interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
                 </p>
             </div>
@@ -270,49 +270,5 @@
         });
     </script>
 
-    <div class="test-7">
-        <h1>Text Black Button 7: Empty Selection at the Beginning of a Word</h1>
-        <div class="test-input">
-            <div class="editible">
-                <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada {}hendrerit velit nec tristique.</span>
-                </p><p>
-                    <span class="cms-blue">Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
-                </p>
-            </div>
-        </div>
-        <div class="test-expected">
-            <div class="editible">
-                <p>
-                    <span class="cms-blue">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
-                    malesuada </span><span class="cms-black">{hendrerit}</span><span class="cms-blue"> velit nec tristique.</span>
-                </p><p>
-                    <span class="cms-blue">Aliquam gravida mauris at
-                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
-                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.</span>
-                </p>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        testEditor('.test-7', function(input) {
-            var colorMenuBasic = getLayoutElement(input).find('.raptor-ui-color-menu-basic');
-            colorMenuBasic.trigger('click');
-            var black = $('.raptor-ui-color-menu-basic-menu:eq(6) [data-color=black]');
-            black.trigger('click');
-            rangesToTokens(rangy.getSelection().getAllRanges());
-
-            var colorMenuBasicValue = colorMenuBasic.toString();
-
-            if (!colorMenuBasicValue === 'Black'){
-                throw new Error('Button is not active');
-            }
-        });
-    </script>
 </body>
 </html>

@@ -11,6 +11,22 @@
     </script>
 
     <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Empty Element</h1>
+        <div class="test-input">
+            <div class="editible">{}</div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">{}</div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+
+    <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Basic</h1>
         <div class="test-input">
             <div class="editible">
@@ -304,6 +320,26 @@
         <div class="test-input">
             <div class="editible">
                 <p><strong>{Some bold text.}</strong></p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{Some bold text.}</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-<?= $i ?>', function(input) {
+            clickButton(input, '.raptor-ui-clear-formatting');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+
+    <div class="test-<?= ++$i ?>">
+        <h1>Clear Formatting Button <?= $i ?>: Removing complex styling elements</h1>
+        <div class="test-input">
+            <div class="editible">
+                <p><i><strong>{Some bold text.}</strong></i></p>
             </div>
         </div>
         <div class="test-expected">

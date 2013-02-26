@@ -7,7 +7,8 @@
 
 var pasteInProgress = false,
     pasteDialog = null,
-    pasteInstance = null;
+    pasteInstance = null,
+    selection = null;
 
 /**
  * @class The paste plugin class.
@@ -48,7 +49,7 @@ PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
  * Enables pasting.
  */
 PastePlugin.prototype.enable = function() {
-    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.caputrePaste.bind(this));
+    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.capturePaste.bind(this));
 };
 
 /**
@@ -56,14 +57,13 @@ PastePlugin.prototype.enable = function() {
  *
  * @returns {Boolean} True if paste capture is successful.
  */
-PastePlugin.prototype.caputrePaste = function() {
+PastePlugin.prototype.capturePaste = function() {
     if (pasteInProgress) {
         return false;
     }
-    this.state = this.raptor.stateSave();
-    pasteInProgress = true;
+    selectionSave();
 
-    //selectionSave();
+    pasteInProgress = true;
 
     // Make a contentEditable div to capture pasted text
     $('.raptorPasteBin').remove();
@@ -88,14 +88,21 @@ PastePlugin.prototype.showPasteDialog = function() {
  * @param {HTML} html The html to be pasted into the selection.
  */
 PastePlugin.prototype.pasteContent = function(html) {
-//    console.log(this.state);
-    this.raptor.stateRestore(this.state);
+    var uniqueId = elementUniqueId();
     this.raptor.actionApply(function() {
+        selectionRestore();
         html = this.filterAttributes(html);
         html = this.filterChars(html);
-        selectionReplace(html);
+        selectionReplace($('<placeholder id="' + uniqueId + '">' + html + '</placeholder>'));
         $('.raptorPasteBin').remove();
         pasteInProgress = false;
+
+        var placeholder = $('#' + uniqueId);
+        selectionSelectInner(placeholder.get(0));
+        selectionSave();
+        placeholder.contents().unwrap();
+        selectionRestore();
+
     }.bind(this));
 };
 
@@ -130,8 +137,9 @@ PastePlugin.prototype.getDialog = function(instance) {
                         } else {
                             html = element.html();
                         }
-                        pasteInstance.pasteContent(html);
+
                         aDialogClose(pasteDialog);
+                        pasteInstance.pasteContent(html);
                     }.bind(this),
                     icons: {
                         primary: 'ui-icon-circle-check'
@@ -141,6 +149,7 @@ PastePlugin.prototype.getDialog = function(instance) {
                     text: _('pasteDialogCancelButton'),
                     click: function() {
                         pasteInProgress = false;
+                        selectionDestroy();
                         $('.raptorPasteBin').remove();
                         aDialogClose(pasteDialog);
                     },
