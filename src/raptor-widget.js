@@ -848,8 +848,10 @@ var RaptorWidget = {
         for (var keyCombination in this.hotkeys) {
             this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
                 if (this.isEditing()) {
-                    this.hotkeys[event.data]();
-                    event.preventDefault();
+                    var result = this.hotkeys[event.data]();
+                    if (result !== false) {
+                        event.preventDefault();
+                    }
                 }
             }.bind(this));
         }
