@@ -28,6 +28,8 @@ TableSupport.prototype = Object.create(RaptorPlugin.prototype);
  */
 TableSupport.prototype.init = function() {
     this.raptor.bind('selectionCustomise', this.selectionCustomise.bind(this));
+    this.raptor.registerHotkey('tab', this.tabToNextCell.bind(this));
+    this.raptor.registerHotkey('shift+tab', this.tabToPrevCell.bind(this));
     this.raptor.getElement()
         .on('mousedown', 'tbody td', this.cellMouseDown.bind(this))
         .on('mouseover', 'tbody td', this.cellMouseOver.bind(this))
@@ -101,6 +103,48 @@ TableSupport.prototype.cellMouseOver = function(event) {
         $(cells).addClass(this.options.baseClass + '-cell-selected');
         rangy.getSelection().removeAllRanges();
     }
+};
+
+/**
+ * Handles tabbing to the next table cell.
+ */
+TableSupport.prototype.tabToNextCell = function() {
+    var range = rangy.getSelection().getRangeAt(0),
+        parent = rangeGetCommonAncestor(range),
+        cell = $(parent).closest('td');
+    if (cell.length === 0) {
+        return false;
+    }
+    var next = cell.next('td');
+    if (next.length === 0) {
+        next = cell.closest('tr').next('tr').find('td:first');
+        if (next.length === 0) {
+            next = cell.closest('tbody').find('td:first');
+        }
+    }
+    rangeSelectElementContent(range, next);
+    rangy.getSelection().setSingleRange(range);
+};
+
+/**
+ * Handles tabbing to the next table cell.
+ */
+TableSupport.prototype.tabToPrevCell = function() {
+    var range = rangy.getSelection().getRangeAt(0),
+        parent = rangeGetCommonAncestor(range),
+        cell = $(parent).closest('td');
+    if (cell.length === 0) {
+        return false;
+    }
+    var prev = cell.prev('td');
+    if (prev.length === 0) {
+        prev = cell.closest('tr').prev('tr').find('td:last');
+        if (prev.length === 0) {
+            prev = cell.closest('tbody').find('td:last');
+        }
+    }
+    rangeSelectElementContent(range, prev);
+    rangy.getSelection().setSingleRange(range);
 };
 
 Raptor.registerPlugin(new TableSupport());
