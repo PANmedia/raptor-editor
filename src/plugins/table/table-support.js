@@ -1,5 +1,6 @@
 /**
  * @fileOverview Contains the table helper functions.
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
@@ -75,7 +76,7 @@ TableSupport.prototype.cellMouseUp = function(event) {
     tableSupportDragging = false;
     var cell = $(event.target).closest('td'),
         deselect = false;
-    if (cell.length > 0) {
+    if (cell.length > 0 && tableSupportStartCell !== null) {
         var index = tableGetCellIndex(cell.get(0));
         if (index === null ||
                 (index.x == tableSupportStartCell.x &&
