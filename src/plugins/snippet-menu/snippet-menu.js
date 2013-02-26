@@ -6,7 +6,7 @@
  */
 
 /**
- * @class The snippet menu class, This is a test.
+ * @class The snippet menu class.
  * @constructor
  * @augments SelectMenu
  *
