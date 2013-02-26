@@ -20,6 +20,8 @@
         @include display-box();
         @include box-pack(center);
         @include box-align(center);
+        // Firefox width fix
+        width: 100%;
     }
 
     .raptor-toolbar {
