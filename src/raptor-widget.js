@@ -459,9 +459,9 @@ var RaptorWidget = {
 
             this.getElement().addClass(this.options.baseClass + '-editing');
             if (this.options.partialEdit) {
-                this.getElement().find(this.options.partialEdit).attr('contenteditable', true);
+                this.getElement().find(this.options.partialEdit).prop('contenteditable', true);
             } else {
-                this.getElement().attr('contenteditable', true);
+                this.getElement().prop('contenteditable', true);
             }
 
             if (!this.initialised) {
@@ -493,8 +493,9 @@ var RaptorWidget = {
     disableEditing: function() {
         if (this.enabled) {
             this.enabled = false;
-            this.getElement().attr('contenteditable', false)
-                        .removeClass(this.options.baseClass + '-editing');
+            this.getElement()
+                .prop('contenteditable', false)
+                .removeClass(this.options.baseClass + '-editing');
             rangy.getSelection().removeAllRanges();
             this.fire('disabled');
         }
