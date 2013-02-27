@@ -32,7 +32,7 @@ var debugLevel = MIN;
  */
 function info() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('Raptor Editor');
+    args.unshift('[Raptor Editor]: ');
     (console.info || console.log).apply(console, args);
 }
 
@@ -44,7 +44,7 @@ function info() {
  */
 function debug() {
     var args = Array.prototype.slice.call(arguments);
-    args.unshift('Raptor Editor');
+    args.unshift('[Raptor Editor]: ');
     (console.debug || console.log).apply(console, args);
 }
 
