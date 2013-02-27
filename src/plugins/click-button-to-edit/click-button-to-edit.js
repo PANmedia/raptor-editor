@@ -1,7 +1,7 @@
 /**
- * @fileOverview Contains the click butotn to edit plugin code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @fileOverview Contains the click button to edit plugin code.
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 

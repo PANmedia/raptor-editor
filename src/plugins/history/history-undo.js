@@ -22,7 +22,7 @@ Raptor.registerUi(new Button({
     init: function () {
         this.raptor.bind('historyChange', this.historyChange.bind(this));
         Button.prototype.init.apply(this, arguments);
-        aButtonDisable(this.butotn);
+        aButtonDisable(this.button);
         return this.button;
     },
 
