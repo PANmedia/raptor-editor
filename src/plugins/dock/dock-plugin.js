@@ -57,6 +57,11 @@ DockPlugin.prototype.init = function() {
                 this.dockState.spacer.show();
             }
         }.bind(this));
+        this.raptor.bind('layoutDestroy', function() {
+            if (this.dockState) {
+                this.toggleState();
+            }
+        }.bind(this));
     }
 };
 

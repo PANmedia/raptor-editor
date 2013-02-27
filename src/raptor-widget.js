@@ -54,7 +54,6 @@ var RaptorWidget = {
         // Initialise properties
         this.ready = false;
         this.events = {};
-        this.ui = {};
         this.plugins = {};
         this.templates = $.extend({}, Raptor.templates);
         this.target = this.element;
@@ -175,35 +174,30 @@ var RaptorWidget = {
      * Reinitialises the editor, unbinding all events, destroys all UI and plugins
      * then recreates them.
      */
-    reinit: function() {
+    localeChange: function() {
         if (!this.ready) {
             // If the edit is still initialising, wait until its ready
-            var reinit;
-            reinit = function() {
+            var localeChange;
+            localeChange = function() {
                 // Prevent reinit getting called twice
-                this.unbind('ready', reinit);
-                this.reinit();
+                this.unbind('ready', localeChange);
+                this.localeChange();
             };
-            this.bind('ready', reinit);
+            this.bind('ready', localeChange);
             return;
         }
-        // <debug>
-        debug('Reinitialising editor', this.getElement());
-        // </debug>
-
-        // Store the state of the editor
-        var enabled = this.enabled,
-            visible = this.visible;
-
-        // We are ready, so we can run reinit now
-        this.destruct(true);
-        this._init();
-
-        // Restore the editor state
-        if (enabled) {
-            this.enableEditing();
+        
+        var visible = this.visible;
+        this.actionPreviewRestore();
+        if (this.layout) {
+            this.layout.destruct();
+            this.layout = null;
         }
-
+        this.events = {};
+        this.plugins = {};
+        this.uiObjects = {};
+        this.visible = false;
+        this.loadPlugins();
         if (visible) {
             this.showLayout();
         }

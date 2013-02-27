@@ -178,6 +178,17 @@ src/plugins/insert-file/image.png
 src/plugins/insert-file/insert-file.scss
 src/plugins/insert-file/templates/dialog.html
 
+src/plugins/language-menu/language-menu.js
+src/plugins/language-menu/language-menu.scss
+src/plugins/language-menu/flags/de.png
+src/plugins/language-menu/flags/en.png
+src/plugins/language-menu/flags/es.png
+src/plugins/language-menu/flags/fr.png
+src/plugins/language-menu/flags/nl.png
+src/plugins/language-menu/flags/sv.png
+src/plugins/language-menu/flags/zh-CN.png
+src/plugins/language-menu/templates/item.html
+
 src/plugins/link/link-create.js
 src/plugins/link/link-remove.js
 src/plugins/link/link-type-document.js

@@ -74,6 +74,15 @@ registerLocale('en', 'English', {
     insertFileDialogOKButton: 'Insert file',
     insertFileDialogCancelButton: 'Cancel',
 
+    languageMenuTitle: 'Change Language',
+    languageMenuEN: 'English',
+    languageMenuDE: 'German',
+    languageMenuES: 'Spanish',
+    languageMenuFR: 'French',
+    languageMenuNL: 'Dutch',
+    languageMenuSV: 'Swedish',
+    languageMenuZHCN: 'Simplified Chinese',
+
     listOrderedTitle: 'Ordered list',
     listUnorderedTitle: 'Unordered list',
 

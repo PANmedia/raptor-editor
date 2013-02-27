@@ -196,7 +196,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
     },
 
     enableDragging: function() {
-        if ($.fn.draggable && this.options.draggable) {
+        if ($.fn.draggable && this.options.draggable && this.wrapper.data('ui-draggable')) {
             this.wrapper.draggable('enable');
         }
     },
@@ -218,6 +218,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
      * Clean up.
      */
     destruct: function() {
+        this.raptor.fire('layoutDestroy');
         if (this.wrapper) {
             this.wrapper.remove();
         }

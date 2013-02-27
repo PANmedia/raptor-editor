@@ -52,7 +52,7 @@ function setLocale(key) {
 
         currentLocale = key;
         Raptor.eachInstance(function() {
-            this.reinit();
+            this.localeChange();
         });
     }
 }
