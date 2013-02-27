@@ -12,6 +12,12 @@
  * @returns {Element} The modified element.
  */
 function aButton(element, options) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButton is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).button(options);
 }
 
@@ -23,6 +29,12 @@ function aButton(element, options) {
  * @returns {Element} The labelled button.
  */
 function aButtonSetLabel(element, text) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButtonSetLabel is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     $(element).button('option', 'text', true);
     return $(element).button('option', 'label', text);
 }
@@ -35,6 +47,12 @@ function aButtonSetLabel(element, text) {
  * @returns {Element} The modified button.
  */
 function aButtonSetIcon(element, icon) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButtonSetIcon is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).button('option', 'icons', {
         primary: icon
     });
@@ -47,6 +65,12 @@ function aButtonSetIcon(element, icon) {
  * @returns {Element} The enabled button.
  */
 function aButtonEnable(element) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButtonEnable is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).button('option', 'disabled', false);
 }
 
@@ -57,6 +81,12 @@ function aButtonEnable(element) {
  * @returns {Element} The disabled button.
  */
 function aButtonDisable(element) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButtonDisable is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).button('option', 'disabled', true);
 }
 
@@ -67,6 +97,12 @@ function aButtonDisable(element) {
  * @returns {Element} The highlighted button.
  */
 function aButtonActive(element) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButtonActive is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).addClass('ui-state-highlight');
 }
 
@@ -77,6 +113,12 @@ function aButtonActive(element) {
  * @returns {Element} The button back in its normal state.
  */
 function aButtonInactive(element) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aButtonInactive is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).removeClass('ui-state-highlight');
 }
 
@@ -88,6 +130,12 @@ function aButtonInactive(element) {
  * @returns {Element} The menu.
  */
 function aMenu(element, options) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aMenu is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).menu(options);
 }
 
@@ -99,6 +147,12 @@ function aMenu(element, options) {
  * @returns {Element} A dialog.
  */
 function aDialog(element, options) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aDialog is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     var dialog = $(element).dialog(options);
     // TODO: Remove this when jQuery UI 1.10 is released
     if (typeof options.buttons === 'undefined') {
@@ -122,6 +176,12 @@ function aDialog(element, options) {
  * @returns {Element}
  */
 function aDialogOpen(element) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aDialogOpen is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).dialog('open');
 }
 
@@ -132,6 +192,12 @@ function aDialogOpen(element) {
  * @returns {Element}
  */
 function aDialogClose(element) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aDialogClose is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).dialog('close');
 }
 
@@ -143,5 +209,11 @@ function aDialogClose(element) {
  * @returns {Element}
  */
 function aTabs(element, options) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to aTabs is expected to be a jQuery element', element);
+    }
+    // </strict>
+
     return $(element).tabs(options);
 }
