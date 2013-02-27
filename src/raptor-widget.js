@@ -355,18 +355,24 @@ var RaptorWidget = {
 
     actionPreview: function(action) {
         this.actionPreviewRestore();
-        var ranges = this.fire('selectionCustomise');
-        if (ranges.length > 0) {
-            this.previewState = actionPreview(this.previewState, this.target, function() {
-                for (var i = 0, l = ranges.length; i < l; i++) {
-                    rangy.getSelection().setSingleRange(ranges[i]);
-                    selectionConstrain(this.target);
-                    action();
-                }
-            }.bind(this));
-        } else {
-            selectionConstrain(this.target);
-            this.previewState = actionPreview(this.previewState, this.target, action);
+        try {
+            var ranges = this.fire('selectionCustomise');
+            if (ranges.length > 0) {
+                this.previewState = actionPreview(this.previewState, this.target, function() {
+                    for (var i = 0, l = ranges.length; i < l; i++) {
+                        rangy.getSelection().setSingleRange(ranges[i]);
+                        selectionConstrain(this.target);
+                        action();
+                    }
+                }.bind(this));
+            } else {
+                selectionConstrain(this.target);
+                this.previewState = actionPreview(this.previewState, this.target, action);
+            }
+        } catch (exception) {
+            // <strict>
+            handleError(exception);
+            // </strict>
         }
     },
 
