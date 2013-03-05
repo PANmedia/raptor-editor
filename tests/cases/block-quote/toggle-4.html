@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-16">
+        <h1>List 16: complicated list #2</h1>
+        <div class="test-input">
+            <ul>
+                <li>
+                    Click to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </li>
+                <li>
+                    Dock{}<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </li>
+                <li>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </li>
+            </ul>
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>
+                    Click to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </li>
+            </ul>
+            <p>
+                Dock
+            </p>
+            <p>
+                <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+            </p>
+            <ul>
+                </li>
+                <li>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-16', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-17">
+        <h1>List 17: Empty selection within a &lt;p&gt;</h1>
+        <div class="test-input">
+            <p>Lorem ipsum {}dolor sit amet, consectetuer adipiscing elit.</p>
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-17', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-18">
+        <h1>List 18: Empty selection within an &lt;i&gt;</h1>
+        <div class="test-input">
+            <p>
+                <i>Lorem ipsum{} dolor sit amet, consectetuer adipiscing elit.</i>
+            </p>
+        </div>
+        <div class="test-expected">
+            <ul>
+                <li>
+                    <p>
+                        <i>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</i>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-18', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('ul', 'li', input);
+        });
+    </script>
+    <div class="test-19">
+        <h1>List 19: Selection containing an image</h1>
+        <div class="test-input">
+            <p>
+                {Here is an image: <img src="http://www.raptor-editor.com/images/favicon.png" title="Raptor Editor" />.} It is selected.
+            </p>
+        </div>
+        <div class="test-expected">
+            <blockquote>
+                <p>
+                    Here is an image: <img src="http://www.raptor-editor.com/images/favicon.png" title="Raptor Editor" />.
+                </p>
+            </blockquote>
+            <p>
+                It is selected.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-19', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-20">
+        <h1>List 20: Selection containing an image and block elements</h1>
+        <div class="test-input">
+            {<p>
+                Here is an image: <img src="http://www.raptor-editor.com/images/favicon.png" title="Raptor Editor" />. It is selected.
+            </p>
+            <p>
+                This is another paragraph.
+            </p>}
+        </div>
+        <div class="test-expected">
+            <blockquote>
+                <p>
+                    Here is an image: <img src="http://www.raptor-editor.com/images/favicon.png" title="Raptor Editor" />. It is selected.
+                </p>
+                <p>
+                    This is another paragraph.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-20', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <div class="test-1">
+        <h1>Create Table</h1>
+        <div class="test-input">
+        </div>
+        <div class="test-expected">
+            <table>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            $(input).append(tableCreate(3, 3, {
+                placeHolder: 'Cell'
+            }));
+        });
+    </script>
+</body>
+</html>

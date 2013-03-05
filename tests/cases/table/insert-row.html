@@ -1,0 +1,500 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <div class="test-1">
+        <h1>Insert row 1</h1>
+        <div class="test-input">
+            <table>
+                <tr>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                </tr>
+                <tr>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                </tr>
+                <tr>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                </tr>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <tr>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                    <td>Row 1</td>
+                </tr>
+                <tr>
+                    <td>New</td>
+                    <td>New</td>
+                    <td>New</td>
+                </tr>
+                <tr>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                    <td>Row 2</td>
+                </tr>
+                <tr>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                    <td>Row 3</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var table = input.find('table').get(0);
+            tableInsertRow(table, 1, {
+                placeHolder: 'New'
+            });
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Insert row 2, with colspan and rowspan</h1>
+        <div class="test-input">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td rowspan="2">Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2</td>
+                        <td colspan="2">Row 2</td>
+                        <td rowspan="2">Row 2</td>
+                        <td>Row 2</td>
+                    </tr>
+                    <tr>
+                        <td>Row 3</td>
+                        <td>Row 3</td>
+                        <td colspan="2">Row 3</td>
+                        <td>Row 3</td>
+                    </tr>
+                    <tr>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                    </tr>
+                    <tr>
+                        <td>Row 5</td>
+                        <td colspan="2">Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
+                    </tr>
+                    <tr>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Header</th>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                        <td rowspan="3">Row 1</td>
+                        <td>Row 1</td>
+                        <td>Row 1</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2</td>
+                        <td colspan="2">Row 2</td>
+                        <td rowspan="2">Row 2</td>
+                        <td>Row 2</td>
+                    </tr>
+                    <tr>
+                        <td>Row 3</td>
+                        <td>Row 3</td>
+                        <td colspan="2">Row 3</td>
+                        <td>Row 3</td>
+                    </tr>
+                    <tr>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                        <td>Row 4</td>
+                    </tr>
+                    <tr>
+                        <td>Row 5</td>
+                        <td colspan="2">Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
+                        <td>Row 5</td>
+                    </tr>
+                    <tr>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                        <td>Row 6</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Header</th>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var table = input.find('table').get(0);
+            tableInsertRow(table, 2, {
+                placeHolder: '&nbsp;'
+            });
+        });
+    </script>
+    
+    <div class="test-3">
+        <h1>Insert Header 1</h1>
+        <div class="test-input">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Header</th>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Header</th>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var table = input.find('table').get(0);
+            tableInsertRow(table, 0, {
+                placeHolder: 'Header'
+            });
+        });
+    </script>
+    
+    <div class="test-4">
+        <h1>Insert Footer 1</h1>
+        <div class="test-input">
+             <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                        <th>Header</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td rowspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td colspan="2">Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                    <tr>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Header</th>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                        <td>Cell</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-4', function(input) {
+            var table = input.find('table').get(0);
+            tableInsertRow(table, table.rows.length, {
+                placeHolder: 'Footer'
+            });
+        });
+    </script>
+</body>
+</html>
+

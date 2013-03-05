@@ -1,0 +1,23 @@
+/**
+ * Logo plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box-shadow';
+
+.raptor-ui-logo {
+    border: none !important;
+    background: transparent !important;
+    @include box-shadow(none !important);
+}
+
+.raptor-ui-logo .ui-icon {
+    background: inline-image('raptor.png') 0 0;
+    background-repeat: no-repeat;
+    width: 35px;
+    height: 35px;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+}

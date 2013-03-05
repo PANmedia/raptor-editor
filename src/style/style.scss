@@ -1,0 +1,32 @@
+/**
+ * Main editor styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+@import 'compass/css3/user-interface';
+
+.raptor-wrapper {
+    overflow: visible;
+    position: fixed;
+    font-size: 12px;
+    z-index: $z-toolbar;
+    @include user-select(none);
+
+    * {
+        @include user-select(none);
+    }
+
+    .raptor-toolbar {
+        padding: 6px 0 0 5px;
+        overflow: visible;
+    }
+}
+
+.raptor-editing {
+    outline: none;
+}
+
+.raptor-path {
+    padding: $spacing;
+}

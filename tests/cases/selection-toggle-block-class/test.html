@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>Selection toggle block classes 1: single paragraph</h1>
+        <div class="test-input">
+            <p>
+                This {paragraph} should be red.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p class="cms-red">
+                This {paragraph} should be red.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            tokensToSelection(input);
+            selectionToggleBlockClasses(['cms-red'], [], input);
+            selectionToTokens();
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Selection toggle block classes 2: multiple paragraphs</h1>
+        <div class="test-input">
+            <p>
+                This paragraph sho{uld be red and centered.
+            </p>
+            <p>
+                This paragraph is in the middle, and should be the same.
+            </p>
+            <p>
+                So should this par}agraph.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p class="cms-red cms-center">
+                This paragraph sho{uld be red and centered.
+            </p>
+            <p class="cms-red cms-center">
+                This paragraph is in the middle, and should be the same.
+            </p>
+            <p class="cms-red cms-center">
+                So should this par}agraph.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            tokensToSelection(input);
+            selectionToggleBlockClasses(['cms-red', 'cms-center'], [], input);
+            selectionToTokens();
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Selection toggle block classes 3: limit element</h1>
+        <div class="test-input">
+            This paragraph sho{}uld be red and centered.
+        </div>
+        <div class="test-expected">
+            <p class="cms-red cms-center">
+                This paragraph sho{}uld be red and centered.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            tokensToSelection(input);
+            selectionToggleBlockClasses(['cms-red', 'cms-center'], [], input, 'p');
+            selectionToTokens();
+        });
+    </script>
+
+    <div class="test-4">
+        <h1>Selection toggle block classes 4: following paragraph bug (prevent next paragraph getting classes set as well)</h1>
+        <div class="test-input">
+            <p>
+                This paragraph {should be red and centered.}
+            </p>
+            <p>
+                This paragraph should be normal.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p class="cms-red cms-center">
+                This paragraph {should be red and centered.}
+            </p>
+            <p>
+                This paragraph should be normal.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-4', function(input) {
+            tokensToSelection(input);
+            selectionToggleBlockClasses(['cms-red', 'cms-center'], [], input, 'p');
+            selectionToTokens();
+        });
+    </script>
+
+    <div class="test-5">
+        <h1>Selection toggle block classes 5: Add and remove classes</h1>
+        <div class="test-input">
+            <p class="cms-center">
+                This paragraph {was centered, now its left.
+            </p>
+            <p class="cms-right">
+                This paragraph was right, now its left.}
+            </p>
+        </div>
+        <div class="test-expected">
+            <p class="cms-left">
+                This paragraph {was centered, now its left.
+            </p>
+            <p class="cms-left">
+                This paragraph was right, now its left.}
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-5', function(input) {
+            tokensToSelection(input);
+            selectionToggleBlockClasses(['cms-left'], ['cms-center', 'cms-right', 'cms-justify'], input, 'p');
+            selectionToTokens();
+        });
+    </script>
+</body>
+</html>

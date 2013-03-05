@@ -1,0 +1,100 @@
+.content{
+    margin-left: 5%;
+    margin-right: 5%;
+    width: 90%;
+}
+
+.tests {
+    border-collapse: collapse;
+    width: 90%;
+    border: 2px solid #b3b3b3;
+    margin-right: 5%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+}
+
+.test-button{
+    float: right;
+    margin: 1em;
+}
+
+.group{
+    border-bottom: 1px solid #b3b3b3;
+}
+
+.group-header, .item-header, .item{
+    float: right;
+    width: 92%;
+}
+
+.number{
+    width: 8%;
+    float: left;
+}
+
+.description{
+    margin-left: 3.5em;
+    margin-top: .5em;
+    width: 80%;
+}
+
+h2 {
+    margin-left: 3%;
+}
+
+.clear {
+    clear: both;
+}
+
+.error-message {
+    float: left;
+    margin-left: 4.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.summary{
+    float: right;
+    margin-right: 10%;
+
+}
+.buttons{
+    float: left;
+}
+
+iframe {
+    position: fixed;
+    top: 1px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.group-header,
+.number label {
+    cursor: pointer;
+}
+
+.group-header .ui-state-confirmation .ui-icon,
+.group-header .ui-state-highlight .ui-icon,
+.group-header .ui-state-error .ui-icon,
+.group-header .ui-state-warning .ui-icon,
+.item-header .ui-state-confirmation .ui-icon,
+.item-header .ui-state-highlight .ui-icon,
+.item-header .ui-state-error .ui-icon,
+.item-header .ui-state-warning .ui-icon {
+    top: 1.95em;
+}
+
+.group-header .ui-state-confirmation .title,
+.group-header .ui-state-highlight .title,
+.group-header .ui-state-default .title,
+.group-header .ui-state-error .title,
+.group-header .ui-state-warning .title,
+.item-header .ui-state-confirmation .title,
+.item-header .ui-state-highlight .title,
+.item-header .ui-state-error .title,
+.item-header .ui-state-default .title,
+.item-header .ui-state-warning .title {
+    position: relative;
+    margin-left: 0.5em;
+    width: 80%;
+}

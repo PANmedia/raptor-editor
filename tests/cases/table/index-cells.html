@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <div class="test-1">
+        <h1>Index Cells 1</h1>
+        <div class="test-input">
+            <table>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <tr>
+                    <td>Cell [0, 0]</td>
+                    <td>Cell [1, 0]</td>
+                    <td>Cell [2, 0]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 1]</td>
+                    <td>Cell [1, 1]</td>
+                    <td>Cell [2, 1]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 2]</td>
+                    <td>Cell [1, 2]</td>
+                    <td>Cell [2, 2]</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var cells = input.find('table tbody').find('td, th');
+            cells.each(function() {
+                var index = tableGetCellIndex(this);
+                $(this).text($(this).text() + ' [' + index.x + ', ' + index.y + ']');
+            });
+        });
+    </script>
+    <div class="test-2">
+        <h1>Index Cells 2</h1>
+        <div class="test-input">
+        <table>
+            <thead>
+                <tr>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td rowspan="2">Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td colspan="2">Cell</td>
+                    <td rowspan="2">Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td colspan="2">Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td colspan="2">Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+                <tr>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Header</th>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+        <div class="test-expected">
+        <table>
+            <thead>
+                <tr>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                    <th>Header</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Cell [0, 0]</td>
+                    <td>Cell [1, 0]</td>
+                    <td>Cell [2, 0]</td>
+                    <td rowspan="2">Cell [3, 0]</td>
+                    <td>Cell [4, 0]</td>
+                    <td>Cell [5, 0]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 1]</td>
+                    <td colspan="2">Cell [1, 1]</td>
+                    <td rowspan="2">Cell [4, 1]</td>
+                    <td>Cell [5, 1]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 2]</td>
+                    <td>Cell [1, 2]</td>
+                    <td colspan="2">Cell [2, 2]</td>
+                    <td>Cell [5, 2]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 3]</td>
+                    <td>Cell [1, 3]</td>
+                    <td>Cell [2, 3]</td>
+                    <td>Cell [3, 3]</td>
+                    <td>Cell [4, 3]</td>
+                    <td>Cell [5, 3]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 4]</td>
+                    <td colspan="2">Cell [1, 4]</td>
+                    <td>Cell [3, 4]</td>
+                    <td>Cell [4, 4]</td>
+                    <td>Cell [5, 4]</td>
+                </tr>
+                <tr>
+                    <td>Cell [0, 5]</td>
+                    <td>Cell [1, 5]</td>
+                    <td>Cell [2, 5]</td>
+                    <td>Cell [3, 5]</td>
+                    <td>Cell [4, 5]</td>
+                    <td>Cell [5, 5]</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Header</th>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                    <td>Cell</td>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var cells = input.find('table tbody').find('td, th');
+            cells.each(function() {
+                var index = tableGetCellIndex(this);
+                $(this).text($(this).text() + ' [' + index.x + ', ' + index.y + ']');
+            });
+        });
+    </script>
+</body>
+</html>

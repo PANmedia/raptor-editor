@@ -1,0 +1,157 @@
+
+<!-- Libraries -->
+<script type="text/javascript">
+    if (typeof jQuery === 'undefined') {
+        document.write('<script type="text/javascript" src="/jquery-raptor/dependencies/jquery.js"><' + '/script>');
+    }
+</script>
+<script type="text/javascript">
+    if (typeof jQuery.ui === 'undefined') {
+        document.write('<script type="text/javascript" src="/jquery-raptor/dependencies/jquery-ui.js"><' + '/script>');
+//        document.write('<link rel="stylesheet" href="/jquery-raptor/dependencies/themes/aristo/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="/jquery-raptor/dependencies/themes/smoothness/jquery-ui.css"/>');
+        document.write('<link rel="stylesheet" href="/jquery-raptor/dependencies/themes/redmond/jquery-ui.css"/>');
+    }
+</script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/jquery-hotkeys.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-core.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-serializer.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-applier.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-cssclassapplier.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/rangy/rangy-textrange.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/raptorize/jquery.raptorize.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/dependencies/resizetable.js"></script>
+<script type="text/javascript" src="/jquery-raptor/dependencies/goog-table.js"></script>
+
+<!-- Theme -->
+<link rel="stylesheet" type="text/css" href="/jquery-raptor/../packages/raptor.css"/>
+<link rel="stylesheet" type="text/css" href="/jquery-raptor/../packages/raptor-front-end.css"/>
+
+<!-- Editor -->
+<script type="text/javascript" src="/jquery-raptor/adapters/jquery-ui.js"></script>
+<script type="text/javascript" src="/jquery-raptor/i18n.js"></script>
+<script type="text/javascript" src="/jquery-raptor/locales/en.js"></script>
+<script type="text/javascript" src="/jquery-raptor/init.js"></script>
+<script type="text/javascript" src="/jquery-raptor/support.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/action.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/clean.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/dock.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/element.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/fragment.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/list.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/node.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/persist.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/range.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/selection.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/string.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/state.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/style.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/table.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/template.js"></script>
+<script type="text/javascript" src="/jquery-raptor/tools/types.js"></script>
+<script type="text/javascript" src="/jquery-raptor/raptor.js"></script>
+<script type="text/javascript" src="/jquery-raptor/raptor-widget.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/plugin.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/preview-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/dialog-toggle-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/filtered-preview-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/css-class-applier-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/menu-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/menu.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/select-menu.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/ui/custom-menu.js"></script>
+<script type="text/javascript" src="/jquery-raptor/components/layout/toolbar.js"></script>
+
+<!-- Preset -->
+<script type="text/javascript" src="/jquery-raptor/presets/base.js"></script>
+<script type="text/javascript" src="/jquery-raptor/presets/full.js"></script>
+
+<!-- Plugins -->
+<script type="text/javascript" src="/jquery-raptor/plugins/cancel/cancel.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/class-menu/class-menu.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/clear-formatting/clear-formatting.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/click-button-to-edit/click-button-to-edit.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/color-menu-basic/color-menu-basic.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/dock/dock-plugin.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/dock/dock-to-screen.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/dock/dock-to-element.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/embed/embed.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/insert-file/insert-file.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/float/float-left.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/float/float-none.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/float/float-right.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/guides/guides.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/history/history-redo.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/history/history-undo.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/hr/hr-create.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/image-resize-button/image-resize-button.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/link/link-create.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/link/link-remove.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/link/link-type-email.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/link/link-type-document.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/link/link-type-internal.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/list/list-ordered.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/list/list-unordered.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/logo/logo.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/paste/paste.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/save/save.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/save/save-json.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/save/save-rest.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/snippet-menu/snippet-menu.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/special-characters/special-characters.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/statistics/statistics.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-cell-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-create.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-delete-column.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-delete-row.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-insert-column.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-insert-row.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-merge-cells.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/table/table-support.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/tag-tree/tag-tree.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/tag-menu/tag-menu.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/text-align/text-align-button.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-align/left.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-align/right.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-align/center.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-align/justify.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/size-decrease.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/size-increase.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/super.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/tool-tip/tool-tip.js"></script>
+
+<script type="text/javascript" src="/jquery-raptor/plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
+<script type="text/javascript" src="/jquery-raptor/plugins/view-source/view-source.js"></script>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+    <script type="text/javascript" src="../../js/non-functional-test.js"></script>
+    <style type="text/css">
+        p {
+            font-size: 16pt;
+        }
+        .element-to-dock {
+            background-color: #9999ff;
+            border: 1px solid #3333ff;
+        }
+        p {
+            width: 32%;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="element-to-dock">
+            <h1>Element to dock</h1>
+        </div>
+        <div class="test-template">
+            <div>
+                <button name="undock">Undock</button>
+                <button name="dock-to" data-index="0">Dock to element 1</button>
+                <button name="dock-to" data-index="1">Dock to element 2</button>
+                <button name="dock-to" data-index="2">Dock to element 3</button>
+            </div>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+            <p>
+                Hendrerit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
+                amet tincidunt enim quam sollicitudin nisi. Maecenas ipsum augue,
+                commodo sit amet aliquet ut, laoreet ut nunc. Vestibulum ante ipsum
+                primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                Pellentesque tincidunt eros quis tellus laoreet ac dignissim turpis
+                luctus. Integer nunc est, pulvinar ac tempor ac, pretium ut odio.
+            </p>
+            <p>
+                Pellentesque in arcu sit amet odio scelerisque tincidunt. Lorem ipsum
+                dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
+                tristique senectus et netus et malesuada fames ac turpis egestas.
+            </p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var dockState = null;
+        function undock() {
+            if (dockState) {
+                var toolbar = undockFromElement(dockState);
+                toolbar.prependTo('.wrapper');
+                dockState = null;
+            }
+        }
+        $('[name=undock]').click(undock);
+        $('[name=dock-to]').click(function() {
+            undock();
+            dockState = dockToElement($('.element-to-dock'), $('p:eq(' + $(this).data('index') + ')'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+        var applier = rangy.createCssClassApplier('cms-bold', {
+            elementTagName: 'strong'
+        });
+    </script>
+    <div class="test-1">
+        <h1>Reverse Bold 1: Word Group Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {<strong class="cms-bold">dui id erat pellentesque et rhoncus}</strong> nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.undoToRanges(ranges);
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Reverse Bold 2: Word Part Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat <strong class="cms-bold">{pellentes</strong>}que et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.toggleRanges(ranges);
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Reverse Bold 3: Full Word Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula {<strong class="cms-bold">venenatis</strong>} rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.undoToRanges(ranges);
+        });
+    </script>
+
+    <div class="test-4">
+        <h1>Reverse Bold 4: Multi Paragraph Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id {<strong class="cms-bold">erat pellentesque et rhoncus nunc semper.
+            </strong></p>
+            <p><strong class="cms-bold">
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam}</strong> gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.
+            </p>
+            <p>
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-4', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.toggleRanges(ranges);
+        });
+    </script>
+
+    <div class="test-5">
+        <h1>Reverse Bold 5: Paragraph Selection</h1>
+        <div class="test-input">
+            <p>
+                <strong class="cms-bold">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.</strong>
+            </p>
+            <p>
+                <strong class="cms-bold">Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</strong>
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.
+            </p>
+            <p>
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-5', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.undoToRanges(ranges);
+        });
+    </script>
+</body>
+</html>

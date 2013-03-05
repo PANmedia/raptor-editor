@@ -1,0 +1,155 @@
+@import url(style.css);
+@import url(diff.css);
+
+html,
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+.CodeMirror-scroll {
+    height: auto !important;
+}
+
+.test-clear {
+    clear: both;
+    height: 3px;
+}
+
+.test-box {
+    float: left;
+    width: 49%;
+    border: 1px solid #587CBF;
+    max-height: 250px;
+    overflow: auto;
+}
+
+.test-box table {
+    border-collapse: separate;
+}
+
+.test-box td {
+    border: 1px dashed #aaa;
+}
+
+.test-results:before {
+    content: "Results: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+
+.test-results {
+    border: 1px solid #587CBF;
+}
+
+.test-input:before {
+    content: "Input: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+
+.test-source:before {
+    content: "Source: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+
+.test-source {
+    float: right;
+    width: 49%;
+    font-family: 'Courier New', monospace;
+    overflow: auto;
+}
+
+.test-output:before {
+    content: "Output: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+
+.test-expected:before {
+    content: "Expected: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+
+.test-diff:before {
+    content: "Differences: ";
+    background: #587CBF;
+    width: 100%;
+    display: block;
+}
+.test-diff {
+    border: 1px solid #587CBF;
+}
+
+.pass,
+.fail {
+    margin-bottom: 2px;
+}
+
+.pass {
+    border: 2px solid #B8DC3C;
+}
+
+.verbose .pass:before {
+    content: "Pass: ";
+    background: #B8DC3C;
+    width: 100%;
+    display: block;
+}
+
+.verbose .pass h1 {
+    margin: 5px;
+}
+
+.simple .pass h1:before {
+    content: "Pass: ";
+    background: #B8DC3C;
+    margin-right: 2px;
+    padding: 1px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.simple .pass h1 {
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+}
+
+.simple .pass .test-box,
+.simple .pass .test-clear,
+.simple .pass .test-diff {
+    display: none;
+}
+
+.fail:before {
+    content: "Fail: ";
+    background: #CB2402;
+    width: 100%;
+    display: block;
+    padding: 1px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.fail {
+    border: 2px solid #CB2402;
+}
+
+
+.error-output {
+    font-weight: bold;
+}
+
+blockquote {
+    outline: 1px dotted;
+}

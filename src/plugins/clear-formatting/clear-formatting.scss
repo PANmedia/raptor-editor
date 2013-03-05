@@ -1,0 +1,15 @@
+/**
+ * Clear formatting style plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.raptor-ui-clear-formatting .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('clear-formatting.png') 0 0;
+}
+
+.raptor-ui-clear-formatting:hover .ui-icon {
+    @include opacity(1);
+}

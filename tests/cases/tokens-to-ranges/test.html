@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>Tokens To Ranges 1: Single Range</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            rangesToTokens(ranges);
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Tokens To Ranges 2: Multiple Mixed Ranges</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada {hendrerit velit nec }tristique. Aliq{uam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse inter}dum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in ve{lit.
+            </p>
+            <p>
+                Hendr}erit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
+                amet tincidunt enim quam {sollicitudin} nisi. Maecenas ipsum augue,
+                commodo sit amet aliquet ut, laoreet ut nunc. Vestibulum ante ipsum
+                primis in {fauc}ibus orci luctus et ultrices posuere cubilia Curae;
+                Pellentesque tincidunt eros quis tellus laoreet ac dignissim turpis
+                luctus. Integer nunc est, {pulvinar ac tempor ac, pretium ut odio.
+            </p>
+            <p>
+                Pellentesque in arcu sit amet} odio scelerisque tincidunt. Lorem ipsum
+                dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
+                tristique senectus et netus et malesuada fames ac turpis egestas.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada {hendrerit velit nec }tristique. Aliq{uam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse inter}dum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in ve{lit.
+            </p>
+            <p>
+                Hendr}erit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
+                amet tincidunt enim quam {sollicitudin} nisi. Maecenas ipsum augue,
+                commodo sit amet aliquet ut, laoreet ut nunc. Vestibulum ante ipsum
+                primis in {fauc}ibus orci luctus et ultrices posuere cubilia Curae;
+                Pellentesque tincidunt eros quis tellus laoreet ac dignissim turpis
+                luctus. Integer nunc est, {pulvinar ac tempor ac, pretium ut odio.
+            </p>
+            <p>
+                Pellentesque in arcu sit amet} odio scelerisque tincidunt. Lorem ipsum
+                dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
+                tristique senectus et netus et malesuada fames ac turpis egestas.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            rangesToTokens(ranges);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+/**
+ * Toolbar layout.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box-sizing';
+
+.raptor-toolbar-wrapper {
+    border: 1px solid #c1c1c1;
+    border-top: none;
+}
+
+.raptor-layout-toolbar-group {
+    float: left;
+    margin-right: $spacing;
+}
+
+.raptor-layout-toolbar-group .ui-button {
+    padding: 0;
+    margin-top: 0;
+    margin-left: -1px;
+    margin-bottom: $spacing;
+    margin-right: 0;
+    height: 32px;
+    float: left;
+    @include box-sizing(border-box);
+}
+
+.raptor-layout-toolbar-group .ui-button:hover {
+    z-index: 1;
+}
+
+.raptor-layout-toolbar-group .ui-button-icon-only {
+    width: 32px;
+}
+
+.raptor-layout-toolbar-group .ui-button-text-only .ui-button-text {
+    padding: 8px 16px 10px 16px;
+}
+.raptor-layout-toolbar-group .ui-button-text-icon-primary .ui-button-text {
+    padding: 8px 16px 10px 32px;
+}

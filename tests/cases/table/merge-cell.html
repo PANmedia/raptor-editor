@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <div class="test-1">
+        <h1>Merge cells 1</h1>
+        <div class="test-input">
+            <table>
+                <tr>
+                    <td>Cell 0,0</td>
+                    <td>Cell 1,0</td>
+                    <td>Cell 2,0</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,1</td>
+                    <td>Cell 1,1</td>
+                    <td>Cell 2,1</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,2</td>
+                    <td>Cell 1,2</td>
+                    <td>Cell 2,2</td>
+                </tr>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <tr>
+                    <td>Cell 0,0</td>
+                    <td>Cell 1,0</td>
+                    <td>Cell 2,0</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,1</td>
+                    <td colspan="2" rowspan="2">
+                        Cell 1,1<br/>
+                        Cell 2,1<br/>
+                        Cell 1,2<br/>
+                        Cell 2,2
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cell 0,2</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var table = input.find('table').get(0);
+            tableMergeCells(table, 1, 1, 2, 2);
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Split cells 1</h1>
+        <div class="test-input">
+            <table>
+                <tr>
+                    <td>Cell 0,0</td>
+                    <td>Cell 1,0</td>
+                    <td>Cell 2,0</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,1</td>
+                    <td colspan="2" rowspan="2">
+                        Cell 1,1<br/>
+                        Cell 2,1<br/>
+                        Cell 1,2<br/>
+                        Cell 2,2
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cell 0,2</td>
+                </tr>
+            </table>
+        </div>
+        <div class="test-expected">
+            <table>
+                <tr>
+                    <td>Cell 0,0</td>
+                    <td>Cell 1,0</td>
+                    <td>Cell 2,0</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,1</td>
+                    <td>
+                        Cell 1,1<br/>
+                        Cell 2,1<br/>
+                        Cell 1,2<br/>
+                        Cell 2,2
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Cell 0,2</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var table = input.find('table').get(0);
+            tableSplitCells(table, 1, 1);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+    <script type="text/javascript" src="../../js/non-functional-test.js"></script>
+    <style type="text/css">
+        p {
+            font-size: 16pt;
+        }
+        .element-to-dock {
+            background-color: #9999ff;
+            border: 1px solid #3333ff;
+        }
+        .dock-under {
+            background-color: #ff9999;
+            border: 1px solid #ff3333;
+        }
+        .wrapper {
+            width: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="dock-under">
+        <h1>Element should dock under this element</h1>
+    </div>
+    <div class="wrapper">
+        <div class="element-to-dock">
+            <h1>Element to dock</h1>
+        </div>
+        <div class="test-template">
+            <div>
+                <button name="undock">Undock</button>
+                <button name="dock-to" data-position="top" data-spacer="true">Dock to top</button>
+                <button name="dock-to" data-position="topLeft" data-spacer="false">Dock to top left</button>
+                <button name="dock-to" data-position="topRight" data-spacer="false">Dock to top right</button>
+                <button name="dock-to" data-position="bottom" data-spacer="true">Dock to bottom</button>
+                <button name="dock-to" data-position="bottomLeft" data-spacer="false">Dock to bottom left</button>
+                <button name="dock-to" data-position="bottomRight" data-spacer="false">Dock to bottom right</button>
+            </div>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+            <p>
+                Hendrerit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
+                amet tincidunt enim quam sollicitudin nisi. Maecenas ipsum augue,
+                commodo sit amet aliquet ut, laoreet ut nunc. Vestibulum ante ipsum
+                primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+                Pellentesque tincidunt eros quis tellus laoreet ac dignissim turpis
+                luctus. Integer nunc est, pulvinar ac tempor ac, pretium ut odio.
+            </p>
+            <p>
+                Pellentesque in arcu sit amet odio scelerisque tincidunt. Lorem ipsum
+                dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
+                tristique senectus et netus et malesuada fames ac turpis egestas.
+            </p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var dockState = null;
+        function undock() {
+            if (dockState) {
+                var toolbar = undockFromScreen(dockState);
+                toolbar.prependTo('.wrapper');
+                dockState = null;
+            }
+        }
+        $('[name=undock]').click(undock);
+        $('[name=dock-to]').click(function() {
+            undock();
+            dockState = dockToScreen($('.element-to-dock'), {
+                position: $(this).data('position'),
+                spacer: $(this).data('spacer'),
+                under: '.dock-under'
+            });
+        });
+    </script>
+</body>
+</html>

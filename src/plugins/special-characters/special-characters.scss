@@ -1,0 +1,15 @@
+/**
+ * Special Characters plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.raptor-ui-special-characters .ui-icon-special-characters {
+    @include opacity(0.85);
+    background: inline-image('edit-symbol.png') 0 0;
+}
+
+.raptor-ui-special-characters:hover .ui-icon-special-characters {
+    @include opacity(1);
+}

@@ -1,0 +1,52 @@
+/**
+ * Embed plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+@import 'compass/css3/opacity';
+
+.raptor-ui-embed .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('youtube.png') 0 0;
+}
+
+.raptor-ui-embed:hover .ui-icon {
+    @include opacity(1);
+}
+
+.raptor-ui-embed-panel-tabs {
+    height: 100%;
+    width: 100%;
+
+    @include display-box();
+    @include box-orient(vertical);
+    @include box-flex(1);
+
+    .raptor-ui-embed-code-tab,
+    .raptor-ui-embed-preview-tab {
+        @include display-box();
+        @include box-orient(vertical);
+        @include box-flex(1);
+        @include box-sizing(border-box);
+
+        p {
+            padding-top: 10px;
+        }
+
+        textarea {
+            @include display-box();
+            @include box-flex(4);
+        }
+    }
+}
+
+.raptor-ui-embed-dialog .ui-dialog-content {
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: box !important;
+    width: 100% !important;
+    overflow: hidden;
+    @include box-sizing(border-box);
+}

@@ -1,0 +1,535 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>List 1: simple listToggle within p</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis
+            </p>
+            <blockquote>
+                <p>dui id erat pellentesque et rhoncus</p>
+            </blockquote>
+            <p>
+                nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-2">
+        <h1>List 2: listToggle within a</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis</a>
+            </p>
+            <blockquote>
+                <p>dui id erat pellentesque et rhoncus</p>
+            </blockquote>
+            <p>
+                <a href="#">nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-3">
+        <h1>List 3: listToggle crossing from an h2 to an a inside a p</h1>
+        <div class="test-input">
+            <h2>Lorem ipsum {dolor sit amet</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis dui id erat pellentesque et rhoncus} nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <h2>Lorem ipsum </h2>
+            <blockquote>
+                <h2>dolor sit amet</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis dui id erat pellentesque et rhoncus</a>
+                </p>
+            </blockquote>
+            <p>
+                <a href="#"> nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-4">
+        <h1>List 4: listToggle unwrapping simple list</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis
+            </p>
+            <blockquote>
+                <p>{dui id erat pellentesque et rhoncus}</p>
+            </blockquote>
+            <p>
+                nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis
+            </p>
+            <p>
+                dui id erat pellentesque et rhoncus
+            </p>
+            <p>
+                nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-4', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-5">
+        <h1>List 5: listToggle unwrapping list crossing a</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis</a>
+            </p>
+            <blockquote>
+                <p>{dui id erat pellentesque et rhoncus}</p>
+            </blockquote>
+            <p>
+                <a href="#">nunc semper</a>. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis</a>
+            </p>
+            <p>
+                dui id erat pellentesque et rhoncus
+            </p>
+            <p>
+                <a href="#">nunc semper</a>. Suspendisse malesuada hendrerit velit
+                nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus.
+                Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue
+                ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-5', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-6">
+        <h1>List 6: listToggle unwrapping list crossing from an h2 to an a inside a p</h1>
+        <div class="test-input">
+            <h2>Lorem ipsum </h2>
+            <blockquote>
+                <p>
+                    <p>
+                        {dolor sit amet
+                    </p>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                        convallis dui id erat pellentesque et rhoncus</a>}
+                    </p>
+                </p>
+            </blockquote>
+            <p>
+                <a href="#"> nunc semper</a>. Suspendisse malesuada hendrerit velit
+                nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus.
+                Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue
+                ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <h2>Lorem ipsum </h2>
+            <p>dolor sit amet</p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="#">Maecenas
+                convallis dui id erat pellentesque et rhoncus</a>
+            </p>
+            <p>
+                <a href="#">nunc semper</a>. Suspendisse malesuada hendrerit velit
+                nec tristique. Aliquam gravida mauris at ligula venenatis rhoncus.
+                Suspendisse interdum, nisi nec consectetur pulvinar, lorem augue
+                ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-6', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-7">
+        <h1>List 7: listToggle unwrapping selected list item that has n siblings below</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</p>
+                <p>Dui id erat pellentesque et rhoncus</p>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus</p>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-7', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-8">
+        <h1>List 8: listToggle unwrapping selected list item that has n siblings above and below</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus</p>
+                <p>{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</p>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus</p>
+            </blockquote>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <blockquote>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-8', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-9">
+        <h1>List 9: listToggle unwrapping selected list item that has n siblings above</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus</p>
+                <p>{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</p>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus</p>
+            </blockquote>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <blockquote>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-9', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-10">
+        <h1>List 10: listToggle unwrapping selection crossing list items within a single list</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>Dui id erat{ pellentesque et rhoncus</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.}</p>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <p>
+                Dui id erat pellentesque et rhoncus
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <blockquote>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-10', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-11">
+        <h1>List 11: listToggle unwrapping selection crossing list items within a single list</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <p>
+                    {Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+            <blockquote>
+                <p>Dui id erat pellentesque et rhoncus}</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <p>
+                Dui id erat pellentesque et rhoncus
+            </p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <blockquote>
+                <p>
+                    Suspendisse malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-11', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-12">
+        <h1>List 12: empty selection</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>dui {}id erat pellentesque et rhoncus</p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <p>
+                dui id erat pellentesque et rhoncus
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-12', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-13">
+        <h1>List 13: complicated list #1</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>
+                    Click {}to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </p>
+                <p>
+                    Dock<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </p>
+                <p>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <p>
+                Click to Edit
+            </p>
+            <p>
+                Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.
+            </p>
+            <blockquote>
+                <p>
+                    Dock<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </p>
+                <p>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-13', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+    <div class="test-14">
+        <h1>List 14: complicated list #2</h1>
+        <div class="test-input">
+            <blockquote>
+                <p>
+                    Click to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </p>
+                <p>
+                    Dock{}<br/>
+                    <span>Allows the editor to be docked to the top of the body, or in place of the element.</span>
+                </p>
+                <p>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </p>
+            </blockquote>
+        </div>
+        <div class="test-expected">
+            <blockquote>
+                <p>
+                    Click to Edit<br/>
+                    <span>Hides the editor by default, then when the user clicks on the editable element, the editor opens, and is enabled.</span>
+                </p>
+            </blockquote>
+            <p>
+                Dock
+            </p>
+            <p>
+                Allows the editor to be docked to the top of the body, or in place of the element.
+            </p>
+            <blockquote>
+                <p>
+                    Advanced Linking<br/>
+                    <span>With options to link to files, email, internal and external pages, as well as custom linking options (for 3rd party file managers, and content management systems).</span>
+                </p>
+            </blockquote>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-14', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            listToggle('blockquote', 'p', input);
+        });
+    </script>
+</body>
+</html>
