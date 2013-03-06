@@ -37,6 +37,12 @@ src/dependencies/jquery-hotkeys.js
 src/adapters/jquery-ui.js
 src/i18n.js
 src/locales/en.js
+src/locales/de.js
+src/locales/es.js
+src/locales/fr.js
+src/locales/nl.js
+src/locales/sv.js
+src/locales/zh-CN.js
 
 src/init.js
 src/support.js
