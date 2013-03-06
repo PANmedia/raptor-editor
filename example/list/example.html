@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" href="../include/style.css" />
+    
+<!-- Libraries -->
+<script type="text/javascript">
+    if (typeof jQuery === 'undefined') {
+        document.write('<script type="text/javascript" src="../../src/dependencies/jquery.js"><' + '/script>');
+    }
+</script>
+<script type="text/javascript">
+    if (typeof jQuery.ui === 'undefined') {
+        document.write('<script type="text/javascript" src="../../src/dependencies/jquery-ui.js"><' + '/script>');
+//        document.write('<link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="../../src/dependencies/themes/smoothness/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="../../src/dependencies/themes/redmond/jquery-ui.css"/>');
+        document.write('<link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/mammoth/theme.css" />');
+        document.write('<link rel="stylesheet" type="text/css" href="../../src/dependencies/themes/mammoth/theme-icons.css" />');
+    }
+</script>
+<script type="text/javascript" src="../../src/dependencies/jquery-hotkeys.js"></script>
+<script type="text/javascript" src="../../src/dependencies/rangy/rangy-core.js"></script>
+<script type="text/javascript" src="../../src/dependencies/rangy/rangy-serializer.js"></script>
+<script type="text/javascript" src="../../src/dependencies/rangy/rangy-applier.js"></script>
+<script type="text/javascript" src="../../src/dependencies/rangy/rangy-cssclassapplier.js"></script>
+<script type="text/javascript" src="../../src/dependencies/rangy/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="../../src/dependencies/rangy/rangy-textrange.js"></script>
+
+<script type="text/javascript" src="../../src/dependencies/resizetable.js"></script>
+<script type="text/javascript" src="../../src/dependencies/goog-table.js"></script>
+
+<!-- Theme -->
+<link rel="stylesheet" type="text/css" href="../../src/../packages/raptor.css"/>
+<link rel="stylesheet" type="text/css" href="../../src/../packages/raptor-front-end.css"/>
+
+<!-- Editor -->
+<script type="text/javascript" src="../../src/adapters/jquery-ui.js"></script>
+<script type="text/javascript" src="../../src/i18n.js"></script>
+<script type="text/javascript" src="../../src/locales/en.js"></script>
+<script type="text/javascript" src="../../src/locales/de.js"></script>
+<script type="text/javascript" src="../../src/locales/es.js"></script>
+<script type="text/javascript" src="../../src/locales/fr.js"></script>
+<script type="text/javascript" src="../../src/locales/nl.js"></script>
+<script type="text/javascript" src="../../src/locales/sv.js"></script>
+<script type="text/javascript" src="../../src/locales/zh-CN.js"></script>
+<script type="text/javascript" src="../../src/init.js"></script>
+<script type="text/javascript" src="../../src/support.js"></script>
+<script type="text/javascript" src="../../src/tools/action.js"></script>
+<script type="text/javascript" src="../../src/tools/clean.js"></script>
+<script type="text/javascript" src="../../src/tools/dock.js"></script>
+<script type="text/javascript" src="../../src/tools/element.js"></script>
+<script type="text/javascript" src="../../src/tools/fragment.js"></script>
+<script type="text/javascript" src="../../src/tools/list.js"></script>
+<script type="text/javascript" src="../../src/tools/node.js"></script>
+<script type="text/javascript" src="../../src/tools/persist.js"></script>
+<script type="text/javascript" src="../../src/tools/range.js"></script>
+<script type="text/javascript" src="../../src/tools/selection.js"></script>
+<script type="text/javascript" src="../../src/tools/string.js"></script>
+<script type="text/javascript" src="../../src/tools/state.js"></script>
+<script type="text/javascript" src="../../src/tools/style.js"></script>
+<script type="text/javascript" src="../../src/tools/table.js"></script>
+<script type="text/javascript" src="../../src/tools/template.js"></script>
+<script type="text/javascript" src="../../src/tools/types.js"></script>
+<script type="text/javascript" src="../../src/raptor.js"></script>
+<script type="text/javascript" src="../../src/raptor-widget.js"></script>
+<script type="text/javascript" src="../../src/components/plugin.js"></script>
+<script type="text/javascript" src="../../src/components/ui/button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/preview-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/dialog-toggle-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/filtered-preview-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/css-class-applier-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/menu-button.js"></script>
+<script type="text/javascript" src="../../src/components/ui/menu.js"></script>
+<script type="text/javascript" src="../../src/components/ui/select-menu.js"></script>
+<script type="text/javascript" src="../../src/components/ui/custom-menu.js"></script>
+<script type="text/javascript" src="../../src/components/layout/toolbar.js"></script>
+
+<!-- Preset -->
+<script type="text/javascript" src="../../src/presets/base.js"></script>
+<script type="text/javascript" src="../../src/presets/full.js"></script>
+
+<!-- Plugins -->
+<script type="text/javascript" src="../../src/plugins/cancel/cancel.js"></script>
+<script type="text/javascript" src="../../src/plugins/class-menu/class-menu.js"></script>
+<script type="text/javascript" src="../../src/plugins/clear-formatting/clear-formatting.js"></script>
+<script type="text/javascript" src="../../src/plugins/click-button-to-edit/click-button-to-edit.js"></script>
+<script type="text/javascript" src="../../src/plugins/color-menu-basic/color-menu-basic.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/dock/dock-plugin.js"></script>
+<script type="text/javascript" src="../../src/plugins/dock/dock-to-screen.js"></script>
+<script type="text/javascript" src="../../src/plugins/dock/dock-to-element.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/embed/embed.js"></script>
+<script type="text/javascript" src="../../src/plugins/insert-file/insert-file.js"></script>
+<script type="text/javascript" src="../../src/plugins/language-menu/language-menu.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/float/float-left.js"></script>
+<script type="text/javascript" src="../../src/plugins/float/float-none.js"></script>
+<script type="text/javascript" src="../../src/plugins/float/float-right.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/guides/guides.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/history/history-redo.js"></script>
+<script type="text/javascript" src="../../src/plugins/history/history-undo.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/hr/hr-create.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/image-resize-button/image-resize-button.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/link/link-create.js"></script>
+<script type="text/javascript" src="../../src/plugins/link/link-remove.js"></script>
+<script type="text/javascript" src="../../src/plugins/link/link-type-email.js"></script>
+<script type="text/javascript" src="../../src/plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="../../src/plugins/link/link-type-document.js"></script>
+<script type="text/javascript" src="../../src/plugins/link/link-type-internal.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/list/list-ordered.js"></script>
+<script type="text/javascript" src="../../src/plugins/list/list-unordered.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/logo/logo.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/paste/paste.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/save/save.js"></script>
+<script type="text/javascript" src="../../src/plugins/save/save-json.js"></script>
+<script type="text/javascript" src="../../src/plugins/save/save-rest.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/snippet-menu/snippet-menu.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/special-characters/special-characters.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/statistics/statistics.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/table/table-cell-button.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-create.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-delete-column.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-delete-row.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-insert-column.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-insert-row.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-merge-cells.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="../../src/plugins/table/table-support.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/tag-menu/tag-menu.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/text-align/text-align-button.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-align/left.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-align/right.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-align/center.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-align/justify.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/size-decrease.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/size-increase.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/super.js"></script>
+<script type="text/javascript" src="../../src/plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="../../src/plugins/tool-tip/tool-tip.js"></script>
+
+<script type="text/javascript" src="../../src/plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
+<script type="text/javascript" src="../../src/plugins/view-source/view-source.js"></script>
+    <title>Raptor Editor - Table Example</title>
+    <script type="text/javascript">
+        jQuery(function($) {
+            $('.editable').raptor({
+                urlPrefix: '../../src/'
+            });
+        });
+    </script>
+    <style type="text/css">
+        table {
+            width: 100%;
+        }
+        td, th {
+            border: 1px dotted #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="switcher-spacer"></div>
+<nav class="switcher">
+    <a href="?">Include</a>
+    <a href="?type=default">Default</a>
+    <a href="?type=light">Light</a>
+    <a href="?type=rails">Rails</a>
+    <a href="?type=mammoth">Mammoth</a>
+    <a href="?type=0deps">0 dependencies</a>
+    <a href="?type=0depsnc">0 dependencies, no conflict</a>
+</nav>
+    <header>
+        <h1>Raptor Editor - List Example</h1>
+    </header>
+    <div class="editable" data-id="body">
+                <ul>
+            <li>
+                Sped nightingale before invaluably unwilling amidst ready salamander virtuously as sentimental.
+            </li>
+            <li>
+                Felt darn far examined industrious wow unaccountably the nefarious circa far.
+            </li>
+            <li>
+                On darn gosh around wallaby thickly clung crud knelt over because antelope.
+            </li>
+            <li>
+                After as far this crazily naive ruminant surreptitious reindeer the poured certain.
+            </li>
+            <li>
+                Telepathic wow slight so sent subconscious and yet coarse jeepers seal tense.
+            </li>
+        </ul>
+        <ol>
+            <li>
+                Sped nightingale before invaluably unwilling amidst ready salamander virtuously as sentimental.
+            </li>
+            <li>
+                Felt darn far examined industrious wow unaccountably the nefarious circa far.
+            </li>
+            <li>
+                On darn gosh around wallaby thickly clung crud knelt over because antelope.
+            </li>
+            <li>
+                After as far this crazily naive ruminant surreptitious reindeer the poured certain.
+            </li>
+            <li>
+                Telepathic wow slight so sent subconscious and yet coarse jeepers seal tense.
+            </li>
+        </ol>
+        <ol>
+            <li>
+                <ul>
+                    <li>
+                        Sped nightingale before invaluably unwilling amidst ready salamander virtuously as sentimental.
+                    </li>
+                    <li>
+                        Felt darn far examined industrious wow unaccountably the nefarious circa far.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Felt darn far examined industrious wow unaccountably the nefarious circa far.
+            </li>
+            <li>
+                On darn gosh around wallaby thickly clung crud knelt over because antelope.
+            </li>
+            <li>
+                <ul>
+                    <li>
+                        On darn gosh around wallaby thickly clung crud knelt over because antelope.
+                    </li>
+                    <li>
+                        After as far this crazily naive ruminant surreptitious reindeer the poured certain.
+                    </li>
+                    <li>
+                        Telepathic wow slight so sent subconscious and yet coarse jeepers seal tense.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Telepathic wow slight so sent subconscious and yet coarse jeepers seal tense.
+            </li>
+        </ol>
+            </div>
+
+</body>
+</html>
