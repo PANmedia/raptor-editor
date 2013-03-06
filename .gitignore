@@ -7,3 +7,8 @@ translation-status.html
 /build/
 /nbproject/
 /src/plugins-extra/
+/temp/
+/packages/
+/vendor/
+*.php
+*.scss
