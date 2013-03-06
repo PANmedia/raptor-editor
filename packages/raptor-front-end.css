@@ -1,0 +1,124 @@
+/**
+ * Basic color menu plugin default colors.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-white {
+  color: #ffffff;
+}
+
+/* line 10, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-black {
+  color: #000000;
+}
+
+/* line 14, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-blue {
+  color: #4f81bd;
+}
+
+/* line 18, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-red {
+  color: #c0504d;
+}
+
+/* line 22, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-green {
+  color: #9bbb59;
+}
+
+/* line 26, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-purple {
+  color: #8064a2;
+}
+
+/* line 30, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-orange {
+  color: #f79646;
+}
+
+/* line 34, ../plugins/color-menu-basic/color-menu-basic-front-end.scss */
+.cms-grey {
+  color: #999;
+}
+
+/**
+ * Float plugin default colors.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/float/float-front-end.scss */
+.cms-float-left {
+  float: left;
+}
+
+/* line 10, ../plugins/float/float-front-end.scss */
+.cms-float-right {
+  float: right;
+}
+
+/**
+ * Text align styles.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/text-align/style/text-align-front-end.scss */
+.cms-center {
+  text-align: center;
+}
+
+/* line 10, ../plugins/text-align/style/text-align-front-end.scss */
+.cms-left {
+  text-align: left;
+}
+
+/* line 14, ../plugins/text-align/style/text-align-front-end.scss */
+.cms-right {
+  text-align: right;
+}
+
+/* line 18, ../plugins/text-align/style/text-align-front-end.scss */
+.cms-justify {
+  text-align: justify;
+}
+
+/**
+ * Bold formatting styles.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/text-style/style/bold-front-end.scss */
+.cms-bold {
+  font-weight: bold;
+}
+
+/**
+ * Italic formatting styles.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/text-style/style/italic-front-end.scss */
+.cms-italic {
+  font-style: italic;
+}
+
+/**
+ * Strike formatting styles.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/text-style/style/strike-front-end.scss */
+.cms-strike {
+  text-decoration: line-through;
+}
+
+/**
+ * Underline formatting styles.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+/* line 6, ../plugins/text-style/style/underline-front-end.scss */
+.cms-underline {
+  text-decoration: underline;
+}
