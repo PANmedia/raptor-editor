@@ -14,7 +14,7 @@
                 plugins: {
                     dock: {
                         docked: true,
-                        under: '.switcher'
+                        under: '.switcher-spacer'
                     },
                     classMenu: {
                         classes: {
@@ -82,7 +82,7 @@
             <strong class="cms-bold">This text is bold.</strong>
             <em class="cms-italic">This text is italic.</em>
         </p>
-        
+
         <ul>
             <li>List item 1</li>
             <li>List item 2</li>
