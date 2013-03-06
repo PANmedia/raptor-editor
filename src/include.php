@@ -34,6 +34,12 @@
 <script type="text/javascript" src="<?= $uri ?>adapters/jquery-ui.js"></script>
 <script type="text/javascript" src="<?= $uri ?>i18n.js"></script>
 <script type="text/javascript" src="<?= $uri ?>locales/en.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/de.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/es.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/fr.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/nl.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/sv.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?= $uri ?>init.js"></script>
 <script type="text/javascript" src="<?= $uri ?>support.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/action.js"></script>
@@ -86,6 +92,7 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/embed/embed.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/insert-file/insert-file.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/language-menu/language-menu.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-left.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-none.js"></script>
@@ -134,7 +141,6 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
 
-<script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/text-align-button.js"></script>
