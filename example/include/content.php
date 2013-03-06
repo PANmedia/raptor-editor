@@ -40,8 +40,7 @@ function saveJson($file) {
         $content = json_encode($content, JSON_PRETTY_PRINT);
         if ($content !== false) {
             if (file_put_contents($file, $content)) {
-                echo json_encode(true);
-                return;
+                return json_encode(true);
             }
         }
     }
@@ -62,10 +61,9 @@ function saveRest($file) {
         $content = json_encode($content, JSON_PRETTY_PRINT);
         if ($content !== false) {
             if (file_put_contents($file, $content)) {
-                echo json_encode(true);
-                return;
+                return json_encode(true);
             }
         }
     }
-    echo json_encode(false);
+    return json_encode(false);
 }
