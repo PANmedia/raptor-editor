@@ -11,7 +11,9 @@
         document.write('<script type="text/javascript" src="<?= $uri ?>dependencies/jquery-ui.js"><' + '/script>');
 //        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/aristo/jquery-ui.css"/>');
 //        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/smoothness/jquery-ui.css"/>');
-        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
+        document.write('<link rel="stylesheet" type="text/css" href="<?= $uri ?>dependencies/themes/mammoth/theme.css" />');
+        document.write('<link rel="stylesheet" type="text/css" href="<?= $uri ?>dependencies/themes/mammoth/theme-icons.css" />');
     }
 </script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/jquery-hotkeys.js"></script>
@@ -21,7 +23,6 @@
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-selectionsaverestore.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-textrange.js"></script>
-<script type="text/javascript" src="<?= $uri ?>dependencies/raptorize/jquery.raptorize.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>dependencies/resizetable.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/goog-table.js"></script>
@@ -34,6 +35,12 @@
 <script type="text/javascript" src="<?= $uri ?>adapters/jquery-ui.js"></script>
 <script type="text/javascript" src="<?= $uri ?>i18n.js"></script>
 <script type="text/javascript" src="<?= $uri ?>locales/en.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/de.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/es.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/fr.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/nl.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/sv.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?= $uri ?>init.js"></script>
 <script type="text/javascript" src="<?= $uri ?>support.js"></script>
 <script type="text/javascript" src="<?= $uri ?>tools/action.js"></script>
@@ -86,6 +93,7 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/embed/embed.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/insert-file/insert-file.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/language-menu/language-menu.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-left.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/float/float-none.js"></script>
@@ -134,7 +142,6 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
 
-<script type="text/javascript" src="<?= $uri ?>plugins/tag-tree/tag-tree.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/text-align/text-align-button.js"></script>
