@@ -22,6 +22,7 @@ v0.5.0
  - Decoupled layout (messaging system still needs decoupling)
  - Rewrote plugin/UI architecture
    - Adjusted exiting plugins/UI
+   - Remove 'ui' option in initialisation, all ui options should be placed in the 'plugins' option
  - Updated translations to use keys instead of english strings
  - Changed save REST options
 
