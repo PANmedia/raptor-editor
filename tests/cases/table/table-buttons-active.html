@@ -1,0 +1,1016 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+    
+<!-- Libraries -->
+<script type="text/javascript">
+    if (typeof jQuery === 'undefined') {
+        document.write('<script type="text/javascript" src="../../../src/dependencies/jquery.js"><' + '/script>');
+    }
+</script>
+<script type="text/javascript">
+    if (typeof jQuery.ui === 'undefined') {
+        document.write('<script type="text/javascript" src="../../../src/dependencies/jquery-ui.js"><' + '/script>');
+//        document.write('<link rel="stylesheet" href="../../../src/dependencies/themes/aristo/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="../../../src/dependencies/themes/smoothness/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="../../../src/dependencies/themes/redmond/jquery-ui.css"/>');
+        document.write('<link rel="stylesheet" type="text/css" href="../../../src/dependencies/themes/mammoth/theme.css" />');
+        document.write('<link rel="stylesheet" type="text/css" href="../../../src/dependencies/themes/mammoth/theme-icons.css" />');
+    }
+</script>
+<script type="text/javascript" src="../../../src/dependencies/jquery-hotkeys.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/rangy/rangy-core.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/rangy/rangy-serializer.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/rangy/rangy-applier.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/rangy/rangy-cssclassapplier.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/rangy/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/rangy/rangy-textrange.js"></script>
+
+<script type="text/javascript" src="../../../src/dependencies/resizetable.js"></script>
+<script type="text/javascript" src="../../../src/dependencies/goog-table.js"></script>
+
+<!-- Theme -->
+<link rel="stylesheet" type="text/css" href="../../../src/../packages/raptor.css"/>
+<link rel="stylesheet" type="text/css" href="../../../src/../packages/raptor-front-end.css"/>
+
+<!-- Editor -->
+<script type="text/javascript" src="../../../src/adapters/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../src/i18n.js"></script>
+<script type="text/javascript" src="../../../src/locales/en.js"></script>
+<script type="text/javascript" src="../../../src/locales/de.js"></script>
+<script type="text/javascript" src="../../../src/locales/es.js"></script>
+<script type="text/javascript" src="../../../src/locales/fr.js"></script>
+<script type="text/javascript" src="../../../src/locales/nl.js"></script>
+<script type="text/javascript" src="../../../src/locales/sv.js"></script>
+<script type="text/javascript" src="../../../src/locales/zh-CN.js"></script>
+<script type="text/javascript" src="../../../src/init.js"></script>
+<script type="text/javascript" src="../../../src/support.js"></script>
+<script type="text/javascript" src="../../../src/tools/action.js"></script>
+<script type="text/javascript" src="../../../src/tools/clean.js"></script>
+<script type="text/javascript" src="../../../src/tools/dock.js"></script>
+<script type="text/javascript" src="../../../src/tools/element.js"></script>
+<script type="text/javascript" src="../../../src/tools/fragment.js"></script>
+<script type="text/javascript" src="../../../src/tools/list.js"></script>
+<script type="text/javascript" src="../../../src/tools/node.js"></script>
+<script type="text/javascript" src="../../../src/tools/persist.js"></script>
+<script type="text/javascript" src="../../../src/tools/range.js"></script>
+<script type="text/javascript" src="../../../src/tools/selection.js"></script>
+<script type="text/javascript" src="../../../src/tools/string.js"></script>
+<script type="text/javascript" src="../../../src/tools/state.js"></script>
+<script type="text/javascript" src="../../../src/tools/style.js"></script>
+<script type="text/javascript" src="../../../src/tools/table.js"></script>
+<script type="text/javascript" src="../../../src/tools/template.js"></script>
+<script type="text/javascript" src="../../../src/tools/types.js"></script>
+<script type="text/javascript" src="../../../src/raptor.js"></script>
+<script type="text/javascript" src="../../../src/raptor-widget.js"></script>
+<script type="text/javascript" src="../../../src/components/plugin.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/preview-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/dialog-toggle-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/filtered-preview-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/css-class-applier-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/menu-button.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/menu.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/select-menu.js"></script>
+<script type="text/javascript" src="../../../src/components/ui/custom-menu.js"></script>
+<script type="text/javascript" src="../../../src/components/layout/toolbar.js"></script>
+
+<!-- Preset -->
+<script type="text/javascript" src="../../../src/presets/base.js"></script>
+<script type="text/javascript" src="../../../src/presets/full.js"></script>
+
+<!-- Plugins -->
+<script type="text/javascript" src="../../../src/plugins/cancel/cancel.js"></script>
+<script type="text/javascript" src="../../../src/plugins/class-menu/class-menu.js"></script>
+<script type="text/javascript" src="../../../src/plugins/clear-formatting/clear-formatting.js"></script>
+<script type="text/javascript" src="../../../src/plugins/click-button-to-edit/click-button-to-edit.js"></script>
+<script type="text/javascript" src="../../../src/plugins/color-menu-basic/color-menu-basic.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/dock/dock-plugin.js"></script>
+<script type="text/javascript" src="../../../src/plugins/dock/dock-to-screen.js"></script>
+<script type="text/javascript" src="../../../src/plugins/dock/dock-to-element.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/embed/embed.js"></script>
+<script type="text/javascript" src="../../../src/plugins/insert-file/insert-file.js"></script>
+<script type="text/javascript" src="../../../src/plugins/language-menu/language-menu.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/float/float-left.js"></script>
+<script type="text/javascript" src="../../../src/plugins/float/float-none.js"></script>
+<script type="text/javascript" src="../../../src/plugins/float/float-right.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/guides/guides.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/history/history-redo.js"></script>
+<script type="text/javascript" src="../../../src/plugins/history/history-undo.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/hr/hr-create.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/image-resize-button/image-resize-button.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/link/link-create.js"></script>
+<script type="text/javascript" src="../../../src/plugins/link/link-remove.js"></script>
+<script type="text/javascript" src="../../../src/plugins/link/link-type-email.js"></script>
+<script type="text/javascript" src="../../../src/plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="../../../src/plugins/link/link-type-document.js"></script>
+<script type="text/javascript" src="../../../src/plugins/link/link-type-internal.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/list/list-ordered.js"></script>
+<script type="text/javascript" src="../../../src/plugins/list/list-unordered.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/logo/logo.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/paste/paste.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/save/save.js"></script>
+<script type="text/javascript" src="../../../src/plugins/save/save-json.js"></script>
+<script type="text/javascript" src="../../../src/plugins/save/save-rest.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/snippet-menu/snippet-menu.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/special-characters/special-characters.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/statistics/statistics.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/table/table-cell-button.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-create.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-delete-column.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-delete-row.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-insert-column.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-insert-row.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-merge-cells.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="../../../src/plugins/table/table-support.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/tag-menu/tag-menu.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/text-align/text-align-button.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-align/left.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-align/right.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-align/center.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-align/justify.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/size-decrease.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/size-increase.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/super.js"></script>
+<script type="text/javascript" src="../../../src/plugins/text-style/underline.js"></script>
+<script type="text/javascript" src="../../../src/plugins/tool-tip/tool-tip.js"></script>
+
+<script type="text/javascript" src="../../../src/plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
+<script type="text/javascript" src="../../../src/plugins/view-source/view-source.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>Create Table Button 1: Active When Table is Not Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-1', function(input) {
+            var createTableButton = getLayoutElement(input).find('.raptor-ui-table-create');
+            createTableButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!createTableButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Insert Column Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>some text that isn't selected</p>
+                <table>{
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1},2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>{
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1},2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-2', function(input) {
+            var insertColumnButton = getLayoutElement(input).find('.raptor-ui-table-insert-column');
+            insertColumnButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!insertColumnButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Insert Row Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-3', function(input) {
+            var insertRowButton = getLayoutElement(input).find('.raptor-ui-table-insert-row');
+            insertRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!insertRowButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-4">
+        <h1>Delete Column Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0}</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>{Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0}</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-4', function(input) {
+            var deleteColumnButton = getLayoutElement(input).find('.raptor-ui-table-delete-column');
+            deleteColumnButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!deleteColumnButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+     <div class="test-5">
+        <h1>Delete Row Button 1: Active When Table is Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell {}1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell {}1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-5', function(input) {
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-delete-row');
+            deleteRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!deleteRowButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+     <div class="test-6">
+        <h1>Create Table Button 2: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>{Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2}</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>{Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2}</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-6', function(input) {
+            var createTableButton = getLayoutElement(input).find('.raptor-ui-table-create');
+            createTableButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!createTableButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-7">
+        <h1>Insert Column Button 2: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-7', function(input) {
+            var insertColumnButton = getLayoutElement(input).find('.raptor-ui-table-insert-column');
+            insertColumnButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (insertColumnButton.is('.ui-state-highlight')) {
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-8">
+        <h1>Insert Row Button 8: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-8', function(input) {
+            var insertRowButton = getLayoutElement(input).find('.raptor-ui-table-insert-row');
+            insertRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (insertRowButton.is('.ui-state-highlight')) {
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-9">
+        <h1>Delete Column Button 2: Not Active When Table is not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-9', function(input) {
+            var deleteColumnButton = getLayoutElement(input).find('.raptor-ui-table-delete-column');
+            deleteColumnButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (deleteColumnButton.is('.ui-state-highlight')) {
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+     <div class="test-10">
+        <h1>Delete Row Button 2: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-10', function(input) {
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-delete-row');
+            deleteRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (deleteRowButton.is('.ui-state-highlight')) {
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-11">
+        <h1>Merge Cells Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>some text that isn't selected</p>
+                <table>
+                <tr>
+                    <td>Cell 0,0</td>
+                    <td>Cell 1,0</td>
+                    <td>Cell 2,0</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,1</td>
+                    <td>{Cell 1,1</td>
+                    <td>Cell 2,1}</td>
+                </tr>
+                <tr>
+                    <td>Cell 0,2</td>
+                    <td>{Cell 1,2</td>
+                    <td>Cell 2,2}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td colspan="2" rowspan="2">
+                            {Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                    </tr>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-11', function(input) {
+            var mergeCellsButton = getLayoutElement(input).find('.raptor-ui-table-merge-cells');
+            mergeCellsButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!mergeCellsButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-12">
+        <h1>Merge Cells Button 2: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td>Cell 1,1</td>
+                        <td>Cell 2,1</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td>Cell 1,2</td>
+                        <td>Cell 2,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-12', function(input) {
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-merge-cells');
+            deleteRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (deleteRowButton.is('.ui-state-highlight')) {
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-13">
+        <h1>Split Cells Button 1: Active When Table is Selected</h1>
+         <div class="test-input">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+               <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td colspan="2" rowspan="2">
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                <p>some text that isn't selected</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <<td>Cell 0,1</td>
+                        <td>
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-13', function(input) {
+            var mergeCellsButton = getLayoutElement(input).find('.raptor-ui-table-split-cells');
+            mergeCellsButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (!mergeCellsButton.is('.ui-state-highlight')) {
+                throw new Error('Button is not active');
+            }
+        });
+    </script>
+
+    <div class="test-14">
+        <h1>Split Cells Button 2: Not Active When Table is Not Selected in Cell</h1>
+         <div class="test-input">
+            <div class="editible">
+               <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,1</td>
+                        <td colspan="2" rowspan="2">
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible">
+                 <p>{some text that is selected}</p>
+                <table>
+                    <tr>
+                        <td>Cell 0,0</td>
+                        <td>Cell 1,0</td>
+                        <td>Cell 2,0</td>
+                    </tr>
+                    <tr>
+                        <<td>Cell 0,1</td>
+                        <td>
+                            Cell 1,1<br/>
+                            Cell 2,1<br/>
+                            Cell 1,2<br/>
+                            Cell 2,2
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Cell 0,2</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-14', function(input) {
+            var deleteRowButton = getLayoutElement(input).find('.raptor-ui-table-split-cells');
+            deleteRowButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (deleteRowButton.is('.ui-state-highlight')) {
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+</body>
+</html>
