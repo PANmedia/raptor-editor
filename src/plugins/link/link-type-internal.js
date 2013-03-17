@@ -16,7 +16,7 @@
 function LinkTypeInternal(raptor) {
     this.raptor = raptor;
     this.label = _('linkTypeInternalLabel');
-};
+}
 
 /**
  * Gets the content of the internal link.
@@ -26,7 +26,7 @@ function LinkTypeInternal(raptor) {
 LinkTypeInternal.prototype.getContent = function() {
     return this.raptor.getTemplate('link.internal', {
         baseClass: this.raptor.options.baseClass,
-        domain: window.location.protocol + '//' + window.location.host + '/'
+        domain: window.location.protocol + '//' + window.location.host
     });
 };
 
