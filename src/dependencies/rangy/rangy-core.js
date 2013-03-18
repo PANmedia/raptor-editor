@@ -67,13 +67,13 @@ rangy = rangy || (function() {
     function isTextRange(range) {
         return range && areHostMethods(range, textRangeMethods) && areHostProperties(range, textRangeProperties);
     }
-    
+
     function getBody(doc) {
         return isHostObject(doc, "body") ? doc.body : doc.getElementsByTagName("body")[0];
     }
 
     var modules = {};
-    
+
     var api = {
         version: "1.3alpha.774",
         initialized: false,
@@ -191,11 +191,11 @@ rangy = rangy || (function() {
     } else {
         fail("Document does not have required addEventListener or attachEvent method");
     }
-    
+
     api.util.addListener = addListener;
 
     var initListeners = [];
-    
+
     function getErrorDesc(ex) {
         return ex.message || ex.description || String(ex);
     }
@@ -249,7 +249,7 @@ rangy = rangy || (function() {
                 module.init();
             }
         }
-        
+
         // Call init listeners
         for (var i = 0, len = initListeners.length; i < len; ++i) {
             try {
@@ -338,14 +338,14 @@ rangy = rangy || (function() {
     api.requireModules = function(moduleNames) {
         for (var i = 0, len = moduleNames.length, module, moduleName; i < len; ++i) {
             moduleName = moduleNames[i];
-            
+
             module = modules[moduleName];
             if (!module || !(module instanceof Module)) {
                 throw new Error("required module '" + moduleName + "' not found");
             }
 
             module.init();
-            
+
             if (!module.supported) {
                 throw new Error("required module '" + moduleName + "' not supported");
             }
@@ -1679,7 +1679,7 @@ rangy.createModule("DomRange", function(api, module) {
             this.setStartAfter(node);
             this.collapse(true);
         },
-        
+
         getBookmark: function(containerNode) {
             var doc = getRangeDocument(this);
             var preSelectionRange = api.createRange(doc);
@@ -1700,7 +1700,7 @@ rangy.createModule("DomRange", function(api, module) {
                 containerNode: containerNode
             };
         },
-        
+
         moveToBookmark: function(bookmark) {
             var containerNode = bookmark.containerNode;
             var charIndex = 0;
@@ -1742,7 +1742,7 @@ rangy.createModule("DomRange", function(api, module) {
         isValid: function() {
             return isRangeValid(this);
         },
-        
+
         inspect: function() {
             return inspect(this);
         }
@@ -1884,7 +1884,7 @@ rangy.createModule("DomRange", function(api, module) {
 
                 boundaryUpdater(this, sc, so, ec, eo);
             },
-            
+
             setBoundary: function(node, offset, isStart) {
                 this["set" + (isStart ? "Start" : "End")](node, offset);
             },
@@ -2376,7 +2376,7 @@ rangy.createModule("WrappedRange", function(api, module) {
             };
         })();
     }
-    
+
     if (api.features.implementsTextRange) {
         /*
          This is a workaround for a bug where IE returns the wrong container element from the TextRange's parentElement()
@@ -3362,7 +3362,7 @@ rangy.createModule("WrappedSelection", function(api, module) {
         var ranges = sel.getAllRanges();
         sel.removeAllRanges();
         for (var i = 0, len = ranges.length; i < len; ++i) {
-            if (!api.rangesEqual(range, ranges[i])) {
+            if (!rangesEqual(range, ranges[i])) {
                 sel.addRange(ranges[i]);
             }
         }
@@ -3535,7 +3535,7 @@ rangy.createModule("WrappedSelection", function(api, module) {
         } );
         return results;
     };
-    
+
     function createStartOrEndSetter(isStart) {
         return function(node, offset) {
             var range;
@@ -3552,7 +3552,7 @@ rangy.createModule("WrappedSelection", function(api, module) {
 
     selProto.setStart = createStartOrEndSetter(true);
     selProto.setEnd = createStartOrEndSetter(false);
-    
+
     // Add cheeky select() method to Range prototype
     api.rangePrototype.select = function(direction) {
         getSelection( this.getDocument() ).setSingleRange(this, direction);
