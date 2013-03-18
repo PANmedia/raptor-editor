@@ -121,7 +121,7 @@ function selectionSelectInner(element, selection) {
 function selectionSelectInner(node, selection) {
     // <strict>
     if (!typeIsNode(node)) {
-        handleInvalidArgumentError('Paramter 1 to selectionSelectInner is expected a Node, got:', node);
+        handleInvalidArgumentError('Parameter 1 to selectionSelectInner is expected a Node, got:', node);
         return;
     }
     // </strict>
@@ -596,7 +596,6 @@ function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, bl
 function selectionConstrain(element, selection) {
     element = $(element)[0];
     selection = selection || rangy.getSelection();
-
     if (!selection) {
         selectionSelectStart(element);
         return;
