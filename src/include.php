@@ -74,6 +74,7 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/select-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/custom-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/layout/toolbar.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/hover-panel/basic.js"></script>
 
 <!-- Preset -->
 <script type="text/javascript" src="<?= $uri ?>presets/base.js"></script>
@@ -162,4 +163,5 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/view-source/view-source.js"></script>
-
+<script type="text/javascript" src="<?= $uri ?>plugins/view-revisions/view-revisions-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/view-revisions/view-revisions.js"></script>
