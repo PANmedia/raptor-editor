@@ -219,6 +219,12 @@ registerLocale('en', 'English', {
 
     unsavedEditWarningText: 'There are unsaved changes on this page',
 
+    revisionsButton: 'Revisions',
+    revisionsButtonTitle: 'Revisions',
+    revisionsButtonDialogCancelButton: 'Close',
+    revisionsButtonDialogOKButton: 'Apply selected revision',
+    revisionsButtonDialogTitle: 'View content revisions',
+
     viewSourceDialogCancelButton: 'Close',
     viewSourceDialogOKButton: 'Apply source code',
     viewSourceDialogTitle: 'Content source code',
