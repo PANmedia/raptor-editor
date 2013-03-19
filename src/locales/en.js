@@ -17,7 +17,7 @@ registerLocale('en', 'English', {
 
     classMenuTitle: 'Style picker',
     clearFormattingTitle: 'Clear formatting',
-    clickButtonToEditPluginButton: 'Click to begin editing',
+    clickButtonToEditPluginButton: 'Edit',
 
     colorMenuBasicAutomatic: 'Automatic',
     colorMenuBasicBlack: 'Black',
