@@ -213,7 +213,12 @@ $.ui.editor.registerPlugin('saveJson', /** @lends $.editor.plugin.saveJson.proto
             ajax.data = ajax.data.apply(this, [id, contentData]);
         } else if (this.options.postName) {
             ajax.data = {};
-            ajax.data[this.options.postName] = JSON.stringify(contentData);
+            if (this.options.ajax.processData) {
+                ajax.data[this.options.postName] = JSON.stringify(contentData);
+            } else {
+                ajax.data[this.options.postName] = contentData;
+                ajax.data = JSON.stringify(ajax.data);
+            }
         }
 
         // Get the URL, if it is a callback
