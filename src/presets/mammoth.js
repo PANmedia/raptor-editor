@@ -35,5 +35,11 @@ Raptor.defaults = $.extend(basePreset, {
                 ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn', 'tableMergeCells', 'tableSplitCells']
             ]
         }
+    },
+    hoverPanel: {
+        type: 'basic',
+        options: {
+            componentOrder: ['clickButtonToEdit', 'revisions']
+        }
     }
 });
