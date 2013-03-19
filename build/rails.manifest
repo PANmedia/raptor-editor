@@ -57,6 +57,7 @@ src/components/ui/menu-button.js
 src/components/ui/select-menu.js
 src/components/ui/custom-menu.js
 src/components/layout/toolbar.js
+src/components/hover-panel/basic.js
 
 src/presets/base.js
 src/presets/rails.js

@@ -66,6 +66,10 @@ src/components/plugin.js
 src/components/layout/toolbar.js
 src/components/layout/toolbar.scss
 
+src/components/hover-panel/basic.js
+src/components/hover-panel/diagonal-lines.png
+src/components/hover-panel/basic.scss
+
 src/components/ui/button.js
 src/components/ui/preview-button.js
 src/components/ui/toggle-button.js
@@ -102,7 +106,6 @@ src/plugins/clear-formatting/clear-formatting.png
 src/plugins/clear-formatting/clear-formatting.scss
 
 src/plugins/click-button-to-edit/click-button-to-edit.js
-src/plugins/click-button-to-edit/diagonal-lines.png
 src/plugins/click-button-to-edit/pencil.png
 src/plugins/click-button-to-edit/click-button-to-edit.scss
 src/plugins/click-button-to-edit/templates/button.html
@@ -296,6 +299,12 @@ src/plugins/tool-tip/tool-tip.scss
 src/plugins/unsaved-edit-warning/unsaved-edit-warning.js
 src/plugins/unsaved-edit-warning/unsaved-edit-warning.scss
 src/plugins/unsaved-edit-warning/templates/warning.html
+
+src/plugins/revisions/revisions-plugin.js
+src/plugins/revisions/documents-stack.png
+src/plugins/revisions/revisions.scss
+src/plugins/revisions/templates/button.html
+src/plugins/revisions/templates/dialog.html
 
 src/plugins/view-source/view-source.js
 src/plugins/view-source/edit-code.png
