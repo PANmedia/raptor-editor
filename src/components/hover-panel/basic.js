@@ -8,7 +8,7 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
     components: {},
 
     /**
-     * Inititialise the toolbar layout.
+     * Inititialise the hover panel
      * @constructs
      */
     init: function() {
@@ -50,9 +50,9 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
     },
 
     /**
-     * Show the toolbar.
+     * Show the hover panel.
      *
-     * @fires RaptorWidget#layoutShow
+     * @fires RaptorWidget#hoverPanelShow
      */
     show: function(event) {
         if (this.raptor.isEditing()) {
@@ -102,9 +102,9 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
     },
 
     /**
-     * Hide the toolbar.
+     * Hide the hover panel
      *
-     * @fires RaptorWidget#layoutHide
+     * @fires RaptorWidget#hoverPanelHide
      */
     hide: function(event) {
         if (!event) {
@@ -125,13 +125,6 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
         hoverPanel.hide();
         this.raptor.getElement().removeClass(this.options.baseClass + '-hover');
         this.raptor.fire('hoverPanelHide');
-    },
-
-    /**
-     * @return {Element}
-     */
-    getElement: function() {
-        return this.hoverPanel;
     },
 
     /**
