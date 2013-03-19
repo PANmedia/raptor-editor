@@ -170,7 +170,7 @@ var Raptor =  {
      */
     registerLayout: function(name, layout) {
         // <strict>
-        if (this.ui[name]) {
+        if (this.layouts[name]) {
             handleError(_('Layout "{{name}}" has already been registered, and will be overwritten', {name: name}));
         }
         // </strict>
