@@ -74,6 +74,7 @@ var RaptorWidget = {
 
         // List of hotkeys bound to the editor
         this.hotkeys = {};
+
         // If hotkeys are enabled, register any custom hotkeys provided by the user
         if (this.options.enableHotkeys) {
             this.registerHotkey(this.hotkeys);
@@ -106,6 +107,8 @@ var RaptorWidget = {
 
         // Attach core events
         this.attach();
+
+        this.loadHoverPanel();
 
         // Load plugins
         this.loadPlugins();
@@ -186,7 +189,7 @@ var RaptorWidget = {
             this.bind('ready', localeChange);
             return;
         }
-        
+
         var visible = this.visible;
         this.actionPreviewRestore();
         if (this.layout) {
@@ -736,6 +739,38 @@ var RaptorWidget = {
      */
     isVisible: function() {
         return this.visible;
+    },
+
+    /*========================================================================*\
+     * Hover Panel
+    \*========================================================================*/
+
+    getHoverPanel: function() {
+        return this.hoverPanel;
+    },
+
+    addToHoverPanel: function(component) {
+        // <debug>
+        if (debugLevel >= MID) debug('Adding to hover panel', component);
+        // </debug>
+
+        if (!this.getHoverPanel()) {
+            // <strict>
+            handleError('No hover panel loaded');
+            // </strict>
+            return null;
+        }
+
+        this.getHoverPanel().addComponent(component.name, component);
+    },
+
+    loadHoverPanel: function() {
+        if (!this.hoverPanel && this.options.hoverPanel) {
+            this.hoverPanel = $.extend({}, Raptor.hoverPanels[this.options.hoverPanel.type]);
+            this.hoverPanel.raptor = this;
+            this.hoverPanel.options = $.extend({}, this.options, this.hoverPanel.options, this.options.hoverPanel.options, { baseClass: this.options.baseClass + '-hover-panel-' + this.options.hoverPanel.type });
+            this.hoverPanel.init();
+        }
     },
 
     /*========================================================================*\
