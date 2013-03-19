@@ -33,6 +33,8 @@ var Raptor =  {
      */
     layouts: {},
 
+    hoverPanels: {},
+
     /**
      * @property {Raptor[]} instances
      */
@@ -175,6 +177,21 @@ var Raptor =  {
         }
         // </strict>
         this.layouts[name] = layout;
+    },
+
+    /**
+     * Registers a new layout, overriding any previous layout registered with the same name.
+     *
+     * @param {String} name
+     * @param {Object} layout
+     */
+    registerHoverPanel: function(name, hoverPanel) {
+        // <strict>
+        if (this.hoverPanels[name]) {
+            handleError(_('Hover panel "{{name}}" has already been registered, and will be overwritten', {name: name}));
+        }
+        // </strict>
+        this.hoverPanels[name] = hoverPanel;
     },
 
     registerPlugin: function(plugin) {
