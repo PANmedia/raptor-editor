@@ -1,0 +1,12 @@
+/**
+ * Click to edit plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+@import 'compass/css3/transition';
+
+.raptor-revisions .ui-icon {
+    background: inline-image('documents-stack.png') 0 0;
+}
