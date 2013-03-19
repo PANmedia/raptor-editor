@@ -13,30 +13,90 @@
 
 var RevisionsButton = new DialogButton({
     name: 'revisionsButton',
-    text: _('revisionsButton'),
-    plugin: null,
 
     dialogOptions: {
-        width: 600,
-        height: 400
+        width: 300,
+        height: 400,
+        modal: false
     },
+
     applyAction: function(dialog) {
-        var html = this.find('.selected-revision').data('content');
+        var html = dialog.find('.selected').data().revision.content;
         this.raptor.actionApply(function() {
             this.raptor.setHtml(html);
         }.bind(this));
     },
+
     openDialog: function(dialog) {
+
+        this.raptor.enableEditing();
+        this.raptor.showLayout();
+
         this.raptor.fire('hideHoverPanel');
-        this.plugin.getRevisions(function(result) {
-            console.log(arguments);
-            dialog.find('> div').text(result);
-        }, function(result) {
-            console.log(arguments);
-            dialog.find('> div').text(result);
+        var _this = this;
+        this.raptor.getPlugin('revisions').getRevisions(function(revisions) {
+            var tbody = dialog.find('> div')
+                            .html(this.raptor.getTemplate('revisions.table', this.options))
+                            .find('tbody');
+            var trTemplate = this.raptor.getTemplate('revisions.tr', this.options);
+            var tableRows = [];
+            for (var revisionIndex = 0; revisionIndex < revisions.length; revisionIndex++) {
+                var tr = $(trTemplate);
+                tr.data('revision', revisions[revisionIndex])
+                    .find('.' + this.options.baseClass + '-updated')
+                    .html(revisions[revisionIndex].updated);
+                this.bindRow(dialog, tbody, tr);
+                tableRows.push(tr);
+            }
+            tbody.append(tableRows);
+        }.bind(this), function() {
+            dialog.find('> div').text('There was a problem getting revisions for this block');
         });
     },
+
+    applyRevision: function(revision) {
+        selectionSelectInner(this.raptor.getElement().get(0));
+        selectionReplace(revision.content);
+        this.raptor.checkChange();
+    },
+
+    bindRow: function(dialog, tbody, tableRow) {
+        var revision = tableRow.data().revision,
+            applied = false;
+            updatedCell = tableRow.find('.' + this.options.baseClass + '-updated');
+
+        updatedCell.mouseenter(function() {
+            applied = false;
+            tableRow.addClass('ui-state-hover');
+            this.raptor.actionPreview(function() {
+                this.applyRevision(revision);
+            }.bind(this));
+        }.bind(this));
+
+        updatedCell.mouseleave(function() {
+            tableRow.removeClass('ui-state-hover');
+            if (applied) {
+                return true;
+            }
+            this.raptor.actionPreviewRestore();
+        }.bind(this));
+
+        updatedCell.click(function() {
+            tbody.find('.selected').removeClass('selected');
+            tableRow.addClass('selected');
+            applied = true;
+            aDialogClose(dialog);
+            this.applyAction(dialog);
+        }.bind(this));
+    },
+
     getDialogTemplate: function() {
         return $('<div>').html(this.raptor.getTemplate('revisions.dialog', this.options));
+    },
+
+    getOkButton: function() {
+        return false;
     }
 });
+
+Raptor.registerUi(RevisionsButton);
