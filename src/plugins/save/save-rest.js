@@ -58,7 +58,6 @@ SaveRestPlugin.prototype.save = function() {
 };
 
 /**
- * @todo this confuses me greatly, could you please do it?
  * @param {type} data
  * @param {type} status
  * @param {type} xhr
@@ -69,17 +68,14 @@ SaveRestPlugin.prototype.done = function(data, status, xhr) {
 };
 
 /**
- * @todo same with this one
  * @param {type} xhr
- * @returns {undefined}
  */
 SaveRestPlugin.prototype.fail = function(xhr) {
     this.errors.push(xhr.responseText);
 };
 
 /**
- * @todo and this one
- * @returns {undefined}
+ * Action always peformed on AJAX request
  */
 SaveRestPlugin.prototype.always = function() {
     this.requests--;
@@ -110,8 +106,7 @@ SaveRestPlugin.prototype.always = function() {
 };
 
 /**
- * @todo and this one
- * @returns {unresolved}
+ * @returns {Object} AJAX promise object
  */
 SaveRestPlugin.prototype.sendRequest = function() {
     var headers = this.raptor.getPlugin('saveRest').getHeaders(),
@@ -127,8 +122,7 @@ SaveRestPlugin.prototype.sendRequest = function() {
 };
 
 /**
- * @todo and this one
- * @returns {SaveRestPlugin.prototype.getHeaders.Anonym$5}
+ * @returns {SaveRestPlugin.prototype.getHeaders}
  */
 SaveRestPlugin.prototype.getHeaders = function() {
     if (this.options.headers) {
@@ -138,7 +132,6 @@ SaveRestPlugin.prototype.getHeaders = function() {
 };
 
 /**
- * @todo and this one
  * @returns {SaveRestPlugin.prototype.getData.data}
  */
 SaveRestPlugin.prototype.getData = function() {
@@ -150,8 +143,7 @@ SaveRestPlugin.prototype.getData = function() {
 };
 
 /**
- * @todo and this one 
- * @returns {unresolved}
+ * @returns {String} The URL to use for REST calls
  */
 SaveRestPlugin.prototype.getURL = function() {
     if (typeof this.options.url === 'string') {
