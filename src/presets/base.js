@@ -13,6 +13,8 @@ var basePreset = {
      */
     layout: null,
 
+    hoverPanel: null,
+
     /**
      * Plugins option overrides.
      *
