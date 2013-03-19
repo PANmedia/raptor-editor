@@ -120,6 +120,8 @@ src/plugins/text-style/underline.js
 src/plugins/tool-tip/tool-tip.js
 src/plugins/unsaved-edit-warning/unsaved-edit-warning.js
 src/plugins/view-source/view-source.js
+src/plugins/revisions/revisions-button.js
+src/plugins/revisions/revisions-plugin.js
 
 src/plugins/class-menu/templates/item.html
 src/plugins/click-button-to-edit/templates/button.html
@@ -146,6 +148,9 @@ src/plugins/table/templates/create-menu.html
 src/plugins/tag-menu/templates/menu.html
 src/plugins/unsaved-edit-warning/templates/warning.html
 src/plugins/view-source/templates/dialog.html
+src/plugins/revisions/templates/dialog.html
+src/plugins/revisions/templates/table.html
+src/plugins/revisions/templates/tr.html
 src/templates/message.html
 src/templates/messages.html
 src/templates/unsupported.html
