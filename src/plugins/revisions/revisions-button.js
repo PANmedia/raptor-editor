@@ -10,7 +10,6 @@
  *
  * @param {type} param
  */
-
 var RevisionsButton = new DialogButton({
     name: 'revisionsButton',
 
@@ -20,6 +19,9 @@ var RevisionsButton = new DialogButton({
         modal: false
     },
 
+    /**
+     * @param  {Object} dialog
+     */
     applyAction: function(dialog) {
         var html = dialog.find('.selected').data().revision.content;
         this.raptor.actionApply(function() {
@@ -27,39 +29,89 @@ var RevisionsButton = new DialogButton({
         }.bind(this));
     },
 
+    /**
+     * Get and either render the revisions for this instance, or
+     * display an appropriate error message.
+     *
+     * @param  {Object} dialog
+     */
     openDialog: function(dialog) {
 
         this.raptor.enableEditing();
         this.raptor.showLayout();
 
-        this.raptor.fire('hideHoverPanel');
-        var _this = this;
-        this.raptor.getPlugin('revisions').getRevisions(function(revisions) {
-            var tbody = dialog.find('> div')
-                            .html(this.raptor.getTemplate('revisions.table', this.options))
-                            .find('tbody');
-            var trTemplate = this.raptor.getTemplate('revisions.tr', this.options);
-            var tableRows = [];
-            for (var revisionIndex = 0; revisionIndex < revisions.length; revisionIndex++) {
-                var tr = $(trTemplate);
-                tr.data('revision', revisions[revisionIndex])
-                    .find('.' + this.options.baseClass + '-updated')
-                    .html(revisions[revisionIndex].updated);
-                this.bindRow(dialog, tbody, tr);
-                tableRows.push(tr);
-            }
-            tbody.append(tableRows);
-        }.bind(this), function() {
-            dialog.find('> div').text('There was a problem getting revisions for this block');
-        });
+        this.dialog = dialog;
+
+        this.raptor.getPlugin('revisions')
+            .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
     },
 
+    /**
+     * Render revisions into a table.
+     * Calls bindRow to bind events to each row.
+     *
+     * @param  {Object[]} revisions
+     */
+    renderRevisions: function(revisions, hasDiff) {
+
+        var tbody = this.dialog.find('> div')
+                        .html(this.raptor.getTemplate('revisions.table', this.options))
+                        .find('tbody'),
+            trTemplate = this.raptor.getTemplate('revisions.tr', this.options),
+            tableRows = [],
+            updatedDate = null;
+
+        for (var revisionIndex = 0; revisionIndex < revisions.length; revisionIndex++) {
+            var tr = $(trTemplate);
+
+            updatedDate = new Date(revisions[revisionIndex].updated);
+
+            tr.data('revision', revisions[revisionIndex])
+                .find('.' + this.options.baseClass + '-updated')
+                .html(updatedDate.toLocaleString());
+
+            this.bindRow(this.dialog, tbody, tr);
+            if (hasDiff) {
+                tr.find('.' + this.options.baseClass + '-view-diff')
+                    .button({
+                        text: false,
+                        icons: {
+                            primary: 'ui-icon-edit-diff'
+                        }
+                    });
+                // bind diff button
+            }
+            tableRows.push(tr);
+        }
+        tbody.append(tableRows, hasDiff);
+    },
+
+    /**
+     * Display a generic error message
+     */
+    displayAjaxError: function() {
+        this.dialog.find('> div')
+            .text(_('viewRevisionsAJAXFailed'));
+    },
+
+    /**
+     * Apply the given revision to the current Raptor instance.
+     *
+     * @param  {Object} revision
+     */
     applyRevision: function(revision) {
         selectionSelectInner(this.raptor.getElement().get(0));
         selectionReplace(revision.content);
         this.raptor.checkChange();
     },
 
+    /**
+     * Bind events to the given tableRow to allow user interaction.
+     *
+     * @param  {Object} dialog
+     * @param  {Element} tbody The revisions table's tbody Element
+     * @param  {Element} tableRow The revision's tr Element
+     */
     bindRow: function(dialog, tbody, tableRow) {
         var revision = tableRow.data().revision,
             applied = false;
@@ -90,13 +142,22 @@ var RevisionsButton = new DialogButton({
         }.bind(this));
     },
 
+    /**
+     * @return {Element}
+     */
     getDialogTemplate: function() {
         return $('<div>').html(this.raptor.getTemplate('revisions.dialog', this.options));
     },
 
+    /**
+     * Disable the OK button, as clicking a revision will apply & close the dialog.
+     *
+     * @return {Boolean} False to disable the OK button
+     */
     getOkButton: function() {
         return false;
     }
 });
 
+// Also register this button for use in the layout
 Raptor.registerUi(RevisionsButton);

@@ -10,6 +10,12 @@
  * @constructor
  * @augments Raptor Plugin.
  *
+ * Default options:
+ * <pre>{
+ *      url: Function|String,
+ *      id: Function|String
+ * }</pre>
+ *
  * @param {type} name
  * @param {Object} overrides Options hash.
  */
@@ -25,41 +31,72 @@ RevisionsPlugin.prototype = Object.create(RaptorPlugin.prototype);
 RevisionsPlugin.prototype.init = function() {
     this.raptor.addToHoverPanel(this);
     // <strict>
-    if (typeof this.options.url !== 'string') {
-        handleError('RevisionsPlugin expects revisions url option to be set');
+    if (typeof this.options.url !== 'string' && !$.isFunction(this.options.url)) {
+        handleError('RevisionsPlugin expects revisions url option to be a string or function');
     }
     // </strict>
 };
 
+RevisionsPlugin.prototype.getHeaders = function() {
+    if (this.options.headers) {
+        return this.options.headers.call(this);
+    }
+    return {};
+};
+
+RevisionsPlugin.prototype.getUrl = function() {
+    if (typeof this.options.url === 'string') {
+        return this.options.url;
+    }
+    return this.options.url.call(this);
+};
+
+/**
+ * Get the revisions for this instance from the server.
+ * Expected data:
+ * <pre>
+ * {
+ *  // Indicates whether each revision has an accompanying html diff showing changes
+ *  // between it and the next revision in history
+ *  "hasDiff": Boolean,
+ *
+ *  // An array of revisions
+ *  "revisions": [
+ *      {
+ *          "identifier": String,
+ *          "content": String,
+ *          "updated": Integer, // Millisecond timestamp,
+ *
+ *          // Optional, presence indicated by hasDiff above
+ *          "diff": String // The diff between this and the previous revision
+ *      }
+ *   ]
+ * }
+ * </pre>
+ *
+ * @param  {Function} success Function to be called with revisions & hasDiff on success
+ * @param  {Function} failure Function that will display a generic error message on failure
+ */
 RevisionsPlugin.prototype.getRevisions = function(success, failure) {
     $.ajax({
-        url: this.options.url,
-        data: {
-
-        }
-    }).done(function() {
-        // this will be run when the AJAX request succeeds
-        success('success');
+        url: this.getUrl(),
+        headers: this.getHeaders()
+    }).done(function(data) {
+        success(data.revisions, data.hasDiff);
     }).fail(function() {
-        // this will be run when the AJAX request fails
-        failure('failure');
-    }).always(function() {
-        // this will be run when the AJAX request is complete, whether it fails or succeeds
-    }).done(function() {
-        // this will also be run when the AJAX request succeeds
+        failure();
     });
 };
 
 /**
- * @todo type and description for instance.
- * @param {type} instance
- * @return {jQuery} The "click to edit" button.
+ * @param {RevisionsPlugin} instance
+ * @return {Object}
  */
 RevisionsPlugin.prototype.getButton = function(instance) {
     var button = $.extend({}, RevisionsButton);
     button.raptor = this.raptor;
     button.options = this.options;
-    button.plugin = instance;
+    button.text = _('revisionsButton');
     var ui = button.init();
     return ui;
 };
