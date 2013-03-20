@@ -14,4 +14,10 @@
 
 .raptor-hover-panel-basic {
     white-space: pre;
+    .ui-button {
+        margin-right: 10px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }
