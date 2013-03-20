@@ -47,7 +47,9 @@ var RevisionsDiffButton = new DialogButton({
      * @param  {Object} dialog
      */
     openDialog: function(dialog) {
-        dialog.find('.' + this.options.baseClass + '-diff').html(this.diff);
+        this.raptor.fire('diffView');
+        aButtonActive(this.button);
+        dialog.find('.' + this.options.baseClass + '-diff').html(this.options.revision.diff);
     },
 
     /**
