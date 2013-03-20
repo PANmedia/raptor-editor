@@ -112,6 +112,3 @@ var RevisionsButton = new DialogButton({
         return false;
     }
 });
-
-// Also register this button for use in the layout
-Raptor.registerUi(RevisionsButton);
