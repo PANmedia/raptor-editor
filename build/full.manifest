@@ -338,10 +338,17 @@ src/plugins/unsaved-edit-warning/unsaved-edit-warning.scss
 src/plugins/unsaved-edit-warning/templates/warning.html
 
 src/plugins/revisions/revisions-button.js
+src/plugins/revisions/revisions-diff-button.js
+src/plugins/revisions/revisions-preview-button.js
+src/plugins/revisions/revisions-apply-button.js
 src/plugins/revisions/revisions-plugin.js
 src/plugins/revisions/documents-stack.png
+src/plugins/revisions/document-convert.png
+src/plugins/revisions/blue-document-export.png
+src/plugins/revisions/edit-diff.png
 src/plugins/revisions/revisions.scss
 src/plugins/revisions/templates/dialog.html
+src/plugins/revisions/templates/diff-dialog.html
 src/plugins/revisions/templates/table.html
 src/plugins/revisions/templates/tr.html
 
