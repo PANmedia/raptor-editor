@@ -7,30 +7,65 @@
 @import 'compass/css3/opacity';
 @import 'compass/css3/transition';
 
-.raptor-revisions,
-.raptor-ui-revisions-button {
+// Buttons
+.raptor-revisions {
     .ui-icon {
         background: inline-image('documents-stack.png') 0 0;
     }
 }
 
-.raptor-revisions-view-diff {
+.raptor-revisions-apply-button,
+.raptor-revisions-preview-button {
+    margin-right: 10px;
+}
+
+.raptor-revisions-preview-button {
+    .ui-icon {
+        background: inline-image('blue-document-export.png') 0 0;
+    }
+}
+
+.raptor-revisions-apply-button {
+    .ui-icon {
+        background: inline-image('document-convert.png') 0 0;
+    }
+}
+
+.raptor-revisions-diff-button {
     .ui-icon {
         background: inline-image('edit-diff.png') 0 0;
     }
 }
 
-.raptor-revisions-table,
-.raptor-ui-revisions-button-table{
-    tbody tr.ui-state-hover {
-        cursor: pointer;
+// Dialog
+.raptor-revisions-loading-revisions {
+    text-align: center;
+    padding: 20px;
+}
+
+.raptor-revisions-table {
+    thead {
+        th {
+            display: table-cell;
+        }
+    }
+    tbody {
+        tr.ui-state-hover {
+            cursor: pointer;
+        }
+        td {
+            vertical-align: middle;
+            &.raptor-revisions-controls {
+                white-space: pre;
+            }
+        }
     }
 }
 
-.raptor-revisions-diff del {
+del.diffmod {
     background-color: #FFC8C8;
 }
 
-.raptor-revisions-diff ins {
+ins.diffmod {
     background-color: #BEF0BE;
 }
