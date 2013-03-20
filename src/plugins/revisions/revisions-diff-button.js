@@ -21,7 +21,12 @@ var RevisionsDiffButton = new DialogButton({
         modal: false
     },
 
-    diff: null,
+    init: function() {
+        this.raptor.bind('diffView', function() {
+            aButtonInactive(this.button);
+        }.bind(this));
+        return DialogButton.prototype.init.apply(this, arguments);
+    },
 
     /**
      * @param  {Object} dialog
