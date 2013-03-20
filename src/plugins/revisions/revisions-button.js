@@ -14,19 +14,9 @@ var RevisionsButton = new DialogButton({
     name: 'revisionsButton',
 
     dialogOptions: {
-        width: 350,
+        width: 650,
         height: 400,
         modal: false
-    },
-
-    /**
-     * @param  {Object} dialog
-     */
-    applyAction: function(dialog) {
-        var html = dialog.find('.selected').data().revision.content;
-        this.raptor.actionApply(function() {
-            this.raptor.setHtml(html);
-        }.bind(this));
     },
 
     /**
