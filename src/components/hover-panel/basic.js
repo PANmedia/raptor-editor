@@ -86,20 +86,34 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
 
         aButton(hoverPanel.find('button'));
 
-        var visibleRect = elementVisibleRect(this.raptor.getElement());
-
         hoverPanel.css({
             position: 'absolute'
-        }).show().css({
-            // Calculate offset center for the hoverPanel
-            top:  visibleRect.top  + ((visibleRect.height / 2) - (hoverPanel.outerHeight() / 2)),
-            left: visibleRect.left + ((visibleRect.width / 2)  - (hoverPanel.outerWidth()  / 2)),
-            width: hoverPanel.outerWidth()
-        });
+        }).show();
+
+        this.position(this.raptor.getElement());
+
+        $(window).bind('scroll', function() {
+            this.position(this.raptor.getElement());
+        }.bind(this));
 
         hoverPanel.mouseleave(this.hide.bind(this));
-
         this.raptor.fire('hoverPanelShow');
+    },
+
+    isVisible: function() {
+        return this.visible;
+    },
+
+    position: function(element) {
+        if (!this.isVisible()) {
+            return;
+        }
+        var visibleRect = elementVisibleRect(element);
+        hoverPanel.css({
+            // Calculate offset center for the hoverPanel
+            top:  visibleRect.top  + ((visibleRect.height / 2) - (hoverPanel.outerHeight() / 2)),
+            left: visibleRect.left + ((visibleRect.width / 2)  - (hoverPanel.outerWidth()  / 2))
+        });
     },
 
     /**
