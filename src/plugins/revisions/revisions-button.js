@@ -104,8 +104,6 @@ var RevisionsButton = new DialogButton({
     },
 
     /**
-     * Disable the OK button, as clicking a revision will apply & close the dialog.
-     *
      * @return {Boolean} False to disable the OK button
      */
     getOkButton: function() {
