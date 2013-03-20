@@ -6,6 +6,7 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
     },
 
     components: {},
+    visible: false,
 
     /**
      * Inititialise the hover panel
@@ -64,7 +65,7 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
         if (hoverPanel && $.contains(hoverPanel.get(0), event.relatedTarget)) {
             return;
         }
-
+        this.visible = true;
         this.raptor.getElement()
             .addClass(this.options.baseClass + '-hover');
 
@@ -128,6 +129,7 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
     hidePanel: function() {
         hoverPanel.hide();
         this.raptor.getElement().removeClass(this.options.baseClass + '-hover');
+        this.visible = false;
         this.raptor.fire('hoverPanelHide');
     },
 
