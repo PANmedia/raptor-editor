@@ -123,6 +123,9 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
         if ($.contains(this.raptor.getElement().get(0), event.relatedTarget)) {
             return;
         }
+        if (event.relatedTarget === this.raptor.getElement().get(0)) {
+            return;
+        }
         this.hidePanel();
     },
 
