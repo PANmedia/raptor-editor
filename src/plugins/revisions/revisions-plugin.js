@@ -13,7 +13,8 @@
  * Default options:
  * <pre>{
  *      url: Function|String,
- *      id: Function|String
+ *      id: Function|String,
+ *      savePlugin: String
  * }</pre>
  *
  * @param {type} name
