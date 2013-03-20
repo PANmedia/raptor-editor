@@ -224,6 +224,8 @@ registerLocale('en', 'English', {
     revisionsButtonDialogCancelButton: 'Close',
     revisionsButtonDialogOKButton: 'Apply selected revision',
     revisionsButtonDialogTitle: 'View content revisions',
+    revisionsButtonViewDiff: 'View Diff',
+    revisionsInstructions: 'Hover a revision to preview it, click to apply',
 
     viewSourceDialogCancelButton: 'Close',
     viewSourceDialogOKButton: 'Apply source code',
