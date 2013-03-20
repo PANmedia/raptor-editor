@@ -48,34 +48,44 @@ var RevisionsButton = new DialogButton({
         var tbody = this.dialog.find('> div')
                         .html(this.raptor.getTemplate('revisions.table', this.options))
                         .find('tbody'),
-            trTemplate = this.raptor.getTemplate('revisions.tr', this.options),
+            tableRowTemplate = this.raptor.getTemplate('revisions.tr', this.options),
             tableRows = [],
-            updatedDate = null;
+            tableRow = null,
+            updatedDate = null,
+            controls = null,
+            revision = null;
 
         for (var revisionIndex = 0; revisionIndex < revisions.length; revisionIndex++) {
-            var tr = $(trTemplate);
+            tableRow = $(tableRowTemplate);
+            revision = revisions[revisionIndex];
 
-            updatedDate = new Date(revisions[revisionIndex].updated);
+            updatedDate = new Date(revision.updated);
 
-            tr.data('revision', revisions[revisionIndex])
+            tableRow.data('revision', revision)
                 .find('.' + this.options.baseClass + '-updated')
                 .html(updatedDate.toLocaleString());
 
+            controls = tableRow.find('.' + this.options.baseClass + '-controls');
+
+            controls.append(this.prepareRowButton('preview', revision, RevisionsPreviewButton));
+            controls.append(this.prepareRowButton('apply', revision, RevisionsApplyButton));
             if (hasDiff) {
-                var button = $.extend({}, RevisionsDiffButton);
-                button.raptor = this.raptor;
-                button.diff = revisions[revisionIndex].diff;
-                button.options = this.options;
-                tr.find('.' + this.options.baseClass + '-view-diff')
-                    .html(button.init());
+                controls.append(this.prepareRowButton('diff', revision, RevisionsDiffButton));
             }
-            this.bindRevision(this.dialog, tbody, tr);
-            tableRows.push(tr);
+            tableRows.push(tableRow);
         }
-        tbody.append(tableRows, hasDiff);
-        if (hasDiff) {
-            tbody.parent('table').find('th, td').show();
-        }
+
+        tbody.append(tableRows);
+    },
+
+    prepareRowButton: function(name, revision, buttonObject) {
+        var button = $.extend({}, buttonObject);
+        button.raptor = this.raptor;
+        button.options = $.extend({}, this.options, {
+            baseClass: this.options.baseClass + '-' + name + '-button',
+            revision: revision
+        });
+        return button.init();
     },
 
     /**
