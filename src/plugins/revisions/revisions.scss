@@ -7,6 +7,30 @@
 @import 'compass/css3/opacity';
 @import 'compass/css3/transition';
 
-.raptor-revisions .ui-icon {
-    background: inline-image('documents-stack.png') 0 0;
+.raptor-revisions,
+.raptor-ui-revisions-button {
+    .ui-icon {
+        background: inline-image('documents-stack.png') 0 0;
+    }
+}
+
+.raptor-revisions-view-diff {
+    .ui-icon {
+        background: inline-image('edit-diff.png') 0 0;
+    }
+}
+
+.raptor-revisions-table,
+.raptor-ui-revisions-button-table{
+    tbody tr.ui-state-hover {
+        cursor: pointer;
+    }
+}
+
+.raptor-revisions-diff del {
+    background-color: #FFC8C8;
+}
+
+.raptor-revisions-diff ins {
+    background-color: #BEF0BE;
 }
