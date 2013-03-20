@@ -28,14 +28,16 @@ var RevisionsDiffButton = new DialogButton({
         return DialogButton.prototype.init.apply(this, arguments);
     },
 
-    /**
-     * @param  {Object} dialog
-     */
-    applyAction: function(dialog) {
-        var html = dialog.find('.' + this.options.baseClass + '-diff').html();
-        this.raptor.actionApply(function() {
-            this.raptor.setHtml(html);
-        }.bind(this));
+    action: function() {
+        var dialog = this.getDialog(this);
+        this.openDialog(dialog);
+        aDialogOpen(dialog);
+    },
+
+    applyAction: function(dialog) { },
+
+    getOkButton: function(name) {
+        return false;
     },
 
     /**
