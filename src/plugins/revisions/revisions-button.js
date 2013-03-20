@@ -14,7 +14,7 @@ var RevisionsButton = new DialogButton({
     name: 'revisionsButton',
 
     dialogOptions: {
-        width: 300,
+        width: 350,
         height: 400,
         modal: false
     },
@@ -70,20 +70,21 @@ var RevisionsButton = new DialogButton({
                 .find('.' + this.options.baseClass + '-updated')
                 .html(updatedDate.toLocaleString());
 
-            this.bindRow(this.dialog, tbody, tr);
             if (hasDiff) {
+                var button = $.extend({}, RevisionsDiffButton);
+                button.raptor = this.raptor;
+                button.diff = revisions[revisionIndex].diff;
+                button.options = this.options;
                 tr.find('.' + this.options.baseClass + '-view-diff')
-                    .button({
-                        text: false,
-                        icons: {
-                            primary: 'ui-icon-edit-diff'
-                        }
-                    });
-                // bind diff button
+                    .html(button.init());
             }
+            this.bindRevision(this.dialog, tbody, tr);
             tableRows.push(tr);
         }
         tbody.append(tableRows, hasDiff);
+        if (hasDiff) {
+            tbody.parent('table').find('th, td').show();
+        }
     },
 
     /**
@@ -112,7 +113,7 @@ var RevisionsButton = new DialogButton({
      * @param  {Element} tbody The revisions table's tbody Element
      * @param  {Element} tableRow The revision's tr Element
      */
-    bindRow: function(dialog, tbody, tableRow) {
+    bindRevision: function(dialog, tbody, tableRow) {
         var revision = tableRow.data().revision,
             applied = false;
             updatedCell = tableRow.find('.' + this.options.baseClass + '-updated');
