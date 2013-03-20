@@ -12,7 +12,8 @@
  */
 var RevisionsDiffButton = new DialogButton({
     name: 'revisionsDiffButton',
-    title: _('revisionsButtonViewDiff'),
+    title: _('revisionsButtonViewDiffTitle'),
+    text: _('revisionsButtonViewDiffText'),
 
     dialogOptions: {
         width: 400,
