@@ -27,11 +27,12 @@ var RevisionsButton = new DialogButton({
      */
     openDialog: function(dialog) {
 
-        this.raptor.enableEditing();
-        this.raptor.showLayout();
+        this.raptor.bind('saved', function() {
+            aDialogClose(dialog);
+        });
 
         this.dialog = dialog;
-
+        this.state = this.raptor.stateSave();
         this.raptor.getPlugin('revisions')
             .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
     },
