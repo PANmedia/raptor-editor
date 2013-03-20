@@ -219,13 +219,15 @@ registerLocale('en', 'English', {
 
     unsavedEditWarningText: 'There are unsaved changes on this page',
 
+    revisionsApplyButtonTitle: 'Rollback',
     revisionsButton: 'Revisions',
-    revisionsButtonTitle: 'Revisions',
-    revisionsButtonDialogCancelButton: 'Close',
-    revisionsButtonDialogOKButton: 'Apply selected revision',
+    revisionsButtonDialogCancelButton: 'Cancel',
     revisionsButtonDialogTitle: 'View content revisions',
-    revisionsButtonViewDiff: 'View Diff',
-    revisionsInstructions: 'Hover a revision to preview it, click to apply',
+    revisionsButtonTitle: 'Revisions',
+    revisionsButtonViewDiffText: 'Differences',
+    revisionsDiffButtonDialogCancelButton: 'Close',
+    revisionsDiffButtonDialogTitle: 'View differences',
+    revisionsPreviewButtonTitle: 'Preview',
 
     viewSourceDialogCancelButton: 'Close',
     viewSourceDialogOKButton: 'Apply source code',
