@@ -97,54 +97,6 @@ var RevisionsButton = new DialogButton({
     },
 
     /**
-     * Apply the given revision to the current Raptor instance.
-     *
-     * @param  {Object} revision
-     */
-    applyRevision: function(revision) {
-        selectionSelectInner(this.raptor.getElement().get(0));
-        selectionReplace(revision.content);
-        this.raptor.checkChange();
-    },
-
-    /**
-     * Bind events to the given tableRow to allow user interaction.
-     *
-     * @param  {Object} dialog
-     * @param  {Element} tbody The revisions table's tbody Element
-     * @param  {Element} tableRow The revision's tr Element
-     */
-    bindRevision: function(dialog, tbody, tableRow) {
-        var revision = tableRow.data().revision,
-            applied = false;
-            updatedCell = tableRow.find('.' + this.options.baseClass + '-updated');
-
-        updatedCell.mouseenter(function() {
-            applied = false;
-            tableRow.addClass('ui-state-hover');
-            this.raptor.actionPreview(function() {
-                this.applyRevision(revision);
-            }.bind(this));
-        }.bind(this));
-
-        updatedCell.mouseleave(function() {
-            tableRow.removeClass('ui-state-hover');
-            if (applied) {
-                return true;
-            }
-            this.raptor.actionPreviewRestore();
-        }.bind(this));
-
-        updatedCell.click(function() {
-            tbody.find('.selected').removeClass('selected');
-            tableRow.addClass('selected');
-            applied = true;
-            aDialogClose(dialog);
-            this.applyAction(dialog);
-        }.bind(this));
-    },
-
-    /**
      * @return {Element}
      */
     getDialogTemplate: function() {
