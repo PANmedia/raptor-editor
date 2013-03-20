@@ -21,6 +21,12 @@ var RevisionsDiffButton = new DialogButton({
         modal: false
     },
 
+    /**
+     * Bind to the diffView event so this button can be deactived when
+     * another one is clicked.
+     *
+     * @return {RevisionsDiffButton}
+     */
     init: function() {
         this.raptor.bind('diffView', function() {
             aButtonInactive(this.button);
@@ -34,15 +40,25 @@ var RevisionsDiffButton = new DialogButton({
         aDialogOpen(dialog);
     },
 
+    /**
+     * Disable the apply action
+     *
+     * @param  {Element} dialog
+     */
     applyAction: function(dialog) { },
 
+    /**
+     * Disable the OK button
+     *
+     * @param  {String} name
+     */
     getOkButton: function(name) {
         return false;
     },
 
     /**
-     * Get and either render the revisions for this instance, or
-     * display an appropriate error message.
+     * Fire diffView event, replace content div with the diff for this instance's
+     * revision.
      *
      * @param  {Object} dialog
      */
