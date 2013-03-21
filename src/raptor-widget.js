@@ -420,9 +420,9 @@ var RaptorWidget = {
     },
 
     stateRestore: function(state) {
-        if (!this.isEditing()) {
-            return;
-        }
+        // if (!this.isEditing()) {
+        //     return;
+        // }
         var restoredState = stateRestore(this.target, state),
             selection = rangy.getSelection();
         this.target = restoredState.element;
