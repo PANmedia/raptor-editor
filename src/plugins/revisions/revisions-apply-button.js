@@ -22,7 +22,13 @@ var RevisionsApplyButton = new Button({
     },
 
     getSavePlugin: function() {
-        return this.raptor.getPlugin(this.options.savePlugin);
+        var plugin = this.raptor.getPlugin(this.options.savePlugin);
+        // <strict>
+        if (!plugin) {
+            handlerError('Revision plugin requires a save plugin to be defined & present');
+        }
+        // </strict>
+        return plugin;
     }
 
 });
