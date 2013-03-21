@@ -122,6 +122,9 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
      * @fires RaptorWidget#hoverPanelHide
      */
     hide: function(event) {
+        if (!this.visible) {
+            return;
+        }
         if (!event) {
             return;
         }
