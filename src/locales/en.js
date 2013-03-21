@@ -220,6 +220,7 @@ registerLocale('en', 'English', {
     unsavedEditWarningText: 'There are unsaved changes on this page',
 
     revisionsApplyButtonTitle: 'Rollback',
+    revisionsAJAXFailed: 'Failed to retrieve revisions',
     revisionsButton: 'Revisions',
     revisionsButtonDialogCancelButton: 'Cancel',
     revisionsButtonDialogTitle: 'View content revisions',
@@ -227,6 +228,7 @@ registerLocale('en', 'English', {
     revisionsButtonViewDiffText: 'Differences',
     revisionsDiffButtonDialogCancelButton: 'Close',
     revisionsDiffButtonDialogTitle: 'View differences',
+    revisionsNone: 'No revisions for this element',
     revisionsPreviewButtonTitle: 'Preview',
 
     viewSourceDialogCancelButton: 'Close',
