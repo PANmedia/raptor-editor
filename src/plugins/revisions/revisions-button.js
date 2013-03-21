@@ -45,6 +45,11 @@ var RevisionsButton = new DialogButton({
      */
     renderRevisions: function(revisions, hasDiff) {
 
+        if (!revisions.length) {
+            this.displayNoRevisions();
+            return;
+        }
+
         var tbody = this.dialog.find('> div')
                         .html(this.raptor.getTemplate('revisions.table', this.options))
                         .find('tbody'),
@@ -93,7 +98,12 @@ var RevisionsButton = new DialogButton({
      */
     displayAjaxError: function() {
         this.dialog.find('> div')
-            .text(_('viewRevisionsAJAXFailed'));
+            .text(_('revisionsAJAXFailed'));
+    },
+
+    displayNoRevisions: function() {
+        this.dialog.find('> div')
+            .text(_('revisionsNone'));
     },
 
     /**
