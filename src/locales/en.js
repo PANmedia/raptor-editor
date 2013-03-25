@@ -222,6 +222,7 @@ registerLocale('en', 'English', {
     revisionsApplyButtonTitle: 'Rollback',
     revisionsAJAXFailed: 'Failed to retrieve revisions',
     revisionsButton: 'Revisions',
+    revisionsButtonCurrent: 'Current',
     revisionsButtonDialogCancelButton: 'Cancel',
     revisionsButtonDialogTitle: 'View content revisions',
     revisionsButtonTitle: 'Revisions',
