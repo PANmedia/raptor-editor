@@ -34,6 +34,8 @@ var RevisionsButton = new DialogButton({
         }.bind(this));
 
         this.dialog = dialog;
+        this.getDialogContentArea().html('');
+
         this.state = this.raptor.stateSave();
         this.raptor.getPlugin('revisions')
             .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
