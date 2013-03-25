@@ -1025,7 +1025,7 @@ var RaptorWidget = {
     setHtml: function(html) {
         this.getElement().html(html);
         this.fire('html');
-        this.change();
+        this.checkChange();
     },
 
     /**
