@@ -10,14 +10,22 @@
  *
  * @param {type} param
  */
-var RevisionsApplyButton = new Button({
+var RevisionsApplyButton = new DialogButton({
     name: 'revisionsApplyButton',
     title: _('revisionsApplyButtonTitle'),
     text: _('revisionsApplyButtonTitle'),
 
     action: function() {
+        var dialog = this.getDialog(this);
+        this.openDialog(dialog);
+        aDialogOpen(dialog);
+    },
+
+    /**
+     * @param  {Element} dialog
+     */
+    applyAction: function(dialog) {
         this.raptor.setHtml(this.options.revision.content);
-        this.raptor.setOriginalHtml(this.raptor.getHtml());
         this.getSavePlugin().save();
     },
 
@@ -29,7 +37,12 @@ var RevisionsApplyButton = new Button({
         }
         // </strict>
         return plugin;
+    },
+
+    /**
+     * @return {Element}
+     */
+    getDialogTemplate: function() {
+        return $('<div>').html(this.raptor.getTemplate('revisions.apply-dialog', this.options));
     }
-
 });
-
