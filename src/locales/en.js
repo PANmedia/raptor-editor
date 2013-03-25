@@ -221,6 +221,10 @@ registerLocale('en', 'English', {
 
     revisionsApplyButtonTitle: 'Rollback',
     revisionsAJAXFailed: 'Failed to retrieve revisions',
+    revisionsApplyButtonDialogCancelButton: 'Cancel',
+    revisionsApplyButtonDialogOKButton: 'Rollback',
+    revisionsApplyButtonDialogTitle: 'Rollback Confirmation',
+    revisionsApplyDialogContent: 'This will replace the current content with the selected revision.<br/>The current content will be added as a revision, and will be visible in the revisions list for this block.',
     revisionsButton: 'Revisions',
     revisionsButtonCurrent: 'Current',
     revisionsButtonDialogCancelButton: 'Cancel',
