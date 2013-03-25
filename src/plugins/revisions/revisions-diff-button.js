@@ -1,5 +1,5 @@
 /**
- * @fileOverview Contains the view revisions button code.
+ * @fileOverview Contains the view revisions diff button code.
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
@@ -67,6 +67,11 @@ var RevisionsDiffButton = new DialogButton({
         return this.diffTool;
     },
 
+    /**
+     * Get the diff for this button instance's revision.
+     *
+     * @return {String} The HTML diff
+     */
     getDiff: function() {
         if (typeof diffs[this.options.revision.id] === 'undefined') {
             var diff = this.getDiffTool().diff_main(this.options.current.content, this.options.revision.content);
