@@ -43,12 +43,14 @@ var RevisionsButton = new DialogButton({
      *
      * @param  {Object[]} revisions
      */
-    renderRevisions: function(revisions, hasDiff) {
+    renderRevisions: function(data) {
 
-        if (!revisions.length) {
+        if (typeof data.revisions === 'undefined' || !data.revisions.length) {
             this.displayNoRevisions();
             return;
         }
+
+        var revisions = data.revisions;
 
         var tbody = this.dialog.find('> div')
                         .html(this.raptor.getTemplate('revisions.table', this.options))
@@ -56,27 +58,30 @@ var RevisionsButton = new DialogButton({
             tableRowTemplate = this.raptor.getTemplate('revisions.tr', this.options),
             tableRows = [],
             tableRow = null,
-            updatedDate = null,
             controls = null,
             revision = null;
+
+        var currentRow = $(tableRowTemplate).find('.' + this.options.baseClass + '-updated')
+            .html((new Date(data.current.updated)).toLocaleString())
+            .next().html(_('revisionsButtonCurrent'))
+            .parent().addClass(this.options.baseClass + '-current ui-state-highlight');
+
+        tableRows.push(currentRow);
 
         for (var revisionIndex = 0; revisionIndex < revisions.length; revisionIndex++) {
             tableRow = $(tableRowTemplate);
             revision = revisions[revisionIndex];
 
-            updatedDate = new Date(revision.updated);
-
             tableRow.data('revision', revision)
                 .find('.' + this.options.baseClass + '-updated')
-                .html(updatedDate.toLocaleString());
+                .html((new Date(revision.updated)).toLocaleString());
 
             controls = tableRow.find('.' + this.options.baseClass + '-controls');
 
             controls.append(this.prepareRowButton('preview', revision, RevisionsPreviewButton));
             controls.append(this.prepareRowButton('apply', revision, RevisionsApplyButton));
-            if (hasDiff) {
-                controls.append(this.prepareRowButton('diff', revision, RevisionsDiffButton));
-            }
+            controls.append(this.prepareRowButton('diff', revision, RevisionsDiffButton));
+
             tableRows.push(tableRow);
         }
 

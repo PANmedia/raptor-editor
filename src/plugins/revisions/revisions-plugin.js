@@ -83,7 +83,7 @@ RevisionsPlugin.prototype.getRevisions = function(success, failure) {
         url: this.getUrl(),
         headers: this.getHeaders()
     }).done(function(data) {
-        success(data.revisions, data.hasDiff);
+        success(data);
     }).fail(function() {
         failure();
     });
