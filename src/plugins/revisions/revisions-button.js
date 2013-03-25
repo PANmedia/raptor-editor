@@ -42,6 +42,15 @@ var RevisionsButton = new DialogButton({
     },
 
     /**
+     * Return the dialog's content element.
+     *
+     * @return {Element}
+     */
+    getDialogContentArea: function() {
+        return this.dialog.find('> div');
+    },
+
+    /**
      * Render revisions into a table.
      * Calls bindRow to bind events to each row.
      *
@@ -56,7 +65,7 @@ var RevisionsButton = new DialogButton({
 
         var revisions = data.revisions;
 
-        var tbody = this.dialog.find('> div')
+        var tbody = this.getDialogContentArea()
                         .html(this.raptor.getTemplate('revisions.table', this.options))
                         .find('tbody'),
             tableRowTemplate = this.raptor.getTemplate('revisions.tr', this.options),
@@ -106,13 +115,11 @@ var RevisionsButton = new DialogButton({
      * Display a generic error message
      */
     displayAjaxError: function() {
-        this.dialog.find('> div')
-            .text(_('revisionsAJAXFailed'));
+        this.getDialogContentArea().text(_('revisionsAJAXFailed'));
     },
 
     displayNoRevisions: function() {
-        this.dialog.find('> div')
-            .text(_('revisionsNone'));
+        this.getDialogContentArea().text(_('revisionsNone'));
     },
 
     /**
