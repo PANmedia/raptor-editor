@@ -28,8 +28,10 @@ var RevisionsButton = new DialogButton({
     openDialog: function(dialog) {
 
         this.raptor.bind('saved', function() {
+            // Ensure raptor's previous state is *not* restored
+            this.state = null;
             aDialogClose(dialog);
-        });
+        }.bind(this));
 
         this.dialog = dialog;
         this.state = this.raptor.stateSave();
