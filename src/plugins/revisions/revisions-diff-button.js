@@ -5,6 +5,8 @@
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
+var diffs = {};
+
 /**
  * Creates an instance of the dialog button to open the revisions dialog.
  *
@@ -14,6 +16,8 @@ var RevisionsDiffButton = new DialogButton({
     name: 'revisionsDiffButton',
     title: _('revisionsButtonViewDiffTitle'),
     text: _('revisionsButtonViewDiffText'),
+
+    diffTool: false,
 
     dialogOptions: {
         width: 400,
@@ -56,6 +60,22 @@ var RevisionsDiffButton = new DialogButton({
         return false;
     },
 
+    getDiffTool: function() {
+        if (!this.diffTool) {
+            this.diffTool = new diff_match_patch();
+        }
+        return this.diffTool;
+    },
+
+    getDiff: function() {
+        if (typeof diffs[this.options.revision.id] === 'undefined') {
+            var diff = this.getDiffTool().diff_main(this.options.current.content, this.options.revision.content);
+            this.getDiffTool().diff_cleanupSemantic(diff);
+            diffs[this.options.revision.id] = this.getDiffTool().diff_prettyHtml(diff);
+        }
+        return diffs[this.options.revision.id];
+    },
+
     /**
      * Fire diffView event, replace content div with the diff for this instance's
      * revision.
@@ -65,7 +85,7 @@ var RevisionsDiffButton = new DialogButton({
     openDialog: function(dialog) {
         // this.raptor.fire('diffView');
         // aButtonActive(this.button);
-        dialog.find('.' + this.options.baseClass + '-diff').html(this.options.revision.diff);
+        dialog.find('.' + this.options.baseClass + '-diff').html(this.getDiff());
     },
 
     /**
