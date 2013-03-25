@@ -28,9 +28,9 @@ var RevisionsDiffButton = new DialogButton({
      * @return {RevisionsDiffButton}
      */
     init: function() {
-        this.raptor.bind('diffView', function() {
-            aButtonInactive(this.button);
-        }.bind(this));
+        // this.raptor.bind('diffView', function() {
+        //     aButtonInactive(this.button);
+        // }.bind(this));
         return DialogButton.prototype.init.apply(this, arguments);
     },
 
@@ -63,8 +63,8 @@ var RevisionsDiffButton = new DialogButton({
      * @param  {Object} dialog
      */
     openDialog: function(dialog) {
-        this.raptor.fire('diffView');
-        aButtonActive(this.button);
+        // this.raptor.fire('diffView');
+        // aButtonActive(this.button);
         dialog.find('.' + this.options.baseClass + '-diff').html(this.options.revision.diff);
     },
 
