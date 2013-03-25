@@ -7,7 +7,6 @@
 @import 'compass/css3/transition';
 
 .raptor-hover-panel-basic-hover {
-    outline: 1px dotted rgba(0, 0, 0, 0.5);
     @include transition(all 0.5s 0s);
     background: inline-image('diagonal-lines.png') 0 0;
 }
