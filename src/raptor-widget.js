@@ -1003,7 +1003,7 @@ var RaptorWidget = {
      * @returns {String}
      */
     getHtml: function() {
-        return this.target.html();
+        return this.getElement().html();
     },
 
     getCleanHtml: function() {
