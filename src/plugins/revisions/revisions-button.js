@@ -78,22 +78,22 @@ var RevisionsButton = new DialogButton({
 
             controls = tableRow.find('.' + this.options.baseClass + '-controls');
 
-            controls.append(this.prepareRowButton('preview', revision, RevisionsPreviewButton));
-            controls.append(this.prepareRowButton('apply', revision, RevisionsApplyButton));
-            controls.append(this.prepareRowButton('diff', revision, RevisionsDiffButton));
+            controls.append(this.prepareRowButton('preview', revision, data.current, RevisionsPreviewButton));
+            controls.append(this.prepareRowButton('apply', revision, data.current, RevisionsApplyButton));
+            controls.append(this.prepareRowButton('diff', revision, data.current, RevisionsDiffButton));
 
             tableRows.push(tableRow);
         }
-
         tbody.append(tableRows);
     },
 
-    prepareRowButton: function(name, revision, buttonObject) {
+    prepareRowButton: function(name, revision, current, buttonObject) {
         var button = $.extend({}, buttonObject);
         button.raptor = this.raptor;
         button.options = $.extend({}, this.options, {
             baseClass: this.options.baseClass + '-' + name + '-button',
-            revision: revision
+            revision: revision,
+            current: current
         });
         return button.init();
     },
