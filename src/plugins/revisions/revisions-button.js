@@ -34,7 +34,11 @@ var RevisionsButton = new DialogButton({
         }.bind(this));
 
         this.dialog = dialog;
-        this.getDialogContentArea().html('');
+
+        var loadingMessage = $('<p/>')
+                                .html(_('revisionsLoading'))
+                                .addClass(this.options.baseClass + '-loading-revisions');
+        this.getDialogContentArea().html(loadingMessage);
 
         this.state = this.raptor.stateSave();
         this.raptor.getPlugin('revisions')

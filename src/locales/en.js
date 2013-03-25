@@ -233,6 +233,7 @@ registerLocale('en', 'English', {
     revisionsButtonViewDiffText: 'Differences',
     revisionsDiffButtonDialogCancelButton: 'Close',
     revisionsDiffButtonDialogTitle: 'View differences',
+    revisionsLoading: 'Loading revisions...',
     revisionsNone: 'No revisions for this element',
     revisionsPreviewButtonTitle: 'Preview',
 
