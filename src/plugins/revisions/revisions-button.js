@@ -100,6 +100,15 @@ var RevisionsButton = new DialogButton({
         tbody.append(tableRows);
     },
 
+    /**
+     * Prepare a single row button.
+     *
+     * @param  {String} name
+     * @param  {Object} revision The revision represented by this row
+     * @param  {Object} current The current revision
+     * @param  {Button} buttonObject
+     * @return {Element} The button
+     */
     prepareRowButton: function(name, revision, current, buttonObject) {
         var button = $.extend({}, buttonObject);
         button.raptor = this.raptor;
@@ -118,6 +127,10 @@ var RevisionsButton = new DialogButton({
         this.getDialogContentArea().text(_('revisionsAJAXFailed'));
     },
 
+    /**
+     * Display 'no revisions' message';
+     * @return {[type]} [description]
+     */
     displayNoRevisions: function() {
         this.getDialogContentArea().text(_('revisionsNone'));
     },

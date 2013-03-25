@@ -79,9 +79,6 @@ var RevisionsDiffButton = new DialogButton({
     },
 
     /**
-     * Fire diffView event, replace content div with the diff for this instance's
-     * revision.
-     *
      * @param  {Object} dialog
      */
     openDialog: function(dialog) {
