@@ -70,12 +70,13 @@ var RevisionsDiffButton = new DialogButton({
      * @return {String} The HTML diff
      */
     getDiff: function() {
-        if (typeof diffs[this.options.revision.id] === 'undefined') {
+        var key = this.options.revision.identifier + '-' + this.options.revision.updated;
+        if (typeof diffs[key] === 'undefined') {
             var diff = this.getDiffTool().diff_main(this.options.current.content, this.options.revision.content);
             this.getDiffTool().diff_cleanupSemantic(diff);
-            diffs[this.options.revision.id] = this.getDiffTool().diff_prettyHtml(diff);
+            diffs[key] = this.getDiffTool().diff_prettyHtml(diff);
         }
-        return diffs[this.options.revision.id];
+        return diffs[key];
     },
 
     /**
