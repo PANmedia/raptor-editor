@@ -72,7 +72,7 @@ var RevisionsDiffButton = new DialogButton({
     getDiff: function() {
         var key = this.options.revision.identifier + '-' + this.options.revision.updated;
         if (typeof diffs[key] === 'undefined') {
-            var diff = this.getDiffTool().diff_main(this.options.current.content, this.options.revision.content);
+            var diff = this.getDiffTool().diff_main(this.options.revision.content, this.options.current.content);
             this.getDiffTool().diff_cleanupSemantic(diff);
             diffs[key] = this.getDiffTool().diff_prettyHtml(diff);
         }
