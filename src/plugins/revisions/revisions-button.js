@@ -19,6 +19,21 @@ var RevisionsButton = new DialogButton({
         modal: false
     },
 
+    init: function() {
+        this.state = null;
+
+        var closeDialog = function() {
+            // Ensure raptor's previous state is *not* restored
+            this.state = null;
+            aDialogClose(this.dialog);
+            this.raptor.unbind('saved', closeDialog);
+        }.bind(this);
+
+        this.raptor.bind('saved', closeDialog);
+
+        return DialogButton.prototype.init.call(this);
+    },
+
     /**
      * Get and either render the revisions for this instance, or
      * display an appropriate error message.
@@ -26,12 +41,6 @@ var RevisionsButton = new DialogButton({
      * @param  {Object} dialog
      */
     openDialog: function(dialog) {
-
-        this.raptor.bind('saved', function() {
-            // Ensure raptor's previous state is *not* restored
-            this.state = null;
-            aDialogClose(dialog);
-        }.bind(this));
 
         this.dialog = dialog;
 
