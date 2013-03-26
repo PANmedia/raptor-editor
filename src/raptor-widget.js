@@ -1069,11 +1069,13 @@ var RaptorWidget = {
      * @param {Object} [context]
      */
     bind: function(name, callback, context) {
-        // <strict>
-        if (!$.isFunction(callback)) {
+        if (typeof callback === 'undefined' ||
+            !$.isFunction(callback)) {
+            // <strict>
             handleError('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
+            // </strict>
+            return;
         }
-        // </strict>
         var names = name.split(/,\s*/);
         for (var i = 0, l = names.length; i < l; i++) {
             if (!this.events[names[i]]) {
