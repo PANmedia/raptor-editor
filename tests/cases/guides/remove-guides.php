@@ -44,7 +44,6 @@
             }
         });
     </script>
-
      <div class="test-2">
         <h1>Remove Guides 2: Single Paragraph with multiple attributes</h1>
         <div class="test-input">
@@ -107,9 +106,6 @@
             }
         });
     </script>
-
-
-
     <div class="test-3">
         <h1>Remove Guides 3: Multi Paragraph</h1>
         <div class="test-input">
@@ -150,6 +146,77 @@
             }
         });
     </script>
-
+    <div class="test-4">
+        <h1>Remove Guides 4: After save</h1>
+        <div class="test-input">
+            <div class="editible raptor-ui-guides-visible">
+                <p>
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit} velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible" >
+                <p>
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit} velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-4', function(input) {
+            var guidesButton = getLayoutElement(input).find('.raptor-ui-guides');
+            guidesButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            getRaptor(input).fire('saved');
+            if (guidesButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+    <div class="test-5">
+        <h1>Remove Guides 5: After cancel</h1>
+        <div class="test-input">
+            <div class="editible raptor-ui-guides-visible">
+                <p>
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit} velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editible" >
+                <p>
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit} velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-5', function(input) {
+            var guidesButton = getLayoutElement(input).find('.raptor-ui-guides');
+            guidesButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+            getRaptor(input).fire('cancel');
+            if (guidesButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
 </body>
 </html>
