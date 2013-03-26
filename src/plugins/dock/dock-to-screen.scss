@@ -17,7 +17,6 @@
 
 .raptor-dock-docked {
     .raptor-toolbar-wrapper {
-        @include display-box();
         @include box-pack(center);
         @include box-align(center);
         // Firefox width fix
