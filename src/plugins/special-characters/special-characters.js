@@ -15,10 +15,10 @@ var insertCharacter = false;
  */
 Raptor.registerUi(new DialogButton({
     name: 'specialCharacters',
+    dialogOptions: {
+        width: 450
+    },
     options: {
-        dialogOptions: {
-            width: 500
-        },
         setOrder: [
             'symbols',
             'mathematics',
