@@ -28,10 +28,13 @@ Raptor.registerUi(new PreviewButton({
     },
 
     init: function() {
-        this.raptor.bind('cancel', function() {
-            this.raptor.getElement().removeClass(this.getClassName());
-        }.bind(this));
+        this.raptor.bind('cancel', this.removeClass.bind(this));
+        this.raptor.bind('saved', this.removeClass.bind(this));
         return Button.prototype.init.call(this);
+    },
+
+    removeClass: function() {
+        this.raptor.getElement().removeClass(this.getClassName());
     },
 
     getClassName: function() {
