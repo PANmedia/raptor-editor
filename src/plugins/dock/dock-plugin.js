@@ -138,7 +138,8 @@ DockPlugin.prototype.toggleDockToScreen = function() {
 DockPlugin.prototype.dockToScreen = function() {
     var layout = this.raptor.getLayout(),
         layoutElement = layout.getElement();
-    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layoutElement);
+    this.marker = $('<marker>').addClass(this.options.baseClass + '-marker')
+                        .insertAfter(layoutElement);
     layoutElement.addClass(this.options.baseClass + '-docked');
     layout.disableDragging();
     this.dockState = dockToScreen(layoutElement, {
