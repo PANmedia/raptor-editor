@@ -80,7 +80,7 @@ ColorMenuBasic.prototype.updateButton = function() {
 ColorMenuBasic.prototype.changeColor = function(color) {
     this.raptor.actionApply(function() {
         if (color === 'automatic') {
-            selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
+            selectionGetElements().parents('.' + this.options.cssPrefix + 'color').addBack().each(function() {
                 var classes = $(this).attr('class');
                 if (classes === null || typeof classes === 'undefined') {
                     return;
