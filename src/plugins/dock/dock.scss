@@ -10,6 +10,10 @@
     }
 }
 
+.raptor-dock-docked {
+    line-height: 0;
+}
+
 .raptor-dock-docked .raptor-messages {
     position: fixed;
     top: 0;
