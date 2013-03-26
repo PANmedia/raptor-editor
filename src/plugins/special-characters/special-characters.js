@@ -16,7 +16,7 @@ var insertCharacter = false;
 Raptor.registerUi(new DialogButton({
     name: 'specialCharacters',
     dialogOptions: {
-        width: 450
+        width: 645
     },
     options: {
         setOrder: [
