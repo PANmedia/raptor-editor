@@ -24,6 +24,14 @@ function ColorMenuBasic(options) {
         'purple',
         'orange'
     ];
+    /**
+     * Cache the current color so it can be reapplied to the button if the user
+     * clicks the button to open the menu, hovers some colors then clicks off to
+     * close it.
+     *
+     * @type {String}
+     */
+    this.currentColor = 'automatic';
     SelectMenu.call(this, {
         name: 'colorMenuBasic'
     });
@@ -49,6 +57,7 @@ ColorMenuBasic.prototype.updateButton = function() {
         button = this.getButton().getButton(),
         color = null,
         closest = null;
+
     // TODO: set automatic icon color to the color of the text
     aButtonSetLabel(button, _('colorMenuBasicAutomatic'));
     aButtonSetIcon(button, false);
@@ -77,7 +86,10 @@ ColorMenuBasic.prototype.updateButton = function() {
  *
  * @param {type} color The current colour.
  */
-ColorMenuBasic.prototype.changeColor = function(color) {
+ColorMenuBasic.prototype.changeColor = function(color, permanent) {
+    if (permanent) {
+        this.currentColor = color;
+    }
     this.raptor.actionApply(function() {
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').addBack().each(function() {
@@ -122,6 +134,7 @@ ColorMenuBasic.prototype.preview = function(event) {
  */
 ColorMenuBasic.prototype.previewRestore = function() {
     this.raptor.actionPreviewRestore();
+    this.changeColor(this.currentColor);
 };
 
 /**
@@ -131,7 +144,7 @@ ColorMenuBasic.prototype.previewRestore = function() {
  */
 ColorMenuBasic.prototype.apply = function(event) {
     this.raptor.actionApply(function() {
-        this.changeColor($(event.currentTarget).data('color'));
+        this.changeColor($(event.currentTarget).data('color'), true);
     }.bind(this));
 };
 
