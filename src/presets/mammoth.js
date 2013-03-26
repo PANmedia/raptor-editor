@@ -23,7 +23,7 @@ Raptor.defaults = $.extend(basePreset, {
                 ['textSuper', 'textSub'],
                 ['listUnordered', 'listOrdered'],
                 ['hrCreate', 'textBlockQuote'],
-                ['textSizeIncrease', 'textSizeDecrease'],
+                ['textSizeDecrease', 'textSizeIncrease'],
                 ['clearFormatting'],
                 ['linkCreate', 'linkRemove'],
                 ['embed', 'insertFile'],
