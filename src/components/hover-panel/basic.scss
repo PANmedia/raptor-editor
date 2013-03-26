@@ -13,6 +13,7 @@
 
 .raptor-hover-panel-basic {
     white-space: pre;
+    z-index: $z-hover-panel-basic;
     .ui-button {
         margin-right: 10px;
         &:last-child {
