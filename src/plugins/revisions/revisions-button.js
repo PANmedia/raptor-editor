@@ -26,10 +26,12 @@ var RevisionsButton = new DialogButton({
             // Ensure raptor's previous state is *not* restored
             this.state = null;
             aDialogClose(this.dialog);
-            this.raptor.unbind('saved', closeDialog);
-        }.bind(this);
+        };
 
-        this.raptor.bind('saved', closeDialog);
+        this.raptor.bind('saved', closeDialog, this);
+        this.raptor.bind('after:saved', function() {
+            this.raptor.unbind('saved', closeDialog, this);
+        }, this);
 
         return DialogButton.prototype.init.call(this);
     },
