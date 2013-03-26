@@ -57,7 +57,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
                 // @todo Move draggable into plugin
                 handle: '.ui-editor-path',
                 stop: $.proxy(function() {
-                    // Save the persistant position
+                    // Save the persistent position
                     var pos = this.raptor.persist('position', [
                         wrapper.css('top'),
                         wrapper.css('left')
@@ -76,7 +76,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
             // Remove the relative position
             wrapper.css('position', '');
 
-            // Set the persistant position
+            // Set the persistent position
             var pos = this.raptor.persist('position') || this.options.dialogPosition;
 
             if (!pos) {
