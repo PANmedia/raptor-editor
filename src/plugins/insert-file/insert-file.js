@@ -23,6 +23,8 @@ Raptor.registerUi(new Button({
     ],
     options: {
         /**
+         * Save the current state, show the insert file dialog or file manager.
+         *
          * @type {null|Function} Specify a function to use instead of the default
          *                       file insertion dialog.
          * @return {Boolean} False to indicate that custom action failed and the
@@ -50,6 +52,7 @@ Raptor.registerUi(new Button({
         if (!dialogElement.length) {
             dialogElement = $(this.raptor.getTemplate('insert-file.dialog'));
         }
+        var self = this;
         aDialog(dialogElement, {
             title: 'No File Manager',
             modal: true,
@@ -57,12 +60,12 @@ Raptor.registerUi(new Button({
                 {
                     text: _('insertFileDialogOKButton'),
                     click: function() {
-                        this.insertFiles([{
+                        self.insertFiles([{
                             location: dialogElement.find('input[name="location"]').val(),
                             name: dialogElement.find('input[name="name"]').val()
                         }]);
                         aDialogClose(dialogElement);
-                    }.bind(this),
+                    },
                     icons: {
                         primary: 'ui-icon-circle-check'
                     }
@@ -71,6 +74,7 @@ Raptor.registerUi(new Button({
                     text: _('insertFileDialogCancelButton'),
                     click: function() {
                         aDialogClose(dialogElement);
+                        self.raptor.stateRestore(self.state);
                     },
                     icons: {
                         primary: 'ui-icon-circle-close'
