@@ -19,12 +19,22 @@ Raptor.registerUi(new DialogButton({
         height: 400
     },
 
+    /**
+     * Replace selection with embed textarea content.
+     *
+     * @param  {Element} dialog
+     */
     applyAction: function(dialog) {
         this.raptor.actionApply(function() {
             selectionReplace(dialog.find('textarea').val());
         });
     },
 
+    /**
+     * Create and prepare the embed dialog template.
+     *
+     * @return {Element}
+     */
     getDialogTemplate: function() {
         var template = $('<div>').html(this.raptor.getTemplate('embed.dialog', this.options));
 
