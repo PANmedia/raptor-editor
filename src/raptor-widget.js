@@ -416,13 +416,9 @@ var RaptorWidget = {
         }
     },
 
-    actionUndo: function() {
+    actionUndo: function() { },
 
-    },
-
-    actionRedo: function() {
-
-    },
+    actionRedo: function() { },
 
     stateSave: function() {
         selectionConstrain(this.target);
