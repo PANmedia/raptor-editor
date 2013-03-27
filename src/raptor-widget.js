@@ -143,16 +143,17 @@ var RaptorWidget = {
     \*========================================================================*/
 
     /**
-     * Attaches the editors internal events.
+     * Attaches the editor's internal events.
+     *
      * @fires RaptorWidget#resize
      */
     attach: function() {
         this.bind('change', this.historyPush);
 
-        this.getElement().on('click.' + this.widgetName, 'img', function(event){
+        this.getElement().on('click.' + this.widgetName, 'img', function imageClickHandler(event) {
             selectionSelectOuter(event.target);
         }.bind(this));
-        this.getElement().focus(function() {
+        this.getElement().bind('focus', function focusHandler() {
             this.hideOtherLayouts(true);
             this.showLayout();
         }.bind(this));
