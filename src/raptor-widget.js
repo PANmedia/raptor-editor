@@ -218,6 +218,13 @@ var RaptorWidget = {
     },
 
     /**
+     * Restore focus to the element being edited.
+     */
+    restoreFocus: function() {
+        this.getElement().focus();
+    },
+
+    /**
      * Returns the current content editable element, which will be either the
      * orignal element, or the div the orignal element was replaced with.
      * @returns {jQuery} The current content editable element
