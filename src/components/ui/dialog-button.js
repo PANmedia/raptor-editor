@@ -137,6 +137,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
             if (dialogs[name].instance.state !== null) {
                 dialogs[name].instance.raptor.stateRestore(dialogs[name].instance.state);
             }
+            dialogs[name].instance.raptor.restoreFocus();
         }.bind(this),
         buttons: []
     };

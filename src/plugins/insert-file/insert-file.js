@@ -80,7 +80,10 @@ Raptor.registerUi(new Button({
                         primary: 'ui-icon-circle-close'
                     }
                 }
-            ]
+            ],
+            close: function() {
+                self.raptor.restoreFocus();
+            }
         });
         aDialogOpen(dialogElement);
     },
