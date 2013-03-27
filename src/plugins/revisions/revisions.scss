@@ -61,11 +61,13 @@
         }
     }
 }
+.raptor-revisions-diff-button-diff {
+    font-family: monospace;
+    del {
+        background-color: #FFC8C8;
+    }
 
-del {
-    background-color: #FFC8C8;
-}
-
-ins {
-    background-color: #BEF0BE;
+    ins {
+        background-color: #BEF0BE;
+    }
 }
