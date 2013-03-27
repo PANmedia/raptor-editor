@@ -172,6 +172,18 @@ var RaptorWidget = {
     },
 
     /**
+     * Detaches the editor's internal events.
+     */
+    detach: function() {
+        this.unbind('change');
+        this.getElement().off('click.' + this.widgetName, 'img');
+        this.getElement().unbind('focus');
+
+        this.target.unbind('mouseup.' + this.widgetName);
+        this.target.unbind('keyup.' + this.widgetName);
+    },
+
+    /**
      * Reinitialises the editor, unbinding all events, destroys all UI and plugins
      * then recreates them.
      */
@@ -497,6 +509,7 @@ var RaptorWidget = {
      */
     disableEditing: function() {
         if (this.enabled) {
+            this.detach();
             this.enabled = false;
             this.getElement()
                 .prop('contenteditable', false)
@@ -655,6 +668,7 @@ var RaptorWidget = {
     /*========================================================================*\
      * Layout
     \*========================================================================*/
+
     getLayout: function() {
         return this.layout;
     },
