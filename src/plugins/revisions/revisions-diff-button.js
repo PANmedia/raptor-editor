@@ -20,7 +20,7 @@ var RevisionsDiffButton = new DialogButton({
     diffTool: false,
 
     dialogOptions: {
-        width: 400,
+        width: 450,
         height: 400,
         modal: false
     },
