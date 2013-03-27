@@ -178,6 +178,7 @@ var RaptorWidget = {
         this.unbind('change');
         this.getElement().off('click.' + this.widgetName, 'img');
         this.getElement().unbind('focus');
+        this.getElement().blur();
 
         this.target.unbind('mouseup.' + this.widgetName);
         this.target.unbind('keyup.' + this.widgetName);
