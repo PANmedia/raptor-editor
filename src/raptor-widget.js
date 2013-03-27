@@ -105,9 +105,6 @@ var RaptorWidget = {
             this.replaceOriginal();
         }
 
-        // Attach core events
-        this.attach();
-
         this.loadHoverPanel();
 
         // Load plugins
@@ -458,6 +455,10 @@ var RaptorWidget = {
 
         if (!this.enabled) {
             this.fire('enabling');
+
+            // Attach core events
+            this.attach();
+
             this.enabled = true;
 
             this.getElement().addClass(this.options.baseClass + '-editing');
