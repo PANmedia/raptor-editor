@@ -30,7 +30,6 @@ CSSClassApplierButton.prototype.action = function() {
         });
         applier.toggleSelection();
     }
-    this.selectionChange();
 };
 
 /**
