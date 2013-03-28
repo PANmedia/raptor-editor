@@ -74,7 +74,7 @@ var RaptorWidget = {
 
         // List of hotkeys bound to the editor
         this.hotkeys = {};
-        this.hotkeysSuspended = true;
+        this.hotkeysSuspended = false;
 
         // If hotkeys are enabled, register any custom hotkeys provided by the user
         if (this.options.enableHotkeys) {
