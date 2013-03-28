@@ -24,7 +24,7 @@ Raptor.registerUi(new DialogButton({
         }.bind(this));
     },
     openDialog: function(dialog) {
-        dialog.find('textarea').text(this.raptor.getHtml());
+        dialog.find('textarea').val(this.raptor.getHtml());
     },
     getDialogTemplate: function() {
         return $('<div>').html(this.raptor.getTemplate('view-source.dialog', this.options));
