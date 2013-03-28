@@ -17,15 +17,31 @@ Raptor.registerUi(new DialogButton({
         width: 600,
         height: 400
     },
+
+    /**
+     * Replace the editing element's content with the HTML from the dialog's textarea
+     *
+     * @param  {Element} dialog
+     */
     applyAction: function(dialog) {
         var html = dialog.find('textarea').val();
         this.raptor.actionApply(function() {
             this.raptor.setHtml(html);
         }.bind(this));
     },
+
+    /**
+     * Update the dialog's text area with the current HTML.
+     *
+     * @param  {Element} dialog
+     */
     openDialog: function(dialog) {
         dialog.find('textarea').val(this.raptor.getHtml());
     },
+
+    /**
+     * @return {Element}
+     */
     getDialogTemplate: function() {
         return $('<div>').html(this.raptor.getTemplate('view-source.dialog', this.options));
     }
