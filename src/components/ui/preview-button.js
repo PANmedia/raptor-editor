@@ -25,7 +25,6 @@ PreviewButton.prototype = Object.create(Button.prototype);
 /**
  * Prepare and return the preview button Element to be used in the Raptor UI.
  *
- * @todo desc for return?
  * @returns {Element}
  */
 PreviewButton.prototype.getButton = function() {
