@@ -10,7 +10,6 @@
  *
  * @constructor
  * @augments preview button.
- *
  * @param {Object} options
  */
 function PreviewToggleButton(options) {
