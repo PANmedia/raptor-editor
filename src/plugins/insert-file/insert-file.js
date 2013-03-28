@@ -86,6 +86,9 @@ Raptor.registerUi(new Button({
             close: function() {
                 self.raptor.resumeHotkeys();
                 self.raptor.restoreFocus();
+                if (self.state) {
+                    self.raptor.stateRestore(self.state);
+                }
             }
         });
         aDialogOpen(dialogElement);
