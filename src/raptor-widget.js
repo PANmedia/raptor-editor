@@ -74,6 +74,7 @@ var RaptorWidget = {
 
         // List of hotkeys bound to the editor
         this.hotkeys = {};
+        this.hotkeysSuspended = true;
 
         // If hotkeys are enabled, register any custom hotkeys provided by the user
         if (this.options.enableHotkeys) {
@@ -903,7 +904,7 @@ var RaptorWidget = {
     bindHotkeys: function() {
         for (var keyCombination in this.hotkeys) {
             this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
-                if (this.isEditing()) {
+                if (this.isEditing() && !this.hotkeysSuspended) {
                     var result = this.hotkeys[event.data]();
                     if (result !== false) {
                         event.preventDefault();
@@ -911,6 +912,26 @@ var RaptorWidget = {
                 }
             }.bind(this));
         }
+    },
+
+    /**
+     * Suspend hotkey functionality.
+     */
+    suspendHotkeys: function() {
+        // <debug>
+        if (debugLevel >= MID) debug('Disabling hotkeys');
+        // </debug>
+        this.hotkeysSuspended = true;
+    },
+
+    /**
+     * Resume hotkey functionality.
+     */
+    resumeHotkeys: function() {
+        // <debug>
+        if (debugLevel >= MID) debug('Enabling hotkeys');
+        // </debug>
+        this.hotkeysSuspended = false;
     },
 
     /*========================================================================*\
