@@ -33,6 +33,7 @@ DialogButton.prototype = Object.create(Button.prototype);
  */
 DialogButton.prototype.action = function() {
     this.state = this.raptor.stateSave();
+    this.raptor.suspendHotkeys();
     var dialog = this.getDialog(this);
     this.openDialog(dialog);
     aDialogOpen(dialog);
@@ -137,6 +138,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
             if (dialogs[name].instance.state !== null) {
                 dialogs[name].instance.raptor.stateRestore(dialogs[name].instance.state);
             }
+            dialogs[name].instance.raptor.resumeHotkeys();
             dialogs[name].instance.raptor.restoreFocus();
         }.bind(this),
         buttons: []

@@ -34,6 +34,8 @@ Raptor.registerUi(new Button({
     },
     action: function() {
         this.state = this.raptor.stateSave();
+        this.raptor.suspendHotkeys();
+
         // If a customAction has been specified, use it instead of the default dialog.
         if (!this.options.customAction) {
             return this.showDialog();
@@ -82,6 +84,7 @@ Raptor.registerUi(new Button({
                 }
             ],
             close: function() {
+                self.raptor.resumeHotkeys();
                 self.raptor.restoreFocus();
             }
         });
@@ -135,6 +138,8 @@ Raptor.registerUi(new Button({
     insertFiles: function(files) {
         this.raptor.stateRestore(this.state);
         this.state = null;
+        this.raptor.resumeHotkeys();
+        this.raptor.restoreFocus();
 
         if (!files.length) {
             return;
