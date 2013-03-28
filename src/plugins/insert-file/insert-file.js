@@ -22,6 +22,7 @@ Raptor.registerUi(new Button({
         'gif'
     ],
     options: {
+
         /**
          * Save the current state, show the insert file dialog or file manager.
          *
@@ -32,6 +33,10 @@ Raptor.registerUi(new Button({
          */
         customAction: false
     },
+
+    /**
+     * Open the insert file dialog or file manager.
+     */
     action: function() {
         this.state = this.raptor.stateSave();
         this.raptor.suspendHotkeys();
