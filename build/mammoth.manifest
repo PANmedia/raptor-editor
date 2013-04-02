@@ -48,6 +48,7 @@ src/raptor-widget.js
 
 src/style/config.rb
 src/style/loading-small.png
+src/style/diagonal-lines.png
 src/style/raptor.scss
 src/style/messages.scss
 src/style/mixins.scss
@@ -67,7 +68,6 @@ src/components/layout/toolbar.js
 src/components/layout/toolbar.scss
 
 src/components/hover-panel/basic.js
-src/components/hover-panel/diagonal-lines.png
 src/components/hover-panel/basic.scss
 
 src/components/ui/button.js
