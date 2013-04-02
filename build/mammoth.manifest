@@ -278,7 +278,6 @@ src/plugins/text-style/style/strike.scss
 src/plugins/text-style/style/sub.scss
 src/plugins/text-style/style/super.scss
 src/plugins/text-style/style/text-size.scss
-src/plugins/text-style/style/text-style.scss
 src/plugins/text-style/style/underline-front-end.scss
 src/plugins/text-style/style/underline.scss
 
