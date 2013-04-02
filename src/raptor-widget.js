@@ -9,6 +9,13 @@
  */
 
 /**
+ * Set to true when raptor is reloading the page after it has disabled editing.
+ *
+ * @type Boolean
+ */
+var disabledReloading = false;
+
+/**
  * @class
  */
 var RaptorWidget = {
@@ -521,6 +528,10 @@ var RaptorWidget = {
                 .removeClass(this.options.baseClass + '-editing');
             rangy.getSelection().removeAllRanges();
             this.fire('disabled');
+            if (this.options.reloadOnDisable && !disabledReloading) {
+                disabledReloading = true;
+                window.location.reload();
+            }
         }
     },
 
@@ -532,7 +543,9 @@ var RaptorWidget = {
 
     stopEditing: function() {
         this.fire('cancel');
-        this.resetHtml();
+        if (!this.options.reloadOnDisable) {
+            this.resetHtml();
+        }
         this.hideLayout();
         this.disableEditing();
         this.dirty = false;
