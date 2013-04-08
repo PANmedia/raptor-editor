@@ -1,5 +1,7 @@
 /**
  * @fileOverview Cleaning helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
  */
@@ -21,8 +23,9 @@ function cleanReplaceElements(selector, replacements) {
     for (var find in replacements) {
         var replace = replacements[find];
         var i = 0;
+        var found = false;
         do {
-            var found = $(selector).find(find);
+            found = $(selector).find(find);
             if (found.length) {
                 found = $(found.get(0));
                 var clone = $(replace).clone();

@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the unsaved edit warning plugin class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,12 +11,11 @@ var unsavedEditWarningDirty = 0,
     unsavedEditWarningElement = null;
 
 /**
- * @class The unsaved edit warning plugin.
+ * The unsaved edit warning plugin.
+ *
  * @constructor
  * @augments RaptorPlugin
- *
- * @todo name details
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function UnsavedEditWarningPlugin(name, overrides) {

@@ -1,5 +1,7 @@
 /**
  * @fileOverview Type checking functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author Michael Robinson michael@panmedia.co.nz
  * @author David Neilsen david@panmedia.co.nz
  */

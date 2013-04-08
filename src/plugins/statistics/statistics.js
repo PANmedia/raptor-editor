@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the statistics code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,9 +11,6 @@ var statisticsDialog = null;
 
 /**
  * Creates an instance of a dialog button to display the pages statistics.
- *
- * @todo param details?
- * @param {type} param
  */
 Raptor.registerUi(new DialogButton({
     name: 'statistics',

@@ -1,8 +1,9 @@
 /**
  * @fileOverview Contains the table helper functions.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -10,12 +11,11 @@ var tableSupportDragging = false,
     tableSupportStartCell = null;
 
 /**
- * @class The supporting table class.
+ * The supporting table class.
+ *
  * @constructor
  * @augments RaptorPlugin
- *
- * @todo type and desc for name
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function TableSupport(name, overrides) {

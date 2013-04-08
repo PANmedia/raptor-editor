@@ -1,18 +1,19 @@
 /**
  * @fileOverview Contains the save rest class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class Thes save rest class.
+ * The save rest class.
+ *
  * @constructor
  * @augments RaptorPlugin
- *
  * @param {type} name
  * @param {type} overrides Options hash.
- * @returns {SaveRestPlugin}
  */
 function SaveRestPlugin(name, overrides) {
     this.method = 'put';
