@@ -12,7 +12,12 @@
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
-    if (wrapper.html().trim() === '') return;
+    if (wrapper.html().trim() === '') {
+        return;
+    }
+    if (!selectionGetFirstRange()) {
+        return;
+    }
     if (listShouldConvertType(listType, listItem, wrapper)) {
         return listConvertListType(listType, listItem, wrapper);
     }
@@ -52,7 +57,7 @@ function listShouldUnwrap(listType, listItem) {
  * @return {Boolean}
  */
 function listShouldConvertType(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionGetFirstRange();
     var commonAncestor = $(rangeGetCommonAncestor(range));
     if (rangeIsEmpty(range)) {
         var closestListItem = commonAncestor.closest(listItem, wrapper);
@@ -182,7 +187,7 @@ function listEnforceValidChildren(list, listItem, validChildren) {
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listWrapSelection(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionGetFirstRange();
     var commonAncestor = rangeGetCommonAncestor(range);
 
     /**
@@ -426,7 +431,7 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
  * @param {Object} listItem
  */
 function listUnwrapSelection(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionGetFirstRange();
     if (rangeIsEmpty(range)) {
         rangeExpandTo(range, [listItem]);
     }
@@ -508,7 +513,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
 }
 
 function listConvertListType(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionGetFirstRange();
     if (rangeIsEmpty(range)) {
         rangeExpandTo(range, [listItem]);
     }

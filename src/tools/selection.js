@@ -877,3 +877,14 @@ function selectionContains(selector, limit) {
     }.bind(this));
     return result;
 }
+
+/**
+ * @return {RangyRange|null} The first range in the current selection or null.
+ */
+function selectionGetFirstRange() {
+    var selection = rangy.getSelection();
+    if (!selection.rangeCount) {
+        return false;
+    }
+    return selection.getRangeAt(0);
+}
