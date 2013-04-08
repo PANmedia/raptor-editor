@@ -247,7 +247,7 @@ function rangeContainsNodeText(range, node) {
 }
 
 /**
- * Removes the white space at the start and the end of the selection.
+ * Removes the white space at the start and the end of the range.
  *
  * @param {RangyRange} range This is the range of selected text.
  */
