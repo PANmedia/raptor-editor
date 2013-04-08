@@ -1,7 +1,18 @@
+/**
+ * @fileOverview Basic hover panel.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
+ */
+
 var hoverPanel = null;
 Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
 
     options: {
+        /**
+         * @type {String[]} Array of hover panel components
+         */
         componentOrder: null
     },
 
@@ -9,7 +20,7 @@ Raptor.registerHoverPanel('basic', /** @lends HoverPanel.prototype */ {
     visible: false,
 
     /**
-     * Inititialise the hover panel
+     * Inititialise the hover panel.
      * @constructs
      */
     init: function() {
