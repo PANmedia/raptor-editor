@@ -821,3 +821,11 @@ function selectionContains(selector, limit) {
     }.bind(this));
     return result;
 }
+
+function selectionGetFirstRange() {
+    var selection = rangy.getSelection();
+    if (!selection.rangeCount) {
+        return false;
+    }
+    return selection.getRangeAt(0);
+}
