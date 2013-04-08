@@ -1,5 +1,7 @@
 /**
  * @fileOverview Contains the click button to edit plugin code.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
