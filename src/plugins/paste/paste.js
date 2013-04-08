@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the paste plugin class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -11,14 +13,12 @@ var pasteInProgress = false,
     selection = null;
 
 /**
- * @class The paste plugin class.
+ * The paste plugin class.
+ *
  * @constructor
  * @augments RaptorPlugin.
- *
- * @todo type and desc for name
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
- * @returns {Element}
  */
 function PastePlugin(name, overrides) {
     this.options = {
