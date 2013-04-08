@@ -1,3 +1,19 @@
+/**
+ * @fileOverview Contains the save JSON plugin code.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * The save JSON class.
+ *
+ * @constructor
+ * @param {String} name
+ * @param {Object} overrides
+ */
 function SaveJsonPlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'saveJson', overrides);
 }
@@ -20,6 +36,9 @@ SaveJsonPlugin.prototype.init = function() {
 };
 // </strict>
 
+/**
+ * Save Raptor content.
+ */
 SaveJsonPlugin.prototype.save = function() {
     var data = {};
     this.raptor.unify(function(raptor) {
@@ -42,6 +61,13 @@ SaveJsonPlugin.prototype.save = function() {
         .fail(this.fail.bind(this));
 };
 
+/**
+ * Done handler.
+ *
+ * @param {Object} data
+ * @param {Integer} status
+ * @param {Object} xhr
+ */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     this.raptor.saved();
     var message = _('saveJsonSaved');
@@ -59,6 +85,11 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     });
 };
 
+/**
+ * Fail handler.
+ *
+ * @param {Object} xhr
+ */
 SaveJsonPlugin.prototype.fail = function(xhr) {
     this.raptor.showError(_('saveJsonFail'));
 };
