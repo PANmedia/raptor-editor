@@ -10,6 +10,10 @@
     border-top: none;
 }
 
+.raptor-dock-docked-to-element .raptor-toolbar-wrapper {
+    border-top: 1px solid #c1c1c1;
+}
+
 .raptor-layout-toolbar-group {
     float: left;
     margin-right: $spacing;

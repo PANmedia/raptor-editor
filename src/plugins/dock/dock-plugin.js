@@ -84,7 +84,12 @@ DockPlugin.prototype.toggleState = function() {
  */
 DockPlugin.prototype.toggleDockToElement = function() {
     if (this.dockState) {
-        this.undockFromElement();
+        if (typeof this.dockState.dockedTo !== 'undefined') {
+            this.undockFromElement();
+        } else {
+            this.undockFromScreen();
+            this.dockToElement();
+        }
     } else {
         this.dockToElement();
     }
@@ -104,6 +109,7 @@ DockPlugin.prototype.dockToElement = function() {
         position: this.options.position,
         spacer: false
     });
+    this.activateButton(this.raptor.getUi('dockToElement'));
 };
 
 /**
@@ -115,6 +121,7 @@ DockPlugin.prototype.undockFromElement = function() {
     this.marker.replaceWith(undockFromElement(this.dockState));
     this.dockState = null;
     this.raptor.getLayout().getElement().removeClass(this.options.baseClass + '-docked-to-element');
+    this.deactivateButton(this.raptor.getUi('dockToElement'));
 };
 
 /**
@@ -124,7 +131,12 @@ DockPlugin.prototype.undockFromElement = function() {
  */
 DockPlugin.prototype.toggleDockToScreen = function() {
     if (this.dockState) {
-        this.undockFromScreen();
+        if (typeof this.dockState.dockedTo !== 'undefined') {
+            this.undockFromElement();
+            this.dockToScreen();
+        } else {
+            this.undockFromScreen();
+        }
     } else {
         this.dockToScreen();
     }
@@ -147,6 +159,7 @@ DockPlugin.prototype.dockToScreen = function() {
         spacer: true,
         under: this.options.under
     });
+    this.activateButton(this.raptor.getUi('dockToScreen'));
 };
 
 /**
@@ -160,6 +173,21 @@ DockPlugin.prototype.undockFromScreen = function() {
     this.raptor.getLayout().enableDragging();
     this.dockState = null;
     layoutElement.removeClass(this.options.baseClass + '-docked');
+    this.deactivateButton(this.raptor.getUi('dockToScreen'));
+};
+
+DockPlugin.prototype.deactivateButton = function(ui) {
+    if (typeof ui !== 'undefined' &&
+            typeof ui.button !== 'undefined') {
+        aButtonInactive(ui.button);
+    }
+};
+
+DockPlugin.prototype.activateButton = function(ui) {
+    if (typeof ui !== 'undefined' &&
+            typeof ui.button !== 'undefined') {
+        aButtonActive(ui.button);
+    }
 };
 
 Raptor.registerPlugin(new DockPlugin());
