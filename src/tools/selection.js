@@ -739,7 +739,63 @@ function selectionExpandToWord() {
 }
 
 /**
+ * Expands the user selection to contain the supplied selector, stopping at the specified limit element.
+ *
+ * @param {jQuerySelector} selector The selector to expand the selection to.
+ * @param {jQuerySelector} limit The element to stop at.
+ * @param {boolean} outer If true, then the outer most matched element (by the
+ *   selector) is wrapped. Otherwise the first matched element is wrapped.
+ */
+function selectionExpandTo(selector, limit, outer) {
+    var ranges = rangy.getSelection().getAllRanges();
+    for (var i = 0, l = ranges.length; i < l; i++) {
+        // Start container
+        var element = $(nodeFindParent(ranges[i].startContainer));
+        if (outer || (!element.is(selector) && !element.is(limit))) {
+            element = element.parentsUntil(limit, selector);
+        }
+        if (outer) {
+            element = element.last();
+        } else {
+            element = element.first();
+        }
+        if (element.length === 1 && !element.is(limit)) {
+            ranges[i].setStart(element[0], 0);
+        }
+
+        // End container
+        element = $(nodeFindParent(ranges[i].endContainer));
+        if (outer || (!element.is(selector) && !element.is(limit))) {
+            element = element.parentsUntil(limit, selector);
+        }
+        if (outer) {
+            element = element.last();
+        } else {
+            element = element.first();
+        }
+        if (element.length === 1 && !element.is(limit)) {
+            ranges[i].setEnd(element[0], element[0].childNodes.length);
+        }
+    }
+    rangy.getSelection().setRanges(ranges);
+}
+
+/**
+ * Trims an entire selection as per rangeTrim.
+ *
+ * @see rangeTrim
+ */
+function selectionTrim() {
+    var ranges = rangy.getSelection().getAllRanges();
+    for (var i = 0, l = ranges.length; i < l; i++) {
+        rangeTrim(ranges[i]);
+    }
+    rangy.getSelection().setRanges(ranges);
+}
+
+/**
  * Finds the inner elements and the wrapping tags for a selector??
+ *
  * @todo check descriptions, not sure what the one for the result is.
  * @param {string} selector A string containing a selector expression to match the current set of elements against.
  * @param {jQuery} limitElement The element to stop searching at.
