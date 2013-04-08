@@ -25,7 +25,8 @@ Raptor.registerUi(new DialogToggleButton({
 
     applyAction: function() {
         this.raptor.actionApply(function() {
-            selectionExpandToWord();
+            selectionExpandTo('a', this.raptor.getElement());
+            selectionTrim();
             var applier = rangy.createApplier({
                 tag: 'a',
                 attributes: linkAttributes
