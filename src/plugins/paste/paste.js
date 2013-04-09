@@ -21,6 +21,11 @@ var pasteInProgress = false,
  * @param {Object} overrides Options hash.
  */
 function PastePlugin(name, overrides) {
+    /**
+     * Default options.
+     *
+     * @type {Object}
+     */
     this.options = {
         /**
          * Tags that will not be stripped from pasted content.
@@ -322,4 +327,3 @@ PastePlugin.prototype.updateAreas = function() {
 };
 
 Raptor.registerPlugin(new PastePlugin());
-
