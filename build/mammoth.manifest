@@ -195,6 +195,8 @@ src/plugins/paste/paste.js
 src/plugins/paste/paste.scss
 src/plugins/paste/templates/dialog.html
 
+src/plugins/placeholder/placeholder.js
+
 src/plugins/save/save-json.js
 src/plugins/save/save-rest.js
 src/plugins/save/save.js
