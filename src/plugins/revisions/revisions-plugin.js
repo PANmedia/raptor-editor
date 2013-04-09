@@ -8,9 +8,10 @@
  */
 
 /**
- * @class The revisions plugin class.
+ * The revisions plugin class.
+ *
  * @constructor
- * @augments Raptor Plugin.
+ * @augments {RaptorPlugin}
  *
  * Default options:
  * <pre>{
@@ -19,7 +20,7 @@
  *      savePlugin: String
  * }</pre>
  *
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function RevisionsPlugin(name, overrides) {

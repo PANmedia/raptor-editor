@@ -14,7 +14,9 @@ var tableSupportDragging = false,
  * The supporting table class.
  *
  * @constructor
- * @augments RaptorPlugin
+ *
+ * @augments {RaptorPlugin}
+ *
  * @param {String} name
  * @param {Object} overrides Options hash.
  */

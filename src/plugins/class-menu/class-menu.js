@@ -8,9 +8,10 @@
  */
 
 /**
- * @class The select menu class.
+ * The select menu class.
+ *
  * @constructor
- * @augments select menu
+ * @augments {SelectMenu}
  *
  * @param {Object} options
  */

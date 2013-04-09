@@ -14,7 +14,8 @@ var unsavedEditWarningDirty = 0,
  * The unsaved edit warning plugin.
  *
  * @constructor
- * @augments RaptorPlugin
+ * @augments {RaptorPlugin}
+ *
  * @param {String} name
  * @param {Object} overrides Options hash.
  */

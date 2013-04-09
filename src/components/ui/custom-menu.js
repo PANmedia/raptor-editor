@@ -11,7 +11,7 @@
  * @class The custom menu class.
  *
  * @constructor
- * @augments menu class.
+ * @augments {Menu}
  *
  * Prepares and returns the custom menu Element to be used in the Raptor UI.
  *

@@ -11,7 +11,7 @@
  * @class The CSS class applier button.
  *
  * @constructor
- * @augments PreviewToggleButton
+ * @augments {PreviewToggleButton}
  * @param {Object} options
  */
 function CSSClassApplierButton(options) {

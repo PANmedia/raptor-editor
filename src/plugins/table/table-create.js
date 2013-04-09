@@ -11,7 +11,8 @@
  * The table menu class.
  *
  * @constructor
- * @augments Menu
+ * @augments {Menu}
+ *
  * @param {Object} options Options hash.
  */
 function TableMenu(options) {

@@ -11,9 +11,10 @@
  * The save rest class.
  *
  * @constructor
- * @augments RaptorPlugin
- * @param {type} name
- * @param {type} overrides Options hash.
+ * @augments {RaptorPlugin}
+ *
+ * @param {String} name
+ * @param {Object} overrides Options hash
  */
 function SaveRestPlugin(name, overrides) {
     this.method = 'put';

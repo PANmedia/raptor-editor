@@ -8,11 +8,11 @@
  */
 
 /**
- * @class The dock plugin class.
- * @constructor
- * @augments Raptor plugin.
+ * The dock plugin class.
  *
- * @todo not sure of desc for the params
+ * @constructor
+ * @augments {RaptorPlugin}
+ *
  * @param {String} name
  * @param {Object} overrides
  */

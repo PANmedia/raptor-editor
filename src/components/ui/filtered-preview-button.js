@@ -11,7 +11,7 @@
  * @class the filtered preview button class.
  *
  * @constructor
- * @augments PreviewButton
+ * @augments {PreviewButton}
  *
  * @param {Object} options
  */

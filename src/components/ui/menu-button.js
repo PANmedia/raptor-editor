@@ -8,13 +8,11 @@
  */
 
 /**
- * @class
  * @constructor
- * @augments Button
+ * @augments {Button}
  *
  * @param {Menu} menu The menu to create the menu button for.
  * @param {Object} options
- * @returns {MenuButton}
  */
 function MenuButton(menu, options) {
     this.menu = menu;

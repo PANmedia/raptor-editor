@@ -11,11 +11,9 @@
  * @class the preview button class.
  *
  * @constructor
- * @augments button
+ * @augments {Button}
  *
- * @todo is return correct? auto generated so got confused.
  * @param {Object} options
- * @returns {PreviewButton}
  */
 function PreviewButton(options) {
     this.previewing = false;

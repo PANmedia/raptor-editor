@@ -28,9 +28,10 @@ var imageResizeButton = false,
     };
 
 /**
- * @class the image resize button plugin class.
+ * The image resize button plugin class.
+ *
  * @constructor
- * @augments RaptorPlugin
+ * @augments {RaptorPlugin}
  *
  * @param {String} name
  * @param {Object} overrides Options hash.

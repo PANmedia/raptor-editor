@@ -8,12 +8,12 @@
  */
 
 /**
- * @class The toggle button class.
+ * The toggle button class.
+ *
  * @constructor
- * @augments Button
+ * @augments {Button}
  *
  * @param {Object} options
- * @returns {ToggleButton}
  */
 function ToggleButton(options) {
     this.disable = false;
