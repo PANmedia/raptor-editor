@@ -122,6 +122,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/paste/paste.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/placeholder/placeholder.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/save/save.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/save/save-json.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/save/save-rest.js"></script>
