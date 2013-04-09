@@ -155,6 +155,8 @@ registerLocale('en', 'English', {
     pasteDialogFormattedUnclean: 'Formatted Unclean',
     pasteDialogSource: 'Source Code',
 
+    placeholderPluginDefaultContent: '[Your content here]',
+
     saveTitle: 'Save content',
     saveJsonFail: 'Failed to save {{failed}} content block(s)',
     saveJsonSaved: 'Successfully saved {{saved}} content block(s).',
