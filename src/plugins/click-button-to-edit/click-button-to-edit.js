@@ -8,12 +8,11 @@
  */
 
 /**
- * @class The click button to edit plugin class.
- * @constructor
- * @augments Raptor Plugin.
+ * The click button to edit plugin class.
  *
- * @todo des and type for name.
- * @param {type} name
+ * @constructor
+ * @augments RaptorPlugin
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function ClickButtonToEditPlugin(name, overrides) {
