@@ -15,7 +15,7 @@ var tableSupportDragging = false,
  *
  * @constructor
  *
- * @augments {RaptorPlugin}
+ * @augments RaptorPlugin
  *
  * @param {String} name
  * @param {Object} overrides Options hash.

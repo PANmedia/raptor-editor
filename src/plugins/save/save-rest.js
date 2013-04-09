@@ -11,7 +11,7 @@
  * The save rest class.
  *
  * @constructor
- * @augments {RaptorPlugin}
+ * @augments RaptorPlugin
  *
  * @param {String} name
  * @param {Object} overrides Options hash

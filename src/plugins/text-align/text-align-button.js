@@ -11,7 +11,7 @@
  * The text align button class.
  *
  * @constructor
- * @augments {PreviewToggleButton}
+ * @augments PreviewToggleButton
  *
  * @param {Object} options Options hash.
  */

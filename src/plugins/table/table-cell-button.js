@@ -11,7 +11,7 @@
  * The table cell button class.
  *
  * @constructor
- * @augments {FilteredPreviewButton}
+ * @augments FilteredPreviewButton
  *
  * @param {Object} options Options hash.
  */

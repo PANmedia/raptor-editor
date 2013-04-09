@@ -11,7 +11,7 @@
  * The dock plugin class.
  *
  * @constructor
- * @augments {RaptorPlugin}
+ * @augments RaptorPlugin
  *
  * @param {String} name
  * @param {Object} overrides

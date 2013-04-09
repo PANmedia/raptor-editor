@@ -11,7 +11,7 @@
  * The select menu class.
  *
  * @constructor
- * @augments {SelectMenu}
+ * @augments SelectMenu
  *
  * @param {Object} options
  */

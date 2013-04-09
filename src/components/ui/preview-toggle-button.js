@@ -11,7 +11,7 @@
  * @class the preview toggle button class.
  *
  * @constructor
- * @augments {PreviewButton}
+ * @augments PreviewButton
  *
  * @param {Object} options
  */

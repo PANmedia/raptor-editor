@@ -11,7 +11,7 @@
  * The tag menu class.
  *
  * @constructor
- * @augments {SelectMenu}
+ * @augments SelectMenu
  *
  * @param {Object} options Options hash.
  */

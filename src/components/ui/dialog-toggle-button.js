@@ -11,8 +11,8 @@
  * @class
  *
  * @constructor
- * @augments {DialogButton}
- * @augments {ToggleButton}
+ * @augments DialogButton
+ * @augments ToggleButton
  *
  * @param {type} options
  */

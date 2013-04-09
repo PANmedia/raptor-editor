@@ -9,7 +9,7 @@
 
 /**
  * @constructor
- * @augments {Button}
+ * @augments Button
  *
  * @param {Menu} menu The menu to create the menu button for.
  * @param {Object} options

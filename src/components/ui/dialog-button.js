@@ -16,7 +16,7 @@ var dialogs = {};
  * @class
  *
  * @constructor
- * @augments {Button}
+ * @augments Button
  * @param {Object} options
  * @returns {DialogButton}
  */

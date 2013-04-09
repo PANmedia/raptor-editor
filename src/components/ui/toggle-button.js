@@ -11,7 +11,7 @@
  * The toggle button class.
  *
  * @constructor
- * @augments {Button}
+ * @augments Button
  *
  * @param {Object} options
  */

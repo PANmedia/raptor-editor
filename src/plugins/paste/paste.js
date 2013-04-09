@@ -16,7 +16,7 @@ var pasteInProgress = false,
  * The paste plugin class.
  *
  * @constructor
- * @augments {RaptorPlugin}
+ * @augments RaptorPlugin
  *
  * @param {String} name
  * @param {Object} overrides Options hash.

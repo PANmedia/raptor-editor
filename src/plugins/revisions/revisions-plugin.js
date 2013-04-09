@@ -11,7 +11,7 @@
  * The revisions plugin class.
  *
  * @constructor
- * @augments {RaptorPlugin}
+ * @augments RaptorPlugin
  *
  * Default options:
  * <pre>{
