@@ -37,13 +37,13 @@
         z-index: 10;
         position: relative;
     }
-    .raptor-lock-proportions-container {
+    .raptor-image-resize-button-lock-proportions-container {
         position: absolute;
         z-index: 0;
     }
 }
 
-.raptor-lock-proportions-container {
+.raptor-image-resize-button-lock-proportions-container {
     right: 16%;
     top: 34px;
     height: 54px;
@@ -55,7 +55,7 @@
     }
 }
 
-.raptor-lock-proportions {
+.raptor-image-resize-button-lock-proportions {
     $lock-size: 26px;
 
     position: absolute;
@@ -83,6 +83,7 @@
     }
 
     &.ui-state-hover {
+        cursor: pointer;
         border-width: 8px;
     }
 }

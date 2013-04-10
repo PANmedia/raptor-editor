@@ -46,6 +46,7 @@ ImageResizeButtonPlugin.prototype = Object.create(RaptorPlugin.prototype);
  * Initialize the image resize button plugin button.
  */
 ImageResizeButtonPlugin.prototype.init = function() {
+    this.proportional = true;
     this.raptor.getElement()
         .on('mouseenter', 'img', this.show.bind(this))
         .on('mouseleave', 'img', this.hide.bind(this));
@@ -98,15 +99,20 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
             return width;
         };
 
+        var plugin = this;
         widthInput.bind('keyup', function() {
             var width = inputWidth();
-            heightInput.val(Math.round(Math.abs(imageOriginalSize.height / imageOriginalSize.width * width)));
+            if (plugin.proportional) {
+                heightInput.val(Math.round(Math.abs(imageOriginalSize.height / imageOriginalSize.width * width)));
+            }
             this.resizeImage(width, inputHeight());
         }.bind(this));
 
         heightInput.bind('keyup', function() {
             var height = inputHeight();
-            widthInput.val(Math.round(Math.abs(imageOriginalSize.width / imageOriginalSize.height * height)));
+            if (plugin.proportional) {
+                widthInput.val(Math.round(Math.abs(imageOriginalSize.width / imageOriginalSize.height * height)));
+            }
             this.resizeImage(inputWidth(), height);
         }.bind(this));
 
@@ -179,6 +185,19 @@ ImageResizeButtonPlugin.prototype.openDialog = function() {
 
     imageResizeButtonDialog.find('[name=width]').val(imageOriginalSize.width),
     imageResizeButtonDialog.find('[name=height]').val(imageOriginalSize.height);
+
+    var plugin = this;
+    imageResizeButtonDialog.find('.' + this.options.baseClass + '-lock-proportions')
+        .hover(function() {
+            $(this).addClass('ui-state-hover');
+        }, function() {
+            $(this).removeClass('ui-state-hover');
+        })
+        .click(function() {
+            plugin.proportional = !plugin.proportional;
+            $(this).find('.ui-icon').toggleClass('ui-icon-locked', plugin.proportional)
+                .toggleClass('ui-icon-unlocked', !plugin.proportional);
+        });
 };
 
 /**
