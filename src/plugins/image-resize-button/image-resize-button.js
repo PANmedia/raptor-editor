@@ -111,6 +111,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
         }.bind(this));
 
         aDialog(imageResizeButtonDialog, {
+            width: 500,
             title: _('imageResizeButtonDialogTitle'),
             buttons: [
                 {

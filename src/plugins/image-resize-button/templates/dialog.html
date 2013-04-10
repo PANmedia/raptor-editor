@@ -1,10 +1,16 @@
-<div>
+<div class="raptor-resize-image">
     <div>
         <label for="{{baseClass}}-width">_('imageResizeButtonDialogWidth')</label>
-        <input id="{{baseClass}}-width" name="width" type="text" placeholder="_('imageResizeButtonDialogWidthPlaceHolder')"/>
+        <input class="form-text" id="{{baseClass}}-width" name="width" type="text" placeholder="_('imageResizeButtonDialogWidthPlaceHolder')"/>
     </div>
     <div>
         <label for="{{baseClass}}-height">_('imageResizeButtonDialogHeight')</label>
-        <input id="{{baseClass}}-height" name="height" type="text" placeholder="_('imageResizeButtonDialogHeightPlaceHolder')"/>
+        <input class="form-text" id="{{baseClass}}-height" name="height" type="text" placeholder="_('imageResizeButtonDialogHeightPlaceHolder')"/>
+    </div>
+    <div class="raptor-lock-proportions-container">
+        <span class="raptor-lock-proportions">
+            <span class="ui-button-text">Constrain proportions</span>
+            <span class="ui-icon ui-icon-locked"></span>
+        </span>
     </div>
 </div>
