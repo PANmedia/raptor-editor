@@ -23,6 +23,7 @@
                         docked: true,
                         persist: false,
                     },
+                    placeholder: false
                 },
                 layout: {
                     type: 'toolbar',

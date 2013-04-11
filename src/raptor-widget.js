@@ -386,12 +386,12 @@ var RaptorWidget = {
                 this.previewState = actionPreview(this.previewState, this.target, function() {
                     for (var i = 0, l = ranges.length; i < l; i++) {
                         rangy.getSelection().setSingleRange(ranges[i]);
-                        selectionConstrain(this.target);
+                        this.selectionConstrain();
                         action();
                     }
                 }.bind(this));
             } else {
-                selectionConstrain(this.target);
+                this.selectionConstrain();
                 this.previewState = actionPreview(this.previewState, this.target, action);
             }
         } catch (exception) {
@@ -417,12 +417,12 @@ var RaptorWidget = {
                 actionApply(function() {
                     for (var i = 0, l = ranges.length; i < l; i++) {
                         rangy.getSelection().setSingleRange(ranges[i]);
-                        selectionConstrain(this.target);
+                        this.selectionConstrain();
                         actionApply(action, this.history);
                     }
                 }.bind(this), this.history);
             } else {
-                selectionConstrain(this.target);
+                this.selectionConstrain();
                 actionApply(action, this.history);
             }
             this.checkChange();
@@ -439,7 +439,7 @@ var RaptorWidget = {
     actionRedo: function() { },
 
     stateSave: function() {
-        selectionConstrain(this.target);
+        this.selectionConstrain();
         return stateSave(this.target);
     },
 
@@ -454,6 +454,10 @@ var RaptorWidget = {
             selection.setRanges(restoredState.ranges);
             selection.refresh();
         }
+    },
+
+    selectionConstrain: function() {
+        selectionConstrain(this.target);
     },
 
     /*========================================================================*\
