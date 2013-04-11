@@ -6,8 +6,8 @@
  *
  * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.3alpha.774
- * Build date: 12 March 2013
+ * Version: 1.3alpha.776
+ * Build date: 12 April 2013
  */
 rangy.createModule("Highlighter", function(api, module) {
     api.requireModules( ["CssClassApplier"] );
