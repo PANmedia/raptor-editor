@@ -66,7 +66,7 @@ Button.prototype.getButton = function() {
 
 /**
  * @return {String} The button's title property value, or if not present then the
- *                      localized value for the button's name + Title.
+ *   localized value for the button's name + Title.
  */
 Button.prototype.getTitle = function() {
     return this.title || _(this.name + 'Title');
@@ -74,7 +74,7 @@ Button.prototype.getTitle = function() {
 
 /**
  * @return {String} The button's icon property value, or the ui-icon- prefix
- *                      with the button's camel cased name appended.
+ *   with the button's camel cased name appended.
  */
 Button.prototype.getIcon = function() {
     if (this.icon === null) {
