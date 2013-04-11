@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <script type="text/javascript" src="../../js/case.js"></script>
     <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
 </head>
