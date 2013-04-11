@@ -1,46 +1,16 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-}
+.test-input table,
+.test-expected table,
+.test-output table {
+  border-collapse: separate; }
 
-del {
-    background-color: #FFE6E6;
-}
-
-ins {
-    background-color: #E6FFE6;
-}
-
-hr {
-    margin: 20px;
-}
-
-h2 {
-    font-size: 15px;
-}
-
-p, h2 {
-    padding: 0 5px;
-}
-
-nav a {
-    display: block;
-}
-
-aside {
-    width: 18%;
-    float: left;
-}
-
-.iframes {
-    width: 78%;
-    float: left;
-}
-
-iframe {
-    border: 0;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    vertical-align: bottom;
-}
+.test-input table, .test-input td, .test-input th,
+.test-expected table,
+.test-expected td,
+.test-expected th,
+.test-output table,
+.test-output td,
+.test-output th {
+  white-space: normal;
+  border: 1px dotted #777777;
+  margin: 5px;
+  padding: 5px; }

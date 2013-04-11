@@ -358,6 +358,27 @@
     </target>
 
     <!-- =================================================================== -->
+    <!-- Test scss                                                           -->
+    <!-- =================================================================== -->
+    <target name="test-css">
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/case.scss css/case.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/diff.scss css/diff.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/style.scss css/style.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/table.scss css/style.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/tests.scss css/tests.css
+        " />
+    </target>
+
+    <!-- =================================================================== -->
     <!-- Adhoc classes                                                       -->
     <!-- =================================================================== -->
     <adhoc-task name="datauri">

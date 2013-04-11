@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+del {
+    background-color: #FFE6E6;
+}
+
+ins {
+    background-color: #E6FFE6;
+}
+ 
+hr {
+    margin: 20px;
+}
+
+h2 {
+    font-size: 18px;
+}
+
+p, h2 {
+    padding: 0 5px;
+}
+
+nav a {
+    display: block;
+}
+
+li {
+    padding-bottom: 5px;
+}
+
+aside {
+    width: 18%;
+    float: left;
+}
+
+.iframes {
+    width: 78%;
+    float: left;
+}
+
+iframe {
+    border: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
+}
