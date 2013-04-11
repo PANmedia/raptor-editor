@@ -264,7 +264,9 @@ var RaptorWidget = {
             // Give the div a unique ID
             .attr('id', elementUniqueId())
             // Copy the original elements class(es) to the replacement div
-            .addClass(this.element.attr('class'));
+            .addClass(this.element.attr('class'))
+            // Add custom classes
+            .addClass(this.options.classes);
 
         var style = elementGetStyles(this.element);
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
@@ -486,7 +488,9 @@ var RaptorWidget = {
 
             this.enabled = true;
 
-            this.getElement().addClass(this.options.baseClass + '-editing');
+            this.getElement()
+                .addClass(this.options.baseClass + '-editing')
+                .addClass(this.options.classes);
             if (this.options.partialEdit) {
                 this.getElement().find(this.options.partialEdit).prop('contenteditable', true);
             } else {
@@ -525,7 +529,8 @@ var RaptorWidget = {
             this.enabled = false;
             this.getElement()
                 .prop('contenteditable', false)
-                .removeClass(this.options.baseClass + '-editing');
+                .removeClass(this.options.baseClass + '-editing')
+                .removeClass(this.options.classes);
             rangy.getSelection().removeAllRanges();
             this.fire('disabled');
             if (this.options.reloadOnDisable && !disabledReloading) {
