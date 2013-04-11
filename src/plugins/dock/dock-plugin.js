@@ -1,16 +1,18 @@
 /**
  * @fileOverview Contains the dock plugin class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The dock plugin class.
- * @constructor
- * @augments Raptor plugin.
+ * The dock plugin class.
  *
- * @todo not sure of desc for the params
+ * @constructor
+ * @augments RaptorPlugin
+ *
  * @param {String} name
  * @param {Object} overrides
  */

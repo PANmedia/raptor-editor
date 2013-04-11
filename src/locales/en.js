@@ -1,5 +1,7 @@
 /**
  * @fileOverview English strings file.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
@@ -152,6 +154,8 @@ registerLocale('en', 'English', {
     pasteDialogFormattedCleaned: 'Formatted &amp; Cleaned',
     pasteDialogFormattedUnclean: 'Formatted Unclean',
     pasteDialogSource: 'Source Code',
+
+    placeholderPluginDefaultContent: '[Your content here]',
 
     saveTitle: 'Save content',
     saveJsonFail: 'Failed to save {{failed}} content block(s)',

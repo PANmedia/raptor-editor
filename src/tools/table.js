@@ -1,5 +1,7 @@
 /**
  * @fileOverview Table helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen - david@panmedia.co.nz
  */
 
@@ -107,7 +109,7 @@ function tableGetCellIndex(cell) {
                     x: x,
                     y: y
                 };
-            };
+            }
         }
     }
 }

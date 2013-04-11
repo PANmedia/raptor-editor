@@ -1,17 +1,15 @@
 /**
  * @fileOverview Contains the justify text button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * Creates a text align button to justify text.
- *
- * @todo param details?
- * @param {type} param.
  */
-
 Raptor.registerUi(new TextAlignButton({
     name: 'alignJustify',
     getClass: function() {

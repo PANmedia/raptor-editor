@@ -1,9 +1,10 @@
 /**
  * @fileOverview Contains the dialog button class code.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
@@ -16,7 +17,6 @@ var dialogs = {};
  *
  * @constructor
  * @augments Button
- *
  * @param {Object} options
  * @returns {DialogButton}
  */

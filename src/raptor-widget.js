@@ -745,7 +745,9 @@ var RaptorWidget = {
             var editor = this;
             $(function() {
                 editor.fire('show');
-                editor.getElement().focus();
+                if (!editor.options.autoEnable) {
+                    editor.getElement().focus();
+                }
                 editor.fire('selectionChange');
             });
         }

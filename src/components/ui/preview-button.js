@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the preview button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,11 +11,9 @@
  * @class the preview button class.
  *
  * @constructor
- * @augments button
+ * @augments Button
  *
- * @todo is return correct? auto generated so got confused.
  * @param {Object} options
- * @returns {PreviewButton}
  */
 function PreviewButton(options) {
     this.previewing = false;

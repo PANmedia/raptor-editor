@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the paste plugin class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -11,16 +13,20 @@ var pasteInProgress = false,
     selection = null;
 
 /**
- * @class The paste plugin class.
- * @constructor
- * @augments RaptorPlugin.
+ * The paste plugin class.
  *
- * @todo type and desc for name
- * @param {type} name
+ * @constructor
+ * @augments RaptorPlugin
+ *
+ * @param {String} name
  * @param {Object} overrides Options hash.
- * @returns {Element}
  */
 function PastePlugin(name, overrides) {
+    /**
+     * Default options.
+     *
+     * @type {Object}
+     */
     this.options = {
         /**
          * Tags that will not be stripped from pasted content.
@@ -322,4 +328,3 @@ PastePlugin.prototype.updateAreas = function() {
 };
 
 Raptor.registerPlugin(new PastePlugin());
-

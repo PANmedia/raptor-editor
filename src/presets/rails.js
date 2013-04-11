@@ -1,12 +1,14 @@
 /**
- * @fileOverview Contains the rails default toolbar code?.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @fileOverview Contains the rails Raptor preset.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
+
 /**
- * @todo not sure what to put for these?
- * @type @exp;$@call;extend
+ * @namespace Rails preset for Raptor.
  */
 Raptor.defaults = $.extend(basePreset, {
     layout: {

@@ -1,14 +1,17 @@
 /**
  * @fileOverview Contains the revisions plugin code.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The revisions plugin class.
+ * The revisions plugin class.
+ *
  * @constructor
- * @augments Raptor Plugin.
+ * @augments RaptorPlugin
  *
  * Default options:
  * <pre>{
@@ -17,7 +20,7 @@
  *      savePlugin: String
  * }</pre>
  *
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function RevisionsPlugin(name, overrides) {

@@ -1,5 +1,6 @@
 /**
  * @fileOverview Editor internationalization (i18n) private functions and properties.
+ * @license http://www.raptor-editor.com/license
  *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>

@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the view revisions diff button code.
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  David Neilsen <david@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,8 +11,6 @@ var diffs = {};
 
 /**
  * Creates an instance of the dialog button to open the revisions dialog.
- *
- * @param {type} param
  */
 var RevisionsDiffButton = new DialogButton({
     name: 'revisionsDiffButton',

@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the preview toggle button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,7 +11,8 @@
  * @class the preview toggle button class.
  *
  * @constructor
- * @augments preview button.
+ * @augments PreviewButton
+ *
  * @param {Object} options
  */
 function PreviewToggleButton(options) {

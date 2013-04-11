@@ -1,17 +1,19 @@
 /**
  * @fileOverview Contains the click button to edit plugin code.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The click button to edit plugin class.
- * @constructor
- * @augments Raptor Plugin.
+ * The click button to edit plugin class.
  *
- * @todo des and type for name.
- * @param {type} name
+ * @constructor
+ * @augments RaptorPlugin
+ *
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function ClickButtonToEditPlugin(name, overrides) {

@@ -1,5 +1,7 @@
 /**
  * @fileOverview Find node parent helper function.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */

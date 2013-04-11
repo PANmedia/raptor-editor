@@ -18,14 +18,24 @@
 
     </head>
     <body>
+        <div class="tests-notification">
+            <div class="ui-state-highlight">
+                <span class="ui-icon spinner"></span>
+                <h2>Your tests are running</h2>
+                <p>This may take a few minutes</p>
+            </div>
+        </div>
         <?php if (!empty($warnings)): ?>
-            <h2>Warnings: </h2>
-            <ul>
-                <?php foreach ($warnings as $warning): ?>
-                    <li><?= $warning ?></li>
-            <?php endforeach; ?>
-            </ul>
+            <div class="test-warnings-frame ui-state-warning">
+                <h2>Warnings: </h2>
+                <ul class="test-warnings">
+                    <?php foreach ($warnings as $warning): ?>
+                        <li><?= $warning ?></li>
+                <?php endforeach; ?>
+                </ul>
+            </div>
         <?php endif; ?>
+        <div>
         <h2>Tests: </h2>
         <div class="content">
             <div class="summary"></div>
@@ -38,7 +48,7 @@
             <div class="tests">
                 <?php $i = 1; ?>
                 <?php foreach ($groups as $group): ?>
-                    <div class="group" data-path="<?= $group['path'] ?>">
+                    <div class="group ui-state-default" data-path="<?= $group['path'] ?>">
                         <div class="number">
                             <label><input class="group-check" type="checkbox"><?= $i ?></label>
                         </div>
@@ -59,9 +69,9 @@
                             </div>
                         </div>
                         <?php $k = 0; foreach ($group["tests"] as $item): ?>
-                            <div class="item" style="display: none;" data-file-name="<?= $item['filename'] ?>">
+                            <div class="item ui-state-default" style="display: none;" data-file-name="<?= $item['filename'] ?>">
                                 <div class="number">
-                                    <input class="item-check" type="checkbox"><?= $i . chr(97 + $k++) ?>
+                                    <label><input class="item-check" type="checkbox"><?= $i . chr(97 + $k++) ?></label>
                                 </div>
                                 <div class="item-header">
                                     <div class="ui-widget ui-notification">
@@ -94,6 +104,7 @@
                 This may take several minutes
             </div>
             <div class="iframes"></div>
+            </div>
         </div>
     </body>
 </html>

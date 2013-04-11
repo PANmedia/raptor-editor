@@ -1,17 +1,19 @@
 /**
  * @fileOverview Contains the table menu class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The table menu class.
+ * The table menu class.
+ *
  * @constructor
  * @augments Menu
  *
  * @param {Object} options Options hash.
- * @returns {Element}
  */
 function TableMenu(options) {
     Menu.call(this, {

@@ -1,14 +1,14 @@
 /**
  * @fileOverview Contains the apply revisions button code.
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  David Neilsen <david@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * Creates an instance of the apply button that applies & saves the selected revision
- *
- * @param {type} param
  */
 var RevisionsApplyButton = new DialogButton({
     name: 'revisionsApplyButton',

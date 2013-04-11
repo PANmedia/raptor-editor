@@ -1,12 +1,15 @@
 /**
  * @fileOverview Contains the snippet menu class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The snippet menu class.
+ * The snippet menu class.
+ *
  * @constructor
  * @augments SelectMenu
  *
@@ -90,6 +93,5 @@ SnippetMenu.prototype.getMenuItems = function() {
         .mouseenter(this.preview.bind(this))
         .mouseleave(this.previewRestore.bind(this));
 };
-
 
 Raptor.registerUi(new SnippetMenu());

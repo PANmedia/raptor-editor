@@ -1,17 +1,19 @@
 /**
  * @fileOverview Contains the text align button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The text align button class.
+ * The text align button class.
+ *
  * @constructor
  * @augments PreviewToggleButton
  *
  * @param {Object} options Options hash.
- * @returns {Element}
  */
 function TextAlignButton(options) {
     PreviewToggleButton.call(this, $.extend({

@@ -1,7 +1,9 @@
 /**
  * @fileOverview Docking to screen and element helper functions.
- * @author David Neilsen - david@panmedia.co.nz
- * @author Michael Robinson - michael@panmedia.co.nz
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 
 /**

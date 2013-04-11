@@ -1,0 +1,206 @@
+@import "compass/css3",
+        "style";
+
+.content {
+    margin-left: 3%;
+    margin-right: 3%;
+    width: 94%;
+}
+
+.tests {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1%;
+    margin-bottom: 2%;
+    @include box-shadow(0 2px 15px #888);
+    button {
+        margin-top: 0;
+    }
+}
+
+.test-button {
+    float: right;
+    margin: 1em;
+}
+
+.group {
+    float: left;
+    clear: both;
+    width: 100%;
+    margin-bottom: -1px;
+}
+
+.group-header, .item-header, .item {
+    float: right;
+    width: 92%;
+}
+
+.group-content, .item-content {
+    padding-bottom: 10px;
+    padding-top: 13px;
+    margin: -1px -1px -1px 0;
+    z-index: 0;
+    box-sizing: border-box;
+    position: relative;
+
+    .ui-widget & {
+        .ui-icon {
+            position: absolute;
+            left: 15px;
+            top: 0.9em;
+            margin-top: 0;
+        }
+    }
+}
+
+.tests-notification {
+    width: 100%;
+    @include box-sizing(border-box);
+    @include box-shadow(0 5px 15px rgba(0,0,0,0.5));
+    position: fixed;
+    top: -15px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 0;
+    overflow: hidden;
+    @include transition(top 0.5s ease-out, height 0.5s ease-out);
+
+    .tests-running & {
+        height: 75px;
+        top: 0;
+    }
+
+    .ui-icon {
+        position: absolute;
+        left: 20px;
+        top: 1.6em;
+        margin-top: 0;
+        width: 32px;
+        height: 32px;
+    }
+
+    h2, p {
+        padding-left: 0;
+        margin: 0 0 10px;
+    }
+
+    h2 {
+        padding-top: 0.6em;
+    }
+
+    .ui-state-highlight {
+        margin-left: 0;
+        padding: 3px 5.5em 5px;
+        border-top: 0 none;
+    }
+}
+
+.number {
+    width: 8%;
+    float: left;
+
+    label {
+        padding: 1em 0 2.6em 30%;
+        display: block;
+        font-weight: bold;
+    }
+}
+
+.spinner {
+    background: url(/tests/images/spinner.gif) no-repeat 0 0 transparent;
+}
+
+.item {
+    @include box-sizing(border-box);
+    border-right: 0 none;
+    margin-bottom: -1px;
+}
+
+.description {
+    margin-left: 3.5em;
+    margin-top: .5em;
+    width: 80%;
+    p {
+        padding: 0!important;
+        margin: 5px 0;
+    }
+}
+
+h2 {
+    margin-left: 3%;
+}
+
+.clear {
+    clear: both;
+}
+
+.error-message {
+    float: left;
+    margin-left: 3.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    font-style: italic;
+}
+
+.summary {
+    float: right;
+    text-align: right;
+    line-height: 1.6;
+}
+
+.buttons {
+    float: left;
+    padding-bottom: 1em;
+}
+
+.buttons, .tests {
+    button {
+        padding: 0.75em 1em;
+        margin-bottom: 0.5em;
+        cursor: pointer;
+        text-shadow: 0 1px 1px #fff;
+        border: 1px solid #555;
+        @include background(linear-gradient(#eee, #e1e1e1));
+
+        &:hover {
+            border-color: #222;
+            background-color: #444;
+            @include background(linear-gradient(#333, #666));
+            text-shadow: 0 1px 1px #000;
+            color: #fff;
+        }
+    }
+}
+
+iframe {
+    position: fixed;
+    top: 1px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.group-header,
+.number label {
+    cursor: pointer;
+}
+
+.group-header, .item-header {
+    .title {
+        position: relative;
+        width: 80%;
+    }
+
+    .ui-state-confirmation, 
+    .ui-state-highlight, 
+    .ui-state-error, 
+    .ui-state-warning {
+        z-index: 10;
+        position: relative;
+    }
+    .title {
+        strong {
+            padding-left: 3.5em;
+        }
+    }
+}

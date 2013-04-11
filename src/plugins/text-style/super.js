@@ -1,15 +1,15 @@
 /**
  * @fileOverview Contains the superscript button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * Creates an instance of the CSS applier button to apply the superscript class to a selection.
- *
- * @todo param stuffs?
- * @param {type} param
+ * Creates an instance of the CSS applier button to apply the superscript class
+ * to a selection.
  */
 Raptor.registerUi(new CSSClassApplierButton({
     name: 'textSuper',

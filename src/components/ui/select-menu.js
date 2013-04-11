@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the select menu class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,7 +11,7 @@
  * @class The select menu class.
  *
  * @constructor
- * @augments menu
+ * @augments Menu
  *
  * @param {Object} options
  */

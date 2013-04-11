@@ -100,6 +100,7 @@ function checkState(content, currentIcon, state, icon) {
  */
 function runTest(path, fileName) {
     testRunning = true;
+    $('body').addClass('tests-running');
     $('<iframe>')
             .attr('src', 'cases/' + path + '/' + fileName)
             .load(function() {
@@ -169,6 +170,7 @@ function finishTest() {
     $('iframe').remove();
     updateSummary();
     testRunning = false;
+    $('body').removeClass('tests-running');
 }
 
 //Checks every 500 miliseconds whether there is a test running

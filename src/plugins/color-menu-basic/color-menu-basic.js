@@ -1,17 +1,19 @@
 /**
  * @fileOverview Contains the basic colour menu class code.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The basic colour menu class.
+ * The basic colour menu class.
+ *
  * @constructor
  * @augments SelectMenu
  *
  * @param {Object} options
- * @returns {ColorMenuBasic}
  */
 function ColorMenuBasic(options) {
     this.colors = [
