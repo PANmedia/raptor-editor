@@ -15,17 +15,16 @@ var testEditorQueue = [],
     testEditorQueueTimer = null,
     testEditorRunning = false;
 
-function testEditor(container, action) {
+function testEditor(container, action, options) {
     if ($(container).length !== 1) {
         throw new Error('Duplicate or missing container: ' + container);
-        return;
     }
-    testEditorQueue.push([container, action]);
+    testEditorQueue.push([container, action, options]);
     if (testEditorQueueTimer === null) {
         testEditorQueueTimer = setInterval(function() {
             if (testEditorRunning === false && testEditorQueue.length > 0) {
                 var test = testEditorQueue.shift();
-                runEditorTest(test[0], test[1]);
+                runEditorTest(test[0], test[1], test[2]);
             }
             if (testEditorRunning === false && testEditorQueue.length === 0) {
                 window.testResults.finished = true;
@@ -35,49 +34,52 @@ function testEditor(container, action) {
     }
 }
 
-function runEditorTest(container, action) {
+var defaultOptions = {
+    autoEnable: true,
+    urlPrefix: '../../../src/',
+    plugins: {
+//            dock: {
+//                docked: true
+//            },
+        logo: false,
+        save: {
+            plugin: null
+        },
+        saveJson: {
+            url: 'save.php',
+            postName: 'raptor-content',
+            id: function() {
+                return this.raptor.getElement().data('id');
+            }
+        },
+        saveRest: {
+            url: 'save.php',
+            data: function(html) {
+                return {
+                    id: this.raptor.getElement().data('id'),
+                    content: html
+                };
+            }
+        },
+        classMenu: {
+            classes: {
+                'Blue background': 'cms-blue-bg',
+                'Round corners': 'cms-round-corners',
+                'Indent and center': 'cms-indent-center'
+            }
+        }
+    }
+};
+
+function runEditorTest(container, action, options) {
     testEditorRunning = true;
     var input = $(container).find('.test-input');
     var html = input.html();
     var output = $('<div>').addClass('test-output').html(html).appendTo(container);
     var diff = $('<div>').addClass('test-diff').appendTo(container);
     var expected = $(container).find('.test-expected');
-    output.find('.editible').raptor({
-        autoEnable: true,
-        urlPrefix: '../../../src/',
-        plugins: {
-//            dock: {
-//                docked: true
-//            },
-            logo: false,
-            save: {
-                plugin: null
-            },
-            saveJson: {
-                url: 'save.php',
-                postName: 'raptor-content',
-                id: function() {
-                    return this.raptor.getElement().data('id');
-                }
-            },
-            saveRest: {
-                url: 'save.php',
-                data: function(html) {
-                    return {
-                        id: this.raptor.getElement().data('id'),
-                        content: html
-                    };
-                }
-            },
-            classMenu: {
-                classes: {
-                    'Blue background': 'cms-blue-bg',
-                    'Round corners': 'cms-round-corners',
-                    'Indent and center': 'cms-indent-center'
-                }
-            }
-        }
-    });
+    options = $.extend({}, defaultOptions, options, true);
+    output.find('.editible').raptor(options);
 
     var inputSource = $('<div>')
         .addClass('test-source test-box test-input-source')
@@ -114,9 +116,10 @@ function runEditorTest(container, action) {
         output.addClass('test-box');
         $('<div>').addClass('test-clear').insertAfter(outputSource);
 
+        var expectedHTML, actualHTML;
         if (error) {
-            var expectedHTML = style_html(expected.find('.editible').html());
-            var actualHTML = style_html(output.find('.editible').html());
+            expectedHTML = style_html(expected.find('.editible').html());
+            actualHTML = style_html(output.find('.editible').html());
             if (actualHTML !== expectedHTML) {
                 diff.html(diffstr(expectedHTML, actualHTML));
             }
@@ -129,8 +132,8 @@ function runEditorTest(container, action) {
             });
             fail(container);
         } else {
-            var expectedHTML = style_html(expected.find('.editible').html());
-            var actualHTML = style_html(output.find('.editible').html());
+            expectedHTML = style_html(expected.find('.editible').html());
+            actualHTML = style_html(output.find('.editible').html());
 
             diff.html(diffstr(expectedHTML, actualHTML));
             if (actualHTML !== expectedHTML) {
