@@ -6,12 +6,12 @@
 @import 'compass/css3/box-sizing';
 
 .raptor-toolbar-wrapper {
-    border: 1px solid #c1c1c1;
+    border: $border-style;
     border-top: none;
 }
 
 .raptor-dock-docked-to-element .raptor-toolbar-wrapper {
-    border-top: 1px solid #c1c1c1;
+    border-top: $border-style;
 }
 
 .raptor-layout-toolbar-group {
