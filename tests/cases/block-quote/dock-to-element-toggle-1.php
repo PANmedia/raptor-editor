@@ -55,11 +55,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-1', function(input) {
+        testEditor('.test-1', function(input) {
             tokensToSelection(input);
             listToggle('blockquote', 'p', input);
             selectionToTokens();
-        });
+        }, options);
     </script>
     <div class="test-2">
         <h1>List 2: listToggle within an &lt;a&gt;</h1>
