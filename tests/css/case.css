@@ -206,7 +206,7 @@ body > div, .test-results:before, .test-input:before, .test-source:before, .test
     content: "Fail: ";
     background: #CB2402; }
 
-.editible p {
+.editable p {
   padding: 0 10px; }
 
 .error-output {

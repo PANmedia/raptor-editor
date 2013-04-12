@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Create Table Button 1: Active When Table is Not Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -70,7 +70,7 @@
     <div class="test-2">
         <h1>Insert Column Button 1: Active When Table is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>some text that isn't selected</p>
                 <table>{
                     <tr>
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>{
                     <tr>
@@ -129,7 +129,7 @@
     <div class="test-3">
         <h1>Insert Row Button 1: Active When Table is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -151,7 +151,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -188,7 +188,7 @@
     <div class="test-4">
         <h1>Delete Column Button 1: Active When Table is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -210,7 +210,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -247,7 +247,7 @@
      <div class="test-5">
         <h1>Delete Row Button 1: Active When Table is Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -269,7 +269,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -306,7 +306,7 @@
      <div class="test-6">
         <h1>Create Table Button 2: Active When Table is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -328,7 +328,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -365,7 +365,7 @@
     <div class="test-7">
         <h1>Insert Column Button 2: Not Active When Table is Not Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -387,7 +387,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -424,7 +424,7 @@
     <div class="test-8">
         <h1>Insert Row Button 8: Not Active When Table is Not Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -446,7 +446,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -483,7 +483,7 @@
     <div class="test-9">
         <h1>Delete Column Button 2: Not Active When Table is not Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -505,7 +505,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -542,7 +542,7 @@
      <div class="test-10">
         <h1>Delete Row Button 2: Not Active When Table is Not Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -564,7 +564,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -601,7 +601,7 @@
     <div class="test-11">
         <h1>Merge Cells Button 1: Active When Table is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>some text that isn't selected</p>
                 <table>
                 <tr>
@@ -622,7 +622,7 @@
             </table>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
@@ -661,7 +661,7 @@
     <div class="test-12">
         <h1>Merge Cells Button 2: Not Active When Table is Not Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -683,7 +683,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -720,7 +720,7 @@
     <div class="test-13">
         <h1>Split Cells Button 1: Active When Table is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                <table>
                     <tr>
@@ -744,7 +744,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>some text that isn't selected</p>
                 <table>
                     <tr>
@@ -787,7 +787,7 @@
     <div class="test-14">
         <h1>Split Cells Button 2: Not Active When Table is Not Selected in Cell</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <p>{some text that is selected}</p>
                 <table>
                     <tr>
@@ -811,7 +811,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                  <p>{some text that is selected}</p>
                 <table>
                     <tr>

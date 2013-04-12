@@ -8,7 +8,7 @@
     <div class="test-1">
         <h1>Navigate By Tab 1: Simple Tab</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell{} 0,0</td>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
@@ -64,7 +64,7 @@
     <div class="test-2">
         <h1>Navigate By Tab 2: Tab in Header</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <thead>
                         <tr>
@@ -135,7 +135,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <thead>
                         <tr>
@@ -217,7 +217,7 @@
     <div class="test-3">
         <h1>Navigate By Tab 3: Tab in Footer</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <thead>
                         <tr>
@@ -288,7 +288,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <thead>
                         <tr>

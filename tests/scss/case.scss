@@ -160,7 +160,7 @@ body {
     .pass{
         &:before {
             content: "Pass: ";
-            @extend %blue-header;    
+            @extend %blue-header;
         }
         h1 {
             margin: 5px;
@@ -208,7 +208,7 @@ body {
     }
 }
 
-.editible {
+.editable {
     p {
         padding: 0 10px;
     }

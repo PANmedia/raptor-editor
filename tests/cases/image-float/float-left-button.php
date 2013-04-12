@@ -11,14 +11,14 @@
     <div class="test-1">
         <h1>Left Float Button 1: Float Image - No Text</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                     <div style="clear: both">
                     </div>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-left"  />}
                     <div style="clear: both">
                     </div>
@@ -40,7 +40,7 @@
     <div class="test-2">
         <h1>Left Float Button 2: Float Image With Text </h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-left"  />
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas

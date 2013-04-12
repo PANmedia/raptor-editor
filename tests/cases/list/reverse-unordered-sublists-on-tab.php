@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Unordered List 1: Create an unordered sub list from group of words</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -66,7 +66,7 @@
     <div class="test-2">
         <h1>Unordered List 2: Create an unordered sublist from single word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         Lorem ipsum dolor sit amet,
@@ -83,7 +83,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Lorem ipsum dolor sit amet,</li>
                     <li>{consectetur}</li>
@@ -110,7 +110,7 @@
     <div class="test-3">
        <h1>Unordered List 3: Create an unordered sublist with multiple items selection from part word to part word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         Lor
@@ -126,7 +126,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Lor</li>
                     <li>{em ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -151,7 +151,7 @@
     <div class="test-4">
         <h1>Unordered List 4: Create an unordered sublist from a list with multiple heading items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li><h3>Item 1</h3></li>
                     <ul>
@@ -164,7 +164,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li><h3>Item 1</h3></li>
                     <li><h2>It{}em 2</h2></li>

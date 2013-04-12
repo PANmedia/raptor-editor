@@ -14,7 +14,7 @@
     <div class="test-1">
         <h1>Cancel Formatting Button 1: Basic</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id <strong class="cms-bold">erat pellentesque</strong> et rhoncus nunc semper. Suspendisse
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id <strong class="cms-bold">erat pellentesque</strong> et rhoncus nunc semper. Suspendisse
@@ -47,7 +47,7 @@
     <div class="test-2">
         <h1>Cancel Formatting Button 2: Complex</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -81,7 +81,7 @@
     <div class="test-3">
         <h1>Cancel Formatting Button 3: Multi Paragraph Basic</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {<strong class="cms-bold">id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {<strong class="cms-bold">id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -120,7 +120,7 @@
     <div class="test-4">
         <h1>Cancel Formatting Button 4: Multi Paragraph Complex</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum {dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum {dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -160,7 +160,7 @@
     <div class="test-5">
         <h1>Cancel Formatting Button 5: Empty Selection in Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -173,7 +173,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -198,7 +198,7 @@
     <div class="test-6">
         <h1>Cancel Formatting Button 6: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat <u class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
@@ -211,7 +211,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat <u class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
@@ -236,7 +236,7 @@
     <div class="test-7">
         <h1>Cancel Formatting Button 7: Alignment</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
@@ -249,7 +249,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id eratpellentesque et rhoncus nunc semper. Suspendisse
@@ -274,7 +274,7 @@
     <div class="test-8">
         <h1>Cancel Formatting Button 8: Two Different Alignments</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -287,7 +287,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -312,14 +312,14 @@
     <div class="test-9">
         <h1>Cancel Formatting Button 9: Image Float</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                     <div style="clear: both">
                     </div>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                     <div style="clear: both">
                     </div>
@@ -337,7 +337,7 @@
     <div class="test-10">
         <h1>Cancel Formatting Button 10: Image Float and text and alignment</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Some text here.
                 </p>
@@ -347,7 +347,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Some text here.
                 </p>
@@ -370,7 +370,7 @@
     <div class="test-11">
         <h1>Cancel Formatting Button 11: Guides Disappear</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Some text here.
                 </p>
@@ -380,7 +380,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Some text here.
                 </p>
@@ -402,7 +402,7 @@
     <div class="test-12">
         <h1>Cancel Formatting Button 12: Spacer Div Disappears</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Some text here.
                 </p>
@@ -412,7 +412,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Some text here.
                 </p>

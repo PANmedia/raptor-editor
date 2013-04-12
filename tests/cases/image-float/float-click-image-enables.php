@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Left Float Button 1: Enabled When Image Clicked On</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
                     Some text here
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-left"/>}
                 <p>
                     Some text here
@@ -42,7 +42,7 @@
     <div class="test-2">
         <h1>Right Float Button 1: Enabled When Image Clicked On </h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
                     Some text here
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-right" />}
                 <p>
                     Some text here
@@ -73,7 +73,7 @@
      <div class="test-3">
         <h1>No Float Button 1: Enabled When Image Clicked On </h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" class="cms-float-left"/>
                 <p>
                     Some text here
@@ -83,7 +83,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />
                 <p>
                     Some text here

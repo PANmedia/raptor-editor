@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>H2 Tag Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -56,7 +56,7 @@
     <div class="test-2">
         <h1>H2 Tag Button 2: Single Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur
                 </p><h2>
@@ -101,7 +101,7 @@
     <div class="test-3">
         <h1>H2 Tag Button 3: Part Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
@@ -112,7 +112,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel
@@ -146,7 +146,7 @@
      <div class="test-4">
         <h1>H2 Tag Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -159,7 +159,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui
@@ -194,7 +194,7 @@
     <div class="test-5">
         <h1>H2 Tag Button 5: Multi-Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -208,7 +208,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <h2>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -242,7 +242,7 @@
     <div class="test-6">
         <h1>H2 Tag Button 6: Empty Selection in Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -256,7 +256,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -289,7 +289,7 @@
     <div class="test-7">
         <h1>H2 Tag Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -303,7 +303,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <h2>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -336,7 +336,7 @@
     <div class="test-8">
         <h1>H2 Tag Button 8: Empty Selection at the Beginning of a Word in a Header H1</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <h1>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -350,7 +350,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <h2>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

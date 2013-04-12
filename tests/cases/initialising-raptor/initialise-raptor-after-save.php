@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Initialise Raptor After Saving</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum {}dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible raptor-editing" contenteditible="true">
+            <div class="editable raptor-editing" contenteditable="true">
                 <p class="cms-center">
                     Lorem ipsum {}dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

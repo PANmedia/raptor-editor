@@ -11,12 +11,12 @@
     <div class="test-1">
         <h1>Placeholder 1: Empty content replacement</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
 
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     [Your content here]
                 </p>

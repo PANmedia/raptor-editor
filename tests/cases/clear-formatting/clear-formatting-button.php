@@ -13,10 +13,10 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Empty Element</h1>
         <div class="test-input">
-            <div class="editible">{}</div>
+            <div class="editable">{}</div>
         </div>
         <div class="test-expected">
-            <div class="editible">{}</div>
+            <div class="editable">{}</div>
         </div>
     </div>
     <script type="text/javascript">
@@ -29,7 +29,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Basic</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Test 1 {paragraph 1 start.
                     <strong class="cms-bold">Some bold text.</strong>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Test 1 {paragraph 1 start.
                     Some bold text.
@@ -57,7 +57,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Complex</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Paragraph 1
                     <em class="cms-italic">{Some italic text</em>
@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Paragraph 1 {
                 </p>
@@ -97,7 +97,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Multi Basic</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id <strong class="cms-bold">erat pellentesque</strong> et rhoncus} nunc semper. Suspendisse
@@ -108,7 +108,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -129,7 +129,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Multi Paragraph Basic</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {<strong class="cms-bold">id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -143,7 +143,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui {
                 </p>
@@ -166,7 +166,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Multi Paragraph Complex</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum {<strong class="cms-bold">dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -182,7 +182,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum {
                 </p>
@@ -208,7 +208,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Alignment</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
@@ -221,7 +221,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-center">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit
                     <span class="cms-underline">
@@ -244,7 +244,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Two Different Alignments</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-right">
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -257,7 +257,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -281,7 +281,7 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Alignment and Other Formatting</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p class="cms-right">
                     {Lorem ipsum <span class="cms-underline"> dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -294,7 +294,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -318,12 +318,12 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Removing bold</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p><strong>{Some bold text.}</strong></p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{Some bold text.}</p>
             </div>
         </div>
@@ -338,12 +338,12 @@
     <div class="test-<?= ++$i ?>">
         <h1>Clear Formatting Button <?= $i ?>: Removing complex styling elements</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p><i><strong>{Some bold text.}</strong></i></p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>{Some bold text.}</p>
             </div>
         </div>

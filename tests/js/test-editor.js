@@ -79,24 +79,24 @@ function runEditorTest(container, action, options) {
     var diff = $('<div>').addClass('test-diff').appendTo(container);
     var expected = $(container).find('.test-expected');
     options = $.extend({}, defaultOptions, options, true);
-    output.find('.editible').raptor(options);
+    output.find('.editable').raptor(options);
 
     var inputSource = $('<div>')
         .addClass('test-source test-box test-input-source')
         .insertAfter(input);
-    applyCodeMirror(inputSource.get(0), input.find('.editible').html());
+    applyCodeMirror(inputSource.get(0), input.find('.editable').html());
     input.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(inputSource);
 
     var expectedSource = $('<div>')
         .addClass('test-source test-box test-expected-source')
         .insertAfter(expected);
-    applyCodeMirror(expectedSource.get(0), expected.find('.editible').html());
+    applyCodeMirror(expectedSource.get(0), expected.find('.editable').html());
     expected.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(expectedSource);
 
     setTimeout(function() {
-        var ranges = tokensToRanges(output.find('.editible'));
+        var ranges = tokensToRanges(output.find('.editable'));
         rangy.getSelection().setRanges(ranges);
 
         var error;
@@ -112,14 +112,14 @@ function runEditorTest(container, action, options) {
         var outputSource = $('<div>')
             .addClass('test-source test-box test-output-source')
             .insertAfter(output);
-        applyCodeMirror(outputSource.get(0), output.find('.editible').html());
+        applyCodeMirror(outputSource.get(0), output.find('.editable').html());
         output.addClass('test-box');
         $('<div>').addClass('test-clear').insertAfter(outputSource);
 
         var expectedHTML, actualHTML;
         if (error) {
-            expectedHTML = style_html(expected.find('.editible').html());
-            actualHTML = style_html(output.find('.editible').html());
+            expectedHTML = style_html(expected.find('.editable').html());
+            actualHTML = style_html(output.find('.editable').html());
             if (actualHTML !== expectedHTML) {
                 diff.html(diffstr(expectedHTML, actualHTML));
             }
@@ -132,8 +132,8 @@ function runEditorTest(container, action, options) {
             });
             fail(container);
         } else {
-            expectedHTML = style_html(expected.find('.editible').html());
-            actualHTML = style_html(output.find('.editible').html());
+            expectedHTML = style_html(expected.find('.editable').html());
+            actualHTML = style_html(output.find('.editable').html());
 
             diff.html(diffstr(expectedHTML, actualHTML));
             if (actualHTML !== expectedHTML) {
@@ -157,7 +157,7 @@ function runEditorTest(container, action, options) {
 }
 
 function getRaptor(input) {
-    return input.find('.editible').data('uiRaptor');
+    return input.find('.editable').data('uiRaptor');
 }
 
 function getLayoutElement(input) {

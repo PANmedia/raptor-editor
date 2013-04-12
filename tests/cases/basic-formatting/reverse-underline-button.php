@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Reverse Underline Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {<u class="cms-underline">dui id erat pellentesque et rhoncus</u>} nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -49,7 +49,7 @@
     <div class="test-2">
         <h1>Reverse Underline Button 2: Single Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur <u class="cms-underline">{adipiscing}</u> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -87,7 +87,7 @@
     <div class="test-3">
         <h1>Reverse Underline Button 3: Part Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel<u class="cms-underline">{lentesqu}</u>e et rhoncus nunc semper. Suspendisse
@@ -98,7 +98,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
@@ -125,7 +125,7 @@
      <div class="test-4">
         <h1>Reverse Underline Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <u class="cms-underline">{id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -140,7 +140,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -168,7 +168,7 @@
     <div class="test-5">
         <h1>Reverse Underline Button 5: Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     <u class="cms-underline">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -182,7 +182,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -210,7 +210,7 @@
     <div class="test-6">
         <h1>Reverse Underline Button 6: Empty Selection in Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -223,7 +223,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -251,7 +251,7 @@
     <div class="test-7">
         <h1>Reverse Underline Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -264,7 +264,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

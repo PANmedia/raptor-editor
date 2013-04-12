@@ -31,7 +31,7 @@
     <div class="test-1">
         <h1>Insert File Button 1: Insert Image File No Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. {}Suspendisse
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper.
@@ -61,7 +61,7 @@
     <div class="test-2">
         <h1>Insert File Button 2: Insert Image File With Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <img src="../../images/raptor.png" title="dui id erat pellentesque et rhoncus" class="cms-png"/>{} nunc semper. Suspendisse

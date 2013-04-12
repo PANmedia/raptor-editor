@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Unordered List 1: Create an unordered list from group of words</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This is the first part of the paragraph. {This is the second
                     part.} This is the third.
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This is the first part of the paragraph.
                 </p>
@@ -51,14 +51,14 @@
     <div class="test-2">
         <h1>Unordered List 2: Create an unordered list from single word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     First part of {the} paragraph.
                 </p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    First part of
                 </p>
@@ -89,14 +89,14 @@
     <div class="test-3">
         <h1>Unordered List 3: Create an unordered list from empty selection before a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This is {}paragraph #1.
                 </p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         {<p>
@@ -121,14 +121,14 @@
     <div class="test-4">
         <h1>Unordered List 4: Create an unordered list from empty selection inside a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This is parag{}raph #1.
                 </p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         {<p>
@@ -153,7 +153,7 @@
     <div class="test-5">
        <h1>Unordered List 5: Create an unordered list with multiple items selection from part word to part word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This {is the first paragraph.
                 </p>
@@ -169,7 +169,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This
                 </p>
@@ -216,7 +216,7 @@
     <div class="test-6">
         <h1>Unordered List 6: Create an unordered list with multiple items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {
                     <p>
                         Item 1
@@ -234,7 +234,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         {<p>
@@ -275,7 +275,7 @@
     <div class="test-7">
         <h1>Unordered List 7: Create an unordered list with multiple heading items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {
                     <h3>Item 1</h3>
                     <h2>Item 2</h2>
@@ -285,7 +285,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         {<h3>Item 1</h3>}
@@ -317,7 +317,7 @@
     <div class="test-8">
         <h1>Unordered List 8: Toggle bottom list of two lists and check selection remains on bottom list</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li><h3>Item 1</h3></li>
                 </ul>
@@ -325,7 +325,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>
                         <h3>Item 1</h3>

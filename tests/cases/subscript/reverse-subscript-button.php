@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Reverse Subscript Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <sub class="cms-sub">{dui id erat pellentesque et rhoncus}</sub> nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -48,7 +48,7 @@
     <div class="test-2">
         <h1>Reverse Subscript Button 2: Single Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur <sub class="cms-sub">{adipiscing}</sub> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -86,7 +86,7 @@
     <div class="test-3">
         <h1>Reverse Subscript Button 3: Part Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel<sub class="cms-sub">{lentesqu}</sub>e et rhoncus nunc semper. Suspendisse
@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
@@ -123,7 +123,7 @@
      <div class="test-4">
         <h1>Reverse Subscript Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <sub class="cms-sub">{id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -137,7 +137,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -166,7 +166,7 @@
     <div class="test-5">
         <h1>Reverse Subscript Button 5: Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     <sub class="cms-sub">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -180,7 +180,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -208,7 +208,7 @@
     <div class="test-6">
         <h1>Reverse Subscript Button 6: Empty Selection in Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -221,7 +221,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -249,7 +249,7 @@
     <div class="test-7">
         <h1>Reverse Subscript Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -262,7 +262,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

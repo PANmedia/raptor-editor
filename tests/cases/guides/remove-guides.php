@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Remove Guides 1: Single Paragraph</h1>
         <div class="test-input">
-            <div class="editible raptor-ui-guides-visible">
+            <div class="editable raptor-ui-guides-visible">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible" >
+            <div class="editable" >
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -47,7 +47,7 @@
      <div class="test-2">
         <h1>Remove Guides 2: Single Paragraph with multiple attributes</h1>
         <div class="test-input">
-            <div class="editible raptor-ui-guides-visible">
+            <div class="editable raptor-ui-guides-visible">
                 <h1>This </h1><h2>is</h2><h1> a </h1><h3>header</h3>
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible" >
+            <div class="editable" >
                     <h1>This </h1><h2>is</h2><h1> a </h1><h3>header</h3>
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -109,7 +109,7 @@
     <div class="test-3">
         <h1>Remove Guides 3: Multi Paragraph</h1>
         <div class="test-input">
-            <div class="editible raptor-ui-guides-visible">
+            <div class="editable raptor-ui-guides-visible">
                 <p>
                     {Lorem ipsum dolor s<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />it amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -122,7 +122,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible" >
+            <div class="editable" >
                 <p>
                     {Lorem ipsum dolor s<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />it amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -149,7 +149,7 @@
     <div class="test-4">
         <h1>Remove Guides 4: After save</h1>
         <div class="test-input">
-            <div class="editible raptor-ui-guides-visible">
+            <div class="editable raptor-ui-guides-visible">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -160,7 +160,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible" >
+            <div class="editable" >
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -185,7 +185,7 @@
     <div class="test-5">
         <h1>Remove Guides 5: After cancel</h1>
         <div class="test-input">
-            <div class="editible raptor-ui-guides-visible">
+            <div class="editable raptor-ui-guides-visible">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -196,7 +196,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible" >
+            <div class="editable" >
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

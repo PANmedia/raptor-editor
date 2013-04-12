@@ -36,9 +36,11 @@ function getTextNodesIn(node) {
 }
 
 function tokensToRanges(el, limit) {
+
     var rangeInfos = [],
         currentRangeInfo,
         textNodes = getTextNodesIn(el.get(0));
+
     (function() {
         for (var i = 0, l = textNodes.length; i < l; i++) {
             var searchStartIndex = 0,
@@ -60,7 +62,7 @@ function tokensToRanges(el, limit) {
             }
         }
     })();
-    
+
     // Convert RangeInfos into ranges
     var ranges = [];
     $.each(rangeInfos, function() {

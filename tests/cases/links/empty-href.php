@@ -30,7 +30,7 @@
     <div class="test-1">
         <h1>Test 1: Empty Internal Link</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2}</li>
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2}</li>
@@ -59,7 +59,7 @@
     <div class="test-2">
         <h1>Test 2: Empty External Link</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2}</li>
@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2}</li>
@@ -88,7 +88,7 @@
     <div class="test-3">
         <h1>Test 3: Empty Email Link</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2}</li>
@@ -98,7 +98,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2}</li>

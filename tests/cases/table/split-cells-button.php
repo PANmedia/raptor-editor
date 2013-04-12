@@ -8,7 +8,7 @@
     <div class="test-1">
         <h1>Split Cells 1 - Columns and Rows</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
@@ -67,7 +67,7 @@
     <div class="test-2">
         <h1>Split Cells 2 - Across a Column </h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
             <table>
                 <tr>
                     <td>Cell 0,0</td>
@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
@@ -120,7 +120,7 @@
     <div class="test-3">
         <h1>Split Cells 3 - Across a Row</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
@@ -143,7 +143,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <tr>
                         <td>Cell 0,0</td>
