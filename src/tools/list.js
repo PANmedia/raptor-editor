@@ -202,7 +202,7 @@ function listWrapSelection(listType, listItem, wrapper) {
     // Having a <td> fully selected is a special case: without intervention
     // the surrounding <table> would be split, with a <listType> inserted between
     // the two <tables>.
-    if ($(commonAncestor).is('td,th')) {
+    if ($(commonAncestor).is('td,th') || commonAncestor === wrapper.get(0)) {
         rangeSelectElementContent(range, commonAncestor);
 
     // Other cases require checking if the range contains the full text of the
