@@ -600,3 +600,36 @@ function listBreakByReplacingSelection(listType, listItem, wrapper, replacement)
 
     return replacementElement;
 }
+
+/**
+ * Add a new list item below the selection. New list item contains content of original
+ * list item from selection end to end of element.
+ *
+ * @param  {String} listType
+ * @param  {String} listItem
+ * @param  {Element} wrapper
+ * @param  {String|Element} replacement
+ * @return {Element|Boolean}
+ */
+function listBreakAtSelection(listType, listItem, wrapper) {
+    var selectedElement = selectionGetElement();
+    if (!selectedElement.closest(listItem).length) {
+        return false;
+    }
+    selectionDelete();
+    selectionSelectToEndOfElement(selectedElement);
+    var html = selectionGetHtml();
+    selectionDelete();
+
+    var parentList = selectedElement.closest(listType);
+    if (!parentList.length || wrapper.get(0) === parentList.get(0)) {
+        return false;
+    }
+
+    var newListItem = $('<' + listItem + '>').html(html);
+    selectedElement.closest(listItem).after(newListItem);
+
+    listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren);
+
+    return newListItem;
+}
