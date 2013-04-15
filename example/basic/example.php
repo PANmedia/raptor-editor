@@ -28,6 +28,10 @@
                             'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
                         }
                     }
+                },
+                hoverPanel: {
+                    type: 'basic',
+                    componentOrder: ['clickToEdit', 'revisions']
                 }
             });
         });
@@ -94,6 +98,18 @@
                 <p>List item 3</p>
             </li>
         </ul>
+
+        <ol>
+            <li>
+                <p>List item 1</p>
+            </li>
+            <li>
+                <p>List item 2</p>
+            </li>
+            <li>
+                <p>List item 3</p>
+            </li>
+        </ol>
 
         <p>
             Text above the image.
