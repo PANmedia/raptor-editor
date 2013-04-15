@@ -190,6 +190,26 @@ function selectionSelectStart(element, selection) {
 }
 
 /**
+ * Extend selection to the end of element.
+ *
+ * @param  {Element} element
+ * @param  {RangySelection|null} selection
+ */
+function selectionSelectToEndOfElement(element, selection) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to selectionSelectToEndOfElement is expected to be Element, got:', element);
+        return;
+    }
+    // </strict>
+    selection = selection || rangy.getSelection();
+    var range = selection.getRangeAt(0);
+    selection.removeAllRanges();
+    range.setEndAfter(element.get(0));
+    selection.addRange(range);
+}
+
+/**
  * Gets the HTML from a selection. If no selection is supplied then current selection will be used.
  *
  * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
@@ -271,7 +291,7 @@ function selectionGetEndElement() {
 
 /**
  * Checks to see if the selection is at the end of the element.
- * @todo check desc please
+ *
  * @returns {Boolean} True if the node immediately after the selection ends does not exist or is empty,
  *                      false if the whole nodes' text is not selected or it doesn't fit the criteria for the true clause.
  */
@@ -292,7 +312,7 @@ function selectionAtEndOfElement() {
 
 /**
  * Checks to see if the selection is at the start of the element.
- * @todo check desc please
+ *
  * @returns {Boolean} True if the node immediately before the selection starts does not exist or is empty,
  *                      false if the whole nodes' text is not selected or it doesn't fit the criteria for the true clause.
  */
@@ -889,4 +909,9 @@ function selectionGetFirstRange() {
         return false;
     }
     return selection.getRangeAt(0);
+}
+
+function selectionDelete(selection) {
+    selection = selection || rangy.getSelection();
+    selection.deleteFromDocument();
 }
