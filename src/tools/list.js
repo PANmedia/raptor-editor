@@ -137,13 +137,14 @@ var listValidPParents = [
  * @param  {String} listItem
  * @param  {String[]} validChildren
  */
-function listEnforceValidChildren(list, listItem, validChildren) {
+function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
+    removeEmpty = typeof removeEmpty === 'undefined' ? true : removeEmpty;
     // <strict>
     if (!typeIsElement(list)) {
         handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
-    var removeEmpty = function(node) {
+    var removeEmptyElements = function(node) {
         if ($(node).is('img')) {
             return;
         }
@@ -154,11 +155,11 @@ function listEnforceValidChildren(list, listItem, validChildren) {
     };
 
     list.find('> ' + listItem).each(function() {
-        if (removeEmpty(this)) {
+        if (removeEmpty && removeEmptyElements(this)) {
             return true;
         }
         $(this).contents().each(function() {
-            if (removeEmpty(this)) {
+            if (removeEmpty && removeEmptyElements(this)) {
                 return true;
             }
             if (listItem === 'p') {
@@ -616,20 +617,22 @@ function listBreakAtSelection(listType, listItem, wrapper) {
     if (!selectedElement.closest(listItem).length) {
         return false;
     }
+
     selectionDelete();
     selectionSelectToEndOfElement(selectedElement);
     var html = selectionGetHtml();
+    if (html.trim() === '') {
+        html = $('<p>&nbsp;</p>');
+    }
     selectionDelete();
 
-    var parentList = selectedElement.closest(listType);
-    if (!parentList.length || wrapper.get(0) === parentList.get(0)) {
-        return false;
+    if (selectedElement.text().trim() === '') {
+        selectedElement.html($('<p>&nbsp;</p>'));
     }
-
     var newListItem = $('<' + listItem + '>').html(html);
     selectedElement.closest(listItem).after(newListItem);
 
-    listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren);
+    listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren, false);
 
     return newListItem;
 }
