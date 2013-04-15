@@ -120,6 +120,8 @@
 
 <script type="text/javascript" src="<?= $uri ?>plugins/logo/logo.js"></script>
 
+<script type="text/javascript" src="<?= $uri ?>plugins/normalise-line-breaks/normalise-line-breaks.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/paste/paste.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/placeholder/placeholder.js"></script>

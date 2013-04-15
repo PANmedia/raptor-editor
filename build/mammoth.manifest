@@ -191,6 +191,8 @@ src/plugins/logo/logo.js
 src/plugins/logo/raptor.png
 src/plugins/logo/logo.scss
 
+src/plugins/normalise-line-breaks/normalise-line-breaks.js
+
 src/plugins/paste/paste.js
 src/plugins/paste/paste.scss
 src/plugins/paste/templates/dialog.html

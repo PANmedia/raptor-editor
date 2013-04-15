@@ -89,6 +89,7 @@ src/plugins/link/link-remove.js
 src/plugins/list/list-ordered.js
 src/plugins/list/list-unordered.js
 src/plugins/logo/logo.js
+src/plugins/normalise-line-breaks/normalise-line-breaks.js
 src/plugins/paste/paste.js
 src/plugins/placeholder/placeholder.js
 src/plugins/save/save.js
