@@ -61,7 +61,7 @@ NormaliseLineBreaksPlugin.prototype.returnPressed = function() {
  */
 NormaliseLineBreaksPlugin.prototype.shiftReturnPressed = function() {
     var selectedElement = selectionGetElement();
-    if (selectedElement.is('li')) {
+    if (selectedElement.closest('li').length) {
         var listType = selectedElement.closest('ul, ol').get(0).tagName.toLowerCase();
         var replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
         if (replacementElement) {

@@ -570,7 +570,7 @@ function listConvertListType(listType, listItem, wrapper) {
  */
 function listBreakByReplacingSelection(listType, listItem, wrapper, replacement) {
     var selectedElement = selectionGetElement();
-    if (!selectedElement.is(listItem)) {
+    if (!selectedElement.closest(listItem).length) {
         return false;
     }
 
@@ -579,15 +579,16 @@ function listBreakByReplacingSelection(listType, listItem, wrapper, replacement)
         return false;
     }
 
-    var replacementElement = selectionReplaceSplittingSelectedElement(replacement);
+    selectionSelectToEndOfElement(selectedElement);
+    selectionDelete();
 
     var top = $('<' + listType + '/>'),
         bottom = $('<' + listType + '/>'),
         middlePassed = false;
-
     parentList.children().each(function() {
-        if (replacementElement.get(0) === this) {
+        if (selectedElement.closest(listItem).get(0) === this) {
             middlePassed = true;
+            top.append(this);
             return;
         }
         if (!middlePassed) {
@@ -597,9 +598,10 @@ function listBreakByReplacingSelection(listType, listItem, wrapper, replacement)
         }
     });
     parentList.replaceWith(top);
-    top.after(replacementElement, bottom);
+    replacement = $(replacement).appendTo($('body'));
+    top.after(replacement, bottom);
 
-    return replacementElement;
+    return replacement;
 }
 
 /**
