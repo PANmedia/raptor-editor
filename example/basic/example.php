@@ -95,6 +95,18 @@
             </li>
         </ul>
 
+        <ol>
+            <li>
+                <p>List item 1</p>
+            </li>
+            <li>
+                <p>List item 2</p>
+            </li>
+            <li>
+                <p>List item 3</p>
+            </li>
+        </ol>
+
         <p>
             Text above the image.
             <img src="../full-suite/images/orange.jpg" width="100" />
