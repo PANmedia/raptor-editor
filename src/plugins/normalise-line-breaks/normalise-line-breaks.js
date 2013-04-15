@@ -39,11 +39,13 @@ NormaliseLineBreaksPlugin.prototype.init = function() {
  *                        further
  */
 NormaliseLineBreaksPlugin.prototype.returnPressed = function() {
-    var cursorElement = selectionGetElement();
-    if (cursorElement.is('li')) {
-        var temp = selectionReplaceSplittingSelectedElement('<temp/>');
-        selectionSelectStart(temp.next());
-        temp.remove();
+    var selectedElement = selectionGetElement();
+    if (selectedElement.closest('li').length) {
+        var listType = selectedElement.closest('ul, ol').get(0).tagName.toLowerCase();
+        var replacementElement = listBreakAtSelection(listType, 'li', this.raptor.getElement());
+        if (replacementElement) {
+            selectionSelectStart(replacementElement.get(0));
+        }
         return true;
     }
     return false;
@@ -58,9 +60,9 @@ NormaliseLineBreaksPlugin.prototype.returnPressed = function() {
  *                        further
  */
 NormaliseLineBreaksPlugin.prototype.shiftReturnPressed = function() {
-    var cursorElement = selectionGetElement();
-    if (cursorElement.is('li')) {
-        var listType = cursorElement.closest('ul, ol').get(0).tagName.toLowerCase();
+    var selectedElement = selectionGetElement();
+    if (selectedElement.is('li')) {
+        var listType = selectedElement.closest('ul, ol').get(0).tagName.toLowerCase();
         var replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
         if (replacementElement) {
             selectionSelectInner(replacementElement.get(0));
