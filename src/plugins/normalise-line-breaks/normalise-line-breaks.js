@@ -1,3 +1,20 @@
+/**
+ * @fileOverview Contains the view normalise line breaks button code.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * Attempts to enforce standard behaviour across browsers for return &
+ * shift+return key presses.
+ *
+ * @constructor
+ * @param {String} name
+ * @param {Object} overrides
+ */
 function NormaliseLineBreaksPlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'normaliseLineBreaks', overrides);
 }
