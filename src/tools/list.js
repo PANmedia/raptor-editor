@@ -556,3 +556,47 @@ function listConvertListType(listType, listItem, wrapper) {
 
     return listEnforceValidChildren(convertedList, listItem, listValidLiChildren);
 }
+
+/**
+ * Break the currently selected list, replacing the selection.
+ *
+ * @param  {String} listType
+ * @param  {String} listItem
+ * @param  {Element} wrapper
+ * @param  {String|Element} replacement
+ * @return {Element|Boolean} The replaced element, or false if replacement did not
+ *                               occur.
+ */
+function listBreakByReplacingSelection(listType, listItem, wrapper, replacement) {
+    var selectedElement = selectionGetElement();
+    if (!selectedElement.is(listItem)) {
+        return false;
+    }
+
+    var parentList = selectedElement.closest(listType);
+    if (!parentList.length || wrapper.get(0) === parentList.get(0)) {
+        return false;
+    }
+
+    var replacementElement = selectionReplaceSplittingSelectedElement(replacement);
+
+    var top = $('<' + listType + '/>'),
+        bottom = $('<' + listType + '/>'),
+        middlePassed = false;
+
+    parentList.children().each(function() {
+        if (replacementElement.get(0) === this) {
+            middlePassed = true;
+            return;
+        }
+        if (!middlePassed) {
+            top.append(this);
+        } else {
+            bottom.append(this);
+        }
+    });
+    parentList.replaceWith(top);
+    top.after(replacementElement, bottom);
+
+    return replacementElement;
+}
