@@ -1,24 +1,63 @@
 /**
- * @fileOverview Basic toolbar layout.
+ * @fileOverview Toolbar layout.
  * @license http://www.raptor-editor.com/license
  *
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
 
-Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
-    options: {
-        /**
-         * Each element of the uiOrder should be an array of UI which will be grouped.
-         */
-        uiOrder: null
-    },
+function ToolbarLayout() {
+    RaptorLayout.call(this, 'toolbar');
+    this.toolbar = null;
+}
 
-    /**
-     * Inititialise the toolbar layout.
-     * @constructs
-     */
-    init: function() {
+ToolbarLayout.prototype = Object.create(RaptorLayout.prototype);
+
+ToolbarLayout.prototype.enabled = function() {
+    this.show();
+};
+
+ToolbarLayout.prototype.disabled = function() {
+    this.hide();
+};
+
+/**
+ * Show the toolbar.
+ *
+ * @fires RaptorWidget#toolbarShow
+ */
+ToolbarLayout.prototype.show = function() {
+    this.getElement().css('display', '');
+    this.raptor.fire('toolbarShow');
+};
+
+/**
+ * Hide the toolbar.
+ *
+ * @fires RaptorWidget#toolbarHide
+ */
+ToolbarLayout.prototype.hide = function() {
+    this.getElement().css('display', 'none');
+    this.raptor.fire('toolbarHide');
+};
+
+ToolbarLayout.prototype.enableDragging = function() {
+    if ($.fn.draggable &&
+            this.options.draggable &&
+            this.getElement().data('ui-draggable')) {
+        this.getElement().draggable('enable');
+    }
+};
+
+ToolbarLayout.prototype.disableDragging = function() {
+    if ($.fn.draggable &&
+            this.options.draggable) {
+        this.getElement().draggable('disable').removeClass('ui-state-disabled');
+    }
+};
+
+ToolbarLayout.prototype.getElement = function() {
+    if (this.toolbar === null) {
         // Load all UI components if not supplied
         if (!this.options.uiOrder) {
             this.options.uiOrder = [[]];
@@ -35,8 +74,8 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
 
         var toolbar = this.toolbar = $('<div/>')
             .addClass(this.options.baseClass + '-toolbar');
-        var toolbarWrapper = this.toolbarWrapper = $('<div/>')
-            .addClass(this.options.baseClass + '-toolbar-wrapper')
+        var innerWrapper = this.toolbarWrapper = $('<div/>')
+            .addClass(this.options.baseClass + '-inner')
             .addClass('ui-widget-content')
             .mousedown(function(event) {
                 event.preventDefault();
@@ -46,10 +85,10 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
             .addClass(this.options.baseClass + '-path')
             .addClass('ui-widget-header');
         var wrapper = this.wrapper = $('<div/>')
-            .addClass(this.options.baseClass + '-wrapper')
+            .addClass(this.options.baseClass + '-outer ' + this.raptor.options.baseClass + '-layout')
             .css('display', 'none')
             .append(path)
-            .append(toolbarWrapper);
+            .append(innerWrapper);
 
         if ($.fn.draggable && this.options.draggable) {
             // <debug>
@@ -82,7 +121,7 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
             });
 
             // Remove the relative position
-            wrapper.css('position', '');
+            wrapper.css('position', 'fixed');
 
             // Set the persistent position
             var pos = this.raptor.persist('position') || this.options.dialogPosition;
@@ -106,70 +145,10 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
                 top: Math.abs(parseInt(pos[0], 10)),
                 left: Math.abs(parseInt(pos[1], 10))
             });
-
-            // Load the message display widget
-            this.raptor.loadMessages();
         }
 
-        // Loop the UI component order option
-        for (var i = 0, l = this.options.uiOrder.length; i < l; i++) {
-            var uiGroupContainer = $('<div/>')
-                .addClass(this.raptor.options.baseClass + '-layout-toolbar-group');
-
-            // Loop each UI in the group
-            var uiGroup = this.options.uiOrder[i];
-            for (var ii = 0, ll = uiGroup.length; ii < ll; ii++) {
-                // Check if the UI component has been explicitly disabled
-                if (!this.raptor.isUiEnabled(uiGroup[ii])) {
-                    continue;
-                }
-
-                // Check the UI has been registered
-                if (Raptor.ui[uiGroup[ii]]) {
-                    var uiOptions = this.raptor.options.plugins[uiGroup[ii]];
-                    if (uiOptions === false) {
-                        continue;
-                    }
-
-                    // Clone the UI object (which should be extended from the defaultUi object)
-                    var uiObject = $.extend({}, Raptor.ui[uiGroup[ii]]);
-
-                    // Get the UI components base class
-                    var baseClass = uiGroup[ii].replace(/([A-Z])/g, function(match) {
-                        return '-' + match.toLowerCase();
-                    });
-
-                    var options = $.extend(true, {}, this.raptor.options, {
-                        baseClass: this.raptor.options.baseClass + '-ui-' + baseClass
-                    }, uiObject.options, uiOptions);
-
-                    uiObject.raptor = this.raptor;
-                    uiObject.options = options;
-                    var ui = uiObject.init();
-
-                    if (typeIsElement(ui)) {
-                        // Fix corner classes
-                        ui.removeClass('ui-corner-all');
-
-                        // Append the UI object to the group
-                        uiGroupContainer.append(ui);
-                    }
-
-                    // Add the UI object to the editors list
-                    this.raptor.uiObjects[uiGroup[ii]] = uiObject;
-                }
-                // <strict>
-                else {
-                    handleError('UI identified by key "' + uiGroup[ii] + '" does not exist');
-                }
-                // </strict>
-            }
-
-            // Append the UI group to the editor toolbar
-            if (uiGroupContainer.children().length > 0) {
-                uiGroupContainer.appendTo(this.toolbar);
-            }
-        }
+        var uiGroup = new UiGroup(this.raptor, this.options.uiOrder);
+        uiGroup.appendTo(this.toolbar);
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
 
         // Fix corner classes
@@ -179,56 +158,10 @@ Raptor.registerLayout('toolbar', /** @lends Toolbar.prototype */ {
         var layout = this;
         $(function() {
             wrapper.appendTo('body');
-            layout.raptor.fire('layoutReady');
+            layout.raptor.fire('toolbarReady');
         });
-    },
-
-    /**
-     * Show the toolbar.
-     *
-     * @fires RaptorWidget#layoutShow
-     */
-    show: function() {
-        this.wrapper.css('display', '');
-        this.raptor.fire('layoutShow');
-    },
-
-    /**
-     * Hide the toolbar.
-     *
-     * @fires RaptorWidget#layoutHide
-     */
-    hide: function() {
-        this.wrapper.css('display', 'none');
-        this.raptor.fire('layoutHide');
-    },
-
-    enableDragging: function() {
-        if ($.fn.draggable && this.options.draggable && this.wrapper.data('ui-draggable')) {
-            this.wrapper.draggable('enable');
-        }
-    },
-
-    disableDragging: function() {
-        if ($.fn.draggable && this.options.draggable) {
-            this.wrapper.draggable('disable').removeClass('ui-state-disabled');
-        }
-    },
-
-    /**
-     * @return {Element} The toolbar's wrapping element.
-     */
-    getElement: function() {
-        return this.wrapper;
-    },
-
-    /**
-     * Clean up.
-     */
-    destruct: function() {
-        this.raptor.fire('layoutDestroy');
-        if (this.wrapper) {
-            this.wrapper.remove();
-        }
     }
-});
+    return this.wrapper;
+};
+
+Raptor.registerLayout(new ToolbarLayout());

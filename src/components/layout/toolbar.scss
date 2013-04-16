@@ -5,13 +5,18 @@
  */
 @import 'compass/css3/box-sizing';
 
-.raptor-toolbar-wrapper {
+.raptor-layout-toolbar-inner {
     border: $border-style;
     border-top: none;
 }
 
-.raptor-dock-docked-to-element .raptor-toolbar-wrapper {
-    border-top: $border-style;
+.raptor-layout-toolbar-toolbar {
+    padding: 6px 0 0 5px;
+    overflow: visible;
+}
+
+.raptor-layout-toolbar-path {
+    padding: $spacing;
 }
 
 .raptor-layout-toolbar-group {
