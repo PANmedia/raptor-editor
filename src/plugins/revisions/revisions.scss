@@ -8,42 +8,42 @@
 @import 'compass/css3/transition';
 
 // Buttons
-.raptor-revisions {
+.raptor-ui-revisions {
     .ui-icon {
         background: inline-image('documents-stack.png') 0 0;
     }
 }
 
-.raptor-revisions-apply-button,
-.raptor-revisions-preview-button {
+.raptor-plugin-revisions-apply-button,
+.raptor-plugin-revisions-preview-button {
     margin-right: 10px;
 }
 
-.raptor-revisions-preview-button {
+.raptor-plugin-revisions-preview-button {
     .ui-icon {
         background: inline-image('blue-document-export.png') 0 0;
     }
 }
 
-.raptor-revisions-apply-button {
+.raptor-plugin-revisions-apply-button {
     .ui-icon {
         background: inline-image('document-convert.png') 0 0;
     }
 }
 
-.raptor-revisions-diff-button {
+.raptor-plugin-revisions-diff-button {
     .ui-icon {
         background: inline-image('edit-diff.png') 0 0;
     }
 }
 
 // Dialog
-.raptor-revisions-loading-revisions {
+.raptor-plugin-revisions-loading-revisions {
     text-align: center;
     padding: 20px;
 }
 
-.raptor-revisions-table {
+.raptor-plugin-revisions-table {
     thead {
         th {
             display: table-cell;
@@ -55,13 +55,13 @@
         }
         td {
             vertical-align: middle;
-            &.raptor-revisions-controls {
+            &.raptor-plugin-revisions-controls {
                 white-space: pre;
             }
         }
     }
 }
-.raptor-revisions-diff-button-diff {
+.raptor-plugin-revisions-diff-button-diff {
     font-family: monospace;
     del {
         background-color: #FFC8C8;

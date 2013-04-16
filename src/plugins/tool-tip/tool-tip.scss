@@ -6,7 +6,7 @@
 @import 'compass/css3/images';
 @import 'compass/css3/transition';
 
-.raptor-wrapper [data-title]:after {
+.raptor-layout [data-title]:after {
     opacity: 0;
     content: attr(data-title);
     display: block;
@@ -27,15 +27,15 @@
     );
 }
 
-.raptor-wrapper [data-title]:hover:after {
+.raptor-layout [data-title]:hover:after {
     opacity: 1;
 }
 
-.raptor-wrapper .raptor-select-element {
+.raptor-layout .raptor-select-element {
     position: relative;
 }
 
-.raptor-wrapper .raptor-select-element:after {
+.raptor-layout .raptor-select-element:after {
     @include background(
         linear-gradient(rgba(40, 40, 40, 0) 5px, rgba(40, 40, 40, 1) 6px, rgba(40, 40, 40, 1)),
         inline-image('tip.png') no-repeat 3px 0

@@ -15,7 +15,7 @@
     padding-top: $height;
 }
 
-.raptor-image-resize-button-button .ui-icon {
+.raptor-plugin-image-resize-button-button .ui-icon {
     background: inline-image('image-resize.png') 0 0;
 }
 
@@ -37,13 +37,13 @@
         z-index: 10;
         position: relative;
     }
-    .raptor-image-resize-button-lock-proportions-container {
+    .raptor-plugin-image-resize-button-lock-proportions-container {
         position: absolute;
         z-index: 0;
     }
 }
 
-.raptor-image-resize-button-lock-proportions-container {
+.raptor-plugin-image-resize-button-lock-proportions-container {
     right: 16%;
     top: 34px;
     height: 54px;
@@ -55,7 +55,7 @@
     }
 }
 
-.raptor-image-resize-button-lock-proportions {
+.raptor-plugin-image-resize-button-lock-proportions {
     $lock-size: 26px;
 
     position: absolute;
