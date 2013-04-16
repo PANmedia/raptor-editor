@@ -12,6 +12,7 @@ src/dependencies/rangy/rangy-textrange.js
 src/dependencies/jquery-hotkeys.js
 src/dependencies/resizetable.js
 src/dependencies/goog-table.js
+src/dependencies/diff.js
 
 // jQuery
 src/dependencies/jquery-hotkeys.js
@@ -75,17 +76,19 @@ src/components/layout/messages.js
 src/components/layout/messages.scss
 
 src/components/ui/button.js
+src/components/ui/preview-button.js
+src/components/ui/toggle-button.js
+src/components/ui/preview-toggle-button.js
+src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
-src/components/ui/custom-menu.js
+
 src/components/ui/dialog-button.js
 src/components/ui/dialog-toggle-button.js
-src/components/ui/filtered-preview-button.js
+
 src/components/ui/menu-button.js
 src/components/ui/menu.js
-src/components/ui/preview-button.js
-src/components/ui/preview-toggle-button.js
+src/components/ui/custom-menu.js
 src/components/ui/select-menu.js
-src/components/ui/toggle-button.js
 src/components/ui/menu.scss
 src/components/ui/select-menu.scss
 
