@@ -151,10 +151,6 @@ ToolbarLayout.prototype.getElement = function() {
         uiGroup.appendTo(this.toolbar);
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
 
-        // Fix corner classes
-        this.toolbar.find('.ui-button:first-child').addClass('ui-corner-left');
-        this.toolbar.find('.ui-button:last-child').addClass('ui-corner-right');
-
         var layout = this;
         $(function() {
             wrapper.appendTo('body');

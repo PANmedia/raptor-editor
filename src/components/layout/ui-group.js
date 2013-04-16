@@ -48,4 +48,8 @@ UiGroup.prototype.appendTo = function(panel) {
             uiGroupContainer.appendTo(panel);
         }
     }
+
+    // Fix corner classes
+    panel.find('.ui-button:first-child').addClass('ui-corner-left');
+    panel.find('.ui-button:last-child').addClass('ui-corner-right');
 };

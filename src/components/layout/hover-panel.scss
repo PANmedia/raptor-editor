@@ -5,13 +5,6 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 .raptor-layout-hover-panel {
-    white-space: pre;
     z-index: $z-hover-panel-basic;
     position: absolute;
-    .ui-button {
-        margin-right: 10px;
-        &:last-child {
-            margin-right: 0;
-        }
-    }
 }
