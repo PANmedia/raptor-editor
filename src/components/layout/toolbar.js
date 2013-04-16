@@ -151,7 +151,7 @@ ToolbarLayout.prototype.getElement = function() {
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
 
         var layout = this;
-        this.raptor.defer(function() {
+        $(function() {
             wrapper.appendTo('body');
             layout.raptor.fire('toolbarReady');
         });
