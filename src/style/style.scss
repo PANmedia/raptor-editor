@@ -10,8 +10,8 @@
     outline: none;
 }
 
-.raptor-editable-hover:not(.raptor-editing),
-.raptor-editable:hover:not(.raptor-editing) {
+.raptor-editable-block-hover:not(.raptor-editing),
+.raptor-editable-block:hover:not(.raptor-editing) {
     background: inline-image('diagonal-lines.png') 0 0;
 }
 

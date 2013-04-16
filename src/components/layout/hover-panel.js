@@ -46,7 +46,7 @@ HoverPanelLayout.prototype.show = function(event) {
         this.visible = true;
         this.getHoverPanel().show();
         this.position();
-        this.raptor.getElement().addClass(this.raptor.options.baseClass + '-editable-hover');
+        this.raptor.getElement().addClass(this.raptor.options.baseClass + '-editable-block-hover');
     }
 };
 
@@ -74,7 +74,7 @@ HoverPanelLayout.prototype.hide = function(event) {
     }
     this.visible = false;
     this.getHoverPanel().hide();
-    this.raptor.getElement().removeClass(this.raptor.options.baseClass + '-editable-hover');
+    this.raptor.getElement().removeClass(this.raptor.options.baseClass + '-editable-block-hover');
 };
 
 HoverPanelLayout.prototype.position = function() {

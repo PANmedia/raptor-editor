@@ -132,7 +132,7 @@ var RaptorWidget = {
             setLocale(locale);
         }
 
-        this.getElement().addClass('raptor-editable');
+        this.getElement().addClass('raptor-editable-block');
 
         this.loadLayouts();
 
@@ -723,7 +723,7 @@ var RaptorWidget = {
     isVisible: function() {
         return this.visible;
     },
-    
+
     /*========================================================================*\
      * Template functions
     \*========================================================================*/
