@@ -64,7 +64,7 @@
         <h1>Raptor Editor - Basic Example</h1>
     </header>
     <div style="clear: both"></div>
-    <div class="editable" data-id="body-1">
+    <div class="editable" id="left" data-id="body-1">
         <?php ob_start(); ?>
         <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
@@ -165,7 +165,7 @@
         <?= renderContent(ob_get_clean(), $content, 'body-1'); ?>
     </div>
 
-    <div class="editable" data-id="body-2">
+    <div class="editable" id="right" data-id="body-2">
         <?php ob_start(); ?>
         <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
