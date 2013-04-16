@@ -47,6 +47,7 @@ Raptor.registerUi(new DialogButton({
         this.getDialogContentArea().html(loadingMessage);
 
         this.state = this.raptor.stateSave();
+        this.raptor.removeClass(this.raptor.options.baseClass + '-editable-hover')
         this.raptor.getPlugin('revisions')
             .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
     },
