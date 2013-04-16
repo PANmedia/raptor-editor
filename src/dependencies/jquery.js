@@ -1,4 +1,4 @@
-/*!
+/*
  * jQuery JavaScript Library v1.9.0
  * http://jquery.com/
  *
@@ -3670,7 +3670,7 @@ jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblcl
 		jQuery.event.fixHooks[ name ] = jQuery.event.mouseHooks;
 	}
 });
-/*!
+/*
  * Sizzle CSS Selector Engine
  * Copyright 2012 jQuery Foundation and other contributors
  * Released under the MIT license

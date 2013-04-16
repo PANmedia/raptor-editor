@@ -232,7 +232,9 @@
             <istrue value="${compile-js}" />
             <then>
                 <echo>closure --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js</echo>
-                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js"
+                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.temp.min.js"
+                      dir="." level="info" outputProperty="output" />
+                <exec command="closure ${closure-options} --js ${dir.build}/concat.temp.min.js --js_output_file ${dir.build}/concat.min.js"
                       dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
             </then>
