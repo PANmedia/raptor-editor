@@ -21,7 +21,6 @@
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-selectionsaverestore.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-textrange.js"></script>
-<script type="text/javascript" src="<?= $uri ?>dependencies/raptorize/jquery.raptorize.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>dependencies/resizetable.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/goog-table.js"></script>
@@ -61,6 +60,7 @@
 <script type="text/javascript" src="<?= $uri ?>raptor.js"></script>
 <script type="text/javascript" src="<?= $uri ?>raptor-widget.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/plugin.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/preview-toggle-button.js"></script>
@@ -73,8 +73,10 @@
 <script type="text/javascript" src="<?= $uri ?>components/ui/menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/select-menu.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/ui/custom-menu.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/ui-group.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/messages.js"></script>
 <script type="text/javascript" src="<?= $uri ?>components/layout/toolbar.js"></script>
-<script type="text/javascript" src="<?= $uri ?>components/hover-panel/basic.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/hover-panel.js"></script>
 
 <!-- Preset -->
 <script type="text/javascript" src="<?= $uri ?>presets/base.js"></script>
@@ -163,9 +165,15 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/sub.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/super.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/text-style/underline.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/tool-tip/tool-tip.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
+
 <script type="text/javascript" src="<?= $uri ?>plugins/view-source/view-source.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/view-revisions/view-revisions-button.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/view-revisions/view-revisions.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-diff-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-preview-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-apply-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-plugin.js"></script>

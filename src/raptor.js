@@ -170,46 +170,32 @@ var Raptor =  {
      * @param {String} name
      * @param {Object} layout
      */
-    registerLayout: function(name, layout) {
+    registerLayout: function(layout) {
         // <strict>
-        if (this.layouts[name]) {
-            handleError(_('Layout "{{name}}" has already been registered, and will be overwritten', {name: name}));
+        if (typeof layout !== 'object') {
+            handleError('Layout "' + layout + '" is invalid (must be an object)');
+            return;
+        } else if (typeof layout.name !== 'string') {
+            handleError('Layout "'+ layout + '" is invalid (must have a name property)');
+            return;
+        } else if (this.layouts[layout.name]) {
+            handleError('Layout "' + layout.name + '" has already been registered, and will be overwritten');
         }
         // </strict>
-        this.layouts[name] = layout;
-    },
 
-    /**
-     * Registers a new layout, overriding any previous layout registered with the same name.
-     *
-     * @param {String} name
-     * @param {Object} layout
-     */
-    registerHoverPanel: function(name, hoverPanel) {
-        // <strict>
-        if (this.hoverPanels[name]) {
-            handleError(_('Hover panel "{{name}}" has already been registered, and will be overwritten', {name: name}));
-        }
-        // </strict>
-        this.hoverPanels[name] = hoverPanel;
+        this.layouts[layout.name] = layout;
     },
 
     registerPlugin: function(plugin) {
         // <strict>
         if (typeof plugin !== 'object') {
-            handleError(_('errorPluginNotObject', {
-                plugin: plugin
-            }));
+            handleError('Plugin "' + plugin + '" is invalid (must be an object)');
             return;
         } else if (typeof plugin.name !== 'string') {
-            handleError(_('errorPluginNoName', {
-                plugin: plugin
-            }));
+            handleError('Plugin "'+ plugin + '" is invalid (must have a name property)');
             return;
         } else if (this.plugins[plugin.name]) {
-            handleError(_('errorPluginOverride', {
-                name: plugin.name
-            }));
+            handleError('Plugin "' + plugin.name + '" has already been registered, and will be overwritten');
         }
         // </strict>
 

@@ -163,17 +163,17 @@
  */
 
 /**
- * RaptorWidget#layoutHide
+ * RaptorWidget#toolbarHide
  * @event
  */
 
 /**
- * @name RaptorWidget#layoutReady
+ * @name RaptorWidget#toolbarReady
  * @event
  */
 
 /**
- * @name RaptorWidget#layoutShow
+ * @name RaptorWidget#toolbarShow
  * @event
  */
 
