@@ -129,7 +129,7 @@ function rangeEmptyTag(range) {
     if (typeof html === 'string') {
         html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
     }
-    return elementIsEmpty(html);
+    return stringHtmlStringIsEmpty(html);
 }
 
 /**
