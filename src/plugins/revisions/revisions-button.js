@@ -47,8 +47,8 @@ Raptor.registerUi(new DialogButton({
         this.getDialogContentArea().html(loadingMessage);
 
         this.state = this.raptor.stateSave();
-        this.raptor.removeClass(this.raptor.options.baseClass + '-editable-hover');
-        this.raptor.addClass(this.options.baseClass + '-reviewing');
+        this.raptor.getElement().removeClass(this.raptor.options.baseClass + '-editable-hover');
+        this.raptor.getElement().addClass(this.options.baseClass + '-reviewing');
         this.raptor.getPlugin('revisions')
             .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
     },
@@ -56,7 +56,7 @@ Raptor.registerUi(new DialogButton({
     closeDialog: function() {
         // Ensure raptor's previous state is *not* restored
         this.state = null;
-        this.raptor.removeClass(this.options.baseClass + '-reviewing');
+        this.raptor.getElement().removeClass(this.options.baseClass + '-reviewing');
         aDialogClose(this.dialog);
     },
 
