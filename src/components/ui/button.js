@@ -90,5 +90,7 @@ Button.prototype.getIcon = function() {
  * @todo this probably should not nest actions
  */
 Button.prototype.click = function() {
-    this.raptor.actionApply(this.action.bind(this));
+    if (aButtonIsEnabled(this.button)) {
+        this.raptor.actionApply(this.action.bind(this));
+    }
 };
