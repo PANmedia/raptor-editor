@@ -12,11 +12,9 @@
  */
 var basePreset = {
     /**
-     * @type Object Default layout to use.
+     * @type Object Default layouts to use.
      */
-    layout: null,
-
-    hoverPanel: null,
+    layout: {},
 
     /**
      * Plugins option overrides.
