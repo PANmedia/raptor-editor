@@ -40,3 +40,19 @@ function stringCamelCaseConvert(string, delimiter) {
         return (delimiter || '-') + match.toLowerCase();
     });
 }
+
+/**
+ * Checks if an html string is empty.
+ *
+ * @param {Element} element The element to be checked.
+ * @returns {Element}
+ */
+function stringHtmlStringIsEmpty(html) {
+    // <strict>
+    if (!typeIsString(html)) {
+        handleInvalidArgumentError('Parameter 1 to stringHtmlStringIsEmpty must be a string', html);
+        return;
+    }
+    // </strict>
+    return $($.parseHTML(html)).is(':empty');
+}
