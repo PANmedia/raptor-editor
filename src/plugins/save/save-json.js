@@ -95,7 +95,7 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    this.raptor.showError(_('saveJsonFail', {
+    this.raptor.getLayout('messages').showMessage('error', _('saveJsonFail', {
         failed: this.size
     }));
 };
