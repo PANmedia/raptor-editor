@@ -4,6 +4,19 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 @import 'compass/css3/box-sizing';
+@import 'compass/css3/user-interface';
+
+.raptor-layout-toolbar-outer {
+    overflow: visible;
+    position: fixed;
+    font-size: 12px;
+    z-index: $z-toolbar;
+    @include user-select(none);
+
+    * {
+        @include user-select(none);
+    }
+}
 
 .raptor-layout-toolbar-inner {
     border: $border-style;
