@@ -16,7 +16,7 @@ Raptor.defaults = $.extend(basePreset, {
             uiOrder: [
                 ['logo'],
                 ['save', 'cancel'],
-                ['dockToScreen', 'guides'],
+                ['dockToScreen', 'dockToElement', 'guides'],
                 ['viewSource'],
                 ['historyUndo', 'historyRedo'],
                 ['alignLeft', 'alignCenter', 'alignJustify', 'alignRight'],

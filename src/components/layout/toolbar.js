@@ -8,7 +8,7 @@
 
 function ToolbarLayout() {
     RaptorLayout.call(this, 'toolbar');
-    this.toolbar = null;
+    this.wrapper = null;
 }
 
 ToolbarLayout.prototype = Object.create(RaptorLayout.prototype);
@@ -18,6 +18,7 @@ ToolbarLayout.prototype.init = function() {
     this.raptor.bind('disabled', this.hide.bind(this));
     this.raptor.bind('layoutShow', this.show.bind(this));
     this.raptor.bind('layoutHide', this.hide.bind(this));
+    $(window).resize(this.constrainPosition.bind(this));
 };
 
 /**
@@ -26,8 +27,11 @@ ToolbarLayout.prototype.init = function() {
  * @fires RaptorWidget#toolbarShow
  */
 ToolbarLayout.prototype.show = function() {
-    this.getElement().css('display', '');
-    this.raptor.fire('toolbarShow');
+    if (!this.isVisible()) {
+        this.getElement().css('display', '');
+        this.constrainPosition();
+        this.raptor.fire('toolbarShow');
+    }
 };
 
 /**
@@ -36,8 +40,10 @@ ToolbarLayout.prototype.show = function() {
  * @fires RaptorWidget#toolbarHide
  */
 ToolbarLayout.prototype.hide = function() {
-    this.getElement().css('display', 'none');
-    this.raptor.fire('toolbarHide');
+    if (this.isReady()) {
+        this.getElement().css('display', 'none');
+        this.raptor.fire('toolbarHide');
+    }
 };
 
 ToolbarLayout.prototype.enableDragging = function() {
@@ -55,8 +61,41 @@ ToolbarLayout.prototype.disableDragging = function() {
     }
 };
 
+ToolbarLayout.prototype.isReady = function() {
+    return this.wrapper !== null;
+};
+
+ToolbarLayout.prototype.isVisible = function() {
+    return this.isReady() && this.getElement().is(':visible');
+};
+
+ToolbarLayout.prototype.constrainPosition = function() {
+    if (this.isReady() && this.isVisible()) {
+        var x = parseInt(this.wrapper.css('left')),
+            y = parseInt(this.wrapper.css('top')),
+            width = this.wrapper.outerWidth(),
+            height = this.wrapper.outerHeight(),
+            windowWidth = $(window).width(),
+            windowHeight = $(window).height(),
+            newX = Math.max(0, Math.min(x, windowWidth - width)),
+            newY = Math.max(0, Math.min(y, windowHeight - height));
+        if (newX !== x || newY !== y) {
+            this.wrapper.css({
+                left: newX,
+                top: newY
+            });
+        }
+
+        // Save the persistent position
+        this.raptor.persist('position', [
+            this.wrapper.css('top'),
+            this.wrapper.css('left')
+        ]);
+    }
+};
+
 ToolbarLayout.prototype.getElement = function() {
-    if (this.toolbar === null) {
+    if (this.wrapper === null) {
         // Load all UI components if not supplied
         if (!this.options.uiOrder) {
             this.options.uiOrder = [[]];
@@ -100,23 +139,8 @@ ToolbarLayout.prototype.getElement = function() {
                 cancel: 'a, button',
                 cursor: 'move',
                 // @todo Cancel drag when docked
-                // @todo Move draggable into plugin
                 handle: '.ui-editor-path',
-                stop: $.proxy(function() {
-                    // Save the persistent position
-                    var pos = this.raptor.persist('position', [
-                        wrapper.css('top'),
-                        wrapper.css('left')
-                    ]);
-                    wrapper.css({
-                        top: Math.abs(pos[0]),
-                        left: Math.abs(pos[1])
-                    });
-
-                    // <debug>
-                    if (debugLevel >= MID) debug('Saving toolbar position', this.raptor.getElement(), pos);
-                    // </debug>
-                }, this)
+                stop: this.constrainPosition.bind(this)
             });
 
             // Remove the relative position

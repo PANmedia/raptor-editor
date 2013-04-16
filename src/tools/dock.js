@@ -16,10 +16,7 @@
 function dockToScreen(element, options) {
     var position,
         spacer = $('<div>')
-            .addClass('spacer')
-            .css({
-                height: element.outerHeight()
-            });
+            .addClass('spacer');
     if (options.position === 'top') {
         position = {
             position: 'fixed',
@@ -89,10 +86,12 @@ function dockToScreen(element, options) {
             spacer.appendTo('body');
         }
     }
+    var styleState = styleSwapState(element, position);
+    spacer.css('height', element.outerHeight());
     return {
         dockedElement: element,
         spacer: spacer,
-        styleState: styleSwapState(element, position)
+        styleState: styleState
     };
 }
 

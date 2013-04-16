@@ -9,7 +9,7 @@
     <title>Raptor Editor - Basic Example</title>
     <script type="text/javascript">
         jQuery(function($) {
-            $('.editable').raptor({
+            $('#left').raptor({
                 urlPrefix: '../../src/',
                 plugins: {
                     save: {
@@ -38,6 +38,22 @@
                             'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
                         }
                     }
+                }
+            });
+            $('#right').raptor({
+                urlPrefix: '../../src/',
+                enableUi: false,
+                plugins: {
+                    dock: {
+                        docked: true,
+                        under: '.switcher-spacer'
+                    },
+                    dockToScreen: true,
+                    dockToElement: true,
+                    textBold: true,
+                    textItalic: true,
+                    textUnderline: true,
+                    clickButtonToEdit: true
                 }
             });
         });

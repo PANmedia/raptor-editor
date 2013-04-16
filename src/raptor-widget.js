@@ -817,13 +817,13 @@ var RaptorWidget = {
     isUiEnabled: function(ui) {
         // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
         if (this.options.enableUi === false &&
-                typeof this.options.ui[ui] === 'undefined' ||
-                this.options.ui[ui] === false) {
+                typeof this.options.plugins[ui] === 'undefined' ||
+                this.options.plugins[ui] === false) {
             // <debug>
             if (debugLevel >= MID) {
                 debug('UI with name ' + ui + ' has been disabled ' + (
                     this.options.enableUi === false ? 'by default' : 'manually'
-                ) + $.inArray(ui, this.options.ui));
+                ) + ' ' + $.inArray(ui, this.options.ui));
             }
             // </debug>
             return false;

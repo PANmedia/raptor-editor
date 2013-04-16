@@ -11,7 +11,9 @@
         document.write('<script type="text/javascript" src="<?= $uri ?>dependencies/jquery-ui.js"><' + '/script>');
 //        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/aristo/jquery-ui.css"/>');
 //        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/smoothness/jquery-ui.css"/>');
-        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
+        document.write('<link rel="stylesheet" type="text/css" href="<?= $uri ?>dependencies/themes/mammoth/theme.css" />');
+        document.write('<link rel="stylesheet" type="text/css" href="<?= $uri ?>dependencies/themes/mammoth/theme-icons.css" />');
     }
 </script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/jquery-hotkeys.js"></script>
