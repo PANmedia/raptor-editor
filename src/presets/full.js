@@ -11,9 +11,8 @@
  * @namespace Full options for Raptor.
  */
 Raptor.defaults = $.extend(basePreset, {
-    layout: {
-        type: 'toolbar',
-        options: {
+    layouts: {
+        toolbar: {
             uiOrder: [
                 ['logo'],
                 ['save', 'cancel'],
@@ -36,12 +35,14 @@ Raptor.defaults = $.extend(basePreset, {
                 ['snippetMenu'],
                 ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn', 'tableMergeCells', 'tableSplitCells']
             ]
-        }
-    },
-    hoverPanel: {
-        type: 'basic',
-        options: {
-            componentOrder: ['clickButtonToEdit', 'viewRevisions']
+        },
+        hoverPanel: {
+            uiOrder: [
+                ['clickButtonToEdit', 'revisions']
+            ]
+        },
+        messages: {
+            delay: 5000
         }
     }
 });
