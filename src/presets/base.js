@@ -130,14 +130,6 @@ var basePreset = {
     disabledUi: [],
 
     /**
-     * Default message options
-     * @type Object
-     */
-    message: {
-        delay: 5000
-    },
-
-    /**
      * Switch to indicate that the element the editor is being applied to should
      * be replaced with a div (useful for textareas), the value/html of the
      * replaced element will be automatically updated when the editor element is
