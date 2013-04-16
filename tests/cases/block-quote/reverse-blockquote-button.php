@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Reverse Block Quote Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -59,7 +59,7 @@
     <div class="test-2">
         <h1>Reverse Block Quote Button 2: Single Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur
                 </p>
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur
                 </p><p>
@@ -108,7 +108,7 @@
     <div class="test-3">
         <h1>Reverse Block Quote Button 3: Part Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel
@@ -127,7 +127,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel
@@ -157,7 +157,7 @@
      <div class="test-4">
         <h1>Reverse Block Quote Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui
@@ -178,7 +178,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui
@@ -211,7 +211,7 @@
     <div class="test-5">
         <h1>Reverse Block Quote Button 5: Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <blockquote>
                     <p>
                         {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -227,7 +227,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -256,7 +256,7 @@
     <div class="test-6">
         <h1>Reverse Block Quote Button 6: Empty Selection in Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -272,7 +272,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -300,7 +300,7 @@
     <div class="test-7">
         <h1>Reverse Block Quote Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                  <blockquote>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -316,7 +316,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -344,7 +344,7 @@
     <div class="test-8">
         <h1>Block Quote Button 8: Text Selection With an image</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <blockquote>
                     <p>
                         Lorem {ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -362,7 +362,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Click to Edit Button 1: With Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible raptor-editing" contenteditible="true">
+            <div class="editable raptor-editing" contenteditable="true">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -35,7 +35,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            $(input).find('.editible').trigger('mouseenter');
+            $(input).find('.editable').trigger('mouseenter');
             $('.raptor-image-resize-button-button').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
@@ -44,7 +44,7 @@
     <div class="test-2">
         <h1>Click to Edit Button 1: Without Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -55,7 +55,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible raptor-editing" contenteditible="true">
+            <div class="editable raptor-editing" contenteditable="true">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -68,7 +68,7 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            $(input).find('.editible').trigger('mouseenter');
+            $(input).find('.editable').trigger('mouseenter');
             $('.raptor-image-resize-button-button').trigger('click');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });

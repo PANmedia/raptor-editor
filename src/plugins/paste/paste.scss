@@ -7,7 +7,7 @@
 @import 'compass/css3/box';
 @import 'compass/css3/box-sizing';
 
-.raptor-paste-panel-tabs {
+.raptor-plugin-paste-panel-tabs {
     height: auto;
     width: 100%;
 
@@ -16,11 +16,11 @@
     @include box-flex(1);
 }
 
-.raptor-paste .ui-tabs a {
+.raptor-plugin-paste .ui-tabs a {
     outline: none;
 }
 
-.raptor-paste-panel-tabs > div {
+.raptor-plugin-paste-panel-tabs > div {
     overflow: auto;
 
     @include display-box();
@@ -32,18 +32,18 @@
     border-top: none;
 }
 
-.raptor-paste-panel-tabs > div > textarea.raptor-paste-area {
+.raptor-plugin-paste-panel-tabs > div > textarea.raptor-plugin-paste-area {
     @include box-flex(1);
     @include display-box();
 }
 
-.raptor-paste-panel-tabs > div > textarea,
-.raptor-paste-panel-tabs > div > .raptor-paste-area {
+.raptor-plugin-paste-panel-tabs > div > textarea,
+.raptor-plugin-paste-panel-tabs > div > .raptor-plugin-paste-area {
     border: none;
     padding: 2px;
 }
 
-.raptor-paste-dialog .ui-dialog-content {
+.raptor-plugin-paste-dialog .ui-dialog-content {
     display: -webkit-box !important;
     display: -moz-box !important;
     display: box !important;

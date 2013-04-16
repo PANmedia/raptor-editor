@@ -11,10 +11,10 @@
     <div class="test-1">
         <h1>Messages 1: Show basic confirm</h1>
         <div class="test-input">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
         <div class="test-expected">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -33,10 +33,10 @@
     <div class="test-2">
         <h1>Messages 2: Show basic info</h1>
         <div class="test-input">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
         <div class="test-expected">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -55,10 +55,10 @@
     <div class="test-3">
         <h1>Messages 3: Show basic error</h1>
         <div class="test-input">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
         <div class="test-expected">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -77,10 +77,10 @@
     <div class="test-4">
         <h1>Messages 4: Show basic alert</h1>
         <div class="test-input">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
         <div class="test-expected">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -99,10 +99,10 @@
     <div class="test-5">
         <h1>Messages 5: Show basic loading</h1>
         <div class="test-input">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
         <div class="test-expected">
-            <div class="editible"></div>
+            <div class="editable"></div>
         </div>
     </div>
     <script type="text/javascript">

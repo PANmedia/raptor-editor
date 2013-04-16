@@ -8,12 +8,12 @@
     <div class="test-1">
         <h1>Create Table 1: No Text</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 Some text.{}
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 Some text.{}
                 <table>
                     <tr>
@@ -57,12 +57,12 @@
     <div class="test-2">
         <h1>Create Table 2: With Text</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 Some text.{}
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 Some text.{}
                 <table>
                     <tr>

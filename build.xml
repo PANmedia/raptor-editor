@@ -232,7 +232,9 @@
             <istrue value="${compile-js}" />
             <then>
                 <echo>closure --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js</echo>
-                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js"
+                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.temp.min.js"
+                      dir="." level="info" outputProperty="output" />
+                <exec command="closure ${closure-options} --js ${dir.build}/concat.temp.min.js --js_output_file ${dir.build}/concat.min.js"
                       dir="." level="info" outputProperty="output" />
                 <echo>${output}</echo>
             </then>
@@ -355,6 +357,27 @@
         <echo>${dir.package}/${filename}.js</echo>
         <copy file="${dir.build}/merge.min.js" tofile="${dir.package}/${filename}.min.js" />
         <echo>${dir.package}/${filename}.min.js</echo>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Test scss                                                           -->
+    <!-- =================================================================== -->
+    <target name="test-css">
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/case.scss css/case.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/diff.scss css/diff.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/style.scss css/style.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/table.scss css/style.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/tests.scss css/tests.css
+        " />
     </target>
 
     <!-- =================================================================== -->

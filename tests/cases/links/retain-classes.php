@@ -33,14 +33,14 @@
     <div class="test-1">
         <h1>Create Link Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This is my paragraph, and <a href="." class="cms-red">{here is a link}</a>.
                 </p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This is my paragraph, and <a href="http://www.google.com" class="cms-red">{here is a link}</a>.
                 </p>

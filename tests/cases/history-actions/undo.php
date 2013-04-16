@@ -12,7 +12,7 @@
     <div class="test-1">
         <h1>Italic Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <em class="cms-italic">dui id erat pellentesque et rhoncus</em> nunc semper. Suspendisse
@@ -57,12 +57,12 @@
     <div class="test-2">
         <h1>Italic Button 2: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" style="width: 40px; height: 50px;" />
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" style="width: 40px; height: 50px;" />
             </div>
         </div>

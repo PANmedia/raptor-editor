@@ -31,7 +31,7 @@
     <div class="test-1">
         <h1>Insert File Button 1: Insert Text File With No Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. {} Suspendisse
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper.
@@ -61,7 +61,7 @@
     <div class="test-2">
         <h1>Insert File Button 2: Insert Text File With Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <a href="../../tests.csv" title="Some Text File" class="cms-file cms-csv">{dui id erat pellentesque et rhoncus}</a> nunc semper. Suspendisse

@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Tool Bar Doesn't Exceed Screen</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -37,7 +37,7 @@
         testEditor('.test-1', function(input) {
             var raptorWrapper = input.find('.raptor-wrapper');
             var toolbarTop = raptorWrapper.offset();
-            
+
             if (toolbarTop <= raptorWrapper) {
                 alert ('Toolbar inside viewport');
             } else {

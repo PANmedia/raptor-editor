@@ -23,6 +23,7 @@ Raptor.registerUi(new ToggleButton({
                 tag: 'a'
             });
             selectionExpandToWord();
+            this.raptor.selectionConstrain();
             applier.undoToSelection();
             cleanEmptyElements(this.raptor.getElement(), ['a']);
         }.bind(this));

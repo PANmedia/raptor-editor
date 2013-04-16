@@ -1,0 +1,10 @@
+/**
+ * Hover panel layout.
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-layout-hover-panel {
+    z-index: $z-hover-panel-basic;
+    position: absolute;
+}

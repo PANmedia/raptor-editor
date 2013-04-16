@@ -1,3 +1,4 @@
+<?php $i = 0 ?>
 <!doctype html>
 <html>
 <head>
@@ -10,35 +11,51 @@
         function testSelectExpand(input) {
             var ranges = tokensToRanges(input);
             rangy.getSelection().setRanges(ranges);
-            var range = rangy.getSelection().getRangeAt(0);
-            rangeExpandWhiteSpace(range);
-            $('<div>').addClass('output').html(range.extractContents()).appendTo(input);
+            selectionExpandToWord();
+            rangesToTokens(rangy.getSelection().getAllRanges());
         }
     </script>
 
-    <div class="test-1">
-        <h1>Test 1</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Test <?= $i ?></h1>
         <div class="test-input">
             <p>
-                {This is paragraph 1.}
-            </p>
-            <p>
-                This is a paragraph 2.
+                Loooooooooooo{}ooooooong
             </p>
         </div>
         <div class="test-expected">
             <p>
-                This is a paragraph 2.
+                {Looooooooooooooooooong}
             </p>
-            <div class="output">
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-<?= $i ?>', testSelectExpand);
+    </script>
+
+    <div class="test-<?= ++$i ?>">
+        <h1>Test <?= $i ?></h1>
+        <div class="test-input">
+            <div>
+                Above
                 <p>
-                    This is paragraph 1.
+                    {}
                 </p>
+                Below
+            </div>
+        </div>
+        <div class="test-expected">
+            <div>
+                Above
+                <p>
+                    {}
+                </p>
+                Below
             </div>
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-1', testSelectExpand);
+        test('.test-<?= $i ?>', testSelectExpand);
     </script>
 
 </body>

@@ -10,8 +10,9 @@
 /**
  * Creates an instance of the dialog button to open the revisions dialog.
  */
-var RevisionsButton = new DialogButton({
-    name: 'revisionsButton',
+Raptor.registerUi(new DialogButton({
+    name: 'revisions',
+    text: _('revisionsText'),
 
     dialogOptions: {
         width: 650,
@@ -22,18 +23,13 @@ var RevisionsButton = new DialogButton({
     init: function() {
         this.state = null;
 
-        var closeDialog = function() {
-            // Ensure raptor's previous state is *not* restored
-            this.state = null;
-            aDialogClose(this.dialog);
-        };
-
-        this.raptor.bind('saved', closeDialog, this);
-        this.raptor.bind('after:saved', function() {
-            this.raptor.unbind('saved', closeDialog, this);
-        }, this);
-
-        return DialogButton.prototype.init.call(this);
+        var result = DialogButton.prototype.init.call(this);
+        if (typeof this.raptor.getPlugin('revisions') === 'undefined' ||
+                typeof this.raptor.getPlugin('revisions').getUrl() === 'undefined') {
+            aButtonSetLabel(this.button, _('revisionsTextEmpty'))
+            aButtonDisable(this.button)
+        }
+        return result;
     },
 
     /**
@@ -43,17 +39,26 @@ var RevisionsButton = new DialogButton({
      * @param  {Object} dialog
      */
     openDialog: function(dialog) {
-
         this.dialog = dialog;
 
         var loadingMessage = $('<p/>')
-                                .html(_('revisionsLoading'))
-                                .addClass(this.options.baseClass + '-loading-revisions');
+                .html(_('revisionsLoading'))
+                .addClass(this.options.baseClass + '-loading-revisions');
+
         this.getDialogContentArea().html(loadingMessage);
 
         this.state = this.raptor.stateSave();
+        this.raptor.getElement().removeClass(this.raptor.options.baseClass + '-editable-hover');
+        this.raptor.getElement().addClass(this.options.baseClass + '-reviewing');
         this.raptor.getPlugin('revisions')
             .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
+    },
+
+    closeDialog: function() {
+        // Ensure raptor's previous state is *not* restored
+        this.state = null;
+        this.raptor.getElement().removeClass(this.options.baseClass + '-reviewing');
+        aDialogClose(this.dialog);
     },
 
     /**
@@ -72,7 +77,6 @@ var RevisionsButton = new DialogButton({
      * @param  {Object[]} revisions
      */
     renderRevisions: function(data) {
-
         if (typeof data.revisions === 'undefined' || !data.revisions.length) {
             this.displayNoRevisions();
             return;
@@ -81,8 +85,8 @@ var RevisionsButton = new DialogButton({
         var revisions = data.revisions;
 
         var tbody = this.getDialogContentArea()
-                        .html(this.raptor.getTemplate('revisions.table', this.options))
-                        .find('tbody'),
+                .html(this.raptor.getTemplate('revisions.table', this.options))
+                .find('tbody'),
             tableRowTemplate = this.raptor.getTemplate('revisions.tr', this.options),
             tableRows = [],
             tableRow = null,
@@ -163,4 +167,5 @@ var RevisionsButton = new DialogButton({
     getOkButton: function() {
         return false;
     }
-});
+
+}));

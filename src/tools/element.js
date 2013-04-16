@@ -286,11 +286,20 @@ function elementSwapStyles(element1, element2, style) {
 /**
  * Checks if an element is empty.
  *
- * @param {jQuery|Element} element The element to be checked.
+ * @param {Element} element The element to be checked.
  * @returns {Boolean} Returns true if element is empty.
  */
 function elementIsEmpty(element) {
-    return $($.parseHTML(element)).is(':empty');
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to elementIsEmpty must be a jQuery element', element);
+        return;
+    }
+    // </strict>
+    if ((/&nbsp;/).test(element.html())) {
+        return false;
+    }
+    else return element.text() === '';
 }
 
 /**

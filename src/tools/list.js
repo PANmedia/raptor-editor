@@ -138,13 +138,14 @@ var listValidPParents = [
  * @param  {String} listItem
  * @param  {String[]} validChildren
  */
-function listEnforceValidChildren(list, listItem, validChildren) {
+function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
+    removeEmpty = typeof removeEmpty === 'undefined' ? true : removeEmpty;
     // <strict>
     if (!typeIsElement(list)) {
         handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
-    var removeEmpty = function(node) {
+    var removeEmptyElements = function(node) {
         if ($(node).is('img')) {
             return;
         }
@@ -155,11 +156,11 @@ function listEnforceValidChildren(list, listItem, validChildren) {
     };
 
     list.find('> ' + listItem).each(function() {
-        if (removeEmpty(this)) {
+        if (removeEmpty && removeEmptyElements(this)) {
             return true;
         }
         $(this).contents().each(function() {
-            if (removeEmpty(this)) {
+            if (removeEmpty && removeEmptyElements(this)) {
                 return true;
             }
             if (listItem === 'p') {
@@ -203,7 +204,7 @@ function listWrapSelection(listType, listItem, wrapper) {
     // Having a <td> fully selected is a special case: without intervention
     // the surrounding <table> would be split, with a <listType> inserted between
     // the two <tables>.
-    if ($(commonAncestor).is('td,th')) {
+    if ($(commonAncestor).is('td,th') || commonAncestor === wrapper.get(0)) {
         rangeSelectElementContent(range, commonAncestor);
 
     // Other cases require checking if the range contains the full text of the
@@ -556,4 +557,85 @@ function listConvertListType(listType, listItem, wrapper) {
     var convertedList = $(toUnwrap).wrap('<' + listType + '>').parent();
 
     return listEnforceValidChildren(convertedList, listItem, listValidLiChildren);
+}
+
+/**
+ * Break the currently selected list, replacing the selection.
+ *
+ * @param  {String} listType
+ * @param  {String} listItem
+ * @param  {Element} wrapper
+ * @param  {String|Element} replacement
+ * @return {Element|Boolean} The replaced element, or false if replacement did not
+ *                               occur.
+ */
+function listBreakByReplacingSelection(listType, listItem, wrapper, replacement) {
+    var selectedElement = selectionGetElement();
+    if (!selectedElement.closest(listItem).length) {
+        return false;
+    }
+
+    var parentList = selectedElement.closest(listType);
+    if (!parentList.length || wrapper.get(0) === parentList.get(0)) {
+        return false;
+    }
+
+    selectionSelectToEndOfElement(selectedElement);
+    selectionDelete();
+
+    var top = $('<' + listType + '/>'),
+        bottom = $('<' + listType + '/>'),
+        middlePassed = false;
+    parentList.children().each(function() {
+        if (selectedElement.closest(listItem).get(0) === this) {
+            middlePassed = true;
+            top.append(this);
+            return;
+        }
+        if (!middlePassed) {
+            top.append(this);
+        } else {
+            bottom.append(this);
+        }
+    });
+    parentList.replaceWith(top);
+    replacement = $(replacement).appendTo($('body'));
+    top.after(replacement, bottom);
+
+    return replacement;
+}
+
+/**
+ * Add a new list item below the selection. New list item contains content of original
+ * list item from selection end to end of element.
+ *
+ * @param  {String} listType
+ * @param  {String} listItem
+ * @param  {Element} wrapper
+ * @param  {String|Element} replacement
+ * @return {Element|Boolean}
+ */
+function listBreakAtSelection(listType, listItem, wrapper) {
+    var selectedElement = selectionGetElement();
+    if (!selectedElement.closest(listItem).length) {
+        return false;
+    }
+
+    selectionDelete();
+    selectionSelectToEndOfElement(selectedElement);
+    var html = selectionGetHtml();
+    if (html.trim() === '') {
+        html = $('<p>&nbsp;</p>');
+    }
+    selectionDelete();
+
+    if (selectedElement.text().trim() === '') {
+        selectedElement.html($('<p>&nbsp;</p>'));
+    }
+    var newListItem = $('<' + listItem + '>').html(html);
+    selectedElement.closest(listItem).after(newListItem);
+
+    listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren, false);
+
+    return newListItem;
 }

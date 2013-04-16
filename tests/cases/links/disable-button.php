@@ -23,14 +23,14 @@
     <div class="test-1">
         <h1>Test remove link button is disabled</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This {is a paragraph}.
                 </p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     This {is a paragraph}.
                 </p>

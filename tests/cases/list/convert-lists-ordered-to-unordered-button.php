@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Unordered List 1: Convert an unordered list from an ordered list using a group of words</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -55,7 +55,7 @@
     <div class="test-2">
         <h1>Unordered List 2: Create an unordered list from an ordered list using single word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet,
                 </p>
@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet,
                 </p>
@@ -100,7 +100,7 @@
     <div class="test-3">
         <h1>Unordered List 3: Create an unordered list from an ordered list using empty selection before a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet,
                 </p>
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Lorem ipsum dolor sit amet, {}consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -138,7 +138,7 @@
     <div class="test-4">
         <h1>Unordered List 4: Create an unordered list from an ordered list using empty selection inside a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -149,7 +149,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -170,7 +170,7 @@
     <div class="test-5">
        <h1>Unordered List 5: Create an unordered list with multiple items selection from an ordered list using part word to part word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                   <p>Lor</p>
                 <ol>
                     <li>{em ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -182,7 +182,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>Lor</p>
                 <ul>
                     <li>{em ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -204,7 +204,7 @@
     <div class="test-6">
         <h1>Unordered List 6: Create an unordered list with multiple items from an ordered list</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                  <ol>{
                     <li>Item 1</li>
                     <li>Item 2</li>
@@ -215,7 +215,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>{
                     <li>Item 1</li>
                     <li>Item 2</li>
@@ -236,7 +236,7 @@
     <div class="test-7">
         <h1>Unordered List 7: Create an unordered list with multiple heading items from an ordered list</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                  <ol>{
                     <li><h3>Item 1</h3></li>
                     <li><h2>Item 2</h2></li>
@@ -247,7 +247,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>{
                     <li><h3>Item 1</h3></li>
                     <li><h2>Item 2</h2></li>

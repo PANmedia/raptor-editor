@@ -25,6 +25,7 @@ CSSClassApplierButton.prototype = Object.create(PreviewToggleButton.prototype);
  */
 CSSClassApplierButton.prototype.action = function() {
     selectionExpandToWord();
+    this.raptor.selectionConstrain();
     for (var i = 0, l = this.classes.length; i < l; i++) {
         var applier = rangy.createCssClassApplier(this.options.cssPrefix + this.classes[i], {
             elementTagName: this.tag || 'span'

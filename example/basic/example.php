@@ -9,9 +9,19 @@
     <title>Raptor Editor - Basic Example</title>
     <script type="text/javascript">
         jQuery(function($) {
-            $('.editable').raptor({
+            $('#left').raptor({
                 urlPrefix: '../../src/',
                 plugins: {
+                    save: {
+                        plugin: 'saveJson'
+                    },
+                    saveJson: {
+                        url: 'save.php',
+                        postName: 'raptor-content',
+                        id: function() {
+                            return this.raptor.getElement().data('id');
+                        }
+                    },
                     dock: {
                         docked: true,
                         under: '.switcher-spacer'
@@ -28,6 +38,22 @@
                             'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
                         }
                     }
+                }
+            });
+            $('#right').raptor({
+                urlPrefix: '../../src/',
+                enableUi: false,
+                plugins: {
+                    dock: {
+                        docked: true,
+                        under: '.switcher-spacer'
+                    },
+                    dockToScreen: true,
+                    dockToElement: true,
+                    textBold: true,
+                    textItalic: true,
+                    textUnderline: true,
+                    clickButtonToEdit: true
                 }
             });
         });
@@ -54,7 +80,7 @@
         <h1>Raptor Editor - Basic Example</h1>
     </header>
     <div style="clear: both"></div>
-    <div class="editable" data-id="body-1">
+    <div class="editable" id="left" data-id="body-1">
         <?php ob_start(); ?>
         <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
@@ -84,10 +110,28 @@
         </p>
 
         <ul>
-            <li>List item 1</li>
-            <li>List item 2</li>
-            <li>List item 3</li>
+            <li>
+                <p>List item 1</p>
+            </li>
+            <li>
+                <p>List item 2</p>
+            </li>
+            <li>
+                <p>List item 3</p>
+            </li>
         </ul>
+
+        <ol>
+            <li>
+                <p>List item 1</p>
+            </li>
+            <li>
+                <p>List item 2</p>
+            </li>
+            <li>
+                <p>List item 3</p>
+            </li>
+        </ol>
 
         <p>
             Text above the image.
@@ -137,7 +181,7 @@
         <?= renderContent(ob_get_clean(), $content, 'body-1'); ?>
     </div>
 
-    <div class="editable" data-id="body-2">
+    <div class="editable" id="right" data-id="body-2">
         <?php ob_start(); ?>
         <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum

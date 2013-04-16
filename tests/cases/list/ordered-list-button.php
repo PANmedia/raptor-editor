@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Ordered List 1: Create an ordered list from group of words</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -49,7 +49,7 @@
     <div class="test-2">
         <h1>Ordered List 2: Create an ordered list from single word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, {consectetur} adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet,
                 </p>
@@ -88,7 +88,7 @@
     <div class="test-3">
         <h1>Ordered List 3: Create an ordered list from empty selection before a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, {}consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Lorem ipsum dolor sit amet, {}consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -120,7 +120,7 @@
     <div class="test-4">
         <h1>Ordered List 4: Create an ordered list from empty selection inside a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -131,7 +131,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -152,7 +152,7 @@
     <div class="test-5">
        <h1>Ordered List 5: Create an ordered list with multiple items selection from part word to part word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                   <p>Lor{em ipsum dolor sit amet, consectetur adipiscing elit.</p>
                   <p>Maecenas convallis dui id erat pellentesque et rhoncus nunc semper.</p>
                   <p>Suspendisse malesuada hendrerit velit nec tristique.</p>
@@ -160,7 +160,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>Lor</p>
                 <ol>
                     <li>{em ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -182,7 +182,7 @@
     <div class="test-6">
         <h1>Ordered List 6: Create an ordered list with multiple items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {
                     <p>Item 1</p>
                     <p>Item 2</p>
@@ -192,7 +192,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>{
                     <li>Item 1</li>
                     <li>Item 2</li>
@@ -213,7 +213,7 @@
     <div class="test-7">
         <h1>Ordered List 7: Create an ordered list with multiple heading items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {
                     <h3>Item 1</h3>
                     <h2>Item 2</h2>
@@ -223,7 +223,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>{
                     <li><h3>Item 1</h3></li>
                     <li><h2>Item 2</h2></li>
@@ -244,7 +244,7 @@
     <div class="test-8">
         <h1>Ordered List 8: Toggle bottom list of two lists and check selection remains on bottom list</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li><h3>Item 1</h3></li>
                 </ol>
@@ -252,7 +252,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li><h3>Item 1</h3></li>
                 </ol>

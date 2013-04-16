@@ -83,11 +83,11 @@ SaveRestPlugin.prototype.always = function() {
     this.requests--;
     if (this.requests === 0) {
         if (this.errors.length > 0 && this.messages.length === 0) {
-            this.raptor.showError(_('saveRestFail', {
+            this.raptor.getLayout('messages').showMessage('error', _('saveRestFail', {
                 failed: this.errors.length
             }));
         } else if (this.errors.length > 0) {
-            this.raptor.showError(_('saveRestPartial', {
+            this.raptor.getLayout('messages').showMessage('error', _('saveRestPartial', {
                 saved: this.messages.length,
                 failed: this.errors.length
             }));

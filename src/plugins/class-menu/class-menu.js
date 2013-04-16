@@ -31,7 +31,7 @@ ClassMenu.prototype = Object.create(SelectMenu.prototype);
  */
 ClassMenu.prototype.init = function() {
     var result = SelectMenu.prototype.init.call(this);
-    if (typeof this.options.classes !== 'undefined' &&
+    if (typeof this.options.classes === 'object' &&
             Object.keys(this.options.classes).length > 0) {
         this.raptor.bind('selectionChange', this.updateButton.bind(this));
         return result;

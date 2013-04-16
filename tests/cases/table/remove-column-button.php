@@ -8,7 +8,7 @@
     <div class="test-1">
         <h1>Remove Column 1</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                  <table>
                 <tr>
                     <td>Column 1</td>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                 <tr>
                     <td>Column 1</td>
@@ -59,7 +59,7 @@
     <div class="test-2">
         <h1>Remove Column 2</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                 <thead>
                     <tr>
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                 <thead>
                     <tr>

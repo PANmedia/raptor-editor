@@ -8,7 +8,7 @@
     <div class="test-1">
         <h1>Insert Footer 1</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <table>
                    <thead>
                        <tr>
@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <table>
                     <thead>
                         <tr>

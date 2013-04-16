@@ -76,6 +76,10 @@ function aButtonEnable(element) {
     return $(element).button('option', 'disabled', false);
 }
 
+function aButtonIsEnabled(element) {
+    return !$(element).is('.ui-state-disabled');
+}
+
 /**
  * Wrap the jQuery UI button's disable function.
  *

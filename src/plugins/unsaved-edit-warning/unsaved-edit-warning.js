@@ -42,8 +42,8 @@ UnsavedEditWarningPlugin.prototype.enable = function(raptor) {
 UnsavedEditWarningPlugin.prototype.show = function() {
     unsavedEditWarningDirty++;
     if (unsavedEditWarningDirty > 0) {
-        elementBringToTop(this.getElement(this));
-        this.getElement(this).addClass('raptor-unsaved-edit-warning-visible');
+        elementBringToTop(this.getElement());
+        this.getElement().addClass(this.options.baseClass + '-visible');
     }
 };
 
@@ -55,7 +55,7 @@ UnsavedEditWarningPlugin.prototype.show = function() {
 UnsavedEditWarningPlugin.prototype.hide = function(event) {
     unsavedEditWarningDirty--;
     if (unsavedEditWarningDirty === 0) {
-        this.getElement(this).removeClass('raptor-unsaved-edit-warning-visible');
+        this.getElement().removeClass(this.options.baseClass + '-visible');
     }
 };
 
@@ -66,18 +66,18 @@ UnsavedEditWarningPlugin.prototype.hide = function(event) {
  * @param {type} instance
  * @returns {Element}
  */
-UnsavedEditWarningPlugin.prototype.getElement = function(instance) {
+UnsavedEditWarningPlugin.prototype.getElement = function() {
     if (!unsavedEditWarningElement) {
         unsavedEditWarningElement = $(this.raptor.getTemplate('unsaved-edit-warning.warning', this.options))
             .mouseenter(function() {
                 Raptor.eachInstance(function(editor) {
                     if (editor.isDirty()) {
-                        editor.getElement().addClass('raptor-unsaved-edit-warning-dirty');
+                        editor.getElement().addClass(this.options.baseClass + '-dirty');
                     }
                 });
             })
             .mouseleave(function() {
-                $('.raptor-unsaved-edit-warning-dirty').removeClass('raptor-unsaved-edit-warning-dirty');
+                $('.' + this.options.baseClass + '-dirty').removeClass(this.options.baseClass + '-dirty');
             })
             .appendTo('body');
     }

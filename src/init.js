@@ -48,6 +48,17 @@ function debug() {
     (console.debug || console.log).apply(console, args);
 }
 
+var abortLoopCount = null;
+function abortLoop(i) {
+    if (abortLoopCount === null) {
+        abortLoopCount = i;
+    }
+    if (abortLoopCount <= 0) {
+        throw new Error('Aborting loop');
+    }
+    abortLoopCount--;
+}
+
 // Show some debugging information on ready
 if (debugLevel >= MID) {
     $(function() {

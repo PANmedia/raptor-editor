@@ -35,7 +35,7 @@
     <div class="test-1">
         <h1>Create Link Button 1: Word Group Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis <a href="http://www.google.com">{dui id erat pellentesque et rhoncus}</a> nunc semper. Suspendisse
@@ -64,7 +64,7 @@
     <div class="test-2">
         <h1>Create Link Button 2: Single Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur <a href="http://www.google.com">{adipiscing}</a> elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -93,7 +93,7 @@
     <div class="test-3">
         <h1>Create Link Button 3: Part Word Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pel<a href="http://www.google.com">{lentesqu}</a>e et rhoncus nunc semper. Suspendisse
@@ -122,7 +122,7 @@
      <div class="test-4">
         <h1>Create Link Button 4: Multi-Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -136,7 +136,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui <a href="http://www.google.com">{id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -157,7 +157,7 @@
     <div class="test-5">
         <h1>Create Link Button 5: Paragraph Selection</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -170,7 +170,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     <a href="http://www.google.com">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -191,7 +191,7 @@
     <div class="test-6">
         <h1>Create Link Button 6: Empty Selection in Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -204,7 +204,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -224,7 +224,7 @@
     <div class="test-7">
         <h1>Create Link Button 7: Empty Selection at the Beginning of a Word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -237,7 +237,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -257,14 +257,14 @@
     <div class="test-8">
         <h1>Create Link Button 8: Selected Image</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     {<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}
                 </p>
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     <a href="http://www.google.com">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
                 </p>
@@ -278,7 +278,7 @@
     <div class="test-9">
         <h1>Create Link Button 9: Ordered List</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <li>{Item 2 is a link}</li>
@@ -288,7 +288,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <li><a href="http://www.google.com">{Item 2 is a link}</a></li>
@@ -305,7 +305,7 @@
     <div class="test-10">
         <h1>Create Link Button 10: Unordered List</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li>{Item 2 is a link}</li>
@@ -315,7 +315,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <li><a href="http://www.google.com">{Item 2 is a link}</a></li>

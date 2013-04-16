@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Reverse Ordered List 1: Reverse an ordered list from group of words</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis
@@ -54,7 +54,7 @@
     <div class="test-2">
         <h1>Reverse Ordered List 2: Reverse an ordered list from single word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet,
                 </p>
@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet,
                 </p>
@@ -99,7 +99,7 @@
     <div class="test-3">
         <h1>Reverse Ordered List 3: Reverse an ordered list from empty selection before a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Lorem ipsum dolor sit amet, {}consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -110,7 +110,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lorem ipsum dolor sit amet, {}consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -131,7 +131,7 @@
     <div class="test-4">
         <h1>Reverse Ordered List 4: Reverse an ordered list from empty selection inside a word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                <ol>
                     <li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -142,7 +142,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                  <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -163,7 +163,7 @@
     <div class="test-5">
        <h1>Reverse Ordered List 5: Reverse an ordered list with multiple items selection from part word to part word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>Lor</p>
                 <ol>
                     <li>{em ipsum dolor sit amet, consectetur adipiscing elit.</li>
@@ -175,7 +175,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                     Lor
                 </p>
@@ -207,7 +207,7 @@
     <div class="test-6">
         <h1>Reverse Ordered List 6: Reverse an ordered list with multiple items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>{
                     <li>Item 1</li>
                     <li>Item 2</li>
@@ -218,7 +218,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {
                     <p>Item 1</p>
                     <p>Item 2</p>
@@ -238,7 +238,7 @@
     <div class="test-7">
         <h1>Reverse Ordered List 7: Reverse an ordered list with multiple heading items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>{
                     <li><h3>Item 1</h3></li>
                     <li><h2>Item 2</h2></li>
@@ -249,7 +249,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {
                     <h3>Item 1</h3>
                     <h2>Item 2</h2>

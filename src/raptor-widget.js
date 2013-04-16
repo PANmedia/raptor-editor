@@ -62,6 +62,7 @@ var RaptorWidget = {
         this.ready = false;
         this.events = {};
         this.plugins = {};
+        this.layouts = {};
         this.templates = $.extend({}, Raptor.templates);
         this.target = this.element;
         this.layout = null;
@@ -72,9 +73,6 @@ var RaptorWidget = {
 
         // True if editing is enabled at least once
         this.initialised = false;
-
-        // True if the layout has been loaded and displayed
-        this.visible = false;
 
         // List of UI objects bound to the editor
         this.uiObjects = {};
@@ -113,8 +111,6 @@ var RaptorWidget = {
             this.replaceOriginal();
         }
 
-        this.loadHoverPanel();
-
         // Load plugins
         this.loadPlugins();
 
@@ -133,6 +129,10 @@ var RaptorWidget = {
             setLocale(locale);
         }
 
+        this.getElement().addClass('raptor-editable-block');
+
+        this.loadLayouts();
+
         // Fire the ready event
         this.ready = true;
         this.fire('ready');
@@ -141,7 +141,6 @@ var RaptorWidget = {
         if (this.options.autoEnable) {
             $(function() {
                 currentInstance.enableEditing();
-                currentInstance.showLayout();
             });
         }
     },
@@ -161,11 +160,7 @@ var RaptorWidget = {
         this.getElement().on('click.' + this.widgetName, 'img', function imageClickHandler(event) {
             selectionSelectOuter(event.target);
         }.bind(this));
-        this.getElement().bind('focus', function focusHandler() {
-            this.hideOtherLayouts(true);
-            this.showLayout();
-        }.bind(this));
-
+        this.getElement().bind('focus', this.showLayout.bind(this));
         this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
         this.target.bind('keyup.' + this.widgetName, this.checkChange.bind(this));
 
@@ -209,7 +204,6 @@ var RaptorWidget = {
             return;
         }
 
-        var visible = this.visible;
         this.actionPreviewRestore();
         if (this.layout) {
             this.layout.destruct();
@@ -218,11 +212,7 @@ var RaptorWidget = {
         this.events = {};
         this.plugins = {};
         this.uiObjects = {};
-        this.visible = false;
         this.loadPlugins();
-        if (visible) {
-            this.showLayout();
-        }
     },
 
     /**
@@ -264,7 +254,9 @@ var RaptorWidget = {
             // Give the div a unique ID
             .attr('id', elementUniqueId())
             // Copy the original elements class(es) to the replacement div
-            .addClass(this.element.attr('class'));
+            .addClass(this.element.attr('class'))
+            // Add custom classes
+            .addClass(this.options.classes);
 
         var style = elementGetStyles(this.element);
         for (var i = 0; i < this.options.replaceStyle.length; i++) {
@@ -384,12 +376,12 @@ var RaptorWidget = {
                 this.previewState = actionPreview(this.previewState, this.target, function() {
                     for (var i = 0, l = ranges.length; i < l; i++) {
                         rangy.getSelection().setSingleRange(ranges[i]);
-                        selectionConstrain(this.target);
+                        this.selectionConstrain();
                         action();
                     }
                 }.bind(this));
             } else {
-                selectionConstrain(this.target);
+                this.selectionConstrain();
                 this.previewState = actionPreview(this.previewState, this.target, action);
             }
         } catch (exception) {
@@ -415,12 +407,12 @@ var RaptorWidget = {
                 actionApply(function() {
                     for (var i = 0, l = ranges.length; i < l; i++) {
                         rangy.getSelection().setSingleRange(ranges[i]);
-                        selectionConstrain(this.target);
+                        this.selectionConstrain();
                         actionApply(action, this.history);
                     }
                 }.bind(this), this.history);
             } else {
-                selectionConstrain(this.target);
+                this.selectionConstrain();
                 actionApply(action, this.history);
             }
             this.checkChange();
@@ -437,7 +429,7 @@ var RaptorWidget = {
     actionRedo: function() { },
 
     stateSave: function() {
-        selectionConstrain(this.target);
+        this.selectionConstrain();
         return stateSave(this.target);
     },
 
@@ -452,6 +444,10 @@ var RaptorWidget = {
             selection.setRanges(restoredState.ranges);
             selection.refresh();
         }
+    },
+
+    selectionConstrain: function() {
+        selectionConstrain(this.target);
     },
 
     /*========================================================================*\
@@ -476,8 +472,6 @@ var RaptorWidget = {
      *
      */
     enableEditing: function() {
-        this.loadLayout();
-
         if (!this.enabled) {
             this.fire('enabling');
 
@@ -486,7 +480,10 @@ var RaptorWidget = {
 
             this.enabled = true;
 
-            this.getElement().addClass(this.options.baseClass + '-editing');
+            this.getElement()
+                .addClass(this.options.baseClass + '-editing')
+                .addClass(this.options.classes);
+
             if (this.options.partialEdit) {
                 this.getElement().find(this.options.partialEdit).prop('contenteditable', true);
             } else {
@@ -512,7 +509,8 @@ var RaptorWidget = {
             }
 
             this.fire('enabled');
-            this.fire('resize');
+
+            this.showLayout();
         }
     },
 
@@ -525,7 +523,8 @@ var RaptorWidget = {
             this.enabled = false;
             this.getElement()
                 .prop('contenteditable', false)
-                .removeClass(this.options.baseClass + '-editing');
+                .removeClass(this.options.baseClass + '-editing')
+                .removeClass(this.options.classes);
             rangy.getSelection().removeAllRanges();
             this.fire('disabled');
             if (this.options.reloadOnDisable && !disabledReloading) {
@@ -546,7 +545,6 @@ var RaptorWidget = {
         if (!this.options.reloadOnDisable) {
             this.resetHtml();
         }
-        this.hideLayout();
         this.disableEditing();
         this.dirty = false;
         selectionDestroy();
@@ -573,7 +571,9 @@ var RaptorWidget = {
      * @param {boolean} [callSelf]
      */
     unify: function(callback, callSelf) {
-        if (callSelf !== false) callback(this);
+        if (callSelf !== false) {
+            callback(this);
+        }
         if (this.options.unify) {
             var currentInstance = this;
             Raptor.eachInstance(function(instance) {
@@ -588,222 +588,85 @@ var RaptorWidget = {
     },
 
     /*========================================================================*\
-     * Messages
-    \*========================================================================*/
-
-    /**
-     *
-     */
-    loadMessages: function() {
-        this.messages = $(this.getTemplate('messages', this.options)).appendTo(this.getLayout().getElement());
-    },
-
-    /**
-     * @param {String} type
-     * @param {String[]} messages
-     */
-    showMessage: function(type, message, options) {
-        options = $.extend({}, this.options.message, options);
-
-        var messageObject;
-        messageObject = {
-            timer: null,
-            editor: this,
-            show: function() {
-                this.element.slideDown();
-                this.timer = window.setTimeout(function() {
-                    this.timer = null;
-                    messageObject.hide();
-                }, options.delay, this);
-            },
-            hide: function() {
-                if (this.timer) {
-                    window.clearTimeout(this.timer);
-                    this.timer = null;
-                }
-                this.element.stop().slideUp(function() {
-                    if ($.isFunction(options.hide)) {
-                        options.hide.call(this);
-                    }
-                    this.element.remove();
-                }.bind(this));
-            }
-        };
-
-        messageObject.element =
-            $(this.getTemplate('message', $.extend(this.options, {
-                type: type,
-                message: message
-            })))
-            .hide()
-            .appendTo(this.messages)
-            .find('.ui-editor-message-close')
-                .click(function() {
-                    messageObject.hide();
-                })
-            .end();
-
-        messageObject.show();
-
-        return messageObject;
-    },
-
-    /**
-     * @param {String[]} messages
-     */
-    showLoading: function(message, options) {
-        return this.showMessage('clock', message, options);
-    },
-
-    /**
-     * @param {String[]} messages
-     */
-    showInfo: function(message, options) {
-        return this.showMessage('info', message, options);
-    },
-
-    /**
-     * @param {String[]} messages
-     */
-    showError: function(message, options) {
-        return this.showMessage('circle-close', message, options);
-    },
-
-    /**
-     * @param {String[]} messages
-     */
-    showConfirm: function(message, options) {
-        return this.showMessage('circle-check', message, options);
-    },
-
-    /**
-     * @param {String[]} messages
-     */
-    showWarning: function(message, options) {
-        return this.showMessage('alert', message, options);
-    },
-
-    /*========================================================================*\
      * Layout
     \*========================================================================*/
-
-    getLayout: function() {
-        return this.layout;
+    getLayout: function(type) {
+        // <strict>
+        if (typeof type === 'undefined') {
+            handleInvalidArgumentError('Parameter 1 to getLayout is expected to be a layout type', type);
+            return;
+        }
+        // </strict>
+        return this.layouts[type];
     },
 
-    loadLayout: function() {
-        if (!this.layout) {
-            this.layout = $.extend({}, Raptor.layouts[this.options.layout.type]);
-            this.layout.raptor = this;
-            this.layout.options = $.extend({}, this.options, this.layout.options, this.options.layout.options);
-            this.layout.init();
+    loadLayouts: function() {
+        for (var name in this.options.layouts) {
+            // <strict>
+            if (typeof Raptor.layouts[name] === 'undefined') {
+                handleError('Unknown layout type: ' + name);
+                continue;
+            }
+            // </strict>
+            this.layouts[name] = this.prepareComponent(Raptor.layouts[name], this.options.layouts[name], 'layout').instance;
+
+            if (this.layouts[name].hotkeys) {
+                this.registerHotkey(this.layouts[name].hotkeys, null, this.layouts[name]);
+            }
         }
+    },
+
+    prepareComponent: function(component, componentOptions, prefix) {
+        var instance = $.extend({}, component);
+
+        var baseClass = component.name.replace(/([A-Z])/g, function(match) {
+            return '-' + match.toLowerCase();
+        });
+
+        var options = $.extend({}, this.options, {
+            baseClass: this.options.baseClass + '-' + prefix + '-' + baseClass
+        }, instance.options, componentOptions);
+
+        instance.raptor = this;
+        instance.options = options;
+        var init = instance.init();
+
+        return {
+            init: init,
+            instance: instance
+        };
     },
 
     /**
      * Show the layout for the current element.
+     *
      * @param  {Range} [range] a native range to select after the layout has been shown
      */
     showLayout: function(range) {
-        this.loadLayout();
-
-        if (!this.visible) {
-            // <debug>
-            if (debugLevel >= MID) debug('Displaying layout', this.getElement());
-            // </debug>
-
-            // If unify option is set, hide all other layouts first
-            if (this.options.unify) {
-                this.hideOtherLayouts(true);
-            }
-
-            // Store the visible state
-            this.visible = true;
-
-            this.layout.show();
-
-            this.fire('resize');
-            if (typeof this.getElement().attr('tabindex') === 'undefined') {
-                this.getElement().attr('tabindex', -1);
-            }
-
-            if (range) {
-                if (range.select) { // IE
-                    range.select();
-                } else { // Others
-                    var selection = window.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                }
-            }
-
-            var editor = this;
-            $(function() {
-                editor.fire('show');
-                editor.getElement().focus();
-                editor.fire('selectionChange');
-            });
-        }
-    },
-
-    /**
-     *
-     */
-    hideLayout: function() {
-        if (this.layout) {
-            this.visible = false;
-            this.layout.hide();
-            this.fire('hide');
-            this.fire('resize');
-        }
-    },
-
-    /**
-     * @param {boolean} [instant]
-     */
-    hideOtherLayouts: function(instant) {
-        this.unify(function(editor) {
-            editor.hideLayout(instant);
-        }, false);
-    },
-
-    /**
-     *
-     * @returns {boolean}
-     */
-    isVisible: function() {
-        return this.visible;
-    },
-
-    /*========================================================================*\
-     * Hover Panel
-    \*========================================================================*/
-
-    getHoverPanel: function() {
-        return this.hoverPanel;
-    },
-
-    addToHoverPanel: function(component) {
         // <debug>
-        if (debugLevel >= MID) debug('Adding to hover panel', component);
+        if (debugLevel >= MID) debug('Displaying layout', this.getElement());
         // </debug>
 
-        if (!this.getHoverPanel()) {
-            // <strict>
-            handleError('No hover panel loaded');
-            // </strict>
-            return null;
+        // If unify option is set, hide all other layouts first
+        this.unify(function(raptor) {
+            raptor.fire('layoutHide');
+        }, false);
+
+        this.fire('layoutShow');
+
+        this.fire('resize');
+        if (typeof this.getElement().attr('tabindex') === 'undefined') {
+            this.getElement().attr('tabindex', -1);
         }
 
-        this.getHoverPanel().addComponent(component.name, component);
-    },
-
-    loadHoverPanel: function() {
-        if (!this.hoverPanel && this.options.hoverPanel) {
-            this.hoverPanel = $.extend({}, Raptor.hoverPanels[this.options.hoverPanel.type]);
-            this.hoverPanel.raptor = this;
-            this.hoverPanel.options = $.extend({}, this.options, this.hoverPanel.options, this.options.hoverPanel.options, { baseClass: this.options.baseClass + '-hover-panel-' + this.options.hoverPanel.type });
-            this.hoverPanel.init();
+        if (range) {
+            if (range.select) { // IE
+                range.select();
+            } else { // Others
+                var selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
         }
     },
 
@@ -954,13 +817,13 @@ var RaptorWidget = {
     isUiEnabled: function(ui) {
         // Check if we are not automatically enabling UI, and if not, check if the UI was manually enabled
         if (this.options.enableUi === false &&
-                typeof this.options.ui[ui] === 'undefined' ||
-                this.options.ui[ui] === false) {
+                typeof this.options.plugins[ui] === 'undefined' ||
+                this.options.plugins[ui] === false) {
             // <debug>
             if (debugLevel >= MID) {
                 debug('UI with name ' + ui + ' has been disabled ' + (
                     this.options.enableUi === false ? 'by default' : 'manually'
-                ) + $.inArray(ui, this.options.ui));
+                ) + ' ' + $.inArray(ui, this.options.ui));
             }
             // </debug>
             return false;
@@ -1017,28 +880,11 @@ var RaptorWidget = {
             }
 
             // Check if we have explicitly disabled the plugin
-            if ($.inArray(name, this.options.disabledPlugins) !== -1) continue;
-
-            // Clone the plugin object (which should be extended from the defaultPlugin object)
-            var pluginObject = $.extend({}, Raptor.plugins[name]);
-
-            var baseClass = name.replace(/([A-Z])/g, function(match) {
-                return '-' + match.toLowerCase();
-            });
-
-            var options = $.extend({}, editor.options, {
-                baseClass: editor.options.baseClass + '-' + baseClass
-            }, pluginObject.options, editor.options.plugins[name]);
-
-            pluginObject.raptor = this;
-            pluginObject.options = options;
-            pluginObject.init();
-
-            if (pluginObject.hotkeys) {
-                this.registerHotkey(pluginObject.hotkeys, null, pluginObject);
+            if ($.inArray(name, this.options.disabledPlugins) !== -1) {
+                continue;
             }
 
-            editor.plugins[name] = pluginObject;
+            editor.plugins[name] = this.prepareComponent(Raptor.plugins[name], editor.options.plugins[name], 'plugin').instance;
         }
     },
 
@@ -1179,6 +1025,7 @@ var RaptorWidget = {
             debug('Firing event: ' + name, this.getElement());
         }
         // </debug>
+
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];

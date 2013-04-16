@@ -1,3 +1,4 @@
+<?php $i = 0; ?>
 <!doctype html>
 <html>
 <head>
@@ -10,8 +11,8 @@
             elementTagName: 'strong'
         });
     </script>
-    <div class="test-1">
-        <h1>Bold 1: Word Group Selection</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Bold <?= $i ?>: Word Group Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -32,7 +33,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-1', function(input) {
+        test('.test-<?= $i ?>', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
@@ -41,8 +42,8 @@
         });
     </script>
 
-    <div class="test-2">
-        <h1>Bold 2: Word Part Selection</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Bold <?= $i ?>: Word Part Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -63,7 +64,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-2', function(input) {
+        test('.test-<?= $i ?>', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
@@ -72,8 +73,8 @@
         });
     </script>
 
-    <div class="test-3">
-        <h1>Bold 3: Full Word Selection</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Bold <?= $i ?>: Full Word Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -94,7 +95,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-3', function(input) {
+        test('.test-<?= $i ?>', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
@@ -103,8 +104,8 @@
         });
     </script>
 
-    <div class="test-4">
-        <h1>Bold 4: Multi Paragraph Selection</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Bold <?= $i ?>: Multi Paragraph Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -131,7 +132,7 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-4', function(input) {
+        test('.test-<?= $i ?>', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
@@ -140,8 +141,8 @@
         });
     </script>
 
-    <div class="test-5">
-        <h1>Bold 5: Paragraph Selection</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Bold <?= $i ?>: Paragraph Selection</h1>
         <div class="test-input">
             <p>
                 {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -168,7 +169,23 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-5', function(input) {
+        test('.test-<?= $i ?>', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.applyToRanges(ranges);
+        });
+    </script>
+
+    <div class="test-<?= ++$i ?>">
+        <h1>Bold <?= $i ?>: Contain Wrapper</h1>
+        <div class="test-input">{}</div>
+        <div class="test-expected">
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-<?= $i ?>', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);

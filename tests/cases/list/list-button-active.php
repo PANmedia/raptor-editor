@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Ordered List Button 1: Active When List is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {
                     <p>Item 1</p>
                     <p>Item 2</p>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>{
                     <li>Item 1</li>
                     <li>Item 2</li>
@@ -47,7 +47,7 @@
     <div class="test-2">
         <h1>Ordered List Button 2: Active When Ordered Sublist is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <li>{Item 2</li>
@@ -57,7 +57,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <ol>
@@ -84,7 +84,7 @@
     <div class="test-3">
         <h1>Ordered List Button 3: Active When Unordered Sublist is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <li>{Item 2</li>
@@ -94,7 +94,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <ul>
@@ -121,7 +121,7 @@
     <div class="test-4">
         <h1>Unordered List Button 1: Not Active When List is Not Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {}
                     <p>Item 1</p>
                     <p>Item 2</p>
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {}
                 <ul>
                     <li>Item 1</li>
@@ -156,7 +156,7 @@
     <div class="test-5">
         <h1>Ordered List Button 4: Not Active When List is Not Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 {}
                     <p>Item 1</p>
                     <p>Item 2</p>
@@ -165,7 +165,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 {}
                 <ol>
                     <li>Item 1</li>
@@ -191,7 +191,7 @@
         <div class="test-6">
         <h1>Unordered List Button 2: Active With Empty Selection</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                     <p>Ite{}m 1</p>
                     <p>Item 2</p>
                     <p>Item 3</p>
@@ -199,7 +199,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Ite{}m 1</li>
                     <li>Item 2</li>
@@ -224,7 +224,7 @@
     <div class="test-7">
         <h1>Ordered List Button 5: Active With Empty Selection</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                     <p>Ite{}m 1</p>
                     <p>Item 2</p>
                     <p>Item 3</p>
@@ -232,7 +232,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Ite{}m 1</li>
                     <li>Item 2</li>
@@ -257,7 +257,7 @@
     <div class="test-8">
         <h1>Unordered List Button 3: Active When Ordered Sublist is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <li>{Item 2</li>
@@ -267,7 +267,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <ol>
@@ -294,7 +294,7 @@
     <div class="test-9">
         <h1>Unordered List Button 4: Active When Unordered Sublist is Selected</h1>
          <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>Item 1</li>
                     <li>{Item 2</li>
@@ -304,7 +304,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ul>
                     <li>Item 1</li>
                     <ul>

@@ -16,6 +16,7 @@
  */
 function SaveJsonPlugin(name, overrides) {
     RaptorPlugin.call(this, name || 'saveJson', overrides);
+    this.size = null;
 }
 
 SaveJsonPlugin.prototype = Object.create(RaptorPlugin.prototype);
@@ -50,6 +51,7 @@ SaveJsonPlugin.prototype.save = function() {
         }
     }.bind(this));
     var post = {};
+    this.size = Object.keys(data).length;
     post[this.options.postName] = JSON.stringify(data);
     $.ajax({
             type: this.options.type || 'post',
@@ -70,11 +72,13 @@ SaveJsonPlugin.prototype.save = function() {
  */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     this.raptor.saved();
-    var message = _('saveJsonSaved');
+    var message = _('saveJsonSaved', {
+        saved: this.size
+    });
     if ($.isFunction(this.options.formatResponse)) {
         message = this.options.formatResponse(data);
     }
-    this.raptor.showConfirm(message, {
+    this.raptor.getLayout('messages').showMessage('confirm', message, {
         delay: 1000,
         hide: function() {
             this.raptor.unify(function(raptor) {
@@ -91,5 +95,7 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    this.raptor.showError(_('saveJsonFail'));
+    this.raptor.getLayout('messages').showMessage('error', _('saveJsonFail', {
+        failed: this.size
+    }));
 };

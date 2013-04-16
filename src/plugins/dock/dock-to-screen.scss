@@ -15,8 +15,8 @@
     @include opacity(1);
 }
 
-.raptor-dock-docked {
-    .raptor-toolbar-wrapper {
+.raptor-plugin-dock-docked {
+    .raptor-layout-toolbar-inner {
         @include display-box();
         @include box-pack(center);
         @include box-align(center);
@@ -24,13 +24,13 @@
         width: 100%;
     }
 
-    .raptor-toolbar {
+    .raptor-layout-toolbar-toolbar {
         text-align: center;
     }
 
 }
 
-.raptor-dock-docked,
-.raptor-ios .raptor-dock-docked {
-    @extend %raptor-dock-path;
+.raptor-plugin-dock-docked,
+.raptor-ios .raptor-plugin-dock-docked {
+    @extend %raptor-plugin-dock-path;
 }

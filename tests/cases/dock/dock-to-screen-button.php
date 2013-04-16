@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Dock to Screen Button 1: Dock Toolbar to screen</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -73,7 +73,7 @@
     <div class="test-2">
         <h1>Dock to Screen Button 2: Load Page With toolbar docked to screen</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
@@ -97,7 +97,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <p>
                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse

@@ -11,7 +11,7 @@
     <div class="test-1">
         <h1>Ordered List 1: Create an ordered sub list from group of words</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -65,7 +65,7 @@
     <div class="test-2">
         <h1>Ordered List 2: Create an ordered sublist from single word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>
                         Lorem ipsum dolor sit amet, {consectetur} adipiscing elit. Maecenas
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>
                         Lorem ipsum dolor sit amet,
@@ -107,7 +107,7 @@
     <div class="test-3">
        <h1>Ordered List 3: Create an ordered sublist with multiple items selection from part word to part word</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                   <ol>
                     <li>Lor{em ipsum dolor sit amet, consectetur adipiscing elit.</li>
                     <li>Maecenas convallis dui id erat pellentesque et rhoncus nunc semper.</li>
@@ -117,7 +117,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li>
                         Lor
@@ -145,7 +145,7 @@
     <div class="test-4">
         <h1>Ordered List 4: Create an ordered sublist from a list with multiple heading items</h1>
         <div class="test-input">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li><h3>Item 1</h3></li>
                     <li><h2>It{}em 2</h2></li>
@@ -156,7 +156,7 @@
             </div>
         </div>
         <div class="test-expected">
-            <div class="editible">
+            <div class="editable">
                 <ol>
                     <li><h3>Item 1</h3></li>
                     <ol>

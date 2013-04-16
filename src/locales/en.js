@@ -19,7 +19,8 @@ registerLocale('en', 'English', {
 
     classMenuTitle: 'Style picker',
     clearFormattingTitle: 'Clear formatting',
-    clickButtonToEditPluginButton: 'Edit',
+    clickButtonToEditText: 'Edit',
+    clickButtonToEditTitle: null,
 
     colorMenuBasicAutomatic: 'Automatic',
     colorMenuBasicBlack: 'Black',
@@ -43,10 +44,6 @@ registerLocale('en', 'English', {
     embedDialogTabPreviewContent: 'A preview of your embedded object is displayed below:',
     embedDialogOKButton: 'Embed Object',
     embedDialogCancelButton: 'Cancel',
-
-    errorPluginNoName: 'Plugin "{{plugin}}" is invalid (must have a name property)',
-    errorPluginNotObject: 'Plugin "{{plugin}}" is invalid (must be an object)',
-    errorPluginOverride: 'Plugin "{{name}}" has already been registered, and will be overwritten',
 
     errorUINoName: 'UI "{{ui}}" is invalid (must have a name property)',
     errorUINotObject: 'UI "{{ui}}" is invalid (must be an object)',
@@ -223,18 +220,20 @@ registerLocale('en', 'English', {
 
     unsavedEditWarningText: 'There are unsaved changes on this page',
 
+    revisionsText: 'Revisions',
+    revisionsTextEmpty: 'No Revisions',
+    revisionsTitle: null,
     revisionsApplyButtonTitle: 'Rollback',
     revisionsAJAXFailed: 'Failed to retrieve revisions',
     revisionsApplyButtonDialogCancelButton: 'Cancel',
     revisionsApplyButtonDialogOKButton: 'Rollback',
     revisionsApplyButtonDialogTitle: 'Rollback Confirmation',
     revisionsApplyDialogContent: 'This will replace the current content with the selected revision.<br/>The current content will be added as a revision, and will be visible in the revisions list for this block.',
-    revisionsButton: 'Revisions',
+    revisionsDialogCancelButton: 'Cancel',
+    revisionsDialogTitle: 'View content revisions',
     revisionsButtonCurrent: 'Current',
-    revisionsButtonDialogCancelButton: 'Cancel',
-    revisionsButtonDialogTitle: 'View content revisions',
-    revisionsButtonTitle: 'Revisions',
     revisionsButtonViewDiffText: 'Differences',
+    revisionsButtonViewDiffTitle: null,
     revisionsDiffButtonDialogCancelButton: 'Close',
     revisionsDiffButtonDialogTitle: 'View differences',
     revisionsLoading: 'Loading revisions...',
