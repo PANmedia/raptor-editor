@@ -15,19 +15,19 @@
     @include opacity(1);
 }
 
-.raptor-dock-docked-to-element {
-    @extend %raptor-dock-path;
+.raptor-plugin-dock-docked-to-element {
+    @extend %raptor-plugin-dock-path;
 }
 
 /**
  * Dialog docked to element
  */
-.raptor-dock-docked-to-element-wrapper {
+.raptor-plugin-dock-docked-to-element-wrapper {
     font-size: inherit;
     color: inherit;
     font-family: inherit;
 }
-.raptor-dock-docked-to-element-wrapper .raptor-wrapper {
+.raptor-plugin-dock-docked-to-element-wrapper .raptor-layout-toolbar-outer {
     /* Removed fixed position from the editor */
     position: relative !important;
     top: auto !important;
@@ -47,14 +47,14 @@
     @include display-box();
     @include box-orient(vertical);
 
-    .raptor-toolbar {
+    .raptor-layout-toolbar-toolbar {
         margin: 0;
         z-index: 2;
 
         @include box-ordinal-group(1);
     }
 
-    .raptor-toolbar .ui-widget-header {
+    .raptor-layout-toolbar-toolbar .ui-widget-header {
         border-top: 0;
         border-left: 0;
         border-right: 0;
@@ -65,7 +65,7 @@
     }
 }
 
-.raptor-dock-docked-element {
+.raptor-plugin-dock-docked-element {
     /* Override margin so toolbars sit flush next to element */
     margin: 0 !important;
 
@@ -88,4 +88,8 @@
     width: auto;
 
     @include box-ordinal-group(2);
+}
+
+.raptor-plugin-dock-docked-to-element .raptor-layout-toolbar-inner {
+    border-top: $border-style;
 }

@@ -46,20 +46,20 @@ DockPlugin.prototype.init = function() {
         docked = false;
     }
     if (docked) {
-        this.raptor.bind('layoutReady', function() {
+        this.raptor.bind('toolbarReady', function() {
             this.toggleState();
         }.bind(this));
-        this.raptor.bind('layoutHide', function() {
+        this.raptor.bind('toolbarHide', function() {
             if (this.dockState && this.dockState.spacer) {
                 this.dockState.spacer.hide();
             }
         }.bind(this));
-        this.raptor.bind('layoutShow', function() {
+        this.raptor.bind('toolbarShow', function() {
             if (this.dockState && this.dockState.spacer) {
                 this.dockState.spacer.show();
             }
         }.bind(this));
-        this.raptor.bind('layoutDestroy', function() {
+        this.raptor.bind('toolbarDestroy', function() {
             if (this.dockState) {
                 this.toggleState();
             }
@@ -104,10 +104,10 @@ DockPlugin.prototype.toggleDockToElement = function() {
  */
 DockPlugin.prototype.dockToElement = function() {
     var element = this.raptor.getElement(),
-        layoutElement = this.raptor.getLayout().getElement();
+        layoutElement = this.raptor.getLayout('toolbar').getElement();
     this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layoutElement);
-    this.raptor.getLayout().getElement().addClass(this.options.baseClass + '-docked-to-element');
-    this.dockState = dockToElement(this.raptor.getLayout().getElement(), element, {
+    this.raptor.getLayout('toolbar').getElement().addClass(this.options.baseClass + '-docked-to-element');
+    this.dockState = dockToElement(this.raptor.getLayout('toolbar').getElement(), element, {
         position: this.options.position,
         spacer: false
     });
@@ -122,7 +122,7 @@ DockPlugin.prototype.dockToElement = function() {
 DockPlugin.prototype.undockFromElement = function() {
     this.marker.replaceWith(undockFromElement(this.dockState));
     this.dockState = null;
-    this.raptor.getLayout().getElement().removeClass(this.options.baseClass + '-docked-to-element');
+    this.raptor.getLayout('toolbar').getElement().removeClass(this.options.baseClass + '-docked-to-element');
     this.deactivateButton(this.raptor.getUi('dockToElement'));
 };
 
@@ -150,7 +150,7 @@ DockPlugin.prototype.toggleDockToScreen = function() {
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.dockToScreen = function() {
-    var layout = this.raptor.getLayout(),
+    var layout = this.raptor.getLayout('toolbar'),
         layoutElement = layout.getElement();
     this.marker = $('<marker>').addClass(this.options.baseClass + '-marker')
                         .insertAfter(layoutElement);
@@ -172,7 +172,7 @@ DockPlugin.prototype.dockToScreen = function() {
 DockPlugin.prototype.undockFromScreen = function() {
     var layoutElement = undockFromScreen(this.dockState);
     this.marker.replaceWith(layoutElement);
-    this.raptor.getLayout().enableDragging();
+    this.raptor.getLayout('toolbar').enableDragging();
     this.dockState = null;
     layoutElement.removeClass(this.options.baseClass + '-docked');
     this.deactivateButton(this.raptor.getUi('dockToScreen'));
