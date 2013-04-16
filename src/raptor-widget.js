@@ -74,9 +74,6 @@ var RaptorWidget = {
         // True if editing is enabled at least once
         this.initialised = false;
 
-        // True if the layout has been loaded and displayed
-        this.visible = false;
-
         // List of UI objects bound to the editor
         this.uiObjects = {};
 
@@ -144,7 +141,6 @@ var RaptorWidget = {
         if (this.options.autoEnable) {
             $(function() {
                 currentInstance.enableEditing();
-                currentInstance.showLayout();
             });
         }
     },
@@ -164,11 +160,7 @@ var RaptorWidget = {
         this.getElement().on('click.' + this.widgetName, 'img', function imageClickHandler(event) {
             selectionSelectOuter(event.target);
         }.bind(this));
-        this.getElement().bind('focus', function focusHandler() {
-            this.hideOtherLayouts(true);
-            this.showLayout();
-        }.bind(this));
-
+        this.getElement().bind('focus', this.showLayout.bind(this));
         this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
         this.target.bind('keyup.' + this.widgetName, this.checkChange.bind(this));
 
@@ -212,7 +204,6 @@ var RaptorWidget = {
             return;
         }
 
-        var visible = this.visible;
         this.actionPreviewRestore();
         if (this.layout) {
             this.layout.destruct();
@@ -221,11 +212,7 @@ var RaptorWidget = {
         this.events = {};
         this.plugins = {};
         this.uiObjects = {};
-        this.visible = false;
         this.loadPlugins();
-        if (visible) {
-            this.showLayout();
-        }
     },
 
     /**
@@ -522,7 +509,8 @@ var RaptorWidget = {
             }
 
             this.fire('enabled');
-            this.fire('resize');
+
+            this.showLayout();
         }
     },
 
@@ -557,7 +545,6 @@ var RaptorWidget = {
         if (!this.options.reloadOnDisable) {
             this.resetHtml();
         }
-        this.hideLayout();
         this.disableEditing();
         this.dirty = false;
         selectionDestroy();
@@ -584,7 +571,9 @@ var RaptorWidget = {
      * @param {boolean} [callSelf]
      */
     unify: function(callback, callSelf) {
-        if (callSelf !== false) callback(this);
+        if (callSelf !== false) {
+            callback(this);
+        }
         if (this.options.unify) {
             var currentInstance = this;
             Raptor.eachInstance(function(instance) {
@@ -654,74 +643,31 @@ var RaptorWidget = {
      * @param  {Range} [range] a native range to select after the layout has been shown
      */
     showLayout: function(range) {
-        if (!this.visible) {
-            // <debug>
-            if (debugLevel >= MID) debug('Displaying layout', this.getElement());
-            // </debug>
+        // <debug>
+        if (debugLevel >= MID) debug('Displaying layout', this.getElement());
+        // </debug>
 
-            // If unify option is set, hide all other layouts first
-            if (this.options.unify) {
-                this.hideOtherLayouts(true);
-            }
-
-            // Store the visible state
-            this.visible = true;
-
-            this.fire('layoutShow');
-
-            this.fire('resize');
-            if (typeof this.getElement().attr('tabindex') === 'undefined') {
-                this.getElement().attr('tabindex', -1);
-            }
-
-            if (range) {
-                if (range.select) { // IE
-                    range.select();
-                } else { // Others
-                    var selection = window.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
-                }
-            }
-
-            var editor = this;
-            $(function() {
-                editor.fire('show');
-                if (!editor.options.autoEnable) {
-                    editor.getElement().focus();
-                }
-                editor.fire('selectionChange');
-            });
-        }
-    },
-
-    /**
-     *
-     */
-    hideLayout: function() {
-        if (this.layout) {
-            this.visible = false;
-            this.layout.hide();
-            this.fire('hide');
-            this.fire('resize');
-        }
-    },
-
-    /**
-     * @param {boolean} [instant]
-     */
-    hideOtherLayouts: function(instant) {
-        this.unify(function(editor) {
-            editor.hideLayout(instant);
+        // If unify option is set, hide all other layouts first
+        this.unify(function(raptor) {
+            raptor.fire('layoutHide');
         }, false);
-    },
 
-    /**
-     *
-     * @returns {boolean}
-     */
-    isVisible: function() {
-        return this.visible;
+        this.fire('layoutShow');
+
+        this.fire('resize');
+        if (typeof this.getElement().attr('tabindex') === 'undefined') {
+            this.getElement().attr('tabindex', -1);
+        }
+
+        if (range) {
+            if (range.select) { // IE
+                range.select();
+            } else { // Others
+                var selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+            }
+        }
     },
 
     /*========================================================================*\
@@ -1079,6 +1025,7 @@ var RaptorWidget = {
             debug('Firing event: ' + name, this.getElement());
         }
         // </debug>
+
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
