@@ -229,7 +229,6 @@ registerLocale('en', 'English', {
     revisionsApplyButtonDialogOKButton: 'Rollback',
     revisionsApplyButtonDialogTitle: 'Rollback Confirmation',
     revisionsApplyDialogContent: 'This will replace the current content with the selected revision.<br/>The current content will be added as a revision, and will be visible in the revisions list for this block.',
-    revisionsTitle: 'Revisions',
     revisionsDialogCancelButton: 'Cancel',
     revisionsDialogTitle: 'View content revisions',
     revisionsButtonCurrent: 'Current',
