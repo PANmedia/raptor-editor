@@ -12,6 +12,16 @@
             $('.editable').raptor({
                 urlPrefix: '../../src/',
                 plugins: {
+                    save: {
+                        plugin: 'saveJson'
+                    },
+                    saveJson: {
+                        url: 'save.php',
+                        postName: 'raptor-content',
+                        id: function() {
+                            return this.raptor.getElement().data('id');
+                        }
+                    },
                     dock: {
                         docked: true,
                         under: '.switcher-spacer'
