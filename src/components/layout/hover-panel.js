@@ -14,6 +14,11 @@ function HoverPanelLayout() {
 
 HoverPanelLayout.prototype = Object.create(RaptorLayout.prototype);
 
+HoverPanelLayout.prototype.init = function() {
+    this.raptor.bind('ready', this.ready.bind(this));
+    this.raptor.bind('enabled', this.enabled.bind(this));
+};
+
 HoverPanelLayout.prototype.ready = function() {
     this.raptor.getElement()
         .mouseenter(this.show.bind(this))

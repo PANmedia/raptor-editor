@@ -13,12 +13,11 @@ function ToolbarLayout() {
 
 ToolbarLayout.prototype = Object.create(RaptorLayout.prototype);
 
-ToolbarLayout.prototype.enabled = function() {
-    this.show();
-};
-
-ToolbarLayout.prototype.disabled = function() {
-    this.hide();
+ToolbarLayout.prototype.init = function() {
+    this.raptor.bind('enabled', this.show.bind(this));
+    this.raptor.bind('disabled', this.hide.bind(this));
+    this.raptor.bind('layoutShow', this.show.bind(this));
+    this.raptor.bind('layoutHide', this.hide.bind(this));
 };
 
 /**
@@ -152,7 +151,7 @@ ToolbarLayout.prototype.getElement = function() {
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
 
         var layout = this;
-        $(function() {
+        this.raptor.defer(function() {
             wrapper.appendTo('body');
             layout.raptor.fire('toolbarReady');
         });
