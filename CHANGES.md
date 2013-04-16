@@ -1,3 +1,15 @@
+v0.9.0
+---
+
+*Updates:*
+
+ - Moved messaging system into a layout plugin.
+ - Added hover panel layout.
+
+*API Changes:*
+
+ - Changed layout initialisation syntax.
+
 v0.5.0
 ---
 

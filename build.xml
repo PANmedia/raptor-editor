@@ -261,17 +261,11 @@
     <!-- =================================================================== -->
     <target name="merge">
         <!-- Append VERSION file in a comment -->
-        <echo file="${dir.build}/merge.js" append="true">/*! ${line.separator}VERSION: ${version} </echo>
-        <echo file="${dir.build}/merge.js" append="true">${line.separator}</echo>
-        <!-- Append LICENSE file in the same comment -->
-        <echo>${project.basedir}/LICENSE</echo>
         <append destFile="${dir.build}/merge.js">
             <fileset dir="${project.basedir}">
-                <include name="LICENSE.md" />
+                <include name="TOP" />
             </fileset>
         </append>
-        <echo file="${dir.build}/merge.js" append="true">*/${line.separator}</echo>
-        <!-- Close the comment -->
 
         <!-- Append the merged JS -->
         <append destFile="${dir.build}/merge.js">
@@ -305,18 +299,11 @@
     </target>
 
     <target name="merge-min">
-        <!-- Append VERSION file in a comment -->
-        <echo file="${dir.build}/merge.min.js" append="true">/*! ${line.separator}VERSION: ${version} </echo>
-        <echo file="${dir.build}/merge.min.js" append="true">${line.separator}</echo>
-        <!-- Append LICENSE file in the same comment -->
-        <echo>${project.basedir}/LICENSE</echo>
         <append destFile="${dir.build}/merge.min.js">
             <fileset dir="${project.basedir}">
-                <include name="LICENSE" />
+                <include name="TOP" />
             </fileset>
         </append>
-        <echo file="${dir.build}/merge.min.js" append="true">*/${line.separator}</echo>
-        <!-- Close the comment -->
 
         <!-- Append the merged JS -->
         <append destFile="${dir.build}/merge.min.js">
