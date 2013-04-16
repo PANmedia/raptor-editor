@@ -106,8 +106,9 @@ var listValidLiChildren = [
  * @type {String][]} Tags ol & ul are allowed within.
  */
 var listValidUlOlParents =  [
-    'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form',
-    'iframe', 'li', 'noframes', 'noscript', 'object', 'td', 'th'
+    'article', 'nav', 'section', 'footer', 'blockquote', 'body', 'button',
+    'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
+    'noscript', 'object', 'td', 'th'
 ];
 
 /**
