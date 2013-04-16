@@ -50,7 +50,7 @@ function style_html(html) {
             if (tokens[i][0] === '/') {
                 indentLevel--;
             }
-            result += getIndent(indentLevel)
+            result += getIndent(indentLevel);
             if (tokens[i][0] !== '/') {
                 indentLevel++;
             }
@@ -59,7 +59,7 @@ function style_html(html) {
                 result += '<';
             }
 
-            result += trim(parts[0]) + ">\n"
+            result += trim(parts[0]) + ">\n";
             if (trim(parts[1]) !== '') {
                 result += getIndent(indentLevel) + trim(parts[1]).replace(/\s+/g, ' ') + "\n";
             }
