@@ -30,7 +30,7 @@ var RevisionsApplyButton = new DialogButton({
     },
 
     getSavePlugin: function() {
-        var plugin = this.raptor.getPlugin(this.options.savePlugin);
+        var plugin = this.raptor.getPlugin(this.options.plugins.save.plugin);
         // <strict>
         if (!plugin) {
             handlerError('Revision plugin requires a save plugin to be defined & present');

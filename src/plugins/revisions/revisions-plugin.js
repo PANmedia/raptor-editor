@@ -16,8 +16,7 @@
  * Default options:
  * <pre>{
  *      url: Function|String,
- *      id: Function|String,
- *      savePlugin: String
+ *      id: Function|String
  * }</pre>
  *
  * @param {String} name
@@ -29,18 +28,6 @@ function RevisionsPlugin(name, overrides) {
 
 RevisionsPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
-/**
- * Initialises the click to edit plugin.
- */
-RevisionsPlugin.prototype.init = function() {
-    this.raptor.addToHoverPanel(this);
-    // <strict>
-    if (typeof this.options.url !== 'string' && !$.isFunction(this.options.url)) {
-        handleError('RevisionsPlugin expects revisions url option to be a string or function');
-    }
-    // </strict>
-};
-
 RevisionsPlugin.prototype.getHeaders = function() {
     if (this.options.headers) {
         return this.options.headers.call(this);
@@ -51,8 +38,9 @@ RevisionsPlugin.prototype.getHeaders = function() {
 RevisionsPlugin.prototype.getUrl = function() {
     if (typeof this.options.url === 'string') {
         return this.options.url;
+    } else if ($.isFunction(this.options.url)) {
+        return this.options.url.call(this);
     }
-    return this.options.url.call(this);
 };
 
 /**
