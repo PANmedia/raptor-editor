@@ -72,29 +72,32 @@ src/raptor-widget.js
 src/expose.js
 
 src/style/config.rb
-src/style/loading-small.png
 src/style/diagonal-lines.png
 src/style/raptor.scss
-src/style/messages.scss
 src/style/mixins.scss
 src/style/style.scss
 src/style/support.scss
 src/style/variables.scss
 src/style/z-index.scss
 
-
 src/templates/message.html
 src/templates/messages.html
 src/templates/unsupported.html
 
 // Components
+src/components/layout.js
 src/components/plugin.js
+
+src/components/layout/ui-group.js
 
 src/components/layout/toolbar.js
 src/components/layout/toolbar.scss
 
-src/components/hover-panel/basic.js
-src/components/hover-panel/basic.scss
+src/components/layout/hover-panel.js
+src/components/layout/hover-panel.scss
+
+src/components/layout/messages.js
+src/components/layout/messages.scss
 
 src/components/ui/button.js
 src/components/ui/css-class-applier-button.js
@@ -285,11 +288,11 @@ src/plugins/tag-menu/edit.png
 src/plugins/tag-menu/tag-menu.scss
 src/plugins/tag-menu/templates/menu.html
 
+src/plugins/text-align/text-align-button.js
 src/plugins/text-align/center.js
 src/plugins/text-align/justify.js
 src/plugins/text-align/left.js
 src/plugins/text-align/right.js
-src/plugins/text-align/text-align-button.js
 
 src/plugins/text-align/style/text-align-front-end.scss
 src/plugins/text-align/style/text-align.scss

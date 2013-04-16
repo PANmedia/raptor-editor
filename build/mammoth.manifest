@@ -47,10 +47,8 @@ src/raptor.js
 src/raptor-widget.js
 
 src/style/config.rb
-src/style/loading-small.png
 src/style/diagonal-lines.png
 src/style/raptor.scss
-src/style/messages.scss
 src/style/mixins.scss
 src/style/style.scss
 src/style/support.scss
@@ -62,32 +60,36 @@ src/templates/messages.html
 src/templates/unsupported.html
 
 // Components
+src/components/layout.js
 src/components/plugin.js
+
+src/components/layout/ui-group.js
 
 src/components/layout/toolbar.js
 src/components/layout/toolbar.scss
 
-src/components/hover-panel/basic.js
-src/components/hover-panel/basic.scss
+src/components/layout/hover-panel.js
+src/components/layout/hover-panel.scss
+
+src/components/layout/messages.js
+src/components/layout/messages.scss
 
 src/components/ui/button.js
-src/components/ui/preview-button.js
-src/components/ui/toggle-button.js
-src/components/ui/preview-toggle-button.js
-src/components/ui/filtered-preview-button.js
 src/components/ui/css-class-applier-button.js
-
+src/components/ui/custom-menu.js
 src/components/ui/dialog-button.js
 src/components/ui/dialog-toggle-button.js
-
+src/components/ui/filtered-preview-button.js
 src/components/ui/menu-button.js
 src/components/ui/menu.js
-src/components/ui/custom-menu.js
+src/components/ui/preview-button.js
+src/components/ui/preview-toggle-button.js
 src/components/ui/select-menu.js
+src/components/ui/toggle-button.js
 src/components/ui/menu.scss
 src/components/ui/select-menu.scss
 
-// Preset
+// Presets
 src/presets/base.js
 src/presets/mammoth.js
 
