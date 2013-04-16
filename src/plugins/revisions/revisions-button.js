@@ -24,7 +24,8 @@ Raptor.registerUi(new DialogButton({
         this.state = null;
 
         var result = DialogButton.prototype.init.call(this);
-        if (typeof this.raptor.getPlugin('revisions').getUrl() === 'undefined') {
+        if (typeof this.raptor.getPlugin('revisions') === 'undefined' ||
+                typeof this.raptor.getPlugin('revisions').getUrl() === 'undefined') {
             aButtonSetLabel(this.button, _('revisionsTextEmpty'))
             aButtonDisable(this.button)
         }
