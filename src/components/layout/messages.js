@@ -8,6 +8,9 @@
 function MessagesLayout() {
     RaptorLayout.call(this, 'messages');
     this.panel = null;
+    this.options = {
+        delay: 5000
+    };
 }
 
 MessagesLayout.prototype = Object.create(RaptorLayout.prototype);

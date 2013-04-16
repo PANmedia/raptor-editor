@@ -42,7 +42,6 @@ Raptor.defaults = $.extend(basePreset, {
             ]
         },
         messages: {
-            delay: 5000
         }
     }
 });
