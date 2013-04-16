@@ -5,6 +5,7 @@
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
 @import 'compass/css3/user-interface';
+@import 'compass/css3/transition';
 
 .raptor-wrapper {
     overflow: visible;
@@ -16,19 +17,15 @@
     * {
         @include user-select(none);
     }
-
-    .raptor-toolbar {
-        padding: 6px 0 0 5px;
-        overflow: visible;
-    }
 }
 
 .raptor-editing {
     outline: none;
 }
 
-.raptor-path {
-    padding: $spacing;
+.raptor-editable-hover:not(.raptor-editing),
+.raptor-editable:hover:not(.raptor-editing) {
+    background: inline-image('diagonal-lines.png') 0 0;
 }
 
 .raptor-editing-inline {
