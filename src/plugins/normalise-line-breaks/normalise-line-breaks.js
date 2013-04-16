@@ -29,6 +29,39 @@ NormaliseLineBreaksPlugin.prototype.init = function() {
     this.raptor.registerHotkey('shift+return', this.shiftReturnPressed.bind(this));
 };
 
+NormaliseLineBreaksPlugin.prototype.returnPressedList = function(selectedElement) {
+    var selectedListElement = selectedElement.closest('li');
+    if (!selectedListElement.length) {
+        return false;
+    }
+
+    var parentList = selectedListElement.closest('ul, ol');
+    var listType = parentList.get(0).tagName.toLowerCase(),
+        replacementElement = false;
+
+    // If current list element is empty, list element needs to be replaced with <p>
+    if (elementIsEmpty(selectedListElement)) {
+        // If not at bottom of list, list must be broken
+        var nextListElement = selectedListElement.next();
+        if (nextListElement.length && nextListElement.is('li')) {
+            replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
+            if (replacementElement) {
+                selectionSelectInner(replacementElement.get(0));
+            }
+        } else {
+            selectedListElement.remove();
+            selectionSelectInner($('<p>&nbsp;</p>').insertAfter(parentList).get(0));
+        }
+    } else {
+        replacementElement = listBreakAtSelection(listType, 'li', this.raptor.getElement());
+        if (replacementElement) {
+            selectionSelectStart(replacementElement.get(0));
+        }
+    }
+    return true;
+
+};
+
 /**
  * Handle return keypress.
  *
@@ -40,14 +73,23 @@ NormaliseLineBreaksPlugin.prototype.init = function() {
  */
 NormaliseLineBreaksPlugin.prototype.returnPressed = function() {
     var selectedElement = selectionGetElement();
+
+    if (this.returnPressedList(selectedElement)) {
+        return true;
+    }
+    return false;
+};
+
+NormaliseLineBreaksPlugin.prototype.shiftReturnPressedList = function(selectedElement) {
     if (selectedElement.closest('li').length) {
         var listType = selectedElement.closest('ul, ol').get(0).tagName.toLowerCase();
-        var replacementElement = listBreakAtSelection(listType, 'li', this.raptor.getElement());
+        var replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
         if (replacementElement) {
-            selectionSelectStart(replacementElement.get(0));
+            selectionSelectInner(replacementElement.get(0));
         }
         return true;
     }
+
     return false;
 };
 
@@ -61,12 +103,7 @@ NormaliseLineBreaksPlugin.prototype.returnPressed = function() {
  */
 NormaliseLineBreaksPlugin.prototype.shiftReturnPressed = function() {
     var selectedElement = selectionGetElement();
-    if (selectedElement.closest('li').length) {
-        var listType = selectedElement.closest('ul, ol').get(0).tagName.toLowerCase();
-        var replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
-        if (replacementElement) {
-            selectionSelectInner(replacementElement.get(0));
-        }
+    if (this.shiftReturnPressedList(selectedElement)) {
         return true;
     }
     return false;
