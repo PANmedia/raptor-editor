@@ -54,7 +54,7 @@ var basePreset = {
     unify: true,
 
     /**
-     * Switch to indicate weather or not to stored persistent values, if set to
+     * Switch to indicate whether or not to stored persistent values, if set to
      * false the persist function will always return null
      *
      * @type boolean
@@ -68,7 +68,7 @@ var basePreset = {
     persistenceName: 'uiEditor',
 
     /**
-     * Switch to indicate weather or not to a warning should pop up when the
+     * Switch to indicate whether or not to a warning should pop up when the
      * user navigates aways from the page and there are unsaved changes
      *
      * @type boolean
@@ -99,18 +99,11 @@ var basePreset = {
     enablePlugins: true,
 
     /**
-     * An array of explicitly disabled plugins
-     * @type String[]
-     */
-    disabledPlugins: [],
-
-    /**
-     * And array of arrays denoting the order and grouping of UI elements in the
-     * toolbar
+     * An array of explicitly disabled plugins.
      *
      * @type String[]
      */
-    uiOrder: null,
+    disabledPlugins: [],
 
     /**
      * Switch to specify if the editor should automatically enable all UI, if
@@ -122,7 +115,8 @@ var basePreset = {
     enableUi: true,
 
     /**
-     * An array of explicitly disabled UI elements
+     * An array of explicitly disabled UI elements.
+     *
      * @type String[]
      */
     disabledUi: [],
