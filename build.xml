@@ -263,7 +263,7 @@
         <!-- Append VERSION file in a comment -->
         <append destFile="${dir.build}/merge.js">
             <fileset dir="${project.basedir}">
-                <include name="TOP" />
+                <include name="${file.top}" />
             </fileset>
         </append>
 
@@ -301,7 +301,7 @@
     <target name="merge-min">
         <append destFile="${dir.build}/merge.min.js">
             <fileset dir="${project.basedir}">
-                <include name="TOP" />
+                <include name="${file.top}" />
             </fileset>
         </append>
 
