@@ -9,9 +9,6 @@
 
 /**
  * Creates a new instance of the preview toggle button to create ordered lists.
- *
- * @todo param details?
- * @param {type} param
  */
 Raptor.registerUi(new PreviewToggleButton({
     name: 'listOrdered',

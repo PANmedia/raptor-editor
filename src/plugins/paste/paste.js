@@ -34,7 +34,7 @@ function PastePlugin(name, overrides) {
          */
         allowedTags: [
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
-            'p', 'a', 'span', 'hr', 'br'
+            'p', 'a', 'span', 'hr', 'br', 'strong', 'em'
         ],
 
         allowedAttributes: [
@@ -180,7 +180,8 @@ PastePlugin.prototype.getDialog = function(instance) {
 };
 
 /**
- * Attempts to filter rubbish from content using regular expressions
+ * Attempts to filter rubbish from content using regular expressions.
+ *
  * @param  {String} content Dirty text
  * @return {String} The filtered content
  */
@@ -287,7 +288,8 @@ PastePlugin.prototype.stripAttributes = function(content) {
 
 /**
  * Remove empty tags.
- * @param  {String} content The HTML containing empty elements to be removed
+ *
+ * @param {String} content The HTML containing empty elements to be removed
  * @return {String} The cleaned HTML
  */
 PastePlugin.prototype.stripEmpty = function(content) {
@@ -308,6 +310,22 @@ PastePlugin.prototype.stripEmpty = function(content) {
 };
 
 /**
+ * Remove spans that have no attributes.
+ *
+ * @param {String} content
+ * @return {String} The cleaned HTML
+ */
+PastePlugin.prototype.stripSpans = function(content) {
+    var wrapper = $('<div/>').html(content);
+    wrapper.find('span').each(function() {
+        if (!this.attributes.length) {
+            $(this).replaceWith($(this).html());
+        }
+    });
+    return wrapper.html();
+};
+
+/**
  * Update text input content.
  */
 PastePlugin.prototype.updateAreas = function() {
@@ -316,6 +334,7 @@ PastePlugin.prototype.updateAreas = function() {
     markup = this.filterChars(markup);
     markup = this.stripEmpty(markup);
     markup = this.stripAttributes(markup);
+    markup = this.stripSpans(markup);
     markup = stringStripTags(markup, this.options.allowedTags);
 
     var plain = $('<div/>').html($('.raptorPasteBin').html()).text();
@@ -324,7 +343,7 @@ PastePlugin.prototype.updateAreas = function() {
     pasteDialog.find('.' + this.options.baseClass + '-plain').val($('<div/>').html(plain).text());
     pasteDialog.find('.' + this.options.baseClass + '-rich').html(markup);
     pasteDialog.find('.' + this.options.baseClass + '-source').html(html);
-    pasteDialog.find('.' + this.options.baseClass + '-markup').html(this.stripAttributes(html));
+    pasteDialog.find('.' + this.options.baseClass + '-markup').html(markup);
 };
 
 Raptor.registerPlugin(new PastePlugin());
