@@ -639,10 +639,8 @@ var RaptorWidget = {
 
     /**
      * Show the layout for the current element.
-     *
-     * @param  {Range} [range] a native range to select after the layout has been shown
      */
-    showLayout: function(range) {
+    showLayout: function() {
         // <debug>
         if (debugLevel >= MID) debug('Displaying layout', this.getElement());
         // </debug>
@@ -657,16 +655,6 @@ var RaptorWidget = {
         this.fire('resize');
         if (typeof this.getElement().attr('tabindex') === 'undefined') {
             this.getElement().attr('tabindex', -1);
-        }
-
-        if (range) {
-            if (range.select) { // IE
-                range.select();
-            } else { // Others
-                var selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
         }
     },
 
