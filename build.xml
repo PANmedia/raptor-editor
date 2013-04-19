@@ -38,6 +38,7 @@
         <echo>rangy: ${rangy}</echo>
         <echo>raptorize: ${raptorize}</echo>
         <echo>wrapper: ${wrapper}</echo>
+        <echo>file.top: ${file.top}</echo>
     </target>
 
     <target name="0deps">
@@ -260,7 +261,7 @@
     <!-- Merge CSS and JS into one file                                      -->
     <!-- =================================================================== -->
     <target name="merge">
-        <!-- Append VERSION file in a comment -->
+        <php>file_put_contents('${dir.build}/merge.js', file_get_contents('${file.top}'));</php>
         <append destFile="${dir.build}/merge.js">
             <fileset dir="${project.basedir}">
                 <include name="${file.top}" />
@@ -299,6 +300,7 @@
     </target>
 
     <target name="merge-min">
+        <php>file_put_contents('${dir.build}/merge.min.js', file_get_contents('${file.top}'));</php>
         <append destFile="${dir.build}/merge.min.js">
             <fileset dir="${project.basedir}">
                 <include name="${file.top}" />
