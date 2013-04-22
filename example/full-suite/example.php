@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/style.css" />
 
     <script src="js/libs/modernizr-2.0.6.min.js"></script>
-    <?php $uri = '../../src/'; include '../../src/include.php'; ?>
+    <?php $uri = '../../src/'; include __DIR__ . '/../../src/include.php'; ?>
     <script>
         jQuery(function($) {
             $('.editable').raptor({
