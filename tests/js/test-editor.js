@@ -161,7 +161,7 @@ function getRaptor(input) {
 }
 
 function getLayoutElement(input) {
-    return getRaptor(input).getLayout().getElement();
+    return getRaptor(input).getLayout('toolbar').getElement();
 }
 
 function clickButton(input, button) {
