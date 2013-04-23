@@ -38,6 +38,11 @@
             var embedObjectButton = getLayoutElement(input).find('.raptor-ui-embed');
             embedObjectButton.trigger('click');
 
+            var video = '<video src="http://www.youtube.com/watch?v=KQbySwxU8L4" controls></video>';
+
+            var textarea = $('.raptor-ui-embed-code-tab textarea');
+            textarea.val(video);
+
             var cancelEmbeddingButton = $('.raptor-ui-embed-dialog button:contains(Cancel)');
             cancelEmbeddingButton.trigger('click');
 
