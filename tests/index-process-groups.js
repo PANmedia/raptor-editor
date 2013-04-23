@@ -170,7 +170,9 @@ function finishTest() {
     $('iframe').remove();
     updateSummary();
     testRunning = false;
-    $('body').removeClass('tests-running');
+    if (queue.length === 0) {
+        $('body').removeClass('tests-running');
+    }
 }
 
 //Checks every 500 miliseconds whether there is a test running
