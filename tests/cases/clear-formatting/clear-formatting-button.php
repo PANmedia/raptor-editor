@@ -213,7 +213,8 @@
                     {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat <span class="cms-underline">pellentesque et rhoncus nunc semper. Suspendisse
                     malesuada hendrerit velit} nec tristique.</span>
-                </p><p>
+                </p>
+                <p>
                     Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
@@ -222,10 +223,12 @@
         </div>
         <div class="test-expected">
             <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit
+                </p>
                 <p class="cms-center">
-                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse malesuada hendrerit velit
                     <span class="cms-underline">
-                        } nec tristique.
+                        nec tristique.
                     </span>
                 </p>
                 <p>
