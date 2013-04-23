@@ -83,7 +83,6 @@ Raptor.registerUi(new Button({
                     text: _('insertFileDialogCancelButton'),
                     click: function() {
                         aDialogClose(dialogElement);
-                        self.raptor.stateRestore(self.state);
                     },
                     icons: {
                         primary: 'ui-icon-circle-close'
