@@ -223,6 +223,7 @@ function listWrapSelection(listType, listItem, wrapper) {
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var uniqueId = elementUniqueId();
     var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
+  
     rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
     var replacement = $('#' + uniqueId).removeAttr('id');
@@ -256,7 +257,7 @@ function listConvertItemsForList(items, listItem) {
         if ($(this).is('img')) {
             return true;
         }
-        if ($(this).text().trim() === '') {
+        if (elementIsEmpty($(this))) {
             return $(this).remove();
         }
         $(this).wrap('<' + listItem + '/>');
