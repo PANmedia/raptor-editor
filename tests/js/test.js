@@ -7,7 +7,8 @@ if (typeof window.testResults === 'undefined') {
 
 var testQueue = [],
     testQueueTimer = null,
-    testRunning = false;
+    testRunning = false,
+    testReady = false;
 
 function test(container, action, options) {
     if ($(container).length !== 1) {
@@ -15,17 +16,22 @@ function test(container, action, options) {
         return;
     }
     testQueue.push([container, action]);
-    if (testQueueTimer === null) {
-        testQueueTimer = setInterval(function() {
-            if (testRunning === false && testQueue.length > 0) {
-                var test = testQueue.shift();
-                runTest(test[0], test[1], test[2]);
+    if (testReady === false) {
+        testReady = true;
+        $(function() {
+            if (testQueueTimer === null) {
+                testQueueTimer = setInterval(function() {
+                    if (testRunning === false && testQueue.length > 0) {
+                        var test = testQueue.shift();
+                        runTest(test[0], test[1], test[2]);
+                    }
+                    if (testRunning === false && testQueue.length === 0) {
+                        window.testResults.finished = true;
+                        clearInterval(testQueueTimer);
+                    }
+                }, 20);
             }
-            if (testRunning === false && testQueue.length === 0) {
-                window.testResults.finished = true;
-                clearInterval(testQueueTimer);
-            }
-        }, 20);
+        });
     }
 }
 
