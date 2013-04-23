@@ -896,7 +896,7 @@ function selectionContains(selector, limit) {
                 (children.length === 0 || children.length !== children.filter(selector).length)) {
             result = false;
         }
-    }.bind(this));
+    });
     return result;
 }
 
