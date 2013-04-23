@@ -96,6 +96,11 @@ function isSupported() {
 }
 
 // <ie>
+
+/**
+ * Object.create polyfill
+ * https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Object/create
+ */
 if (!Object.create) {
     Object.create = function (o) {
         if (arguments.length > 1) {
@@ -106,4 +111,23 @@ if (!Object.create) {
         return new F();
     };
 }
+
+/**
+ * Node.TEXT_NODE polyfill
+ */
+if (typeof Node === 'undefined') {
+    Node = {
+        TEXT_NODE: 3
+    };
+}
+
+/**
+ * String.trim polyfill
+ * https://gist.github.com/eliperelman/1035982
+ */
+''.trim || (String.prototype.trim = // Use the native method if available, otherwise define a polyfill:
+    function () { // trim returns a new string (which replace supports)
+        return this.replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g,'') // trim the left and right sides of the string
+    })
+    
 // </ie>
