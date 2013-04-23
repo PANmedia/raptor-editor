@@ -21,14 +21,14 @@
  */
 function cleanReplaceElements(selector, replacements) {
     for (var find in replacements) {
-        var replace = replacements[find];
+        var replacement = replacements[find];
         var i = 0;
         var found = false;
         do {
             found = $(selector).find(find);
             if (found.length) {
                 found = $(found.get(0));
-                var clone = $(replace).clone();
+                var clone = $(replacement).clone();
                 clone.html(found.html());
                 clone.attr(elementGetAttributes(found));
                 found.replaceWith(clone);
@@ -128,9 +128,9 @@ function cleanEmptyElements(parent, tags) {
 }
 
 /**
- * Wraps any text nodes in the element with the supplied tag. This does not scan child elements.
+ * Wraps any text nodes in the node with the supplied tag. This does not scan child elements.
  *
- * @param  {jQuery} element The jQuery element to scan for text ndoes.
+ * @param  {Node} node
  * @param  {String} tag The tag to use from wrapping the text nodes.
  */
 function cleanWrapTextNodes(node, tag) {
@@ -141,7 +141,7 @@ function cleanWrapTextNodes(node, tag) {
     }
     // </strict>
 
-    var textNodes = elementFindTextNodes(node);
+    var textNodes = nodeFindTextNodes(node);
     for (var i = 0, l = textNodes.length; i < l; i++) {
         var clone = textNodes[i].cloneNode(),
             wrapper = document.createElement(tag);
@@ -151,14 +151,16 @@ function cleanWrapTextNodes(node, tag) {
     }
 }
 
-function elementFindTextNodes(node) {
-    var textNodes = [], whitespace = /^\s*$/;
-    for (var i = 0, l = node.childNodes.length; i < l; i++) {
-        if (node.childNodes[i].nodeType == 3) {
-            if (!whitespace.test(node.childNodes[i].nodeValue)) {
-                textNodes.push(node.childNodes[i]);
+function cleanUnnestElement(element, selector) {
+    var found;
+    do {
+        found = false;
+        $(element).find(selector).each(function() {
+            if ($(this).parent().is(selector)) {
+                $(this).unwrap();
+                found = true;
             }
-        }
-    }
-    return textNodes;
+        });
+    } while (found);
+
 }
