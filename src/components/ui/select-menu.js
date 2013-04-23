@@ -21,6 +21,24 @@ function SelectMenu(options) {
 
 SelectMenu.prototype = Object.create(Menu.prototype);
 
+SelectMenu.prototype.menuItemMouseDown = function(event) {
+    // Prevent losing the selection on the editor target
+    event.preventDefault();
+};
+
+SelectMenu.prototype.menuItemClick = function(event) {
+    aButtonSetLabel(this.button.button, $(event.target).html());
+    $(this.menu).closest('ul').hide();
+    // Prevent jQuery UI focusing the menu
+    return false;
+};
+
+SelectMenu.prototype.menuItemMouseEnter = function(event) {
+};
+
+SelectMenu.prototype.menuItemMouseLeave = function(event) {
+};
+
 /**
  * Prepare and return the select menu Element to be used in the Raptor UI.
  *
@@ -33,16 +51,12 @@ SelectMenu.prototype.getMenu = function() {
             .html(this.getMenuItems())
             .css('position', 'fixed')
             .hide()
-            .mousedown(function(event) {
-                // Prevent losing the selection on the editor target
-                event.preventDefault();
-            })
-            .on('click', 'a', function(event) {
-                aButtonSetLabel(this.button.button, $(event.target).html());
-                $(this.menu).closest('ul').hide();
-                // Prevent jQuery UI focusing the menu
-                return false;
-            }.bind(this))
+            .find('a')
+            .mousedown(this.menuItemMouseDown.bind(this))
+            .mouseenter(this.menuItemMouseEnter.bind(this))
+            .mouseleave(this.menuItemMouseLeave.bind(this))
+            .click(this.menuItemClick.bind(this))
+            .end()
             .appendTo('body');
         aMenu(this.menu);
     }
