@@ -44,7 +44,7 @@
         testEditor('.test-1', function(input) {
             clickButton(input, '.raptor-ui-table-create');
 
-            var table = $('.raptor-ui-table-create-menu').find('tbody')[0];
+            var table = $('.raptor-ui-table-create-menu:eq(1)').find('tbody')[0];
             var rows = table.getElementsByTagName('tr');
             var cols = rows[2].getElementsByTagName('td');
             $(cols[3]).mouseover();
@@ -93,7 +93,7 @@
         testEditor('.test-2', function(input) {
             clickButton(input, '.raptor-ui-table-create');
 
-            var table = $('.raptor-ui-table-create-menu').find('tbody')[0];
+            var table = $('.raptor-ui-table-create-menu:eq(2)').find('tbody')[0];
             var rows = table.getElementsByTagName('tr');
             var cols = rows[2].getElementsByTagName('td');
             $(cols[3]).mouseover();
