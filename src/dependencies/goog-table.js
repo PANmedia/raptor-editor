@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// http://code.google.com/p/closure-library/source/browse/trunk/closure/goog/editor/table.js
+// https://code.google.com/p/closure-library/source/browse/closure/goog/editor/table.js
 //
 // Modified by David Neilsen <david@panmedia.co.nz>
 
@@ -104,6 +104,84 @@ GoogTable.getChildCellElements = function(tr) {
     }
     return cells;
 };
+
+
+/**
+ * Inserts a new row in the table. The row will be populated with new
+ * cells, and existing rowspanned cells that overlap the new row will
+ * be extended.
+ * @param {number=} rowIndex Index at which to insert the row. If
+ *     this is omitted the row will be appended to the end of the table.
+ * @return {Element} The new row.
+ */
+GoogTable.prototype.insertRow = function(rowIndex, options) {
+    var rowIndex = rowIndex || this.rows.length;
+    var refRow;
+    var insertAfter;
+    if (rowIndex == 0) {
+        refRow = this.rows[0];
+        insertAfter = false;
+    } else {
+        refRow = this.rows[rowIndex - 1];
+        insertAfter = true;
+    }
+    var newTr = document.createElement('tr');
+    for (var i = 0, cell; cell = refRow.columns[i]; i += 1) {
+        // Check whether the existing cell will span this new row.
+        // If so, instead of creating a new cell, extend
+        // the rowspan of the existing cell.
+        if ((insertAfter && cell.endRow > rowIndex) ||
+            (!insertAfter && cell.startRow < rowIndex)) {
+            cell.setRowSpan(cell.rowSpan + 1);
+            if (cell.colSpan > 1) {
+                i += cell.colSpan - 1;
+            }
+        } else {
+            var newTd = document.createElement('td');
+            newTd.innerHTML = options.placeHolder;
+            newTr.appendChild(newTd);
+        }
+        if (insertAfter) {
+            refRow.element.parentNode.insertBefore(newTr, refRow.element.nextSibling);
+        } else {
+            refRow.element.insertBefore(newTr);
+        }
+    }
+    this.refresh();
+    return newTr;
+};
+
+
+/**
+ * Inserts a new column in the table. The column will be created by
+ * inserting new TD elements in each row, or extending the colspan
+ * of existing TD elements.
+ * @param {number=} colIndex Index at which to insert the column. If
+ *     this is omitted the column will be appended to the right side of
+ *     the table.
+ * @return {Array.<Element>} Array of new cell elements that were created
+ *     to populate the new column.
+ */
+//GoogTable.prototype.insertColumn = function(colIndex, options) {
+//    // TODO(user): set column widths in a way that makes sense.
+//    var colIndex = colIndex || ((this.rows[0] && this.rows[0].columns.length) || 0);
+//    var newTds = [];
+//    for (var rowNum = 0, row; row = this.rows[rowNum]; rowNum++) {
+//        var existingCell = row.columns[colIndex];
+//        if (existingCell && existingCell.endCol >= colIndex &&
+//            existingCell.startCol < colIndex) {
+//            existingCell.setColSpan(existingCell.colSpan + 1);
+//            rowNum += existingCell.rowSpan - 1;
+//        } else {
+//            var newTd = document.createElement('td');
+//            newTd.innerHTML = options.placeHolder;
+//            this.insertCellElement(newTd, rowNum, colIndex);
+//            newTds.push(newTd);
+//        }
+//    }
+//    this.refresh();
+//    return newTds;
+//};
 
 /**
  * Merges multiple cells into a single cell, and sets the rowSpan and colSpan
