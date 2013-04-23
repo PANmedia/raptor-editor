@@ -1,11 +1,12 @@
+<?php $i = 0; ?>
 <!doctype html>
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
 </head>
 <body class="simple">
-    <div class="test-1">
-        <h1>Convert Elements 1</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Convert Elements <?= $i ?></h1>
         <div class="test-input">
             <div>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -26,15 +27,15 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-1', function() {
-            cleanReplaceElements('.test-1 .test-output', {
+        test('.test-<?= $i ?>', function() {
+            cleanReplaceElements('.test-<?= $i ?> .test-output', {
                 div: '<p/>'
             });
         });
     </script>
 
-    <div class="test-2">
-        <h1>Convert Elements 2</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Convert Elements <?= $i ?></h1>
         <div class="test-input">
             <div>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -81,15 +82,15 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-2', function() {
-            cleanReplaceElements('.test-2 .test-output', {
+        test('.test-<?= $i ?>', function() {
+            cleanReplaceElements('.test-<?= $i ?> .test-output', {
                 div: '<p/>'
             });
         });
     </script>
 
-    <div class="test-3">
-        <h1>Convert Elements 3</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Convert Elements <?= $i ?></h1>
         <div class="test-input">
             <div>
                 <div>
@@ -114,15 +115,16 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-3', function() {
-            cleanReplaceElements('.test-3 .test-output', {
+        test('.test-<?= $i ?>', function() {
+            cleanReplaceElements('.test-<?= $i ?> .test-output', {
                 div: '<p/>'
             });
+            cleanUnnestElement('.test-<?= $i ?> .test-output', 'p');
         });
     </script>
 
-    <div class="test-4">
-        <h1>Convert Elements 4</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Convert Elements <?= $i ?></h1>
         <div class="test-input">
             <div class="some-class" style="color: red" data-foo="bar">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -143,15 +145,15 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-4', function() {
-            cleanReplaceElements('.test-4 .test-output', {
+        test('.test-<?= $i ?>', function() {
+            cleanReplaceElements('.test-<?= $i ?> .test-output', {
                 div: '<p/>'
             });
         });
     </script>
 
-    <div class="test-5">
-        <h1>Convert Elements 5</h1>
+    <div class="test-<?= ++$i ?>">
+        <h1>Convert Elements <?= $i ?></h1>
         <div class="test-input">
             <div>
                 <div>
@@ -202,11 +204,12 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-5', function() {
-            cleanReplaceElements('.test-5 .test-output', {
+        test('.test-<?= $i ?>', function() {
+            cleanReplaceElements('.test-<?= $i ?> .test-output', {
                 div: '<p/>'
             });
-            cleanEmptyElements($('.test-5 .test-output'), ['p']);
+            cleanEmptyElements($('.test-<?= $i ?> .test-output'), ['p']);
+            cleanUnnestElement('.test-<?= $i ?> .test-output', 'p');
         });
     </script>
 </body>
