@@ -159,6 +159,7 @@ var RaptorWidget = {
 
         this.getElement().on('click.' + this.widgetName, 'img', function(event) {
             selectionSelectOuter(event.target);
+            this.checkSelectionChange();
         }.bind(this));
         this.getElement().bind('focus', this.showLayout.bind(this));
         this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
