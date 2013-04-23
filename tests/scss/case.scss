@@ -51,6 +51,13 @@ body {
     @extend %header;
 }
 
+%green-header {
+    background: #b8dc3c;
+    @extend %border-box;
+    @extend %white-text;
+    @extend %header;
+}
+
 .CodeMirror-scroll {
     height: auto !important;
 }
@@ -157,10 +164,10 @@ body {
 }
 
 .verbose {
-    .pass{
+    .pass {
         &:before {
             content: "Pass: ";
-            @extend %blue-header;
+            @extend %green-header;
         }
         h1 {
             margin: 5px;
