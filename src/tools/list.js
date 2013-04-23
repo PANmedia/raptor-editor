@@ -170,12 +170,14 @@ function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
                     return true;
                 }
             } else {
+                // Do nothing for bare text nodes
                 if (typeIsTextNode(this)) {
-                    $(this).wrap('<p/>');
                     return true;
                 }
+                // Unwrap the invalid element and remove it if empty
                 if (!elementIsValid(this, validChildren)) {
-                    elementChangeTag($(this), 'p');
+                    $(this).contents().unwrap();
+                    removeEmptyElements(this); 
                     return true;
                 }
             }
@@ -625,16 +627,16 @@ function listBreakAtSelection(listType, listItem, wrapper) {
     selectionSelectToEndOfElement(selectedElement);
     var html = selectionGetHtml();
     if (html.trim() === '') {
-        html = $('<p>&nbsp;</p>');
+        html = $('&nbsp;');
     }
     selectionDelete();
 
     if (selectedElement.text().trim() === '') {
-        selectedElement.html($('<p>&nbsp;</p>'));
+        selectedElement.html($('&nbsp;'));
     }
     var newListItem = $('<' + listItem + '>').html(html);
     selectedElement.closest(listItem).after(newListItem);
-
+    
     listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren, false);
 
     return newListItem;
