@@ -108,8 +108,11 @@ body > div, .test-results:before, .test-input:before, .test-source:before, .test
   width: 100%;
   font-family: Arial, Helvetica, sans-serif; }
 
-.test-results:before, .test-input:before, .test-source:before, .test-output:before, .test-expected:before, .test-diff:before, .verbose .pass:before {
+.test-results:before, .test-input:before, .test-source:before, .test-output:before, .test-expected:before, .test-diff:before {
   background: #587CBF; }
+
+.verbose .pass:before {
+  background: #b8dc3c; }
 
 .CodeMirror-scroll {
   height: auto !important; }
