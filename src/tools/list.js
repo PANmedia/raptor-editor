@@ -146,7 +146,7 @@ function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
     }
     // </strict>
     var removeEmptyElements = function(node) {
-        if ($(node).is('img')) {
+        if ($(node).is('img') || $(node).find('img').length) {
             return;
         }
         if (!$(node).text().trim()) {
@@ -170,12 +170,14 @@ function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
                     return true;
                 }
             } else {
+                // Do nothing for bare text nodes
                 if (typeIsTextNode(this)) {
-                    $(this).wrap('<p/>');
                     return true;
                 }
+                // Unwrap the invalid element and remove it if empty
                 if (!elementIsValid(this, validChildren)) {
-                    elementChangeTag($(this), 'p');
+                    $(this).contents().unwrap();
+                    removeEmptyElements(this); 
                     return true;
                 }
             }
@@ -218,7 +220,6 @@ function listWrapSelection(listType, listItem, wrapper) {
     }
 
     var contents = listConvertItemsForList(fragmentToHtml(range.extractContents()), listItem);
-
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var uniqueId = elementUniqueId();
     var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
@@ -625,16 +626,16 @@ function listBreakAtSelection(listType, listItem, wrapper) {
     selectionSelectToEndOfElement(selectedElement);
     var html = selectionGetHtml();
     if (html.trim() === '') {
-        html = $('<p>&nbsp;</p>');
+        html = '&nbsp;';
     }
     selectionDelete();
 
     if (selectedElement.text().trim() === '') {
-        selectedElement.html($('<p>&nbsp;</p>'));
+        selectedElement.html('&nbsp;');
     }
     var newListItem = $('<' + listItem + '>').html(html);
     selectedElement.closest(listItem).after(newListItem);
-
+    
     listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren, false);
 
     return newListItem;

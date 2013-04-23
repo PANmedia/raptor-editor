@@ -23,5 +23,5 @@
     <script src="../../src/dependencies/jquery-ui.js"></script>
     <script src="../../packages/raptor.mammoth.js"></script>
 <?php elseif ($type === 'include'): ?>
-    <?php $uri = '../../src/'; include '../../src/include.php'; ?>
+    <?php $uri = '../../src/'; include __DIR__ . '/../../src/include.php'; ?>
 <?php endif; ?>

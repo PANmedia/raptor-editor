@@ -111,10 +111,10 @@
 
         <ul>
             <li>
-                <p>List item 1</p>
+                List item 1
             </li>
             <li>
-                <p>List item 2</p>
+                List item 2
             </li>
             <li>
                 <p>List item 3</p>
@@ -123,10 +123,10 @@
 
         <ol>
             <li>
-                <p>List item 1</p>
+                List item 1
             </li>
             <li>
-                <p>List item 2</p>
+                List item 2
             </li>
             <li>
                 <p>List item 3</p>

@@ -1,4 +1,5 @@
 *.sass-cache*
+*.swp
 js-doc
 tagging
 plugins-extra.manifest

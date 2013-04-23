@@ -110,3 +110,4 @@ NormaliseLineBreaksPlugin.prototype.shiftReturnPressed = function() {
 };
 
 Raptor.registerPlugin(new NormaliseLineBreaksPlugin());
+
