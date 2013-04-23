@@ -44,13 +44,13 @@ NormaliseLineBreaksPlugin.prototype.returnPressedList = function(selectedElement
         // If not at bottom of list, list must be broken
         var nextListElement = selectedListElement.next();
         if (nextListElement.length && nextListElement.is('li')) {
-            replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '&nbsp;');
+            replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
             if (replacementElement) {
                 selectionSelectInner(replacementElement.get(0));
             }
         } else {
             selectedListElement.remove();
-            selectionSelectInner($('&nbsp;').insertAfter(parentList).get(0));
+            selectionSelectInner($('<p>&nbsp;</p>').insertAfter(parentList).get(0));
         }
     } else {
         replacementElement = listBreakAtSelection(listType, 'li', this.raptor.getElement());
@@ -83,7 +83,7 @@ NormaliseLineBreaksPlugin.prototype.returnPressed = function() {
 NormaliseLineBreaksPlugin.prototype.shiftReturnPressedList = function(selectedElement) {
     if (selectedElement.closest('li').length) {
         var listType = selectedElement.closest('ul, ol').get(0).tagName.toLowerCase();
-        var replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '&nbsp;');
+        var replacementElement = listBreakByReplacingSelection(listType, 'li', this.raptor.getElement(), '<p>&nbsp;</p>');
         if (replacementElement) {
             selectionSelectInner(replacementElement.get(0));
         }
@@ -110,3 +110,4 @@ NormaliseLineBreaksPlugin.prototype.shiftReturnPressed = function() {
 };
 
 Raptor.registerPlugin(new NormaliseLineBreaksPlugin());
+
