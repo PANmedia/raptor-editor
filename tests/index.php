@@ -13,9 +13,8 @@
         <link type="text/css" rel="stylesheet" href="css/theme.css"/>
         <link type="text/css" rel="stylesheet" href="css/theme.icons.datauri.css"/>
         <link type="text/css" rel="stylesheet" href="css/tests.css"/>
-        <script src="../src/dependencies/jquery.js"></script>
-        <script src="index-process-groups.js"></script>
-
+        <script type="text/javascript" src="../src/dependencies/jquery.js"></script>
+        <script type="text/javascript" src="index-process-groups.js"></script>
     </head>
     <body>
         <div class="tests-notification">
