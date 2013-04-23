@@ -217,6 +217,7 @@
     </div>
    <script type="text/javascript">
         testEditor('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
             clickButton(input, '.raptor-ui-table-insert-row');
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
