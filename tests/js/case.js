@@ -20,7 +20,8 @@ function loadCSS(href) {
 
 // document.write('<meta charset="utf-8" />');
 // document.write('<meta http-equiv="cache-control" content="no-cache" />');
-loadCSS('../src/dependencies/themes/aristo/jquery-ui.css');
+loadCSS('../src/dependencies/themes/mammoth/theme.css');
+loadCSS('../src/dependencies/themes/mammoth/theme-icons.css');
 loadCSS('css/case.css');
 loadCSS('../codemirror/lib/codemirror.css');
 loadCSS('../example/include/style.css');
@@ -65,3 +66,21 @@ loadJS('js/reorder-attributes.js');
 loadJS('js/test-editor.js');
 loadJS('js/test.js');
 loadJS('js/tokens-to-ranges.js');
+
+document.addEventListener('DOMContentLoaded', function() {
+    if (top === window) {
+        $('<label for="verbose">Enable verbose output</label>').prependTo('body');
+        var checkbox = $('<input id="verbose" type="checkbox" name="verbose" />').click(function() {
+            if ($(this).is(':checked')) {
+                localStorage.setItem('verbose', 1);
+                $('body').addClass('verbose').removeClass('simple');
+            } else {
+                localStorage.setItem('verbose', 0);
+                $('body').addClass('simple').removeClass('verbose');
+            }
+        }).prependTo('body');
+        if (localStorage.getItem('verbose') == 1) {
+            checkbox.trigger('click');
+        }
+    }
+});
