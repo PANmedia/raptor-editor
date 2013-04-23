@@ -35,11 +35,12 @@
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            var raptorWrapper = input.find('.raptor-wrapper');
-            var toolbarTop = raptorWrapper.offset();
+            var raptorWrapper = $('.raptor-layout-toolbar-outer');
+            var offset = raptorWrapper.offset();
 
-            if (toolbarTop <= raptorWrapper) {
-                alert ('Toolbar inside viewport');
+            if (offset.top >= 0 && offset.left >= 0 &&
+                    (raptorWrapper.outerWidth() - offset.left <= $(window).width()) &&
+                    (raptorWrapper.outerHeight() - offset.top <= $(window).height())) {
             } else {
                 throw new Error('Toolbar outside viewport');
             }
