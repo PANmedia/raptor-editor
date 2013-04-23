@@ -146,7 +146,7 @@ function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
     }
     // </strict>
     var removeEmptyElements = function(node) {
-        if ($(node).is('img')) {
+        if ($(node).is('img') || $(node).find('img').length) {
             return;
         }
         if (!$(node).text().trim()) {
@@ -220,7 +220,6 @@ function listWrapSelection(listType, listItem, wrapper) {
     }
 
     var contents = listConvertItemsForList(fragmentToHtml(range.extractContents()), listItem);
-
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var uniqueId = elementUniqueId();
     var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
@@ -627,12 +626,12 @@ function listBreakAtSelection(listType, listItem, wrapper) {
     selectionSelectToEndOfElement(selectedElement);
     var html = selectionGetHtml();
     if (html.trim() === '') {
-        html = $('&nbsp;');
+        html = '&nbsp;';
     }
     selectionDelete();
 
     if (selectedElement.text().trim() === '') {
-        selectedElement.html($('&nbsp;'));
+        selectedElement.html('&nbsp;');
     }
     var newListItem = $('<' + listItem + '>').html(html);
     selectedElement.closest(listItem).after(newListItem);
