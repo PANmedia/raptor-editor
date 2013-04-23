@@ -62,7 +62,8 @@ function tableDeleteColumn(table, index) {
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
  */
 function tableInsertRow(table, index, options) {
-    return resizeTable(table, 1, index, 0, 0, options || {});
+    var googTable = new GoogTable(table);
+    return googTable.insertRow(index, options);
 }
 
 /**
