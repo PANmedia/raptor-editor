@@ -37,10 +37,12 @@ function testEditor(container, action, options) {
 var defaultOptions = {
     autoEnable: true,
     urlPrefix: '../../../src/',
+    unloadWarning: false,
     plugins: {
-//            dock: {
-//                docked: true
-//            },
+        dock: {
+            docked: true,
+            persist: false
+        },
         logo: false,
         save: {
             plugin: null
@@ -137,12 +139,20 @@ function runEditorTest(container, action, options) {
 
             diff.html(diffstr(expectedHTML, actualHTML));
             if (actualHTML !== expectedHTML) {
+                var expectedHTMLNoBraces = style_html(expected.find('.editable').html().replace(/[{}]/g, ''));
+                var actualHTMLNoBraces = style_html(output.find('.editable').html().replace(/[{}]/g, ''));
+                if (actualHTMLNoBraces === expectedHTMLNoBraces) {
+                    diff.prepend(diffstr(expectedHTMLNoBraces, actualHTMLNoBraces));
+                    diff.prepend('<h1>Possible selection restore issue.</h1>');
+                }
+
                 window.testResults.tests.push({
                     status: 'fail',
                     type: 'diff',
                     diff: diff,
                     expectedHTML: expectedHTML,
-                    actualHTML: actualHTML
+                    actualHTML: actualHTML,
+                    error: new Error('test')
                 });
                 fail(container);
             } else {
