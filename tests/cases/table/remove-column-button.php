@@ -46,13 +46,11 @@
             </table>
             </div>
         </div>
-        <div class="test-output"></div>
-        <div class="test-diff"></div>
     </div>
     <script type="text/javascript">
         testEditor('.test-1', function(input) {
-            clickButton(input, '.raptor-ui-table-remove-column');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            var ranges = tokensToRanges(input);
+            clickButton(input, '.raptor-ui-table-delete-column');
         });
     </script>
 
@@ -67,7 +65,7 @@
                         <th>Header</th>
                         <th>Header</th>
                         <th>Header</th>
-                        <th>{}Header</th>
+                        <th>Header</th>
                         <th>Header</th>
                     </tr>
                 </thead>
@@ -77,7 +75,7 @@
                         <td>Column 2</td>
                         <td>Column 3</td>
                         <td rowspan="2">Column 4</td>
-                        <td>Column 5</td>
+                        <td>{}Column 5</td>
                         <td>Column 6</td>
                     </tr>
                     <tr>
@@ -193,13 +191,11 @@
             </table>
             </div>
         </div>
-        <div class="test-output"></div>
-        <div class="test-diff"></div>
     </div>
      <script type="text/javascript">
         testEditor('.test-2', function(input) {
-            clickButton(input, '.raptor-ui-table-remove-column');
-            rangesToTokens(rangy.getSelection().getAllRanges());
+            var ranges = tokensToRanges(input);
+            clickButton(input, '.raptor-ui-table-delete-column');
         });
     </script>
 </body>
