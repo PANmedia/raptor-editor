@@ -39,7 +39,7 @@
                         <td>Cell 2,0</td>
                     </tr>
                     <tr>
-                        <<td>Cell 0,1</td>
+                        <td>Cell 0,1</td>
                         <td>
                             Cell 1,1<br/>
                             Cell 2,1<br/>
