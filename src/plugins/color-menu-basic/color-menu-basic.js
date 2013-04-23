@@ -93,6 +93,7 @@ ColorMenuBasic.prototype.changeColor = function(color, permanent) {
         this.currentColor = color;
     }
     this.raptor.actionApply(function() {
+        selectionExpandToWord();
         if (color === 'automatic') {
             selectionGetElements().parents('.' + this.options.cssPrefix + 'color').addBack().each(function() {
                 var classes = $(this).attr('class');
@@ -115,7 +116,15 @@ ColorMenuBasic.prototype.changeColor = function(color, permanent) {
                     id: uniqueId
                 }
             });
-            selectionSelectInner($('#' + uniqueId).removeAttr('id').get(0));
+            var element = $('#' + uniqueId);
+            if (element.length) {
+                selectionSelectInner(element.removeAttr('id').get(0));
+                var splitNode;
+                do {
+                    splitNode = $('#' + uniqueId);
+                    splitNode.removeAttr('id');
+                } while (splitNode.length);
+            }
         }
     }.bind(this));
 };
@@ -123,9 +132,9 @@ ColorMenuBasic.prototype.changeColor = function(color, permanent) {
 /**
  * The preview state for the basic colour menu.
  *
- * @param event The mouse event to trigger the preview.
+ * @param event The mouse event which triggered the preview.
  */
-ColorMenuBasic.prototype.preview = function(event) {
+ColorMenuBasic.prototype.menuItemMouseEnter = function(event) {
     this.raptor.actionPreview(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
@@ -133,8 +142,10 @@ ColorMenuBasic.prototype.preview = function(event) {
 
 /**
  * Restores the selection from the preview.
+ *
+ * @param event
  */
-ColorMenuBasic.prototype.previewRestore = function() {
+ColorMenuBasic.prototype.menuItemMouseLeave = function(event) {
     this.raptor.actionPreviewRestore();
     this.changeColor(this.currentColor);
 };
@@ -144,7 +155,8 @@ ColorMenuBasic.prototype.previewRestore = function() {
  *
  * @param event The mouse event to trigger the application of the colour.
  */
-ColorMenuBasic.prototype.apply = function(event) {
+ColorMenuBasic.prototype.menuItemClick = function(event) {
+    SelectMenu.prototype.menuItemClick.apply(this, arguments);
     this.raptor.actionApply(function() {
         this.changeColor($(event.currentTarget).data('color'), true);
     }.bind(this));
@@ -155,10 +167,7 @@ ColorMenuBasic.prototype.apply = function(event) {
  * @returns {Element} The menu items.
  */
 ColorMenuBasic.prototype.getMenuItems = function() {
-    return $(this.raptor.getTemplate('color-menu-basic.menu', this.options))
-        .click(this.apply.bind(this))
-        .mouseenter(this.preview.bind(this))
-        .mouseleave(this.previewRestore.bind(this));
+    return this.raptor.getTemplate('color-menu-basic.menu', this.options);
 };
 
 Raptor.registerUi(new ColorMenuBasic());
