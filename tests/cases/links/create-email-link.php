@@ -266,7 +266,7 @@
         <div class="test-expected">
             <div class="editable">
                 <p>
-                    <a href=". ">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
+                    <a href="mailto:test@test.com?Subject=Test%20subject">{<img src="../../images/raptor.png" alt="raptor logo" height="50" width="40" />}</a>
                 </p>
             </div>
         </div>
