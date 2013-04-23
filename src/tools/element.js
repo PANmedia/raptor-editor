@@ -296,10 +296,15 @@ function elementIsEmpty(element) {
         return;
     }
     // </strict>
+    
+    // Images and elements containing images are not empty
+    if (element.is('img') || element.find('img').length) {
+        return false;
+    }
     if ((/&nbsp;/).test(element.html())) {
         return false;
     }
-    else return element.text() === '';
+    return element.text() === '';
 }
 
 /**
