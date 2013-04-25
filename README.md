@@ -39,8 +39,8 @@ See the following links for information on build &amp; contributing to Raptor:
 * [Translating Raptor](https://github.com/PANmedia/Raptor/wiki/Translating-Raptor)
 
 [^1]: http://www.raptor-editor.com/ (Download, usage examples and documentation)
-[^2]: http://www.raptor-editor.com/docs (Raptor documentation)
-[^3]: http://www.raptor-editor.com.com/license (Raptor license)
+[^2]: http://www.raptor-editor.com/documentation (Raptor documentation)
+[^3]: http://www.raptor-editor.com/license (Raptor license)
 [^4]: http://www.raptor-editor.com/demo (Raptor Editor Demo)
 [^5]: http://www.raptor-editor.com/demo/docking (Raptor Editor Examples)
 
