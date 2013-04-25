@@ -92,7 +92,7 @@ SaveRestPlugin.prototype.always = function() {
                 failed: this.errors.length
             }));
         } else {
-            this.raptor.getLayout('messages').showConfirm(_('saveRestSaved', {
+            this.raptor.getLayout('messages').showMessage('confirm', _('saveRestSaved', {
                 saved: this.messages.length
             }), {
                 delay: 1000,
