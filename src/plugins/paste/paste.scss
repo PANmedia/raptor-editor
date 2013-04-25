@@ -1,0 +1,53 @@
+/**
+ * Paste plugin
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/box-sizing';
+
+.raptor-plugin-paste-panel-tabs {
+    height: auto;
+    width: 100%;
+
+    @include display-box();
+    @include box-orient(vertical);
+    @include box-flex(1);
+}
+
+.raptor-plugin-paste .ui-tabs a {
+    outline: none;
+}
+
+.raptor-plugin-paste-panel-tabs > div {
+    overflow: auto;
+
+    @include display-box();
+    @include box-flex(1);
+    @include box-orient(vertical);
+    @include box-sizing(border-box);
+
+    border: 1px solid #C2C2C2;
+    border-top: none;
+}
+
+.raptor-plugin-paste-panel-tabs > div > textarea.raptor-plugin-paste-area {
+    @include box-flex(1);
+    @include display-box();
+}
+
+.raptor-plugin-paste-panel-tabs > div > textarea,
+.raptor-plugin-paste-panel-tabs > div > .raptor-plugin-paste-area {
+    border: none;
+    padding: 2px;
+}
+
+.raptor-plugin-paste-dialog .ui-dialog-content {
+    display: -webkit-box !important;
+    display: -moz-box !important;
+    display: box !important;
+    width: 100% !important;
+    overflow: hidden;
+    @include box-sizing(border-box);
+}

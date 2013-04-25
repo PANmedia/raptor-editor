@@ -1,0 +1,37 @@
+/**
+ * Unsaved edit warning plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/images';
+@import 'compass/css3/opacity';
+@import 'compass/css3/transition';
+
+.raptor-plugin-unsaved-edit-warning {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #D4D4D4;
+    padding-right: 7px;
+    @include background(linear-gradient(top, rgba(255, 255, 242, 1), rgba(237, 236, 189, 1)));
+    @include transition(opacity 0.5s);
+    @include opacity(0);
+
+    .ui-icon {
+        display: inline-block;
+        float: left;
+        margin: 8px 5px 0 5px;
+    }
+}
+
+.raptor-plugin-unsaved-edit-warning-visible {
+    @include opacity(1);
+}
+
+.raptor-plugin-unsaved-edit-warning-dirty {
+    outline: 1px dotted #aaa;
+    background-image: inline-image('diagonal-lines.png') !important;
+}

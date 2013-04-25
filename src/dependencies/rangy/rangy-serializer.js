@@ -8,10 +8,10 @@
  *
  * Depends on Rangy core.
  *
- * Copyright 2012, Tim Down
+ * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.2.3
- * Build date: 26 February 2012
+ * Version: 1.3alpha.776
+ * Build date: 12 April 2013
  */
 rangy.createModule("Serializer", function(api, module) {
     api.requireModules( ["WrappedSelection", "WrappedRange"] );
@@ -131,11 +131,8 @@ rangy.createModule("Serializer", function(api, module) {
     }
 
     function deserializePosition(serialized, rootNode, doc) {
-        if (rootNode) {
-            doc = doc || dom.getDocument(rootNode);
-        } else {
-            doc = doc || document;
-            rootNode = doc.documentElement;
+        if (!rootNode) {
+            rootNode = (doc || document).documentElement;
         }
         var bits = serialized.split(":");
         var node = rootNode;
@@ -144,9 +141,9 @@ rangy.createModule("Serializer", function(api, module) {
         while (i--) {
             nodeIndex = parseInt(nodeIndices[i], 10);
             if (nodeIndex < node.childNodes.length) {
-                node = node.childNodes[parseInt(nodeIndices[i], 10)];
+                node = node.childNodes[nodeIndex];
             } else {
-                throw module.createError("deserializePosition failed: node " + dom.inspectNode(node) +
+                throw module.createError("deserializePosition() failed: node " + dom.inspectNode(node) +
                         " has no child with index " + nodeIndex + ", " + i);
             }
         }
@@ -156,8 +153,9 @@ rangy.createModule("Serializer", function(api, module) {
 
     function serializeRange(range, omitChecksum, rootNode) {
         rootNode = rootNode || api.DomRange.getRangeDocument(range).documentElement;
-        if (!dom.isAncestorOf(rootNode, range.commonAncestorContainer, true)) {
-            throw new Error("serializeRange: range is not wholly contained within specified root node");
+        if (!dom.isOrIsAncestorOf(rootNode, range.commonAncestorContainer)) {
+            throw module.createError("serializeRange(): range " + range.inspect() +
+                " is not wholly contained within specified root node " + dom.inspectNode(rootNode));
         }
         var serialized = serializePosition(range.startContainer, range.startOffset, rootNode) + "," +
             serializePosition(range.endContainer, range.endOffset, rootNode);
@@ -174,33 +172,29 @@ rangy.createModule("Serializer", function(api, module) {
             doc = doc || document;
             rootNode = doc.documentElement;
         }
-        var result = /^([^,]+),([^,\{]+)({([^}]+)})?$/.exec(serialized);
+        var result = /^([^,]+),([^,\{]+)(\{([^}]+)\})?$/.exec(serialized);
         var checksum = result[4], rootNodeChecksum = getElementChecksum(rootNode);
         if (checksum && checksum !== getElementChecksum(rootNode)) {
-            throw new Error("deserializeRange: checksums of serialized range root node (" + checksum +
+            throw module.createError("deserializeRange(): checksums of serialized range root node (" + checksum +
                     ") and target root node (" + rootNodeChecksum + ") do not match");
         }
         var start = deserializePosition(result[1], rootNode, doc), end = deserializePosition(result[2], rootNode, doc);
         var range = api.createRange(doc);
-        range.setStart(start.node, start.offset);
-        range.setEnd(end.node, end.offset);
+        range.setStartAndEnd(start.node, start.offset, end.node, end.offset);
         return range;
     }
 
     function canDeserializeRange(serialized, rootNode, doc) {
-        if (rootNode) {
-            doc = doc || dom.getDocument(rootNode);
-        } else {
-            doc = doc || document;
-            rootNode = doc.documentElement;
+        if (!rootNode) {
+            rootNode = (doc || document).documentElement;
         }
-        var result = /^([^,]+),([^,]+)({([^}]+)})?$/.exec(serialized);
+        var result = /^([^,]+),([^,]+)(\{([^}]+)\})?$/.exec(serialized);
         var checksum = result[3];
         return !checksum || checksum === getElementChecksum(rootNode);
     }
 
     function serializeSelection(selection, omitChecksum, rootNode) {
-        selection = selection || api.getSelection();
+        selection = api.getSelection(selection);
         var ranges = selection.getAllRanges(), serializedRanges = [];
         for (var i = 0, len = ranges.length; i < len; ++i) {
             serializedRanges[i] = serializeRange(ranges[i], omitChecksum, rootNode);
@@ -246,7 +240,6 @@ rangy.createModule("Serializer", function(api, module) {
         return true;
     }
 
-
     var cookieName = "rangySerializedSelection";
 
     function getSerializedSelectionFromCookie(cookie) {
@@ -267,7 +260,7 @@ rangy.createModule("Serializer", function(api, module) {
         win = win || window;
         var serialized = getSerializedSelectionFromCookie(win.document.cookie);
         if (serialized) {
-            deserializeSelection(serialized, win.doc)
+            deserializeSelection(serialized, win.doc);
         }
     }
 
@@ -297,4 +290,5 @@ rangy.createModule("Serializer", function(api, module) {
     api.saveSelectionCookie = saveSelectionCookie;
 
     api.getElementChecksum = getElementChecksum;
+    api.nodeToInfoString = nodeToInfoString;
 });

@@ -1,60 +1,43 @@
 <?php
-    $file = __DIR__ . '/content.json';
-    $content = [];
-    if (file_exists(__DIR__ . '/content.json')) {
-        $content = file_get_contents($file);
-        $content = json_decode($content, true);
-        if ($content === false) {
-            $content = [];
-        }
-    }
-
-    $type = 'light';
+    include __DIR__ . '/../include/content.php';
+    $content = loadContent(__DIR__ . '/content.json');
 ?>
 <!doctype html>
 <html>
 <head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>Raptor Editor - Save Rest Example</title>
-	<link rel="stylesheet" href="css/style.css" />
-    <?php if ($type === 'light'): ?>
-        <link rel="stylesheet" href="../../src/dependencies/themes/aristo/jquery-ui.css" />
-        <link rel="stylesheet" href="../../src/theme/theme.css" />
-        <script src="../../src/dependencies/jquery.js"></script>
-        <script src="../../src/dependencies/jquery-ui.js"></script>
-        <script src="../../packages/raptor.light.min.js"></script>
-    <?php elseif ($type === 'include'): ?>
-        <?php $uri = '../../src/'; include '../../src/include.php'; ?>
-    <?php endif; ?>
+    <?php include __DIR__ . '/../include/head.php'; ?>
+    <title>Raptor Editor - Save Rest Example</title>
     <script type="text/javascript">
-        jQuery(function($) {
-            $('.editable').editor({
+        jQuery(function() {
+            $('.editable').raptor({
                 urlPrefix: '../../src/',
-                ui: {
-                    save: {
-                      plugin: 'saveRest'
-                    }
-                },
                 plugins: {
+                    save: {
+                        plugin: 'saveRest'
+                    },
                     saveRest: {
-                        /**
-                         * True if you want all editing elements to be saved at once.
-                         */
-                        multiple: true,
-                        ajax: {
-                            type: 'post',
-                            dataType: 'json',
-                            url: function(id) {
-                                return 'save.php';
-                            },
-                            data: function(html) {
-                                return {
-                                    _method: 'put',
-                                    id: this.editor.getElement().data('id'),
-                                    content: html
-                                };
-                            }
+                        url: 'save.php',
+                        data: function(html) {
+                            return {
+                                id: this.raptor.getElement().data('id'),
+                                content: html
+                            };
+                        }
+                    },
+                    dock: {
+                        docked: true,
+                        under: '.switcher'
+                    },
+                    classMenu: {
+                        classes: {
+                            'Blue background': 'cms-blue-bg',
+                            'Round corners': 'cms-round-corners',
+                            'Indent and center': 'cms-indent-center'
+                        }
+                    },
+                    snippetMenu: {
+                        snippets: {
+                            'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
                         }
                     }
                 }
@@ -63,46 +46,88 @@
     </script>
 </head>
 <body>
-    <div class="editable" data-id="header">
-        <?php ob_start(); ?>
+    <?php include __DIR__ . '/../include/nav.php'; ?>
+    <header>
         <h1>Raptor Editor - Save Rest Example</h1>
-        <?php
-            $buffer = ob_get_clean();
-            if (isset($content['header'])) {
-                echo $content['header'];
-            } else {
-                echo $buffer;
-            }
-        ?>
-    </div>
-    <div class="editable" data-id="body">
+    </header>
+    <div class="editable half" data-id="body-1">
         <?php ob_start(); ?>
         <p>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
             has been the industry's standard dummy text ever since the 1500s, when an unknown printer
-            took a galley of type and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+            took a galley of type and scrambled it to make a type specimen book.
+        </p>
+        <blockquote>
+            <p>
+                It has survived not only five centuries, but also the leap into electronic typesetting,
+                remaining essentially unchanged.
+            </p>
+        </blockquote>
+        <p>
+            It was popularised in the 1960s with the release of Letraset sheets containing
             Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
             including versions of Lorem Ipsum.
         </p>
         <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-            has been the industry's standard dummy text ever since the 1500s, when an unknown printer
-            took a galley of type and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting, remaining essentially
-            unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-            Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker
-            including versions of Lorem Ipsum.
+            <span class="cms-blue">This text is blue.</span>
+            <span class="cms-red">This text is red.</span>
+            <span class="cms-green">This text is green.</span>
+            <a href=".">This is an internal link.</a>
+            <a href="http://www.raptor-editor.com" target="_blank">This is an external link.</a>
+            <a href="mailto:info@raptor-editor.com?Subject=Example">This is an email link.</a>
+            <strong class="cms-bold">This text is bold.</strong>
+            <em class="cms-italic">This text is italic.</em>
         </p>
-        <?php
-            $buffer = ob_get_clean();
-            if (isset($content['body'])) {
-                echo $content['body'];
-            } else {
-                echo $buffer;
-            }
-        ?>
+        <?= renderContent(ob_get_clean(), $content, 'body-1'); ?>
+    </div>
+    <div class="editable half" data-id="body-2">
+        <?php ob_start(); ?>
+        <p>
+            Text above the image.
+            <img src="../full-suite/images/orange.jpg" />
+            Text below the image.
+        </p>
+        <p>
+            The image below is a link.
+            <a href="http://www.raptor-editor.com">
+                <img src="../full-suite/images/orange.jpg" />
+            </a>
+            The image above is a link.
+        </p>
+
+        <table>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+            <tr>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+                <td>Cell</td>
+            </tr>
+        </table>
+        <?= renderContent(ob_get_clean(), $content, 'body-2'); ?>
     </div>
 
 </body>

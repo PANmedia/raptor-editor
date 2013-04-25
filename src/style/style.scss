@@ -1,0 +1,23 @@
+/**
+ * Main editor styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ */
+.raptor-editing {
+    outline: none;
+}
+
+.raptor-editable-block-hover:not(.raptor-editing),
+.raptor-editable-block:hover:not(.raptor-editing) {
+    background: inline-image('diagonal-lines.png') 0 0;
+}
+
+.raptor-editing-inline {
+    width: 600px;
+    min-height: 150px;
+    padding: 5px !important;
+    background-color: #fff;
+    border: $border-style !important;
+    border-top: none !important;
+}

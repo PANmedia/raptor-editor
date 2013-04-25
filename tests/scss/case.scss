@@ -1,0 +1,234 @@
+@import "style",
+        "diff";
+
+html,
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 1em!important;
+    > div {
+        @extend %border-box;
+    }
+}
+
+%border-box {
+    @include box-sizing(border-box);
+}
+
+%padded-heading {
+    padding: 0.5em 1em 0.5em 0;
+    font-size: 13px;
+
+    &:before {
+        padding: 0.5em 1em;
+        margin: -0.5em 1em -0.5em 0;
+    }
+}
+
+%white-text {
+    color: #fff;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+}
+
+%header {
+    display: block;
+    padding: 0.5em 1em;
+    font-size: 13px;
+    font-weight: bold;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+%blue-header {
+    background: #587CBF;
+    @extend %border-box;
+    @extend %white-text;
+    @extend %header;
+}
+
+%green-header {
+    background: #b8dc3c;
+    @extend %border-box;
+    @extend %white-text;
+    @extend %header;
+}
+
+.CodeMirror-scroll {
+    height: auto !important;
+}
+
+.test-clear {
+    clear: both;
+    height: 3px;
+}
+
+.test-box {
+    float: left;
+    width: 49%;
+    border: 1px solid #587CBF;
+    max-height: 250px;
+    overflow: auto;
+
+    table {
+        border-collapse: separate;
+    }
+    td {
+        border: 1px dashed #aaa;
+    }
+}
+
+.test-results {
+    border: 1px solid #587CBF;
+
+    &:before {
+        content: "Results: ";
+        @extend %blue-header;
+    }
+}
+
+.test-box {
+    margin: 2px 2% 11px 1%;
+    @extend %border-box;;
+}
+
+.test-input, .test-expected, .test-output {
+    width: 47%;
+    margin-right: 1%;
+    margin-left: 2%
+}
+
+.test-input {
+    &:before {
+        content: "Input: ";
+        @extend %blue-header;
+    }
+}
+
+.test-source {
+    float: right;
+    width: 47%;
+    font-family: 'Courier New', monospace;
+    overflow: auto;
+
+    &:before {
+        content: "Source: ";
+        @extend %blue-header;
+    }
+}
+
+.test-output:before {
+    content: "Output: ";
+    @extend %blue-header;
+}
+
+.test-expected:before {
+    content: "Expected: ";
+    @extend %blue-header;
+}
+
+.test-diff {
+    border: 1px solid #587CBF;
+    margin: 0 11px 11px;
+    padding: 1em;
+    margin-left: 2%;
+    margin-right: 2%;
+
+    td {
+        white-space: pre-wrap;
+    }
+
+    table {
+        margin-bottom: 1em;
+    }
+
+    &:before {
+        content: "Differences: ";
+        @extend %blue-header;
+        margin: -1em -1em 1em;
+        @include box-sizing(content-box);
+    }
+}
+
+.pass,
+.fail {
+    margin-bottom: 4px;
+}
+
+.pass {
+    border: 2px solid #B8DC3C;
+}
+
+.verbose {
+    .pass {
+        &:before {
+            content: "Pass: ";
+            @extend %green-header;
+        }
+        h1 {
+            margin: 5px;
+        }
+    }
+    h1 {
+        @extend %padded-heading;
+    }
+}
+
+.simple {
+    .pass {
+        h1 {
+            margin: 0;
+
+            &:before {
+                content: "Pass: ";
+                background: #B8DC3C;
+            }
+        }
+        .test-box,
+        .test-clear,
+        .test-diff {
+            display: none;
+        }
+    }
+    h1 {
+        @extend %padded-heading;
+    }
+}
+
+.fail {
+    border: 2px solid #CB2402;
+
+    h1 {
+        margin-left: 1em;
+    }
+
+    &:before {
+        content: "Fail: ";
+        background: #CB2402;
+        @extend %white-text;
+        @extend %border-box;
+        @extend %header;
+    }
+}
+
+.editable {
+    p {
+        padding: 0 10px;
+    }
+}
+
+.error-output {
+    font-weight: bold;
+}
+
+.codekolom {
+    vertical-align: top;
+}
+
+blockquote {
+    outline: 1px dotted;
+}

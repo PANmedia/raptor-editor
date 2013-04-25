@@ -1,11 +1,14 @@
 *.sass-cache*
+*.swp
 js-doc
 tagging
 plugins-extra.manifest
 addons-extra.manifest
 translation-status.html
-/build/
 /nbproject/
 /src/plugins-extra/
 /vendor/
 /composer.lock
+/jscover/
+/temp/
+/packages/

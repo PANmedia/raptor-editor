@@ -1,0 +1,126 @@
+/**
+ * Link plugin
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/opacity';
+
+.raptor-ui-link-create .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('chain.png') 0 0;
+}
+
+.raptor-ui-link-create:hover .ui-icon {
+    @include opacity(1);
+}
+
+.raptor-ui-link-remove .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('chain-unchain.png') 0 0;
+}
+
+.raptor-ui-link-remove:hover .ui-icon {
+    @include opacity(1);
+}
+
+/* Dialog */
+.raptor-ui-link-create-panel .raptor-ui-link-create-menu {
+    height: 100%;
+    width: 200px;
+    float: left;
+    border-right: 1px dashed #D4D4D4;
+
+    @include display-box();
+    @include box-orient(vertical);
+
+    p {
+        font-weight: bold;
+        margin: 12px 0 8px;
+    }
+    fieldset {
+        @include box-flex(2);
+        margin: 2px 4px;
+        padding: 7px 4px;
+        font-size: $font-size;
+        label {
+            display: block;
+            margin-bottom: 10px;
+            span {
+                display: inline-block;
+                width: 150px;
+                font-size: $font-size;
+                vertical-align: top;
+            }
+        }
+    }
+}
+
+.raptor-ui-link-create-panel .raptor-ui-link-create-menu fieldset,
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap fieldset {
+    border: none;
+}
+
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap {
+    margin-left: 200px;
+    padding-left: 20px;
+    min-height: 200px;
+    position: relative;
+    &.raptor-ui-link-create-loading{
+        &:after {
+            content: 'Loading...';
+            position: absolute;
+            top: 60px;
+            left: 200px;
+            padding-left: 20px;
+        }
+    }
+    h2 {
+        margin: 10px 0 0;
+    }
+    fieldset {
+        margin: 2px 4px;
+        padding: 7px 4px;
+        font-size: $font-size;
+        input[type=text] {
+            width: 300px;
+            padding: 5px;
+        }
+        input[type=text].raptor-external-href,
+        input[type=text].raptor-document-href {
+            width: 400px;
+        }
+        &.raptor-email label {
+            display: inline-block;
+            width: 140px;
+        }
+        &.raptor-email input {
+            width: 340px;
+        }
+    }
+    ol {
+        li {
+            list-style: decimal inside;
+        }
+    }
+}
+
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap
+.raptor-ui-link-create-panel .raptor-ui-link-create-wrap fieldset #raptor-ui-link-create-external-target {
+    vertical-align: middle;
+}
+
+.raptor-ui-link-create-error-message {
+    div {
+        padding: 0 .7em;
+        p {
+            margin: 0;
+            .ui-icon {
+                margin-top: 2px;
+                float: left;
+                margin-right: 2px;
+            }
+        }
+    }
+}

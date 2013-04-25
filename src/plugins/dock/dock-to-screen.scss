@@ -1,0 +1,36 @@
+/**
+ * Dock to screen plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/opacity';
+
+.raptor-ui-dock-to-screen .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('application-dock-090.png') 0 0;
+}
+
+.raptor-ui-dock-to-screen:hover .ui-icon-pin-s {
+    @include opacity(1);
+}
+
+.raptor-plugin-dock-docked {
+    .raptor-layout-toolbar-inner {
+        @include display-box();
+        @include box-pack(center);
+        @include box-align(center);
+        // Firefox width fix
+        width: 100%;
+    }
+
+    .raptor-layout-toolbar-toolbar {
+        text-align: center;
+    }
+
+}
+
+.raptor-plugin-dock-docked,
+.raptor-ios .raptor-plugin-dock-docked {
+    @extend %raptor-plugin-dock-path;
+}

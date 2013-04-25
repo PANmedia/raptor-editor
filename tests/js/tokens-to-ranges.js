@@ -4,51 +4,64 @@ function RangeInfo() {}
 
 RangeInfo.prototype = {
     setStart: function(node, offset) {
-        this.sc = node;
-        this.so = offset;
+        this.startNode = node;
+        this.startOffset = offset;
     },
     setEnd: function(node, offset) {
-        this.ec = node;
-        this.eo = offset;
+        this.endNode = node;
+        this.endOffset = offset;
     },
     toRange: function() {
         var range = rangy.createRange();
-        range.setStart(this.sc, this.so);
-        range.setEnd(this.ec, this.eo);
+        range.setStart(this.startNode, this.startOffset);
+        range.setEnd(this.endNode, this.endOffset);
         return range;
     }
 };
 
-function tokensToRanges(el) {
-    var rangeInfos = [];
-    var currentRangeInfo;
-    var textNodes = $(el)
-        .find(":not(iframe)")
-        .andSelf()
-        .contents()
-        .filter(function() {
-            return this.nodeType == 3;
-        });
-
-    $.each(textNodes, function() {
-        var searchStartIndex = 0;
-        var searchIndex;
-        while ( (searchIndex = this.data.indexOf(currentRangeInfo ? "}" : "{", searchStartIndex)) != -1 ) {
-            // Remove the marker. Doing this breaks existing ranges
-            // in this node, which is why we use RangeInfo objects
-            // instead of ranges
-            this.data = this.data.slice(0, searchIndex) + this.data.slice(searchIndex + 1);
-            if (currentRangeInfo) {
-                currentRangeInfo.setEnd(this, searchIndex);
-                rangeInfos.push(currentRangeInfo);
-                currentRangeInfo = null;
-            } else {
-                currentRangeInfo = new RangeInfo();
-                currentRangeInfo.setStart(this, searchIndex);
+function getTextNodesIn(node) {
+    var textNodes = [];
+    function getTextNodes(node) {
+        if (node.nodeType === 3) {
+            textNodes.push(node);
+        } else {
+            for (var i = 0, l = node.childNodes.length; i < l; i++) {
+                getTextNodes(node.childNodes[i]);
             }
-            searchStartIndex = searchIndex;
         }
-    });
+    }
+
+    getTextNodes(node);
+    return textNodes;
+}
+
+function tokensToRanges(el, limit) {
+
+    var rangeInfos = [],
+        currentRangeInfo,
+        textNodes = getTextNodesIn(el.get(0));
+
+    (function() {
+        for (var i = 0, l = textNodes.length; i < l; i++) {
+            var searchStartIndex = 0,
+                searchIndex;
+            while ((searchIndex = textNodes[i].data.indexOf(currentRangeInfo ? "}" : "{", searchStartIndex)) != -1) {
+                if (limit && rangeInfos.length === limit) {
+                    return;
+                }
+                textNodes[i].data = textNodes[i].data.slice(0, searchIndex) + textNodes[i].data.slice(searchIndex + 1);
+                if (currentRangeInfo) {
+                    currentRangeInfo.setEnd(textNodes[i], searchIndex);
+                    rangeInfos.push(currentRangeInfo);
+                    currentRangeInfo = null;
+                } else {
+                    currentRangeInfo = new RangeInfo();
+                    currentRangeInfo.setStart(textNodes[i], searchIndex);
+                }
+                searchStartIndex = searchIndex;
+            }
+        }
+    })();
 
     // Convert RangeInfos into ranges
     var ranges = [];
@@ -57,4 +70,28 @@ function tokensToRanges(el) {
     });
 
     return ranges;
+}
+
+function tokensToSelection(el, limit) {
+    var ranges = tokensToRanges(el, limit);
+    rangy.getSelection().setRanges(ranges);
+    return ranges;
+}
+
+function rangesToTokens(ranges) {
+    var i = ranges.length;
+    while (i--) {
+        var close = document.createTextNode('}'),
+            open = document.createTextNode('{'),
+            closeRange = rangy.createRangyRange(),
+            openRange = rangy.createRangyRange();
+        closeRange.setStart(ranges[i].endContainer, ranges[i].endOffset);
+        openRange.setStart(ranges[i].startContainer, ranges[i].startOffset);
+        closeRange.insertNode(close);
+        openRange.insertNode(open);
+    }
+}
+
+function selectionToTokens() {
+    return rangesToTokens(rangy.getSelection().getAllRanges());
 }

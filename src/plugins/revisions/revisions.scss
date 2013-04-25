@@ -1,0 +1,74 @@
+/**
+ * Revision history plugin.
+ *
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+@import 'compass/css3/transition';
+
+// Buttons
+.raptor-ui-revisions {
+    .ui-icon {
+        background: inline-image('documents-stack.png') 0 0;
+    }
+}
+
+.raptor-ui-revisions-apply-button,
+.raptor-ui-revisions-preview-button {
+    margin-right: 10px;
+}
+
+.raptor-ui-revisions-preview-button {
+    .ui-icon {
+        background: inline-image('blue-document-export.png') 0 0;
+    }
+}
+
+.raptor-ui-revisions-apply-button {
+    .ui-icon {
+        background: inline-image('document-convert.png') 0 0;
+    }
+}
+
+.raptor-ui-revisions-diff-button {
+    .ui-icon {
+        background: inline-image('edit-diff.png') 0 0;
+    }
+}
+
+// Dialog
+.raptor-ui-revisions-loading-revisions {
+    text-align: center;
+    padding: 20px;
+}
+
+.raptor-ui-revisions-table {
+    thead {
+        th {
+            display: table-cell;
+        }
+    }
+    tbody {
+        tr.ui-state-hover {
+            cursor: pointer;
+        }
+        td {
+            vertical-align: middle;
+            &.raptor-ui-revisions-controls {
+                white-space: pre;
+            }
+        }
+    }
+}
+
+.raptor-ui-revisions-diff-button-diff {
+    font-family: monospace;
+    del {
+        background-color: #FFC8C8;
+    }
+
+    ins {
+        background-color: #BEF0BE;
+    }
+}

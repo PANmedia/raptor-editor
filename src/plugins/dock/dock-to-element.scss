@@ -1,0 +1,95 @@
+/**
+ * Dock to element plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/box';
+@import 'compass/css3/opacity';
+
+.raptor-ui-dock-to-element .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('application-dock-tab.png') 0 0;
+}
+
+.raptor-ui-dock-to-element:hover .ui-icon-pin-s {
+    @include opacity(1);
+}
+
+.raptor-plugin-dock-docked-to-element {
+    @extend %raptor-plugin-dock-path;
+}
+
+/**
+ * Dialog docked to element
+ */
+.raptor-plugin-dock-docked-to-element-wrapper {
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+}
+.raptor-plugin-dock-docked-to-element-wrapper .raptor-layout-toolbar-outer {
+    /* Removed fixed position from the editor */
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+
+    border: 0 none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: auto !important;
+    width: 100% !important;
+    font-size: inherit !important;
+    color: inherit !important;
+    font-family: inherit !important;
+    float: none !important;
+    width: auto !important;
+
+    @include display-box();
+    @include box-orient(vertical);
+
+    .raptor-layout-toolbar-toolbar {
+        margin: 0;
+        z-index: 2;
+
+        @include box-ordinal-group(1);
+    }
+
+    .raptor-layout-toolbar-toolbar .ui-widget-header {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .raptor-messages {
+        margin: 0;
+    }
+}
+
+.raptor-plugin-dock-docked-element {
+    /* Override margin so toolbars sit flush next to element */
+    margin: 0 !important;
+
+    display: block;
+    z-index: 1;
+
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+
+    border: 0 none;
+    padding: 0;
+    margin: 0;
+    z-index: auto;
+    width: 100%;
+    font-size: inherit;
+    color: inherit;
+    font-family: inherit;
+    float: none;
+    width: auto;
+
+    @include box-ordinal-group(2);
+}
+
+.raptor-plugin-dock-docked-to-element .raptor-layout-toolbar-inner {
+    border-top: $border-style;
+}

@@ -1,0 +1,41 @@
+@import "compass/css3";
+
+table {
+    border-collapse: collapse;
+    width:100%;
+    font-family: 'Bitstream Vera Sans Mono', Courier, monospace;
+    border: 1px solid #CCC;
+}
+
+thead tr {
+    font-weight: normal;
+    text-aling: left;
+    height: 2em;
+    border-bottom: 1px solid #DDD;
+    background-color: #ECECEC;
+    @include background(linear-gradient(#FAFAFA,  #ECECEC));
+}
+
+td {
+    padding: 1px 2px;
+
+    &.bredecode {
+        width: 100%;
+        padding-left: 4px;
+    }
+    &.codekolom {
+        text-align: right;
+        min-width: 3em;
+        background-color: #ECECEC;
+        border-right: 1px solid #DDD;
+        color: #AAA;
+    }
+}
+
+tr.add {
+    background: #DFD;
+}
+
+tr.del {
+    background: #FDD;
+}

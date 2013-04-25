@@ -1,3 +1,44 @@
+v0.9.0
+---
+
+*Updates:*
+
+ - Moved messaging system into a layout plugin.
+ - Added hover panel layout.
+
+*API Changes:*
+
+ - Changed layout initialisation syntax.
+
+v0.5.0
+---
+
+*Updates:*
+
+ - Preview action when you hover a button
+ - Restore selection after an action is applied
+ - Improved performance
+   - Updated selection/change checking
+   - Removed HTML cleaning (HTML should now always be clean)
+   - Removed rangy markers (serialized ranges)
+   - Use static/shared dialogs
+   - Only create toolbar/buttons/menus/dialogs when first used
+ - Many bug fixes
+ - Added lots of tests
+ - Added option presets
+ - Updated build script to create smaller, more targeted builds
+
+*API Changes:*
+
+ - Renamed variables from 'editor' to 'raptor' to prevent conflicts
+ - Decoupled layout (messaging system still needs decoupling)
+ - Rewrote plugin/UI architecture
+   - Adjusted exiting plugins/UI
+   - Remove 'ui' option in initialisation, all ui options should be placed in the 'plugins' option
+ - Updated translations to use keys instead of english strings
+ - Changed save REST options
+
+
 v0.0.30
 ---
 Fixed encoding issue in Swedish translation.

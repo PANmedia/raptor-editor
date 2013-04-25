@@ -1,0 +1,15 @@
+/**
+ * Bold text style plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.raptor-ui-text-bold .ui-icon {
+    @include opacity(0.85);
+    background: inline-image('edit-bold.png') 0 0;
+}
+
+.raptor-ui-text-bold:hover .ui-icon {
+    @include opacity(1);
+}

@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+        var applier = rangy.createCssClassApplier('cms-underline', {
+            elementTagName: 'u'
+        });
+    </script>
+    <div class="test-1">
+        <h1>Reverse Underline 1: Word Group Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {<u class="cms-underline">dui id erat pellentesque et rhoncus}</u> nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.undoToRanges(ranges);
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Reverse Underline 2: Word Part Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat <u class="cms-underline">{pellentes</u>}que et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.toggleRanges(ranges);
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Reverse Underline 3: Full Word Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula {<u class="cms-underline">venenatis</u>} rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.undoToRanges(ranges);
+        });
+    </script>
+
+    <div class="test-4">
+        <h1>Reverse Underline 4: Multi Paragraph Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id {<u class="cms-underline">erat pellentesque et rhoncus nunc semper.
+            </u></p>
+            <p><u class="cms-underline">
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam}</u> gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.
+            </p>
+            <p>
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-4', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.toggleRanges(ranges);
+        });
+    </script>
+
+    <div class="test-5">
+        <h1>Reverse Underline 5: Paragraph Selection</h1>
+        <div class="test-input">
+            <p>
+                <u class="cms-underline">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.</u>
+            </p>
+            <p>
+                <u class="cms-underline">Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</u>
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis dui id erat pellentesque et rhoncus nunc semper.
+            </p>
+            <p>
+                Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-5', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            applier.undoToRanges(ranges);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+/**
+ * Unsupported warning styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+@import 'compass/css3/opacity';
+
+.raptor-unsupported {
+    position: relative;
+}
+
+.raptor-unsupported-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: black;
+    @include opacity(0.5);
+}
+
+.raptor-unsupported-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin: -200px 0 0 -300px;
+    width: 600px;
+    height: 400px;
+}
+
+.raptor-unsupported-input {
+    position: absolute;
+    bottom: 10px;
+}
+
+.raptor-unsupported-content {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #777;
+}

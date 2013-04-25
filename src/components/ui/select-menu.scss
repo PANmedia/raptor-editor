@@ -1,0 +1,68 @@
+/**
+ * Select menu UI widget styles
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-selectmenu {
+    overflow: visible;
+    position: relative;
+}
+
+.raptor-selectmenu-button {
+    text-align: left;
+    padding: 3px 18px 5px 5px !important;
+
+    // Pervent floated buttons breaking menu position
+    float: none !important;
+
+    .ui-icon {
+        position: absolute;
+        right: 1px;
+        top: 8px;
+    }
+    .raptor-selectmenu-text {
+        font-size: $font-size;
+    }
+}
+
+.raptor-selectmenu-wrapper {
+    position: relative;
+}
+
+.raptor-selectmenu-button .ui-button-text {
+    padding: 0 25px 0 5px;
+}
+.raptor-selectmenu-button .ui-icon {
+    background-repeat: no-repeat;
+}
+
+.raptor-selectmenu-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    display: none;
+    margin-top: -1px !important;
+}
+
+.raptor-selectmenu-visible .raptor-selectmenu-menu {
+    display: block;
+    z-index: 1;
+}
+
+.raptor-selectmenu-menu-item {
+    padding: 5px;
+    margin: 3px;
+    z-index: 1;
+    text-align: left;
+    font-size: $font-size;
+    font-weight: normal !important;
+    border: 1px solid transparent;
+    cursor: pointer;
+    background-color: inherit;
+}
+
+.raptor-selectmenu-button {
+    background: #f5f5f5;
+    border: 1px solid #ccc;
+}

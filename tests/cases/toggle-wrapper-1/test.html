@@ -1,29 +1,17 @@
 <!doctype html>
 <html>
 <head>
-    <base href="../../" />
-    <link type="text/css" rel="stylesheet" href="css/style.css"/>
-    <link type="text/css" rel="stylesheet" href="css/diff.css"/>
-    <script src="../src/dependencies/jquery.js"></script>
-    <script src="../src/dependencies/rangy/rangy-core.js"></script>
-    <script src="../src/dependencies/rangy/rangy-cssclassapplier.js"></script>
-    <script src="../src/dependencies/rangy/rangy-textrange.js"></script>
-    <script src="../src/tools/jquery.ui.editor.range.js"></script>
-    <script src="../src/tools/jquery.ui.editor.element.js"></script>
-    <script src="../src/tools/jquery.ui.editor.fragment.js"></script>
-    <script src="../src/tools/jquery.ui.editor.selection.js"></script>
-    <script type="text/javascript" src="js/test.js"></script>
-    <script type="text/javascript" src="js/helpers.js"></script>
-    <script type="text/javascript" src="js/tokens-to-ranges.js"></script>
-    <script type="text/javascript" src="js/diff.js"></script>
-    <script type="text/javascript" src="js/beautify-html.js"></script>
+    <script type="text/javascript" src="../../js/case.js"></script>
 </head>
 <body class="simple">
     <script type="text/javascript">
         rangy.init();
+        var applier = rangy.createCssClassApplier('cms-bold', {
+            elementTagName: 'strong'
+        });
     </script>
     <div class="test-1">
-        <h1>Toggle Wrapper 2: Word Group Selection</h1>
+        <h1>Toggle Wrapper 1: Word Group Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -47,10 +35,9 @@
         test('.test-1', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
-                rangeToggleWrapper(ranges[i], 'strong', {
-                    classes: 'cms-bold'
-                });
+                rangeTrim(ranges[i]);
             }
+            applier.applyToRanges(ranges);
         });
     </script>
 
@@ -81,15 +68,14 @@
         test('.test-2', function(input) {
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
-                rangeToggleWrapper(ranges[i], 'strong', {
-                    classes: 'cms-bold'
-                });
+                rangeTrim(ranges[i]);
             }
+            applier.applyToRanges(ranges);
         });
     </script>
 
     <div class="test-3">
-        <h1>Toggle Wrapper 2: Combo Selection</h1>
+        <h1>Toggle Wrapper 3: Combo Selection</h1>
         <div class="test-input">
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
@@ -118,18 +104,18 @@
                 convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
                 malesuada <strong class="cms-bold">hendrerit velit nec</strong> tristique. Aliq<strong class="cms-bold">uam gravida mauris at
                 ligula venenatis rhoncus. Suspendisse inter</strong>dum, nisi nec consectetur
-                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in ve<strong class="cms-bold">lit.</strong>
-            </p>
-            <p>
-                <strong class="cms-bold">Hendr</strong>erit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in ve<strong class="cms-bold">lit.
+            </strong></p>
+            <p><strong class="cms-bold">
+                Hendr</strong>erit, felis ac fringilla lobortis, massa ligula aliquet justo, sit
                 amet tincidunt enim quam <strong class="cms-bold">sollicitudin</strong> nisi. Maecenas ipsum augue,
                 commodo sit amet aliquet ut, laoreet ut nunc. Vestibulum ante ipsum
                 primis in <strong class="cms-bold">fauc</strong>ibus orci luctus et ultrices posuere cubilia Curae;
                 Pellentesque tincidunt eros quis tellus laoreet ac dignissim turpis
-                luctus. Integer nunc est, <strong class="cms-bold">pulvinar ac tempor ac, pretium ut odio.</strong>
-            </p>
-            <p>
-                <strong class="cms-bold">Pellentesque in arcu sit amet</strong> odio scelerisque tincidunt. Lorem ipsum
+                luctus. Integer nunc est, <strong class="cms-bold">pulvinar ac tempor ac, pretium ut odio.
+            </strong></p>
+            <p><strong class="cms-bold">
+                Pellentesque in arcu sit amet</strong> odio scelerisque tincidunt. Lorem ipsum
                 dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
                 tristique senectus et netus et malesuada fames ac turpis egestas.
             </p>
@@ -140,13 +126,40 @@
             var ranges = tokensToRanges(input);
             for (var i = 0; i < ranges.length; i++) {
                 rangeTrim(ranges[i]);
-                rangeToggleWrapper(ranges[i], 'strong', {
-                    classes: 'cms-bold'
-                });
             }
-            var selection = rangy.getSelection();
-            selection.setRanges(ranges);
-            selection.refresh();
+            applier.applyToRanges(ranges);
+        }, false);
+    </script>
+
+    <div class="test-4">
+        <h1>Toggle Wrapper 4: Normalized Cross Node Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, {consectetur adipiscing elit.
+            </p>
+            <p>
+                Hendrerit, felis ac fringilla} lobortis, massa ligula aliquet justo, sit
+                amet tincidunt enim quam sollicitudin nisi.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, <strong class="cms-bold">consectetur adipiscing elit.
+            </strong></p>
+            <p><strong class="cms-bold">
+                Hendrerit, felis ac fringilla</strong> lobortis, massa ligula aliquet justo, sit
+                amet tincidunt enim quam sollicitudin nisi.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-4', function(input) {
+            var ranges = tokensToRanges(input);
+            for (var i = 0; i < ranges.length; i++) {
+                rangeTrim(ranges[i]);
+            }
+            // TODO: Need to normalise the ranges here...
+            applier.applyToRanges(ranges);
         }, false);
     </script>
 </body>

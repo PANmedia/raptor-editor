@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+    <style>
+        custom {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+        var applier = rangy.createCssClassApplier('some-class', {
+            elementTagName: 'custom'
+        });
+    </script>
+    <div class="test-1">
+        <h1>Custom Tags 1: Apply To Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis <custom class="some-class">{dui id erat pellentesque et rhoncus}</custom> nunc semper. Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-1', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            tagCustomApplyToSelection('custom', 'some-class');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Custom Tags 2: Remove From Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {<custom class="some-class">dui id erat pellentesque et rhoncus nunc semper.</custom>} Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis {dui id erat pellentesque et rhoncus nunc semper.} Suspendisse
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-2', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            tagCustomRemoveFromSelection('custom', 'some-class');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Custom Tags 3: Remove Part From Selection</h1>
+        <div class="test-input">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis <custom class="some-class">dui id erat pellentesque et {rhoncus nunc semper.</custom> Suspendisse}
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+        <div class="test-expected">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                convallis <custom class="some-class">dui id erat pellentesque et </custom>{rhoncus nunc semper. Suspendisse}
+                malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+            </p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-3', function(input) {
+            var ranges = tokensToRanges(input);
+            rangy.getSelection().setRanges(ranges);
+            tagCustomRemoveFromSelection('custom', 'some-class');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+        });
+    </script>
+</body>
+</html>

@@ -3,74 +3,179 @@
 <!-- Libraries -->
 <script type="text/javascript">
     if (typeof jQuery === 'undefined') {
-        document.write('<script type="text/javascript" src="<?php echo $uri ?>dependencies/jquery.js"><' + '/script>');
+        document.write('<script type="text/javascript" src="<?= $uri ?>dependencies/jquery.js"><' + '/script>');
     }
 </script>
 <script type="text/javascript">
     if (typeof jQuery.ui === 'undefined') {
-        document.write('<script type="text/javascript" src="<?php echo $uri ?>dependencies/jquery-ui.js"><' + '/script>');
-//        document.write('<link rel="stylesheet" href="<?php echo $uri ?>dependencies/themes/aristo/jquery-ui.css"/>');
-//        document.write('<link rel="stylesheet" href="<?php echo $uri ?>dependencies/themes/smoothness/jquery-ui.css"/>');
-        document.write('<link rel="stylesheet" href="<?php echo $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
+        document.write('<script type="text/javascript" src="<?= $uri ?>dependencies/jquery-ui.js"><' + '/script>');
+//        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/aristo/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/smoothness/jquery-ui.css"/>');
+//        document.write('<link rel="stylesheet" href="<?= $uri ?>dependencies/themes/redmond/jquery-ui.css"/>');
+        document.write('<link rel="stylesheet" type="text/css" href="<?= $uri ?>dependencies/themes/mammoth/theme.css" />');
+        document.write('<link rel="stylesheet" type="text/css" href="<?= $uri ?>dependencies/themes/mammoth/theme-icons.css" />');
     }
 </script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/jquery-hotkeys.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-core.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-serializer.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/rangy/rangy-selectionsaverestore.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>dependencies/raptorize/jquery.raptorize.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/jquery-hotkeys.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-core.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-serializer.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-applier.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-cssclassapplier.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-textrange.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>dependencies/resizetable.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/goog-table.js"></script>
 
 <!-- Theme -->
-<link rel="stylesheet" type="text/css" href="<?php echo $uri ?>theme/theme.css"/>
+<link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor.css"/>
+<link rel="stylesheet" type="text/css" href="<?= $uri ?>../packages/raptor-front-end.css"/>
 
 <!-- Editor -->
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.i18n.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.init.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.domtools.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.support.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.clean.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.element.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.fragment.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.range.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.selection.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.string.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>tools/jquery.ui.editor.types.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>jquery.ui.editor.js"></script>
+<script type="text/javascript" src="<?= $uri ?>adapters/jquery-ui.js"></script>
+<script type="text/javascript" src="<?= $uri ?>i18n.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/en.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/de.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/es.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/fr.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/nl.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/sv.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/zh-CN.js"></script>
+<script type="text/javascript" src="<?= $uri ?>init.js"></script>
+<script type="text/javascript" src="<?= $uri ?>support.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/action.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/clean.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/dock.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/element.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/fragment.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/list.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/node.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/persist.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/range.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/selection.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/string.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/state.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/style.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/table.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/template.js"></script>
+<script type="text/javascript" src="<?= $uri ?>tools/types.js"></script>
+<script type="text/javascript" src="<?= $uri ?>raptor.js"></script>
+<script type="text/javascript" src="<?= $uri ?>raptor-widget.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/plugin.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/preview-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/dialog-toggle-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/filtered-preview-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/css-class-applier-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/menu-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/menu.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/select-menu.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/ui/custom-menu.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/ui-group.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/messages.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/toolbar.js"></script>
+<script type="text/javascript" src="<?= $uri ?>components/layout/hover-panel.js"></script>
+
+<!-- Preset -->
+<script type="text/javascript" src="<?= $uri ?>presets/base.js"></script>
+<script type="text/javascript" src="<?= $uri ?>presets/full.js"></script>
 
 <!-- Plugins -->
-<script type="text/javascript" src="<?php echo $uri ?>plugins/toolbartip/jquery.ui.editor.toolbartip.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/logo/jquery.ui.editor.logo.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/dock/jquery.ui.editor.dock.js"></script>
-<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/clicktoedit/jquery.ui.editor.clicktoedit.js"></script> */ ?>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/clickbuttontoedit/jquery.ui.editor.clickbuttontoedit.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/color-picker-basic/jquery.ui.editor.color-picker-basic.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/clean/jquery.ui.editor.clean.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/clear-formatting/jquery.ui.editor.clear-formatting.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/float/jquery.ui.editor.float.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/alignment/jquery.ui.editor.alignment.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/basic/jquery.ui.editor.basic.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/history/jquery.ui.editor.history.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/viewsource/jquery.ui.editor.viewsource.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/guides/jquery.ui.editor.guides.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.savejson.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.saverest.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/save/jquery.ui.editor.saveui.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/raptorize/jquery.ui.editor.raptorize.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/paste/jquery.ui.editor.paste.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/cancel/jquery.ui.editor.cancel.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/list/jquery.ui.editor.list.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/fontsize/jquery.ui.editor.fontsize.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/hr/jquery.ui.editor.hr.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/blockquote/jquery.ui.editor.blockquote.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/tagmenu/jquery.ui.editor.tagmenu.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/link/jquery.ui.editor.link.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/imageresize/jquery.ui.editor.imageresize.js"></script>
-<?php /* <script type="text/javascript" src="<?php echo $uri ?>plugins/unsavededitwarning/jquery.ui.editor.unsavededitwarning.js"></script>*/ ?>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/embed/jquery.ui.editor.embed.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/statistics/jquery.ui.editor.statistics.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/jquery.ui.editor.i18n.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/en.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/i18n/locales/zh-CN.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/debug/jquery.ui.editor.debug.js"></script>
-<script type="text/javascript" src="<?php echo $uri ?>plugins/empty-element/jquery.ui.editor.empty-element.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/cancel/cancel.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/class-menu/class-menu.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/clear-formatting/clear-formatting.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/click-button-to-edit/click-button-to-edit.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/color-menu-basic/color-menu-basic.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-plugin.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-screen.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-element.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/embed/embed.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/insert-file/insert-file.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/language-menu/language-menu.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/float/float-left.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/float/float-none.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/float/float-right.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/guides/guides.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/history/history-redo.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/history/history-undo.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/hr/hr-create.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/image-resize-button/image-resize-button.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-create.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-remove.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-email.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-document.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/link/link-type-internal.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/list/list-ordered.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/list/list-unordered.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/logo/logo.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/normalise-line-breaks/normalise-line-breaks.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/paste/paste.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/placeholder/placeholder.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/save/save.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/save/save-json.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/save/save-rest.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/snippet-menu/snippet-menu.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/special-characters/special-characters.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/statistics/statistics.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-cell-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-create.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-delete-column.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-delete-row.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-insert-column.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-insert-row.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-merge-cells.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/table/table-support.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/tag-menu/tag-menu.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/text-align/text-align-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-align/left.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-align/right.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-align/center.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-align/justify.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-decrease.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/size-increase.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/super.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/text-style/underline.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/tool-tip/tool-tip.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/view-source/view-source.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-diff-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-preview-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-apply-button.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-plugin.js"></script>

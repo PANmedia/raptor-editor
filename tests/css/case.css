@@ -1,0 +1,222 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px; }
+
+del {
+  background-color: #FFE6E6; }
+
+ins {
+  background-color: #E6FFE6; }
+
+hr {
+  margin: 20px; }
+
+h2 {
+  font-size: 18px; }
+
+p, h2 {
+  padding: 0 5px; }
+
+nav a {
+  display: block; }
+
+li {
+  padding-bottom: 5px; }
+
+aside {
+  width: 18%;
+  float: left; }
+
+.iframes {
+  width: 78%;
+  float: left; }
+
+iframe {
+  border: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: bottom; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: "Bitstream Vera Sans Mono", Courier, monospace;
+  border: 1px solid #cccccc; }
+
+thead tr {
+  font-weight: normal;
+  text-aling: left;
+  height: 2em;
+  border-bottom: 1px solid #dddddd;
+  background-color: #ECECEC;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fafafa), color-stop(100%, #ececec));
+  background: -webkit-linear-gradient(#fafafa, #ececec);
+  background: -moz-linear-gradient(#fafafa, #ececec);
+  background: -o-linear-gradient(#fafafa, #ececec);
+  background: linear-gradient(#fafafa, #ececec); }
+
+td {
+  padding: 1px 2px; }
+  td.bredecode {
+    width: 100%;
+    padding-left: 4px; }
+  td.codekolom {
+    text-align: right;
+    min-width: 3em;
+    background-color: #ECECEC;
+    border-right: 1px solid #dddddd;
+    color: #AAA; }
+
+tr.add {
+  background: #DFD; }
+
+tr.del {
+  background: #FDD; }
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  padding: 0;
+  margin: 0; }
+
+body {
+  padding: 1em!important; }
+
+body > div, .test-results:before, .test-input:before, .test-source:before, .test-output:before, .test-expected:before, .test-diff:before, .verbose .pass:before, .test-box, .fail:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.verbose h1, .simple h1 {
+  padding: 0.5em 1em 0.5em 0;
+  font-size: 13px; }
+  .verbose h1:before, .simple h1:before {
+    padding: 0.5em 1em;
+    margin: -0.5em 1em -0.5em 0; }
+
+.test-results:before, .test-input:before, .test-source:before, .test-output:before, .test-expected:before, .test-diff:before, .verbose .pass:before, .fail:before {
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5); }
+
+.test-results:before, .test-input:before, .test-source:before, .test-output:before, .test-expected:before, .test-diff:before, .verbose .pass:before, .fail:before {
+  display: block;
+  padding: 0.5em 1em;
+  font-size: 13px;
+  font-weight: bold;
+  width: 100%;
+  font-family: Arial, Helvetica, sans-serif; }
+
+.test-results:before, .test-input:before, .test-source:before, .test-output:before, .test-expected:before, .test-diff:before {
+  background: #587CBF; }
+
+.verbose .pass:before {
+  background: #b8dc3c; }
+
+.CodeMirror-scroll {
+  height: auto !important; }
+
+.test-clear {
+  clear: both;
+  height: 3px; }
+
+.test-box {
+  float: left;
+  width: 49%;
+  border: 1px solid #587cbf;
+  max-height: 250px;
+  overflow: auto; }
+  .test-box table {
+    border-collapse: separate; }
+  .test-box td {
+    border: 1px dashed #aaaaaa; }
+
+.test-results {
+  border: 1px solid #587cbf; }
+  .test-results:before {
+    content: "Results: "; }
+
+.test-box {
+  margin: 2px 2% 11px 1%; }
+
+.test-input, .test-expected, .test-output {
+  width: 47%;
+  margin-right: 1%;
+  margin-left: 2%; }
+
+.test-input:before {
+  content: "Input: "; }
+
+.test-source {
+  float: right;
+  width: 47%;
+  font-family: "Courier New", monospace;
+  overflow: auto; }
+  .test-source:before {
+    content: "Source: "; }
+
+.test-output:before {
+  content: "Output: "; }
+
+.test-expected:before {
+  content: "Expected: "; }
+
+.test-diff {
+  border: 1px solid #587cbf;
+  margin: 0 11px 11px;
+  padding: 1em;
+  margin-left: 2%;
+  margin-right: 2%; }
+  .test-diff td {
+    white-space: pre-wrap; }
+  .test-diff table {
+    margin-bottom: 1em; }
+  .test-diff:before {
+    content: "Differences: ";
+    margin: -1em -1em 1em;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box; }
+
+.pass,
+.fail {
+  margin-bottom: 4px; }
+
+.pass {
+  border: 2px solid #b8dc3c; }
+
+.verbose .pass:before {
+  content: "Pass: "; }
+.verbose .pass h1 {
+  margin: 5px; }
+
+.simple .pass h1 {
+  margin: 0; }
+  .simple .pass h1:before {
+    content: "Pass: ";
+    background: #B8DC3C; }
+.simple .pass .test-box,
+.simple .pass .test-clear,
+.simple .pass .test-diff {
+  display: none; }
+
+.fail {
+  border: 2px solid #cb2402; }
+  .fail h1 {
+    margin-left: 1em; }
+  .fail:before {
+    content: "Fail: ";
+    background: #CB2402; }
+
+.editable p {
+  padding: 0 10px; }
+
+.error-output {
+  font-weight: bold; }
+
+.codekolom {
+  vertical-align: top; }
+
+blockquote {
+  outline: 1px dotted; }
