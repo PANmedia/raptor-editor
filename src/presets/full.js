@@ -38,7 +38,7 @@ Raptor.defaults = $.extend(basePreset, {
         },
         hoverPanel: {
             uiOrder: [
-                ['clickButtonToEdit', 'revisions']
+                ['clickButtonToEdit']
             ]
         },
         messages: {

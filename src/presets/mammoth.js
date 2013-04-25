@@ -41,7 +41,7 @@ Raptor.defaults = $.extend(basePreset, {
     hoverPanel: {
         type: 'basic',
         options: {
-            componentOrder: ['clickButtonToEdit', 'revisions']
+            componentOrder: ['clickButtonToEdit']
         }
     }
 });
