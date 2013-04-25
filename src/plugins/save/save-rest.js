@@ -99,7 +99,6 @@ SaveRestPlugin.prototype.always = function() {
                 hide: function() {
                     this.raptor.unify(function(raptor) {
                         raptor.disableEditing();
-                        raptor.hideLayout();
                     });
                 }.bind(this)
             });
