@@ -3,31 +3,14 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-float-left .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-image.png') 0 0;
+.raptor-ui-float-left {
+    @include button-icon('edit-image.png');
 }
 
-.raptor-ui-float-left:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-float-none {
+    @include button-icon('edit-image-none.png');
 }
 
-.raptor-ui-float-none .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-image-none.png') 0 0;
-}
-
-.raptor-ui-float-none:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-float-right .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-image-right.png') 0 0;
-}
-
-.raptor-ui-float-right:hover .ui-icon- {
-    @include opacity(1);
+.raptor-ui-float-right {
+    @include button-icon('edit-image-right.png');
 }

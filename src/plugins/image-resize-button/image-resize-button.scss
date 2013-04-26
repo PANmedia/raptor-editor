@@ -13,14 +13,14 @@
     display: block;
 }
 
- @mixin block-item ($width, $height: $width) {
+@mixin block-item ($width, $height: $width) {
     @extend %block-item-base;
     width: $width;
     padding-top: $height;
 }
 
-.raptor-plugin-image-resize-button-button .ui-icon {
-    background: inline-image('image-resize.png') 0 0;
+.raptor-plugin-image-resize-button-button {
+    @include button-icon('image-resize.png');
 }
 
 .raptor-resize-image {

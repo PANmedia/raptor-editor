@@ -3,11 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-.raptor-ui-tag-menu .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit.png') 0 0;
-}
-
-.raptor-ui-tag-menu:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-tag-menu {
+    @include button-icon('edit.png');
 }

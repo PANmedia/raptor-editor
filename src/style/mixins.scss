@@ -1,5 +1,23 @@
+@import 'compass/css3/opacity';
+
 @mixin pointer-events($events) {
     -webkit-pointer-events: $events;
     -moz-pointer-events: $events;
     pointer-events: $events;
+}
+
+%button-icon .ui-icon {
+    @include opacity(0.85);
+}
+
+%button-icon:hover .ui-icon {
+    @include opacity(1);
+}
+
+@mixin button-icon($icon) {
+    @extend %button-icon;
+    .ui-icon,
+    &.ui-state-hover .ui-icon {
+        background: inline-image($icon) 0 0;
+    }
 }

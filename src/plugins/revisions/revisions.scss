@@ -9,9 +9,7 @@
 
 // Buttons
 .raptor-ui-revisions {
-    .ui-icon {
-        background: inline-image('documents-stack.png') 0 0;
-    }
+    @include button-icon('documents-stack.png');
 }
 
 .raptor-ui-revisions-apply-button,
@@ -20,21 +18,15 @@
 }
 
 .raptor-ui-revisions-preview-button {
-    .ui-icon {
-        background: inline-image('blue-document-export.png') 0 0;
-    }
+    @include button-icon('blue-document-export.png');
 }
 
 .raptor-ui-revisions-apply-button {
-    .ui-icon {
-        background: inline-image('document-convert.png') 0 0;
-    }
+    @include button-icon('document-convert.png');
 }
 
 .raptor-ui-revisions-diff-button {
-    .ui-icon {
-        background: inline-image('edit-diff.png') 0 0;
-    }
+    @include button-icon('edit-diff.png');
 }
 
 // Dialog

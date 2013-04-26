@@ -5,15 +5,9 @@
  */
 @import 'compass/css3/box';
 @import 'compass/css3/box-sizing';
-@import 'compass/css3/opacity';
 
-.raptor-ui-embed .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('youtube.png') 0 0;
-}
-
-.raptor-ui-embed:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-embed {
+    @include button-icon('youtube.png');
 }
 
 .raptor-ui-embed-panel-tabs {

@@ -3,13 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-text-super .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-superscript.png') 0 0;
-}
-
-.raptor-ui-text-super:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-text-super {
+    @include button-icon('edit-superscript.png');
 }

@@ -3,22 +3,10 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-history-undo .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('arrow-curve-180-left.png') 0 0;
+.raptor-ui-history-undo {
+    @include button-icon('arrow-curve-180-left.png');
 }
 
-.raptor-ui-history-undo:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-history-redo .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('arrow-curve.png') 0 0;
-}
-
-.raptor-ui-history-redo:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-history-redo {
+    @include button-icon('arrow-curve.png');
 }

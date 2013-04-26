@@ -4,15 +4,9 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 @import 'compass/css3/box';
-@import 'compass/css3/opacity';
 
-.raptor-ui-dock-to-screen .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('application-dock-090.png') 0 0;
-}
-
-.raptor-ui-dock-to-screen:hover .ui-icon-pin-s {
-    @include opacity(1);
+.raptor-ui-dock-to-screen {
+    @include button-icon('application-dock-090.png');
 }
 
 .raptor-plugin-dock-docked {

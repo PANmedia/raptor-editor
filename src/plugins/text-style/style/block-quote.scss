@@ -3,13 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-text-block-quote .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-quotation.png') 0 0;
-}
-
-.raptor-ui-text-block-quote:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-text-block-quote {
+    @include button-icon('edit-quotation.png');
 }
