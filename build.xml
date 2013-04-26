@@ -46,7 +46,7 @@
         <phingcall target="build" />
     </target>
 
-    <target name="nc">
+    <target name="0depsnc">
         <property file="build/build.0deps.nc.properties" override="true" />
         <phingcall target="build" />
     </target>
