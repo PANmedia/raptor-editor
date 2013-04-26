@@ -22,6 +22,10 @@
     <script src="../../src/dependencies/jquery.js"></script>
     <script src="../../src/dependencies/jquery-ui.js"></script>
     <script src="../../packages/raptor.mammoth.js"></script>
+<?php elseif ($type === '0deps'): ?>
+    <script src="../../packages/raptor.0deps.js"></script>
+<?php elseif ($type === '0depsnc'): ?>
+    <script src="../../packages/raptor.0depsnc.js"></script>
 <?php elseif ($type === 'include'): ?>
     <?php $uri = '../../src/'; include __DIR__ . '/../../src/include.php'; ?>
 <?php endif; ?>
