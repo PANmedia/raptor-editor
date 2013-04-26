@@ -8,7 +8,8 @@
     <?php include __DIR__ . '/../include/head.php'; ?>
     <title>Raptor Editor - Basic Example</title>
     <script type="text/javascript">
-        jQuery(function($) {
+        // Test for no conflict version
+        (raptor || jQuery)(function($) {
             $('#left').raptor({
                 urlPrefix: '../../src/',
                 plugins: {
