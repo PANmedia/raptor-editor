@@ -89,7 +89,6 @@ $.extend(Raptor, {
     nodeFindTextNodes: nodeFindTextNodes,
     persistGet: persistGet,
     persistSet: persistSet,
-    rangeContains: rangeContains,
     rangeContainsNode: rangeContainsNode,
     rangeContainsNodeText: rangeContainsNodeText,
     rangeDeserialize: rangeDeserialize,
