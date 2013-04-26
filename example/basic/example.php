@@ -9,7 +9,15 @@
     <title>Raptor Editor - Basic Example</title>
     <script type="text/javascript">
         // Test for no conflict version
-        (raptor || jQuery)(function($) {
+        var init;
+        if (typeof raptor !== 'undefined') {
+            init = raptor;
+        } else if (typeof jQuery !== 'undefined') {
+            init = jQuery;
+        } else {
+            alert('Could not find initialiser');
+        }
+        init(function($) {
             $('#left').raptor({
                 urlPrefix: '../../src/',
                 plugins: {
