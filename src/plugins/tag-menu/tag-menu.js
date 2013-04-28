@@ -59,7 +59,8 @@ TagMenu.prototype.changeTag = function(tag) {
  *
  * @param event The mouse event to trigger the function.
  */
-TagMenu.prototype.apply = function(event) {
+TagMenu.prototype.menuItemClick = function(event) {
+    SelectMenu.prototype.menuItemClick.apply(this, arguments);
     this.raptor.actionApply(function() {
         this.changeTag($(event.currentTarget).data('value'));
     }.bind(this));
@@ -70,12 +71,10 @@ TagMenu.prototype.apply = function(event) {
  *
  * @param event The mouse event to trigger the preview.
  */
-TagMenu.prototype.preview = function(event) {
-    if (this.preview) {
-        this.raptor.actionPreview(function() {
-            this.changeTag($(event.currentTarget).data('value'));
-        }.bind(this));
-    }
+TagMenu.prototype.menuItemMouseEnter = function(event) {
+    this.raptor.actionPreview(function() {
+        this.changeTag($(event.currentTarget).data('value'));
+    }.bind(this));
 };
 
 /**
@@ -83,10 +82,8 @@ TagMenu.prototype.preview = function(event) {
  *
  * @param event The mouse event to trigger the restoration of the tag menu.
  */
-TagMenu.prototype.previewRestore = function(event) {
-    if (this.preview) {
-        this.raptor.actionPreviewRestore();
-    }
+TagMenu.prototype.menuItemMouseLeave = function(event) {
+    this.raptor.actionPreviewRestore();
 };
 
 /**
@@ -117,10 +114,7 @@ TagMenu.prototype.updateButton = function() {
  * @returns {Element}
  */
 TagMenu.prototype.getMenuItems = function() {
-    return $(this.raptor.getTemplate('tag-menu.menu', this.options))
-        .click(this.apply.bind(this))
-        .mouseenter(this.preview.bind(this))
-        .mouseleave(this.previewRestore.bind(this));
+    return this.raptor.getTemplate('tag-menu.menu', this.options);
 };
 
 Raptor.registerUi(new TagMenu());
