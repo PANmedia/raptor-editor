@@ -268,7 +268,7 @@ Raptor.registerUi(new DialogButton({
 
         var _this = this;
         html.find('button').each(function() {
-            aButton(this);
+            aButton($(this));
         }).click(function() {
             var setKey = $(this).attr('data-setKey');
             var charactersIndex = $(this).attr('data-charactersIndex');

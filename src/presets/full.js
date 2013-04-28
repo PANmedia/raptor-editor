@@ -32,7 +32,7 @@ Raptor.defaults = $.extend(basePreset, {
                 ['colorMenuBasic'],
                 ['tagMenu'],
                 ['classMenu'],
-                ['snippetMenu'],
+                ['snippetMenu', 'specialCharacters'],
                 ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn']
             ]
         },
