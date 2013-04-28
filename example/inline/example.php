@@ -1,6 +1,7 @@
 <?php
     include __DIR__ . '/../include/content.php';
     $content = loadContent(__DIR__ . '/content.json');
+    ksort($content);
 ?>
 <!doctype html>
 <html>
@@ -16,24 +17,35 @@
                 draggable: false,
                 unify: false,
                 unloadWarning: false,
+                reloadOnDisable: true,
                 plugins: {
                     unsavedEditWarning: false,
                     dock: {
                         dockToElement: true,
                         docked: true,
-                        persist: false,
+                        persist: false
+                    },
+                    save: {
+                        plugin: 'saveJson'
+                    },
+                    saveJson: {
+                        url: 'save.php',
+                        postName: 'raptor-content',
+                        id: function() {
+                            return (new Date()).getTime();
+                        }
                     },
                     placeholder: false
                 },
-                layout: {
-                    type: 'toolbar',
-                    options: {
+                layouts: {
+                    toolbar: {
                         uiOrder: [
                             ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
                             ['textBlockQuote'],
                             ['listOrdered', 'listUnordered'],
                             ['textSizeDecrease', 'textSizeIncrease'],
-                            ['linkCreate', 'linkRemove']
+                            ['linkCreate', 'linkRemove'],
+                            ['save']
                         ]
                     }
                 }
@@ -49,24 +61,26 @@
             padding: 20px;
             background-color: #fff;
         }
-/*        .raptor-editing {
-            width: 600px;
-            min-height: 150px;
-            padding: 5px !important;
-            background-color: #fff;
-            border: 1px solid #c1c1c1 !important;
-            border-top: none !important;
-        }*/
+        h4 {
+            padding: 0;
+            margin: 5px 0 0 0;
+        }
     </style>
 </head>
 <body>
     <?php include __DIR__ . '/../include/nav.php'; ?>
     <br />
     <div class="wrapper center">
-            <h1>Raptor Editor - Inline Example</h1>
-        <div class="editable" data-id="body-1">
+        <h1>Raptor Editor - Inline Example</h1>
+        <div class="editable">
         </div>
         <button>Submit</button>
+        <?php foreach ($content as $key => $comment): ?>
+            <h4><?= date('Y-m-d H:i:s', $key); ?></h4>
+            <div>
+                <?= $comment; ?>
+            </div>
+        <?php endforeach; ?>
     </div>
 </body>
 </html>
