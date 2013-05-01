@@ -44,9 +44,9 @@
         <div class="test-expected">
             <div class="editable">
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    {}Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
                     convallis dui id erat pellentesque et rhoncus nunc semper.
-                    <img src="../../images/raptor.png" title="Raptor Image" class="cms-png"/> {}Suspendisse
+                    <img src="../../images/raptor.png" title="Raptor Image" class="cms-png"/> Suspendisse
                     malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
                     ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
                     pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
