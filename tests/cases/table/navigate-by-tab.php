@@ -49,11 +49,9 @@
                 </table>
             </div>
         </div>
-        <div class="test-output"></div>
-        <div class="test-diff"></div>
     </div>
     <script type="text/javascript">
-        testEditor('.test-1', function(input) {
+        testEditor('.test-1', function() {
             var e = jQuery.Event("keydown");
             e.which = 9; //key code
             $(this).blur().closest('td').next().find('td').focus();
@@ -61,7 +59,7 @@
         });
     </script>
 
-    <div class="test-2">
+<!--    <div class="test-2">
         <h1>Navigate By Tab 2: Tab in Header</h1>
         <div class="test-input">
             <div class="editable">
@@ -365,6 +363,6 @@
         testEditor('.test-3', function(input) {
             rangesToTokens(rangy.getSelection().getAllRanges());
         });
-    </script>
+    </script>-->
 </body>
 </html>
