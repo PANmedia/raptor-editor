@@ -112,7 +112,8 @@ DockPlugin.prototype.dockToElement = function() {
     this.raptor.getLayout('toolbar').getElement().addClass(this.options.baseClass + '-docked-to-element');
     this.dockState = dockToElement(this.raptor.getLayout('toolbar').getElement(), element, {
         position: this.options.position,
-        spacer: false
+        spacer: false,
+        wrapperClass: this.options.baseClass + '-inline-wrapper'
     });
     this.activateButton(this.raptor.getUi('dockToElement'));
 };

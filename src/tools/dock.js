@@ -116,7 +116,9 @@ function undockFromScreen(dockState) {
  * @returns {Object} An object containing the docked element, what it has been docked to, and their style states.
  */
 function dockToElement(elementToDock, dockTo, options) {
-    var wrapper = dockTo.wrap('<div>').parent(),
+    var wrapper = dockTo
+            .wrap('<div>')
+            .parent(),
         innerStyleState = styleSwapWithWrapper(wrapper, dockTo, {
             'float': 'none',
             display: 'block',
@@ -143,8 +145,10 @@ function dockToElement(elementToDock, dockTo, options) {
         }),
         dockedElementStyleState = styleSwapState(elementToDock, {
             position: 'static'
-    });
-    wrapper.prepend(elementToDock);
+        });
+    wrapper
+        .prepend(elementToDock)
+        .addClass(options.wrapperClass ? options.wrapperClass : '');
     return {
         dockedElement: elementToDock,
         dockedTo: dockTo,

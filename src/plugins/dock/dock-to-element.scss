@@ -13,6 +13,12 @@
     @extend %raptor-plugin-dock-path;
 }
 
+.raptor-plugin-dock-inline-wrapper {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
 /**
  * Dialog docked to element
  */

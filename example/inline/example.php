@@ -72,8 +72,8 @@
     <br />
     <div class="wrapper center">
         <h1>Raptor Editor - Inline Example</h1>
-        <div class="editable">
-        </div>
+        <textarea name="comment" class="editable"></textarea>
+        <br/>
         <button>Submit</button>
         <?php foreach ($content as $key => $comment): ?>
             <h4><?= date('Y-m-d H:i:s', $key); ?></h4>
