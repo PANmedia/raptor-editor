@@ -51,7 +51,7 @@ SnippetMenu.prototype.insertSnippet = function(name) {
  *
  * @param {type} event The click event that applies the snippet.
  */
-SnippetMenu.prototype.apply = function(event) {
+SnippetMenu.prototype.menuItemMouseDown = function(event) {
     this.raptor.actionApply(function() {
         this.insertSnippet($(event.currentTarget).data('name'));
     }.bind(this));
@@ -62,7 +62,7 @@ SnippetMenu.prototype.apply = function(event) {
  *
  * @param {type} event The mouse event that triggers the preview.
  */
-SnippetMenu.prototype.preview = function(event) {
+SnippetMenu.prototype.menuItemMouseEnter = function(event) {
     this.raptor.actionPreview(function() {
         this.insertSnippet($(event.currentTarget).data('name'));
     }.bind(this));
@@ -71,7 +71,7 @@ SnippetMenu.prototype.preview = function(event) {
 /**
  * Removes the preview state.
  */
-SnippetMenu.prototype.previewRestore = function() {
+SnippetMenu.prototype.menuItemMouseLeave = function() {
     this.raptor.actionPreviewRestore();
 };
 
@@ -88,10 +88,7 @@ SnippetMenu.prototype.getMenuItems = function() {
             name: name
         });
     }
-    return $(items)
-        .click(this.apply.bind(this))
-        .mouseenter(this.preview.bind(this))
-        .mouseleave(this.previewRestore.bind(this));
+    return items;
 };
 
 Raptor.registerUi(new SnippetMenu());
