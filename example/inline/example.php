@@ -41,6 +41,7 @@
                     toolbar: {
                         uiOrder: [
                             ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
+                            ['colorMenuBasic'],
                             ['textBlockQuote'],
                             ['listOrdered', 'listUnordered'],
                             ['textSizeDecrease', 'textSizeIncrease'],
