@@ -48,6 +48,7 @@ ColorMenuBasic.prototype = Object.create(SelectMenu.prototype);
  */
 ColorMenuBasic.prototype.init = function() {
     this.raptor.bind('selectionChange', this.updateButton.bind(this));
+    this.updateButton();
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
