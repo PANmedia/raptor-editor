@@ -12,11 +12,15 @@
             $('.editable').raptor({
                 urlPrefix: '../../src/',
                 plugins: {
+                    // The save UI plugin/button
                     save: {
+                        // Specifies the UI to call the saveRest plugin to do the actual saving
                         plugin: 'saveRest'
                     },
                     saveRest: {
+                        // The URI to send the content to
                         url: 'save.php',
+                        // Returns an object containing the data to send to the server
                         data: function(html) {
                             return {
                                 id: this.raptor.getElement().data('id'),
