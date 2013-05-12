@@ -1,3 +1,4 @@
+<?php $i = 0; ?>
 <!doctype html>
 <html>
 <head>
@@ -17,9 +18,9 @@
             rangesToTokens(rangy.getSelection().getAllRanges());
         }
     </script>
-    
-    <div class="test-1">
-        <h1>Test 1</h1>
+
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -40,11 +41,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-1', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-2">
-        <h1>Test 2</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -69,11 +70,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-2', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-3">
-        <h1>Test 3</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?>: Blockquote</h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -107,11 +108,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-3', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-4">
-        <h1>Test 4</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -132,11 +133,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-4', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-5">
-        <h1>Test 5</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 This is a par{agraph.
@@ -155,11 +156,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-5', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-6">
-        <h1>Test 6</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -182,11 +183,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-6', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-7">
-        <h1>Test 7</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -221,11 +222,11 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-7', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 
-    <div class="test-8">
-        <h1>Test 8</h1>
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?></h1>
         <div class="test-input">
             <div class="limit">
                 <p>
@@ -258,7 +259,57 @@
         </div>
     </div>
     <script type="text/javascript">
-        test('.test-8', testSwapTags);
+        test('.test-<?= $i; ?>', testSwapTags);
+    </script>
+
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?>: HTML comment/div wrapper</h1>
+        <div class="test-input">
+            <div class="limit">
+                <div>
+                    <h1>{Editable} Block</h1>
+                    <p>Click to edit</p>
+                </div><!-- xmod-cms-block demo-editable-block-1:Raptor: -->
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="limit">
+                <div>
+                    <h1>{Editable} Block</h1>
+                    <p>Click to edit</p>
+                </div><!-- xmod-cms-block demo-editable-block-1:Raptor: -->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-<?= $i; ?>', testSwapTags);
+    </script>
+
+    <div class="test-<?= ++$i; ?>">
+        <h1>Test <?= $i; ?>: Multi wrapper</h1>
+        <div class="test-input">
+            <div class="limit">
+                <div>
+                    <div>
+                        <h2>{Editable} Block</h2>
+                        <p>Click to edit</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="limit">
+                <div>
+                    <div>
+                        <h1>{Editable} Block</h1>
+                        <p>Click to edit</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-<?= $i; ?>', testSwapTags);
     </script>
 </body>
 </html>

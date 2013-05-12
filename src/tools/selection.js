@@ -816,10 +816,9 @@ function selectionTrim() {
 }
 
 /**
- * Finds the inner elements and the wrapping tags for a selector??
+ * Finds the inner elements and the wrapping tags for a selector.
  *
- * @todo check descriptions, not sure what the one for the result is.
- * @param {string} selector A string containing a selector expression to match the current set of elements against.
+ * @param {string} selector A jQuery selector to match the wrapping/inner element against.
  * @param {jQuery} limitElement The element to stop searching at.
  * @returns {jQuery}
  */
@@ -845,7 +844,7 @@ function selectionFindWrappingAndInnerElements(selector, limitElement) {
         do {
             $(startNode).filter(selector).each(filter);
 
-            if (!limitElement.is(startNode)) {
+            if (!limitElement.is(startNode) && result.length === 0) {
                 $(startNode).parentsUntil(limitElement, selector).each(filter);
             }
 
@@ -892,12 +891,20 @@ function selectionContains(selector, limit) {
     selectionEachRange(function(range) {
         // Check if selection only contains valid children
         var children = $(range.commonAncestorContainer).find('*');
+        console.log($(range.commonAncestorContainer).parentsUntil(limit, selector).length === 0 ,
+                (children.length === 0 || children.length !== children.filter(selector).length));
         if ($(range.commonAncestorContainer).parentsUntil(limit, selector).length === 0 &&
                 (children.length === 0 || children.length !== children.filter(selector).length)) {
+                console.log('test');
             result = false;
         }
     });
+    console.log(result);
     return result;
+}
+
+function rangeContains(selector) {
+
 }
 
 /**
