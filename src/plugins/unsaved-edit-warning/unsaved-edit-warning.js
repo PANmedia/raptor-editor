@@ -78,7 +78,7 @@ UnsavedEditWarningPlugin.prototype.getElement = function() {
             })
             .mouseleave(function() {
                 $('.' + this.options.baseClass + '-dirty').removeClass(this.options.baseClass + '-dirty');
-            })
+            }.bind(this))
             .appendTo('body');
     }
     return unsavedEditWarningElement;
