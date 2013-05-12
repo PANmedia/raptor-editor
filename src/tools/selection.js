@@ -891,20 +891,12 @@ function selectionContains(selector, limit) {
     selectionEachRange(function(range) {
         // Check if selection only contains valid children
         var children = $(range.commonAncestorContainer).find('*');
-        console.log($(range.commonAncestorContainer).parentsUntil(limit, selector).length === 0 ,
-                (children.length === 0 || children.length !== children.filter(selector).length));
         if ($(range.commonAncestorContainer).parentsUntil(limit, selector).length === 0 &&
                 (children.length === 0 || children.length !== children.filter(selector).length)) {
-                console.log('test');
             result = false;
         }
     });
-    console.log(result);
     return result;
-}
-
-function rangeContains(selector) {
-
 }
 
 /**
