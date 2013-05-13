@@ -63,8 +63,8 @@ DockPlugin.prototype.init = function() {
             }
         }.bind(this));
         this.raptor.bind('toolbarDestroy', function() {
-            if (this.dockState) {
-                this.toggleState();
+            if (this.dockState && this.dockState.spacer) {
+                this.dockState.spacer.remove();
             }
         }.bind(this));
     }

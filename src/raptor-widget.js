@@ -222,6 +222,7 @@ var RaptorWidget = {
         for (var i = 0; i < visibleLayouts.length; i++) {
             this.layouts[visibleLayouts[i]].show();
         }
+        this.checkSelectionChange();
     },
 
     /**
