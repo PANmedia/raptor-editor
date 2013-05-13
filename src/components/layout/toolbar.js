@@ -26,6 +26,7 @@ ToolbarLayout.prototype.destruct = function() {
         this.wrapper.remove();
         this.wrapper = null;
     }
+    this.raptor.fire('toolbarDestroy');
 };
 
 /**
