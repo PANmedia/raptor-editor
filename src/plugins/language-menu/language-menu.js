@@ -40,7 +40,7 @@ LanguageMenu.prototype.init = function() {
  *
  * @param {Event} event
  */
-LanguageMenu.prototype.changeLanguage = function(event) {
+LanguageMenu.prototype.menuItemClick = function(event) {
     var locale = $(event.currentTarget).data('value');
     setTimeout(function() {
         setLocale(locale);
@@ -59,8 +59,7 @@ LanguageMenu.prototype.getMenuItems = function() {
             icon: locale.toLowerCase()
         });
     }
-    return $(items)
-        .click(this.changeLanguage.bind(this));
+    return items;
 };
 
 Raptor.registerUi(new LanguageMenu());

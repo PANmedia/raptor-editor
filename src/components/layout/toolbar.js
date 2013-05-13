@@ -21,6 +21,13 @@ ToolbarLayout.prototype.init = function() {
     $(window).resize(this.constrainPosition.bind(this));
 };
 
+ToolbarLayout.prototype.destruct = function() {
+    if (this.wrapper) {
+        this.wrapper.remove();
+        this.wrapper = null;
+    }
+};
+
 /**
  * Show the toolbar.
  *

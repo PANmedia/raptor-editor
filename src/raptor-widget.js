@@ -206,14 +206,22 @@ var RaptorWidget = {
         }
 
         this.actionPreviewRestore();
-        if (this.layout) {
-            this.layout.destruct();
-            this.layout = null;
+        var visibleLayouts = [];
+        for (var name in this.layouts) {
+            if (this.layouts[name].isVisible()) {
+                visibleLayouts.push(name);
+            }
         }
+        this.layoutsDestruct();
         this.events = {};
         this.plugins = {};
         this.uiObjects = {};
+        this.hotkeys = {};
         this.loadPlugins();
+        this.loadLayouts();
+        for (var i = 0; i < visibleLayouts.length; i++) {
+            this.layouts[visibleLayouts[i]].show();
+        }
     },
 
     /**
@@ -350,10 +358,7 @@ var RaptorWidget = {
             this.element.show();
         }
 
-        // Remove the layout
-        if (this.layout) {
-            this.layout.destruct();
-        }
+        this.layoutsDestruct();
     },
 
     /**
@@ -617,6 +622,12 @@ var RaptorWidget = {
         }
     },
 
+    layoutsDestruct: function() {
+        for (var name in this.layouts) {
+            this.layouts[name].destruct();
+        }
+    },
+
     prepareComponent: function(component, componentOptions, prefix) {
         var instance = $.extend({}, component);
 
@@ -757,9 +768,7 @@ var RaptorWidget = {
             return;
         }
         if (this.hotkeys[mixed]) {
-            handleError(_('Hotkey "{{hotkey}}" has already been registered, and will be overwritten', {
-                hotkey: mixed
-            }));
+            handleError('Hotkey "' + mixed + '" has already been registered, and will be overwritten');
         }
         // </strict>
 
