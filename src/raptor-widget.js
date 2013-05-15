@@ -338,10 +338,6 @@ var RaptorWidget = {
      * @public
      */
     destruct: function(reinitialising) {
-        if (!reinitialising) {
-            this.hideToolbar();
-        }
-
         this.disableEditing();
 
         // Trigger destroy event, for plugins to remove them selves
