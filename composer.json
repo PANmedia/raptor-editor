@@ -19,6 +19,7 @@
     },
     "minimum-stability": "dev",
     "require-dev": {
-        "phing/phing": "dev-master"
+        "phing/phing": "dev-master",
+        "twig/twig": "dev-master"
     }
 }
