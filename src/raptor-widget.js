@@ -362,10 +362,10 @@ var RaptorWidget = {
      * Runs destruct, then calls the UI widget destroy function.
      * @see $.
      */
-    destroy: function() {
-        this.destruct();
-        $.Widget.prototype.destroy.call(this);
-    },
+//    destroy: function() {
+//        this.destruct();
+//        $.Widget.prototype.destroy.call(this);
+//    },
 
     /*========================================================================*\
      * Preview functions
