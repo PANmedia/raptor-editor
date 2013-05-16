@@ -1,15 +1,6 @@
 <?php
-    $file = __DIR__ . '/content.json';
-    $content = [];
-    if (file_exists(__DIR__ . '/content.json')) {
-        $content = file_get_contents($file);
-        $content = json_decode($content, true);
-        if ($content === false) {
-            $content = [];
-        }
-    }
-
-    $type = 'include';
+    include __DIR__ . '/../include/content.php';
+    $content = loadContent(__DIR__ . '/content.json');
 ?>
 <!doctype html>
 <html>
@@ -19,7 +10,19 @@
     <script type="text/javascript">
         jQuery(function($) {
             $('.editable').raptor({
-                urlPrefix: '../../src/'
+                urlPrefix: '../../src/',
+                plugins: {
+                    save: {
+                        plugin: 'saveJson'
+                    },
+                    saveJson: {
+                        url: 'save.php',
+                        postName: 'raptor-content',
+                        id: function() {
+                            return this.raptor.getElement().data('id');
+                        }
+                    }
+                }
             });
             $('tbody td').each(function() {
                 var index = tableGetCellIndex(this);
@@ -41,7 +44,7 @@
     <header>
         <h1>Raptor Editor - Table Example</h1>
     </header>
-    <div class="editable" data-id="body">
+    <div class="editable" data-id="body-1">
         <?php ob_start(); ?>
         <table>
             <thead>
@@ -110,14 +113,7 @@
                 </tr>
             </tfoot>
         </table>
-        <?php
-            $buffer = ob_get_clean();
-            if (isset($content['body'])) {
-                echo $content['body'];
-            } else {
-                echo $buffer;
-            }
-        ?>
+        <?= renderContent(ob_get_clean(), $content, 'body-1'); ?>
     </div>
 
 </body>
