@@ -11,9 +11,8 @@
  * @namespace Mammoth preset for Raptor.
  */
 Raptor.defaults = $.extend(basePreset, {
-    layout: {
-        type: 'toolbar',
-        options: {
+    layouts: {
+        toolbar: {
             uiOrder: [
                 ['logo'],
                 ['save', 'cancel'],
@@ -33,15 +32,16 @@ Raptor.defaults = $.extend(basePreset, {
                 ['colorMenuBasic'],
                 ['tagMenu'],
                 ['classMenu'],
-                ['snippetMenu'],
+                ['snippetMenu', 'specialCharacters'],
                 ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn']
             ]
-        }
-    },
-    hoverPanel: {
-        type: 'basic',
-        options: {
-            componentOrder: ['clickButtonToEdit']
+        },
+        hoverPanel: {
+            uiOrder: [
+                ['clickButtonToEdit', 'revisions']
+            ]
+        },
+        messages: {
         }
     }
 });

@@ -33,7 +33,8 @@ Raptor.defaults = $.extend(basePreset, {
                 ['tagMenu'],
                 ['classMenu'],
                 ['snippetMenu', 'specialCharacters'],
-                ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn']
+                ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn'],
+                ['languageMenu']
             ]
         },
         hoverPanel: {
