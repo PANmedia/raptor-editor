@@ -16,7 +16,7 @@
  * @param {Object} options
  */
 function PreviewToggleButton(options) {
-    Button.call(this, options);
+    PreviewButton.call(this, options);
 }
 
 PreviewToggleButton.prototype = Object.create(PreviewButton.prototype);

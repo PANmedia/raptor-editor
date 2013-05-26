@@ -13,7 +13,6 @@
  * @param {Object} overrides Options hash.
  */
 function Button(overrides) {
-    this.preview = true;
     this.text = false;
     this.label = null;
     this.icon = null;

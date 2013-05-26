@@ -32,7 +32,7 @@ Raptor.registerUi(new PreviewButton({
     init: function() {
         this.raptor.bind('cancel', this.removeClass.bind(this));
         this.raptor.bind('saved', this.removeClass.bind(this));
-        return Button.prototype.init.call(this);
+        return PreviewButton.prototype.init.call(this);
     },
 
     removeClass: function() {

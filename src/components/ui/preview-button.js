@@ -16,11 +16,22 @@
  * @param {Object} options
  */
 function PreviewButton(options) {
+    this.preview = true;
     this.previewing = false;
     Button.call(this, options);
 }
 
 PreviewButton.prototype = Object.create(Button.prototype);
+
+/**
+ * Initialize the toggle preview button.
+ *
+ * @returns {Element}
+ */
+PreviewButton.prototype.init = function() {
+    this.preview = typeof this.options.preview === 'undefined' ? true : false;
+    return Button.prototype.init.apply(this, arguments);
+};
 
 /**
  * Prepare and return the preview button Element to be used in the Raptor UI.
