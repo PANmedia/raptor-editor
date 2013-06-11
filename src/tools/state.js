@@ -43,8 +43,18 @@ function stateRestore(element, state) {
     // </strict>
 
     element.replaceWith(state.element);
+    var ranges = null;
+    try {
+        if (state.ranges) {
+            ranges = rangeDeserialize(state.ranges);
+        }
+    } catch (exception) {
+        // <debug>
+        handleError(exception);
+        // </debug>
+    }
     return {
         element: state.element,
-        ranges: state.ranges ? rangeDeserialize(state.ranges) : null
+        ranges: ranges
     };
 }
