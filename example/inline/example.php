@@ -25,16 +25,6 @@
                         docked: true,
                         persist: false
                     },
-                    save: {
-                        plugin: 'saveJson'
-                    },
-                    saveJson: {
-                        url: 'save.php',
-                        postName: 'raptor-content',
-                        id: function() {
-                            return (new Date()).getTime();
-                        }
-                    },
                     placeholder: false
                 },
                 layouts: {
@@ -45,8 +35,7 @@
                             ['textBlockQuote'],
                             ['listOrdered', 'listUnordered'],
                             ['textSizeDecrease', 'textSizeIncrease'],
-                            ['linkCreate', 'linkRemove'],
-                            ['save']
+                            ['linkCreate', 'linkRemove']
                         ]
                     }
                 }
@@ -73,9 +62,20 @@
     <br />
     <div class="wrapper center">
         <h1>Raptor Editor - Inline Example</h1>
-        <textarea name="comment" class="editable"></textarea>
-        <br/>
-        <button>Submit</button>
+        <?php 
+            if (isset($_GET['status'])) {
+                if ($_GET['status'] == 'success') {
+                    echo '<p>Successfully saved comment.</p>';
+                } elseif ($_GET['status'] == 'failed') {
+                    echo '<p>Failed to save comment.</p>';
+                }
+            }
+        ?>
+        <form action="save.php" method="post">
+            <textarea name="comment" class="editable"></textarea>
+            <br/>
+            <button>Submit</button>
+        </form>
         <?php foreach ($content as $key => $comment): ?>
             <h4><?= date('Y-m-d H:i:s', $key); ?></h4>
             <div>
