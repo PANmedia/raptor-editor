@@ -164,3 +164,12 @@ function cleanUnnestElement(element, selector) {
     } while (found);
 
 }
+
+/**
+ * Generic clean function to remove misc elements.
+ *
+ * @param  {jQuery} element
+ */
+function clean(element) {
+    $(element).find('.rangySelectionBoundary').remove();
+}

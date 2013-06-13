@@ -44,6 +44,7 @@ SaveJsonPlugin.prototype.save = function() {
     var data = {};
     this.raptor.unify(function(raptor) {
         if (raptor.isDirty()) {
+            this.raptor.clean();
             var plugin = raptor.getPlugin('saveJson');
             var id = plugin.options.id.call(this);
             var html = this.raptor.getHtml();

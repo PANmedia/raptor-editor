@@ -137,6 +137,7 @@ SaveRestPlugin.prototype.getHeaders = function() {
  */
 SaveRestPlugin.prototype.getData = function() {
     // Get the data to send to the server
+    this.raptor.clean();
     var content = this.raptor.getHtml(),
         data = this.options.data.call(this, content);
     data._method = this.method;

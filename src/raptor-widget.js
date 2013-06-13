@@ -509,10 +509,15 @@ var RaptorWidget = {
                 }
 
                 this.bindHotkeys();
+                
+                this.getElement().closest('form').bind('submit.' + this.widgetName, function() {
+                    clean(this.getElement());
+                    this.fire('change');
+                }.bind(this));
             }
-
+            
+            clean(this.getElement());
             this.fire('enabled');
-
             this.showLayout();
         }
     },
@@ -900,18 +905,11 @@ var RaptorWidget = {
     getHtml: function() {
         return this.getElement().html();
     },
-
-    getCleanHtml: function() {
-        this.fire('clean');
-        var content = this.getElement().html();
-        this.fire('restore');
-
-        // Remove saved rangy ranges
-        content = $('<div/>').html(content);
-        content.find('.rangySelectionBoundary').remove();
-        content = content.html();
-
-        return content;
+            
+    clean: function() {
+        this.actionApply(function() {
+            clean(this.getElement());
+        }.bind(this));
     },
 
     /**
