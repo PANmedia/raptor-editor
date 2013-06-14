@@ -12,9 +12,14 @@
     display: none;
 }
 
-.raptor-menu .ui-menu-item a,
+.ui-menu.raptor-menu .ui-menu-item a,
 .raptor-menu .ui-menu-item a:hover {
     white-space: pre;
     padding: 3px 10px;
+    cursor: pointer;
+    margin: 0;
+    border-style: solid;
+    border-width: 1px;
+    border-color: transparent;
 }
 
