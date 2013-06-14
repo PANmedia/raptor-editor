@@ -1947,7 +1947,7 @@ Form Style
   border-bottom-right-radius: 4px;
 }
 
-.ui-icon, .ui-state-default .ui-icon {
+.ui-icon, .ui-widget .ui-state-default .ui-icon {
   background-image: url("theme-icons.png");
 }
 

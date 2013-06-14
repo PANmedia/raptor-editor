@@ -8,7 +8,7 @@
     background-repeat: no-repeat;
 }
 
-.raptor-ui-language-menu .ui-icon {
+raptor-ui-language-menu .ui-icon {
     background-position: 0 3px;
 }
 
@@ -19,37 +19,45 @@
     margin-right: $spacing;
 }
 
-.ui-icon-flag-en,
-.ui-state-hover .ui-icon-flag-en {
+.raptor-ui-language-menu-menu .ui-icon
+{
+    top: 0;
+    left: 0;
+    position: relative;
+}
+
+
+.ui-widget-content .ui-icon-flag-en,
+.ui-widget-content .ui-state-hover .ui-icon-flag-en {
     background-image: inline-image('en.png');
 }
 
-.ui-icon-flag-de,
-.ui-state-hover .ui-icon-flag-de {
+.ui-widget-content .ui-icon-flag-de,
+.ui-widget-content .ui-state-hover .ui-icon-flag-de {
     background-image: inline-image('de.png');
 }
 
-.ui-icon-flag-es,
-.ui-state-hover .ui-icon-flag-es {
+.ui-widget-content .ui-icon-flag-es,
+.ui-widget-content .ui-state-hover .ui-icon-flag-es {
     background-image: inline-image('es.png');
 }
 
-.ui-icon-flag-fr,
-.ui-state-hover .ui-icon-flag-fr {
+.ui-widget-content .ui-icon-flag-fr,
+.ui-widget-content .ui-state-hover .ui-icon-flag-fr {
     background-image: inline-image('fr.png');
 }
 
-.ui-icon-flag-nl,
-.ui-state-hover .ui-icon-flag-nl {
+.ui-widget-content .ui-icon-flag-nl,
+.ui-widget-content .ui-state-hover .ui-icon-flag-nl {
     background-image: inline-image('nl.png');
 }
 
-.ui-icon-flag-sv,
-.ui-state-hover .ui-icon-flag-sv {
+.ui-widget-content .ui-icon-flag-sv,
+.ui-widget-content .ui-state-hover .ui-icon-flag-sv {
     background-image: inline-image('sv.png');
 }
 
-.ui-icon-flag-zh-cn,
-.ui-state-hover .ui-icon-flag-zh-cn {
+.ui-widget-content .ui-icon-flag-zh-cn,
+.ui-widget-content .ui-state-hover .ui-icon-flag-zh-cn {
     background-image: inline-image('zh-CN.png');
 }
