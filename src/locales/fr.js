@@ -78,7 +78,7 @@ registerLocale('fr', 'Français', {
         '<h2>Pas sûr(e) de savoir quoi mettre dans le champ ci-dessus ?</h2>' +
         '<ol>' +
         '    <li>Trouvez la page web que vous voulez lier.</li>' +
-        '    <li>Copiez l\'adresse de la bar d\'adresse de votre navigateur et collez la dans le champs ci-dessous.</li>' +
+        '    <li>Copiez l\'adresse de la barre d\'adresse de votre navigateur et collez-la dans le champs ci-dessous.</li>' +
         '</ol>',
 
     linkTypeInternalLabel: 'Page de ce site',
@@ -90,7 +90,7 @@ registerLocale('fr', 'Français', {
         '<h2>Pas sûr(e) de savoir quoi mettre dans le champ ci-dessus ?</h2>' +
         '<ol>' +
         '    <li>Trouvez la page web que vous voulez lier.</li>' +
-        '    <li>Copiez l\'adresse de la bar d\'adresse de votre navigateur, sans "{{domain}}" et collez la dans le champs ci-dessous..</li>' +
+        '    <li>Copiez l\'adresse de la barre d\'adresse de votre navigateur, sans "{{domain}}" et collez-la dans le champs ci-dessous..</li>' +
         '</ol>',
 
     logoTitle: 'En savoir plus sur l\'éditeur WYSIWYG Raptor',
