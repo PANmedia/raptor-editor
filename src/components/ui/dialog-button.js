@@ -84,8 +84,14 @@ DialogButton.prototype.openDialog = function(dialog) { };
  * @returns {Object} The initiialisation object for this dialog's OK button.
  */
 DialogButton.prototype.getOkButton = function(name) {
+    var text;
+    if (this.dialogOkButton !== undefined) {
+        text = this.dialogOkButton;
+    } else {
+        text = _(name + 'DialogOKButton');
+    }
     return {
-        text: _(name + 'DialogOKButton'),
+        text: text,
         click: function(event) {
             var valid = dialogs[name].instance.validateDialog();
             if (valid === true) {
@@ -110,8 +116,14 @@ DialogButton.prototype.getOkButton = function(name) {
  * @returns {Object} The initiialisation object for this dialog's cancel button.
  */
 DialogButton.prototype.getCancelButton = function(name) {
+    var text;
+    if (this.dialogCancelButton !== undefined) {
+        text = this.dialogCancelButton;
+    } else {
+        text = _(name + 'DialogCancelButton');
+    }
     return {
-        text: _(name + 'DialogCancelButton'),
+        text: text,
         click: function() {
             aDialogClose(dialogs[name].dialog);
         },
@@ -128,11 +140,17 @@ DialogButton.prototype.getCancelButton = function(name) {
  * @returns {Object} the default options for the dialog.
  */
 DialogButton.prototype.getDefaultDialogOptions = function(name) {
+    var title;
+    if (this.dialogTitle !== undefined) {
+        title = this.dialogTitle;
+    } else {
+        title = _(name + 'DialogTitle');
+    }
     var options = {
         modal: true,
         resizable: true,
         autoOpen: false,
-        title: _(name + 'DialogTitle'),
+        title: title,
         dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
         close: function() {
             if (dialogs[name].instance.state !== null) {
