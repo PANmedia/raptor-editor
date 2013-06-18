@@ -3,7 +3,7 @@
  * @license http://www.raptor-editor.com/license
  *
  * @author SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
- * @author In4matik, seb.corbin@gmail.com, https://github.com/In4matik/
+ * @author In4matik, https://github.com/In4matik/
  */
 registerLocale('fr', 'Français', {
 
