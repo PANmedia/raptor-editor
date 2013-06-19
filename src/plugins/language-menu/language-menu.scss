@@ -44,6 +44,11 @@
     background-image: inline-image('nl.png');
 }
 
+.ui-icon-flag-ru,
+.ui-state-hover .ui-icon-flag-ru {
+    background-image: inline-image('ru.png');
+}
+
 .ui-icon-flag-sv,
 .ui-state-hover .ui-icon-flag-sv {
     background-image: inline-image('sv.png');

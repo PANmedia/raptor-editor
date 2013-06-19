@@ -28,6 +28,7 @@ src/locales/de.js
 src/locales/es.js
 src/locales/fr.js
 src/locales/nl.js
+src/locales/ru.js
 src/locales/sv.js
 src/locales/zh-CN.js
 
@@ -186,6 +187,7 @@ src/plugins/language-menu/flags/en.png
 src/plugins/language-menu/flags/es.png
 src/plugins/language-menu/flags/fr.png
 src/plugins/language-menu/flags/nl.png
+src/plugins/language-menu/flags/ru.png
 src/plugins/language-menu/flags/sv.png
 src/plugins/language-menu/flags/zh-CN.png
 src/plugins/language-menu/templates/item.html

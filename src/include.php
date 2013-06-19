@@ -39,6 +39,7 @@
 <script type="text/javascript" src="<?= $uri ?>locales/es.js"></script>
 <script type="text/javascript" src="<?= $uri ?>locales/fr.js"></script>
 <script type="text/javascript" src="<?= $uri ?>locales/nl.js"></script>
+<script type="text/javascript" src="<?= $uri ?>locales/ru.js"></script>
 <script type="text/javascript" src="<?= $uri ?>locales/sv.js"></script>
 <script type="text/javascript" src="<?= $uri ?>locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?= $uri ?>init.js"></script>
@@ -179,3 +180,5 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-preview-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-apply-button.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-plugin.js"></script>
+
+<script type="text/javascript" src="<?= $uri ?>expose.js"></script>

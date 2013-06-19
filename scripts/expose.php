@@ -28,6 +28,15 @@ foreach (glob_recursive(__DIR__ . '/../src/components/*.js') as $file) {
         $result[] = "    $function: $function";
     }
 }
+
+$file = __DIR__ . '/../src/i18n.js';
+$contents = file_get_contents($file);
+$matches = null;
+preg_match_all('/^function (.+?)\(/m', $contents, $matches);
+foreach ($matches[1] as $function) {
+    $result[] = "    $function: $function";
+}
+
 sort($result);
 
 $result = implode(',' . PHP_EOL, $result);

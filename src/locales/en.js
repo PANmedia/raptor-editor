@@ -79,6 +79,7 @@ registerLocale('en', 'English', {
     languageMenuES: 'Spanish',
     languageMenuFR: 'French',
     languageMenuNL: 'Dutch',
+    languageMenuRU: 'Russian',
     languageMenuSV: 'Swedish',
     languageMenuZHCN: 'Simplified Chinese',
 

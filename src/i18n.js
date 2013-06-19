@@ -43,6 +43,19 @@ function registerLocale(name, nativeName, strings) {
 }
 
 /**
+ * Extends an existing locale.
+ *
+ * @static
+ * @param {String} name
+ * @param {Object} strings
+ */
+function extendLocale(name, strings) {
+    for (var key in strings) {
+        locales[name][key] = strings[key];
+    }
+}
+
+/**
  * @param {String} key
  */
 function setLocale(key) {
