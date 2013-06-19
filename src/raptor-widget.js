@@ -41,6 +41,7 @@ var RaptorWidget = {
         }
 
         var currentInstance = this;
+
         // <strict>
         // Check for nested editors
         Raptor.eachInstance(function(instance) {
@@ -50,6 +51,12 @@ var RaptorWidget = {
             }
         });
         // </strict>
+
+        // Set the initial locale
+        var locale = this.persist('locale') || this.options.initialLocale;
+        if (locale) {
+            currentLocale = locale;
+        }
 
         this.options = $.extend({}, Raptor.defaults, this.options);
 
@@ -122,12 +129,6 @@ var RaptorWidget = {
 
         // Stores the previous selection
         this.previousSelection = null;
-
-        // Set the initial locale
-        var locale = this.persist('locale') || this.options.initialLocale;
-        if (locale) {
-            setLocale(locale);
-        }
 
         this.getElement().addClass('raptor-editable-block');
 
@@ -509,13 +510,13 @@ var RaptorWidget = {
                 }
 
                 this.bindHotkeys();
-                
+
                 this.getElement().closest('form').bind('submit.' + this.widgetName, function() {
                     clean(this.getElement());
                     this.fire('change');
                 }.bind(this));
             }
-            
+
             clean(this.getElement());
             this.fire('enabled');
             this.showLayout();
@@ -905,7 +906,7 @@ var RaptorWidget = {
     getHtml: function() {
         return this.getElement().html();
     },
-            
+
     clean: function() {
         this.actionApply(function() {
             clean(this.getElement());
@@ -1022,7 +1023,8 @@ var RaptorWidget = {
         if (this.events[name]) {
             for (var i = 0, l = this.events[name].length; i < l; i++) {
                 var event = this.events[name][i];
-                if (typeof event.callback !== 'undefined') {
+                if (typeof event !== 'undefined' &&
+                        typeof event.callback !== 'undefined') {
                     var currentResult = event.callback.call(event.context || this);
                     if (typeof currentResult !== 'undefined') {
                         result = result.concat(currentResult);

@@ -77,9 +77,10 @@ function setLocale(key) {
  * string.
  *
  * @param  {string} string
- * @return {string}
+ * @param  {Boolean} allowMissing If true and the localized string is missing, false is returned.
+ * @return {string|false}
  */
-function getLocalizedString(string) {
+function getLocalizedString(string, allowMissing) {
     if (typeof locales[currentLocale] !== 'undefined' &&
             typeof locales[currentLocale][string] !== 'undefined') {
         return locales[currentLocale][string];
@@ -91,12 +92,16 @@ function getLocalizedString(string) {
         }
     }
 
+    if (allowMissing) {
+        return false;
+    }
+    
     // <debug>
     if (debugLevel >= MIN) {
         handleError('Missing locale string: ' + string);
     }
     // </debug>
-    return string;
+    return defaultValue;
 }
 
 /**
@@ -110,12 +115,15 @@ function getLocalizedString(string) {
  *
  * @static
  * @param {String} string
- * @param {Object} variables
+ * @param {Object|false} variables If false, then no string is returned by default.
  */
 function _(string, variables) {
     // Get the current locale translated string
-    string = getLocalizedString(string);
-
+    string = getLocalizedString(string, variables === false);
+    if (string === false) {
+        return false;
+    }
+    
     // Convert the variables
     if (!variables) {
         return string;

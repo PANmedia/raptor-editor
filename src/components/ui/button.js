@@ -48,8 +48,9 @@ Button.prototype.init = function() {
  */
 Button.prototype.getButton = function() {
     if (!this.button) {
+        var text = this.text || _(this.name + 'Text', false);
         this.button = $('<div>')
-            .html(this.text)
+            .html(text)
             .addClass(this.options.baseClass)
             .attr('title', this.getTitle())
             .click(this.click.bind(this));
@@ -57,7 +58,7 @@ Button.prototype.getButton = function() {
             icons: {
                 primary: this.getIcon()
             },
-            text: this.text,
+            text: text,
             label: this.label
         });
     }

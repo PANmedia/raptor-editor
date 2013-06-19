@@ -8,8 +8,6 @@
  */
 Raptor.registerUi(new Button({
     name: 'clickButtonToEdit',
-    text: _('clickButtonToEditText'),
-
     action: function() {
         this.raptor.enableEditing();
     }

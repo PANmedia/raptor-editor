@@ -18,7 +18,7 @@ registerLocale('fr', 'Français', {
     cancelTitle: 'Annuler l\'édition',
 
     clearFormattingTitle: 'Effacer la mise en forme',
-    clickButtonToEditPluginButton: 'Cliquer pour commencer la modification',
+    clickButtonToEditText: 'Cliquer pour commencer la modification',
 
     colorMenuBasicAutomatic: 'Automatique',
     colorMenuBasicBlack: 'Noir',
