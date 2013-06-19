@@ -78,6 +78,9 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     });
     if ($.isFunction(this.options.formatResponse)) {
         message = this.options.formatResponse(data);
+    }	
+    if ($.isFunction(this.options.onSave)) {
+        this.options.onSave(data, status, xhr);
     }
     this.raptor.getLayout('messages').showMessage('confirm', message, {
         delay: 1000,
