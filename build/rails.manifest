@@ -35,7 +35,6 @@ src/tools/state.js
 src/tools/string.js
 src/tools/style.js
 src/tools/table.js
-src/tools/tag.js
 src/tools/template.js
 src/tools/types.js
 
