@@ -233,7 +233,7 @@
             <istrue value="${compile-js}" />
             <then>
                 <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
-                    node node_modules\uglify-js\bin\uglifyjs --output ${dir.build}/concat.min.js ${dir.build}/concat.js
+                    node node_modules\uglify-js\bin\uglifyjs -c -m --output ${dir.build}/concat.min.js ${dir.build}/concat.js
                 " />
             </then>
             <else>
@@ -258,11 +258,6 @@
     <!-- =================================================================== -->
     <target name="merge">
         <php>file_put_contents('${dir.build}/merge.js', file_get_contents('${file.top}'));</php>
-        <append destFile="${dir.build}/merge.js">
-            <fileset dir="${project.basedir}">
-                <include name="${file.top}" />
-            </fileset>
-        </append>
 
         <!-- Append the merged JS -->
         <append destFile="${dir.build}/merge.js">
@@ -297,11 +292,6 @@
 
     <target name="merge-min">
         <php>file_put_contents('${dir.build}/merge.min.js', file_get_contents('${file.top}'));</php>
-        <append destFile="${dir.build}/merge.min.js">
-            <fileset dir="${project.basedir}">
-                <include name="${file.top}" />
-            </fileset>
-        </append>
 
         <!-- Append the merged JS -->
         <append destFile="${dir.build}/merge.min.js">
