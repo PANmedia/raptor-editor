@@ -188,14 +188,14 @@
         " />
         <copy file="${dir.build}/src/style/raptor.css" tofile="${project.basedir}/${dir.package}/raptor.css" />
         <exec level="info" logOutput="true" command="
-            node node_modules\clean-css\bin\cleancss --output ${dir.package}/raptor.min.css ${dir.package}/raptor.css
+            node node_modules/clean-css/bin/cleancss --output ${dir.package}/raptor.min.css ${dir.package}/raptor.css
         " />
         <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
             compass compile front-end.scss
         " />
         <copy file="${dir.build}/src/style/front-end.css" tofile="${project.basedir}/${dir.package}/raptor-front-end.css" />
         <exec level="info" logOutput="true" command="
-            node node_modules\clean-css\bin\cleancss --output ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css
+            node node_modules/clean-css/bin/cleancss --output ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css
         " />
     </target>
 
@@ -233,7 +233,7 @@
             <istrue value="${compile-js}" />
             <then>
                 <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
-                    node node_modules\uglify-js\bin\uglifyjs -c -m --output ${dir.build}/concat.min.js ${dir.build}/concat.js
+                    node node_modules/uglify-js/bin/uglifyjs -c -m --output ${dir.build}/concat.min.js ${dir.build}/concat.js
                 " />
             </then>
             <else>
@@ -244,7 +244,7 @@
             <istrue value="${compile-css}" />
             <then>
                 <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
-                    node node_modules\clean-css\bin\cleancss --output ${dir.build}/concat.min.css ${dir.build}/concat.css
+                    node node_modules/clean-css/bin/cleancss --output ${dir.build}/concat.min.css ${dir.build}/concat.css
                 " />
             </then>
             <else>
