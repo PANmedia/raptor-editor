@@ -227,11 +227,15 @@ function selectionGetHtml(selection) {
  * @param {RangySelection} range The selection to get the element from.
  * @returns {jQuery} The common ancestor container that isn't a text node.
  */
-function selectionGetElement(range) {
+function selectionGetElement(range, selection) {
+    selection = selection || rangy.getSelection();
+    var ranges = rangy.getSelection().getAllRanges();
+    if (ranges.length === 0) {
+        return null;
+    }
+    var range = ranges[0];
+
     var commonAncestor;
-
-    range = range || rangy.getSelection().getRangeAt(0);
-
     // Check if the common ancestor container is a text node
     if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
         // Use the parent instead
@@ -870,15 +874,22 @@ function selectionFindWrappingAndInnerElements(selector, limitElement) {
  * @param {jQuery} limitElement The element to stop changing the tags at.
  */
 function selectionChangeTags(changeTo, changeFrom, limitElement) {
-    selectionSave();
     var elements = selectionFindWrappingAndInnerElements(changeFrom.join(','), limitElement);
     if (elements.length) {
+        selectionSave();
         elementChangeTag(elements, changeTo);
+        selectionRestore();
     } else {
         var limitNode = limitElement.get(0);
-        limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+        if (limitNode.innerHTML.trim()) {
+            selectionSave();
+            limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+            selectionRestore();
+        } else {
+            limitNode.innerHTML = '<' + changeTo + '>&nbsp;</' + changeTo + '>';
+            selectionSelectInner(limitNode.childNodes[0]);
+        }
     }
-    selectionRestore();
 }
 
 /**

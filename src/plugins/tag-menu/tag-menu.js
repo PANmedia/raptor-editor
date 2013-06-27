@@ -42,10 +42,13 @@ TagMenu.prototype.changeTag = function(tag) {
         return;
     }
 
-    var selectedElement = selectionGetElement(),
-        limitElement = selectedElement.closest('td, li');
-    if (limitElement.length === 0) {
-        limitElement = this.raptor.getElement();
+    var selectedElement = selectionGetElement();
+    limitElement = this.raptor.getElement();
+    if (selectedElement && !selectedElement.is(limitElement)) {
+        var cell = selectedElement.parentsUntil(limitElement, 'td, li').first();
+        if (cell.length !== 0) {
+            limitElement = cell;
+        }
     }
 
     selectionChangeTags(tag, [
