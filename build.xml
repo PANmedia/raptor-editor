@@ -188,14 +188,14 @@
         " />
         <copy file="${dir.build}/src/style/raptor.css" tofile="${project.basedir}/${dir.package}/raptor.css" />
         <exec level="info" logOutput="true" command="
-            yui-compressor --type css -o ${dir.package}/raptor.min.css ${dir.package}/raptor.css
+            node node_modules\clean-css\bin\cleancss --output ${dir.package}/raptor.min.css ${dir.package}/raptor.css
         " />
         <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
             compass compile front-end.scss
         " />
         <copy file="${dir.build}/src/style/front-end.css" tofile="${project.basedir}/${dir.package}/raptor-front-end.css" />
         <exec level="info" logOutput="true" command="
-            yui-compressor --type css -o ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css
+            node node_modules\clean-css\bin\cleancss --output ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css
         " />
     </target>
 
@@ -232,12 +232,9 @@
         <if>
             <istrue value="${compile-js}" />
             <then>
-                <echo>closure --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.min.js</echo>
-                <exec command="closure ${closure-options} --js ${dir.build}/concat.js --js_output_file ${dir.build}/concat.temp.min.js"
-                      dir="." level="info" outputProperty="output" />
-                <exec command="closure ${closure-options} --js ${dir.build}/concat.temp.min.js --js_output_file ${dir.build}/concat.min.js"
-                      dir="." level="info" outputProperty="output" />
-                <echo>${output}</echo>
+                <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
+                    node node_modules\uglify-js\bin\uglifyjs --output ${dir.build}/concat.min.js ${dir.build}/concat.js
+                " />
             </then>
             <else>
                 <copy file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
@@ -246,10 +243,9 @@
         <if>
             <istrue value="${compile-css}" />
             <then>
-                <echo>yui-compressor --type css -o ${dir.build}/concat.min.css ${dir.build}/concat.css</echo>
-                <exec command="yui-compressor --type css -o ${dir.build}/concat.min.css ${dir.build}/concat.css"
-                      dir="." level="info" outputProperty="output" />
-                <echo>${output}</echo>
+                <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
+                    node node_modules\clean-css\bin\cleancss --output ${dir.build}/concat.min.css ${dir.build}/concat.css
+                " />
             </then>
             <else>
                 <move file="${dir.build}/concat.css" tofile="${dir.build}/concat.min.css" />
