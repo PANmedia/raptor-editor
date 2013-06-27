@@ -615,25 +615,27 @@ function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, bl
  * @param {jQuerySelector|jQuery|Element} element The element to exclude the removal of ranges.
  * @param {RangySelection} [selection] The selection from which to remove the ranges.
  */
-function selectionConstrain(element, selection) {
-    element = $(element)[0];
-    selection = selection || rangy.getSelection();
-    if (!selection) {
-        selectionSelectStart(element);
+function selectionConstrain(node, selection) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to selectionConstrain must be a node', node);
         return;
     }
-
-    var commonAncestor;
-    $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
-            commonAncestor = $(range.commonAncestorContainer).parent()[0];
-        } else {
-            commonAncestor = range.commonAncestorContainer;
+    // </strict>
+    selection = selection || rangy.getSelection();
+    var ranges = selection.getAllRanges(),
+        newRanges = [];
+    for (var i = 0, l = ranges.length; i < l; i++) {
+        var newRange = ranges[i].cloneRange();
+        if (!nodeIsChildOf(ranges[i].startContainer, node)) {
+            newRange.setStart(node, 0);
         }
-        if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
-            selection.removeRange(range);
+        if (!nodeIsChildOf(ranges[i].endContainer, node)) {
+            newRange.setEnd(node, node.childNodes.length);
         }
-    });
+        newRanges.push(newRange);
+    }
+    selection.setRanges(newRanges);
 }
 
 /**

@@ -31,3 +31,14 @@ function nodeFindTextNodes(node) {
     }
     return textNodes;
 }
+
+function nodeIsChildOf(child, parent) {
+     var node = child.parentNode;
+     while (node != null) {
+         if (node == parent) {
+             return true;
+         }
+         node = node.parentNode;
+     }
+     return false;
+}

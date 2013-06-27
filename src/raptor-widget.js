@@ -451,7 +451,7 @@ var RaptorWidget = {
     },
 
     selectionConstrain: function() {
-        selectionConstrain(this.target);
+        selectionConstrain(this.target[0]);
     },
 
     /*========================================================================*\
