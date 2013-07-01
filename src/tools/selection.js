@@ -229,13 +229,11 @@ function selectionGetHtml(selection) {
  */
 function selectionGetElement(range, selection) {
     selection = selection || rangy.getSelection();
-    var ranges = rangy.getSelection().getAllRanges();
-    if (ranges.length === 0) {
+    if (selection.rangeCount === 0) {
         return null;
     }
-    var range = ranges[0];
-
-    var commonAncestor;
+    var range = rangy.getSelection().getRangeAt(0),
+        commonAncestor;
     // Check if the common ancestor container is a text node
     if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
         // Use the parent instead
