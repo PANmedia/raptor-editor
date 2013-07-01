@@ -72,6 +72,10 @@ registerLocale('en', 'English', {
     insertFileTitle: 'Insert file',
     insertFileDialogOKButton: 'Insert file',
     insertFileDialogCancelButton: 'Cancel',
+    insertFileURLLabel: 'File URL',
+    insertFileNameLabel: 'File Name',
+    insertFileURLPlaceHolder: 'File URL...',
+    insertFileNamePlaceHolder: 'File Name...',
 
     languageMenuTitle: 'Change Language',
     languageMenuEN: 'English',
