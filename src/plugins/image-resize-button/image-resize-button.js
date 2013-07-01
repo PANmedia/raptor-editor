@@ -221,6 +221,7 @@ ImageResizeButtonPlugin.prototype.show = function(event) {
         top:  visibleRect.top  + ((visibleRect.height / 2) - (button.outerHeight() / 2)),
         left: visibleRect.left + ((visibleRect.width / 2)  - (button.outerWidth() / 2))
     });
+    elementBringToTop(button);
 };
 
 /**
