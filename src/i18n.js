@@ -95,13 +95,13 @@ function getLocalizedString(string, allowMissing) {
     if (allowMissing) {
         return false;
     }
-    
+
     // <debug>
     if (debugLevel >= MIN) {
         handleError('Missing locale string: ' + string);
     }
     // </debug>
-    return defaultValue;
+    return string;
 }
 
 /**
@@ -123,7 +123,7 @@ function _(string, variables) {
     if (string === false) {
         return false;
     }
-    
+
     // Convert the variables
     if (!variables) {
         return string;
