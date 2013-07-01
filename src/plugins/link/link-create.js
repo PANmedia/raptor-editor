@@ -51,6 +51,7 @@ Raptor.registerUi(new DialogToggleButton({
                 }
             }
         }
+        DialogToggleButton.prototype.openDialog.call(this);
     },
 
     validateDialog: function() {

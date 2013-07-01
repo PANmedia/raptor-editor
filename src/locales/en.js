@@ -241,6 +241,7 @@ registerLocale('en', 'English', {
     revisionsButtonViewDiffTitle: null,
     revisionsDiffButtonDialogCancelButton: 'Close',
     revisionsDiffButtonDialogTitle: 'View differences',
+    revisionsDiffButtonTitle: 'View differences',
     revisionsLoading: 'Loading revisions...',
     revisionsNone: 'No revisions for this element',
     revisionsPreviewButtonTitle: 'Preview',

@@ -21,9 +21,7 @@ Raptor.registerUi(new DialogButton({
     },
 
     init: function() {
-        this.state = null;
-
-        var result = DialogButton.prototype.init.call(this);
+            var result = DialogButton.prototype.init.call(this);
         if (typeof this.raptor.getPlugin('revisions') === 'undefined' ||
                 typeof this.raptor.getPlugin('revisions').getUrl() === 'undefined') {
             aButtonSetLabel(this.button, _('revisionsTextEmpty'))
@@ -38,9 +36,7 @@ Raptor.registerUi(new DialogButton({
      *
      * @param  {Object} dialog
      */
-    openDialog: function(dialog) {
-        this.dialog = dialog;
-
+    openDialog: function() {
         var loadingMessage = $('<p/>')
                 .html(_('revisionsLoading'))
                 .addClass(this.options.baseClass + '-loading-revisions');
@@ -52,13 +48,14 @@ Raptor.registerUi(new DialogButton({
         this.raptor.getElement().addClass(this.options.baseClass + '-reviewing');
         this.raptor.getPlugin('revisions')
             .getRevisions(this.renderRevisions.bind(this), this.displayAjaxError.bind(this));
+        DialogButton.prototype.openDialog.call(this);
     },
 
     closeDialog: function() {
         // Ensure raptor's previous state is *not* restored
         this.state = null;
         this.raptor.getElement().removeClass(this.options.baseClass + '-reviewing');
-        aDialogClose(this.dialog);
+        DialogButton.prototype.closeDialog.call(this);
     },
 
     /**
@@ -67,7 +64,7 @@ Raptor.registerUi(new DialogButton({
      * @return {Element}
      */
     getDialogContentArea: function() {
-        return this.dialog.find('> div');
+        return this.getDialog().find('> div');
     },
 
     /**
@@ -94,7 +91,7 @@ Raptor.registerUi(new DialogButton({
             revision = null;
 
         var currentRow = $(tableRowTemplate).find('.' + this.options.baseClass + '-updated')
-            .html((new Date(data.current.updated)).toLocaleString())
+            .html((new Date(parseInt(data.current.updated))).toLocaleString())
             .next().html(_('revisionsButtonCurrent'))
             .parent().addClass(this.options.baseClass + '-current ui-state-highlight');
 
@@ -103,10 +100,9 @@ Raptor.registerUi(new DialogButton({
         for (var revisionIndex = 0; revisionIndex < revisions.length; revisionIndex++) {
             tableRow = $(tableRowTemplate);
             revision = revisions[revisionIndex];
-
             tableRow.data('revision', revision)
                 .find('.' + this.options.baseClass + '-updated')
-                .html((new Date(revision.updated)).toLocaleString());
+                .html((new Date(parseInt(revision.updated))).toLocaleString());
 
             controls = tableRow.find('.' + this.options.baseClass + '-controls');
 
