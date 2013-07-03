@@ -33,32 +33,15 @@
             });
         });
     </script>
-    <style type="text/css">
-        table {
-            width: 100%;
-            /*-webkit-user-select: none;*/
-        }
-        td, th {
-            border: 1px dotted #777;
-        }
-
-        div.editable {
-            border: 1px dotted gray;
-            padding: 10px;
-            margin: 0 1%;
-            overflow: hidden;
-        }
-    </style>
 </head>
 <body>
     <?php include __DIR__ . '/../include/nav.php'; ?>
-    <header>
+    <div class="half center">
         <h1>Raptor Editor - Basic Example</h1>
-    </header>
-    <div style="clear: both"></div>
-    <div class="editable" data-id="body-1">
-        <?php ob_start(); ?>
-        <?= renderContent(ob_get_clean(), $content, 'body-1'); ?>
+        <div class="editable outline" data-id="body-1">
+            <?php ob_start(); ?>
+            <?= renderContent(ob_get_clean(), $content, 'body-1'); ?>
+        </div>
     </div>
 
 </body>
