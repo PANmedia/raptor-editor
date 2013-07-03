@@ -52,22 +52,24 @@ function PlaceholderPlugin(name, overrides) {
 PlaceholderPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
 /**
- * Bind placeholder show to Raptor Editor's show event.
+ * Init placeholder plugin.
  */
 PlaceholderPlugin.prototype.init = function() {
-    this.raptor.bind('show', this.show.bind(this));
+    this.raptor.bind('enabled', this.enabled.bind(this));
 };
 
 /**
- * Show the placeholder if Raptor Editor instance has no content.
+ * Insert the placeholder if the editable element is empty.
  */
-PlaceholderPlugin.prototype.show = function() {
-    if (!$.trim(this.raptor.getHtml())) {
-        var content = $(document.createElement(this.options.tag))
-                            .html(this.options.content);
-        this.raptor.setHtml(content);
+PlaceholderPlugin.prototype.enabled = function() {
+    if (!this.raptor.getHtml().trim()) {
+        var raptorNode = this.raptor.getNode(),
+            tag = document.createElement(this.options.tag);
+        tag.innerHTML = this.options.content;
+        raptorNode.innerHTML = '';
+        raptorNode.appendChild(tag);
         if (this.options.select) {
-            selectionSelectInner(content.get(0));
+            selectionSelectInner(raptorNode.childNodes[0]);
         }
     }
 };
