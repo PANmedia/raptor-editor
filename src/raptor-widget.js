@@ -242,6 +242,10 @@ var RaptorWidget = {
         return this.target;
     },
 
+    getNode: function() {
+        return this.target[0];
+    },
+
     /**
      *
      */
