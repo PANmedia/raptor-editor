@@ -53,7 +53,7 @@ FilteredPreviewButton.prototype.selectionChange = function() {
 FilteredPreviewButton.prototype.getElement = function(range) {
     throw new Error('Expected child class to override FilteredPreviewButton.getElement');
 };
-// <strict>
+// </strict>
 
 
 /**

@@ -57,7 +57,7 @@ DialogButton.prototype.applyAction = function(dialog) {
 DialogButton.prototype.getDialogTemplate = function() {
     throw new Error('Expected child class to override DialogButton.getDialogTemplate');
 };
-// <strict>
+// </strict>
 
 /**
  * Checks the validility of a dialog.
