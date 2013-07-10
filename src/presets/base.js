@@ -10,7 +10,7 @@
 /**
  * @namespace Default options for Raptor.
  */
-var basePreset = {
+Raptor.globalDefaults = {
     /**
      * @type Object Default layouts to use.
      */

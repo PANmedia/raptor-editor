@@ -10,7 +10,8 @@
 /**
  * @namespace Mammoth preset for Raptor.
  */
-Raptor.defaults = $.extend(basePreset, {
+Raptor.registerPreset({
+    name: 'mammoth',
     layouts: {
         toolbar: {
             uiOrder: [

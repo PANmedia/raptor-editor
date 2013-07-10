@@ -57,8 +57,12 @@ var RaptorWidget = {
         if (locale) {
             currentLocale = locale;
         }
-
-        this.options = $.extend({}, Raptor.defaults, this.options);
+        
+        if (this.options.preset) {
+            this.options = $.extend({}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
+        } else {
+            this.options = $.extend({}, Raptor.globalDefaults, Raptor.defaults, this.options);
+        }
 
         // Give the element a unique ID
         if (!this.element.attr('id')) {

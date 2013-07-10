@@ -7,7 +7,8 @@
 /**
  * @namespace Micro options for Raptor.
  */
-Raptor.defaults = $.extend(basePreset, {
+Raptor.registerPreset({
+    name: 'micro',
     layouts: {
         toolbar: {
             uiOrder: [

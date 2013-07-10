@@ -25,6 +25,7 @@
 <script type="text/javascript" src="<?= $uri ?>dependencies/rangy/rangy-textrange.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>dependencies/resizetable.js"></script>
+<script type="text/javascript" src="<?= $uri ?>dependencies/diff.js"></script>
 <script type="text/javascript" src="<?= $uri ?>dependencies/goog-table.js"></script>
 
 <!-- Theme -->
@@ -84,6 +85,7 @@
 <!-- Preset -->
 <script type="text/javascript" src="<?= $uri ?>presets/base.js"></script>
 <script type="text/javascript" src="<?= $uri ?>presets/full.js"></script>
+<script type="text/javascript" src="<?= $uri ?>presets/micro.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?= $uri ?>plugins/cancel/cancel.js"></script>
@@ -97,6 +99,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/dock/dock-to-element.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/embed/embed.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/empty-element/empty-element.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/insert-file/insert-file.js"></script>
 <script type="text/javascript" src="<?= $uri ?>plugins/language-menu/language-menu.js"></script>
 
@@ -126,6 +129,7 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/logo/logo.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/normalise-line-breaks/normalise-line-breaks.js"></script>
+<script type="text/javascript" src="<?= $uri ?>plugins/no-break/no-break.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/paste/paste.js"></script>
 
@@ -174,11 +178,5 @@
 <script type="text/javascript" src="<?= $uri ?>plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>plugins/view-source/view-source.js"></script>
-
-<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-button.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-diff-button.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-preview-button.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-apply-button.js"></script>
-<script type="text/javascript" src="<?= $uri ?>plugins/revisions/revisions-plugin.js"></script>
 
 <script type="text/javascript" src="<?= $uri ?>expose.js"></script>
