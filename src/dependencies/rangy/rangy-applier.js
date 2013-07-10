@@ -10,12 +10,7 @@
  * Derived from "CSS Class Applier module for Rangy." which is Copyright 2012,
  * Tim Down, and licensed under the MIT license.
  */
-rangy.createModule("Applier", function(api, module) {
-    api.requireModules([
-        "WrappedSelection",
-        "WrappedRange"
-    ]);
-
+rangy.createModule("Applier", ["WrappedSelection"], function(api, module) {
     var dom = api.dom;
     var DomPosition = dom.DomPosition;
 

@@ -9,12 +9,10 @@
  *
  * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.3alpha.776
- * Build date: 12 April 2013
+ * Version: 1.3alpha.783
+ * Build date: 28 June 2013
  */
-rangy.createModule("SaveRestore", function(api, module) {
-    api.requireModules( ["DomUtil", "DomRange", "WrappedRange"] );
-
+rangy.createModule("SaveRestore", ["WrappedRange"], function(api, module) {
     var dom = api.dom;
 
     var markerTextChar = "\ufeff";

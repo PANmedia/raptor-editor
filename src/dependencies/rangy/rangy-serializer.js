@@ -10,11 +10,10 @@
  *
  * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.3alpha.776
- * Build date: 12 April 2013
+ * Version: 1.3alpha.783
+ * Build date: 28 June 2013
  */
-rangy.createModule("Serializer", function(api, module) {
-    api.requireModules( ["WrappedSelection", "WrappedRange"] );
+rangy.createModule("Serializer", ["WrappedSelection"], function(api, module) {
     var UNDEF = "undefined";
 
     // encodeURIComponent and decodeURIComponent are required for cookie handling
