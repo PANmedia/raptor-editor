@@ -45,4 +45,4 @@ Raptor.registerPreset({
         messages: {
         }
     }
-});
+}, true);

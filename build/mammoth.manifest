@@ -9,7 +9,6 @@ src/dependencies/rangy/rangy-cssclassapplier.js
 src/dependencies/rangy/rangy-selectionsaverestore.js
 src/dependencies/rangy/rangy-serializer.js
 src/dependencies/rangy/rangy-textrange.js
-src/dependencies/jquery-hotkeys.js
 src/dependencies/resizetable.js
 src/dependencies/goog-table.js
 src/dependencies/diff.js
