@@ -56,7 +56,6 @@ loadJS('../src/tools/state.js');
 loadJS('../src/tools/string.js');
 loadJS('../src/tools/style.js');
 loadJS('../src/tools/table.js');
-loadJS('../src/tools/tag.js');
 loadJS('../src/tools/types.js');
 loadJS('js/beautify-html.js');
 loadJS('js/code-mirror.js');
