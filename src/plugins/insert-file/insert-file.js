@@ -153,7 +153,6 @@ Raptor.registerUi(new Button({
             for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
                 elements.push(this.prepareElement(files[fileIndex]));
             }
-            console.log(elements.join(', '));
             selectionReplace(elements.join(', '));
         }.bind(this));
     },
