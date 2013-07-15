@@ -90,10 +90,6 @@ DialogButton.prototype.okButtonClick = function(event) {
     var valid = dialogs[this.name].instance.validateDialog();
     if (valid === true) {
         aDialogClose(dialogs[this.name].dialog);
-        if (dialogs[this.name].instance.state !== null) {
-            dialogs[this.name].instance.raptor.stateRestore(dialogs[this.name].instance.state);
-            dialogs[this.name].instance.state = null;
-        }
         dialogs[this.name].instance.applyAction.call(dialogs[this.name].instance, dialogs[this.name].dialog);
     }
 };

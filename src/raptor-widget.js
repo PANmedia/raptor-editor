@@ -57,7 +57,7 @@ var RaptorWidget = {
         if (locale) {
             currentLocale = locale;
         }
-        
+
         if (this.options.preset) {
             this.options = $.extend({}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
         } else {
@@ -652,6 +652,11 @@ var RaptorWidget = {
 
         instance.raptor = this;
         instance.options = options;
+        // <strict>
+        if (!instance.init) {
+            handleError('Component missing init function: ' + instance.name);
+        }
+        // </strict>
         var init = instance.init();
 
         return {

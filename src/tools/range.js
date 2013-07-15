@@ -124,8 +124,7 @@ function rangeReplace(range, html) {
  * @returns {boolean} True if the range is empty.
  */
 function rangeEmptyTag(range) {
-    var contents = range.cloneContents();
-    var html = fragmentToHtml(contents);
+    var html = rangeToHtml(range);
     if (typeof html === 'string') {
         html = html.replace(/([ #;&,.+*~\':"!^$[\]()=>|\/@])/g,'\\$1');
     }
@@ -395,4 +394,8 @@ function rangeReplaceWithinValidTags(range, html, wrapper, validTagNames) {
 
     // Context is invalid. Split containing element and insert list in between.
     return rangeReplaceSplitInvalidTags(range, html, wrapper, validTagNames);
+}
+
+function rangeToHtml(range) {
+    return fragmentToHtml(range.cloneContents());
 }
