@@ -65,15 +65,22 @@ Raptor.registerUi(new Button({
         aDialog(dialogElement, {
             title: 'No File Manager',
             modal: true,
+            close: function() {
+                self.raptor.resumeHotkeys();
+                if (self.state) {
+                    self.raptor.stateRestore(self.state);
+                    self.state = null;
+                }
+            },
             buttons: [
                 {
                     text: _('insertFileDialogOKButton'),
                     click: function() {
+                        aDialogClose(dialogElement);
                         self.insertFiles([{
                             location: dialogElement.find('input[name="location"]').val(),
                             name: dialogElement.find('input[name="name"]').val()
                         }]);
-                        aDialogClose(dialogElement);
                     },
                     icons: {
                         primary: 'ui-icon-circle-check'
@@ -88,14 +95,7 @@ Raptor.registerUi(new Button({
                         primary: 'ui-icon-circle-close'
                     }
                 }
-            ],
-            close: function() {
-                self.raptor.resumeHotkeys();
-                self.raptor.restoreFocus();
-                if (self.state) {
-                    self.raptor.stateRestore(self.state);
-                }
-            }
+            ]
         });
         aDialogOpen(dialogElement);
     },
@@ -145,56 +145,17 @@ Raptor.registerUi(new Button({
      * @param  {Object[]} files Array of files to be inserted.
      */
     insertFiles: function(files) {
-        this.raptor.stateRestore(this.state);
-        this.state = null;
-        this.raptor.resumeHotkeys();
-        this.raptor.restoreFocus();
-
         if (!files.length) {
             return;
         }
-
-        var file;
-        if (files.length === 1) {
-            file = files.shift();
-
-            var html = this.prepareElement(file, selectionGetHtml());
-
-            if (this.isImage(file)) {
-                selectionReplaceWithinValidTags(html, [
-                    // Tags within which the <img> tag may reside
-                    'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
-                    'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em', 'fieldset', 'font',
-                    'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins', 'kbd', 'label', 'legend',
-                    'li', 'noframes', 'noscript', 'object', 'p', 'pre', 'q', 's', 'samp', 'small', 'span',
-                    'strike', 'strong', 'sub', 'sup', 'td', 'th', 'u', 'var'
-                ]);
-            } else {
-                selectionReplaceWithinValidTags(html, [
-                    // Tags within which the <a> tag may reside
-                    'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body',
-                    'button', 'caption', 'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em',
-                    'fieldset', 'font', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins',
-                    'kbd', 'label', 'legend', 'li', 'noframes', 'noscript', 'object', 'p', 'q', 's', 'samp',
-                    'small', 'span', 'strike', 'strong', 'sub', 'sup', 'td', 'th', 'tt', 'u', 'var'
-                ]);
+        this.raptor.actionApply(function() {
+            var elements = [];
+            for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+                elements.push(this.prepareElement(files[fileIndex]));
             }
-            return;
-        }
-
-        var elements = [];
-        for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
-            elements.push(this.prepareElement(files[fileIndex]));
-        }
-
-        selectionReplaceWithinValidTags(elements.join(', '), [
-            // Tags within which both the <img> & <a> tags may reside
-            'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
-            'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em', 'fieldset', 'font',
-            'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins', 'kbd', 'label',
-            'legend', 'li', 'noframes', 'noscript', 'object', 'p', 'q', 's', 'samp', 'small',
-            'span', 'strike', 'strong', 'sub', 'sup', 'td', 'th', 'u', 'var'
-        ]);
+            console.log(elements.join(', '));
+            selectionReplace(elements.join(', '));
+        }.bind(this));
     },
 
     /**

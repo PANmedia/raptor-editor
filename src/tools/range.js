@@ -280,29 +280,26 @@ function rangeTrim(range) {
  * @param {Node} rootNode
  * @returns {String} A string of the serialized ranges separated by '|'.
  */
-function rangeSerialize(ranges, rootNode) {
+function rangeSerialize(range, rootNode) {
     // <strict>
-    if (!typeIsArray(ranges)) {
-        handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be an array', ranges);
+    if (!typeIsRange(range)) {
+        handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be an range', range);
     }
     if (!typeIsNode(rootNode)) {
         handleInvalidArgumentError('Parameter 1 to rangeSerialize is expected to be a node', rootNode);
     }
     // </strict>
-    var serializedRanges = [];
-    for (var i = 0, l = ranges.length; i < l; i++) {
-        serializedRanges[i] = rangy.serializeRange(ranges[i], true);
-    }
-    return serializedRanges.join('|');
+    return rangy.serializeRange(range, true, rootNode);
 }
 
 /**
  * Deseralizes supplied ranges.
  *
  * @param {string} serialized This is the already serailized range to be deserialized.
+ * @param {Node} rootNode
  * @returns {Array} An array of deserialized ranges.
  */
-function rangeDeserialize(serialized) {
+function rangeDeserialize(serialized, rootNode) {
     // <strict>
     if (!typeIsString(serialized)) {
         handleInvalidArgumentError('Parameter 1 to rangeDeserialize is expected to be a string', serialized);
@@ -311,7 +308,7 @@ function rangeDeserialize(serialized) {
     var serializedRanges = serialized.split("|"),
         ranges = [];
     for (var i = 0, l = serializedRanges.length; i < l; i++) {
-        ranges[i] = rangy.deserializeRange(serializedRanges[i]);
+        ranges[i] = rangy.deserializeRange(serializedRanges[i], rootNode);
     }
     return ranges;
 }
@@ -398,4 +395,12 @@ function rangeReplaceWithinValidTags(range, html, wrapper, validTagNames) {
 
 function rangeToHtml(range) {
     return fragmentToHtml(range.cloneContents());
+}
+
+function rangeGet() {
+    var selection = rangy.getSelection();
+    if (selection.rangeCount > 0) {
+        return selection.getRangeAt(0);
+    }
+    return null;
 }

@@ -296,7 +296,7 @@ var RaptorWidget = {
 
     checkSelectionChange: function() {
         // Check if the caret has changed position
-        var currentSelection = rangy.serializeSelection();
+        var currentSelection = rangy.serializeSelection(null, false);
         if (this.previousSelection !== currentSelection) {
             this.fire('selectionChange');
         }

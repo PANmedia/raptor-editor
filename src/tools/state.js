@@ -18,10 +18,10 @@ function stateSave(element) {
     }
     // </strict>
 
-    var ranges = rangy.getSelection().getAllRanges();
+    var range = rangeGet();
     return {
         element: element.clone(true),
-        ranges: ranges.length ? rangeSerialize(ranges, element.get(0)) : null
+        ranges: range ? rangeSerialize(range, element.get(0)) : null
     };
 }
 
@@ -46,7 +46,7 @@ function stateRestore(element, state) {
     var ranges = null;
     try {
         if (state.ranges) {
-            ranges = rangeDeserialize(state.ranges);
+            ranges = rangeDeserialize(state.ranges, state.element.get(0));
         }
     } catch (exception) {
         // <debug>

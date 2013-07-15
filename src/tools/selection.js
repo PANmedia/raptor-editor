@@ -134,20 +134,22 @@ function selectionSelectInner(node, selection) {
 }
 
 /**
- * Selects all the contents of the supplied element, including the element itself.
+ * Selects all the contents of the supplied node, including the node itself.
  *
  * @public @static
- * @param {jQuerySelector|jQuery|Element} element
+ * @param {Node} node
  * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
  */
-function selectionSelectOuter(element, selection) {
-    selection = selection || rangy.getSelection();
-    selection.removeAllRanges();
-    $(element).each(function() {
-        var range = rangy.createRange();
-        range.selectNode(this);
-        selection.addRange(range);
-    }).focus();
+function selectionSelectOuter(node, selection) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to selectionSelectOuter must be a node', node);
+        return;
+    }
+    // </strict>
+    var range = rangy.createRange();
+    range.selectNode(node);
+    rangy.getSelection().setSingleRange(range);
 }
 
 /**
@@ -629,10 +631,12 @@ function selectionConstrain(node, selection) {
         newRanges = [];
     for (var i = 0, l = ranges.length; i < l; i++) {
         var newRange = ranges[i].cloneRange();
-        if (!nodeIsChildOf(ranges[i].startContainer, node)) {
+        if (ranges[i].startContainer !== node &&
+                !nodeIsChildOf(ranges[i].startContainer, node)) {
             newRange.setStart(node, 0);
         }
-        if (!nodeIsChildOf(ranges[i].endContainer, node)) {
+        if (ranges[i].endContainer !== node &&
+                !nodeIsChildOf(ranges[i].endContainer, node)) {
             newRange.setEnd(node, node.childNodes.length);
         }
         newRanges.push(newRange);
