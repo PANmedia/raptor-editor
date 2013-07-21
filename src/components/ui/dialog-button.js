@@ -32,8 +32,6 @@ DialogButton.prototype = Object.create(Button.prototype);
  * stage.
  */
 DialogButton.prototype.action = function() {
-    this.state = this.raptor.stateSave();
-    this.raptor.suspendHotkeys();
     var dialog = this.getDialog(this);
     this.openDialog();
 };
@@ -75,23 +73,12 @@ DialogButton.prototype.validateDialog = function(dialog) {
  * @param {Object} dialog The dialog to open.
  */
 DialogButton.prototype.openDialog = function() {
-    // <jquery-ui>
-    // Hack to fix when a dialog is closed, the editable element is focused, and the scroll jumps to the top
-    this.scrollX = window.scrollX;
-    this.scrollY = window.scrollY;
-    // </jquery-ui>
+    this.raptor.pause();
     aDialogOpen(this.getDialog());
 };
 
 DialogButton.prototype.closeDialog = function() {
-    if (dialogs[this.name].instance.state !== null) {
-        dialogs[this.name].instance.raptor.stateRestore(dialogs[this.name].instance.state);
-    }
-    dialogs[this.name].instance.raptor.resumeHotkeys();
-    dialogs[this.name].instance.raptor.restoreFocus();
-    // <jquery-ui>
-    window.scrollTo(this.scrollY, this.scrollY);
-    // </jquery-ui>
+    dialogs[this.name].instance.raptor.resume();
 };
 
 DialogButton.prototype.okButtonClick = function(event) {

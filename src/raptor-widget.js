@@ -78,6 +78,7 @@ var RaptorWidget = {
         this.target = this.element;
         this.layout = null;
         this.previewState = null;
+        this.pausedState = null;
 
         // True if editing is enabled
         this.enabled = false;
@@ -460,6 +461,22 @@ var RaptorWidget = {
 
     selectionConstrain: function() {
         selectionConstrain(this.target[0]);
+    },
+
+    pause: function() {
+        if (!this.pausedState) {
+            this.pausedState = this.stateSave()
+            this.suspendHotkeys();
+        }
+    },
+
+    resume: function() {
+        if (this.pausedState) {
+            this.stateRestore(this.pausedState);
+            this.pausedState = null;
+            this.resumeHotkeys();
+            this.restoreFocus();
+        }
     },
 
     /*========================================================================*\

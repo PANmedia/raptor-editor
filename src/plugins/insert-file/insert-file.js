@@ -40,8 +40,7 @@ Raptor.registerUi(new Button({
      * Open the insert file dialog or file manager.
      */
     action: function() {
-        this.state = this.raptor.stateSave();
-        this.raptor.suspendHotkeys();
+        this.raptor.pause();
 
         // If a customAction has been specified, use it instead of the default dialog.
         if (!this.options.customAction) {
@@ -66,11 +65,7 @@ Raptor.registerUi(new Button({
             title: 'No File Manager',
             modal: true,
             close: function() {
-                self.raptor.resumeHotkeys();
-                if (self.state) {
-                    self.raptor.stateRestore(self.state);
-                    self.state = null;
-                }
+                self.raptor.resume();
             },
             buttons: [
                 {
@@ -145,15 +140,30 @@ Raptor.registerUi(new Button({
      * @param  {Object[]} files Array of files to be inserted.
      */
     insertFiles: function(files) {
+        this.raptor.resume();
         if (!files.length) {
             return;
         }
         this.raptor.actionApply(function() {
-            var elements = [];
-            for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
-                elements.push(this.prepareElement(files[fileIndex]));
+            if (files.length === 1 && !selectionIsEmpty()) {
+                selectionExpandTo('a', this.raptor.getElement());
+                selectionTrim();
+                var applier = rangy.createApplier({
+                    tag: 'a',
+                    attributes: {
+                        href: files[0].location,
+                        title: files[0].name,
+                        'class': this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(files[0])
+                    }
+                });
+                applier.applyToSelection();
+            } else {
+                var elements = [];
+                for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+                    elements.push(this.prepareElement(files[fileIndex]));
+                }
+                selectionReplace(elements.join(', '));
             }
-            selectionReplace(elements.join(', '));
         }.bind(this));
     },
 
