@@ -79,6 +79,8 @@ var RaptorWidget = {
         this.layout = null;
         this.previewState = null;
         this.pausedState = null;
+        this.pausedScrollX = null;
+        this.pausedScrollY = null;
 
         // True if editing is enabled
         this.enabled = false;
@@ -467,6 +469,11 @@ var RaptorWidget = {
         if (!this.pausedState) {
             this.pausedState = this.stateSave()
             this.suspendHotkeys();
+            // <jquery-ui>
+            // Hack to fix when a dialog is closed, the editable element is focused, and the scroll jumps to the top
+            this.pausedScrollX = window.scrollX;
+            this.pausedScrollY = window.scrollY;
+            // </jquery-ui>
         }
     },
 
@@ -476,6 +483,9 @@ var RaptorWidget = {
             this.pausedState = null;
             this.resumeHotkeys();
             this.restoreFocus();
+            // <jquery-ui>
+            window.scrollTo(this.pausedScrollX, this.pausedScrollY);
+            // </jquery-ui>
         }
     },
 
