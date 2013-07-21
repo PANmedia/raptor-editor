@@ -32,8 +32,7 @@ DialogButton.prototype = Object.create(Button.prototype);
  * stage.
  */
 DialogButton.prototype.action = function() {
-    this.state = this.raptor.stateSave();
-    this.raptor.suspendHotkeys();
+    this.raptor.pause();
     var dialog = this.getDialog(this);
     this.openDialog();
 };
@@ -79,11 +78,7 @@ DialogButton.prototype.openDialog = function() {
 };
 
 DialogButton.prototype.closeDialog = function() {
-    if (dialogs[this.name].instance.state !== null) {
-        dialogs[this.name].instance.raptor.stateRestore(dialogs[this.name].instance.state);
-    }
-    dialogs[this.name].instance.raptor.resumeHotkeys();
-    dialogs[this.name].instance.raptor.restoreFocus();
+    dialogs[this.name].instance.raptor.resume();
 };
 
 DialogButton.prototype.okButtonClick = function(event) {

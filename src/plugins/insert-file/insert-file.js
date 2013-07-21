@@ -40,8 +40,7 @@ Raptor.registerUi(new Button({
      * Open the insert file dialog or file manager.
      */
     action: function() {
-        this.state = this.raptor.stateSave();
-        this.raptor.suspendHotkeys();
+        this.raptor.pause();
 
         // If a customAction has been specified, use it instead of the default dialog.
         if (!this.options.customAction) {
@@ -66,11 +65,7 @@ Raptor.registerUi(new Button({
             title: 'No File Manager',
             modal: true,
             close: function() {
-                self.raptor.resumeHotkeys();
-                if (self.state) {
-                    self.raptor.stateRestore(self.state);
-                    self.state = null;
-                }
+                self.raptor.resume();
             },
             buttons: [
                 {
@@ -145,6 +140,7 @@ Raptor.registerUi(new Button({
      * @param  {Object[]} files Array of files to be inserted.
      */
     insertFiles: function(files) {
+        this.raptor.resume();
         if (!files.length) {
             return;
         }
