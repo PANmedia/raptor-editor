@@ -145,11 +145,25 @@ Raptor.registerUi(new Button({
             return;
         }
         this.raptor.actionApply(function() {
-            var elements = [];
-            for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
-                elements.push(this.prepareElement(files[fileIndex]));
+            if (files.length === 1 && !selectionIsEmpty()) {
+                selectionExpandTo('a', this.raptor.getElement());
+                selectionTrim();
+                var applier = rangy.createApplier({
+                    tag: 'a',
+                    attributes: {
+                        href: files[0].location,
+                        title: files[0].name,
+                        'class': this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(files[0])
+                    }
+                });
+                applier.applyToSelection();
+            } else {
+                var elements = [];
+                for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+                    elements.push(this.prepareElement(files[fileIndex]));
+                }
+                selectionReplace(elements.join(', '));
             }
-            selectionReplace(elements.join(', '));
         }.bind(this));
     },
 
