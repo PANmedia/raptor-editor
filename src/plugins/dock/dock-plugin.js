@@ -54,12 +54,14 @@ DockPlugin.prototype.init = function() {
         }.bind(this));
         this.raptor.bind('toolbarHide', function() {
             if (this.dockState && this.dockState.spacer) {
-                this.dockState.spacer.hide();
+                this.dockState.spacer.addClass(this.options.baseClass + '-hidden');
+                this.dockState.spacer.removeClass(this.options.baseClass + '-visible');
             }
         }.bind(this));
         this.raptor.bind('toolbarShow', function() {
             if (this.dockState && this.dockState.spacer) {
-                this.dockState.spacer.show();
+                this.dockState.spacer.removeClass(this.options.baseClass + '-hidden');
+                this.dockState.spacer.addClass(this.options.baseClass + '-visible');
             }
         }.bind(this));
         this.raptor.bind('toolbarDestroy', function() {
@@ -171,7 +173,8 @@ DockPlugin.prototype.dockToScreen = function() {
                     under: dock.options.under
                 });
                 if (!layout.isVisible()) {
-                    dock.dockState.spacer.hide();
+                    dock.dockState.spacer.removeClass(dock.options.baseClass + '-hidden');
+                    dock.dockState.spacer.addClass(dock.options.baseClass + '-visible');
                 }
                 dock.activateButton(dock.raptor.getUi('dockToScreen'));
             }
