@@ -127,7 +127,7 @@ diff_match_patch.prototype.diff_main = function(text1, text2, opt_checklines,
   text2 = text2.substring(0, text2.length - commonlength);
 
   // Compute the diff on the middle block.
-  var diffs = this.diff_compute_(text1, text2, checklines, deadline);
+  var diffs = this.diff_computetr(text1, text2, checklines, deadline);
 
   // Restore the prefix and suffix.
   if (commonprefix) {
@@ -189,7 +189,7 @@ diff_match_patch.prototype.diff_compute_ = function(text1, text2, checklines,
   }
 
   // Check to see if the problem can be split in two.
-  var hm = this.diff_halfMatch_(text1, text2);
+  var hm = this.diff_halfMatchtr(text1, text2);
   if (hm) {
     // A half-match was found, sort out the return data.
     var text1_a = hm[0];
@@ -205,10 +205,10 @@ diff_match_patch.prototype.diff_compute_ = function(text1, text2, checklines,
   }
 
   if (checklines && text1.length > 100 && text2.length > 100) {
-    return this.diff_lineMode_(text1, text2, deadline);
+    return this.diff_lineModetr(text1, text2, deadline);
   }
 
-  return this.diff_bisect_(text1, text2, deadline);
+  return this.diff_bisecttr(text1, text2, deadline);
 };
 
 
@@ -224,7 +224,7 @@ diff_match_patch.prototype.diff_compute_ = function(text1, text2, checklines,
  */
 diff_match_patch.prototype.diff_lineMode_ = function(text1, text2, deadline) {
   // Scan the text on a line-by-line basis first.
-  var a = this.diff_linesToChars_(text1, text2);
+  var a = this.diff_linesToCharstr(text1, text2);
   text1 = a.chars1;
   text2 = a.chars2;
   var linearray = a.lineArray;
@@ -232,7 +232,7 @@ diff_match_patch.prototype.diff_lineMode_ = function(text1, text2, deadline) {
   var diffs = this.diff_main(text1, text2, false, deadline);
 
   // Convert the diff back to original text.
-  this.diff_charsToLines_(diffs, linearray);
+  this.diff_charsToLinestr(diffs, linearray);
   // Eliminate freak matches (e.g. blank lines)
   this.diff_cleanupSemantic(diffs);
 
@@ -353,7 +353,7 @@ diff_match_patch.prototype.diff_bisect_ = function(text1, text2, deadline) {
           var x2 = text1_length - v2[k2_offset];
           if (x1 >= x2) {
             // Overlap detected.
-            return this.diff_bisectSplit_(text1, text2, x1, y1, deadline);
+            return this.diff_bisectSplittr(text1, text2, x1, y1, deadline);
           }
         }
       }
@@ -391,7 +391,7 @@ diff_match_patch.prototype.diff_bisect_ = function(text1, text2, deadline) {
           x2 = text1_length - x2;
           if (x1 >= x2) {
             // Overlap detected.
-            return this.diff_bisectSplit_(text1, text2, x1, y1, deadline);
+            return this.diff_bisectSplittr(text1, text2, x1, y1, deadline);
           }
         }
       }
@@ -456,7 +456,7 @@ diff_match_patch.prototype.diff_linesToChars_ = function(text1, text2) {
    * @return {string} Encoded string.
    * @private
    */
-  function diff_linesToCharsMunge_(text) {
+  function diff_linesToCharsMungetr(text) {
     var chars = '';
     // Walk the text, pulling out a substring for each line.
     // text.split('\n') would would temporarily double our memory footprint.
@@ -485,8 +485,8 @@ diff_match_patch.prototype.diff_linesToChars_ = function(text1, text2) {
     return chars;
   }
 
-  var chars1 = diff_linesToCharsMunge_(text1);
-  var chars2 = diff_linesToCharsMunge_(text2);
+  var chars1 = diff_linesToCharsMungetr(text1);
+  var chars2 = diff_linesToCharsMungetr(text2);
   return {chars1: chars1, chars2: chars2, lineArray: lineArray};
 };
 
@@ -658,7 +658,7 @@ diff_match_patch.prototype.diff_halfMatch_ = function(text1, text2) {
    *     of shorttext and the common middle.  Or null if there was no match.
    * @private
    */
-  function diff_halfMatchI_(longtext, shorttext, i) {
+  function diff_halfMatchItr(longtext, shorttext, i) {
     // Start with a 1/4 length substring at position i as a seed.
     var seed = longtext.substring(i, i + Math.floor(longtext.length / 4));
     var j = -1;
@@ -687,10 +687,10 @@ diff_match_patch.prototype.diff_halfMatch_ = function(text1, text2) {
   }
 
   // First check if the second quarter is the seed for a half-match.
-  var hm1 = diff_halfMatchI_(longtext, shorttext,
+  var hm1 = diff_halfMatchItr(longtext, shorttext,
                              Math.ceil(longtext.length / 4));
   // Check again based on the third quarter.
-  var hm2 = diff_halfMatchI_(longtext, shorttext,
+  var hm2 = diff_halfMatchItr(longtext, shorttext,
                              Math.ceil(longtext.length / 2));
   var hm;
   if (!hm1 && !hm2) {
@@ -799,8 +799,8 @@ diff_match_patch.prototype.diff_cleanupSemantic = function(diffs) {
         diffs[pointer][0] == DIFF_INSERT) {
       var deletion = diffs[pointer - 1][1];
       var insertion = diffs[pointer][1];
-      var overlap_length1 = this.diff_commonOverlap_(deletion, insertion);
-      var overlap_length2 = this.diff_commonOverlap_(insertion, deletion);
+      var overlap_length1 = this.diff_commonOverlaptr(deletion, insertion);
+      var overlap_length2 = this.diff_commonOverlaptr(insertion, deletion);
       if (overlap_length1 >= overlap_length2) {
         if (overlap_length1 >= deletion.length / 2 ||
             overlap_length1 >= insertion.length / 2) {
@@ -852,7 +852,7 @@ diff_match_patch.prototype.diff_cleanupSemanticLossless = function(diffs) {
    * @return {number} The score.
    * @private
    */
-  function diff_cleanupSemanticScore_(one, two) {
+  function diff_cleanupSemanticScoretr(one, two) {
     if (!one || !two) {
       // Edges are the best.
       return 6;
@@ -922,14 +922,14 @@ diff_match_patch.prototype.diff_cleanupSemanticLossless = function(diffs) {
       var bestEquality1 = equality1;
       var bestEdit = edit;
       var bestEquality2 = equality2;
-      var bestScore = diff_cleanupSemanticScore_(equality1, edit) +
-          diff_cleanupSemanticScore_(edit, equality2);
+      var bestScore = diff_cleanupSemanticScoretr(equality1, edit) +
+          diff_cleanupSemanticScoretr(edit, equality2);
       while (edit.charAt(0) === equality2.charAt(0)) {
         equality1 += edit.charAt(0);
         edit = edit.substring(1) + equality2.charAt(0);
         equality2 = equality2.substring(1);
-        var score = diff_cleanupSemanticScore_(equality1, edit) +
-            diff_cleanupSemanticScore_(edit, equality2);
+        var score = diff_cleanupSemanticScoretr(equality1, edit) +
+            diff_cleanupSemanticScoretr(edit, equality2);
         // The >= encourages trailing rather than leading whitespace on edits.
         if (score >= bestScore) {
           bestScore = score;
@@ -1420,7 +1420,7 @@ diff_match_patch.prototype.match_main = function(text, pattern, loc) {
     return loc;
   } else {
     // Do a fuzzy compare.
-    return this.match_bitap_(text, pattern, loc);
+    return this.match_bitaptr(text, pattern, loc);
   }
 };
 
@@ -1440,7 +1440,7 @@ diff_match_patch.prototype.match_bitap_ = function(text, pattern, loc) {
   }
 
   // Initialise the alphabet.
-  var s = this.match_alphabet_(pattern);
+  var s = this.match_alphabettr(pattern);
 
   var dmp = this;  // 'this' becomes 'window' in a closure.
 
@@ -1452,7 +1452,7 @@ diff_match_patch.prototype.match_bitap_ = function(text, pattern, loc) {
    * @return {number} Overall score for match (0.0 = good, 1.0 = bad).
    * @private
    */
-  function match_bitapScore_(e, x) {
+  function match_bitapScoretr(e, x) {
     var accuracy = e / pattern.length;
     var proximity = Math.abs(loc - x);
     if (!dmp.Match_Distance) {
@@ -1467,12 +1467,12 @@ diff_match_patch.prototype.match_bitap_ = function(text, pattern, loc) {
   // Is there a nearby exact match? (speedup)
   var best_loc = text.indexOf(pattern, loc);
   if (best_loc != -1) {
-    score_threshold = Math.min(match_bitapScore_(0, best_loc), score_threshold);
+    score_threshold = Math.min(match_bitapScoretr(0, best_loc), score_threshold);
     // What about in the other direction? (speedup)
     best_loc = text.lastIndexOf(pattern, loc + pattern.length);
     if (best_loc != -1) {
       score_threshold =
-          Math.min(match_bitapScore_(0, best_loc), score_threshold);
+          Math.min(match_bitapScoretr(0, best_loc), score_threshold);
     }
   }
 
@@ -1490,7 +1490,7 @@ diff_match_patch.prototype.match_bitap_ = function(text, pattern, loc) {
     bin_min = 0;
     bin_mid = bin_max;
     while (bin_min < bin_mid) {
-      if (match_bitapScore_(d, loc + bin_mid) <= score_threshold) {
+      if (match_bitapScoretr(d, loc + bin_mid) <= score_threshold) {
         bin_min = bin_mid;
       } else {
         bin_max = bin_mid;
@@ -1516,7 +1516,7 @@ diff_match_patch.prototype.match_bitap_ = function(text, pattern, loc) {
                 last_rd[j + 1];
       }
       if (rd[j] & matchmask) {
-        var score = match_bitapScore_(d, j - 1);
+        var score = match_bitapScoretr(d, j - 1);
         // This match will almost certainly be better than any existing match.
         // But check anyway.
         if (score <= score_threshold) {
@@ -1534,7 +1534,7 @@ diff_match_patch.prototype.match_bitap_ = function(text, pattern, loc) {
       }
     }
     // No hope for a (better) match at greater error levels.
-    if (match_bitapScore_(d + 1, loc) > score_threshold) {
+    if (match_bitapScoretr(d + 1, loc) > score_threshold) {
       break;
     }
     last_rd = rd;
@@ -1713,7 +1713,7 @@ diff_match_patch.prototype.patch_make = function(a, opt_b, opt_c) {
         } else if (diff_text.length >= 2 * this.Patch_Margin) {
           // Time for a new patch.
           if (patchDiffLength) {
-            this.patch_addContext_(patch, prepatch_text);
+            this.patch_addContexttr(patch, prepatch_text);
             patches.push(patch);
             patch = new diff_match_patch.patch_obj();
             patchDiffLength = 0;
@@ -1738,7 +1738,7 @@ diff_match_patch.prototype.patch_make = function(a, opt_b, opt_c) {
   }
   // Pick up the leftover patch if not empty.
   if (patchDiffLength) {
-    this.patch_addContext_(patch, prepatch_text);
+    this.patch_addContexttr(patch, prepatch_text);
     patches.push(patch);
   }
 

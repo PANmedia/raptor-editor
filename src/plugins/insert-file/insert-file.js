@@ -69,7 +69,7 @@ Raptor.registerUi(new Button({
             },
             buttons: [
                 {
-                    text: _('insertFileDialogOKButton'),
+                    text: tr('insertFileDialogOKButton'),
                     click: function() {
                         aDialogClose(dialogElement);
                         self.insertFiles([{
@@ -82,7 +82,7 @@ Raptor.registerUi(new Button({
                     }
                 },
                 {
-                    text: _('insertFileDialogCancelButton'),
+                    text: tr('insertFileDialogCancelButton'),
                     click: function() {
                         aDialogClose(dialogElement);
                     },

@@ -62,7 +62,7 @@ ColorMenuBasic.prototype.updateButton = function() {
         closest = null;
 
     // TODO: set automatic icon color to the color of the text
-    aButtonSetLabel(button, _('colorMenuBasicAutomatic'));
+    aButtonSetLabel(button, tr('colorMenuBasicAutomatic'));
     aButtonSetIcon(button, false);
     if (!tag) {
         return;
@@ -76,7 +76,7 @@ ColorMenuBasic.prototype.updateButton = function() {
         }
     }
     if (color) {
-        aButtonSetLabel(button, _('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
+        aButtonSetLabel(button, tr('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
         aButtonSetIcon(button, 'ui-icon-swatch');
         // FIXME: set color in an adapter friendly way
         button.find('.ui-icon').css('background-color', closest.css('color'));

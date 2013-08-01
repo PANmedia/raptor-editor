@@ -29,7 +29,7 @@ function PlaceholderPlugin(name, overrides) {
          *
          * @type {String}
          */
-        content: _('placeholderPluginDefaultContent'),
+        content: tr('placeholderPluginDefaultContent'),
 
         /**
          * Tag to wrap placeholder content.

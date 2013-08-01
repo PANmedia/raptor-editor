@@ -83,16 +83,16 @@ SaveRestPlugin.prototype.always = function() {
     this.requests--;
     if (this.requests === 0) {
         if (this.errors.length > 0 && this.messages.length === 0) {
-            this.raptor.getLayout('messages').showMessage('error', _('saveRestFail', {
+            this.raptor.getLayout('messages').showMessage('error', tr('saveRestFail', {
                 failed: this.errors.length
             }));
         } else if (this.errors.length > 0) {
-            this.raptor.getLayout('messages').showMessage('error', _('saveRestPartial', {
+            this.raptor.getLayout('messages').showMessage('error', tr('saveRestPartial', {
                 saved: this.messages.length,
                 failed: this.errors.length
             }));
         } else {
-            this.raptor.getLayout('messages').showMessage('confirm', _('saveRestSaved', {
+            this.raptor.getLayout('messages').showMessage('confirm', tr('saveRestSaved', {
                 saved: this.messages.length
             }), {
                 delay: 1000,

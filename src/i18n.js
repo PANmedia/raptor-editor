@@ -31,7 +31,7 @@ var localeNames = {};
 function registerLocale(name, nativeName, strings) {
     // <strict>
     if (locales[name]) {
-        handleError(_('Locale "{{localeName}}" has already been registered, and will be overwritten', {localeName: name}));
+        handleError(tr('Locale "{{localeName}}" has already been registered, and will be overwritten', {localeName: name}));
     }
     // </strict>
 
@@ -117,7 +117,7 @@ function getLocalizedString(string, allowMissing) {
  * @param {String} string
  * @param {Object|false} variables If false, then no string is returned by default.
  */
-function _(string, variables) {
+function tr(string, variables) {
     // Get the current locale translated string
     string = getLocalizedString(string, variables === false);
     if (string === false) {

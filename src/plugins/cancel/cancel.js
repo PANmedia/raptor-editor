@@ -33,6 +33,6 @@ Raptor.registerUi(new DialogButton({
     },
 
     getDialogTemplate: function() {
-        return $('<div>').html(_('cancelDialogContent'));
+        return $('<div>').html(tr('cancelDialogContent'));
     }
 }));

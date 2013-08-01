@@ -118,10 +118,10 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
 
         aDialog(imageResizeButtonDialog, {
             width: 500,
-            title: _('imageResizeButtonDialogTitle'),
+            title: tr('imageResizeButtonDialogTitle'),
             buttons: [
                 {
-                    text: _('imageResizeButtonDialogOKButton'),
+                    text: tr('imageResizeButtonDialogOKButton'),
                     click: function() {
                         this.resizeImage(inputWidth(), inputHeight());
                         this.raptor.checkChange();
@@ -133,7 +133,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
                     }
                 },
                 {
-                    text: _('imageResizeButtonDialogCancelButton'),
+                    text: tr('imageResizeButtonDialogCancelButton'),
                     click: function() {
                         aDialogClose(imageResizeButtonDialog);
                     }.bind(this),

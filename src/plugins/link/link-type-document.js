@@ -15,7 +15,7 @@
  */
 function LinkTypeDocument(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeDocumentLabel');
+    this.label = tr('linkTypeDocumentLabel');
 }
 
 LinkTypeDocument.prototype = Object.create(LinkTypeExternal.prototype);

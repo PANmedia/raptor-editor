@@ -73,7 +73,7 @@ SaveJsonPlugin.prototype.save = function() {
  */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     this.raptor.saved();
-    var message = _('saveJsonSaved', {
+    var message = tr('saveJsonSaved', {
         saved: this.size
     });
     if ($.isFunction(this.options.formatResponse)) {
@@ -95,7 +95,7 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    this.raptor.getLayout('messages').showMessage('error', _('saveJsonFail', {
+    this.raptor.getLayout('messages').showMessage('error', tr('saveJsonFail', {
         failed: this.size
     }));
 };

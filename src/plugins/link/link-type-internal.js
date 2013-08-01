@@ -17,7 +17,7 @@
  */
 function LinkTypeInternal(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeInternalLabel');
+    this.label = tr('linkTypeInternalLabel');
 }
 
 /**

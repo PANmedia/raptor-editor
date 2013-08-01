@@ -17,7 +17,7 @@
  */
 function LinkTypeEmail(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeEmailLabel');
+    this.label = tr('linkTypeEmailLabel');
 }
 
 /**

@@ -341,7 +341,7 @@ GoogTableCell = function(td, startRow, startCol) {
     this.rowSpan = parseInt(td.rowSpan, 10) || 1;
     this.startRow = startRow;
     this.startCol = startCol;
-    this.updateCoordinates_();
+    this.updateCoordinatestr();
 };
 
 
@@ -369,7 +369,7 @@ GoogTableCell.prototype.setColSpan = function(colSpan) {
                     this.element.removeAttribute('colSpan');
         }
         this.colSpan = colSpan;
-        this.updateCoordinates_();
+        this.updateCoordinatestr();
     }
 };
 
@@ -388,6 +388,6 @@ GoogTableCell.prototype.setRowSpan = function(rowSpan) {
             this.element.removeAttribute('rowSpan');
         }
         this.rowSpan = rowSpan;
-        this.updateCoordinates_();
+        this.updateCoordinatestr();
     }
 };
