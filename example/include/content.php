@@ -1,16 +1,4 @@
 <?php
-function loadContent($file) {
-    $content = [];
-    if (file_exists($file)) {
-        $content = file_get_contents($file);
-        $content = json_decode($content, true);
-        if ($content === false) {
-            $content = [];
-        }
-    }
-    return $content;
-}
-
 function renderContent($buffer, $content, $section) {
     if (isset($content[$section])) {
         return $content[$section];
@@ -66,4 +54,10 @@ function saveRest($file) {
         }
     }
     return json_encode(false);
+}
+
+function nav() {
+    ob_start();
+    include __DIR__ . '/nav.php';
+    return ob_get_clean();
 }

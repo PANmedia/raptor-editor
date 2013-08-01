@@ -84,3 +84,9 @@ pre {
     height: auto !important;
 }
 
+table {
+    width: 100%;
+}
+td, th {
+    border: 1px dotted #777;
+}
