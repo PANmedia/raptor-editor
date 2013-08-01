@@ -15,6 +15,7 @@ $.extend(Raptor, {
     RaptorLayout: RaptorLayout,
     RaptorPlugin: RaptorPlugin,
     SelectMenu: SelectMenu,
+    TextAlignButton: TextAlignButton,
     ToggleButton: ToggleButton,
     ToolbarLayout: ToolbarLayout,
     UiGroup: UiGroup,
