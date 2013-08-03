@@ -4,7 +4,7 @@
  *
  * @author Ruben Vincenten, rubenvincenten@gmail.com, https://github.com/rubenvincenten
  */
-registerLocale('nl', 'Nederlands', {
+extendLocale('nl', 'Nederlands', {
 
     alignCenterTitle: 'Centreren',
     alignJustifyTitle: 'Uitlijnen aan beide kanten',

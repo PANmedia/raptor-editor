@@ -4,7 +4,7 @@
  *
  * @author Francisco Martínez (JnxF), paco.7070@hotmail.com, https://twitter.com/ElJnxF
  */
-registerLocale('es', 'Español', {
+extendLocale('es', 'Español', {
 
     alignCenterTitle: 'Centrar',
     alignJustifyTitle: 'Justificar',

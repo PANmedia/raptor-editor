@@ -4,7 +4,7 @@
  *
  * @author Michael Kessler, michi@netzpiraten.ch, https://mksoft.ch
  */
-registerLocale('de', 'Deutsch', {
+extendLocale('de', 'Deutsch', {
 
     alignCenterTitle: 'Zentrieren',
     alignJustifyTitle: 'Bündig',

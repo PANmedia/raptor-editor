@@ -2,7 +2,7 @@
  * @fileOverview Russian strings file.
  * @author Ivan Gromov, summer.is.gone@gmail.com
  */
-registerLocale('ru', 'Russian', {
+extendLocale('ru', 'Russian', {
     alignCenterTitle: 'По центру',
     alignJustifyTitle: 'По ширине',
     alignLeftTitle: 'По левому краю',

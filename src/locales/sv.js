@@ -4,7 +4,7 @@
  *
  * @author Christoffer Bubach, asmhacker@gmail.com, http://www.bubach.net/
  */
-registerLocale('sv', 'Svenska', {
+extendLocale('sv', 'Svenska', {
 
     alignCenterTitle: 'Centrerad',
     alignJustifyTitle: 'Marginaljustera',

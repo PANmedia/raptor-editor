@@ -4,7 +4,7 @@
  *
  * @author Raptor, info@raptor-editor.com, http://www.raptor-editor.com/
  */
-registerLocale('zh-CN', '简体中文', {
+extendLocale('zh-CN', '简体中文', {
 
     alignCenterTitle: '中心对齐文本',
     alignJustifyTitle: '对齐文字',

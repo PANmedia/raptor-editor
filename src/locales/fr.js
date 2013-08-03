@@ -5,7 +5,7 @@
  * @author SebCorbin, seb.corbin@gmail.com, https://github.com/SebCorbin/
  * @author In4matik, https://github.com/In4matik/
  */
-registerLocale('fr', 'Français', {
+extendLocale('fr', 'Français', {
     alignCenterTitle: 'Aligner au centre',
     alignJustifyTitle: 'Justifier',
     alignLeftTitle: 'Aligner à gauche',

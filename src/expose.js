@@ -19,7 +19,6 @@ $.extend(Raptor, {
     ToggleButton: ToggleButton,
     ToolbarLayout: ToolbarLayout,
     UiGroup: UiGroup,
-    _: _,
     aButton: aButton,
     aButtonActive: aButtonActive,
     aButtonDisable: aButtonDisable,

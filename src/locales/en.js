@@ -5,7 +5,7 @@
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
-registerLocale('en', 'English', {
+extendLocale('en', 'English', {
     alignCenterTitle: 'Align text center',
     alignJustifyTitle: 'Align text justify',
     alignLeftTitle: 'Align text left',
