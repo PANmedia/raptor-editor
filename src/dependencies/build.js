@@ -3,7 +3,7 @@ builder.addModule({
     type: 'library',
     link: 'http://jquery.com/',
     files: [
-        __dirname + '/jquery.js'
+//        __dirname + '/jquery.js'
     ]
 });
 
@@ -12,7 +12,7 @@ builder.addModule({
     type: 'library',
     link: 'http://jqueryui.com/',
     files: [
-        __dirname + '/jquery-ui.js'
+//        __dirname + '/jquery-ui.js'
     ],
     depends: [
         'jQuery'

@@ -96,9 +96,9 @@ builder.addModule({
         'I18N',
         'Tools',
         'Adapters',
-        
-        'jQuery',
-        'jQuery UI',
+
+//        'jQuery',
+//        'jQuery UI',
         'jQuery Hotkeys',
         'Rangy',
     ],
@@ -107,7 +107,7 @@ builder.addModule({
         __dirname + '/support.js',
         __dirname + '/raptor.js',
         __dirname + '/raptor-widget.js',
-        
+
         __dirname + '/style/config.rb',
         __dirname + '/style/diagonal-lines.png',
         __dirname + '/style/raptor.scss',
@@ -116,7 +116,7 @@ builder.addModule({
         __dirname + '/style/support.scss',
         __dirname + '/style/variables.scss',
         __dirname + '/style/z-index.scss',
-        
+
         __dirname + '/templates/message.html',
         __dirname + '/templates/messages.html',
         __dirname + '/templates/unsupported.html'
