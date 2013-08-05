@@ -146,7 +146,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
     if (typeof okButton !== 'undefined' && okButton !== false) {
         options.buttons.push(okButton);
     }
-    if (typeof cancelButton !== 'undefined') {
+    if (typeof cancelButton !== 'undefined' && cancelButton !== false) {
         options.buttons.push(cancelButton);
     }
     return options;
