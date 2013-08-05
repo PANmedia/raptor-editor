@@ -104,11 +104,11 @@ Raptor.registerUi(new Button({
      */
     getFileType: function(file) {
         if (typeof file.extension !== 'undefined') {
-            return file.extension;
+            return file.extension.toLowerCase();
         }
         var extension = file.location.split('.');
         if (extension.length > 0) {
-            return extension.pop();
+            return extension.pop().toLowerCase();
         }
         return 'unknown';
     },
