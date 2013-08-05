@@ -17,5 +17,5 @@
     "minimum-stability": "dev",
     "require": {
         "pan/raptor-common": "dev-master"
-    },
+    }
 }
