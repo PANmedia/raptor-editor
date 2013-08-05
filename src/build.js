@@ -96,11 +96,6 @@ builder.addModule({
         'I18N',
         'Tools',
         'Adapters',
-
-//        'jQuery',
-//        'jQuery UI',
-        'jQuery Hotkeys',
-        'Rangy',
     ],
     files: [
         __dirname + '/init.js',
