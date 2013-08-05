@@ -1,3 +1,5 @@
+var $ = jQuery;
+
 $(function() {
     // Initialise rangy
     if (!rangy.initialized) {
