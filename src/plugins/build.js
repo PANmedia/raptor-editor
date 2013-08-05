@@ -320,7 +320,7 @@ builder.addModule({
     name: 'Save JSON',
     type: 'plugin',
     group: 'Other plugins',
-    description: 'Save JSON interface (sends mutliple content block in 1 request, encoded as JSON).',
+    description: 'Save JSON interface (sends multiple content block in 1 request, encoded as JSON).',
     depends: [
         'Save',
     ],
