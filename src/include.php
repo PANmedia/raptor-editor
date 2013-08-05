@@ -81,9 +81,7 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/hover-panel.js"></script>
 
 <!-- Main templates -->
-<script type="text/javascript">templateRegister('message', '<?= RAPTOR_EDITOR_URI; ?>src/templates/message.html');</script>
-<script type="text/javascript">templateRegister('messages', '<?= RAPTOR_EDITOR_URI; ?>src/templates/messages.html');</script>
-<script type="text/javascript">templateRegister('unsupported', '<?= RAPTOR_EDITOR_URI; ?>src/templates/unsupported.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/templates.js"></script>
 
 <!-- Preset -->
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/presets/base.js"></script>
@@ -94,22 +92,22 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/cancel/cancel.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/class-menu/class-menu.js"></script>
-<script type="text/javascript">templateRegister('class-menu.item', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/class-menu/templates/item.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/class-menu/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/clear-formatting/clear-formatting.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/click-button-to-edit/click-button-to-edit.js"></script>
-<script type="text/javascript">templateRegister('click-button-to-edit.button', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/click-button-to-edit/templates/button.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/click-button-to-edit/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/color-menu-basic/color-menu-basic.js"></script>
-<script type="text/javascript">templateRegister('color-menu-basic.menu', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/color-menu-basic/templates/menu.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/color-menu-basic/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/dock/dock-plugin.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/dock/dock-to-screen.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/dock/dock-to-element.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/embed/embed.js"></script>
-<script type="text/javascript">templateRegister('embed.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/embed/templates/dialog.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/embed/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/float/float-left.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/float/float-none.js"></script>
@@ -123,14 +121,13 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/hr/hr-create.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/insert-file/insert-file.js"></script>
-<script type="text/javascript">templateRegister('insert-file.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/insert-file/templates/dialog.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/insert-file/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize-button/image-resize-button.js"></script>
-<script type="text/javascript">templateRegister('image-resize-button.button', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize-button/templates/button.html');</script>
-<script type="text/javascript">templateRegister('image-resize-button.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize-button/templates/dialog.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize-button/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/language-menu.js"></script>
-<script type="text/javascript">templateRegister('language-menu.item', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/templates/item.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-create.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-remove.js"></script>
@@ -138,14 +135,7 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-type-external.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-type-document.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-type-internal.js"></script>
-<script type="text/javascript">templateRegister('link.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/dialog.html');</script>
-<script type="text/javascript">templateRegister('link.document', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/document.html');</script>
-<script type="text/javascript">templateRegister('link.email', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/email.html');</script>
-<script type="text/javascript">templateRegister('link.error', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/error.html');</script>
-<script type="text/javascript">templateRegister('link.external', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/external.html');</script>
-<script type="text/javascript">templateRegister('link.file-url', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/file-url.html');</script>
-<script type="text/javascript">templateRegister('link.internal', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/internal.html');</script>
-<script type="text/javascript">templateRegister('link.label', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates/label.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/list/list-ordered.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/list/list-unordered.js"></script>
@@ -156,7 +146,7 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/no-break/no-break.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/paste/paste.js"></script>
-<script type="text/javascript">templateRegister('paste.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/paste/templates/dialog.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/paste/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/placeholder/placeholder.js"></script>
 
@@ -165,16 +155,13 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/save/save-rest.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/snippet-menu/snippet-menu.js"></script>
-<script type="text/javascript">templateRegister('snippet-menu.item', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/snippet-menu/templates/item.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/snippet-menu/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/special-characters/special-characters.js"></script>
-<script type="text/javascript">templateRegister('special-characters.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/special-characters/templates/dialog.html');</script>
-<script type="text/javascript">templateRegister('special-characters.tab-button', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/special-characters/templates/tab-button.html');</script>
-<script type="text/javascript">templateRegister('special-characters.tab-content', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/special-characters/templates/tab-content.html');</script>
-<script type="text/javascript">templateRegister('special-characters.tab-li', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/special-characters/templates/tab-li.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/special-characters/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/statistics/statistics.js"></script>
-<script type="text/javascript">templateRegister('statistics.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/statistics/templates/dialog.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/statistics/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/table-cell-button.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/table-create.js"></script>
@@ -185,10 +172,10 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/table-merge-cells.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/table-split-cells.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/table-support.js"></script>
-<script type="text/javascript">templateRegister('table.create-menu', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/templates/create-menu.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/table/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/tag-menu/tag-menu.js"></script>
-<script type="text/javascript">templateRegister('tag-menu.menu', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/tag-menu/templates/menu.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/tag-menu/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/text-align/text-align-button.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/text-align/left.js"></script>
@@ -209,9 +196,9 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/tool-tip/tool-tip.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
-<script type="text/javascript">templateRegister('view-source.dialog', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/view-source/templates/dialog.html');</script>
-<script type="text/javascript">templateRegister('unsaved-edit-warning.warning', '<?= RAPTOR_EDITOR_URI; ?>src/plugins/unsaved-edit-warning/templates/warning.html');</script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/unsaved-edit-warning/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/view-source/view-source.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/view-source/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/expose.js"></script>
