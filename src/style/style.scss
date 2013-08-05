@@ -18,7 +18,7 @@
     min-height: 150px;
     padding: 5px !important;
     background-color: #fff;
-    border: $border-style !important;
+    border: $border-width $border-style $border-color !important;
     border-top: none !important;
     color: #000;
     font-size: 1em;

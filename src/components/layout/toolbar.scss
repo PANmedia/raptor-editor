@@ -19,7 +19,7 @@
 }
 
 .raptor-layout-toolbar-inner {
-    border: $border-style;
+    border: $border-width $border-style $border-color;
     border-top: none;
 }
 

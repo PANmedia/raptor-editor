@@ -91,5 +91,5 @@
 }
 
 .raptor-plugin-dock-docked-to-element .raptor-layout-toolbar-inner {
-    border-top: $border-style;
+    border-top: $border-width $border-style $border-color;
 }
