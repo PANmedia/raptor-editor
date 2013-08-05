@@ -201,6 +201,7 @@ builder.addModule({
     name: 'Language Menu',
     type: 'plugin',
     group: 'Other plugins',
+    description: 'Allows switching Raptor's language while editing.',
     files: [
         __dirname + '/language-menu.js',
         __dirname + '/language-menu.scss',
@@ -260,6 +261,7 @@ builder.addModule({
     name: 'Logo',
     type: 'plugin',
     group: 'Other plugins',
+    description: 'Displays logo and optionally sends usage statistics to the Raptor website.',
     files: [
         __dirname + '/logo.js',
         __dirname + '/logo.scss',
@@ -271,6 +273,7 @@ builder.addModule({
     name: 'No Break',
     type: 'plugin',
     group: 'Other plugins',
+    description: 'Prevents content breaking out of its wrapper. Used for editing single lines of text.',
     files: [
         __dirname + '/no-break.js'
     ]
@@ -280,6 +283,7 @@ builder.addModule({
     name: 'Normalise Line Breaks',
     type: 'plugin',
     group: 'Other plugins',
+    description: 'Normalises the elements inserted when pressing enter/return.',
     files: [
         __dirname + '/normalise-line-breaks.js'
     ]
@@ -300,6 +304,7 @@ builder.addModule({
     name: 'Placeholder',
     type: 'plugin',
     group: 'Other plugins',
+    description: 'Add default place holder content to editable elements when the are initialised on a empty block.',
     files: [
         __dirname + '/placeholder.js'
     ]
