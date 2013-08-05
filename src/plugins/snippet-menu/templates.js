@@ -1,0 +1,1 @@
+templateRegister("snippet-menu.item", "<li><a data-name=\"{{name}}\">{{name}}</a></li>");

@@ -1,0 +1,1 @@
+templateRegister("language-menu.item", "<li><a data-value=\"{{value}}\"><span class=\"ui-icon ui-icon-flag-{{icon}}\"></span>{{label}}</a></li>");

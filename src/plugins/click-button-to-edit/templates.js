@@ -1,0 +1,1 @@
+templateRegister("click-button-to-edit.button", "<button class=\"{{baseClass}}-button\">tr('clickButtonToEditPluginButton')</button>");
