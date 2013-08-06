@@ -17,7 +17,7 @@ function listToggle(listType, listItem, wrapper) {
     if (wrapper.html().trim() === '') {
         return;
     }
-    if (!selectionGetFirstRange()) {
+    if (!selectionExists()) {
         return;
     }
     if (listShouldConvertType(listType, listItem, wrapper)) {
@@ -59,7 +59,7 @@ function listShouldUnwrap(listType, listItem) {
  * @return {Boolean}
  */
 function listShouldConvertType(listType, listItem, wrapper) {
-    var range = selectionGetFirstRange();
+    var range = selectionRange();
     var commonAncestor = $(rangeGetCommonAncestor(range));
     if (rangeIsEmpty(range)) {
         var closestListItem = commonAncestor.closest(listItem, wrapper);
@@ -177,7 +177,7 @@ function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
                 // Unwrap the invalid element and remove it if empty
                 if (!elementIsValid(this, validChildren)) {
                     $(this).contents().unwrap();
-                    removeEmptyElements(this); 
+                    removeEmptyElements(this);
                     return true;
                 }
             }
@@ -193,7 +193,7 @@ function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listWrapSelection(listType, listItem, wrapper) {
-    var range = selectionGetFirstRange();
+    var range = selectionRange();
     var commonAncestor = rangeGetCommonAncestor(range);
 
     /**
@@ -223,7 +223,7 @@ function listWrapSelection(listType, listItem, wrapper) {
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var uniqueId = elementUniqueId();
     var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
-  
+
     rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
     var replacement = $('#' + uniqueId).removeAttr('id');
@@ -437,7 +437,7 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
  * @param {Object} listItem
  */
 function listUnwrapSelection(listType, listItem, wrapper) {
-    var range = selectionGetFirstRange();
+    var range = selectionRange();
     if (rangeIsEmpty(range)) {
         rangeExpandTo(range, [listItem]);
     }
@@ -519,7 +519,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
 }
 
 function listConvertListType(listType, listItem, wrapper) {
-    var range = selectionGetFirstRange();
+    var range = selectionRange();
     if (rangeIsEmpty(range)) {
         rangeExpandTo(range, [listItem]);
     }
@@ -636,7 +636,7 @@ function listBreakAtSelection(listType, listItem, wrapper) {
     }
     var newListItem = $('<' + listItem + '>').html(html);
     selectedElement.closest(listItem).after(newListItem);
-    
+
     listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren, false);
 
     return newListItem;

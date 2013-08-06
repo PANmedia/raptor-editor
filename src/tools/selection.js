@@ -205,7 +205,7 @@ function selectionSelectToEndOfElement(element, selection) {
     }
     // </strict>
     selection = selection || rangy.getSelection();
-    var range = selection.getRangeAt(0);
+    var range = selectionRange();
     selection.removeAllRanges();
     range.setEndAfter(element.get(0));
     selection.addRange(range);
@@ -231,10 +231,10 @@ function selectionGetHtml(selection) {
  */
 function selectionGetElement(range, selection) {
     selection = selection || rangy.getSelection();
-    if (selection.rangeCount === 0) {
+    if (selectionExists()) {
         return null;
     }
-    var range = rangy.getSelection().getRangeAt(0),
+    var range = selectionRange(),
         commonAncestor;
     // Check if the common ancestor container is a text node
     if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
@@ -395,22 +395,29 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
 }
 
 /**
- * Returns true if there is at least one range selected and the range is not
- * empty.
+ * Check if there is a current selection.
  *
- * @see rangeIsEmpty
  * @public @static
- * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
- * @returns {Boolean} Returns true if there is at least one range selected and the range is not empty.
+ * @returns {Boolean} Returns true if there is at least one range selected.
  */
-function selectionExists(sel) {
-    var exists = false;
-    selectionEachRange(function(range) {
-        if (!rangeIsEmpty(range)) {
-            exists = true;
-        }
-    }, sel, this);
-    return exists;
+function selectionExists() {
+    return rangy.getSelection().rangeCount !== 0;
+}
+
+/**
+ * Gets the first range in the current selection. In strict mode if no selection
+ * exists an error occurs.
+ *
+ * @public @static
+ * @returns {RangyRange} Returns true if there is at least one range selected.
+ */
+function selectionRange() {
+    // <strict>
+    if (!selectionExists()) {
+        handleError('Tried to get selection range when there is no selection');
+    }
+    // </strict>
+    return rangy.getSelection().getRangeAt(0);
 }
 
 /**
@@ -422,7 +429,7 @@ function selectionExists(sel) {
 function selectionReplaceSplittingSelectedElement(html, selection) {
     selection = selection || rangy.getSelection();
 
-    var selectionRange = selection.getRangeAt(0);
+    var selectionRange = selectionRange();
     var selectedElement = selectionGetElements()[0];
 
     // Select from start of selected element to start of selection
@@ -460,7 +467,7 @@ function selectionReplaceSplittingSelectedElement(html, selection) {
 function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selection = selection || rangy.getSelection();
 
-    if (selection.rangeCount === 0) {
+    if (!selectionExists()) {
         return;
     }
 
@@ -660,9 +667,9 @@ function selectionClearFormatting(limitNode, selection) {
 
     limitNode = limitNode || document.body;
     selection = selection || rangy.getSelection();
-    if (selection.rangeCount > 0) {
+    if (selectionExists()) {
         // Create a copy of the selection range to work with
-        var range = selection.getRangeAt(0).cloneRange();
+        var range = selectionRange().cloneRange();
 
         // Get the selected content
         var content = range.extractContents();
@@ -748,7 +755,7 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
         }
     }, null, this);
 
-    // Replace the temporay tag with the correct tag
+    // Replace the temporary tag with the correct tag
     $(id).each(function() {
         $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
     });
@@ -816,11 +823,11 @@ function selectionExpandTo(selector, limit, outer) {
  * @see rangeTrim
  */
 function selectionTrim() {
-    var ranges = rangy.getSelection().getAllRanges();
-    for (var i = 0, l = ranges.length; i < l; i++) {
-        rangeTrim(ranges[i]);
+    if (selectionExists()) {
+        var range = selectionRange();
+        rangeTrim(range);
+        selectionSet(range);
     }
-    rangy.getSelection().setRanges(ranges);
 }
 
 /**
@@ -912,17 +919,6 @@ function selectionContains(selector, limit) {
         }
     });
     return result;
-}
-
-/**
- * @return {RangyRange|null} The first range in the current selection or null.
- */
-function selectionGetFirstRange() {
-    var selection = rangy.getSelection();
-    if (!selection.rangeCount) {
-        return false;
-    }
-    return selection.getRangeAt(0);
 }
 
 function selectionDelete(selection) {

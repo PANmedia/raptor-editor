@@ -258,18 +258,12 @@ function rangeTrim(range) {
         handleInvalidArgumentError('Parameter 1 to rangeTrim is expected to be a range', range);
     }
     // </strict>
-    var selectedText = range.text();
-
-    // Trim start
-    var match = /^\s+/.exec(selectedText);
-    if (match) {
-        range.moveStart('character', match[0].length);
+    while (/\s/.test(range.startContainer.data.substr(range.startOffset, 1))) {
+        range.setStart(range.startContainer, range.startOffset + 1);
     }
 
-    // Trim end
-    match = /\s+$/.exec(selectedText);
-    if (match) {
-        range.moveEnd('character', -match[0].length);
+    while (range.endOffset > 0 && /\s/.test(range.endContainer.data.substr(range.endOffset - 1, 1))) {
+        range.setEnd(range.endContainer, range.endOffset - 1);
     }
 }
 
