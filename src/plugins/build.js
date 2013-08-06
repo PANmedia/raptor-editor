@@ -330,7 +330,7 @@ builder.addModule({
         'Save',
     ],
     files: [
-        __dirname + '/save/save-rest.js',
+        __dirname + '/save/save-json.js',
     ]
 });
 
@@ -535,7 +535,6 @@ builder.addModule({
     group: 'Text styling',
     description: 'Buttons for toggling sub and super scripts elements.',
     files: [
-        __dirname + '/text-style/strike.js',
         __dirname + '/text-style/sub.js',
         __dirname + '/text-style/super.js',
         __dirname + '/text-style/style/sub.scss',
