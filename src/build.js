@@ -112,7 +112,7 @@ builder.addModule({
 
 builder.addModule({
     name: 'Expose',
-    type: 'core',
+    type: 'expose',
     include: [
         'preset'
     ],
