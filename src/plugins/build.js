@@ -511,6 +511,7 @@ builder.addModule({
     files: [
         __dirname + '/text-style/size-decrease.js',
         __dirname + '/text-style/size-increase.js',
+        __dirname + '/text-style/style/text-size.scss',
         __dirname + '/text-style/style/images/edit-size-down.png',
         __dirname + '/text-style/style/images/edit-size-up.png',
     ]

@@ -23,7 +23,6 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-textrange.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/resizetable.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/diff.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/goog-table.js"></script>
 
 <!-- Theme -->
