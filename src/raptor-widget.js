@@ -59,9 +59,9 @@ var RaptorWidget = {
         }
 
         if (this.options.preset) {
-            this.options = $.extend({}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
+            this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
         } else {
-            this.options = $.extend({}, Raptor.globalDefaults, Raptor.defaults, this.options);
+            this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.defaults, this.options);
         }
 
         // Give the element a unique ID
