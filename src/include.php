@@ -48,6 +48,7 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/presets/base.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/presets/full.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/presets/micro.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/presets/inline.js"></script>
 
 <!-- Plugins -->
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/cancel/cancel.js"></script>

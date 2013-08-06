@@ -34,6 +34,9 @@ Raptor.registerPreset({
             panels: [
                 'plain-text'
             ]
+        },
+        noBreak: {
+            enabled: true
         }
     }
 });

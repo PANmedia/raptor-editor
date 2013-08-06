@@ -6,7 +6,6 @@
  */
 
 function NoBreakPlugin(name, overrides) {
-    this.enabled = false;
     RaptorPlugin.call(this, name || 'noBreak', overrides);
 }
 
@@ -18,13 +17,13 @@ NoBreakPlugin.prototype.init = function() {
 };
 
 NoBreakPlugin.prototype.preventReturn = function(event) {
-    if (this.enabled && event.which === 13) {
+    if (this.options.enabled && event.which === 13) {
         return false;
     }
 };
 
 NoBreakPlugin.prototype.preventDrop = function(event) {
-    return this.enabled;
+    return this.options.enabled;
 // Attempt to allow dropping of plain text (not working)
 //
 //    console.log(event.originalEvent);
