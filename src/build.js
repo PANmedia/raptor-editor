@@ -97,6 +97,9 @@ builder.addModule({
         'Tools',
         'Adapters',
     ],
+    include: [
+        'Componenets',
+    ],
     files: [
         __dirname + '/init.js',
         __dirname + '/support.js',
