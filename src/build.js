@@ -49,12 +49,34 @@ builder.addModule({
 });
 
 builder.addModule({
-    name: 'Componenets',
+    name: 'Raptor',
     type: 'core',
     depends: [
-        'Raptor'
+        'Common',
+        'I18N',
+        'Tools',
+        'Adapters',
     ],
     files: [
+        __dirname + '/init.js',
+        __dirname + '/support.js',
+        __dirname + '/raptor.js',
+        __dirname + '/raptor-widget.js',
+
+        __dirname + '/style/config.rb',
+        __dirname + '/style/diagonal-lines.png',
+        __dirname + '/style/raptor.scss',
+        __dirname + '/style/mixins.scss',
+        __dirname + '/style/style.scss',
+        __dirname + '/style/support.scss',
+        __dirname + '/style/variables.scss',
+        __dirname + '/style/z-index.scss',
+
+        __dirname + '/templates/message.html',
+        __dirname + '/templates/messages.html',
+        __dirname + '/templates/unsupported.html',
+
+        // Components
         __dirname + '/components/layout.js',
         __dirname + '/components/plugin.js',
 
@@ -85,39 +107,6 @@ builder.addModule({
         __dirname + '/components/ui/select-menu.js',
         __dirname + '/components/ui/menu.scss',
         __dirname + '/components/ui/select-menu.scss'
-    ]
-});
-
-builder.addModule({
-    name: 'Raptor',
-    type: 'core',
-    depends: [
-        'Common',
-        'I18N',
-        'Tools',
-        'Adapters',
-    ],
-    include: [
-        'Componenets',
-    ],
-    files: [
-        __dirname + '/init.js',
-        __dirname + '/support.js',
-        __dirname + '/raptor.js',
-        __dirname + '/raptor-widget.js',
-
-        __dirname + '/style/config.rb',
-        __dirname + '/style/diagonal-lines.png',
-        __dirname + '/style/raptor.scss',
-        __dirname + '/style/mixins.scss',
-        __dirname + '/style/style.scss',
-        __dirname + '/style/support.scss',
-        __dirname + '/style/variables.scss',
-        __dirname + '/style/z-index.scss',
-
-        __dirname + '/templates/message.html',
-        __dirname + '/templates/messages.html',
-        __dirname + '/templates/unsupported.html'
     ]
 });
 
