@@ -30,14 +30,6 @@ builder.addModule({
 });
 
 builder.addModule({
-    name: 'Adapters',
-    type: 'core',
-    files: [
-        __dirname + '/adapters/jquery-ui.js'
-    ]
-});
-
-builder.addModule({
     name: 'I18N',
     type: 'core',
     include: [
@@ -55,7 +47,7 @@ builder.addModule({
         'Common',
         'I18N',
         'Tools',
-        'Adapters',
+        'jQuery UI Adapter',
     ],
     files: [
         __dirname + '/init.js',

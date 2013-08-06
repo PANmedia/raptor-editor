@@ -1,45 +1,8 @@
-<!-- Libraries -->
-<script type="text/javascript">
-    if (typeof jQuery === 'undefined') {
-        document.write('<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/jquery.js"><' + '/script>');
-    }
-</script>
-<script type="text/javascript">
-    if (typeof jQuery.ui === 'undefined') {
-        document.write('<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/jquery-ui.js"><' + '/script>');
-//        document.write('<link rel="stylesheet" href="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/themes/aristo/jquery-ui.css"/>');
-//        document.write('<link rel="stylesheet" href="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/themes/smoothness/jquery-ui.css"/>');
-//        document.write('<link rel="stylesheet" href="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/themes/redmond/jquery-ui.css"/>');
-        document.write('<link rel="stylesheet" type="text/css" href="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/themes/mammoth/theme.css" />');
-        document.write('<link rel="stylesheet" type="text/css" href="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/themes/mammoth/theme-icons.css" />');
-    }
-</script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/jquery-hotkeys.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-core.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-serializer.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-applier.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-cssclassapplier.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-selectionsaverestore.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/rangy/rangy-textrange.js"></script>
-
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/resizetable.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/dependencies/goog-table.js"></script>
-
-<!-- Theme -->
+<!-- Styles -->
 <link rel="stylesheet" type="text/css" href="<?= RAPTOR_PACKAGES_URI; ?>raptor.css"/>
 <link rel="stylesheet" type="text/css" href="<?= RAPTOR_PACKAGES_URI; ?>raptor-front-end.css"/>
 
 <!-- Editor -->
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/adapters/jquery-ui.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/i18n.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/en.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/de.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/es.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/fr.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/nl.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/ru.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/sv.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/locales/zh-CN.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/init.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/support.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/action.js"></script>
@@ -56,7 +19,6 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/state.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/style.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/table.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/template.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/types.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/raptor.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/raptor-widget.js"></script>
