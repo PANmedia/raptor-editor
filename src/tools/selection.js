@@ -231,7 +231,7 @@ function selectionGetHtml(selection) {
  */
 function selectionGetElement(range, selection) {
     selection = selection || rangy.getSelection();
-    if (selectionExists()) {
+    if (!selectionExists()) {
         return null;
     }
     var range = selectionRange(),
