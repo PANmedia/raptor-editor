@@ -34,7 +34,6 @@ builder.addModule({
     type: 'core',
     depends: [
         'Common',
-        'I18N',
         'Tools',
         'jQuery UI Adapter',
     ],
