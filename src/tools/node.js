@@ -23,7 +23,7 @@ function nodeFindParent(node) {
 function nodeFindTextNodes(node) {
     var textNodes = [], whitespace = /^\s*$/;
     for (var i = 0, l = node.childNodes.length; i < l; i++) {
-        if (node.childNodes[i].nodeType == 3) {
+        if (node.childNodes[i].nodeType == Node.TEXT_NODE) {
             if (!whitespace.test(node.childNodes[i].nodeValue)) {
                 textNodes.push(node.childNodes[i]);
             }
