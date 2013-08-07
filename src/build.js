@@ -30,17 +30,6 @@ builder.addModule({
 });
 
 builder.addModule({
-    name: 'I18N',
-    type: 'core',
-    include: [
-        'locale'
-    ],
-    files: [
-        __dirname + '/i18n.js'
-    ]
-});
-
-builder.addModule({
     name: 'Raptor',
     type: 'core',
     depends: [
