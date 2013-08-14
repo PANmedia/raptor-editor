@@ -146,7 +146,6 @@ $.extend(Raptor, {
     selectionSelectEdge: selectionSelectEdge,
     selectionSelectEnd: selectionSelectEnd,
     selectionSelectInner: selectionSelectInner,
-    selectionSelectInner: selectionSelectInner,
     selectionSelectOuter: selectionSelectOuter,
     selectionSelectStart: selectionSelectStart,
     selectionSelectToEndOfElement: selectionSelectToEndOfElement,
