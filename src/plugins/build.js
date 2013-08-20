@@ -394,6 +394,9 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Enables table insertion and modification, as well as extended support for dealing with selection inside table cells.',
+    depends: [
+        'GoogTable',
+    ],
     files: [
         __dirname + '/table/table-cell-button.js',
         __dirname + '/table/table-create.js',
