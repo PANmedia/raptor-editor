@@ -396,6 +396,7 @@ builder.addModule({
     description: 'Enables table insertion and modification, as well as extended support for dealing with selection inside table cells.',
     depends: [
         'GoogTable',
+        'ResizeTable',
     ],
     files: [
         __dirname + '/table/table-cell-button.js',
