@@ -33,8 +33,10 @@ Raptor.registerUi(new DialogButton({
      * Update the dialog's text area with the current HTML.
      */
     openDialog: function() {
-        this.getDialog().find('textarea').val(this.raptor.getHtml());
+        var textarea = this.getDialog().find('textarea');
+        textarea.val(this.raptor.getHtml());
         DialogButton.prototype.openDialog.call(this);
+        textarea.select();
     },
 
     /**
