@@ -158,15 +158,12 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
  * @returns {Element} The dialog.
  */
 DialogButton.prototype.getDialog = function() {
-    if (typeof dialogs[this.name] !== 'undefined') {
-        return dialogs[this.name].dialog;
-    }
-    dialogs[this.name] = {
-        instance: this
-    };
-    if (typeof dialogs[this.name].dialog === 'undefined') {
-        dialogs[this.name].dialog = this.getDialogTemplate();
+    if (typeof dialogs[this.name] === 'undefined') {
+        dialogs[this.name] = {
+            dialog: $(this.getDialogTemplate())
+        };
         aDialog(dialogs[this.name].dialog, $.extend(this.getDefaultDialogOptions(this.name), this.dialogOptions));
     }
+    dialogs[this.name].instance = this;
     return dialogs[this.name].dialog;
 };
