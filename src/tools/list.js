@@ -230,7 +230,10 @@ function listWrapSelection(listType, listItem, wrapper) {
     var validChildren = listType === 'blockquote' ? listValidPChildren : listValidLiChildren;
     listEnforceValidChildren(replacement, listItem, validChildren);
     if (replacement.is(listType)) {
-        replacement = replacement.find(' > ' + listItem);
+        var child = replacement.find(' > ' + listItem);
+        if (child.length === 0) {
+            replacement = $(document.createElement('li')).appendTo(replacement);
+        }
     }
     selectionSelectInner(replacement.get(0));
 }
