@@ -123,7 +123,7 @@ function selectionSelectInner(element, selection) {
 function selectionSelectInner(node, selection) {
     // <strict>
     if (!typeIsNode(node)) {
-        handleInvalidArgumentError('Parameter 1 to selectionSelectInner is expected a Node, got:', node);
+        handleInvalidArgumentError('Parameter 1 to selectionSelectInner is expected a Node', node);
         return;
     }
     // </strict>
@@ -200,7 +200,7 @@ function selectionSelectStart(element, selection) {
 function selectionSelectToEndOfElement(element, selection) {
     // <strict>
     if (!typeIsElement(element)) {
-        handleInvalidArgumentError('Parameter 1 to selectionSelectToEndOfElement is expected to be Element, got:', element);
+        handleInvalidArgumentError('Parameter 1 to selectionSelectToEndOfElement is expected to be Element', element);
         return;
     }
     // </strict>
