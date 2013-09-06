@@ -20,6 +20,31 @@ rangy.createModule("ClassApplier", ["WrappedSelection"], function(api, module) {
 
     var defaultTagName = "span";
 
+    /**
+     * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
+     * @todo type for domFragment and tag.
+     * @param {type} domFragment The fragment to be converted to a HTML string.
+     * @param {type} tag The tag that the string may be wrapped in.
+     * @returns {String} The DOMFragment as a string, optionally wrapped in a tag.
+     */
+    function fragmentToHtml(domFragment, tag) {
+        var html = '';
+        // Get all nodes in the extracted content
+        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+            var node = domFragment.childNodes.item(j);
+            var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml($(node));
+            if (content) {
+                html += content;
+            }
+        }
+        if (tag) {
+            html = $('<' + tag + '>' + html + '</' + tag + '>');
+            html.find('p').wrapInner('<' + tag + '/>');
+            html.find('p > *').unwrap();
+            html = $('<div/>').html(html).html();
+        }
+        return html;
+    }
     function trim(str) {
         return str.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
     }
