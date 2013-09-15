@@ -4,11 +4,11 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 
-.raptor-table-support-selected ::selection,
-.raptor-table-support-selected ::-moz-selection {
+.raptor-plugin-table-support-selected ::selection,
+.raptor-plugin-table-support-selected ::-moz-selection {
     background: transparent;
 }
 
-.raptor-table-support-cell-selected {
+.raptor-plugin-table-support-cell-selected {
     background-color: Highlight;
 }

@@ -42,15 +42,15 @@ TagMenu.prototype.changeTag = function(tag) {
         return;
     }
 
-    var selectedElement = selectionGetElement();
-    limitElement = this.raptor.getElement();
+    var selectedElement = selectionGetElement(),
+        limitElement = this.raptor.getElement();
     if (selectedElement && !selectedElement.is(limitElement)) {
-        var cell = selectedElement.parentsUntil(limitElement, 'td, li').first();
+        var cell = selectedElement.closest('td, li, #' + limitElement.attr('id'));
         if (cell.length !== 0) {
             limitElement = cell;
         }
     }
-
+    
     selectionChangeTags(tag, [
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p', 'div', 'pre', 'address'
