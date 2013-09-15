@@ -9,7 +9,6 @@ $.extend(Raptor, {
     HoverPanelLayout: HoverPanelLayout,
     Menu: Menu,
     MenuButton: MenuButton,
-    MessagesLayout: MessagesLayout,
     PreviewButton: PreviewButton,
     PreviewToggleButton: PreviewToggleButton,
     RaptorLayout: RaptorLayout,

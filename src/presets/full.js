@@ -43,8 +43,6 @@ Raptor.registerPreset({
             uiOrder: [
                 ['clickButtonToEdit']
             ]
-        },
-        messages: {
         }
     }
 }, true);

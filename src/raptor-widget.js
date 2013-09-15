@@ -531,14 +531,14 @@ var RaptorWidget = {
 
             if (!this.initialised) {
                 this.initialised = true;
-                try {
-                    document.execCommand('enableInlineTableEditing', false, false);
-                    document.execCommand('styleWithCSS', true, true);
-                } catch (error) {
-                    // <strict>
-                    handleError(error);
-                    // </strict>
-                }
+//                try {
+//                    document.execCommand('enableInlineTableEditing', false, false);
+//                    document.execCommand('styleWithCSS', true, true);
+//                } catch (error) {
+//                    // <strict>
+//                    handleError(error);
+//                    // </strict>
+//                }
 
                 for (var name in this.plugins) {
                     this.plugins[name].enable();

@@ -25,8 +25,6 @@ Raptor.registerPreset({
             uiOrder: [
                 ['clickButtonToEdit', 'revisions']
             ]
-        },
-        messages: {
         }
     },
     plugins: {

@@ -83,24 +83,29 @@ SaveRestPlugin.prototype.always = function() {
     this.requests--;
     if (this.requests === 0) {
         if (this.errors.length > 0 && this.messages.length === 0) {
-            this.raptor.getLayout('messages').showMessage('error', tr('saveRestFail', {
-                failed: this.errors.length
-            }));
+            aNotify({
+                text: tr('saveRestFail', {
+                    failed: this.errors.length
+                }),
+                type: 'error'
+            });
         } else if (this.errors.length > 0) {
-            this.raptor.getLayout('messages').showMessage('error', tr('saveRestPartial', {
-                saved: this.messages.length,
-                failed: this.errors.length
-            }));
+            aNotify({
+                text: tr('saveRestPartial', {
+                    saved: this.messages.length,
+                    failed: this.errors.length
+                }),
+                type: 'error'
+            });
         } else {
-            this.raptor.getLayout('messages').showMessage('confirm', tr('saveRestSaved', {
-                saved: this.messages.length
-            }), {
-                delay: 1000,
-                hide: function() {
-                    this.raptor.unify(function(raptor) {
-                        raptor.disableEditing();
-                    });
-                }.bind(this)
+            aNotify({
+                text: tr('saveRestSaved', {
+                    saved: this.messages.length
+                }),
+                type: 'success'
+            });
+            this.raptor.unify(function(raptor) {
+                raptor.disableEditing();
             });
         }
     }

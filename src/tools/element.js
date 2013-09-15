@@ -162,8 +162,12 @@ function elementFirstInvalidElementOfValidParent(element, validTags, wrapper) {
  * @return {Object} Visible rectangle for the element.
  */
 function elementVisibleRect(element) {
-
-    element = $(element);
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to elementVisibleRect must be a jQuery element', element);
+        return;
+    }
+    // </strict>
 
     var rect = {
         top: Math.round(element.offset().top),

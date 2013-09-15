@@ -79,13 +79,12 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     if ($.isFunction(this.options.formatResponse)) {
         message = this.options.formatResponse(data);
     }
-    this.raptor.getLayout('messages').showMessage('confirm', message, {
-        delay: 1000,
-        hide: function() {
-            this.raptor.unify(function(raptor) {
-                raptor.disableEditing();
-            });
-        }.bind(this)
+    aNotify({
+        text: message,
+        type: 'success'
+    });
+    this.raptor.unify(function(raptor) {
+        raptor.disableEditing();
     });
 };
 
@@ -95,7 +94,10 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    this.raptor.getLayout('messages').showMessage('error', tr('saveJsonFail', {
-        failed: this.size
-    }));
+    aNotify({
+        text: tr('saveJsonFail', {
+            failed: this.size
+        }),
+        type: 'error'
+    });
 };

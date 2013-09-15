@@ -37,7 +37,6 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/ui/select-menu.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/ui/custom-menu.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/ui-group.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/messages.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/toolbar.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/hover-panel.js"></script>
 

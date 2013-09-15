@@ -52,8 +52,6 @@ builder.addModule({
         __dirname + '/style/variables.scss',
         __dirname + '/style/z-index.scss',
 
-        __dirname + '/templates/message.html',
-        __dirname + '/templates/messages.html',
         __dirname + '/templates/unsupported.html',
 
         // Components
@@ -67,9 +65,6 @@ builder.addModule({
 
         __dirname + '/components/layout/hover-panel.js',
         __dirname + '/components/layout/hover-panel.scss',
-
-        __dirname + '/components/layout/messages.js',
-        __dirname + '/components/layout/messages.scss',
 
         __dirname + '/components/ui/button.js',
         __dirname + '/components/ui/preview-button.js',
