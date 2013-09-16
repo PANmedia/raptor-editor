@@ -44,10 +44,10 @@ SaveJsonPlugin.prototype.save = function() {
     var data = {};
     this.raptor.unify(function(raptor) {
         if (raptor.isDirty()) {
-            this.raptor.clean();
+            raptor.clean();
             var plugin = raptor.getPlugin('saveJson');
-            var id = plugin.options.id.call(this);
-            var html = this.raptor.getHtml();
+            var id = plugin.options.id.call(plugin);
+            var html = raptor.getHtml();
             data[id] = html;
         }
     }.bind(this));
@@ -79,12 +79,13 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     if ($.isFunction(this.options.formatResponse)) {
         message = this.options.formatResponse(data);
     }
-    aNotify({
-        text: message,
-        type: 'success'
-    });
-    this.raptor.unify(function(raptor) {
-        raptor.disableEditing();
+    this.raptor.getLayout('messages').showMessage('confirm', message, {
+        delay: 1000,
+        hide: function() {
+            this.raptor.unify(function(raptor) {
+                raptor.disableEditing();
+            });
+        }.bind(this)
     });
 };
 
@@ -94,10 +95,7 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    aNotify({
-        text: tr('saveJsonFail', {
-            failed: this.size
-        }),
-        type: 'error'
-    });
+    this.raptor.getLayout('messages').showMessage('error', tr('saveJsonFail', {
+        failed: this.size
+    }));
 };
