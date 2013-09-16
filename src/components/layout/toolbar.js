@@ -108,7 +108,8 @@ ToolbarLayout.prototype.enableDragging = function() {
 
 ToolbarLayout.prototype.disableDragging = function() {
     if ($.fn.draggable &&
-            this.options.draggable) {
+            this.options.draggable &&
+            this.getElement().is('.ui-draggable')) {
         this.getElement().draggable('disable').removeClass('ui-state-disabled');
     }
 };
