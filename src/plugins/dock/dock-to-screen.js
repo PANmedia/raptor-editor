@@ -16,6 +16,8 @@
 Raptor.registerUi(new Button({
     name: 'dockToScreen',
     action: function() {
-        this.raptor.plugins.dock.toggleDockToScreen();
+        this.raptor.unify(function(raptor) {
+            raptor.plugins.dock.toggleDockToScreen();
+        });
     }
 }));
