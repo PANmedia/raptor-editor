@@ -13,6 +13,21 @@
 Raptor.registerUi(new TableCellButton({
     name: 'tableDeleteColumn',
     applyToElement: function(cell) {
-        tableDeleteColumn(cell.parentNode.parentNode.parentNode, tableGetCellIndex(cell).x);
+        var position = tableGetCellIndex(cell),
+            table = cell.parentNode.parentNode.parentNode,
+            nextCell;
+        tableDeleteColumn(cell.parentNode.parentNode.parentNode, position.x);
+        if (tableIsEmpty(table)) {
+            table.parentNode.removeChild(table);
+            return;
+        }
+        nextCell = tableGetCellByIndex(table, position);
+        if (!nextCell && position.x > 0) {
+            nextCell = tableGetCellByIndex(table, {
+                x: position.x - 1,
+                y: position.y
+            });
+        }
+        selectionSelectInner(nextCell);
     }
 }));
