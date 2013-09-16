@@ -143,7 +143,7 @@ var Raptor =  {
     },
 
     /*========================================================================*\
-     * Plugins as UI
+     * Plugins and UI
     \*========================================================================*/
 
     /**
@@ -290,7 +290,9 @@ var Raptor =  {
             } else {
                 storage = {};
             }
-            if (value === undefined) return storage[key];
+            if (value === undefined) {
+                return storage[key];
+            }
             storage[key] = value;
             localStorage.uiWidgetEditor = JSON.stringify(storage);
         }
