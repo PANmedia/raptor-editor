@@ -40,7 +40,11 @@ SaveJsonPlugin.prototype.init = function() {
 /**
  * Save Raptor content.
  */
-SaveJsonPlugin.prototype.save = function() {
+SaveJsonPlugin.prototype.save = function(saveSections) {
+    // Hack save sections
+    if (typeof RaptorSection !== 'undefined' && saveSections !== false) {
+        RaptorSection.save(false);
+    }
     var data = {};
     this.raptor.unify(function(raptor) {
         if (raptor.isDirty()) {
