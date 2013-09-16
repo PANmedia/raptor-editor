@@ -72,7 +72,11 @@ SaveJsonPlugin.prototype.save = function() {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
-    this.raptor.saved();
+    this.raptor.unify(function(raptor) {
+        if (raptor.isDirty()) {
+            raptor.saved();
+        }
+    });
     var message = tr('saveJsonSaved', {
         saved: this.size
     });
