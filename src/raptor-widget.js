@@ -58,10 +58,14 @@ var RaptorWidget = {
             currentLocale = locale;
         }
 
+        var options = this.options;
         if (this.options.preset) {
             this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
         } else {
             this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.defaults, this.options);
+        }
+        if (options.layouts && options.layouts.toolbar && options.layouts.toolbar.uiOrder) {
+            this.options.layouts.toolbar.uiOrder = options.layouts.toolbar.uiOrder;
         }
 
         // Give the element a unique ID
