@@ -163,11 +163,12 @@ function elementFirstInvalidElementOfValidParent(element, validTags, wrapper) {
  */
 function elementVisibleRect(element) {
     // <strict>
-    if (!typeIsElement(element)) {
-        handleInvalidArgumentError('Parameter 1 to elementVisibleRect must be a jQuery element', element);
+    if (!typeIsJQueryCompatible(element)) {
+        handleInvalidArgumentError('Parameter 1 to elementVisibleRect is expected to be a jQuery compatible object', element);
         return;
     }
     // </strict>
+    element = $(element);
 
     var rect = {
         top: Math.round(element.offset().top),
