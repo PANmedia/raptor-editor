@@ -103,6 +103,7 @@ if (!defined('RAPTOR_SRC')) {
 <script type="text/javascript" src="<?= RAPTOR_SRC ?>plugins/dock/dock-to-element.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_SRC ?>plugins/embed/embed.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_SRC ?>plugins/font-family/font-family.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_SRC ?>plugins/insert-file/insert-file.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_SRC ?>plugins/language-menu/language-menu.js"></script>
 

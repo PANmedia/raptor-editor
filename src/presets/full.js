@@ -30,7 +30,7 @@ Raptor.registerPreset({
                 ['linkCreate', 'linkRemove'],
                 ['embed', 'insertFile'],
                 ['floatLeft', 'floatNone', 'floatRight'],
-                ['colorMenuBasic'],
+                ['colorMenuBasic','fontFamilyMenu'],
                 ['tagMenu'],
                 ['classMenu'],
                 ['snippetMenu', 'specialCharacters'],

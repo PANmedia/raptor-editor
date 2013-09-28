@@ -21,7 +21,7 @@ var MAX = 1000;
  * Current debugging level
  * @type int
  */
-var debugLevel = MIN;
+var debugLevel = MAX;
 
 
 /**
