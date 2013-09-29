@@ -14,24 +14,24 @@
  * @param {Object} options
  */
 function FontFamilyMenu(options) {
-    this.colors = [
-        'white',
-        'black',
-        'grey',
-        'blue',
-        'red',
-        'green',
-        'purple',
-        'orange'
+    this.fonts = [
+        'default',
+        'arial',
+        'palatino',
+        'georgia',
+        'times',
+        'comicSMS',
+        'impact',
+        'courier'
     ];
     /**
-     * Cache the current color so it can be reapplied to the button if the user
-     * clicks the button to open the menu, hovers some colors then clicks off to
+     * Cache the current font so it can be reapplied to the button if the user
+     * clicks the button to open the menu, hovers some fonts then clicks off to
      * close it.
      *
      * @type {String}
      */
-    this.currentColor = 'red';
+    this.currentFont = 'default';
     SelectMenu.call(this, {
         name: 'fontFamilyMenu'
     });
@@ -40,7 +40,7 @@ function FontFamilyMenu(options) {
 FontFamilyMenu.prototype = Object.create(SelectMenu.prototype);
 
 /**
- * Initialize the basic colour menu.
+ * Initialize the basic font menu.
  *
  * @returns {Element}
  */
@@ -51,33 +51,33 @@ FontFamilyMenu.prototype.init = function() {
 };
 
 /**
- * Updates the basic colour menu with the current colour.
+ * Updates the basic font menu with the current font.
  */
 FontFamilyMenu.prototype.updateButton = function() {
     var tag = selectionGetElements()[0],
         button = this.getButton().getButton(),
-        color = null,
+        font = null,
         closest = null;
 
     // TODO: set automatic icon color to the color of the text
-    aButtonSetLabel(button, _('colorMenuBasicRed'));
+    aButtonSetLabel(button, _('Default'));
     aButtonSetIcon(button, false);
     if (!tag) {
         return;
     }
     tag = $(tag);
-    for (var colorsIndex = 0; colorsIndex < this.colors.length; colorsIndex++) {
-        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[colorsIndex]);
+    for (var fontsIndex = 0; fontsIndex < this.fonts.length; fontsIndex++) {
+        closest = $(tag).closest('.' + this.options.cssPrefix + this.fonts[fontsIndex]);
         if (closest.length) {
-            color = this.colors[colorsIndex];
+            font = this.fonts[fontsIndex];
             break;
         }
     }
-    if (color) {
-        aButtonSetLabel(button, _('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
-        aButtonSetIcon(button, 'ui-icon-swatch');
-        // FIXME: set color in an adapter friendly way
-        button.find('.ui-icon').css('background-color', closest.css('color'));
+    if (font) {
+        aButtonSetLabel(button, _((font.charAt(0).toUpperCase() + font.slice(1))));
+/*        aButtonSetIcon(button, 'ui-icon-swatch');*/
+        // FIXME: set font in an adapter friendly way
+/*        button.find('.ui-icon').css('background-color', closest.css('font'));*/
         return;
     }
 };
@@ -87,14 +87,15 @@ FontFamilyMenu.prototype.updateButton = function() {
  *
  * @param {type} color The current colour.
  */
-FontFamilyMenu.prototype.changeColor = function(color, permanent) {
+FontFamilyMenu.prototype.changeFont = function(font, permanent) {
     if (permanent) {
-        this.currentColor = color;
+        this.currentFont = font;
+        console.log(this.currentFont);
     }
     this.raptor.actionApply(function() {
         selectionExpandToWord();
-        if (color === 'automatic') {
-            selectionGetElements().parents('.' + this.options.cssPrefix + 'color').addBack().each(function() {
+        if (font === 'default') {
+            selectionGetElements().parents('.' + this.options.cssPrefix + 'font').addBack().each(function() {
                 var classes = $(this).attr('class');
                 if (classes === null || typeof classes === 'undefined') {
                     return;
@@ -110,7 +111,7 @@ FontFamilyMenu.prototype.changeColor = function(color, permanent) {
         } else {
             var uniqueId = elementUniqueId();
             selectionToggleWrapper('span', {
-                classes: this.options.classes || this.options.cssPrefix + 'color ' + this.options.cssPrefix + color,
+                classes: this.options.classes || this.options.cssPrefix + 'font ' + this.options.cssPrefix + font,
                 attributes: {
                     id: uniqueId
                 }
@@ -135,7 +136,7 @@ FontFamilyMenu.prototype.changeColor = function(color, permanent) {
  */
 FontFamilyMenu.prototype.menuItemMouseEnter = function(event) {
     this.raptor.actionPreview(function() {
-        this.changeColor($(event.currentTarget).data('color'));
+        this.changeFont($(event.currentTarget).data('font'));
     }.bind(this));
 };
 
@@ -146,7 +147,7 @@ FontFamilyMenu.prototype.menuItemMouseEnter = function(event) {
  */
 FontFamilyMenu.prototype.menuItemMouseLeave = function(event) {
     this.raptor.actionPreviewRestore();
-    this.changeColor(this.currentColor);
+    this.changeFont(this.currentFont);
 };
 
 /**
@@ -157,7 +158,7 @@ FontFamilyMenu.prototype.menuItemMouseLeave = function(event) {
 FontFamilyMenu.prototype.menuItemClick = function(event) {
     SelectMenu.prototype.menuItemClick.apply(this, arguments);
     this.raptor.actionApply(function() {
-        this.changeColor($(event.currentTarget).data('color'), true);
+        this.changeFont($(event.currentTarget).data('font'), true);
     }.bind(this));
 };
 

@@ -52,7 +52,8 @@ registerLocale('en', 'English', {
     floatLeftTitle: 'Align image to the left',
     floatNoneTitle: 'Remove image align',
     floatRightTitle: 'Align image to the right',
-
+    fontFamilyMenuTitle: 'Choose your font',
+    
     guidesTitle: 'Show element guides',
 
     historyRedoTitle: 'Redo',

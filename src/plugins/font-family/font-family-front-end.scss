@@ -1,36 +1,33 @@
 /**
- * Basic color menu plugin default colors.
+ * Basic font-family menu plugin default fonts.
  *
- * @author David Neilsen <david@panmedia.co.nz>
+ * @author Nikolay Rodionov <rodi.incave@gmail.com>
  */
-.cms-white {
-    color: #ffffff;
+
+.cms-arial {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.cms-black {
-    color: #000000;
+.cms-palatino {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 }
 
-.cms-blue {
-    color: #4f81bd;
+.cms-georgia {
+    font-family: Georgia, serif;
 }
 
-.cms-red {
-    color: #c0504d;
+.cms-times {
+    font-family: "Times New Roman", Times, serif;
 }
 
-.cms-green {
-    color: #9bbb59;
+.cms-comicSMS {
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
-.cms-purple {
-    color: #8064a2;
+.cms-impact {
+    font-family: Impact, Charcoal, sans-serif;
 }
 
-.cms-orange {
-    color: #f79646;
-}
-
-.cms-grey {
-    color: #999;
+.cms-courier {
+    font-family: "Courier New", Courier, monospace;
 }
