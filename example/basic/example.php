@@ -46,9 +46,6 @@
                         snippets: {
                             'Grey Box': '<div class="grey-box"><h1>Grey Box</h1><ul><li>This is a list</li></ul></div>'
                         }
-                    },
-                    fontFamilyMenu: {
-                        'coucou' : 'coucou'
                     }
                 }
             });
