@@ -59,7 +59,6 @@ FontFamilyMenu.prototype.updateButton = function() {
         font = null,
         closest = null;
 
-    // TODO: set automatic icon color to the color of the text
     aButtonSetLabel(button, _('Default'));
     aButtonSetIcon(button, false);
     if (!tag) {
@@ -75,17 +74,14 @@ FontFamilyMenu.prototype.updateButton = function() {
     }
     if (font) {
         aButtonSetLabel(button, _((font.charAt(0).toUpperCase() + font.slice(1))));
-/*        aButtonSetIcon(button, 'ui-icon-swatch');*/
-        // FIXME: set font in an adapter friendly way
-/*        button.find('.ui-icon').css('background-color', closest.css('font'));*/
         return;
     }
 };
 
 /**
- * Changes the colour of the selection.
+ * Changes the font-family of the selection.
  *
- * @param {type} color The current colour.
+ * @param {type} font The current font.
  */
 FontFamilyMenu.prototype.changeFont = function(font, permanent) {
     if (permanent) {
@@ -130,7 +126,7 @@ FontFamilyMenu.prototype.changeFont = function(font, permanent) {
 };
 
 /**
- * The preview state for the basic colour menu.
+ * The preview state for the basic font menu.
  *
  * @param event The mouse event which triggered the preview.
  */
@@ -151,9 +147,9 @@ FontFamilyMenu.prototype.menuItemMouseLeave = function(event) {
 };
 
 /**
- * Applies the colour change to the selection.
+ * Applies the font change to the selection.
  *
- * @param event The mouse event to trigger the application of the colour.
+ * @param event The mouse event to trigger the application of the font.
  */
 FontFamilyMenu.prototype.menuItemClick = function(event) {
     SelectMenu.prototype.menuItemClick.apply(this, arguments);
