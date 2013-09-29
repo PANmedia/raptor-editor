@@ -1,0 +1,25 @@
+/**
+ * Basic font-family menu plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-ui-color-menu-basic-menu > div {
+    min-width: 100px;
+}
+
+.raptor-ui-color-menu-basic-menu span {
+    padding-left: 2px;
+}
+
+.raptor-ui-color-menu-basic-swatch {
+    width: 16px;
+    height: 16px;
+    float: left;
+    margin-top: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.raptor-ui-color-menu-basic .ui-icon-swatch {
+    background-image: none;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+}
