@@ -3,6 +3,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Button to prompt the user to disable editing and revert all changes back to their original state.',
+    root: __dirname + '/cancel',
     files: [
         __dirname + '/cancel/cancel.js',
         __dirname + '/cancel/cancel.scss',
@@ -15,6 +16,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Drop down menu to allow selecting a class to be applied to a block level element.',
+    root: __dirname + '/class-menu',
     files: [
         __dirname + '/class-menu/class-menu.js',
         __dirname + '/class-menu/class-menu.scss',
@@ -28,6 +30,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button that removes all formatting from the selected text.',
+    root: __dirname + '/clear-formatting',
     files: [
         __dirname + '/clear-formatting/clear-formatting.js',
         __dirname + '/clear-formatting/clear-formatting.png',
@@ -40,6 +43,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Button that appears over an editable block when the mouse hovers it that when clicked enables Raptor.',
+    root: __dirname + '/click-button-to-edit',
     files: [
         __dirname + '/click-button-to-edit/click-button-to-edit.js',
         __dirname + '/click-button-to-edit/click-button-to-edit.scss',
@@ -53,6 +57,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Drop down menu to allow changing text color.',
+    root: __dirname + '/color-menu-basic',
     files: [
         __dirname + '/color-menu-basic/color-menu-basic-front-end.scss',
         __dirname + '/color-menu-basic/color-menu-basic.js',
@@ -65,6 +70,7 @@ builder.addModule({
     name: 'Dock',
     type: 'plugin',
     group: 'Other plugins',
+    root: __dirname + '/dock',
     files: [
         __dirname + '/dock/dock-plugin.js',
         __dirname + '/dock/dock.scss'
@@ -79,6 +85,7 @@ builder.addModule({
     depends: [
         'Dock',
     ],
+    root: __dirname + '/dock',
     files: [
         __dirname + '/dock/application-dock-090.png',
         __dirname + '/dock/dock-to-screen.js',
@@ -94,6 +101,7 @@ builder.addModule({
     depends: [
         'Dock',
     ],
+    root: __dirname + '/dock',
     files: [
         __dirname + '/dock/application-dock-tab.png',
         __dirname + '/dock/dock-to-element.js',
@@ -107,6 +115,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows embedding of video, flash, and other widgets.',
+    root: __dirname + '/embed',
     files: [
         __dirname + '/embed/embed.js',
         __dirname + '/embed/embed.scss',
@@ -120,6 +129,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows aligning (floating) images.',
+    root: __dirname + '/float',
     files: [
         __dirname + '/float/edit-image-none.png',
         __dirname + '/float/edit-image-right.png',
@@ -133,10 +143,25 @@ builder.addModule({
 });
 
 builder.addModule({
+    name: 'Font Family',
+    type: 'plugin',
+    group: 'Advanced editing plugins',
+    description: 'Drop down menu to allow changing text font family.',
+    root: __dirname + '/font-family',
+    files: [
+        __dirname + '/font-family/font-family.js',
+        __dirname + '/font-family/font-family.scss',
+        __dirname + '/font-family/font-family-front-end.scss',
+        __dirname + '/font-family/templates/menu-item.html',
+    ]
+});
+
+builder.addModule({
     name: 'Guides',
     type: 'plugin',
     group: 'Other plugins',
     description: 'Toggle guides (outlines) around block elements inside an editable region.',
+    root: __dirname + '/guides',
     files: [
         __dirname + '/guides/guide.png',
         __dirname + '/guides/guides.js',
@@ -149,6 +174,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Adds undo and redo buttons.',
+    root: __dirname + '/history',
     files: [
         __dirname + '/history/arrow-curve-180-left.png',
         __dirname + '/history/arrow-curve.png',
@@ -163,6 +189,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button to insert horizontal rule elements',
+    root: __dirname + '/hr',
     files: [
         __dirname + '/hr/edit-rule.png',
         __dirname + '/hr/hr-create.js',
@@ -175,6 +202,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows resizing images by hovering over them and clicking a button to open a resize dialog.',
+    root: __dirname + '/image-resize-button',
     files: [
         __dirname + '/image-resize-button/image-resize-button.js',
         __dirname + '/image-resize-button/image-resize-button.scss',
@@ -189,6 +217,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows simple insertion of images etc.',
+    root: __dirname + '/insert-file',
     files: [
         __dirname + '/insert-file/image.png',
         __dirname + '/insert-file/insert-file.js',
@@ -202,6 +231,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Allows switching Raptor\'s language while editing.',
+    root: __dirname + '/language-menu',
     files: [
         __dirname + '/language-menu/language-menu.js',
         __dirname + '/language-menu/language-menu.scss',
@@ -222,6 +252,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows links to be creates and removed including email, internal, external and file/document links.',
+    root: __dirname + '/link',
     files: [
         __dirname + '/link/chain-unchain.png',
         __dirname + '/link/chain.png',
@@ -248,6 +279,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows orders and unordered lists to be inserted.',
+    root: __dirname + '/list',
     files: [
         __dirname + '/list/edit-list-order.png',
         __dirname + '/list/edit-list.png',
@@ -262,6 +294,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Premium plugins',
     description: 'Displays logo and optionally sends usage statistics to the Raptor website.',
+    root: __dirname + '/logo',
     files: [
         __dirname + '/logo/logo.js',
         __dirname + '/logo/logo.scss',
@@ -274,6 +307,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Prevents content breaking out of its wrapper. Used for editing single lines of text.',
+    root: __dirname + '/no-break',
     files: [
         __dirname + '/no-break/no-break.js'
     ]
@@ -284,6 +318,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Normalises the elements inserted when pressing enter/return.',
+    root: __dirname + '/normalise-line-breaks',
     files: [
         __dirname + '/normalise-line-breaks/normalise-line-breaks.js'
     ]
@@ -293,6 +328,7 @@ builder.addModule({
     name: 'Paste',
     type: 'plugin',
     description: 'Enables triggering a dialog input on a paste event to clean pasted content.',
+    root: __dirname + '/paste',
     files: [
         __dirname + '/paste/paste.js',
         __dirname + '/paste/paste.scss',
@@ -305,6 +341,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Add default place holder content to editable elements when the are initialised on a empty block.',
+    root: __dirname + '/placeholder',
     files: [
         __dirname + '/placeholder/placeholder.js'
     ]
@@ -314,6 +351,7 @@ builder.addModule({
     name: 'Save',
     type: 'plugin',
     group: 'Other plugins',
+    root: __dirname + '/save',
     files: [
         __dirname + '/save/disk-black.png',
         __dirname + '/save/save.js',
@@ -329,6 +367,7 @@ builder.addModule({
     depends: [
         'Save',
     ],
+    root: __dirname + '/save',
     files: [
         __dirname + '/save/save-json.js',
     ]
@@ -342,6 +381,7 @@ builder.addModule({
     depends: [
         'Save',
     ],
+    root: __dirname + '/save',
     files: [
         __dirname + '/save/save-rest.js',
     ]
@@ -352,6 +392,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Menu of customised HTML snippets that can be inserted.',
+    root: __dirname + '/snippet-menu',
     files: [
         __dirname + '/snippet-menu/document-snippet.png',
         __dirname + '/snippet-menu/snippet-menu.js',
@@ -365,6 +406,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows insertion of special characters.',
+    root: __dirname + '/special-characters',
     files: [
         __dirname + '/special-characters/edit-symbol.png',
         __dirname + '/special-characters/special-characters.js',
@@ -381,6 +423,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Enables usage statistics on contents blocks such as word counts. Can warn the user if the content is too long.',
+    root: __dirname + '/statistics',
     files: [
         __dirname + '/statistics/dashboard.png',
         __dirname + '/statistics/statistics.js',
@@ -398,6 +441,7 @@ builder.addModule({
         'GoogTable',
         'ResizeTable',
     ],
+    root: __dirname + '/table',
     files: [
         __dirname + '/table/table-cell-button.js',
         __dirname + '/table/table-create.js',
@@ -426,6 +470,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Menu of block elements (H1, H2, P, etc) that can be set.',
+    root: __dirname + '/tag-menu',
     files: [
         __dirname + '/tag-menu/edit.png',
         __dirname + '/tag-menu/tag-menu.js',
@@ -439,6 +484,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Text alignment buttons (left, right, center, justify)',
+    root: __dirname + '/text-align',
     files: [
         __dirname + '/text-align/text-align-button.js',
 
@@ -460,6 +506,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button for toggling bold text.',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/bold.js',
         __dirname + '/text-style/style/bold-front-end.scss',
@@ -473,6 +520,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button for toggling italic text.',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/italic.js',
         __dirname + '/text-style/style/italic-front-end.scss',
@@ -486,6 +534,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button for toggling struck out text.',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/strike.js',
         __dirname + '/text-style/style/strike-front-end.scss',
@@ -499,6 +548,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button to toggle the &lt;blockquote&gt; element',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/block-quote.js',
         __dirname + '/text-style/style/block-quote.scss',
@@ -512,6 +562,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Buttons for increasing and decreasing the text size.',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/size-decrease.js',
         __dirname + '/text-style/size-increase.js',
@@ -526,6 +577,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Button for toggling underlined text.',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/underline.js',
         __dirname + '/text-style/style/underline-front-end.scss',
@@ -539,6 +591,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Text styling',
     description: 'Buttons for toggling sub and super scripts elements.',
+    root: __dirname + '/text-style',
     files: [
         __dirname + '/text-style/sub.js',
         __dirname + '/text-style/super.js',
@@ -554,6 +607,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Makes tool tips prettier.',
+    root: __dirname + '/tool-tip',
     files: [
         __dirname + '/tool-tip/tip.png',
         __dirname + '/tool-tip/tool-tip.js',
@@ -566,6 +620,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Other plugins',
     description: 'Displays a message in the corner of the browser when there is unsaved changes to an editable block on the page.',
+    root: __dirname + '/unsaved-edit-warning',
     files: [
         __dirname + '/unsaved-edit-warning/unsaved-edit-warning.js',
         __dirname + '/unsaved-edit-warning/unsaved-edit-warning.scss',
@@ -578,6 +633,7 @@ builder.addModule({
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows the user to view and edit the source code for a editable block.',
+    root: __dirname + '/view-source',
     files: [
         __dirname + '/view-source/edit-code.png',
         __dirname + '/view-source/view-source.js',

@@ -74,6 +74,9 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/float/float-none.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/float/float-right.js"></script>
 
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/font-family/font-family.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/font-family/templates.js"></script>
+
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/guides/guides.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/history/history-redo.js"></script>
