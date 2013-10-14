@@ -875,7 +875,11 @@ var RaptorWidget = {
         }
 
         // Check if we have explicitly disabled UI
-        if ($.inArray(ui, this.options.disabledUi) !== -1) {
+        if ($.inArray(ui, this.options.disabledUi) !== -1 ||
+                $.inArray(ui, this.options.disabledPlugins) !== -1) {
+            // <strict>
+            debug('Using disabledUi/disabledPlugins options is deprecated, use plugins: { nameOfPlugin: false } instead.');
+            // </strict>
             return false;
         }
 
@@ -925,7 +929,11 @@ var RaptorWidget = {
             }
 
             // Check if we have explicitly disabled the plugin
-            if ($.inArray(name, this.options.disabledPlugins) !== -1) {
+            if ($.inArray(name, this.options.disabledUi) !== -1 ||
+                    $.inArray(name, this.options.disabledPlugins) !== -1) {
+                // <strict>
+                debug('Using disabledUi/disabledPlugins options is deprecated, use plugins: { nameOfPlugin: false } instead.');
+                // </strict>
                 continue;
             }
 
