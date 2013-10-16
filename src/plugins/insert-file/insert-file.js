@@ -151,7 +151,7 @@ Raptor.registerUi(new Button({
                 var applier = rangy.createApplier({
                     tag: 'a',
                     attributes: {
-                        href: files[0].location,
+                        href: files[0].location.replace(/([^:])\/\//g, '$1/'),
                         title: files[0].name,
                         'class': this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(files[0])
                     }
@@ -194,7 +194,7 @@ Raptor.registerUi(new Button({
      */
     prepareImage: function(file, classNames, text) {
         return $('<div/>').html($('<img/>').attr({
-            src: file.location,
+            src: file.location.replace(/([^:])\/\//g, '$1/'),
             title: text || file.name,
             'class': classNames
         })).html();
@@ -210,8 +210,9 @@ Raptor.registerUi(new Button({
      * @return {string} Anchor tag's HTML.
      */
     prepareAnchor: function(file, classNames, text) {
+        
         return $('<div/>').html($('<a/>').attr({
-            href: file.location,
+            href: file.location.replace(/([^:])\/\//g, '$1/'),
             title: file.name,
             'class': classNames
         }).html(text || file.name)).html();
