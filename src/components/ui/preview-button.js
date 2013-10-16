@@ -61,8 +61,8 @@ PreviewButton.prototype.mouseEnter = function() {
  * Sets the mouse leave function to disable the preview.
  */
 PreviewButton.prototype.mouseLeave = function() {
-    this.raptor.actionPreviewRestore();
     this.previewing = false;
+    this.raptor.actionPreviewRestore();
 };
 
 /**

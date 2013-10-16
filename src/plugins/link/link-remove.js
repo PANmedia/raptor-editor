@@ -13,7 +13,7 @@
  * @todo param details?
  * @param {type} param
  */
-Raptor.registerUi(new PreviewButton({
+Raptor.registerUi(new PreviewToggleButton({
     name: 'linkRemove',
     disable: true,
 
@@ -27,5 +27,16 @@ Raptor.registerUi(new PreviewButton({
             applier.undoToSelection();
             cleanEmptyElements(this.raptor.getElement(), ['a']);
         }.bind(this));
+    },
+
+    selectionToggle: function() {
+        var element = selectionGetElement();
+        if (!element) {
+            return false;
+        }
+        if (element.closest('a').length) {
+            return true;
+        }
+        return false;
     }
 }));

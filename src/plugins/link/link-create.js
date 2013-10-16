@@ -61,10 +61,14 @@ Raptor.registerUi(new DialogToggleButton({
     },
 
     selectionToggle: function() {
-        var applier = rangy.createApplier({
-            tag: 'a'
-        });
-        return applier.isAppliedToSelection();
+        var element = selectionGetElement();
+        if (!element) {
+            return false;
+        }
+        if (element.closest('a').length) {
+            return true;
+        }
+        return false;
     },
 
     getDialogTemplate: function() {

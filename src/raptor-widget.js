@@ -403,6 +403,7 @@ var RaptorWidget = {
                 this.selectionConstrain();
                 this.previewState = actionPreview(this.previewState, this.target, action);
             }
+            this.checkSelectionChange();
         } catch (exception) {
             // <strict>
             handleError(exception);
@@ -414,6 +415,7 @@ var RaptorWidget = {
         if (this.previewState) {
             this.target = actionPreviewRestore(this.previewState, this.target);
             this.previewState = null;
+            this.checkSelectionChange();
         }
     },
 
