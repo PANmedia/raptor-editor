@@ -3,7 +3,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
-    <?php $uri = '../../../src/'; include __DIR__ . '/../../../src/include.php'; ?>
+    <?php include __DIR__ . '/../../include.php'; ?>
 </head>
 <body class="simple">
     <script type="text/javascript">
