@@ -34,7 +34,7 @@ function tableCreate(columns, rows, options) {
  * Adds a column to a table.
  *
  * @param {HTMLTableElement} table
- * @param {int} index Position to insert the column at, starting at 0.
+ * @param {int[]} index Position to insert the column at, starting at 0.
  * @param [options] Extra options to apply.
  * @param [options.placeHolder=""] Place holder HTML to insert into each created cell.
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
@@ -56,7 +56,7 @@ function tableDeleteColumn(table, index) {
  * Adds a row to a table, and append as many cells as the longest row in the table.
  *
  * @param {HTMLTableElement} table
- * @param {int} index Position to insert the row at, starting at 0.
+ * @param {int[]} index Position to insert the row at, starting at 0.
  * @param [options] Extra options to apply.
  * @param [options.placeHolder=""] Place holder HTML to insert into each created cell.
  * @returns {HTMLTableCellElement[]} An array of cells added to the table.
@@ -214,4 +214,14 @@ function tableCanSplitCells(table, x, y) {
 function tableSplitCells(table, x, y) {
     var googTable = new GoogTable(table);
     googTable.splitCell(x, y);
+}
+
+
+function tableIsEmpty(table) {
+    for (var i = 0, l = table.rows.length; i < l; i++) {
+        if (table.rows[i].cells.length > 0) {
+            return false;
+        }
+    }
+    return true;
 }

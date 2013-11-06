@@ -71,6 +71,7 @@ RevisionsPlugin.prototype.getUrl = function() {
  */
 RevisionsPlugin.prototype.getRevisions = function(success, failure) {
     $.ajax({
+        dataType: 'json',
         url: this.getUrl(),
         headers: this.getHeaders()
     }).done(function(data) {

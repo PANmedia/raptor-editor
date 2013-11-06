@@ -72,6 +72,10 @@ registerLocale('en', 'English', {
     insertFileTitle: 'Insert file',
     insertFileDialogOKButton: 'Insert file',
     insertFileDialogCancelButton: 'Cancel',
+    insertFileURLLabel: 'File URL',
+    insertFileNameLabel: 'File Name',
+    insertFileURLPlaceHolder: 'File URL...',
+    insertFileNamePlaceHolder: 'File Name...',
 
     languageMenuTitle: 'Change Language',
     languageMenuEN: 'English',
@@ -153,7 +157,7 @@ registerLocale('en', 'English', {
     pasteDialogFormattedUnclean: 'Formatted Unclean',
     pasteDialogSource: 'Source Code',
 
-    placeholderPluginDefaultContent: '[Your content here]',
+    placeholderPluginDefaultContent: '&nbsp;',
 
     saveTitle: 'Save content',
     saveJsonFail: 'Failed to save {{failed}} content block(s)',
@@ -237,6 +241,7 @@ registerLocale('en', 'English', {
     revisionsButtonViewDiffTitle: null,
     revisionsDiffButtonDialogCancelButton: 'Close',
     revisionsDiffButtonDialogTitle: 'View differences',
+    revisionsDiffButtonTitle: 'View differences',
     revisionsLoading: 'Loading revisions...',
     revisionsNone: 'No revisions for this element',
     revisionsPreviewButtonTitle: 'Preview',

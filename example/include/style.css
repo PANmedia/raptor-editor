@@ -51,19 +51,23 @@ blockquote {
     overflow: auto;
 }
 
+pre {
+    margin: 0;
+}
+
 .half {
     float: left;
     width: 45%;
     margin: 0 1%;
 }
 
-pre {
-    margin: 0;
-}
-
 .center {
     margin: 0 auto;
     float: none;
+}
+
+.outline {
+    border: 1px dotted #777;
 }
 
 .editable table {

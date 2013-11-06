@@ -107,8 +107,9 @@ Raptor.registerUi(new DialogButton({
      *
      * @return {jQuery} The processed statistics dialog template
      */
-    openDialog: function(dialog) {
-        var content = this.getContent();
+    openDialog: function() {
+        var dialog = this.getDialog(),
+            content = this.getContent();
 
         // If maximum has not been set, use infinity
         var charactersRemaining = this.options.maximum ? this.options.maximum - content.length : '&infin;';
@@ -154,5 +155,6 @@ Raptor.registerUi(new DialogButton({
                 charactersRemaining: charactersRemaining * -1
             }));
         }
+        DialogButton.prototype.openDialog.call(this);
     }
 }));

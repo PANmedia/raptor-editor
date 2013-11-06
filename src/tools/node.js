@@ -23,11 +23,22 @@ function nodeFindParent(node) {
 function nodeFindTextNodes(node) {
     var textNodes = [], whitespace = /^\s*$/;
     for (var i = 0, l = node.childNodes.length; i < l; i++) {
-        if (node.childNodes[i].nodeType == 3) {
+        if (node.childNodes[i].nodeType == Node.TEXT_NODE) {
             if (!whitespace.test(node.childNodes[i].nodeValue)) {
                 textNodes.push(node.childNodes[i]);
             }
         }
     }
     return textNodes;
+}
+
+function nodeIsChildOf(child, parent) {
+     var node = child.parentNode;
+     while (node != null) {
+         if (node == parent) {
+             return true;
+         }
+         node = node.parentNode;
+     }
+     return false;
 }

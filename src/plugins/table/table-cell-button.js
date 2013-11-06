@@ -28,10 +28,9 @@ TableCellButton.prototype = Object.create(FilteredPreviewButton.prototype);
  * @returns {Element|null}
  */
 TableCellButton.prototype.getElement = function(range) {
-    var cell = range.commonAncestorContainer.parentNode;
-    if (cell.tagName === 'TD' ||
-            cell.tagName === 'TH') {
-        return cell;
+    var cell = $(range.commonAncestorContainer.parentNode).closest('td, th');
+    if (cell.length) {
+        return cell[0];
     }
     return null;
 };

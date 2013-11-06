@@ -58,7 +58,11 @@ var RaptorWidget = {
             currentLocale = locale;
         }
 
-        this.options = $.extend({}, Raptor.defaults, this.options);
+        if (this.options.preset) {
+            this.options = $.extend({}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
+        } else {
+            this.options = $.extend({}, Raptor.globalDefaults, Raptor.defaults, this.options);
+        }
 
         // Give the element a unique ID
         if (!this.element.attr('id')) {
@@ -74,6 +78,9 @@ var RaptorWidget = {
         this.target = this.element;
         this.layout = null;
         this.previewState = null;
+        this.pausedState = null;
+        this.pausedScrollX = null;
+        this.pausedScrollY = null;
 
         // True if editing is enabled
         this.enabled = false;
@@ -242,6 +249,10 @@ var RaptorWidget = {
         return this.target;
     },
 
+    getNode: function() {
+        return this.target[0];
+    },
+
     /**
      *
      */
@@ -288,7 +299,7 @@ var RaptorWidget = {
 
     checkSelectionChange: function() {
         // Check if the caret has changed position
-        var currentSelection = rangy.serializeSelection();
+        var currentSelection = rangy.serializeSelection(null, false);
         if (this.previousSelection !== currentSelection) {
             this.fire('selectionChange');
         }
@@ -451,7 +462,31 @@ var RaptorWidget = {
     },
 
     selectionConstrain: function() {
-        selectionConstrain(this.target);
+        selectionConstrain(this.target[0]);
+    },
+
+    pause: function() {
+        if (!this.pausedState) {
+            this.pausedState = this.stateSave()
+            this.suspendHotkeys();
+            // <jquery-ui>
+            // Hack to fix when a dialog is closed, the editable element is focused, and the scroll jumps to the top
+            this.pausedScrollX = window.scrollX;
+            this.pausedScrollY = window.scrollY;
+            // </jquery-ui>
+        }
+    },
+
+    resume: function() {
+        if (this.pausedState) {
+            this.stateRestore(this.pausedState);
+            this.pausedState = null;
+            this.resumeHotkeys();
+            this.restoreFocus();
+            // <jquery-ui>
+            window.scrollTo(this.pausedScrollX, this.pausedScrollY);
+            // </jquery-ui>
+        }
     },
 
     /*========================================================================*\
@@ -644,6 +679,11 @@ var RaptorWidget = {
 
         instance.raptor = this;
         instance.options = options;
+        // <strict>
+        if (!instance.init) {
+            handleError('Component missing init function: ' + instance.name);
+        }
+        // </strict>
         var init = instance.init();
 
         return {

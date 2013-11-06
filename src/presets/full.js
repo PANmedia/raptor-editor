@@ -10,7 +10,8 @@
 /**
  * @namespace Full options for Raptor.
  */
-Raptor.defaults = $.extend(basePreset, {
+Raptor.registerPreset({
+    name: 'full',
     layouts: {
         toolbar: {
             uiOrder: [
@@ -34,7 +35,8 @@ Raptor.defaults = $.extend(basePreset, {
                 ['classMenu'],
                 ['snippetMenu', 'specialCharacters'],
                 ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn'],
-                ['languageMenu']
+                ['languageMenu'],
+                ['statistics']
             ]
         },
         hoverPanel: {
@@ -45,4 +47,4 @@ Raptor.defaults = $.extend(basePreset, {
         messages: {
         }
     }
-});
+}, true);

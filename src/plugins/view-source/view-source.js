@@ -31,11 +31,12 @@ Raptor.registerUi(new DialogButton({
 
     /**
      * Update the dialog's text area with the current HTML.
-     *
-     * @param  {Element} dialog
      */
-    openDialog: function(dialog) {
-        dialog.find('textarea').val(this.raptor.getHtml());
+    openDialog: function() {
+        var textarea = this.getDialog().find('textarea');
+        textarea.val(this.raptor.getHtml());
+        DialogButton.prototype.openDialog.call(this);
+        textarea.select();
     },
 
     /**

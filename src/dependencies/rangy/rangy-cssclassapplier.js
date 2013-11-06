@@ -9,18 +9,52 @@
  *
  * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.3alpha.776
- * Build date: 12 April 2013
+ * Version: 1.3alpha.783
+ * Build date: 28 June 2013
  */
-rangy.createModule("CssClassApplier", function(api, module) {
-    api.requireModules( ["WrappedSelection", "WrappedRange"] );
-
+rangy.createModule("ClassApplier", ["WrappedSelection"], function(api, module) {
     var dom = api.dom;
     var DomPosition = dom.DomPosition;
     var contains = dom.arrayContains;
 
 
     var defaultTagName = "span";
+
+    /**
+     * Retrieve outer html from an element.
+     *
+     * @param  {jQuery} element The jQuery element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
+    function elementOuterHtml(element) {
+        return element.clone().wrap('<div/>').parent().html();
+    }
+
+    /**
+     * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
+     * @todo type for domFragment and tag.
+     * @param {type} domFragment The fragment to be converted to a HTML string.
+     * @param {type} tag The tag that the string may be wrapped in.
+     * @returns {String} The DOMFragment as a string, optionally wrapped in a tag.
+     */
+    function fragmentToHtml(domFragment, tag) {
+        var html = '';
+        // Get all nodes in the extracted content
+        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+            var node = domFragment.childNodes.item(j);
+            var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml(jQuery(node));
+            if (content) {
+                html += content;
+            }
+        }
+        if (tag) {
+            html = jQuery('<' + tag + '>' + html + '</' + tag + '>');
+            html.find('p').wrapInner('<' + tag + '/>');
+            html.find('p > *').unwrap();
+            html = jQuery('<div/>').html(html).html();
+        }
+        return html;
+    }
 
     function trim(str) {
         return str.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
@@ -828,7 +862,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
         },
 
         isAppliedToRange: function(range) {
-            if (range.collapsed) {
+            if (range.collapsed || range.toString() == "") {
                 return !!this.getSelfOrAncestorWithClass(range.commonAncestorContainer);
             } else {
                 var textNodes = range.getNodes( [3] );
@@ -849,7 +883,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
         isAppliedToRanges: function(ranges) {
             var i = ranges.length;
-            if (i === 0) {
+            if (i == 0) {
                 return false;
             }
             while (i--) {

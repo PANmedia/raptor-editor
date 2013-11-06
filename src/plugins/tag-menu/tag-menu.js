@@ -43,11 +43,14 @@ TagMenu.prototype.changeTag = function(tag) {
     }
 
     var selectedElement = selectionGetElement(),
-        limitElement = selectedElement.closest('td, li');
-    if (limitElement.length === 0) {
         limitElement = this.raptor.getElement();
+    if (selectedElement && !selectedElement.is(limitElement)) {
+        var cell = selectedElement.closest('td, li, #' + limitElement.attr('id'));
+        if (cell.length !== 0) {
+            limitElement = cell;
+        }
     }
-
+    
     selectionChangeTags(tag, [
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p', 'div', 'pre', 'address'

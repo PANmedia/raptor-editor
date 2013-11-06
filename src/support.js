@@ -70,7 +70,7 @@ function isSupported() {
                  *
                  * @param {jQuery} element The jQuery element to have it's z index increased.
                  */
-                function elementBringToTop(element) {
+                var elementBringToTop = function(element) {
                     var zIndex = 1;
                     element.siblings().each(function() {
                         var z = $(this).css('z-index');
@@ -129,7 +129,7 @@ if (typeof Node === 'undefined') {
     function () { // trim returns a new string (which replace supports)
         return this.replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g,'') // trim the left and right sides of the string
     })
-    
+
 // </ie>
 
 // <strict>
@@ -141,11 +141,13 @@ function versionCompare(v1, v2) {
         if (v2parts.length == i) {
             return v1;
         }
+        var v1int = parseInt(v1parts[i]);
+        var v2int = parseInt(v2parts[i]);
 
-        if (v1parts[i] == v2parts[i]) {
+        if (v1int == v2int) {
             continue;
         }
-        else if (v1parts[i] > v2parts[i]) {
+        else if (v1int > v2int) {
             return v1;
         }
         else {

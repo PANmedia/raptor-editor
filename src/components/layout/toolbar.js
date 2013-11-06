@@ -54,6 +54,50 @@ ToolbarLayout.prototype.hide = function() {
     }
 };
 
+ToolbarLayout.prototype.initDragging = function() {
+    if ($.fn.draggable &&
+            this.options.draggable &&
+            !this.getElement().data('ui-draggable')) {
+        // <debug>
+        if (debugLevel >= MID) {
+            debug('Initialising toolbar dragging', this.raptor.getElement());
+        }
+        // </debug>
+        this.getElement().draggable({
+            cancel: 'a, button',
+            cursor: 'move',
+            stop: this.constrainPosition.bind(this)
+        });
+        // Remove the relative position
+        this.getElement().css('position', 'fixed');
+
+        // Set the persistent position
+        var pos = this.raptor.persist('position') || this.options.dialogPosition;
+
+        if (!pos) {
+            pos = [10, 10];
+        }
+
+        // <debug>
+        if (debugLevel >= MID) {
+            debug('Restoring toolbar position', this.raptor.getElement(), pos);
+        }
+        // </debug>
+
+        if (parseInt(pos[0], 10) + this.getElement().outerHeight() > $(window).height()) {
+            pos[0] = $(window).height() - this.getElement().outerHeight();
+        }
+        if (parseInt(pos[1], 10) + this.getElement().outerWidth() > $(window).width()) {
+            pos[1] = $(window).width() - this.getElement().outerWidth();
+        }
+
+        this.getElement().css({
+            top: Math.abs(parseInt(pos[0], 10)),
+            left: Math.abs(parseInt(pos[1], 10))
+        });
+    }
+};
+
 ToolbarLayout.prototype.enableDragging = function() {
     if ($.fn.draggable &&
             this.options.draggable &&
@@ -64,7 +108,8 @@ ToolbarLayout.prototype.enableDragging = function() {
 
 ToolbarLayout.prototype.disableDragging = function() {
     if ($.fn.draggable &&
-            this.options.draggable) {
+            this.options.draggable &&
+            this.getElement().is('.ui-draggable')) {
         this.getElement().draggable('disable').removeClass('ui-state-disabled');
     }
 };
@@ -78,15 +123,16 @@ ToolbarLayout.prototype.isVisible = function() {
 };
 
 ToolbarLayout.prototype.constrainPosition = function() {
-    if (this.isReady() && this.isVisible()) {
-        var x = parseInt(this.wrapper.css('left')),
-            y = parseInt(this.wrapper.css('top')),
+    if (this.isVisible()) {
+        var x = parseInt(this.wrapper.css('left')) || -999,
+            y = parseInt(this.wrapper.css('top')) || -999,
             width = this.wrapper.outerWidth(),
             height = this.wrapper.outerHeight(),
             windowWidth = $(window).width(),
             windowHeight = $(window).height(),
             newX = Math.max(0, Math.min(x, windowWidth - width)),
             newY = Math.max(0, Math.min(y, windowHeight - height));
+
         if (newX !== x || newY !== y) {
             this.wrapper.css({
                 left: newX,
@@ -136,48 +182,6 @@ ToolbarLayout.prototype.getElement = function() {
             .append(path)
             .append(innerWrapper);
 
-        if ($.fn.draggable && this.options.draggable) {
-            // <debug>
-            if (debugLevel >= MID) {
-                debug('Initialising toolbar dragging', this.raptor.getElement());
-            }
-            // </debug>
-
-            wrapper.draggable({
-                cancel: 'a, button',
-                cursor: 'move',
-                // @todo Cancel drag when docked
-                handle: '.ui-editor-path',
-                stop: this.constrainPosition.bind(this)
-            });
-
-            // Remove the relative position
-            wrapper.css('position', 'fixed');
-
-            // Set the persistent position
-            var pos = this.raptor.persist('position') || this.options.dialogPosition;
-
-            if (!pos) {
-                pos = [10, 10];
-            }
-
-            // <debug>
-            if (debugLevel >= MID) debug('Restoring toolbar position', this.raptor.getElement(), pos);
-            // </debug>
-
-            if (parseInt(pos[0], 10) + wrapper.outerHeight() > $(window).height()) {
-                pos[0] = $(window).height() - wrapper.outerHeight();
-            }
-            if (parseInt(pos[1], 10) + wrapper.outerWidth() > $(window).width()) {
-                pos[1] = $(window).width() - wrapper.outerWidth();
-            }
-
-            wrapper.css({
-                top: Math.abs(parseInt(pos[0], 10)),
-                left: Math.abs(parseInt(pos[1], 10))
-            });
-        }
-
         var uiGroup = new UiGroup(this.raptor, this.options.uiOrder);
         uiGroup.appendTo(this.toolbar);
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
@@ -185,8 +189,10 @@ ToolbarLayout.prototype.getElement = function() {
         var layout = this;
         $(function() {
             wrapper.appendTo('body');
+            this.initDragging();
+            this.constrainPosition(true);
             layout.raptor.fire('toolbarReady');
-        });
+        }.bind(this));
     }
     return this.wrapper;
 };

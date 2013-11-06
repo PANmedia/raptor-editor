@@ -3,6 +3,9 @@
  */
 var Raptor =  {
 
+    globalDefaults: {},
+    defaults: {},
+            
     /** @type {Boolean} True to enable hotkeys */
     enableHotkeys: true,
 
@@ -32,6 +35,12 @@ var Raptor =  {
      * @property {Object} layouts
      */
     layouts: {},
+
+    /**
+     * Presets added via Raptor.registerPreset
+     * @property {Object} presets
+     */
+    presets: {},
 
     hoverPanels: {},
 
@@ -200,6 +209,25 @@ var Raptor =  {
         // </strict>
 
         this.plugins[plugin.name] = plugin;
+    },
+            
+    registerPreset: function(preset, setDefault) {
+        // <strict>
+        if (typeof preset !== 'object') {
+            handleError('Preset "' + preset + '" is invalid (must be an object)');
+            return;
+        } else if (typeof preset.name !== 'string') {
+            handleError('Preset "'+ preset + '" is invalid (must have a name property)');
+            return;
+        } else if (this.presets[preset.name]) {
+            handleError('Preset "' + preset.name + '" has already been registered, and will be overwritten');
+        }
+        // </strict>
+
+        this.presets[preset.name] = preset;
+        if (setDefault) {
+            this.defaults = preset;
+        }
     },
 
     /*========================================================================*\

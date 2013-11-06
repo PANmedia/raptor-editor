@@ -8,3 +8,4 @@
     <a href="?type=0deps">0 dependencies</a>
     <a href="?type=0depsnc">0 dependencies, no conflict</a>
 </nav>
+<div style="clear: both"></div>
