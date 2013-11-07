@@ -17,8 +17,10 @@ registerLocale('fr', 'Français', {
     cancelDialogTitle: 'Annuler l\'édition',
     cancelTitle: 'Annuler l\'édition',
 
+    classMenuTitle: 'Sélecteur de style',
     clearFormattingTitle: 'Effacer la mise en forme',
     clickButtonToEditText: 'Cliquer pour commencer la modification',
+    clickButtonToEditTitle: null,
 
     colorMenuBasicAutomatic: 'Automatique',
     colorMenuBasicBlack: 'Noir',
@@ -35,10 +37,13 @@ registerLocale('fr', 'Français', {
     dockToScreenTitle: 'Fixer l\'éditeur à l\'écran',
 
     embedTitle: 'Object intégré',
-
-    errorPluginNoName: 'Plugin "{{plugin}}" est invalide (doit posséder une propriété "name")',
-    errorPluginNotObject: 'Plugin "{{plugin}}" est invalide (doit être un objet)',
-    errorPluginOverride: 'Plugin "{{name}}" a déjà été défini, et sera écrasé',
+    embedDialogTitle: 'Object intégré',
+    embedDialogTabCode: 'Code intégré',
+    embedDialogTabCodeContent: 'Collez votre code dans la zone de texte suivante :',
+    embedDialogTabPreview: 'Aperçu',
+    embedDialogTabPreviewContent: 'Un aperçu de votre code est disponible ci-dessous :',
+    embedDialogOKButton: 'Intégrer l\'objet',
+    embedDialogCancelButton: 'Annuler',
 
     errorUINoName: 'UI "{{ui}}" est invalide (doit posséder une propriété "name")',
     errorUINotObject: 'UI "{{ui}}" est invalide (doit être un objet)',
@@ -53,13 +58,45 @@ registerLocale('fr', 'Français', {
     historyRedoTitle: 'Rétablir',
     historyUndoTitle: 'Annuler',
 
+    hrCreateTitle: 'Insérer une ligne horizontale',
+    
+    imageResizeButtonText: 'Redimmensionner l\'image',
+    imageResizeButtonDialogWidth: 'Largeur de l\'image',
+    imageResizeButtonDialogHeight: 'Hauteur de l\'image',
+    imageResizeButtonDialogWidthPlaceHolder: 'Largeur',
+    imageResizeButtonDialogHeightPlaceHolder: 'Hauteur',
+    imageResizeButtonDialogTitle: 'Redimmensionner l\'image',
+    imageResizeButtonDialogOKButton: 'Redimmensionner',
+    imageResizeButtonDialogCancelButton: 'Annuler',
+
+    insertFileTitle: 'Insérer un fichier',
+    insertFileDialogOKButton: 'Insérer le fichier',
+    insertFileDialogCancelButton: 'Anuuler',
+    insertFileURLLabel: 'URL du fichier',
+    insertFileNameLabel: 'Nom du fichier',
+    insertFileURLPlaceHolder: 'URL du fichier...',
+    insertFileNamePlaceHolder: 'Nom du fichier...',
+
+    languageMenuTitle: 'Changer de langue',
+    languageMenuEN: 'English',
+    languageMenuDE: 'Deutsch',
+    languageMenuES: 'Español',
+    languageMenuFR: 'Français',
+    languageMenuNL: 'Nederlandse',
+    languageMenuRU: 'Pусский',
+    languageMenuSV: 'Svensk',
+    languageMenuZHCN: '简体中文版',
+
     listOrderedTitle: 'Liste ordonnée',
     listUnorderedTitle: 'Liste non ordonnée',
 
-    linkDialogTitle: 'Insérer un lien',
-    linkDialogOKButton: 'Insérer un lien',
-    linkDialogCancelButton: 'Annuler',
-    linkDialogMenuHeader: 'Choisissez un type de lien :',
+    linkCreateTitle: 'Insérer un lien',
+    linkRemoveTitle: 'Supprimer le lien',
+    
+    linkCreateDialogTitle: 'Insérer un lien',
+    linkCreateDialogOKButton: 'Insérer un lien',
+    linkCreateDialogCancelButton: 'Annuler',
+    linkCreateDialogMenuHeader: 'Choisissez un type de lien :',
 
     linkTypeEmailLabel: 'Adresse e-mail',
     linkTypeEmailHeader: 'Lier une adresse e-mail',
@@ -71,6 +108,7 @@ registerLocale('fr', 'Français', {
     linkTypeExternalLabel: 'Page sur une autre site',
     linkTypeExternalHeader: 'Lien vers une page sur un autre site',
     linkTypeExternalLocationLabel: 'Emplacement',
+    linkTypeExternalLocationPlaceHolder: 'Entrer une URL',
     linkTypeExternalNewWindowHeader: 'Nouvelle fenêtre',
     linkTypeExternalNewWindowLabel: 'Cochez cette case pour ouvrir le lien dans une nouvelle fenêtre de navigateur.',
     linkTypeExternalInfo:
@@ -79,10 +117,25 @@ registerLocale('fr', 'Français', {
         '    <li>Trouvez la page web que vous voulez lier.</li>' +
         '    <li>Copiez l\'adresse de la barre d\'adresse de votre navigateur et collez-la dans le champs ci-dessous.</li>' +
         '</ol>',
+        
+    linkTypeDocumentLabel: 'Document ou autre fichier',
+    linkTypeDocumentHeader: 'Lien vers un document ou un autre fichier',
+    linkTypeDocumentLocationLabel: 'Emplacement :',
+    linkTypeDocumentLocationPlaceHolder: 'Entrer une URL',
+    linkTypeDocumentNewWindowHeader: 'Nouvelle fenêtre',
+    linkTypeDocumentNewWindowLabel: 'Cochez cette case pour ouvrir le lien dans une nouvelle fenêtre de navigateur.',
+    linkTypeDocumentInfo:
+        '<h2>Pas sûr(e) de savoir quoi mettre dans le champ ci-dessus ?</h2>' +
+        '<ol>' +
+        '    <li>Assurez-vous que le fichier a bien été envoyé sur votr site</li>' +
+        '    <li>Ouvrez le fichier envoyé dans votre navigateur.</li>' +
+        '    <li>Copiez l\'adresse de la barre d\'adresse de votre navigateur et collez-la dans le champs ci-dessous.</li>' +
+        '</ol>',
 
     linkTypeInternalLabel: 'Page de ce site',
     linkTypeInternalHeader: 'Lien vers une page de ce site',
-    linkTypeInternalLocationLabel: 'Emplacement',
+    linkTypeInternalLocationLabel: '',
+    linkTypeInternalLocationPlaceHolder: 'Entrer une URI',
     linkTypeInternalNewWindowHeader: 'Nouvelle fenêtre',
     linkTypeInternalNewWindowLabel: 'Cochez cette case pour ouvrir le lien dans une nouvelle fenêtre de navigateur.',
     linkTypeInternalInfo:
@@ -93,8 +146,33 @@ registerLocale('fr', 'Français', {
         '</ol>',
 
     logoTitle: 'En savoir plus sur l\'éditeur WYSIWYG Raptor',
-    saveTitle: 'Enregistrer le contenu',
+    
+    navigateAway: '\nil y a des modifications non enregistrées sur ce site. Si vous quittez cette page, elles seront définitivements perdues',
 
+    pasteDialogTitle: 'Coller',
+    pasteDialogOKButton: 'Insérer',
+    pasteDialogCancelButton: 'Annuler',
+    pasteDialogPlain: 'Texte brute',
+    pasteDialogFormattedCleaned: 'Mis en forme &amp; nettoyé',
+    pasteDialogFormattedUnclean: 'Mis en forme sans nettoyage',
+    pasteDialogSource: 'Code source',
+
+    placeholderPluginDefaultContent: '&nbsp;',
+    
+    saveTitle: 'Enregistrer le contenu',
+    saveJsonFail: 'Impossible d\'enregistrer {{failed}} bloc(s) de contenu',
+    saveJsonSaved: 'Enregistrement effectué de {{saved}} bloc(s) de contenu.',
+    saveRestFail: 'Impossible d\'enregistrer {{failed}} bloc(s) de contenu.',
+    saveRestPartial: 'Enregistrement de {{saved}} sur {{failed}} bloc(s) de contenu.',
+    saveRestSaved: 'Enregistrement effectué {{saved}} bloc(s) de contenu.',
+
+    snippetMenuTitle: 'Fragments',
+
+    specialCharactersDialogOKButton: 'OK',
+    specialCharactersDialogTitle: 'Insérer un caractère spécial',
+    specialCharactersHelp: 'Cliquez sur un caractère spécial pour l\'ajouter. Cliquez sur "OK" lorsque vous avez fini pour fermer la fenêtre.',
+    specialCharactersTitle: 'Insérer un caractère spécial',
+    
     statisticsButtonCharacterOverLimit: '{{charactersRemaining}} caractères au-dessus de la limite',
     statisticsButtonCharacterRemaining: '{{charactersRemaining}} caractères restants',
     statisticsButtonCharacters: '{{characters}} caractères',
@@ -115,12 +193,18 @@ registerLocale('fr', 'Français', {
     tableDeleteRowTitle: 'Supprimer une ligne du tableau',
     tableInsertColumnTitle: 'Insérer une colonne',
     tableInsertRowTitle: 'Insérer une ligne',
+    tableMergeCellsTitle: 'Fusionner des cellules',
+    tableSplitCellsTitle: 'Tronquer des cellules',
 
     tagMenuTagH1: 'Titre&nbsp;1',
     tagMenuTagH2: 'Titre&nbsp;2',
     tagMenuTagH3: 'Titre&nbsp;3',
+    tagMenuTagH4: 'Titre&nbsp;4',
     tagMenuTagNA: 'N/A',
     tagMenuTagP: 'Paragraphe',
+    tagMenuTagDiv: 'Div',
+    tagMenuTagPre: 'Pré-formaté',
+    tagMenuTagAddress: 'Address',
     tagMenuTitle: 'Modifier le style de l\'élément',
 
     tagTreeElementLink: 'Sélectionner l\'élément {{element}}',
@@ -136,11 +220,35 @@ registerLocale('fr', 'Français', {
     textSubTitle: 'Indice',
     textSuperTitle: 'Exposant',
     textUnderlineTitle: 'Souligné',
+    textSizeDecreaseTitle: 'Diminuer la taille du texte',
+    textSizeIncreaseTitle: 'Augmenter la taille du texte',
 
     unsavedEditWarningText: 'Il y a des modifications non enregistrées sur cette page',
 
+    revisionsText: 'Révisions',
+    revisionsTextEmpty: 'Aucune révision',
+    revisionsTitle: null,
+    revisionsApplyButtonTitle: 'Revenir en arrière',
+    revisionsAJAXFailed: 'Impossible de récupérer les révisions',
+    revisionsApplyButtonDialogCancelButton: 'Annuler',
+    revisionsApplyButtonDialogOKButton: 'Revenir en arrière',
+    revisionsApplyButtonDialogTitle: 'Confirmer le retour en arrière',
+    revisionsApplyDialogContent: 'Cela remplacera le contenu actuel par celui de la révision sélectionnée.<br/>Le contenu actuel sera ajouté comme une révision, et sera visible dans la liste des révisions pour ce bloc.',
+    revisionsDialogCancelButton: 'Annuler',
+    revisionsDialogTitle: 'Voir le contenu des révisions',
+    revisionsButtonCurrent: 'Actuelle',
+    revisionsButtonViewDiffText: 'Différences',
+    revisionsButtonViewDiffTitle: null,
+    revisionsDiffButtonDialogCancelButton: 'Fermer',
+    revisionsDiffButtonDialogTitle: 'Voir les différences',
+    revisionsDiffButtonTitle: 'Voir les différences',
+    revisionsLoading: 'Chargement des révisions...',
+    revisionsNone: 'Pas de révision pour cet élément',
+    revisionsPreviewButtonTitle: 'Aperçu',
+    
     viewSourceDialogCancelButton: 'Fermer',
     viewSourceDialogOKButton: 'Appliquer la source code',
     viewSourceDialogTitle: 'Code source du contenu',
     viewSourceTitle: 'Voir / Modifier la source code'
+    
 });
