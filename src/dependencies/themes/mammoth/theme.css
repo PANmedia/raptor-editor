@@ -1947,11 +1947,14 @@ Form Style
   border-bottom-right-radius: 4px;
 }
 
-.ui-icon {
+.ui-icon, .ui-state-default .ui-icon {
+  background-image: url("theme-icons.png");
+}
+
+.ui-icon{
   width: 16px;
   height: 16px;
   display: block;
-  background-image: url("theme-icons.png");
 }
 
 .ui-state-hover .ui-icon {
