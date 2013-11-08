@@ -154,6 +154,12 @@ src/plugins/float/edit-image.png
 src/plugins/float/float-front-end.scss
 src/plugins/float/float.scss
 
+src/plugins/font-family/font-family.js
+src/plugins/font-family/font-family-front-end.scss
+src/plugins/font-family/font-family.scss
+src/plugins/font-family/templates/menu.html
+
+
 src/plugins/guides/guides.js
 src/plugins/guides/guide.png
 src/plugins/guides/guides.scss
