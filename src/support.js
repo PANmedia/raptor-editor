@@ -54,7 +54,7 @@ function isSupported() {
                         '    <ul>' +
                         '        <li><a href="http://www.google.com/chrome">Google Chrome</a></li>' +
                         '        <li><a href="http://www.firefox.com">Mozilla Firefox</a></li>' +
-                        '        <li><a href="http://www.google.com/chromeframe">Internet Explorer with Chrome Frame</a></li>' +
+                        '        <li><a href="http://windows.microsoft.com/ie">Internet Explorer</a></li>' +
                         '    </ul>' +
                         '    <div class="raptor-unsupported-input">' +
                         '        <button class="raptor-unsupported-close">Close</button>' +
