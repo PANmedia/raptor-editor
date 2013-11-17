@@ -20,6 +20,12 @@
     background-color: #fff;
     border: $border-width $border-style $border-color !important;
     border-top: none !important;
-    color: #000;
+    color: #333;
     font-size: 1em;
+    text-shadow: none;
+}
+
+.raptor-editing-inline * {
+    color: inherit;
+    text-shadow: inherit;
 }
