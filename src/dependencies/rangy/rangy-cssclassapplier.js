@@ -21,6 +21,16 @@ rangy.createModule("ClassApplier", ["WrappedSelection"], function(api, module) {
     var defaultTagName = "span";
 
     /**
+     * Retrieve outer html from an element.
+     *
+     * @param  {jQuery} element The jQuery element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
+    function elementOuterHtml(element) {
+        return element.clone().wrap('<div/>').parent().html();
+    }
+
+    /**
      * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
      * @todo type for domFragment and tag.
      * @param {type} domFragment The fragment to be converted to a HTML string.
@@ -32,19 +42,20 @@ rangy.createModule("ClassApplier", ["WrappedSelection"], function(api, module) {
         // Get all nodes in the extracted content
         for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
             var node = domFragment.childNodes.item(j);
-            var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml($(node));
+            var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml(jQuery(node));
             if (content) {
                 html += content;
             }
         }
         if (tag) {
-            html = $('<' + tag + '>' + html + '</' + tag + '>');
+            html = jQuery('<' + tag + '>' + html + '</' + tag + '>');
             html.find('p').wrapInner('<' + tag + '/>');
             html.find('p > *').unwrap();
-            html = $('<div/>').html(html).html();
+            html = jQuery('<div/>').html(html).html();
         }
         return html;
     }
+
     function trim(str) {
         return str.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
     }
