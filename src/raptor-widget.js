@@ -175,7 +175,7 @@ var RaptorWidget = {
         }.bind(this));
         this.getElement().bind('focus', this.showLayout.bind(this));
         this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
-        this.target.bind('keyup.' + this.widgetName, this.checkChange.bind(this));
+        this.target.bind('input.' + this.widgetName, this.checkChange.bind(this));
 
         // Unload warning
         $(window).bind('beforeunload', Raptor.unloadWarning.bind(Raptor));
