@@ -326,7 +326,7 @@ var RaptorWidget = {
         // If the current content has changed since the last check, fire the change event
         if (this.previousHtml !== currentHtml) {
             this.previousHtml = currentHtml;
-            this.fire('change');
+            this.fire('change', [currentHtml]);
 
             // If the content was changed to its original state, fire the cleaned event
             if (wasDirty !== this.dirty) {
@@ -342,7 +342,7 @@ var RaptorWidget = {
     },
 
     change: function() {
-        this.fire('change');
+        this.fire('change', [this.getHtml()]);
     },
 
     /*========================================================================*\
@@ -357,7 +357,7 @@ var RaptorWidget = {
         this.disableEditing();
 
         // Trigger destroy event, for plugins to remove them selves
-        this.fire('destroy', false);
+        this.fire('destroy');
 
         // Remove all event bindings
         this.events = {};
@@ -554,7 +554,7 @@ var RaptorWidget = {
 
                 this.getElement().closest('form').bind('submit.' + this.widgetName, function() {
                     clean(this.getElement());
-                    this.fire('change');
+                    this.fire('change', [this.getHtml()]);
                 }.bind(this));
             }
 
@@ -994,10 +994,10 @@ var RaptorWidget = {
     /**
      *
      */
-    saved: function() {
+    saved: function(args) {
         this.setOriginalHtml(this.getHtml());
         this.dirty = false;
-        this.fire('saved');
+        this.fire('saved', args);
         this.fire('cleaned');
     },
 
@@ -1056,21 +1056,12 @@ var RaptorWidget = {
      * @param {boolean} [global]
      * @param {boolean} [sub]
      */
-    fire: function(name, global, sub) {
+    fire: function(name, args) {
         var result = [];
-
-        // Fire before sub-event
-        if (!sub) {
-            result = result.concat(this.fire('before:' + name, global, true));
-        }
 
         // <debug>
         if (debugLevel === MAX) {
-            if (!name.match(/^before:/) && !name.match(/^after:/)) {
-                debug('Firing event: ' + name);
-            }
-        } else if (debugLevel > MAX) {
-            debug('Firing event: ' + name, this.getElement());
+            debug('Firing event: ' + name);
         }
         // </debug>
 
@@ -1079,22 +1070,12 @@ var RaptorWidget = {
                 var event = this.events[name][i];
                 if (typeof event !== 'undefined' &&
                         typeof event.callback !== 'undefined') {
-                    var currentResult = event.callback.call(event.context || this);
+                    var currentResult = event.callback.apply(event.context || this, args);
                     if (typeof currentResult !== 'undefined') {
                         result = result.concat(currentResult);
                     }
                 }
             }
-        }
-
-        // Also trigger the global editor event, unless specified not to
-        if (global !== false) {
-            Raptor.fire(name);
-        }
-
-        // Fire after sub-event
-        if (!sub) {
-            result = result.concat(this.fire('after:' + name, global, true));
         }
 
         return result;

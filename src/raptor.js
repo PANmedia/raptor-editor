@@ -13,12 +13,6 @@ var Raptor =  {
     hotkeys: {},
 
     /**
-     * Events added via Raptor.bind
-     * @property {Object} events
-     */
-    events: {},
-
-    /**
      * Plugins added via Raptor.registerPlugin
      * @property {Object} plugins
      */
@@ -227,49 +221,6 @@ var Raptor =  {
         this.presets[preset.name] = preset;
         if (setDefault) {
             this.defaults = preset;
-        }
-    },
-
-    /*========================================================================*\
-     * Events
-    \*========================================================================*/
-
-    /**
-     * @param {String} name
-     * @param {function} callback
-     */
-    bind: function(name, callback) {
-        if (!this.events[name]) this.events[name] = [];
-        this.events[name].push(callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    unbind: function(callback) {
-        $.each(this.events, function(name) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] === callback) {
-                    this.events[name].splice(i,1);
-                }
-            }
-        });
-    },
-
-    /**
-     * @param {String} name
-     */
-    fire: function(name) {
-        // <debug>
-        if (debugLevel > MAX) {
-            debug('Firing global/static event: ' + name);
-        }
-        // </debug>
-        if (!this.events[name]) {
-            return;
-        }
-        for (var i = 0, l = this.events[name].length; i < l; i++) {
-            this.events[name][i].call(this);
         }
     },
 

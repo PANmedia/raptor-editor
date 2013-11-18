@@ -56,13 +56,19 @@ PlaceholderPlugin.prototype = Object.create(RaptorPlugin.prototype);
  */
 PlaceholderPlugin.prototype.init = function() {
     this.raptor.bind('enabled', this.enabled.bind(this));
+    this.raptor.bind('change', this.check.bind(this));
 };
 
 /**
  * Insert the placeholder if the editable element is empty.
  */
 PlaceholderPlugin.prototype.enabled = function() {
-    if (!this.raptor.getHtml().trim()) {
+    this.check(this.raptor.getHtml());
+};
+
+PlaceholderPlugin.prototype.check = function(html) {
+    html = html.trim();
+    if (!html || html === '<br>' || html === '<div><br></div>') {
         var raptorNode = this.raptor.getNode(),
             tag = document.createElement(this.options.tag);
         tag.innerHTML = this.options.content;
@@ -71,6 +77,7 @@ PlaceholderPlugin.prototype.enabled = function() {
         if (this.options.select) {
             selectionSelectInner(raptorNode.childNodes[0]);
         }
+        this.raptor.checkChange();
     }
 };
 
