@@ -78,7 +78,7 @@ SaveJsonPlugin.prototype.save = function(saveSections) {
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     this.raptor.unify(function(raptor) {
         if (raptor.isDirty()) {
-            raptor.saved();
+            raptor.saved([data, status, xhr]);
         }
     });
     var message = tr('saveJsonSaved', {
