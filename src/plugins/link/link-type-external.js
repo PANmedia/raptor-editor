@@ -17,7 +17,7 @@
  */
 function LinkTypeExternal(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeExternalLabel');
+    this.label = tr('linkTypeExternalLabel');
 }
 
 /**

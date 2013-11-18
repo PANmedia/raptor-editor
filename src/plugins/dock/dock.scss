@@ -14,18 +14,6 @@
     line-height: 0;
 }
 
-.raptor-plugin-dock-docked .raptor-messages {
-    position: fixed;
-    left: 50%;
-    margin: 0 -400px 10px;
-    padding: 0;
-    text-align: left;
-
-    .raptor-message-wrapper {
-        width: 800px;
-    }
-}
-
 .raptor-plugin-dock-visible {
     display: block;
 }

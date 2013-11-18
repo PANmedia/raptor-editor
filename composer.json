@@ -14,12 +14,8 @@
             "email": "michael@panmedia.co.nz"
         }
     ],
-    "require": {
-        "php": ">=5.3.0"
-    },
     "minimum-stability": "dev",
-    "require-dev": {
-        "phing/phing": "dev-master",
-        "twig/twig": "dev-master"
+    "require": {
+        "pan/raptor-common": "dev-master"
     }
 }

@@ -25,7 +25,7 @@ Raptor.registerPreset({
                 ['textSuper', 'textSub'],
                 ['listUnordered', 'listOrdered'],
                 ['hrCreate', 'textBlockQuote'],
-                ['textSizeDecrease', 'textSizeIncrease'],
+                ['textSizeDecrease', 'textSizeIncrease', 'fontFamilyMenu'],
                 ['clearFormatting'],
                 ['linkCreate', 'linkRemove'],
                 ['embed', 'insertFile'],
@@ -43,8 +43,6 @@ Raptor.registerPreset({
             uiOrder: [
                 ['clickButtonToEdit']
             ]
-        },
-        messages: {
         }
     }
 }, true);

@@ -1,0 +1,1 @@
+templateRegister("class-menu.item", "<li><a data-value=\"{{value}}\">{{label}}</a></li>");

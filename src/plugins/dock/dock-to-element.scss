@@ -59,10 +59,6 @@
         border-left: 0;
         border-right: 0;
     }
-
-    .raptor-messages {
-        margin: 0;
-    }
 }
 
 .raptor-plugin-dock-docked-element {
@@ -91,5 +87,5 @@
 }
 
 .raptor-plugin-dock-docked-to-element .raptor-layout-toolbar-inner {
-    border-top: $border-style;
+    border-top: $border-width $border-style $border-color;
 }

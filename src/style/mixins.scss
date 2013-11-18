@@ -18,6 +18,6 @@
     @extend %button-icon;
     .ui-icon,
     &.ui-state-hover .ui-icon {
-        background: inline-image($icon) 0 0;
+        background: inline-image($icon) 0 0 !important;
     }
 }

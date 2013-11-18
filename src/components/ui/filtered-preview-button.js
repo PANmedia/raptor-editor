@@ -67,13 +67,11 @@ FilteredPreviewButton.prototype.canPreview = function() {
  * @returns {Boolean} True if button is enabled, false otherwise.
  */
 FilteredPreviewButton.prototype.isEnabled = function() {
-    var result = false;
-    selectionEachRange(function(range) {
-        if (this.getElement(range)) {
-            result = true;
-        }
-    }.bind(this));
-    return result;
+    var range = rangeGet();
+    if (range) {
+        return !!this.getElement(range);
+    }
+    return !!this.previewing;
 };
 
 /**

@@ -54,7 +54,7 @@ function isSupported() {
                         '    <ul>' +
                         '        <li><a href="http://www.google.com/chrome">Google Chrome</a></li>' +
                         '        <li><a href="http://www.firefox.com">Mozilla Firefox</a></li>' +
-                        '        <li><a href="http://www.google.com/chromeframe">Internet Explorer with Chrome Frame</a></li>' +
+                        '        <li><a href="http://windows.microsoft.com/ie">Internet Explorer</a></li>' +
                         '    </ul>' +
                         '    <div class="raptor-unsupported-input">' +
                         '        <button class="raptor-unsupported-close">Close</button>' +
@@ -128,11 +128,28 @@ if (typeof Node === 'undefined') {
 ''.trim || (String.prototype.trim = // Use the native method if available, otherwise define a polyfill:
     function () { // trim returns a new string (which replace supports)
         return this.replace(/^[\s\uFEFF]+|[\s\uFEFF]+$/g,'') // trim the left and right sides of the string
-    })
+    });
 
 // </ie>
 
 // <strict>
+
+// Ensure jQuery has been included
+if (typeof jQuery === 'undefined') handleError('jQuery is required');
+
+// Ensure jQuery UI has been included
+else if (!jQuery.ui) handleError('jQuery UI is required');
+
+// Ensure dialog has been included
+else if (!jQuery.ui.dialog) handleError('jQuery UI Dialog is required.');
+
+// Ensure dialog has been included
+else if (!jQuery.ui.position) handleError('jQuery UI Position is required.');
+
+// Ensure rangy has been included
+if (typeof rangy === 'undefined') handleError('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"');
+
+
 function versionCompare(v1, v2) {
     var v1parts = v1.split('.');
     var v2parts = v2.split('.');

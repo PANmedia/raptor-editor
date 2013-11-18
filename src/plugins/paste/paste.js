@@ -140,14 +140,14 @@ PastePlugin.prototype.getDialog = function(instance) {
             autoOpen: false,
             width: 800,
             height: 500,
-            title: _('pasteDialogTitle'),
+            title: tr('pasteDialogTitle'),
             dialogClass: this.options.baseClass + '-dialog',
             close: function() {
                 pasteInProgress = false;
             },
             buttons: [
                 {
-                    text: _('pasteDialogOKButton'),
+                    text: tr('pasteDialogOKButton'),
                     click: function() {
                         var html = null,
                             element = pasteDialog.find('.' + this.options.baseClass + '-area:visible');
@@ -165,7 +165,7 @@ PastePlugin.prototype.getDialog = function(instance) {
                     }
                 },
                 {
-                    text: _('pasteDialogCancelButton'),
+                    text: tr('pasteDialogCancelButton'),
                     click: function() {
                         selectionDestroy();
                         $('.raptorPasteBin').remove();

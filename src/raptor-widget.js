@@ -58,10 +58,14 @@ var RaptorWidget = {
             currentLocale = locale;
         }
 
+        var options = this.options;
         if (this.options.preset) {
-            this.options = $.extend({}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
+            this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
         } else {
-            this.options = $.extend({}, Raptor.globalDefaults, Raptor.defaults, this.options);
+            this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.defaults, this.options);
+        }
+        if (options.layouts && options.layouts.toolbar && options.layouts.toolbar.uiOrder) {
+            this.options.layouts.toolbar.uiOrder = options.layouts.toolbar.uiOrder;
         }
 
         // Give the element a unique ID
@@ -399,6 +403,7 @@ var RaptorWidget = {
                 this.selectionConstrain();
                 this.previewState = actionPreview(this.previewState, this.target, action);
             }
+            this.checkSelectionChange();
         } catch (exception) {
             // <strict>
             handleError(exception);
@@ -410,6 +415,7 @@ var RaptorWidget = {
         if (this.previewState) {
             this.target = actionPreviewRestore(this.previewState, this.target);
             this.previewState = null;
+            this.checkSelectionChange();
         }
     },
 
@@ -531,14 +537,14 @@ var RaptorWidget = {
 
             if (!this.initialised) {
                 this.initialised = true;
-                try {
-                    document.execCommand('enableInlineTableEditing', false, false);
-                    document.execCommand('styleWithCSS', true, true);
-                } catch (error) {
-                    // <strict>
-                    handleError(error);
-                    // </strict>
-                }
+//                try {
+//                    document.execCommand('enableInlineTableEditing', false, false);
+//                    document.execCommand('styleWithCSS', true, true);
+//                } catch (error) {
+//                    // <strict>
+//                    handleError(error);
+//                    // </strict>
+//                }
 
                 for (var name in this.plugins) {
                     this.plugins[name].enable();
@@ -871,7 +877,11 @@ var RaptorWidget = {
         }
 
         // Check if we have explicitly disabled UI
-        if ($.inArray(ui, this.options.disabledUi) !== -1) {
+        if ($.inArray(ui, this.options.disabledUi) !== -1 ||
+                $.inArray(ui, this.options.disabledPlugins) !== -1) {
+            // <strict>
+            debug('Using disabledUi/disabledPlugins options is deprecated, use plugins: { nameOfPlugin: false } instead.');
+            // </strict>
             return false;
         }
 
@@ -921,7 +931,11 @@ var RaptorWidget = {
             }
 
             // Check if we have explicitly disabled the plugin
-            if ($.inArray(name, this.options.disabledPlugins) !== -1) {
+            if ($.inArray(name, this.options.disabledUi) !== -1 ||
+                    $.inArray(name, this.options.disabledPlugins) !== -1) {
+                // <strict>
+                debug('Using disabledUi/disabledPlugins options is deprecated, use plugins: { nameOfPlugin: false } instead.');
+                // </strict>
                 continue;
             }
 

@@ -25,8 +25,6 @@ Raptor.registerPreset({
             uiOrder: [
                 ['clickButtonToEdit', 'revisions']
             ]
-        },
-        messages: {
         }
     },
     plugins: {
@@ -34,6 +32,9 @@ Raptor.registerPreset({
             panels: [
                 'plain-text'
             ]
+        },
+        noBreak: {
+            enabled: true
         }
     }
 });

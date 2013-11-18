@@ -51,7 +51,7 @@ Menu.prototype.getButton = function() {
  * Applies options to the menu.
  */
 Menu.prototype.setOptions = function() {
-    this.options.title = _(this.name + 'Title');
+    this.options.title = tr(this.name + 'Title');
     this.options.icon = 'ui-icon-' + this.name;
 };
 

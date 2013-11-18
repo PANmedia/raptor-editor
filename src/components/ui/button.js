@@ -48,7 +48,7 @@ Button.prototype.init = function() {
  */
 Button.prototype.getButton = function() {
     if (!this.button) {
-        var text = this.text || _(this.name + 'Text', false);
+        var text = this.text || tr(this.name + 'Text', false);
         this.button = $('<div>')
             .html(text)
             .addClass(this.options.baseClass)
@@ -70,7 +70,7 @@ Button.prototype.getButton = function() {
  *   localized value for the button's name + Title.
  */
 Button.prototype.getTitle = function() {
-    return this.title || _(this.name + 'Title');
+    return this.title || tr(this.name + 'Title');
 };
 
 /**

@@ -1,0 +1,1 @@
+templateRegister("insert-file.dialog", "<div> <label>tr('insertFileURLLabel')</label> <input type=\"text\" name=\"location\" placeholder=\"tr('insertFileURLPlaceHolder')\"/> <label>tr('insertFileNameLabel')</label> <input type=\"text\" name=\"name\" placeholder=\"tr('insertFileNamePlaceHolder')\"/> </div>");

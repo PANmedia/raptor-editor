@@ -1,0 +1,1 @@
+templateRegister("unsaved-edit-warning.warning", "<div class=\"{{baseClass}} ui-corner-tl\"> <span class=\"ui-icon ui-icon-alert\"></span> <span>tr('unsavedEditWarningText')</span> </div>");

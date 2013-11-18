@@ -137,13 +137,13 @@ var Raptor =  {
             if (instances[i].isDirty() &&
                     instances[i].isEditing() &&
                     instances[i].options.unloadWarning) {
-                return _('navigateAway');
+                return tr('navigateAway');
             }
         }
     },
 
     /*========================================================================*\
-     * Plugins as UI
+     * Plugins and UI
     \*========================================================================*/
 
     /**
@@ -155,17 +155,17 @@ var Raptor =  {
     registerUi: function(ui) {
         // <strict>
         if (typeof ui !== 'object') {
-            handleError(_('errorUINotObject', {
+            handleError(tr('errorUINotObject', {
                 ui: ui
             }));
             return;
         } else if (typeof ui.name !== 'string') {
-            handleError(_('errorUINoName', {
+            handleError(tr('errorUINoName', {
                 ui: ui
             }));
             return;
         } else if (this.ui[ui.name]) {
-            handleError(_('errorUIOverride', {
+            handleError(tr('errorUIOverride', {
                 name: ui.name
             }));
         }
@@ -290,7 +290,9 @@ var Raptor =  {
             } else {
                 storage = {};
             }
-            if (value === undefined) return storage[key];
+            if (value === undefined) {
+                return storage[key];
+            }
             storage[key] = value;
             localStorage.uiWidgetEditor = JSON.stringify(storage);
         }

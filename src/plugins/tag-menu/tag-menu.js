@@ -103,7 +103,7 @@ TagMenu.prototype.updateButton = function() {
     if (option.length) {
         aButtonSetLabel(button, option.html());
     } else {
-        aButtonSetLabel(button, _('tagMenuTagNA'));
+        aButtonSetLabel(button, tr('tagMenuTagNA'));
     }
 //    if (this.raptor.getElement()[0] === tag) {
 //        aButtonDisable(button);

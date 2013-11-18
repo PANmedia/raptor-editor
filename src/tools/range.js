@@ -258,13 +258,13 @@ function rangeTrim(range) {
         handleInvalidArgumentError('Parameter 1 to rangeTrim is expected to be a range', range);
     }
     // </strict>
-    if (range.startContainer.nodeType === Node.TEXT_NODE) {
+    if (range.startContainer.data) {
         while (/\s/.test(range.startContainer.data.substr(range.startOffset, 1))) {
             range.setStart(range.startContainer, range.startOffset + 1);
         }
     }
 
-    if (range.endContainer.nodeType === Node.TEXT_NODE) {
+    if (range.endContainer.data) {
         while (range.endOffset > 0 && /\s/.test(range.endContainer.data.substr(range.endOffset - 1, 1))) {
             range.setEnd(range.endContainer, range.endOffset - 1);
         }

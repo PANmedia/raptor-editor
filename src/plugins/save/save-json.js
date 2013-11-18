@@ -40,14 +40,18 @@ SaveJsonPlugin.prototype.init = function() {
 /**
  * Save Raptor content.
  */
-SaveJsonPlugin.prototype.save = function() {
+SaveJsonPlugin.prototype.save = function(saveSections) {
+    // Hack save sections
+    if (typeof RaptorSection !== 'undefined' && saveSections !== false) {
+        RaptorSection.save(false);
+    }
     var data = {};
     this.raptor.unify(function(raptor) {
         if (raptor.isDirty()) {
-            this.raptor.clean();
+            raptor.clean();
             var plugin = raptor.getPlugin('saveJson');
-            var id = plugin.options.id.call(this);
-            var html = this.raptor.getHtml();
+            var id = plugin.options.id.call(plugin);
+            var html = raptor.getHtml();
             data[id] = html;
         }
     }.bind(this));
@@ -72,20 +76,23 @@ SaveJsonPlugin.prototype.save = function() {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
-    this.raptor.saved();
-    var message = _('saveJsonSaved', {
+    this.raptor.unify(function(raptor) {
+        if (raptor.isDirty()) {
+            raptor.saved();
+        }
+    });
+    var message = tr('saveJsonSaved', {
         saved: this.size
     });
     if ($.isFunction(this.options.formatResponse)) {
         message = this.options.formatResponse(data);
     }
-    this.raptor.getLayout('messages').showMessage('confirm', message, {
-        delay: 1000,
-        hide: function() {
-            this.raptor.unify(function(raptor) {
-                raptor.disableEditing();
-            });
-        }.bind(this)
+    aNotify({
+        text: message,
+        type: 'success'
+    });
+    this.raptor.unify(function(raptor) {
+        raptor.disableEditing();
     });
 };
 
@@ -95,7 +102,10 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  * @param {Object} xhr
  */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    this.raptor.getLayout('messages').showMessage('error', _('saveJsonFail', {
-        failed: this.size
-    }));
+    aNotify({
+        text: tr('saveJsonFail', {
+            failed: this.size
+        }),
+        type: 'error'
+    });
 };

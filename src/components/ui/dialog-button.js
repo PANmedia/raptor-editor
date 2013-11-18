@@ -101,7 +101,7 @@ DialogButton.prototype.cancelButtonClick = function(event) {
  */
 DialogButton.prototype.getOkButton = function(name) {
     return {
-        text: _(name + 'DialogOKButton'),
+        text: tr(name + 'DialogOKButton'),
         click: this.okButtonClick.bind(this),
         icons: {
             primary: 'ui-icon-circle-check'
@@ -117,7 +117,7 @@ DialogButton.prototype.getOkButton = function(name) {
  */
 DialogButton.prototype.getCancelButton = function(name) {
     return {
-        text: _(name + 'DialogCancelButton'),
+        text: tr(name + 'DialogCancelButton'),
         click: this.cancelButtonClick.bind(this),
         icons: {
             primary: 'ui-icon-circle-close'
@@ -136,7 +136,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
         modal: true,
         resizable: true,
         autoOpen: false,
-        title: _(name + 'DialogTitle'),
+        title: tr(name + 'DialogTitle'),
         dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
         close: this.closeDialog.bind(this),
         buttons: []
@@ -146,7 +146,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
     if (typeof okButton !== 'undefined' && okButton !== false) {
         options.buttons.push(okButton);
     }
-    if (typeof cancelButton !== 'undefined') {
+    if (typeof cancelButton !== 'undefined' && cancelButton !== false) {
         options.buttons.push(cancelButton);
     }
     return options;

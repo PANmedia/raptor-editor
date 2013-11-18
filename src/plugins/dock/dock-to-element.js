@@ -14,6 +14,8 @@
 Raptor.registerUi(new Button({
     name: 'dockToElement',
     action: function() {
-        this.raptor.plugins.dock.toggleDockToElement();
+        this.raptor.unify(function(raptor) {
+            raptor.plugins.dock.toggleDockToElement();
+        });
     }
 }));

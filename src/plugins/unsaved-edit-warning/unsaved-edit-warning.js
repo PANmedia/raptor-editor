@@ -41,10 +41,8 @@ UnsavedEditWarningPlugin.prototype.enable = function(raptor) {
  */
 UnsavedEditWarningPlugin.prototype.show = function() {
     unsavedEditWarningDirty++;
-    if (unsavedEditWarningDirty > 0) {
-        elementBringToTop(this.getElement());
-        this.getElement().addClass(this.options.baseClass + '-visible');
-    }
+    elementBringToTop(this.getElement());
+    this.getElement().addClass(this.options.baseClass + '-visible');
 };
 
 /**
@@ -53,8 +51,7 @@ UnsavedEditWarningPlugin.prototype.show = function() {
  * @param event The mouse event that triggers the function.
  */
 UnsavedEditWarningPlugin.prototype.hide = function(event) {
-    unsavedEditWarningDirty--;
-    if (unsavedEditWarningDirty === 0) {
+    if (--unsavedEditWarningDirty === 0) {
         this.getElement().removeClass(this.options.baseClass + '-visible');
     }
 };
@@ -68,17 +65,17 @@ UnsavedEditWarningPlugin.prototype.hide = function(event) {
  */
 UnsavedEditWarningPlugin.prototype.getElement = function() {
     if (!unsavedEditWarningElement) {
+        var dirtyClass = 'raptor-plugin-unsaved-edit-warning-dirty';
         unsavedEditWarningElement = $(this.raptor.getTemplate('unsaved-edit-warning.warning', this.options))
             .mouseenter(function() {
-                Raptor.eachInstance(function(editor) {
-                    if (editor.isDirty()) {
-                        editor.getElement().addClass(this.options.baseClass + '-dirty');
+                Raptor.eachInstance(function(raptor) {
+                    if (raptor.isDirty()) {
+                        raptor.getElement().addClass(dirtyClass);
                     }
                 });
             })
             .mouseleave(function() {
-                $('.' + this.options.baseClass + '-dirty').removeClass(this.options.baseClass + '-dirty');
-            }.bind(this))
+                $('.' + dirtyClass).removeClass(dirtyClass);            })
             .appendTo('body');
     }
     return unsavedEditWarningElement;
