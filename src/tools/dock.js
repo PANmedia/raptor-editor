@@ -88,6 +88,9 @@ function dockToScreen(element, options) {
     }
     var styleState = styleSwapState(element, position);
     spacer.css('height', element.outerHeight());
+    setTimeout(function() {
+        spacer.css('height', element.outerHeight());
+    }, 300);
     return {
         dockedElement: element,
         spacer: spacer,
