@@ -29,7 +29,7 @@ TextAlignButton.prototype.action = function() {
         this.options.cssPrefix + 'left',
         this.options.cssPrefix + 'right',
         this.options.cssPrefix + 'justify'
-    ], this.raptor.getElement());
+    ], this.raptor.getElement(), 'span');
     this.selectionChange();
 };
 
