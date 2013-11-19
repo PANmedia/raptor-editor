@@ -327,6 +327,7 @@ builder.addModule({
 builder.addModule({
     name: 'Paste',
     type: 'plugin',
+    group: 'Other plugins',
     description: 'Enables triggering a dialog input on a paste event to clean pasted content.',
     root: __dirname + '/paste',
     files: [
