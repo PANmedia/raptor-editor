@@ -14,7 +14,14 @@ Raptor.registerUi(new Button({
     name: 'save',
 
     action: function() {
-        this.getPlugin().save();
+        if (this.getPlugin()) {
+            this.getPlugin().save();
+        } else {
+            aNotify({
+                text: tr('saveNotConfigured'),
+                type: 'error'
+            });
+        }
     },
 
     init: function() {
