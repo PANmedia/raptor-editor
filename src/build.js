@@ -36,6 +36,7 @@ builder.addModule({
         'Common',
         'Tools',
         'jQuery UI Adapter',
+        'Pine Notify Adapter',
     ],
     files: [
         __dirname + '/init.js',
