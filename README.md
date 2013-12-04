@@ -38,9 +38,10 @@ See the following links for information on build &amp; contributing to Raptor:
 * [Contributing to Raptor](http://www.raptor-editor.com/documentation/contributing)
 * [Translating Raptor](http://www.raptor-editor.com/documentation/contributing/translations)
 
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=Petah&url=https://github.com/PANmedia/raptor-editor&title=Raptor Editor&language=&tags=github&category=software)
+
 [^1]: http://www.raptor-editor.com/ (Download, usage examples and documentation)
 [^2]: http://www.raptor-editor.com/documentation (Raptor documentation)
 [^3]: http://www.raptor-editor.com/license (Raptor license)
 [^4]: http://www.raptor-editor.com/demo (Raptor Editor Demo)
 [^5]: http://www.raptor-editor.com/demo/docking (Raptor Editor Examples)
-
