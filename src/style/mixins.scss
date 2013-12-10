@@ -7,7 +7,14 @@
 }
 
 %button-icon .ui-icon {
+    width: 16px;
+    height: 16px;
+    display: block;
     @include opacity(0.85);
+}
+
+%button-icon .ui-icon:before {
+    display: none;
 }
 
 %button-icon:hover .ui-icon {
