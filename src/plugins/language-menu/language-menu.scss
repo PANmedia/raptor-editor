@@ -21,43 +21,55 @@
 
 .raptor-ui-language-menu,
 .raptor-ui-language-menu-menu {
-    .ui-icon-flag-en,
-    .ui-state-hover .ui-icon-flag-en {
-        background-image: inline-image('en.png');
-    }
+    $flags:
+        ar ae,
+        bg bg,
+        ca ca,
+        cs cz,
+        da dk,
+        de de,
+        el gr,
+        en en,
+        es es,
+        et ee,
+        fa ir,
+        fi fi,
+        fr fr,
+        he il,
+        hi in,
+        ht ht,
+        hu hu,
+        id id,
+        it it,
+        ja jp,
+        ko kr,
+        lt lt,
+        lv lv,
+        ms my,
+        mww other,
+        nl nl,
+        no no,
+        pl pl,
+        pt pt,
+        ro ro,
+        ru ru,
+        sk sk,
+        sl si,
+        sv se,
+        th th,
+        tr tr,
+        uk ua,
+        ur pk,
+        vi vn,
+        zh-chs cn,
+        zh-cht cn;
 
-    .ui-icon-flag-de,
-    .ui-state-hover .ui-icon-flag-de {
-        background-image: inline-image('de.png');
-    }
-
-    .ui-icon-flag-es,
-    .ui-state-hover .ui-icon-flag-es {
-        background-image: inline-image('es.png');
-    }
-
-    .ui-icon-flag-fr,
-    .ui-state-hover .ui-icon-flag-fr {
-        background-image: inline-image('fr.png');
-    }
-
-    .ui-icon-flag-nl,
-    .ui-state-hover .ui-icon-flag-nl {
-        background-image: inline-image('nl.png');
-    }
-
-    .ui-icon-flag-ru,
-    .ui-state-hover .ui-icon-flag-ru {
-        background-image: inline-image('ru.png');
-    }
-
-    .ui-icon-flag-sv,
-    .ui-state-hover .ui-icon-flag-sv {
-        background-image: inline-image('sv.png');
-    }
-
-    .ui-icon-flag-zh-cn,
-    .ui-state-hover .ui-icon-flag-zh-cn {
-        background-image: inline-image('zh-CN.png');
+    @each $flag in $flags {
+        $image: nth($flag, 2);
+        $flag: nth($flag, 1);
+        .ui-icon-flag-#{$flag},
+        .ui-state-hover .ui-icon-flag-#{$flag} {
+            background-image: inline-image('#{$image}.png');
+        }
     }
 }

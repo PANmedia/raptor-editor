@@ -30,7 +30,7 @@ LanguageMenu.prototype = Object.create(SelectMenu.prototype);
  */
 LanguageMenu.prototype.init = function() {
     var result = Menu.prototype.init.call(this);
-    aButtonSetLabel(this.button.button, tr('languageMenu' + currentLocale.toUpperCase().replace('-', '')));
+    aButtonSetLabel(this.button.button, localeNames[currentLocale]);
     aButtonSetIcon(this.button.button, 'ui-icon-flag-' + currentLocale.toLowerCase());
     return result;
 };
@@ -54,7 +54,7 @@ LanguageMenu.prototype.getMenuItems = function() {
     var items = '';
     for (var locale in locales) {
         items += this.raptor.getTemplate('language-menu.item', {
-            label: tr('languageMenu' + locale.toUpperCase().replace('-', '')),
+            label: localeNames[locale],
             value: locale,
             icon: locale.toLowerCase()
         });
