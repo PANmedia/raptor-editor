@@ -235,14 +235,46 @@ builder.addModule({
     files: [
         __dirname + '/language-menu/language-menu.js',
         __dirname + '/language-menu/language-menu.scss',
+        __dirname + '/language-menu/flags/ae.png',
+        __dirname + '/language-menu/flags/bg.png',
+        __dirname + '/language-menu/flags/ca.png',
+        __dirname + '/language-menu/flags/cn.png',
+        __dirname + '/language-menu/flags/cz.png',
         __dirname + '/language-menu/flags/de.png',
+        __dirname + '/language-menu/flags/dk.png',
+        __dirname + '/language-menu/flags/ee.png',
         __dirname + '/language-menu/flags/en.png',
         __dirname + '/language-menu/flags/es.png',
+        __dirname + '/language-menu/flags/fi.png',
         __dirname + '/language-menu/flags/fr.png',
+        __dirname + '/language-menu/flags/gr.png',
+        __dirname + '/language-menu/flags/ht.png',
+        __dirname + '/language-menu/flags/hu.png',
+        __dirname + '/language-menu/flags/id.png',
+        __dirname + '/language-menu/flags/il.png',
+        __dirname + '/language-menu/flags/in.png',
+        __dirname + '/language-menu/flags/ir.png',
+        __dirname + '/language-menu/flags/it.png',
+        __dirname + '/language-menu/flags/jp.png',
+        __dirname + '/language-menu/flags/kr.png',
+        __dirname + '/language-menu/flags/lt.png',
+        __dirname + '/language-menu/flags/lv.png',
+        __dirname + '/language-menu/flags/my.png',
         __dirname + '/language-menu/flags/nl.png',
+        __dirname + '/language-menu/flags/no.png',
+        __dirname + '/language-menu/flags/other.png',
+        __dirname + '/language-menu/flags/pk.png',
+        __dirname + '/language-menu/flags/pl.png',
+        __dirname + '/language-menu/flags/pt.png',
+        __dirname + '/language-menu/flags/ro.png',
         __dirname + '/language-menu/flags/ru.png',
-        __dirname + '/language-menu/flags/sv.png',
-        __dirname + '/language-menu/flags/zh-CN.png',
+        __dirname + '/language-menu/flags/se.png',
+        __dirname + '/language-menu/flags/si.png',
+        __dirname + '/language-menu/flags/sk.png',
+        __dirname + '/language-menu/flags/th.png',
+        __dirname + '/language-menu/flags/tr.png',
+        __dirname + '/language-menu/flags/ua.png',
+        __dirname + '/language-menu/flags/vn.png',
         __dirname + '/language-menu/templates/item.html'
     ]
 });
@@ -301,6 +333,7 @@ builder.addModule({
         __dirname + '/logo/raptor.png'
     ]
 });
+
 
 builder.addModule({
     name: 'No Break',
