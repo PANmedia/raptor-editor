@@ -169,13 +169,13 @@ var RaptorWidget = {
     attach: function() {
         this.bind('change', this.historyPush);
 
-        this.getElement().on('click.' + this.widgetName, 'img', function(event) {
+        this.getElement().on('click.raptor', 'img', function(event) {
             selectionSelectOuter(event.target);
             this.checkSelectionChange();
         }.bind(this));
-        this.getElement().bind('focus', this.showLayout.bind(this));
-        this.target.bind('mouseup.' + this.widgetName, this.checkSelectionChange.bind(this));
-        this.target.bind('input.' + this.widgetName, this.checkChange.bind(this));
+        this.getElement().on('focus.raptor', this.showLayout.bind(this));
+        this.target.on('mouseup.raptor', this.checkSelectionChange.bind(this));
+        this.target.on('input.raptor', this.checkChange.bind(this));
 
         // Unload warning
         $(window).bind('beforeunload', Raptor.unloadWarning.bind(Raptor));
@@ -192,12 +192,12 @@ var RaptorWidget = {
      */
     detach: function() {
         this.unbind('change');
-        this.getElement().off('click.' + this.widgetName, 'img');
-        this.getElement().unbind('focus');
+        this.getElement().off('click.raptor', 'img');
+        this.getElement().off('focus.raptor');
         this.getElement().blur();
 
-        this.target.unbind('mouseup.' + this.widgetName);
-        this.target.unbind('keyup.' + this.widgetName);
+        this.target.off('mouseup.raptor');
+        this.target.off('keyup.raptor');
     },
 
     /**
@@ -363,7 +363,7 @@ var RaptorWidget = {
         this.events = {};
 
         // Unbind all events
-        this.getElement().unbind('.' + this.widgetName);
+        this.getElement().off('.raptor');
 
         if (this.getOriginalElement().is(':input')) {
             this.target.remove();
@@ -552,7 +552,7 @@ var RaptorWidget = {
 
                 this.bindHotkeys();
 
-                this.getElement().closest('form').bind('submit.' + this.widgetName, function() {
+                this.getElement().closest('form').on('submit.raptor', function() {
                     clean(this.getElement());
                     this.fire('change', [this.getHtml()]);
                 }.bind(this));
@@ -826,7 +826,7 @@ var RaptorWidget = {
 
     bindHotkeys: function() {
         for (var keyCombination in this.hotkeys) {
-            this.getElement().bind('keydown.' + this.widgetName, keyCombination, function(event) {
+            this.getElement().on('keydown.raptor', keyCombination, function(event) {
                 if (this.isEditing() && !this.hotkeysSuspended) {
                     var result = this.hotkeys[event.data]();
                     if (result !== false) {

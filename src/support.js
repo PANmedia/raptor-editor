@@ -11,7 +11,7 @@ function isSupported() {
 
             // Fixed position hack
             if (ios) {
-                $(document).bind('scroll', function(){
+                $(document).on('scroll', function(){
                     setInterval(function() {
                         $('body').css('height', '+=1').css('height', '-=1');
                     }, 0);

@@ -100,7 +100,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
         };
 
         var plugin = this;
-        widthInput.bind('keyup', function() {
+        widthInput.on('keyup.raptor', function() {
             var width = inputWidth();
             if (plugin.proportional) {
                 heightInput.val(Math.round(Math.abs(imageOriginalSize.height / imageOriginalSize.width * width)));
@@ -108,7 +108,7 @@ ImageResizeButtonPlugin.prototype.getDialog = function() {
             this.resizeImage(width, inputHeight());
         }.bind(this));
 
-        heightInput.bind('keyup', function() {
+        heightInput.on('keyup.raptor', function() {
             var height = inputHeight();
             if (plugin.proportional) {
                 widthInput.val(Math.round(Math.abs(imageOriginalSize.width / imageOriginalSize.height * height)));

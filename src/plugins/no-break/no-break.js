@@ -12,8 +12,8 @@ function NoBreakPlugin(name, overrides) {
 NoBreakPlugin.prototype = Object.create(RaptorPlugin.prototype);
 
 NoBreakPlugin.prototype.init = function() {
-    this.raptor.getElement().bind('keypress.' + this.raptor.widgetName, this.preventReturn.bind(this));
-    this.raptor.getElement().bind('drop.' + this.raptor.widgetName, this.preventDrop.bind(this));
+    this.raptor.getElement().on('keypress.raptor', this.preventReturn.bind(this));
+    this.raptor.getElement().on('drop.raptor', this.preventDrop.bind(this));
 };
 
 NoBreakPlugin.prototype.preventReturn = function(event) {
