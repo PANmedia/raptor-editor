@@ -10,7 +10,7 @@
 var pasteInProgress = false,
     pasteDialog = null,
     pasteInstance = null,
-    selection = null;
+    pasteShiftDown = null;
 
 /**
  * The paste plugin class.
@@ -46,8 +46,8 @@ function PastePlugin(name, overrides) {
         ],
         
         panels: [
-            'plain-text',
             'formatted-clean',
+            'plain-text',
             'formatted-unclean',
             'source'
         ]
@@ -62,7 +62,7 @@ PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
  * Enables pasting.
  */
 PastePlugin.prototype.enable = function() {
-    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.capturePaste.bind(this));
+    this.raptor.getElement().on('paste.raptor', this.capturePaste.bind(this));
 };
 
 /**
@@ -71,6 +71,9 @@ PastePlugin.prototype.enable = function() {
  * @returns {Boolean} True if paste capture is successful.
  */
 PastePlugin.prototype.capturePaste = function() {
+    if (pasteShiftDown) {
+        return;
+    }
     if (pasteInProgress) {
         return false;
     }
@@ -357,5 +360,9 @@ PastePlugin.prototype.updateAreas = function() {
     pasteDialog.find('.' + this.options.baseClass + '-source').html(html);
     pasteDialog.find('.' + this.options.baseClass + '-markup').html(markup);
 };
+
+$(document).on('keyup.raptor keydown.raptor', function(event) {
+    pasteShiftDown = event.shiftKey;
+});
 
 Raptor.registerPlugin(new PastePlugin());

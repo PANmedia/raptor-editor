@@ -1,16 +1,16 @@
 <div class="{{baseClass}}-panel ui-dialog-content ui-widget-content">
     <div class="{{baseClass}}-panel-tabs ui-tabs ui-widget ui-widget-content ui-corner-all">
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="{{baseClass}}-tab-formatted-clean ui-state-default ui-corner-top ui-state-active ui-tabs-selected" style="display: none"><a>tr('pasteDialogFormattedCleaned')</a></li>
             <li class="{{baseClass}}-tab-plain-text ui-state-default ui-corner-top" style="display: none"><a>tr('pasteDialogPlain')</a></li>
-            <li class="{{baseClass}}-tab-formatted-clean ui-state-default ui-corner-top" style="display: none"><a>tr('pasteDialogFormattedCleaned')</a></li>
             <li class="{{baseClass}}-tab-formatted-unclean ui-state-default ui-corner-top" style="display: none"><a>tr('pasteDialogFormattedUnclean')</a></li>
             <li class="{{baseClass}}-tab-source ui-state-default ui-corner-top" style="display: none"><a>tr('pasteDialogSource')</a></li>
         </ul>
-        <div class="{{baseClass}}-content-plain-text" style="display: none">
-            <textarea class="{{baseClass}}-area {{baseClass}}-plain"></textarea>
-        </div>
         <div class="{{baseClass}}-content-formatted-clean" style="display: none">
             <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-markup"></div>
+        </div>
+        <div class="{{baseClass}}-content-plain-text" style="display: none">
+            <textarea class="{{baseClass}}-area {{baseClass}}-plain"></textarea>
         </div>
         <div class="{{baseClass}}-content-formatted-unclean" style="display: none">
             <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-rich"></div>
