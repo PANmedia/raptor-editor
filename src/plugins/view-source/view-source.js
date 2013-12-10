@@ -26,6 +26,8 @@ Raptor.registerUi(new DialogButton({
         var html = dialog.find('textarea').val();
         this.raptor.actionApply(function() {
             this.raptor.setHtml(html);
+            selectionSelectStart(this.raptor.getElement().first());
+            this.raptor.checkSelectionChange();
         }.bind(this));
     },
 
