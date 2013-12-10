@@ -15,6 +15,9 @@
  * @param {Object} overrides
  */
 function SaveJsonPlugin(name, overrides) {
+    this.options = {
+        retain: false
+    };
     RaptorPlugin.call(this, name || 'saveJson', overrides);
     this.size = null;
 }
@@ -91,9 +94,11 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
         text: message,
         type: 'success'
     });
-    this.raptor.unify(function(raptor) {
-        raptor.disableEditing();
-    });
+    if (!this.options.retain) {
+        this.raptor.unify(function(raptor) {
+            raptor.disableEditing();
+        });
+    }
 };
 
 /**

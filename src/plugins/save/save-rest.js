@@ -18,6 +18,9 @@
  */
 function SaveRestPlugin(name, overrides) {
     this.method = 'put';
+    this.options = {
+        retain: false
+    };
     RaptorPlugin.call(this, name || 'saveRest', overrides);
 }
 
@@ -104,9 +107,11 @@ SaveRestPlugin.prototype.always = function() {
                 }),
                 type: 'success'
             });
-            this.raptor.unify(function(raptor) {
-                raptor.disableEditing();
-            });
+            if (!this.options.retain) {
+                this.raptor.unify(function(raptor) {
+                    raptor.disableEditing();
+                });
+            }
         }
     }
 };
