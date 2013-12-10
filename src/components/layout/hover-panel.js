@@ -93,4 +93,12 @@ HoverPanelLayout.prototype.position = function() {
     }
 };
 
+HoverPanelLayout.prototype.destruct = function() {
+    if (this.hoverPanel) {
+        this.hoverPanel.remove();
+        this.hoverPanel = null;
+    }
+    this.visible = false;
+};
+
 Raptor.registerLayout(new HoverPanelLayout());

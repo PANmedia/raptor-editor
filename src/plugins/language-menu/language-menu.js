@@ -16,6 +16,9 @@
  * @param {Object} options
  */
 function LanguageMenu(options) {
+    this.options = {
+        persist: true
+    };
     SelectMenu.call(this, {
         name: 'languageMenu'
     });
@@ -42,6 +45,9 @@ LanguageMenu.prototype.init = function() {
  */
 LanguageMenu.prototype.menuItemClick = function(event) {
     var locale = $(event.currentTarget).data('value');
+    if (this.options.persist) {
+        Raptor.persist('locale', locale);
+    }
     setTimeout(function() {
         setLocale(locale);
     }, 1);

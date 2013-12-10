@@ -29,7 +29,7 @@ Raptor.registerUi(new DialogButton({
          */
         characterSets: {
             symbols: {
-                name: 'Symbols',
+                name: tr('specialCharactersSymbols'),
                 characters: [
                     ['<', '&lt;', 'less than'],
                     ['>', '&gt;', 'greater than'],
@@ -78,7 +78,7 @@ Raptor.registerUi(new DialogButton({
                 ]
             },
             mathematics: {
-                name: 'Mathematics',
+                name: tr('specialCharactersMathematics'),
                 characters: [
                     ['&lt;', 'less than'],
                     ['&le;', 'less than or equal to'],
@@ -149,7 +149,7 @@ Raptor.registerUi(new DialogButton({
                 ]
             },
             arrows: {
-                name: 'Arrows',
+                name: tr('specialCharactersArrows'),
                 characters: [
                     ['&darr;', 'down arrow'],
                     ['&dArr;', 'down double arrow'],
@@ -165,7 +165,7 @@ Raptor.registerUi(new DialogButton({
                 ]
             },
             greekAlphabet: {
-                name: 'Greek Alphabet',
+                name: tr('specialCharactersGreekAlphabet'),
                 characters: [
                     ['&alpha;', 'alpha'],
                     ['&beta;', 'beta'],
