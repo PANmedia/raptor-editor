@@ -232,7 +232,7 @@ function selectionGetHtml(selection) {
 function selectionGetElement(range, selection) {
     selection = selection || rangy.getSelection();
     if (!selectionExists()) {
-        return null;
+        return new jQuery;
     }
     var range = selectionRange(),
         commonAncestor;
