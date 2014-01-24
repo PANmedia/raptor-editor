@@ -561,6 +561,14 @@ var RaptorWidget = {
             clean(this.getElement());
             this.fire('enabled');
             this.showLayout();
+
+            if (this.options.autoSelect) {
+                if (this.options.partialEdit) {
+                    selectionSelectInner(this.getElement().find('[contenteditable]')[0]);
+                } else {
+                    selectionSelectInner(this.getNode());
+                }
+            }
         }
     },
 

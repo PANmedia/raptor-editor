@@ -90,6 +90,13 @@ Raptor.globalDefaults = {
     partialEdit: false,
 
     /**
+     * Automatically select the editable content when editing is enabled.
+     *
+     * @type boolean
+     */
+    autoSelect: true,
+
+    /**
      * Switch to specify if the editor should automatically enable all plugins,
      * if set to false, only the plugins specified in the 'plugins' option
      * object will be enabled
