@@ -1091,3 +1091,4 @@ var RaptorWidget = {
 };
 
 $.widget('ui.raptor', RaptorWidget);
+$.fn.raptor.Raptor = Raptor;
