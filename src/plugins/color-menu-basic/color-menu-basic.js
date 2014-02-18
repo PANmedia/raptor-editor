@@ -112,7 +112,7 @@ ColorMenuBasic.prototype.changeColor = function(color, permanent) {
         } else {
             var uniqueId = elementUniqueId();
             selectionToggleWrapper('span', {
-                classes: this.options.classes || this.options.cssPrefix + 'color ' + this.options.cssPrefix + color,
+                classes: this.options.cssPrefix + 'color ' + this.options.cssPrefix + color,
                 attributes: {
                     id: uniqueId
                 }
@@ -148,7 +148,6 @@ ColorMenuBasic.prototype.menuItemMouseEnter = function(event) {
  */
 ColorMenuBasic.prototype.menuItemMouseLeave = function(event) {
     this.raptor.actionPreviewRestore();
-    this.changeColor(this.currentColor);
 };
 
 /**
