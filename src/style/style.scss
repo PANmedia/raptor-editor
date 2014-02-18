@@ -26,6 +26,9 @@
 }
 
 .raptor-editing-inline * {
-    color: inherit;
     text-shadow: inherit;
+}
+
+.raptor-editing-inline *:not(.cms-color) {
+    color: inherit;
 }
