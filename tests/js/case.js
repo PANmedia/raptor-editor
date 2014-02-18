@@ -42,6 +42,7 @@ loadJS('../../raptor-dependencies/rangy/rangy-serializer.js');
 loadJS('../../raptor-dependencies/rangy/rangy-textrange.js');
 loadJS('../../raptor-dependencies/resizetable.js');
 loadJS('../../raptor-dependencies/goog-table.js');
+loadJS('../../raptor-common/types.js');
 loadJS('../src/init.js');
 loadJS('../src/tools/action.js');
 loadJS('../src/tools/clean.js');
