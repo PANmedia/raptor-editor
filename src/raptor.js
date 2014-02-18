@@ -5,7 +5,7 @@ var Raptor =  {
 
     globalDefaults: {},
     defaults: {},
-            
+
     /** @type {Boolean} True to enable hotkeys */
     enableHotkeys: true,
 
@@ -204,7 +204,7 @@ var Raptor =  {
 
         this.plugins[plugin.name] = plugin;
     },
-            
+
     registerPreset: function(preset, setDefault) {
         // <strict>
         if (typeof preset !== 'object') {
@@ -234,20 +234,24 @@ var Raptor =  {
      */
     persist: function(key, value, namespace) {
         key = namespace ? namespace + '.' + key : key;
-        if (localStorage) {
-            var storage;
-            if (localStorage.uiWidgetEditor) {
-                storage = JSON.parse(localStorage.uiWidgetEditor);
-            } else {
-                storage = {};
+        // Local storage throws an error when using XUL
+        try {
+            if (localStorage) {
+                var storage;
+                if (localStorage.uiWidgetEditor) {
+                    storage = JSON.parse(localStorage.uiWidgetEditor);
+                } else {
+                    storage = {};
+                }
+                if (value === undefined) {
+                    return storage[key];
+                }
+                storage[key] = value;
+                localStorage.uiWidgetEditor = JSON.stringify(storage);
             }
-            if (value === undefined) {
-                return storage[key];
-            }
-            storage[key] = value;
-            localStorage.uiWidgetEditor = JSON.stringify(storage);
-        }
+        } catch (e) {
 
+        }
         return value;
     }
 
