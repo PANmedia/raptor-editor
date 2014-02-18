@@ -33,7 +33,7 @@ function PastePlugin(name, overrides) {
          * @type {Array}
          */
         allowedTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote',
             'p', 'a', 'span', 'hr', 'br', 'strong', 'em'
         ],
 
