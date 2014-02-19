@@ -292,7 +292,7 @@ var RaptorWidget = {
         this.element.hide();
         this.bind('change', function() {
             if (this.getOriginalElement().is(':input')) {
-                this.getOriginalElement().val(this.getHtml());
+                this.getOriginalElement().val(this.getHtml()).trigger('input');
             } else {
                 this.getOriginalElement().html(this.getHtml());
             }
