@@ -897,10 +897,14 @@ var RaptorWidget = {
     },
 
     /**
+     * @deprecated
      * @param  {String} ui Name of the UI object to be returned.
      * @return {Object|null} UI object referenced by the given name.
      */
     getUi: function(ui) {
+        // <strict>
+        handleError('raptor.getUi() is deprecated, use raptor.getPlugin() instead.');
+        // </strict>
         return this.uiObjects[ui];
     },
 
@@ -912,7 +916,7 @@ var RaptorWidget = {
      * @return {Object|undefined} plugin
      */
     getPlugin: function(name) {
-        return this.plugins[name];
+        return this.uiObjects[name] || this.plugins[name];
     },
 
     /**
