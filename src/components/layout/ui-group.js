@@ -3,7 +3,7 @@ function UiGroup(raptor, uiOrder) {
     this.uiOrder = uiOrder;
 };
 
-UiGroup.prototype.appendTo = function(panel) {
+UiGroup.prototype.appendTo = function(layout, panel) {
     // Loop the UI component order option
     for (var i = 0, l = this.uiOrder.length; i < l; i++) {
         var uiGroupContainer = $('<div/>')
@@ -25,6 +25,7 @@ UiGroup.prototype.appendTo = function(panel) {
                 }
 
                 var component = this.raptor.prepareComponent(Raptor.ui[uiGroup[ii]], uiOptions, 'ui');
+                component.instance.layout = layout;
 
                 this.raptor.uiObjects[uiGroup[ii]] = component.instance;
 
