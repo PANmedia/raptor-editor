@@ -13,7 +13,7 @@
  * @todo param details?
  * @param {type} param
  */
-Raptor.registerUi(new Button({
+Raptor.registerUi(new DialogButton({
     name: 'insertFile',
     state: false,
     /** @type {string[]} Image extensions*/
@@ -39,60 +39,34 @@ Raptor.registerUi(new Button({
     /**
      * Open the insert file dialog or file manager.
      */
-    action: function() {
-        this.raptor.pause();
-
+    action: function(target) {
         // If a customAction has been specified, use it instead of the default dialog.
-        if (!this.options.customAction) {
-            return this.showDialog();
-        }
-
-        if (this.options.customAction.call(this) === false) {
-            return this.showDialog();
+        if (!this.options.customAction || this.options.customAction.call(this, target) === false) {
+            if (typeof target !== 'undefined') {
+                this.getDialog().find('[name=location]').val(target.getAttribute('src') || target.getAttribute('href'));
+                this.getDialog().find('[name=name]').val(target.innerHTML);
+            } else {
+                this.getDialog().find('[name=location]').val('');
+                this.getDialog().find('[name=name]').val('');
+            }
+            return this.openDialog();
         }
     },
 
-    /**
-     * Show the insert files dialog.
-     */
-    showDialog: function() {
-        var dialogElement = $('.file-manager-missing');
-        if (!dialogElement.length) {
-            dialogElement = $(this.raptor.getTemplate('insert-file.dialog'));
-        }
-        var self = this;
-        aDialog(dialogElement, {
-            title: 'No File Manager',
-            modal: true,
-            close: function() {
-                self.raptor.resume();
-            },
-            buttons: [
-                {
-                    text: tr('insertFileDialogOKButton'),
-                    click: function() {
-                        aDialogClose(dialogElement);
-                        self.insertFiles([{
-                            location: dialogElement.find('input[name="location"]').val(),
-                            name: dialogElement.find('input[name="name"]').val()
-                        }]);
-                    },
-                    icons: {
-                        primary: 'ui-icon-circle-check'
-                    }
-                },
-                {
-                    text: tr('insertFileDialogCancelButton'),
-                    click: function() {
-                        aDialogClose(dialogElement);
-                    },
-                    icons: {
-                        primary: 'ui-icon-circle-close'
-                    }
-                }
-            ]
-        });
-        aDialogOpen(dialogElement);
+    applyAction: function() {
+        var dialog = this.getDialog(),
+            location = dialog.find('[name=location]').val(),
+            name = dialog.find('[name=name]').val();
+        this.raptor.actionApply(function() {
+            this.insertFiles([{
+                location: location,
+                name: name
+            }]);
+        }.bind(this));
+    },
+
+    getDialogTemplate: function() {
+        return $(this.raptor.getTemplate('insert-file.dialog'));
     },
 
     /**
@@ -145,26 +119,38 @@ Raptor.registerUi(new Button({
             return;
         }
         this.raptor.actionApply(function() {
-            if (files.length === 1 && !selectionIsEmpty()) {
-                selectionExpandTo('a', this.raptor.getElement());
-                selectionTrim();
-                var applier = rangy.createApplier({
-                    tag: 'a',
-                    attributes: {
-                        href: files[0].location.replace(/([^:])\/\//g, '$1/'),
-                        title: files[0].name,
-                        'class': this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(files[0])
-                    }
-                });
-                applier.applyToSelection();
-            } else {
-                var elements = [];
-                for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
-                    elements.push(this.prepareElement(files[fileIndex]));
+            if (files.length === 1) {
+                if ((this.isImage(files[0]) && $(selectionGetHtml()).is('img')) || selectionIsEmpty()) {
+                    this.replaceFiles(files);
+                } else {
+                    this.linkFiles(files);
                 }
-                selectionReplace(elements.join(', '));
+            } else {
+                this.linkFiles(files);
             }
         }.bind(this));
+    },
+
+    linkFiles: function(files) {
+        selectionExpandTo('a', this.raptor.getElement());
+        selectionTrim();
+        var applier = rangy.createApplier({
+            tag: 'a',
+            attributes: {
+                href: files[0].location.replace(/([^:])\/\//g, '$1/'),
+                title: files[0].name,
+                'class': this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(files[0])
+            }
+        });
+        applier.applyToSelection();
+    },
+
+    replaceFiles: function(files) {
+        var elements = [];
+        for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
+            elements.push(this.prepareElement(files[fileIndex]));
+        }
+        selectionReplace(elements.join(', '));
     },
 
     /**
@@ -210,7 +196,6 @@ Raptor.registerUi(new Button({
      * @return {string} Anchor tag's HTML.
      */
     prepareAnchor: function(file, classNames, text) {
-        
         return $('<div/>').html($('<a/>').attr({
             href: file.location.replace(/([^:])\/\//g, '$1/'),
             title: file.name,
