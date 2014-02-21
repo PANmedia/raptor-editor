@@ -301,7 +301,7 @@ function elementIsEmpty(element) {
         return;
     }
     // </strict>
-    
+
     // Images and elements containing images are not empty
     if (element.is('img') || element.find('img').length) {
         return false;
@@ -409,4 +409,34 @@ function elementChangeTag(element, newTag) {
         tags[i] = node;
     }
     return $(tags);
+}
+
+/**
+ * Positions an element over top of another element.
+ *  - If the other element is big, then the element is positioned in the center of the visible part of the other element.
+ *  - If the other element is small and not at the top of the screen, the other element is positioned at the top of the other element.
+ *  - If the other element is small and not is at the top of the screen, the other element is positioned at the bottom of the other element.
+ *
+ * @param {Element} element The element to position.
+ * @param {Element} over The element to position over.
+ */
+function elementPositionOver(element, over) {
+    if (element.outerHeight() > over.outerHeight() - 20) {
+        var visibleRect = elementVisibleRect(over),
+            offset = over.offset();
+        element.css({
+            position: 'absolute',
+            // Calculate offset center for the element
+            top:  offset.top - element.outerHeight(),
+            left: visibleRect.left + ((visibleRect.width / 2)  - (element.outerWidth()  / 2))
+        });
+    } else {
+        var visibleRect = elementVisibleRect(over);
+        element.css({
+            position: 'absolute',
+            // Calculate offset center for the element
+            top:  visibleRect.top  + ((visibleRect.height / 2) - (element.outerHeight() / 2)),
+            left: visibleRect.left + ((visibleRect.width / 2)  - (element.outerWidth()  / 2))
+        });
+    }
 }
