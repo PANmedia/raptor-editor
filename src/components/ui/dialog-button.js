@@ -32,7 +32,6 @@ DialogButton.prototype = Object.create(Button.prototype);
  * stage.
  */
 DialogButton.prototype.action = function() {
-    var dialog = this.getDialog(this);
     this.openDialog();
 };
 
