@@ -562,11 +562,28 @@ var RaptorWidget = {
             this.fire('enabled');
             this.showLayout();
 
-            if (this.options.autoSelect) {
-                if (this.options.partialEdit) {
-                    selectionSelectInner(this.getElement().find('[contenteditable]')[0]);
-                } else {
-                    selectionSelectInner(this.getNode());
+            var selectNode = this.options.partialEdit ? this.getElement().find('[contenteditable]')[0] : this.getNode();
+            switch (this.options.autoSelect) {
+                case 'all': {
+                    selectionSelectInner(selectNode);
+                    break;
+                }
+                case 'start': {
+                    selectNode = $(selectNode).find('*:first')[0];
+                    var range = rangy.createRange();
+                    range.setStartBefore(selectNode);
+                    range.setEndBefore(selectNode);
+                    selectionSet(range);
+                    break;
+                }
+                case 'end': {
+                    selectNode = $(selectNode).find('*:last')[0];
+                    selectionSelectInner(selectNode);
+                    var range = rangy.createRange();
+                    range.setStartAfter(selectNode);
+                    range.setEndAfter(selectNode);
+                    selectionSet(range);
+                    break;
                 }
             }
         }

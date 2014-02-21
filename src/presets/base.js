@@ -94,7 +94,7 @@ Raptor.globalDefaults = {
      *
      * @type boolean
      */
-    autoSelect: true,
+    autoSelect: 'end',
 
     /**
      * Switch to specify if the editor should automatically enable all plugins,
