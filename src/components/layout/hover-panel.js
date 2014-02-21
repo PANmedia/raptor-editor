@@ -26,22 +26,24 @@ HoverPanelLayout.prototype.ready = function() {
 };
 
 HoverPanelLayout.prototype.enabled = function() {
-    this.getHoverPanel().hide();
+    this.getElement().hide();
 };
 
-HoverPanelLayout.prototype.getHoverPanel = function() {
+HoverPanelLayout.prototype.getElement = function() {
     if (this.hoverPanel === null) {
         this.hoverPanel = $('<div/>')
-            .addClass(this.options.baseClass)
+            .addClass(this.raptor.options.baseClass + '-layout ' + this.options.baseClass)
             .mouseleave(this.hide.bind(this));
 
         var uiGroup = new UiGroup(this.raptor, this.options.uiOrder);
-        uiGroup.appendTo(this.hoverPanel);
+        uiGroup.appendTo(this, this.hoverPanel);
 
         $(window).bind('scroll', this.position.bind(this));
 
         this.hoverPanel
             .appendTo('body');
+
+        this.raptor.fire('layoutReady', [this]);
     }
     return this.hoverPanel;
 };
@@ -49,7 +51,7 @@ HoverPanelLayout.prototype.getHoverPanel = function() {
 HoverPanelLayout.prototype.show = function(event) {
     if (!this.raptor.isEditing()) {
         this.visible = true;
-        this.getHoverPanel().show();
+        this.getElement().show();
         this.position();
         this.raptor.getElement().addClass(this.raptor.options.baseClass + '-editable-block-hover');
     }
@@ -62,13 +64,13 @@ HoverPanelLayout.prototype.hide = function(event) {
     if (!event) {
         return;
     }
-    if ($.contains(this.getHoverPanel().get(0), event.relatedTarget)) {
+    if ($.contains(this.getElement().get(0), event.relatedTarget)) {
         return;
     }
-    if (event.relatedTarget === this.getHoverPanel().get(0)) {
+    if (event.relatedTarget === this.getElement().get(0)) {
         return;
     }
-    if (this.getHoverPanel().get(0) === $(event.relatedTarget).parent().get(0)) {
+    if (this.getElement().get(0) === $(event.relatedTarget).parent().get(0)) {
         return;
     }
     if ($.contains(this.raptor.getElement().get(0), event.relatedTarget)) {
@@ -78,17 +80,17 @@ HoverPanelLayout.prototype.hide = function(event) {
         return;
     }
     this.visible = false;
-    this.getHoverPanel().hide();
+    this.getElement().hide();
     this.raptor.getElement().removeClass(this.raptor.options.baseClass + '-editable-block-hover');
 };
 
 HoverPanelLayout.prototype.position = function() {
     if (this.visible) {
         var visibleRect = elementVisibleRect(this.raptor.getElement());
-        this.getHoverPanel().css({
+        this.getElement().css({
             // Calculate offset center for the hoverPanel
-            top:  visibleRect.top  + ((visibleRect.height / 2) - (this.getHoverPanel().outerHeight() / 2)),
-            left: visibleRect.left + ((visibleRect.width / 2)  - (this.getHoverPanel().outerWidth()  / 2))
+            top:  visibleRect.top  + ((visibleRect.height / 2) - (this.getElement().outerHeight() / 2)),
+            left: visibleRect.left + ((visibleRect.width / 2)  - (this.getElement().outerWidth()  / 2))
         });
     }
 };
