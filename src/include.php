@@ -39,6 +39,7 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/ui-group.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/toolbar.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/hover-panel.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/components/layout/element-hover-panel.js"></script>
 
 <!-- Main templates -->
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/templates.js"></script>
@@ -59,6 +60,8 @@
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/click-button-to-edit/click-button-to-edit.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/click-button-to-edit/templates.js"></script>
+
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/close/close.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/color-menu-basic/color-menu-basic.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/color-menu-basic/templates.js"></script>
@@ -87,8 +90,11 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/insert-file/insert-file.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/insert-file/templates.js"></script>
 
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize-button/image-resize-button.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize-button/templates.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize/image-resize.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize/templates.js"></script>
+
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-swap/image-swap.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-swap/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/language-menu.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/templates.js"></script>
