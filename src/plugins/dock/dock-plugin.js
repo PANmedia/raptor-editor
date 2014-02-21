@@ -117,7 +117,7 @@ DockPlugin.prototype.dockToElement = function() {
         spacer: false,
         wrapperClass: this.options.baseClass + '-inline-wrapper'
     });
-    this.activateButton(this.raptor.getUi('dockToElement'));
+    this.activateButton(this.raptor.getPlugin('dockToElement'));
 };
 
 /**
@@ -129,7 +129,7 @@ DockPlugin.prototype.undockFromElement = function() {
     this.marker.replaceWith(undockFromElement(this.dockState));
     this.dockState = null;
     this.raptor.getLayout('toolbar').getElement().removeClass(this.options.baseClass + '-docked-to-element');
-    this.deactivateButton(this.raptor.getUi('dockToElement'));
+    this.deactivateButton(this.raptor.getPlugin('dockToElement'));
 };
 
 /**
@@ -174,7 +174,7 @@ DockPlugin.prototype.dockToScreen = function() {
                 this.dockState.spacer.removeClass(this.options.baseClass + '-visible');
                 this.dockState.spacer.addClass(this.options.baseClass + '-hidden');
             }
-            this.activateButton(this.raptor.getUi('dockToScreen'));
+            this.activateButton(this.raptor.getPlugin('dockToScreen'));
         }
     }
 };
@@ -194,7 +194,7 @@ DockPlugin.prototype.undockFromScreen = function() {
         layout.constrainPosition();
         this.dockState = null;
         layoutElement.removeClass(this.options.baseClass + '-docked');
-        this.deactivateButton(this.raptor.getUi('dockToScreen'));
+        this.deactivateButton(this.raptor.getPlugin('dockToScreen'));
     }
 };
 
