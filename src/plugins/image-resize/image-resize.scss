@@ -1,25 +1,9 @@
 /**
- * Image resize button plugin
+ * Image resize button.
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import "compass/css3/images";
-@import "compass/css3/box-shadow";
-@import "compass/css3/border-radius";
-
-%block-item-base {
-    height: 0;
-    overflow: hidden;
-    display: block;
-}
-
-@mixin block-item ($width, $height: $width) {
-    @extend %block-item-base;
-    width: $width;
-    padding-top: $height;
-}
-
-.raptor-plugin-image-resize-button-button {
+.raptor-ui-image-resize {
     @include button-icon('image-resize.png');
 }
 
@@ -41,15 +25,15 @@
         z-index: 10;
         position: relative;
     }
-    .raptor-plugin-image-resize-button-lock-proportions-container {
+    .raptor-ui-image-resize-lock-proportions-container {
         position: absolute;
         z-index: 0;
     }
 }
 
-.raptor-plugin-image-resize-button-lock-proportions-container {
+.raptor-ui-image-resize-lock-proportions-container {
     right: 16%;
-    top: 34px;
+    top: 19px;
     height: 54px;
     width: 40%;
     border: {
@@ -59,7 +43,7 @@
     }
 }
 
-.raptor-plugin-image-resize-button-lock-proportions {
+.raptor-ui-image-resize-lock-proportions {
     $lock-size: 26px;
 
     position: absolute;
