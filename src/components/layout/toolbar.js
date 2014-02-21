@@ -183,15 +183,15 @@ ToolbarLayout.prototype.getElement = function() {
             .append(innerWrapper);
 
         var uiGroup = new UiGroup(this.raptor, this.options.uiOrder);
-        uiGroup.appendTo(this.toolbar);
+        uiGroup.appendTo(this, this.toolbar);
         $('<div/>').css('clear', 'both').appendTo(this.toolbar);
 
-        var layout = this;
         $(function() {
             wrapper.appendTo('body');
             this.initDragging();
             this.constrainPosition(true);
-            layout.raptor.fire('toolbarReady');
+            this.raptor.fire('layoutReady', [this]);
+            this.raptor.fire('toolbarReady', [this]);
         }.bind(this));
     }
     return this.wrapper;
