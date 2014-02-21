@@ -67,6 +67,8 @@ builder.addModule({
         __dirname + '/components/layout/hover-panel.js',
         __dirname + '/components/layout/hover-panel.scss',
 
+        __dirname + '/components/layout/element-hover-panel.js',
+
         __dirname + '/components/ui/button.js',
         __dirname + '/components/ui/preview-button.js',
         __dirname + '/components/ui/toggle-button.js',
