@@ -3,6 +3,7 @@ To Do:
 
  - Change `autoSelect` option to a generic select object to either select the start, end, all, or none.
  - Make `HoverPanel` extend from `ElementHoverPanel` 
+ - Make `ElementHoverPanel` accept multiple configurations for difference elements.
 
 v1.2.4
 ---
@@ -13,6 +14,7 @@ v1.2.4
  - Added `imageSwap` button.
  - Added `close` button, used from `ElementHoverPanel`.
  - Fires input event on `textarea` when Raptor is changed.
+ - The insert file plugin now replaces image.
 
 *API Changes:*
 
