@@ -1,0 +1,8 @@
+/**
+ * Image swap button.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-ui-image-swap {
+    @include button-icon('images.png');
+}
