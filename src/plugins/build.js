@@ -53,6 +53,19 @@ builder.addModule({
 });
 
 builder.addModule({
+    name: 'Close',
+    type: 'plugin',
+    group: 'Other plugins',
+    description: 'Button to allow closing of panels.',
+    root: __dirname + '/close',
+    files: [
+        __dirname + '/close/close.js',
+        __dirname + '/close/close.scss',
+        __dirname + '/close/cross.png'
+    ]
+});
+
+builder.addModule({
     name: 'Color Menu Basic',
     type: 'plugin',
     group: 'Advanced editing plugins',
@@ -198,17 +211,29 @@ builder.addModule({
 });
 
 builder.addModule({
-    name: 'Image Resize Button',
+    name: 'Image Resize',
     type: 'plugin',
     group: 'Advanced editing plugins',
     description: 'Allows resizing images by hovering over them and clicking a button to open a resize dialog.',
-    root: __dirname + '/image-resize-button',
+    root: __dirname + '/image-resize',
     files: [
-        __dirname + '/image-resize-button/image-resize-button.js',
-        __dirname + '/image-resize-button/image-resize-button.scss',
-        __dirname + '/image-resize-button/image-resize.png',
-        __dirname + '/image-resize-button/templates/button.html',
-        __dirname + '/image-resize-button/templates/dialog.html'
+        __dirname + '/image-resize/image-resize.js',
+        __dirname + '/image-resize/image-resize.scss',
+        __dirname + '/image-resize/image-resize.png',
+        __dirname + '/image-resize/templates/dialog.html'
+    ]
+});
+
+builder.addModule({
+    name: 'Image Swap',
+    type: 'plugin',
+    group: 'Advanced editing plugins',
+    description: 'Allows swapping images by hovering over them and clicking a button to open a file selection dialog.',
+    root: __dirname + '/image-swap',
+    files: [
+        __dirname + '/image-swap/image-swap.js',
+        __dirname + '/image-swap/image-swap.scss',
+        __dirname + '/image-swap/images.png'
     ]
 });
 
