@@ -12,6 +12,11 @@
  */
 Raptor.registerPreset({
     name: 'full',
+    plugins: {
+        imageSwap: {
+            chooser: 'insertFile'
+        }
+    },
     layouts: {
         toolbar: {
             uiOrder: [
@@ -42,6 +47,12 @@ Raptor.registerPreset({
         hoverPanel: {
             uiOrder: [
                 ['clickButtonToEdit']
+            ]
+        },
+        elementHoverPanel: {
+            elements: 'img',
+            uiOrder: [
+                ['imageResize', 'imageSwap', 'close']
             ]
         }
     }
