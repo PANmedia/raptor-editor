@@ -677,12 +677,12 @@ var RaptorWidget = {
 
     loadLayouts: function() {
         for (var name in this.options.layouts) {
-            // <strict>
             if (typeof Raptor.layouts[name] === 'undefined') {
+                // <strict>
                 handleError('Unknown layout type: ' + name);
+                // </strict>
                 continue;
             }
-            // </strict>
             this.layouts[name] = this.prepareComponent(Raptor.layouts[name], this.options.layouts[name], 'layout').instance;
 
             if (this.layouts[name].hotkeys) {
