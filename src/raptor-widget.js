@@ -700,12 +700,8 @@ var RaptorWidget = {
     prepareComponent: function(component, componentOptions, prefix) {
         var instance = $.extend({}, component);
 
-        var baseClass = component.name.replace(/([A-Z])/g, function(match) {
-            return '-' + match.toLowerCase();
-        });
-
         var options = $.extend({}, this.options, {
-            baseClass: this.options.baseClass + '-' + prefix + '-' + baseClass
+            baseClass: this.options.baseClass + '-' + prefix + '-' + stringFromCamelCase(component.name)
         }, instance.options, componentOptions);
 
         instance.raptor = this;
