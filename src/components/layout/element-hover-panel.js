@@ -40,7 +40,7 @@ ElementHoverPanelLayout.prototype.getElement = function() {
         this.hoverPanel
             .appendTo('body');
 
-        this.raptor.fire('layoutReady', [this]);
+        this.raptor.fire('layoutReady', [this.hoverPanel]);
     }
     return this.hoverPanel;
 };

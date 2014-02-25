@@ -190,7 +190,7 @@ ToolbarLayout.prototype.getElement = function() {
             wrapper.appendTo('body');
             this.initDragging();
             this.constrainPosition(true);
-            this.raptor.fire('layoutReady', [this]);
+            this.raptor.fire('layoutReady', [this.wrapper]);
             this.raptor.fire('toolbarReady', [this]);
         }.bind(this));
     }
