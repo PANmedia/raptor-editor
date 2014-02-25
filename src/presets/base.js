@@ -14,7 +14,7 @@ Raptor.globalDefaults = {
     /**
      * @type Object Default layouts to use.
      */
-    layout: {},
+    layouts: {},
 
     /**
      * Plugins option overrides.
