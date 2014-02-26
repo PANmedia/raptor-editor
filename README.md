@@ -34,7 +34,7 @@ Contributing
 ---
 See the following links for information on build &amp; contributing to Raptor:
 
-* [Building Raptor](https://github.com/PANmedia/Raptor/wiki/Building)
+* [Building Raptor](https://github.com/PANmedia/raptor-editor/wiki/Building-and-Running-from-Source)
 * [Contributing to Raptor](http://www.raptor-editor.com/documentation/contributing)
 * [Translating Raptor](http://www.raptor-editor.com/documentation/contributing/translations)
 
