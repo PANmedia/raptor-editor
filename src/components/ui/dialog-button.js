@@ -76,7 +76,7 @@ DialogButton.prototype.openDialog = function() {
     aDialogOpen(this.getDialog());
 };
 
-DialogButton.prototype.closeDialog = function() {
+DialogButton.prototype.onDialogClose = function() {
     dialogs[this.name].instance.raptor.resume();
 };
 
@@ -88,9 +88,11 @@ DialogButton.prototype.okButtonClick = function(event) {
     }
 };
 
-DialogButton.prototype.cancelButtonClick = function(event) {
+DialogButton.prototype.closeDialog = function() {
     aDialogClose(dialogs[this.name].dialog);
 };
+
+DialogButton.prototype.cancelButtonClick = DialogButton.prototype.closeDialog;
 
 /**
  * Prepare and return the dialog's OK button's initialisation object.
@@ -137,7 +139,7 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
         autoOpen: false,
         title: tr(name + 'DialogTitle'),
         dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
-        close: this.closeDialog.bind(this),
+        close: this.onDialogClose.bind(this),
         buttons: []
     };
     var okButton = this.getOkButton(name),
