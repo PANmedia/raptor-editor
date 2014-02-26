@@ -569,19 +569,27 @@ var RaptorWidget = {
                     break;
                 }
                 case 'start': {
-                    selectNode = $(selectNode).find('*:first')[0];
+                    var selectInnerNode = $(selectNode).find('*:first')[0];
+                    if (!selectInnerNode) {
+                        selectionSelectInner(selectNode);
+                        break;
+                    }
                     var range = rangy.createRange();
-                    range.setStartBefore(selectNode);
-                    range.setEndBefore(selectNode);
+                    range.setStartBefore(selectInnerNode);
+                    range.setEndBefore(selectInnerNode);
                     selectionSet(range);
                     break;
                 }
                 case 'end': {
-                    selectNode = $(selectNode).find('*:last')[0];
-                    selectionSelectInner(selectNode);
+                    var selectInnerNode = $(selectNode).find('*:last')[0];
+                    if (!selectInnerNode) {
+                        selectionSelectInner(selectNode);
+                        break;
+                    }
+                    selectionSelectInner(selectInnerNode);
                     var range = rangy.createRange();
-                    range.setStartAfter(selectNode);
-                    range.setEndAfter(selectNode);
+                    range.setStartAfter(selectInnerNode);
+                    range.setEndAfter(selectInnerNode);
                     selectionSet(range);
                     break;
                 }
