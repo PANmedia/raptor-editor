@@ -28,7 +28,7 @@ Raptor.registerPreset({
         }
     },
     plugins: {
-        placeHolder: false,
+        placeholder: false,
         paste: {
             panels: [
                 'plain-text'
