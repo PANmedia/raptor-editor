@@ -94,7 +94,6 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-resize/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-swap/image-swap.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/image-swap/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/language-menu.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/templates.js"></script>
