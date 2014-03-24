@@ -38,6 +38,11 @@ ToolbarLayout.prototype.show = function() {
     if (!this.isVisible()) {
         this.getElement().css('display', '');
         this.constrainPosition();
+        if (this.raptor.getElement().zIndex() > this.getElement().zIndex()) {
+            this.getElement().css('z-index', this.raptor.getElement().zIndex() + 1);
+        } else {
+            this.getElement().css('z-index', null);
+        }
         this.raptor.fire('toolbarShow');
     }
 };

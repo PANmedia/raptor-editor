@@ -52,6 +52,11 @@ HoverPanelLayout.prototype.show = function(event) {
     if (!this.raptor.isEditing()) {
         this.visible = true;
         this.getElement().show();
+        if (this.raptor.getElement().zIndex() > this.getElement().zIndex()) {
+            this.getElement().css('z-index', this.raptor.getElement().zIndex() + 1);
+        } else {
+            this.getElement().css('z-index', null);
+        }
         this.position();
         this.raptor.getElement().addClass(this.raptor.options.baseClass + '-editable-block-hover');
     }
