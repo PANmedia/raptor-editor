@@ -687,7 +687,7 @@ var RaptorWidget = {
         for (var name in this.options.layouts) {
             if (typeof Raptor.layouts[name] === 'undefined') {
                 // <strict>
-                handleError('Unknown layout type: ' + name);
+                debug('Unknown layout type: ' + name);
                 // </strict>
                 continue;
             }
