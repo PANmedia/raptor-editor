@@ -22,7 +22,8 @@ function DockPlugin(name, overrides) {
         docked: false,
         position: 'top',
         spacer: true,
-        persist: true
+        persist: true,
+        dockTo: null
     };
     this.dockState = false;
     this.marker = false;
@@ -108,16 +109,17 @@ DockPlugin.prototype.toggleDockToElement = function() {
  * @return {Object} Resulting dock state
  */
 DockPlugin.prototype.dockToElement = function() {
-    var element = this.raptor.getElement(),
+    var element = this.options.dockTo ? $(this.options.dockTo) : this.raptor.getElement(),
         layoutElement = this.raptor.getLayout('toolbar').getElement();
     this.marker = $('<marker>').addClass(this.options.baseClass + '-marker').insertAfter(layoutElement);
-    this.raptor.getLayout('toolbar').getElement().addClass(this.options.baseClass + '-docked-to-element');
-    this.dockState = dockToElement(this.raptor.getLayout('toolbar').getElement(), element, {
+    layoutElement.addClass(this.options.baseClass + '-docked-to-element');
+    this.dockState = dockToElement(layoutElement, element, {
         position: this.options.position,
         spacer: false,
         wrapperClass: this.options.baseClass + '-inline-wrapper'
     });
     this.activateButton(this.raptor.getPlugin('dockToElement'));
+    this.raptor.persist('docked', true);
 };
 
 /**
@@ -130,6 +132,7 @@ DockPlugin.prototype.undockFromElement = function() {
     this.dockState = null;
     this.raptor.getLayout('toolbar').getElement().removeClass(this.options.baseClass + '-docked-to-element');
     this.deactivateButton(this.raptor.getPlugin('dockToElement'));
+    this.raptor.persist('docked', false);
 };
 
 /**
@@ -159,7 +162,6 @@ DockPlugin.prototype.dockToScreen = function() {
     if (!this.dockState) {
         var layout = this.raptor.getLayout('toolbar');
         if (layout.isReady()) {
-            this.raptor.persist('docked', true);
             var layoutElement = layout.getElement();
             this.marker = $('<marker>').addClass(this.options.baseClass + '-marker')
                                 .insertAfter(layoutElement);
@@ -167,7 +169,7 @@ DockPlugin.prototype.dockToScreen = function() {
             layout.disableDragging();
             this.dockState = dockToScreen(layoutElement, {
                 position: this.options.position,
-                spacer: true,
+                spacer: this.options.spacer,
                 under: this.options.under
             });
             if (!layout.isVisible()) {
@@ -175,6 +177,7 @@ DockPlugin.prototype.dockToScreen = function() {
                 this.dockState.spacer.addClass(this.options.baseClass + '-hidden');
             }
             this.activateButton(this.raptor.getPlugin('dockToScreen'));
+            this.raptor.persist('docked', true);
         }
     }
 };
@@ -186,7 +189,6 @@ DockPlugin.prototype.dockToScreen = function() {
  */
 DockPlugin.prototype.undockFromScreen = function() {
     if (this.dockState) {
-        this.raptor.persist('docked', false);
         var layout = this.raptor.getLayout('toolbar'),
             layoutElement = undockFromScreen(this.dockState);
         this.marker.replaceWith(layoutElement);
@@ -195,6 +197,7 @@ DockPlugin.prototype.undockFromScreen = function() {
         this.dockState = null;
         layoutElement.removeClass(this.options.baseClass + '-docked');
         this.deactivateButton(this.raptor.getPlugin('dockToScreen'));
+        this.raptor.persist('docked', false);
     }
 };
 
