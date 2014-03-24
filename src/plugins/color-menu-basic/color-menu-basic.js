@@ -16,16 +16,18 @@
  * @param {Object} options
  */
 function ColorMenuBasic(options) {
-    this.colors = [
-        'white',
-        'black',
-        'grey',
-        'blue',
-        'red',
-        'green',
-        'purple',
-        'orange'
-    ];
+    this.options = {
+        colors: {
+            white: '#ffffff',
+            black: '#000000',
+            grey: '#999',
+            blue: '#4f81bd',
+            red: '#c0504d',
+            green: '#9bbb59',
+            purple: '#8064a2',
+            orange: '#f79646'
+        }
+    };
     /**
      * Cache the current color so it can be reapplied to the button if the user
      * clicks the button to open the menu, hovers some colors then clicks off to
@@ -68,15 +70,15 @@ ColorMenuBasic.prototype.updateButton = function() {
         return;
     }
     tag = $(tag);
-    for (var colorsIndex = 0; colorsIndex < this.colors.length; colorsIndex++) {
-        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[colorsIndex]);
+    for (var label in this.options.colors) {
+        closest = $(tag).closest('.' + this.options.cssPrefix + label);
         if (closest.length) {
-            color = this.colors[colorsIndex];
+            color = label;
             break;
         }
     }
     if (color) {
-        aButtonSetLabel(button, tr('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
+        aButtonSetLabel(button, tr('colorMenuBasic' + stringToCamelCase(color)));
         aButtonSetIcon(button, 'ui-icon-swatch');
         // FIXME: set color in an adapter friendly way
         button.find('.ui-icon').css('background-color', closest.css('color'));
@@ -167,7 +169,17 @@ ColorMenuBasic.prototype.menuItemClick = function(event) {
  * @returns {Element} The menu items.
  */
 ColorMenuBasic.prototype.getMenuItems = function() {
-    return this.raptor.getTemplate('color-menu-basic.menu', this.options);
+    var template = this.raptor.getTemplate('color-menu-basic.automatic', this.options);
+    for (var label in this.options.colors) {
+        template += this.raptor.getTemplate('color-menu-basic.item', {
+            color: this.options.colors[label],
+            label: tr('colorMenuBasic' + stringToCamelCase(label)),
+            className: label,
+            baseClass: this.options.baseClass
+        });
+    }
+    console.log(template);
+    return template;
 };
 
 Raptor.registerUi(new ColorMenuBasic());

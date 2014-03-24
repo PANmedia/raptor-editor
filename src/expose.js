@@ -157,7 +157,6 @@ $.extend(Raptor, {
     setLocale: setLocale,
     stateRestore: stateRestore,
     stateSave: stateSave,
-    stringCamelCaseConvert: stringCamelCaseConvert,
     stringHtmlStringIsEmpty: stringHtmlStringIsEmpty,
     stringStripTags: stringStripTags,
     styleRestoreState: styleRestoreState,

@@ -75,7 +75,8 @@ builder.addModule({
         __dirname + '/color-menu-basic/color-menu-basic-front-end.scss',
         __dirname + '/color-menu-basic/color-menu-basic.js',
         __dirname + '/color-menu-basic/color-menu-basic.scss',
-        __dirname + '/color-menu-basic/templates/menu.html'
+        __dirname + '/color-menu-basic/templates/automatic.html',
+        __dirname + '/color-menu-basic/templates/item.html',
     ]
 });
 
