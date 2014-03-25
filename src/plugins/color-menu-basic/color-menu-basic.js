@@ -178,7 +178,6 @@ ColorMenuBasic.prototype.getMenuItems = function() {
             baseClass: this.options.baseClass
         });
     }
-    console.log(template);
     return template;
 };
 
