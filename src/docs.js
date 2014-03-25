@@ -4,21 +4,14 @@
  */
 
 /**
- * Raptor HTML5 WYSIWYG Content Editor
- *
- * @name $.raptor
- * @class
- */
-
-/**
  * @name $.ui
- * @namespace  jQuery UI
+ * @namespace jQuery UI
  */
 
 /**
  * Raptor Editor
  * @name Raptor
- * @namespace jQuery UI Editor
+ * @namespace Raptor
  */
 
 /**
