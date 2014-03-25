@@ -1,8 +1,16 @@
 To Do:
 ---
 
- - Make `HoverPanel` extend from `ElementHoverPanel` 
+ - Make `HoverPanel` extend from `ElementHoverPanel`
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
+
+v1.2.5
+---
+
+*Updates:*
+
+ - Added `dockTo` option.
+ - Remove customised list toggling in favour of `execCommand`.
 
 v1.2.4
 ---
@@ -27,7 +35,7 @@ v1.2.3
 *Updates:*
 
  - Expose the global `Raptor` object to `$.fn.raptor.Raptor`
- - Add `autoSelect` option to select all text when enabling the Raptor. 
+ - Add `autoSelect` option to select all text when enabling the Raptor.
 
 *Fixes:*
 
@@ -35,7 +43,7 @@ v1.2.3
  - Fixed overriding color when editing inline.
  - Fixed test runner includes.
  - Prevent XULRunner throwing an error when trying to access `localStorage`
- 
+
 *API Changes:*
 
  - Removed `div` from the default allowed elements when pasting.
@@ -74,7 +82,7 @@ v1.2.0
 *Fixes:*
 
  - Fix docked toolbar not always putting the correct size spacer in.
- 
+
 *API Changes:*
 
  - Changed event system to allow passing arguments.
