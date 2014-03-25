@@ -10,21 +10,9 @@
 /**
  * Creates a new instance of the preview toggle button to create ordered lists.
  */
-Raptor.registerUi(new PreviewToggleButton({
+Raptor.registerUi(new Button({
     name: 'listOrdered',
-    init: function() {
-        var result = PreviewToggleButton.prototype.init.apply(this, arguments);
-        if (elementIsValid(this.raptor.getElement(), listValidUlOlParents)) {
-            return result;
-        }
-        return;
-    },
     action: function() {
-        listToggle('ol', 'li', this.raptor.getElement());
-    },
-    selectionToggle: function() {
-        var selection = rangy.getSelection();
-        return selection.getAllRanges().length > 0 &&
-            selectionGetElements(selection).closest('ol').length;
+        document.execCommand('insertOrderedList');
     }
 }));
