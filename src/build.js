@@ -15,7 +15,7 @@ builder.addModule({
         __dirname + '/tools/dock.js',
         __dirname + '/tools/element.js',
         __dirname + '/tools/fragment.js',
-        __dirname + '/tools/list.js',
+//        __dirname + '/tools/list.js',
         __dirname + '/tools/node.js',
         __dirname + '/tools/persist.js',
         __dirname + '/tools/range.js',

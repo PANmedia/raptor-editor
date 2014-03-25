@@ -10,7 +10,6 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/dock.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/element.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/fragment.js"></script>
-<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/list.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/node.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/persist.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/tools/range.js"></script>
@@ -55,6 +54,8 @@
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/class-menu/class-menu.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/class-menu/templates.js"></script>
+
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/clean-block/clean-block.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/clear-formatting/clear-formatting.js"></script>
 
