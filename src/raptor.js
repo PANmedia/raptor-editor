@@ -1,15 +1,15 @@
 /**
- * @class
+ * @class Raptor
  */
 var Raptor =  {
 
     globalDefaults: {},
     defaults: {},
 
-    /** @type {Boolean} True to enable hotkeys */
+    /** @property {boolean} enableHotkeys True to enable hotkeys */
     enableHotkeys: true,
 
-    /** @type {Object} Custom hotkeys */
+    /** @property {Object} hotkeys Custom hotkeys */
     hotkeys: {},
 
     /**
