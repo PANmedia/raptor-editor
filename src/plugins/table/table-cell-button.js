@@ -29,7 +29,7 @@ TableCellButton.prototype = Object.create(FilteredPreviewButton.prototype);
  */
 TableCellButton.prototype.getElement = function(range) {
     var cell = $(range.commonAncestorContainer.parentNode).closest('td, th');
-    if (cell.length) {
+    if (cell.length && !cell.find(this.raptor.getElement()).length) {
         return cell[0];
     }
     return null;
