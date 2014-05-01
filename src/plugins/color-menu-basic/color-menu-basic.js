@@ -108,7 +108,10 @@ ColorMenuBasic.prototype.changeColor = function(color, permanent) {
                     return;
                 }
                 for (var i = 0, l = classes.length; i < l; i++) {
-                    $(this).removeClass($.trim(classes[i]));
+                    $(this).removeClass(classes[i].trim());
+                    if (!$(this).attr('class').trim()) {
+                        $(this).contents().unwrap();
+                    }
                 }
             });
         } else {
@@ -129,6 +132,9 @@ ColorMenuBasic.prototype.changeColor = function(color, permanent) {
                 } while (splitNode.length);
             }
         }
+        cleanRemoveElements(this.raptor.getElement(), [
+            '.cms-color:has(.cms-color)'
+        ]);
     }.bind(this));
 };
 
