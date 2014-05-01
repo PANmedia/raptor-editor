@@ -72,7 +72,6 @@ function cleanEmptyAttributes(element, attributes) {
     }
 }
 
-
 /**
  * Remove comments from element.
  *
@@ -102,13 +101,13 @@ function cleanRemoveComments(parent) {
 /**
  * Removed empty elements whose tag name matches the list of supplied tags.
  *
- * @param  {jQuery} parent The jQuery element to have empty element removed from.
+ * @param  {jQuery} element The jQuery element to have empty element removed from.
  * @param  {String[]} tags The list of tags to clean.
- * @return {jQuery} The modified parent.
+ * @return {jQuery} The modified element.
  */
-function cleanEmptyElements(parent, tags) {
+function cleanEmptyElements(element, tags) {
     // <strict>
-    if (!typeIsElement(parent)) {
+    if (!typeIsElement(element)) {
         handleInvalidArgumentError('Paramter 1 to cleanEmptyElements is expected a jQuery element');
         return;
     }
@@ -117,14 +116,16 @@ function cleanEmptyElements(parent, tags) {
     // Need to loop incase removing an empty element, leaves another one.
     do {
         found = false;
-        parent.find(tags.join(',')).each(function() {
-            if ($.trim($(this).html()) === '') {
+        element.find(tags.join(',')).each(function() {
+            var html = $(this).html().replace('&nbsp;', ' ').trim();
+            console.log(html);
+            if (html === '') {
                 $(this).remove();
                 found = true;
             }
         });
     } while (found);
-    return parent;
+    return element;
 }
 
 /**
@@ -163,6 +164,23 @@ function cleanUnnestElement(element, selector) {
         });
     } while (found);
 
+}
+
+function cleanRemoveAttributes(element, attributes) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Paramter 1 to cleanRemoveAttributes is expected a jQuery element');
+        return;
+    }
+    // </strict>
+
+    for (var i = 0; i < attributes.length; i++) {
+        element.find('[' + attributes[i] + ']').removeAttr(attributes[i])
+    }
+}
+
+function cleanRemoveElements(element, elements) {
+    element.find(elements.join(',')).contents().unwrap();
 }
 
 /**

@@ -7,7 +7,27 @@
 Raptor.registerUi(new PreviewButton({
     name: 'cleanBlock',
     action: function() {
-        this.raptor.getElement().find('[style]').removeAttr('style');
-        this.raptor.getElement().find('span:empty').remove();
+        var element = this.raptor.getElement();
+        cleanRemoveAttributes(element, [
+            'style'
+        ]);
+        cleanRemoveElements(element, [
+            'font',
+            'span:not([class])',
+            '.cms-color:has(.cms-color)',
+            ':header strong',
+            ':header b',
+            ':header strong'
+        ]);
+        cleanEmptyElements(element, [
+            'b',
+            'big',
+            'em',
+            'i',
+            'small',
+            'span',
+            'strong',
+            ':not(:visible)'
+        ]);
     }
 }));
