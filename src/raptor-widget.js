@@ -342,7 +342,9 @@ var RaptorWidget = {
     },
 
     change: function() {
-        this.fire('change', [this.getHtml()]);
+        this.fire('change', [
+            this.getHtml()
+        ]);
     },
 
     /*========================================================================*\
