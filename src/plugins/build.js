@@ -26,6 +26,19 @@ builder.addModule({
 });
 
 builder.addModule({
+    name: 'Clean Block',
+    type: 'plugin',
+    group: 'Text styling',
+    description: 'Button that removes all inline styles, empty spans, empty list items, etc.',
+    root: __dirname + '/clean-block',
+    files: [
+        __dirname + '/clean-block/clean-block.js',
+        __dirname + '/clean-block/broom.png',
+        __dirname + '/clean-block/clean-block.scss'
+    ]
+});
+
+builder.addModule({
     name: 'Clear Formatting',
     type: 'plugin',
     group: 'Text styling',

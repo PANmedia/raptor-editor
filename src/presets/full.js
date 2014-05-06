@@ -31,7 +31,7 @@ Raptor.registerPreset({
                 ['listUnordered', 'listOrdered'],
                 ['hrCreate', 'textBlockQuote'],
                 ['textSizeDecrease', 'textSizeIncrease', 'fontFamilyMenu'],
-                ['clearFormatting'],
+                ['clearFormatting', 'cleanBlock'],
                 ['linkCreate', 'linkRemove'],
                 ['embed', 'insertFile'],
                 ['floatLeft', 'floatNone', 'floatRight'],
