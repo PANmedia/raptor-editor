@@ -118,7 +118,6 @@ function cleanEmptyElements(element, tags) {
         found = false;
         element.find(tags.join(',')).each(function() {
             var html = $(this).html().replace('&nbsp;', ' ').trim();
-            console.log(html);
             if (html === '') {
                 $(this).remove();
                 found = true;
