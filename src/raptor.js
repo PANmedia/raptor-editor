@@ -234,25 +234,10 @@ var Raptor =  {
      */
     persist: function(key, value, namespace) {
         key = namespace ? namespace + '.' + key : key;
-        // Local storage throws an error when using XUL
-        try {
-            if (localStorage) {
-                var storage;
-                if (localStorage.uiWidgetEditor) {
-                    storage = JSON.parse(localStorage.uiWidgetEditor);
-                } else {
-                    storage = {};
-                }
-                if (value === undefined) {
-                    return storage[key];
-                }
-                storage[key] = value;
-                localStorage.uiWidgetEditor = JSON.stringify(storage);
-            }
-        } catch (e) {
-
+        if (value === undefined) {
+            return persistGet(key);
         }
-        return value;
+        return persistSet(key, value);
     }
 
 };
