@@ -175,7 +175,7 @@ var RaptorWidget = {
         }.bind(this));
         this.getElement().on('focus.raptor', this.showLayout.bind(this));
         this.target.on('mouseup.raptor', this.checkSelectionChange.bind(this));
-        this.target.on('input.raptor', this.checkChange.bind(this));
+        this.target.on('input.raptor keyup.raptor mouseup.raptor', this.checkChangeDelayed.bind(this));
 
         // Unload warning
         $(window).bind('beforeunload', Raptor.unloadWarning.bind(Raptor));
@@ -310,10 +310,26 @@ var RaptorWidget = {
         this.previousSelection = currentSelection;
     },
 
+    checkChangeTimer: null,
+    checkChangeCount: 0,
+    checkChangeDelayed: function() {
+        if (this.checkChangeTimer !== null) {
+            clearTimeout(this.checkChangeTimer);
+            this.checkChangeTimer = null;
+        }
+        if (this.checkChangeCount++ < 10) {
+            this.checkChangeTimer = setTimeout(this.checkChange.bind(this), 200);
+        } else {
+            this.checkChange();
+        }
+    },
+
     /**
      * Determine whether the editing element's content has been changed.
      */
     checkChange: function() {
+        this.checkChangeCount = 0;
+
         // Get the current content
         var currentHtml = this.getHtml();
 
