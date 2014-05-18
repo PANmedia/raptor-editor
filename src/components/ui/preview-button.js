@@ -18,6 +18,8 @@
 function PreviewButton(options) {
     this.preview = true;
     this.previewing = false;
+    this.previewTimeout = 500;
+    this.previewTimer = null;
     Button.call(this, options);
 }
 
@@ -52,16 +54,31 @@ PreviewButton.prototype.getButton = function() {
  */
 PreviewButton.prototype.mouseEnter = function() {
     if (this.canPreview()) {
+        this.endPreview();
+        this.previewTimer = setTimeout(this.applyPreview.bind(this), this.previewTimeout)
+    }
+};
+
+PreviewButton.prototype.applyPreview = function() {
+    if (this.canPreview()) {
         this.previewing = true;
         this.raptor.actionPreview(this.action.bind(this));
     }
+};
+
+PreviewButton.prototype.endPreview = function() {
+    if (this.previewTimer !== null) {
+        clearTimeout(this.previewTimer);
+        this.previewTimer = null;
+    }
+    this.previewing = false;
 };
 
 /**
  * Sets the mouse leave function to disable the preview.
  */
 PreviewButton.prototype.mouseLeave = function() {
-    this.previewing = false;
+    this.endPreview();
     this.raptor.actionPreviewRestore();
 };
 
@@ -71,7 +88,7 @@ PreviewButton.prototype.mouseLeave = function() {
  * @returns {Element}
  */
 PreviewButton.prototype.click = function() {
-    this.previewing = false;
+    this.endPreview();
     return Button.prototype.click.apply(this, arguments);
 };
 
