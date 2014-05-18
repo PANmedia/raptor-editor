@@ -42,6 +42,7 @@ Raptor.registerUi(new DialogToggleButton({
     },
 
     openDialog: function() {
+        this.getDialog();
         var element = selectionGetElement();
         if (element.is('a')) {
             for (var i = 0, l = linkTypes.length; i < l; i++) {
