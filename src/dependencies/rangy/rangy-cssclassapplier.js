@@ -1,6 +1,6 @@
 /**
- * CSS Class Applier module for Rangy.
- * Adds, removes and toggles CSS classes on Ranges and Selections
+ * Class Applier module for Rangy.
+ * Adds, removes and toggles classes on Ranges and Selections
  *
  * Part of Rangy, a cross-browser JavaScript range and selection library
  * http://code.google.com/p/rangy/
@@ -9,17 +9,52 @@
  *
  * Copyright 2013, Tim Down
  * Licensed under the MIT license.
- * Version: 1.3alpha.755
- * Build date: 29 January 2013
+ * Version: 1.3alpha.783
+ * Build date: 28 June 2013
  */
-rangy.createModule("CssClassApplier", function(api, module) {
-    api.requireModules( ["WrappedSelection", "WrappedRange"] );
-
+rangy.createModule("ClassApplier", ["WrappedSelection"], function(api, module) {
     var dom = api.dom;
     var DomPosition = dom.DomPosition;
+    var contains = dom.arrayContains;
 
 
     var defaultTagName = "span";
+
+    /**
+     * Retrieve outer html from an element.
+     *
+     * @param  {jQuery} element The jQuery element to retrieve the outer HTML from.
+     * @return {String} The outer HTML.
+     */
+    function elementOuterHtml(element) {
+        return element.clone().wrap('<div/>').parent().html();
+    }
+
+    /**
+     * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
+     * @todo type for domFragment and tag.
+     * @param {type} domFragment The fragment to be converted to a HTML string.
+     * @param {type} tag The tag that the string may be wrapped in.
+     * @returns {String} The DOMFragment as a string, optionally wrapped in a tag.
+     */
+    function fragmentToHtml(domFragment, tag) {
+        var html = '';
+        // Get all nodes in the extracted content
+        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
+            var node = domFragment.childNodes.item(j);
+            var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml(jQuery(node));
+            if (content) {
+                html += content;
+            }
+        }
+        if (tag) {
+            html = jQuery('<' + tag + '>' + html + '</' + tag + '>');
+            html.find('p').wrapInner('<' + tag + '/>');
+            html.find('p > *').unwrap();
+            html = jQuery('<div/>').html(html).html();
+        }
+        return html;
+    }
 
     function trim(str) {
         return str.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
@@ -174,7 +209,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
     function elementHasNonClassAttributes(el, exceptions) {
         for (var i = 0, len = el.attributes.length, attrName; i < len; ++i) {
             attrName = el.attributes[i].name;
-            if ( !(exceptions && dom.arrayContains(exceptions, attrName)) && el.attributes[i].specified && attrName != "class") {
+            if ( !(exceptions && contains(exceptions, attrName)) && el.attributes[i].specified && attrName != "class") {
                 return true;
             }
         }
@@ -196,32 +231,6 @@ rangy.createModule("CssClassApplier", function(api, module) {
             }
         }
         return true;
-    }
-
-    /**
-     * Convert a DOMFragment to an HTML string. Optionally wraps the string in a tag.
-     * @todo type for domFragment and tag.
-     * @param {type} domFragment The fragment to be converted to a HTML string.
-     * @param {type} tag The tag that the string may be wrapped in.
-     * @returns {String} The DOMFragment as a string, optionally wrapped in a tag.
-     */
-    function fragmentToHtml(domFragment, tag) {
-        var html = '';
-        // Get all nodes in the extracted content
-        for (var j = 0, l = domFragment.childNodes.length; j < l; j++) {
-            var node = domFragment.childNodes.item(j);
-            var content = node.nodeType === Node.TEXT_NODE ? node.nodeValue : elementOuterHtml($(node));
-            if (content) {
-                html += content;
-            }
-        }
-        if (tag) {
-            html = $('<' + tag + '>' + html + '</' + tag + '>');
-            html.find('p').wrapInner('<' + tag + '/>');
-            html.find('p > *').unwrap();
-            html = $('<div/>').html(html).html();
-        }
-        return html;
     }
 
     var getComputedStyleProperty = dom.getComputedStyleProperty;
@@ -470,7 +479,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
     // TODO: Populate this with every attribute name that corresponds to a property with a different name
     var attrNamesForProperties = {};
 
-    function CssClassApplier(cssClass, options, tagNames) {
+    function ClassApplier(cssClass, options, tagNames) {
         this.cssClass = cssClass;
         var normalize, i, len, propName;
 
@@ -525,7 +534,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
         }
     }
 
-    CssClassApplier.prototype = {
+    ClassApplier.prototype = {
         elementTagName: defaultTagName,
         elementProperties: {},
         ignoreWhiteSpace: true,
@@ -587,7 +596,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
         hasClass: function(node) {
             return node.nodeType == 1 &&
-                dom.arrayContains(this.tagNames, node.tagName.toLowerCase()) &&
+                contains(this.tagNames, node.tagName.toLowerCase()) &&
                 hasClass(node, this.cssClass);
         },
 
@@ -677,7 +686,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
             var parent = textNode.parentNode;
             if (parent.childNodes.length == 1 &&
                     this.useExistingElements &&
-                    dom.arrayContains(this.tagNames, parent.tagName.toLowerCase()) &&
+                    contains(this.tagNames, parent.tagName.toLowerCase()) &&
                     elementHasProps(parent, this.elementProperties)) {
 
                 addClass(parent, this.cssClass);
@@ -853,10 +862,11 @@ rangy.createModule("CssClassApplier", function(api, module) {
         },
 
         isAppliedToRange: function(range) {
-            if (range.collapsed) {
+            if (range.collapsed || range.toString() == "") {
                 return !!this.getSelfOrAncestorWithClass(range.commonAncestorContainer);
             } else {
                 var textNodes = range.getNodes( [3] );
+                if (textNodes.length)
                 for (var i = 0, textNode; textNode = textNodes[i++]; ) {
                     if (!this.isIgnorableWhiteSpaceNode(textNode) && rangeSelectsAnyText(range, textNode)
                             && this.isModifiable(textNode) && !this.getSelfOrAncestorWithClass(textNode)) {
@@ -873,7 +883,7 @@ rangy.createModule("CssClassApplier", function(api, module) {
 
         isAppliedToRanges: function(ranges) {
             var i = ranges.length;
-            if (i === 0) {
+            if (i == 0) {
                 return false;
             }
             while (i--) {
@@ -913,14 +923,41 @@ rangy.createModule("CssClassApplier", function(api, module) {
             }
         },
 
+        getElementsWithClassIntersectingRange: function(range) {
+            var elements = [];
+            var applier = this;
+            range.getNodes([3], function(textNode) {
+                var el = applier.getSelfOrAncestorWithClass(textNode);
+                if (el && !contains(elements, el)) {
+                    elements.push(el);
+                }
+            });
+            return elements;
+        },
+
+        getElementsWithClassIntersectingSelection: function(win) {
+            var sel = api.getSelection(win);
+            var elements = [];
+            var applier = this;
+            sel.eachRange(function(range) {
+                var rangeElements = applier.getElementsWithClassIntersectingRange(range);
+                for (var i = 0, el; el = rangeElements[i++]; ) {
+                    if (!contains(elements, el)) {
+                        elements.push(el);
+                    }
+                }
+            });
+            return elements;
+        },
+
         detach: function() {}
     };
 
-    function createCssClassApplier(cssClass, options, tagNames) {
-        return new CssClassApplier(cssClass, options, tagNames);
+    function createClassApplier(cssClass, options, tagNames) {
+        return new ClassApplier(cssClass, options, tagNames);
     }
 
-    CssClassApplier.util = {
+    ClassApplier.util = {
         hasClass: hasClass,
         addClass: addClass,
         removeClass: removeClass,
@@ -934,6 +971,6 @@ rangy.createModule("CssClassApplier", function(api, module) {
         isEditable: isEditable
     };
 
-    api.CssClassApplier = CssClassApplier;
-    api.createCssClassApplier = createCssClassApplier;
+    api.CssClassApplier = api.ClassApplier = ClassApplier;
+    api.createCssClassApplier = api.createClassApplier = createClassApplier;
 });

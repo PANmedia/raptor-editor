@@ -4,29 +4,31 @@
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
-@import 'compass/css3/user-interface';
-
-.raptor-wrapper {
-    overflow: visible;
-    position: fixed;
-    font-size: 12px;
-    z-index: $z-toolbar;
-    @include user-select(none);
-
-    * {
-        @include user-select(none);
-    }
-
-    .raptor-toolbar {
-        padding: 6px 0 0 5px;
-        overflow: visible;
-    }
-}
-
 .raptor-editing {
     outline: none;
 }
 
-.raptor-path {
-    padding: $spacing;
+.raptor-editable-block-hover:not(.raptor-editing),
+.raptor-editable-block:hover:not(.raptor-editing) {
+    background: inline-image('diagonal-lines.png') 0 0;
+}
+
+.raptor-editing-inline {
+    width: 600px;
+    min-height: 150px;
+    padding: 5px !important;
+    background-color: #fff;
+    border: $border-width $border-style $border-color !important;
+    border-top: none !important;
+    color: #333;
+    font-size: 1em;
+    text-shadow: none;
+}
+
+.raptor-editing-inline * {
+    text-shadow: inherit;
+}
+
+.raptor-editing-inline *:not(.cms-color) {
+    color: inherit;
 }

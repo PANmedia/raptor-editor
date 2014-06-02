@@ -1,3 +1,7 @@
+/* Libraries */
+@import 'susy';
+@import 'compass';
+
 /* Non styles */
 @import 'variables';
 @import 'z-index';
@@ -5,5 +9,4 @@
 
 /* Base style */
 @import 'style';
-@import 'messages';
 @import 'support';

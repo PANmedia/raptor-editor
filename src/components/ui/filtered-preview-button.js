@@ -1,9 +1,10 @@
 /**
  * @fileOverview Contains the filtered preview button class code.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
@@ -52,7 +53,7 @@ FilteredPreviewButton.prototype.selectionChange = function() {
 FilteredPreviewButton.prototype.getElement = function(range) {
     throw new Error('Expected child class to override FilteredPreviewButton.getElement');
 };
-// <strict>
+// </strict>
 
 
 /**
@@ -66,13 +67,11 @@ FilteredPreviewButton.prototype.canPreview = function() {
  * @returns {Boolean} True if button is enabled, false otherwise.
  */
 FilteredPreviewButton.prototype.isEnabled = function() {
-    var result = false;
-    selectionEachRange(function(range) {
-        if (this.getElement(range)) {
-            result = true;
-        }
-    }.bind(this));
-    return result;
+    var range = rangeGet();
+    if (range) {
+        return !!this.getElement(range);
+    }
+    return !!this.previewing;
 };
 
 /**

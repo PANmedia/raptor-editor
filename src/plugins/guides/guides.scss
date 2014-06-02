@@ -3,15 +3,8 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-guides .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('guide.png') 0 0;
-}
-
-.raptor-ui-guides:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-guides {
+    @include button-icon('guide.png');
 }
 
 .raptor-ui-guides-visible * {

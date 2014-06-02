@@ -1,34 +1,40 @@
 /**
  * @fileOverview Contains the paste plugin class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 var pasteInProgress = false,
     pasteDialog = null,
     pasteInstance = null,
-    selection = null;
+    pasteShiftDown = null;
 
 /**
- * @class The paste plugin class.
- * @constructor
- * @augments RaptorPlugin.
+ * The paste plugin class.
  *
- * @todo type and desc for name
- * @param {type} name
+ * @constructor
+ * @augments RaptorPlugin
+ *
+ * @param {String} name
  * @param {Object} overrides Options hash.
- * @returns {Element}
  */
 function PastePlugin(name, overrides) {
+    /**
+     * Default options.
+     *
+     * @type {Object}
+     */
     this.options = {
         /**
          * Tags that will not be stripped from pasted content.
          * @type {Array}
          */
         allowedTags: [
-            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'ul', 'ol', 'li', 'blockquote',
-            'p', 'a', 'span', 'hr', 'br'
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote',
+            'p', 'a', 'span', 'hr', 'br', 'strong', 'em'
         ],
 
         allowedAttributes: [
@@ -37,6 +43,13 @@ function PastePlugin(name, overrides) {
 
         allowedEmptyTags: [
             'hr', 'br'
+        ],
+        
+        panels: [
+            'formatted-clean',
+            'plain-text',
+            'formatted-unclean',
+            'source'
         ]
     };
 
@@ -49,7 +62,7 @@ PastePlugin.prototype = Object.create(RaptorPlugin.prototype);
  * Enables pasting.
  */
 PastePlugin.prototype.enable = function() {
-    this.raptor.getElement().bind('paste.' + this.raptor.widgetName, this.capturePaste.bind(this));
+    this.raptor.getElement().on('paste.raptor', this.capturePaste.bind(this));
 };
 
 /**
@@ -58,6 +71,9 @@ PastePlugin.prototype.enable = function() {
  * @returns {Boolean} True if paste capture is successful.
  */
 PastePlugin.prototype.capturePaste = function() {
+    if (pasteShiftDown) {
+        return;
+    }
     if (pasteInProgress) {
         return false;
     }
@@ -88,21 +104,18 @@ PastePlugin.prototype.showPasteDialog = function() {
  * @param {HTML} html The html to be pasted into the selection.
  */
 PastePlugin.prototype.pasteContent = function(html) {
-    var uniqueId = elementUniqueId();
     this.raptor.actionApply(function() {
+        var uniqueId = elementUniqueId();
         selectionRestore();
         html = this.filterAttributes(html);
         html = this.filterChars(html);
         selectionReplace($('<placeholder id="' + uniqueId + '">' + html + '</placeholder>'));
         $('.raptorPasteBin').remove();
-        pasteInProgress = false;
-
         var placeholder = $('#' + uniqueId);
         selectionSelectInner(placeholder.get(0));
         selectionSave();
         placeholder.contents().unwrap();
         selectionRestore();
-
     }.bind(this));
 };
 
@@ -117,17 +130,27 @@ PastePlugin.prototype.getDialog = function(instance) {
     pasteInstance = instance;
     if (!pasteDialog) {
         pasteDialog = $('<div>').html(this.raptor.getTemplate('paste.dialog', this.options));
+        for (var i = 0, l = this.options.panels.length; i < l; i++) {
+            pasteDialog.find('.' + this.options.baseClass + '-tab-' + this.options.panels[i]).css('display', '');
+            if (i === 0) {
+                pasteDialog.find('.' + this.options.baseClass + '-content-' + this.options.panels[i]).css('display', '');
+            }
+        }
+        pasteDialog.find('.' + this.options.baseClass + '-panel-tabs > div:visible:not(:first)').hide();
         aDialog(pasteDialog, {
             modal: true,
             resizable: true,
             autoOpen: false,
             width: 800,
             height: 500,
-            title: _('pasteDialogTitle'),
+            title: tr('pasteDialogTitle'),
             dialogClass: this.options.baseClass + '-dialog',
+            close: function() {
+                pasteInProgress = false;
+            },
             buttons: [
                 {
-                    text: _('pasteDialogOKButton'),
+                    text: tr('pasteDialogOKButton'),
                     click: function() {
                         var html = null,
                             element = pasteDialog.find('.' + this.options.baseClass + '-area:visible');
@@ -137,7 +160,6 @@ PastePlugin.prototype.getDialog = function(instance) {
                         } else {
                             html = element.html();
                         }
-
                         aDialogClose(pasteDialog);
                         pasteInstance.pasteContent(html);
                     }.bind(this),
@@ -146,9 +168,8 @@ PastePlugin.prototype.getDialog = function(instance) {
                     }
                 },
                 {
-                    text: _('pasteDialogCancelButton'),
+                    text: tr('pasteDialogCancelButton'),
                     click: function() {
-                        pasteInProgress = false;
                         selectionDestroy();
                         $('.raptorPasteBin').remove();
                         aDialogClose(pasteDialog);
@@ -174,7 +195,8 @@ PastePlugin.prototype.getDialog = function(instance) {
 };
 
 /**
- * Attempts to filter rubbish from content using regular expressions
+ * Attempts to filter rubbish from content using regular expressions.
+ *
  * @param  {String} content Dirty text
  * @return {String} The filtered content
  */
@@ -281,7 +303,8 @@ PastePlugin.prototype.stripAttributes = function(content) {
 
 /**
  * Remove empty tags.
- * @param  {String} content The HTML containing empty elements to be removed
+ *
+ * @param {String} content The HTML containing empty elements to be removed
  * @return {String} The cleaned HTML
  */
 PastePlugin.prototype.stripEmpty = function(content) {
@@ -302,6 +325,22 @@ PastePlugin.prototype.stripEmpty = function(content) {
 };
 
 /**
+ * Remove spans that have no attributes.
+ *
+ * @param {String} content
+ * @return {String} The cleaned HTML
+ */
+PastePlugin.prototype.stripSpans = function(content) {
+    var wrapper = $('<div/>').html(content);
+    wrapper.find('span').each(function() {
+        if (!this.attributes.length) {
+            $(this).replaceWith($(this).html());
+        }
+    });
+    return wrapper.html();
+};
+
+/**
  * Update text input content.
  */
 PastePlugin.prototype.updateAreas = function() {
@@ -310,6 +349,7 @@ PastePlugin.prototype.updateAreas = function() {
     markup = this.filterChars(markup);
     markup = this.stripEmpty(markup);
     markup = this.stripAttributes(markup);
+    markup = this.stripSpans(markup);
     markup = stringStripTags(markup, this.options.allowedTags);
 
     var plain = $('<div/>').html($('.raptorPasteBin').html()).text();
@@ -318,8 +358,11 @@ PastePlugin.prototype.updateAreas = function() {
     pasteDialog.find('.' + this.options.baseClass + '-plain').val($('<div/>').html(plain).text());
     pasteDialog.find('.' + this.options.baseClass + '-rich').html(markup);
     pasteDialog.find('.' + this.options.baseClass + '-source').html(html);
-    pasteDialog.find('.' + this.options.baseClass + '-markup').html(this.stripAttributes(html));
+    pasteDialog.find('.' + this.options.baseClass + '-markup').html(markup);
 };
 
-Raptor.registerPlugin(new PastePlugin());
+$(document).on('keyup.raptor keydown.raptor', function(event) {
+    pasteShiftDown = event.shiftKey;
+});
 
+Raptor.registerPlugin(new PastePlugin());

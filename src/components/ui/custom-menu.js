@@ -1,16 +1,17 @@
 /**
  * @fileOverview Contains the custom menu class code.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * @class The custom menu class.
  *
  * @constructor
- * @augments menu class.
+ * @augments Menu
  *
  * Prepares and returns the custom menu Element to be used in the Raptor UI.
  *

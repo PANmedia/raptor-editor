@@ -7,13 +7,8 @@
 @import 'compass/css3/box';
 @import 'compass/css3/box-sizing';
 
-.raptor-ui-view-source .ui-icon-view-source {
-    @include opacity(0.85);
-    background: inline-image('edit-code.png') 0 0;
-}
-
-.raptor-ui-view-source:hover .ui-icon-view-source {
-    @include opacity(1);
+.raptor-ui-view-source {
+    @include button-icon('edit-code.png');
 }
 
 .raptor-ui-view-source-dialog .ui-dialog-content {

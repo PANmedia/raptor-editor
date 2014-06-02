@@ -1,39 +1,59 @@
 /**
- * @fileOverview Contains the default toolbar code?.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @fileOverview Contains the full options preset.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
+
 /**
- * @todo not sure what to put for these?
- * @type @exp;$@call;extend
+ * @namespace Full options for Raptor.
  */
-Raptor.defaults = $.extend(basePreset, {
-    layout: {
-        type: 'toolbar',
-        options: {
-//            uiOrder: [
-//                ['logo'],
-//                ['save', 'cancel'],
-//                ['dockToScreen', 'guides'],
-//                ['viewSource'],
-//                ['historyUndo', 'historyRedo'],
-//                ['alignLeft', 'alignCenter', 'alignJustify', 'alignRight'],
-//                ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
-//                ['textSuper', 'textSub'],
-//                ['listUnordered', 'listOrdered'],
-//                ['hrCreate', 'textBlockQuote'],
-//                ['textSizeIncrease', 'textSizeDecrease'],
-//                ['clearFormatting'],
-//                ['linkCreate', 'linkRemove'],
-//                ['embed', 'insertFile'],
-//                ['floatLeft', 'floatNone', 'floatRight'],
-//                ['colorMenuBasic'],
-//                ['tagMenu'],
-//                ['classMenu'],
-//                ['snippetMenu'],
-//                ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn', 'tableMergeCells', 'tableSplitCells']
-//            ]
+Raptor.registerPreset({
+    name: 'full',
+    plugins: {
+        imageSwap: {
+            chooser: 'insertFile'
+        }
+    },
+    layouts: {
+        toolbar: {
+            uiOrder: [
+                ['logo'],
+                ['save', 'cancel'],
+                ['dockToScreen', 'dockToElement', 'guides'],
+                ['viewSource'],
+                ['historyUndo', 'historyRedo'],
+                ['alignLeft', 'alignCenter', 'alignJustify', 'alignRight'],
+                ['textBold', 'textItalic', 'textUnderline', 'textStrike'],
+                ['textSuper', 'textSub'],
+                ['listUnordered', 'listOrdered'],
+                ['hrCreate', 'textBlockQuote'],
+                ['textSizeDecrease', 'textSizeIncrease', 'fontFamilyMenu'],
+                ['clearFormatting', 'cleanBlock'],
+                ['linkCreate', 'linkRemove'],
+                ['embed', 'insertFile'],
+                ['floatLeft', 'floatNone', 'floatRight'],
+                ['colorMenuBasic'],
+                ['tagMenu'],
+                ['classMenu'],
+                ['snippetMenu', 'specialCharacters'],
+                ['tableCreate', 'tableInsertRow', 'tableDeleteRow', 'tableInsertColumn', 'tableDeleteColumn'],
+                ['languageMenu'],
+                ['statistics']
+            ]
+        },
+        hoverPanel: {
+            uiOrder: [
+                ['clickButtonToEdit']
+            ]
+        },
+        elementHoverPanel: {
+            elements: 'img',
+            uiOrder: [
+                ['imageResize', 'imageSwap', 'close']
+            ]
         }
     }
-});
+}, true);

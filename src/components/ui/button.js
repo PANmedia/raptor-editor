@@ -1,9 +1,10 @@
 /**
  * @fileOverview Contains the core button class code.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
@@ -12,7 +13,6 @@
  * @param {Object} overrides Options hash.
  */
 function Button(overrides) {
-    this.preview = true;
     this.text = false;
     this.label = null;
     this.icon = null;
@@ -48,8 +48,9 @@ Button.prototype.init = function() {
  */
 Button.prototype.getButton = function() {
     if (!this.button) {
+        var text = this.text || this.translate('Text', false);
         this.button = $('<div>')
-            .html(this.text)
+            .html(text)
             .addClass(this.options.baseClass)
             .attr('title', this.getTitle())
             .click(this.click.bind(this));
@@ -57,7 +58,7 @@ Button.prototype.getButton = function() {
             icons: {
                 primary: this.getIcon()
             },
-            text: this.text,
+            text: text,
             label: this.label
         });
     }
@@ -66,19 +67,19 @@ Button.prototype.getButton = function() {
 
 /**
  * @return {String} The button's title property value, or if not present then the
- *                      localized value for the button's name + Title.
+ *   localized value for the button's name + Title.
  */
 Button.prototype.getTitle = function() {
-    return this.title || _(this.name + 'Title');
+    return this.title || this.translate('Title');
 };
 
 /**
  * @return {String} The button's icon property value, or the ui-icon- prefix
- *                      with the button's camel cased name appended.
+ *   with the button's camel cased name appended.
  */
 Button.prototype.getIcon = function() {
     if (this.icon === null) {
-        return 'ui-icon-' + stringCamelCaseConvert(this.name);
+        return 'ui-icon-' + stringFromCamelCase(this.name);
     }
     return this.icon;
 };
@@ -89,5 +90,11 @@ Button.prototype.getIcon = function() {
  * @todo this probably should not nest actions
  */
 Button.prototype.click = function() {
-    this.raptor.actionApply(this.action.bind(this));
+    if (aButtonIsEnabled(this.button)) {
+        this.raptor.actionApply(this.action.bind(this));
+    }
+};
+
+Button.prototype.translate = function(translation, variables) {
+    return tr(this.name + translation, variables);
 };

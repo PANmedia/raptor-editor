@@ -1,9 +1,10 @@
 /**
  * @fileOverview Contains the dialog button class code.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
@@ -16,7 +17,6 @@ var dialogs = {};
  *
  * @constructor
  * @augments Button
- *
  * @param {Object} options
  * @returns {DialogButton}
  */
@@ -32,10 +32,7 @@ DialogButton.prototype = Object.create(Button.prototype);
  * stage.
  */
 DialogButton.prototype.action = function() {
-    this.state = this.raptor.stateSave();
-    var dialog = this.getDialog(this);
-    this.openDialog(dialog);
-    aDialogOpen(dialog);
+    this.openDialog();
 };
 
 // <strict>
@@ -57,7 +54,7 @@ DialogButton.prototype.applyAction = function(dialog) {
 DialogButton.prototype.getDialogTemplate = function() {
     throw new Error('Expected child class to override DialogButton.getDialogTemplate');
 };
-// <strict>
+// </strict>
 
 /**
  * Checks the validility of a dialog.
@@ -74,7 +71,28 @@ DialogButton.prototype.validateDialog = function(dialog) {
  *
  * @param {Object} dialog The dialog to open.
  */
-DialogButton.prototype.openDialog = function(dialog) { };
+DialogButton.prototype.openDialog = function() {
+    this.raptor.pause();
+    aDialogOpen(this.getDialog());
+};
+
+DialogButton.prototype.onDialogClose = function() {
+    dialogs[this.name].instance.raptor.resume();
+};
+
+DialogButton.prototype.okButtonClick = function(event) {
+    var valid = dialogs[this.name].instance.validateDialog();
+    if (valid === true) {
+        aDialogClose(dialogs[this.name].dialog);
+        dialogs[this.name].instance.applyAction.call(dialogs[this.name].instance, dialogs[this.name].dialog);
+    }
+};
+
+DialogButton.prototype.closeDialog = function() {
+    aDialogClose(dialogs[this.name].dialog);
+};
+
+DialogButton.prototype.cancelButtonClick = DialogButton.prototype.closeDialog;
 
 /**
  * Prepare and return the dialog's OK button's initialisation object.
@@ -84,18 +102,8 @@ DialogButton.prototype.openDialog = function(dialog) { };
  */
 DialogButton.prototype.getOkButton = function(name) {
     return {
-        text: _(name + 'DialogOKButton'),
-        click: function(event) {
-            var valid = dialogs[name].instance.validateDialog();
-            if (valid === true) {
-                aDialogClose(dialogs[name].dialog);
-                if (dialogs[name].instance.state !== null) {
-                    dialogs[name].instance.raptor.stateRestore(dialogs[name].instance.state);
-                    dialogs[name].instance.state = null;
-                }
-                dialogs[name].instance.applyAction.call(dialogs[name].instance, dialogs[name].dialog);
-            }
-        }.bind(this),
+        text: tr(name + 'DialogOKButton'),
+        click: this.okButtonClick.bind(this),
         icons: {
             primary: 'ui-icon-circle-check'
         }
@@ -110,10 +118,8 @@ DialogButton.prototype.getOkButton = function(name) {
  */
 DialogButton.prototype.getCancelButton = function(name) {
     return {
-        text: _(name + 'DialogCancelButton'),
-        click: function() {
-            aDialogClose(dialogs[name].dialog);
-        },
+        text: tr(name + 'DialogCancelButton'),
+        click: this.cancelButtonClick.bind(this),
         icons: {
             primary: 'ui-icon-circle-close'
         }
@@ -131,21 +137,17 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
         modal: true,
         resizable: true,
         autoOpen: false,
-        title: _(name + 'DialogTitle'),
+        title: tr(name + 'DialogTitle'),
         dialogClass: this.options.baseClass + '-dialog ' + this.options.dialogClass,
-        close: function() {
-            if (dialogs[name].instance.state !== null) {
-                dialogs[name].instance.raptor.stateRestore(dialogs[name].instance.state);
-            }
-        }.bind(this),
+        close: this.onDialogClose.bind(this),
         buttons: []
     };
     var okButton = this.getOkButton(name),
         cancelButton = this.getCancelButton(name);
-    if (typeof okButton !== 'undefined') {
+    if (typeof okButton !== 'undefined' && okButton !== false) {
         options.buttons.push(okButton);
     }
-    if (typeof cancelButton !== 'undefined') {
+    if (typeof cancelButton !== 'undefined' && cancelButton !== false) {
         options.buttons.push(cancelButton);
     }
     return options;
@@ -154,19 +156,15 @@ DialogButton.prototype.getDefaultDialogOptions = function(name) {
 /**
  * Prepare and return the dialog to be used in the Raptor UI.
  *
- * @todo the type and description for instance.
- * @param {DialogButton} instance
  * @returns {Element} The dialog.
  */
-DialogButton.prototype.getDialog = function(instance) {
-    var name = instance.name;
-    if (typeof dialogs[name] === 'undefined') {
-        dialogs[name] = {};
+DialogButton.prototype.getDialog = function() {
+    if (typeof dialogs[this.name] === 'undefined') {
+        dialogs[this.name] = {
+            dialog: $(this.getDialogTemplate())
+        };
+        aDialog(dialogs[this.name].dialog, $.extend(this.getDefaultDialogOptions(this.name), this.dialogOptions));
     }
-    dialogs[name].instance = instance;
-    if (typeof dialogs[name].dialog === 'undefined') {
-        dialogs[name].dialog = instance.getDialogTemplate();
-        aDialog(dialogs[name].dialog, $.extend(instance.getDefaultDialogOptions(name), instance.dialogOptions));
-    }
-    return dialogs[name].dialog;
+    dialogs[this.name].instance = this;
+    return dialogs[this.name].dialog;
 };

@@ -1,7 +1,9 @@
 /**
  * @fileOverview Element manipulation helper functions.
- * @author David Neilsen - david@panmedia.co.nz
- * @author Michael Robinson - michael@panmedia.co.nz
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 
 /**
@@ -160,7 +162,12 @@ function elementFirstInvalidElementOfValidParent(element, validTags, wrapper) {
  * @return {Object} Visible rectangle for the element.
  */
 function elementVisibleRect(element) {
-
+    // <strict>
+    if (!typeIsJQueryCompatible(element)) {
+        handleInvalidArgumentError('Parameter 1 to elementVisibleRect is expected to be a jQuery compatible object', element);
+        return;
+    }
+    // </strict>
     element = $(element);
 
     var rect = {
@@ -284,11 +291,25 @@ function elementSwapStyles(element1, element2, style) {
 /**
  * Checks if an element is empty.
  *
- * @param {jQuery|Element} element The element to be checked.
+ * @param {Element} element The element to be checked.
  * @returns {Boolean} Returns true if element is empty.
  */
 function elementIsEmpty(element) {
-    return $($.parseHTML(element)).is(':empty');
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to elementIsEmpty must be a jQuery element', element);
+        return;
+    }
+    // </strict>
+
+    // Images and elements containing images are not empty
+    if (element.is('img') || element.find('img').length) {
+        return false;
+    }
+    if ((/&nbsp;/).test(element.html())) {
+        return false;
+    }
+    return element.text() === '';
 }
 
 /**
@@ -388,4 +409,34 @@ function elementChangeTag(element, newTag) {
         tags[i] = node;
     }
     return $(tags);
+}
+
+/**
+ * Positions an element over top of another element.
+ *  - If the other element is big, then the element is positioned in the center of the visible part of the other element.
+ *  - If the other element is small and not at the top of the screen, the other element is positioned at the top of the other element.
+ *  - If the other element is small and not is at the top of the screen, the other element is positioned at the bottom of the other element.
+ *
+ * @param {Element} element The element to position.
+ * @param {Element} over The element to position over.
+ */
+function elementPositionOver(element, over) {
+    if (element.outerHeight() > over.outerHeight() - 20) {
+        var visibleRect = elementVisibleRect(over),
+            offset = over.offset();
+        element.css({
+            position: 'absolute',
+            // Calculate offset center for the element
+            top:  offset.top - element.outerHeight(),
+            left: visibleRect.left + ((visibleRect.width / 2)  - (element.outerWidth()  / 2))
+        });
+    } else {
+        var visibleRect = elementVisibleRect(over);
+        element.css({
+            position: 'absolute',
+            // Calculate offset center for the element
+            top:  visibleRect.top  + ((visibleRect.height / 2) - (element.outerHeight() / 2)),
+            left: visibleRect.left + ((visibleRect.width / 2)  - (element.outerWidth()  / 2))
+        });
+    }
 }

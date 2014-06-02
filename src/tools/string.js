@@ -1,7 +1,9 @@
 /**
- * @fileOverview String helper functions
- * @author David Neilsen - david@panmedia.co.nz
- * @author Michael Robinson - michael@panmedia.co.nz
+ * @fileOverview String helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 
 /**
@@ -28,13 +30,17 @@ function stringStripTags(content, allowedTags) {
 }
 
 /**
- * Converts a string in camelcase to lower case words separated with a dash or other supplied delimiter.
- * @param {String} string The string to be converted from camelcase.
- * @param {String} delimiter The character to separate the words, '-' if null.
- * @returns {String} A lowercase string separated by dashes.
+ * Checks if an html string is empty.
+ *
+ * @param {Element} element The element to be checked.
+ * @returns {Element}
  */
-function stringCamelCaseConvert(string, delimiter) {
-    return string.replace(/([A-Z])/g, function(match) {
-        return (delimiter || '-') + match.toLowerCase();
-    });
+function stringHtmlStringIsEmpty(html) {
+    // <strict>
+    if (!typeIsString(html)) {
+        handleInvalidArgumentError('Parameter 1 to stringHtmlStringIsEmpty must be a string', html);
+        return;
+    }
+    // </strict>
+    return $($.parseHTML(html)).is(':empty');
 }

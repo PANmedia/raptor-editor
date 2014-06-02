@@ -5,24 +5,13 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 @import 'compass/css3/box';
-@import 'compass/css3/opacity';
 
-.raptor-ui-link-create .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('chain.png') 0 0;
+.raptor-ui-link-create {
+    @include button-icon('chain.png');
 }
 
-.raptor-ui-link-create:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-link-remove .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('chain-unchain.png') 0 0;
-}
-
-.raptor-ui-link-remove:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-link-remove {
+    @include button-icon('chain-unchain.png');
 }
 
 /* Dialog */
@@ -74,7 +63,6 @@
             top: 60px;
             left: 200px;
             padding-left: 20px;
-            background: inline-image('loading-small.png') no-repeat left center;
         }
     }
     h2 {

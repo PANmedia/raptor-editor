@@ -3,22 +3,10 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-text-size-increase .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-size-up.png') 0 0;
+.raptor-ui-text-size-increase {
+    @include button-icon('edit-size-up.png');
 }
 
-.raptor-ui-text-size-increase:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-text-size-decrease .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-size-down.png') 0 0;
-}
-
-.raptor-ui-text-size-decrease:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-text-size-decrease {
+    @include button-icon('edit-size-down.png');
 }

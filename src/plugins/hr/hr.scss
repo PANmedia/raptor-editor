@@ -3,12 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-hr-create .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-rule.png') 0 0;
-}
-.raptor-ui-hr-create:hover .ui-icon-hr {
-    @include opacity(1);
+.raptor-ui-hr-create {
+    @include button-icon('edit-rule.png');
 }

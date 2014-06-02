@@ -3,13 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-class-menu .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('palette-paint-brush.png') 0 0;
-}
-
-.raptor-ui-class-menu:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-class-menu {
+    @include button-icon('palette-paint-brush.png');
 }

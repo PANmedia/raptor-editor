@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Raptor" default="build">
+    <if>
+        <not><equals arg1="${loaded}" arg2="true" /></not>
+        <then>
+            <property file="build/build.properties" override="false" />
+        </then>
+    </if>
+
+    <!-- =================================================================== -->
+    <!-- main build targets                                                  -->
+    <!-- =================================================================== -->
+    <target name="build">
+        <phingcall target="clean" />
+        <phingcall target="clone" />
+        <phingcall target="theme-build" />
+        <phingcall target="strip-blocks" />
+        <phingcall target="version" />
+        <phingcall target="combine" />
+        <phingcall target="compile" />
+        <phingcall target="merge" />
+        <phingcall target="merge-min" />
+        <phingcall target="package" />
+    </target>
+
+    <target name="test-build">
+        <echo>phing.project.name: ${phing.project.name}</echo>
+        <echo>project.basedir: ${project.basedir}</echo>
+        <echo>dir.package: ${dir.package}</echo>
+        <echo>dir.build: ${dir.build}</echo>
+        <echo>strip.blocks: ${strip.blocks}</echo>
+        <echo>theme: ${theme}</echo>
+        <echo>files.manifest: ${files.manifest}</echo>
+        <echo>jquery-no-conflict: ${jquery-no-conflict}</echo>
+        <echo>jquery-ui: ${jquery-ui}</echo>
+        <echo>jquery-ui-theme: ${jquery-ui-theme}</echo>
+        <echo>jquery-hotkeys: ${jquery-hotkeys}</echo>
+        <echo>rangy: ${rangy}</echo>
+        <echo>raptorize: ${raptorize}</echo>
+        <echo>wrapper: ${wrapper}</echo>
+        <echo>file.top: ${file.top}</echo>
+    </target>
+
+    <target name="0deps">
+        <property file="build/build.0deps.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="0depsnc">
+        <property file="build/build.0deps.nc.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="light">
+        <property file="build/build.light.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <target name="debug">
+        <property file="build/build.debug.properties" override="true" />
+        <phingcall target="build" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Translation build targets                                           -->
+    <!-- =================================================================== -->
+
+    <target name="translationcheck">
+        <translationcheck>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationcheck>
+    </target>
+
+    <target name="translationupdate">
+        <translationupdate>
+            <fileset dir=".">
+                <include name="${dir.locales}/*.js" />
+            </fileset>
+        </translationupdate>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compress PNG images                                                 -->
+    <!-- =================================================================== -->
+    <target name="pngout">
+        <foreach param="input.file.name" absparam="input.file" target="pngout-exec">
+            <fileset dir="src">
+                <include name="*.png" />
+                <include name="**/*.png" />
+            </fileset>
+        </foreach>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Development build                                                   -->
+    <!-- =================================================================== -->
+    <target name="dev">
+        <phingcall target="clean" />
+        <phingcall target="dev-clone" />
+        <phingcall target="datauri" />
+    </target>
+
+    <target name="dev-clone">
+        <copy todir="${dir.build}" >
+            <fileset dir="src">
+                <include name="**/*" />
+                <exclude name="dependencies/**" />
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Prepare for build                                                   -->
+    <!-- =================================================================== -->
+    <target name="clean">
+        <if>
+            <available file="${dir.build}" type="dir" />
+            <then>
+                <delete dir="${dir.build}" includeemptydirs="true" failonerror="true" />
+            </then>
+        </if>
+        <mkdir dir="${dir.build}" />
+        <mkdir dir="${dir.package}" />
+    </target>
+
+    <target name="clone">
+        <clone file="${files.manifest}" builddir="${dir.build}" />
+    </target>
+
+    <target name="pngout-exec">
+        <exec command="pngout ${input.file}" logoutput="true" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Strip debug/strict blocks                                           -->
+    <!-- =================================================================== -->
+    <target name="strip-blocks">
+        <echo>Stripping blocks ${strip.blocks}</echo>
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="**/*" />
+            </fileset>
+            <filterchain>
+                <!-- Replace the blocks using regex -->
+                <replaceregexp>
+                    <regexp pattern="//\s&lt;(${strip.blocks})&gt;.*?//\s&lt;/(${strip.blocks})&gt;"
+                            replace="// &lt;$1/&gt;"
+                            ignoreCase="true"
+                            multiline="true" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Replace version token with current version string                   -->
+    <!-- =================================================================== -->
+    <target name="version">
+        <echo>Replacing version token ${version}</echo>
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="**/*" />
+            </fileset>
+            <filterchain>
+                <!-- Replace the blocks using regex -->
+                <replaceregexp>
+                    <regexp pattern="VERSION" replace="${version}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compile theme                                                       -->
+    <!-- =================================================================== -->
+    <target name="theme">
+        <phingcall target="clean" />
+        <phingcall target="clone" />
+        <phingcall target="theme-build" />
+    </target>
+
+    <target name="theme-build">
+        <theme file="${files.manifest}" builddir="${dir.build}" />
+        <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
+            compass compile raptor.scss
+        " />
+        <copy file="${dir.build}/src/style/raptor.css" tofile="${project.basedir}/${dir.package}/raptor.css" />
+        <exec level="info" logOutput="true" command="
+            node node_modules/clean-css/bin/cleancss --output ${dir.package}/raptor.min.css ${dir.package}/raptor.css
+        " />
+        <exec level="info" logOutput="true" dir="${dir.build}/src/style" command="
+            compass compile front-end.scss
+        " />
+        <copy file="${dir.build}/src/style/front-end.css" tofile="${project.basedir}/${dir.package}/raptor-front-end.css" />
+        <exec level="info" logOutput="true" command="
+            node node_modules/clean-css/bin/cleancss --output ${dir.package}/raptor-front-end.min.css ${dir.package}/raptor-front-end.css
+        " />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Convert images to data URIs                                         -->
+    <!-- =================================================================== -->
+    <target name="datauri">
+        <datauri>
+            <fileset dir=".">
+                <include name="${dir.build}/*.css" />
+                <include name="${dir.build}/**/*.css" />
+            </fileset>
+        </datauri>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Convert HTML templates to JSON                                      -->
+    <!-- =================================================================== -->
+    <target name="template">
+        <template file="${files.manifest}" builddir="${dir.build}" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Combine all files                                                   -->
+    <!-- =================================================================== -->
+    <target name="combine" depends="datauri,template">
+        <combine file="${files.manifest}" builddir="${dir.build}" wrapper="${wrapper}" noconflict="${jquery-no-conflict}" />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Compile (minify) all files                                          -->
+    <!-- =================================================================== -->
+    <target name="compile">
+        <if>
+            <istrue value="${compile-js}" />
+            <then>
+                <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
+                    node node_modules/uglify-js/bin/uglifyjs -c -m --output ${dir.build}/concat.min.js ${dir.build}/concat.js
+                " />
+            </then>
+            <else>
+                <copy file="${dir.build}/concat.js" tofile="${dir.build}/concat.min.js" />
+            </else>
+        </if>
+        <if>
+            <istrue value="${compile-css}" />
+            <then>
+                <exec dir="${phing.dir.raptor}" level="info" logoutput="true" command="
+                    node node_modules/clean-css/bin/cleancss --output ${dir.build}/concat.min.css ${dir.build}/concat.css
+                " />
+            </then>
+            <else>
+                <move file="${dir.build}/concat.css" tofile="${dir.build}/concat.min.css" />
+            </else>
+        </if>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Merge CSS and JS into one file                                      -->
+    <!-- =================================================================== -->
+    <target name="merge">
+        <php>file_put_contents('${dir.build}/merge.js', file_get_contents('${file.top}'));</php>
+
+        <!-- Append the merged JS -->
+        <append destFile="${dir.build}/merge.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.js" />
+            </fileset>
+        </append>
+
+        <!-- Append the style inserter -->
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[document.write('<style type="text/css">]]></echo>
+
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="concat.css" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\r" replace="" />
+                    <regexp pattern="\n" replace="\n\${line.separator}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append destFile="${dir.build}/merge.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.css" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.js" append="true"><![CDATA[</style>');]]></echo>
+    </target>
+
+    <target name="merge-min">
+        <php>file_put_contents('${dir.build}/merge.min.js', file_get_contents('${file.top}'));</php>
+
+        <!-- Append the merged JS -->
+        <append destFile="${dir.build}/merge.min.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.min.js" />
+            </fileset>
+        </append>
+
+        <!-- Append the style inserter -->
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[document.write('<style type="text/css">]]></echo>
+
+        <reflexive>
+            <fileset dir="${dir.build}">
+                <include pattern="concat.min.css" />
+            </fileset>
+            <filterchain>
+                <!-- Escape quotes -->
+                <replaceregexp>
+                    <regexp pattern="'" replace="\'" />
+                    <regexp pattern="\n" replace="\n\${line.separator}" />
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
+        <append destFile="${dir.build}/merge.min.js">
+            <fileset dir=".">
+                <include name="${dir.build}/concat.min.css" />
+            </fileset>
+        </append>
+        <echo file="${dir.build}/merge.min.js" append="true"><![CDATA[</style>');]]></echo>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Package files                                                       -->
+    <!-- =================================================================== -->
+    <target name="package">
+        <mkdir dir="${dir.package}" />
+        <copy file="${dir.build}/merge.js" tofile="${dir.package}/${filename}.js" />
+        <echo>${dir.package}/${filename}.js</echo>
+        <copy file="${dir.build}/merge.min.js" tofile="${dir.package}/${filename}.min.js" />
+        <echo>${dir.package}/${filename}.min.js</echo>
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Test scss                                                           -->
+    <!-- =================================================================== -->
+    <target name="test-css">
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/case.scss css/case.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/diff.scss css/diff.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/style.scss css/style.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/table.scss css/style.css
+        " />
+        <exec level="info" logOutput="true" dir="tests" command="
+            bundle exec sass --compass scss/tests.scss css/tests.css
+        " />
+    </target>
+
+    <!-- =================================================================== -->
+    <!-- Adhoc classes                                                       -->
+    <!-- =================================================================== -->
+    <adhoc-task name="datauri">
+        require_once '${project.basedir}/classes/DataURI.php';
+    </adhoc-task>
+
+    <adhoc-task name="template">
+        require_once '${project.basedir}/classes/TemplateTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationcheck">
+        require_once '${project.basedir}/classes/TranslationCheckTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="translationupdate">
+        require_once '${project.basedir}/classes/TranslationUpdateTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="combine">
+        require_once '${project.basedir}/classes/CombineTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="clone">
+        require_once '${project.basedir}/classes/CloneTask.php';
+    </adhoc-task>
+
+    <adhoc-task name="theme">
+        require_once '${project.basedir}/classes/ThemeTask.php';
+    </adhoc-task>
+
+</project>

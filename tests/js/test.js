@@ -7,29 +7,35 @@ if (typeof window.testResults === 'undefined') {
 
 var testQueue = [],
     testQueueTimer = null,
-    testRunning = false;
+    testRunning = false,
+    testReady = false;
 
-function test(container, action) {
+function test(container, action, options) {
     if ($(container).length !== 1) {
         throw new Error('Duplicate or missing container: ' + container);
         return;
     }
     testQueue.push([container, action]);
-    if (testQueueTimer === null) {
-        testQueueTimer = setInterval(function() {
-            if (testRunning === false && testQueue.length > 0) {
-                var test = testQueue.shift();
-                runTest(test[0], test[1]);
+    if (testReady === false) {
+        testReady = true;
+        $(function() {
+            if (testQueueTimer === null) {
+                testQueueTimer = setInterval(function() {
+                    if (testRunning === false && testQueue.length > 0) {
+                        var test = testQueue.shift();
+                        runTest(test[0], test[1], test[2]);
+                    }
+                    if (testRunning === false && testQueue.length === 0) {
+                        window.testResults.finished = true;
+                        clearInterval(testQueueTimer);
+                    }
+                }, 20);
             }
-            if (testRunning === false && testQueue.length === 0) {
-                window.testResults.finished = true;
-                clearInterval(testQueueTimer);
-            }
-        }, 20);
+        });
     }
 }
 
-function runTest(container, action, format) {
+function runTest(container, action, options) {
     var output = $(container).find('.test-output'),
         input = $(container).find('.test-input'),
         diff = $(container).find('.test-diff'),
@@ -81,10 +87,10 @@ function runTest(container, action, format) {
     output.addClass('test-box');
     $('<div>').addClass('test-clear').insertAfter(outputSource);
 
-    if (typeof format === 'undefined' || format) {
+    // if (typeof format === 'undefined' || format) {
         formatElement(expected);
         formatElement(output);
-    }
+    // }
 
     if (error) {
         $('<pre>').text(error).appendTo(diff);

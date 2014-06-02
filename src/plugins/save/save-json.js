@@ -1,5 +1,25 @@
+/**
+ * @fileOverview Contains the save JSON plugin code.
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
+ */
+
+/**
+ * The save JSON class.
+ *
+ * @constructor
+ * @param {String} name
+ * @param {Object} overrides
+ */
 function SaveJsonPlugin(name, overrides) {
+    this.options = {
+        retain: false
+    };
     RaptorPlugin.call(this, name || 'saveJson', overrides);
+    this.size = null;
 }
 
 SaveJsonPlugin.prototype = Object.create(RaptorPlugin.prototype);
@@ -20,17 +40,26 @@ SaveJsonPlugin.prototype.init = function() {
 };
 // </strict>
 
-SaveJsonPlugin.prototype.save = function() {
+/**
+ * Save Raptor content.
+ */
+SaveJsonPlugin.prototype.save = function(saveSections) {
+    // Hack save sections
+    if (typeof RaptorSection !== 'undefined' && saveSections !== false) {
+        RaptorSection.save(false);
+    }
     var data = {};
     this.raptor.unify(function(raptor) {
         if (raptor.isDirty()) {
+            raptor.clean();
             var plugin = raptor.getPlugin('saveJson');
-            var id = plugin.options.id.call(this);
-            var html = this.raptor.getHtml();
+            var id = plugin.options.id.call(plugin);
+            var html = raptor.getHtml();
             data[id] = html;
         }
     }.bind(this));
     var post = {};
+    this.size = Object.keys(data).length;
     post[this.options.postName] = JSON.stringify(data);
     $.ajax({
             type: this.options.type || 'post',
@@ -42,23 +71,46 @@ SaveJsonPlugin.prototype.save = function() {
         .fail(this.fail.bind(this));
 };
 
+/**
+ * Done handler.
+ *
+ * @param {Object} data
+ * @param {Integer} status
+ * @param {Object} xhr
+ */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
-    this.raptor.saved();
-    var message = _('saveJsonSaved');
+    this.raptor.unify(function(raptor) {
+        if (raptor.isDirty()) {
+            raptor.saved([data, status, xhr]);
+        }
+    });
+    var message = tr('saveJsonSaved', {
+        saved: this.size
+    });
     if ($.isFunction(this.options.formatResponse)) {
         message = this.options.formatResponse(data);
     }
-    this.raptor.showConfirm(message, {
-        delay: 1000,
-        hide: function() {
-            this.raptor.unify(function(raptor) {
-                raptor.disableEditing();
-                raptor.hideLayout();
-            });
-        }.bind(this)
+    aNotify({
+        text: message,
+        type: 'success'
     });
+    if (!this.options.retain) {
+        this.raptor.unify(function(raptor) {
+            raptor.disableEditing();
+        });
+    }
 };
 
+/**
+ * Fail handler.
+ *
+ * @param {Object} xhr
+ */
 SaveJsonPlugin.prototype.fail = function(xhr) {
-    this.raptor.showError(_('saveJsonFail'));
+    aNotify({
+        text: tr('saveJsonFail', {
+            failed: this.size
+        }),
+        type: 'error'
+    });
 };

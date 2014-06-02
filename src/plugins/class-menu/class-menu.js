@@ -1,14 +1,17 @@
 /**
  * @fileOverview Contains the class menu class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The select menu class.
+ * The select menu class.
+ *
  * @constructor
- * @augments select menu
+ * @augments SelectMenu
  *
  * @param {Object} options
  */
@@ -28,7 +31,7 @@ ClassMenu.prototype = Object.create(SelectMenu.prototype);
  */
 ClassMenu.prototype.init = function() {
     var result = SelectMenu.prototype.init.call(this);
-    if (typeof this.options.classes !== 'undefined' &&
+    if (typeof this.options.classes === 'object' &&
             Object.keys(this.options.classes).length > 0) {
         this.raptor.bind('selectionChange', this.updateButton.bind(this));
         return result;
@@ -47,9 +50,10 @@ ClassMenu.prototype.changeClass = function(classes) {
 /**
  * Applies the class on click.
  *
- * @param event The click event to apply the class at.
+ * @param event
  */
-ClassMenu.prototype.apply = function(event) {
+ClassMenu.prototype.menuItemClick = function(event) {
+    SelectMenu.prototype.menuItemClick.apply(this, arguments);
     this.raptor.actionApply(function() {
         this.changeClass([$(event.currentTarget).data('value')]);
     }.bind(this));
@@ -58,9 +62,9 @@ ClassMenu.prototype.apply = function(event) {
 /**
  * Puts the selection into preview mode for the chosen class.
  *
- * @param event The click event to enable preview mode.
+ * @param event The mouse event which triggered the preview.
  */
-ClassMenu.prototype.preview = function(event) {
+ClassMenu.prototype.menuItemMouseEnter = function(event) {
     this.raptor.actionPreview(function() {
         this.changeClass([$(event.currentTarget).data('value')]);
     }.bind(this));
@@ -69,9 +73,9 @@ ClassMenu.prototype.preview = function(event) {
 /**
  * Restores the selection from preview mode.
  *
- * @param event The click event to disable preview mode.
+ * @param event
  */
-ClassMenu.prototype.previewRestore = function(event) {
+ClassMenu.prototype.menuItemMouseLeave = function(event) {
     this.raptor.actionPreviewRestore();
 };
  /**
@@ -107,10 +111,7 @@ ClassMenu.prototype.getMenuItems = function() {
             value: this.options.classes[label]
         });
     }
-    return $(items)
-        .click(this.apply.bind(this))
-        .mouseenter(this.preview.bind(this))
-        .mouseleave(this.previewRestore.bind(this));
+    return items;
 };
 
 Raptor.registerUi(new ClassMenu());

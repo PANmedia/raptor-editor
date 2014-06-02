@@ -1,5 +1,7 @@
 /**
  * @fileOverview List manipulation helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
@@ -12,7 +14,12 @@
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listToggle(listType, listItem, wrapper) {
-    if (wrapper.html().trim() === '') return;
+    if (wrapper.html().trim() === '') {
+        return;
+    }
+    if (!selectionExists()) {
+        return;
+    }
     if (listShouldConvertType(listType, listItem, wrapper)) {
         return listConvertListType(listType, listItem, wrapper);
     }
@@ -52,7 +59,7 @@ function listShouldUnwrap(listType, listItem) {
  * @return {Boolean}
  */
 function listShouldConvertType(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionRange();
     var commonAncestor = $(rangeGetCommonAncestor(range));
     if (rangeIsEmpty(range)) {
         var closestListItem = commonAncestor.closest(listItem, wrapper);
@@ -99,8 +106,9 @@ var listValidLiChildren = [
  * @type {String][]} Tags ol & ul are allowed within.
  */
 var listValidUlOlParents =  [
-    'blockquote', 'body', 'button', 'center', 'dd', 'div', 'fieldset', 'form',
-    'iframe', 'li', 'noframes', 'noscript', 'object', 'td', 'th'
+    'article', 'nav', 'section', 'footer', 'blockquote', 'body', 'button',
+    'center', 'dd', 'div', 'fieldset', 'form', 'iframe', 'li', 'noframes',
+    'noscript', 'object', 'td', 'th'
 ];
 
 /**
@@ -130,14 +138,15 @@ var listValidPParents = [
  * @param  {String} listItem
  * @param  {String[]} validChildren
  */
-function listEnforceValidChildren(list, listItem, validChildren) {
+function listEnforceValidChildren(list, listItem, validChildren, removeEmpty) {
+    removeEmpty = typeof removeEmpty === 'undefined' ? true : removeEmpty;
     // <strict>
     if (!typeIsElement(list)) {
         handleInvalidArgumentError('Parameter 1 for listEnforceValidChildren must be a jQuery element', list);
     }
     // </strict>
-    var removeEmpty = function(node) {
-        if ($(node).is('img')) {
+    var removeEmptyElements = function(node) {
+        if ($(node).is('img') || $(node).find('img').length) {
             return;
         }
         if (!$(node).text().trim()) {
@@ -147,11 +156,11 @@ function listEnforceValidChildren(list, listItem, validChildren) {
     };
 
     list.find('> ' + listItem).each(function() {
-        if (removeEmpty(this)) {
+        if (removeEmpty && removeEmptyElements(this)) {
             return true;
         }
         $(this).contents().each(function() {
-            if (removeEmpty(this)) {
+            if (removeEmpty && removeEmptyElements(this)) {
                 return true;
             }
             if (listItem === 'p') {
@@ -161,12 +170,14 @@ function listEnforceValidChildren(list, listItem, validChildren) {
                     return true;
                 }
             } else {
+                // Do nothing for bare text nodes
                 if (typeIsTextNode(this)) {
-                    $(this).wrap('<p/>');
                     return true;
                 }
+                // Unwrap the invalid element and remove it if empty
                 if (!elementIsValid(this, validChildren)) {
-                    elementChangeTag($(this), 'p');
+                    $(this).contents().unwrap();
+                    removeEmptyElements(this);
                     return true;
                 }
             }
@@ -182,7 +193,7 @@ function listEnforceValidChildren(list, listItem, validChildren) {
  * @param {Element} wrapper Element containing the entire action, may not be modified.
  */
 function listWrapSelection(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionRange();
     var commonAncestor = rangeGetCommonAncestor(range);
 
     /**
@@ -195,7 +206,7 @@ function listWrapSelection(listType, listItem, wrapper) {
     // Having a <td> fully selected is a special case: without intervention
     // the surrounding <table> would be split, with a <listType> inserted between
     // the two <tables>.
-    if ($(commonAncestor).is('td,th')) {
+    if ($(commonAncestor).is('td,th') || commonAncestor === wrapper.get(0)) {
         rangeSelectElementContent(range, commonAncestor);
 
     // Other cases require checking if the range contains the full text of the
@@ -209,17 +220,20 @@ function listWrapSelection(listType, listItem, wrapper) {
     }
 
     var contents = listConvertItemsForList(fragmentToHtml(range.extractContents()), listItem);
-
     var validParents = listType === 'blockquote' ? listValidBlockQuoteParents : listValidUlOlParents;
     var uniqueId = elementUniqueId();
     var replacementHtml = '<' + listType + ' id="' + uniqueId + '">' + $('<div/>').html(contents).html() + '</' + listType + '>';
+
     rangeReplaceWithinValidTags(range, replacementHtml, wrapper, validParents);
 
     var replacement = $('#' + uniqueId).removeAttr('id');
     var validChildren = listType === 'blockquote' ? listValidPChildren : listValidLiChildren;
     listEnforceValidChildren(replacement, listItem, validChildren);
     if (replacement.is(listType)) {
-        replacement = replacement.find(' > ' + listItem);
+        var child = replacement.find(' > ' + listItem);
+        if (child.length === 0) {
+            replacement = $(document.createElement('li')).appendTo(replacement);
+        }
     }
     selectionSelectInner(replacement.get(0));
 }
@@ -246,7 +260,7 @@ function listConvertItemsForList(items, listItem) {
         if ($(this).is('img')) {
             return true;
         }
-        if ($(this).text().trim() === '') {
+        if (elementIsEmpty($(this))) {
             return $(this).remove();
         }
         $(this).wrap('<' + listItem + '/>');
@@ -426,7 +440,7 @@ function listUnwrapSelectedListItems(range, listType, listItem, wrapper) {
  * @param {Object} listItem
  */
 function listUnwrapSelection(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionRange();
     if (rangeIsEmpty(range)) {
         rangeExpandTo(range, [listItem]);
     }
@@ -508,7 +522,7 @@ function listUnwrapSelection(listType, listItem, wrapper) {
 }
 
 function listConvertListType(listType, listItem, wrapper) {
-    var range = rangy.getSelection().getRangeAt(0);
+    var range = selectionRange();
     if (rangeIsEmpty(range)) {
         rangeExpandTo(range, [listItem]);
     }
@@ -548,4 +562,85 @@ function listConvertListType(listType, listItem, wrapper) {
     var convertedList = $(toUnwrap).wrap('<' + listType + '>').parent();
 
     return listEnforceValidChildren(convertedList, listItem, listValidLiChildren);
+}
+
+/**
+ * Break the currently selected list, replacing the selection.
+ *
+ * @param  {String} listType
+ * @param  {String} listItem
+ * @param  {Element} wrapper
+ * @param  {String|Element} replacement
+ * @return {Element|Boolean} The replaced element, or false if replacement did not
+ *                               occur.
+ */
+function listBreakByReplacingSelection(listType, listItem, wrapper, replacement) {
+    var selectedElement = selectionGetElement();
+    if (!selectedElement.closest(listItem).length) {
+        return false;
+    }
+
+    var parentList = selectedElement.closest(listType);
+    if (!parentList.length || wrapper.get(0) === parentList.get(0)) {
+        return false;
+    }
+
+    selectionSelectToEndOfElement(selectedElement);
+    selectionDelete();
+
+    var top = $('<' + listType + '/>'),
+        bottom = $('<' + listType + '/>'),
+        middlePassed = false;
+    parentList.children().each(function() {
+        if (selectedElement.closest(listItem).get(0) === this) {
+            middlePassed = true;
+            top.append(this);
+            return;
+        }
+        if (!middlePassed) {
+            top.append(this);
+        } else {
+            bottom.append(this);
+        }
+    });
+    parentList.replaceWith(top);
+    replacement = $(replacement).appendTo($('body'));
+    top.after(replacement, bottom);
+
+    return replacement;
+}
+
+/**
+ * Add a new list item below the selection. New list item contains content of original
+ * list item from selection end to end of element.
+ *
+ * @param  {String} listType
+ * @param  {String} listItem
+ * @param  {Element} wrapper
+ * @param  {String|Element} replacement
+ * @return {Element|Boolean}
+ */
+function listBreakAtSelection(listType, listItem, wrapper) {
+    var selectedElement = selectionGetElement();
+    if (!selectedElement.closest(listItem).length) {
+        return false;
+    }
+
+    selectionDelete();
+    selectionSelectToEndOfElement(selectedElement);
+    var html = selectionGetHtml();
+    if (html.trim() === '') {
+        html = '&nbsp;';
+    }
+    selectionDelete();
+
+    if (selectedElement.text().trim() === '') {
+        selectedElement.html('&nbsp;');
+    }
+    var newListItem = $('<' + listItem + '>').html(html);
+    selectedElement.closest(listItem).after(newListItem);
+
+    listEnforceValidChildren(selectedElement.closest(listType), listItem, listValidLiChildren, false);
+
+    return newListItem;
 }

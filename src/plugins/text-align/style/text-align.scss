@@ -5,35 +5,18 @@
  */
 @import 'compass/css3/opacity';
 
-.raptor-ui-align-left .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('edit-alignment.png') 0 0;
+.raptor-ui-align-left {
+    @include button-icon('edit-alignment.png');
 }
 
-.raptor-ui-align-left:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-align-right {
+    @include button-icon('edit-alignment-right.png');
 }
 
-.raptor-ui-align-right .ui-icon {
-    background: inline-image('edit-alignment-right.png') 0 0;
+.raptor-ui-align-center {
+    @include button-icon('edit-alignment-center.png');
 }
 
-.raptor-ui-align-right:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-align-center .ui-icon {
-    background: inline-image('edit-alignment-center.png') 0 0;
-}
-
-.raptor-ui-align-center:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-align-justify .ui-icon {
-    background: inline-image('edit-alignment-justify.png') 0 0;
-}
-
-.raptor-ui-align-justify:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-align-justify {
+    @include button-icon('edit-alignment-justify.png');
 }

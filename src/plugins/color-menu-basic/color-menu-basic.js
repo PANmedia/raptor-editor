@@ -1,29 +1,41 @@
 /**
  * @fileOverview Contains the basic colour menu class code.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author  David Neilsen <david@panmedia.co.nz>
  * @author  Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The basic colour menu class.
+ * The basic colour menu class.
+ *
  * @constructor
  * @augments SelectMenu
  *
  * @param {Object} options
- * @returns {ColorMenuBasic}
  */
 function ColorMenuBasic(options) {
-    this.colors = [
-        'white',
-        'black',
-        'grey',
-        'blue',
-        'red',
-        'green',
-        'purple',
-        'orange'
-    ];
+    this.options = {
+        colors: {
+            white: '#ffffff',
+            black: '#000000',
+            grey: '#999',
+            blue: '#4f81bd',
+            red: '#c0504d',
+            green: '#9bbb59',
+            purple: '#8064a2',
+            orange: '#f79646'
+        }
+    };
+    /**
+     * Cache the current color so it can be reapplied to the button if the user
+     * clicks the button to open the menu, hovers some colors then clicks off to
+     * close it.
+     *
+     * @type {String}
+     */
+    this.currentColor = 'automatic';
     SelectMenu.call(this, {
         name: 'colorMenuBasic'
     });
@@ -38,6 +50,7 @@ ColorMenuBasic.prototype = Object.create(SelectMenu.prototype);
  */
 ColorMenuBasic.prototype.init = function() {
     this.raptor.bind('selectionChange', this.updateButton.bind(this));
+    this.updateButton();
     return SelectMenu.prototype.init.apply(this, arguments);
 };
 
@@ -49,22 +62,23 @@ ColorMenuBasic.prototype.updateButton = function() {
         button = this.getButton().getButton(),
         color = null,
         closest = null;
+
     // TODO: set automatic icon color to the color of the text
-    aButtonSetLabel(button, _('colorMenuBasicAutomatic'));
+    aButtonSetLabel(button, tr('colorMenuBasicAutomatic'));
     aButtonSetIcon(button, false);
     if (!tag) {
         return;
     }
     tag = $(tag);
-    for (var colorsIndex = 0; colorsIndex < this.colors.length; colorsIndex++) {
-        closest = $(tag).closest('.' + this.options.cssPrefix + this.colors[colorsIndex]);
+    for (var label in this.options.colors) {
+        closest = $(tag).closest('.' + this.options.cssPrefix + label);
         if (closest.length) {
-            color = this.colors[colorsIndex];
+            color = label;
             break;
         }
     }
     if (color) {
-        aButtonSetLabel(button, _('colorMenuBasic' + (color.charAt(0).toUpperCase() + color.slice(1))));
+        aButtonSetLabel(button, tr('colorMenuBasic' + stringToCamelCase(color)));
         aButtonSetIcon(button, 'ui-icon-swatch');
         // FIXME: set color in an adapter friendly way
         button.find('.ui-icon').css('background-color', closest.css('color'));
@@ -77,10 +91,14 @@ ColorMenuBasic.prototype.updateButton = function() {
  *
  * @param {type} color The current colour.
  */
-ColorMenuBasic.prototype.changeColor = function(color) {
+ColorMenuBasic.prototype.changeColor = function(color, permanent) {
+    if (permanent) {
+        this.currentColor = color;
+    }
     this.raptor.actionApply(function() {
+        selectionExpandToWord();
         if (color === 'automatic') {
-            selectionGetElements().parents('.' + this.options.cssPrefix + 'color').andSelf().each(function() {
+            selectionGetElements().parents('.' + this.options.cssPrefix + 'color').addBack().each(function() {
                 var classes = $(this).attr('class');
                 if (classes === null || typeof classes === 'undefined') {
                     return;
@@ -90,28 +108,42 @@ ColorMenuBasic.prototype.changeColor = function(color) {
                     return;
                 }
                 for (var i = 0, l = classes.length; i < l; i++) {
-                    $(this).removeClass($.trim(classes[i]));
+                    $(this).removeClass(classes[i].trim());
+                    if (!$(this).attr('class').trim()) {
+                        $(this).contents().unwrap();
+                    }
                 }
             });
         } else {
             var uniqueId = elementUniqueId();
             selectionToggleWrapper('span', {
-                classes: this.options.classes || this.options.cssPrefix + 'color ' + this.options.cssPrefix + color,
+                classes: this.options.cssPrefix + 'color ' + this.options.cssPrefix + color,
                 attributes: {
                     id: uniqueId
                 }
             });
-            selectionSelectInner($('#' + uniqueId).removeAttr('id').get(0));
+            var element = $('#' + uniqueId);
+            if (element.length) {
+                selectionSelectInner(element.removeAttr('id').get(0));
+                var splitNode;
+                do {
+                    splitNode = $('#' + uniqueId);
+                    splitNode.removeAttr('id');
+                } while (splitNode.length);
+            }
         }
+        cleanRemoveElements(this.raptor.getElement(), [
+            '.cms-color:has(.cms-color)'
+        ]);
     }.bind(this));
 };
 
 /**
  * The preview state for the basic colour menu.
  *
- * @param event The mouse event to trigger the preview.
+ * @param event The mouse event which triggered the preview.
  */
-ColorMenuBasic.prototype.preview = function(event) {
+ColorMenuBasic.prototype.menuItemMouseEnter = function(event) {
     this.raptor.actionPreview(function() {
         this.changeColor($(event.currentTarget).data('color'));
     }.bind(this));
@@ -119,8 +151,10 @@ ColorMenuBasic.prototype.preview = function(event) {
 
 /**
  * Restores the selection from the preview.
+ *
+ * @param event
  */
-ColorMenuBasic.prototype.previewRestore = function() {
+ColorMenuBasic.prototype.menuItemMouseLeave = function(event) {
     this.raptor.actionPreviewRestore();
 };
 
@@ -129,9 +163,10 @@ ColorMenuBasic.prototype.previewRestore = function() {
  *
  * @param event The mouse event to trigger the application of the colour.
  */
-ColorMenuBasic.prototype.apply = function(event) {
+ColorMenuBasic.prototype.menuItemClick = function(event) {
+    SelectMenu.prototype.menuItemClick.apply(this, arguments);
     this.raptor.actionApply(function() {
-        this.changeColor($(event.currentTarget).data('color'));
+        this.changeColor($(event.currentTarget).data('color'), true);
     }.bind(this));
 };
 
@@ -140,10 +175,16 @@ ColorMenuBasic.prototype.apply = function(event) {
  * @returns {Element} The menu items.
  */
 ColorMenuBasic.prototype.getMenuItems = function() {
-    return $(this.raptor.getTemplate('color-menu-basic.menu', this.options))
-        .click(this.apply.bind(this))
-        .mouseenter(this.preview.bind(this))
-        .mouseleave(this.previewRestore.bind(this));
+    var template = this.raptor.getTemplate('color-menu-basic.automatic', this.options);
+    for (var label in this.options.colors) {
+        template += this.raptor.getTemplate('color-menu-basic.item', {
+            color: this.options.colors[label],
+            label: tr('colorMenuBasic' + stringToCamelCase(label)),
+            className: label,
+            baseClass: this.options.baseClass
+        });
+    }
+    return template;
 };
 
 Raptor.registerUi(new ColorMenuBasic());

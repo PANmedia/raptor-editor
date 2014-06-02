@@ -1,19 +1,18 @@
 /**
  * @fileOverview Contains the menu button class code.
+ * @license http://www.raptor-editor.com/license
  *
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
- * @author  Melissa Richards <melissa@panmedia.co.nz>
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
+ * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class
  * @constructor
  * @augments Button
  *
  * @param {Menu} menu The menu to create the menu button for.
  * @param {Object} options
- * @returns {MenuButton}
  */
 function MenuButton(menu, options) {
     this.menu = menu;

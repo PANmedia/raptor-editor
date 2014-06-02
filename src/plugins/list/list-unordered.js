@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the unordered list button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -11,21 +13,9 @@
  * @todo param details?
  * @param {type} param
  */
-Raptor.registerUi(new PreviewToggleButton({
+Raptor.registerUi(new Button({
     name: 'listUnordered',
-    init: function() {
-        var result = PreviewToggleButton.prototype.init.apply(this, arguments);
-        if (elementIsValid(this.raptor.getElement(), listValidUlOlParents)) {
-            return result;
-        }
-        return;
-    },
     action: function() {
-        listToggle('ul', 'li', this.raptor.getElement());
-    },
-    selectionToggle: function() {
-        var selection = rangy.getSelection();
-        return selection.getAllRanges().length > 0 &&
-            selectionGetElements(selection).closest('ul').length;
+        document.execCommand('insertUnorderedList');
     }
 }));

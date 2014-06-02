@@ -3,13 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-save .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('disk-black.png') 0 0;
-}
-
-.raptor-ui-save:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-save {
+    @include button-icon('disk-black.png');
 }

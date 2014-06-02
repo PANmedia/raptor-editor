@@ -4,21 +4,20 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 
-%raptor-dock-path {
-    .raptor-path {
+%raptor-plugin-dock-path {
+    .raptor-layout-toolbar-path {
         display: none;
     }
 }
 
-.raptor-dock-docked .raptor-messages {
-    position: fixed;
-    top: 0;
-    left: 50%;
-    margin: 0 -400px 10px;
-    padding: 0;
-    text-align: left;
+.raptor-plugin-dock-docked {
+    line-height: 0;
+}
 
-    .raptor-message-wrapper {
-        width: 800px;
-    }
+.raptor-plugin-dock-visible {
+    display: block;
+}
+
+.raptor-plugin-dock-hidden {
+    display: none;
 }

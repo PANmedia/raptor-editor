@@ -1,0 +1,2 @@
+templateRegister("color-menu-basic.automatic", "<li><a data-color=\"automatic\"><div class=\"{{baseClass}}-swatch\" style=\"display: none\"></div> <span>tr('colorMenuBasicAutomatic')</span></a></li>");
+templateRegister("color-menu-basic.item", "<li><a data-color=\"{{className}}\"><div class=\"{{baseClass}}-swatch\" style=\"background-color: {{color}}\"></div> <span>{{label}}</span></a></li>");

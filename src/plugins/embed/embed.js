@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the embed dialog button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -19,12 +21,22 @@ Raptor.registerUi(new DialogButton({
         height: 400
     },
 
+    /**
+     * Replace selection with embed textarea content.
+     *
+     * @param  {Element} dialog
+     */
     applyAction: function(dialog) {
         this.raptor.actionApply(function() {
             selectionReplace(dialog.find('textarea').val());
         });
     },
 
+    /**
+     * Create and prepare the embed dialog template.
+     *
+     * @return {Element}
+     */
     getDialogTemplate: function() {
         var template = $('<div>').html(this.raptor.getTemplate('embed.dialog', this.options));
 

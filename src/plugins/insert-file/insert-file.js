@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the insert file button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -11,7 +13,7 @@
  * @todo param details?
  * @param {type} param
  */
-Raptor.registerUi(new Button({
+Raptor.registerUi(new DialogButton({
     name: 'insertFile',
     state: false,
     /** @type {string[]} Image extensions*/
@@ -22,7 +24,10 @@ Raptor.registerUi(new Button({
         'gif'
     ],
     options: {
+
         /**
+         * Save the current state, show the insert file dialog or file manager.
+         *
          * @type {null|Function} Specify a function to use instead of the default
          *                       file insertion dialog.
          * @return {Boolean} False to indicate that custom action failed and the
@@ -30,55 +35,38 @@ Raptor.registerUi(new Button({
          */
         customAction: false
     },
-    action: function() {
-        this.state = this.raptor.stateSave();
-        // If a customAction has been specified, use it instead of the default dialog.
-        if (!this.options.customAction) {
-            return this.showDialog();
-        }
 
-        if (this.options.customAction.call(this) === false) {
-            return this.showDialog();
+    /**
+     * Open the insert file dialog or file manager.
+     */
+    action: function(target) {
+        // If a customAction has been specified, use it instead of the default dialog.
+        if (!this.options.customAction || this.options.customAction.call(this, target) === false) {
+            if (typeof target !== 'undefined') {
+                this.getDialog().find('[name=location]').val(target.getAttribute('src') || target.getAttribute('href'));
+                this.getDialog().find('[name=name]').val(target.innerHTML);
+            } else {
+                this.getDialog().find('[name=location]').val('');
+                this.getDialog().find('[name=name]').val('');
+            }
+            return this.openDialog();
         }
     },
 
-    /**
-     * Show the insert files dialog.
-     */
-    showDialog: function() {
-        var dialogElement = $('.file-manager-missing');
-        if (!dialogElement.length) {
-            dialogElement = $(this.raptor.getTemplate('insert-file.dialog'));
-        }
-        aDialog(dialogElement, {
-            title: 'No File Manager',
-            modal: true,
-            buttons: [
-                {
-                    text: _('insertFileDialogOKButton'),
-                    click: function() {
-                        this.insertFiles([{
-                            location: dialogElement.find('input[name="location"]').val(),
-                            name: dialogElement.find('input[name="name"]').val()
-                        }]);
-                        aDialogClose(dialogElement);
-                    }.bind(this),
-                    icons: {
-                        primary: 'ui-icon-circle-check'
-                    }
-                },
-                {
-                    text: _('insertFileDialogCancelButton'),
-                    click: function() {
-                        aDialogClose(dialogElement);
-                    },
-                    icons: {
-                        primary: 'ui-icon-circle-close'
-                    }
-                }
-            ]
-        });
-        aDialogOpen(dialogElement);
+    applyAction: function() {
+        var dialog = this.getDialog(),
+            location = dialog.find('[name=location]').val(),
+            name = dialog.find('[name=name]').val();
+        this.raptor.actionApply(function() {
+            this.insertFiles([{
+                location: location,
+                name: name
+            }]);
+        }.bind(this));
+    },
+
+    getDialogTemplate: function() {
+        return $(this.raptor.getTemplate('insert-file.dialog'));
     },
 
     /**
@@ -90,11 +78,11 @@ Raptor.registerUi(new Button({
      */
     getFileType: function(file) {
         if (typeof file.extension !== 'undefined') {
-            return file.extension;
+            return file.extension.toLowerCase();
         }
         var extension = file.location.split('.');
         if (extension.length > 0) {
-            return extension.pop();
+            return extension.pop().toLowerCase();
         }
         return 'unknown';
     },
@@ -126,54 +114,43 @@ Raptor.registerUi(new Button({
      * @param  {Object[]} files Array of files to be inserted.
      */
     insertFiles: function(files) {
-        this.raptor.stateRestore(this.state);
-        this.state = null;
-
+        this.raptor.resume();
         if (!files.length) {
             return;
         }
-
-        var file;
-        if (files.length === 1) {
-            file = files.shift();
-
-            var html = this.prepareElement(file, selectionGetHtml());
-
-            if (this.isImage(file)) {
-                selectionReplaceWithinValidTags(html, [
-                    // Tags within which the <img> tag may reside
-                    'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
-                    'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em', 'fieldset', 'font',
-                    'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins', 'kbd', 'label', 'legend',
-                    'li', 'noframes', 'noscript', 'object', 'p', 'pre', 'q', 's', 'samp', 'small', 'span',
-                    'strike', 'strong', 'sub', 'sup', 'td', 'th', 'u', 'var'
-                ]);
+        this.raptor.actionApply(function() {
+            if (files.length === 1) {
+                if ((this.isImage(files[0]) && $(selectionGetHtml()).is('img')) || selectionIsEmpty()) {
+                    this.replaceFiles(files);
+                } else {
+                    this.linkFiles(files);
+                }
             } else {
-                selectionReplaceWithinValidTags(html, [
-                    // Tags within which the <a> tag may reside
-                    'a', 'abbr', 'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body',
-                    'button', 'caption', 'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em',
-                    'fieldset', 'font', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins',
-                    'kbd', 'label', 'legend', 'li', 'noframes', 'noscript', 'object', 'p', 'q', 's', 'samp',
-                    'small', 'span', 'strike', 'strong', 'sub', 'sup', 'td', 'th', 'tt', 'u', 'var'
-                ]);
+                this.linkFiles(files);
             }
-            return;
-        }
+        }.bind(this));
+    },
 
+    linkFiles: function(files) {
+        selectionExpandTo('a', this.raptor.getElement());
+        selectionTrim();
+        var applier = rangy.createApplier({
+            tag: 'a',
+            attributes: {
+                href: files[0].location.replace(/([^:])\/\//g, '$1/'),
+                title: files[0].name,
+                'class': this.options.cssPrefix + 'file ' + this.options.cssPrefix + this.getFileType(files[0])
+            }
+        });
+        applier.applyToSelection();
+    },
+
+    replaceFiles: function(files) {
         var elements = [];
         for (var fileIndex = 0; fileIndex < files.length; fileIndex++) {
             elements.push(this.prepareElement(files[fileIndex]));
         }
-
-        selectionReplaceWithinValidTags(elements.join(', '), [
-            // Tags within which both the <img> & <a> tags may reside
-            'acronym', 'address', 'applet', 'b', 'bdo', 'big', 'blockquote', 'body', 'caption',
-            'center', 'cite', 'code', 'dd', 'del', 'dfn', 'div', 'dt', 'em', 'fieldset', 'font',
-            'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'iframe', 'ins', 'kbd', 'label',
-            'legend', 'li', 'noframes', 'noscript', 'object', 'p', 'q', 's', 'samp', 'small',
-            'span', 'strike', 'strong', 'sub', 'sup', 'td', 'th', 'u', 'var'
-        ]);
+        selectionReplace(elements.join(', '));
     },
 
     /**
@@ -203,7 +180,7 @@ Raptor.registerUi(new Button({
      */
     prepareImage: function(file, classNames, text) {
         return $('<div/>').html($('<img/>').attr({
-            src: file.location,
+            src: file.location.replace(/([^:])\/\//g, '$1/'),
             title: text || file.name,
             'class': classNames
         })).html();
@@ -220,7 +197,7 @@ Raptor.registerUi(new Button({
      */
     prepareAnchor: function(file, classNames, text) {
         return $('<div/>').html($('<a/>').attr({
-            href: file.location,
+            href: file.location.replace(/([^:])\/\//g, '$1/'),
             title: file.name,
             'class': classNames
         }).html(text || file.name)).html();

@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the preview button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,23 +11,33 @@
  * @class the preview button class.
  *
  * @constructor
- * @augments button
+ * @augments Button
  *
- * @todo is return correct? auto generated so got confused.
  * @param {Object} options
- * @returns {PreviewButton}
  */
 function PreviewButton(options) {
+    this.preview = true;
     this.previewing = false;
+    this.previewTimeout = 500;
+    this.previewTimer = null;
     Button.call(this, options);
 }
 
 PreviewButton.prototype = Object.create(Button.prototype);
 
 /**
+ * Initialize the toggle preview button.
+ *
+ * @returns {Element}
+ */
+PreviewButton.prototype.init = function() {
+    this.preview = typeof this.options.preview === 'undefined' ? true : false;
+    return Button.prototype.init.apply(this, arguments);
+};
+
+/**
  * Prepare and return the preview button Element to be used in the Raptor UI.
  *
- * @todo desc for return?
  * @returns {Element}
  */
 PreviewButton.prototype.getButton = function() {
@@ -42,17 +54,32 @@ PreviewButton.prototype.getButton = function() {
  */
 PreviewButton.prototype.mouseEnter = function() {
     if (this.canPreview()) {
+        this.endPreview();
+        this.previewTimer = setTimeout(this.applyPreview.bind(this), this.previewTimeout)
+    }
+};
+
+PreviewButton.prototype.applyPreview = function() {
+    if (this.canPreview()) {
         this.previewing = true;
         this.raptor.actionPreview(this.action.bind(this));
     }
+};
+
+PreviewButton.prototype.endPreview = function() {
+    if (this.previewTimer !== null) {
+        clearTimeout(this.previewTimer);
+        this.previewTimer = null;
+    }
+    this.previewing = false;
 };
 
 /**
  * Sets the mouse leave function to disable the preview.
  */
 PreviewButton.prototype.mouseLeave = function() {
+    this.endPreview();
     this.raptor.actionPreviewRestore();
-    this.previewing = false;
 };
 
 /**
@@ -61,7 +88,7 @@ PreviewButton.prototype.mouseLeave = function() {
  * @returns {Element}
  */
 PreviewButton.prototype.click = function() {
-    this.previewing = false;
+    this.endPreview();
     return Button.prototype.click.apply(this, arguments);
 };
 

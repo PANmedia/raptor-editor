@@ -1,5 +1,7 @@
 /**
  * @fileOverview Cleaning helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen - david@panmedia.co.nz
  * @author Michael Robinson - michael@panmedia.co.nz
  */
@@ -19,13 +21,14 @@
  */
 function cleanReplaceElements(selector, replacements) {
     for (var find in replacements) {
-        var replace = replacements[find];
+        var replacement = replacements[find];
         var i = 0;
+        var found = false;
         do {
-            var found = $(selector).find(find);
+            found = $(selector).find(find);
             if (found.length) {
                 found = $(found.get(0));
-                var clone = $(replace).clone();
+                var clone = $(replacement).clone();
                 clone.html(found.html());
                 clone.attr(elementGetAttributes(found));
                 found.replaceWith(clone);
@@ -69,7 +72,6 @@ function cleanEmptyAttributes(element, attributes) {
     }
 }
 
-
 /**
  * Remove comments from element.
  *
@@ -99,13 +101,13 @@ function cleanRemoveComments(parent) {
 /**
  * Removed empty elements whose tag name matches the list of supplied tags.
  *
- * @param  {jQuery} parent The jQuery element to have empty element removed from.
+ * @param  {jQuery} element The jQuery element to have empty element removed from.
  * @param  {String[]} tags The list of tags to clean.
- * @return {jQuery} The modified parent.
+ * @return {jQuery} The modified element.
  */
-function cleanEmptyElements(parent, tags) {
+function cleanEmptyElements(element, tags) {
     // <strict>
-    if (!typeIsElement(parent)) {
+    if (!typeIsElement(element)) {
         handleInvalidArgumentError('Paramter 1 to cleanEmptyElements is expected a jQuery element');
         return;
     }
@@ -114,20 +116,21 @@ function cleanEmptyElements(parent, tags) {
     // Need to loop incase removing an empty element, leaves another one.
     do {
         found = false;
-        parent.find(tags.join(',')).each(function() {
-            if ($.trim($(this).html()) === '') {
+        element.find(tags.join(',')).each(function() {
+            var html = $(this).html().replace('&nbsp;', ' ').trim();
+            if (html === '') {
                 $(this).remove();
                 found = true;
             }
         });
     } while (found);
-    return parent;
+    return element;
 }
 
 /**
- * Wraps any text nodes in the element with the supplied tag. This does not scan child elements.
+ * Wraps any text nodes in the node with the supplied tag. This does not scan child elements.
  *
- * @param  {jQuery} element The jQuery element to scan for text ndoes.
+ * @param  {Node} node
  * @param  {String} tag The tag to use from wrapping the text nodes.
  */
 function cleanWrapTextNodes(node, tag) {
@@ -138,7 +141,7 @@ function cleanWrapTextNodes(node, tag) {
     }
     // </strict>
 
-    var textNodes = elementFindTextNodes(node);
+    var textNodes = nodeFindTextNodes(node);
     for (var i = 0, l = textNodes.length; i < l; i++) {
         var clone = textNodes[i].cloneNode(),
             wrapper = document.createElement(tag);
@@ -148,14 +151,42 @@ function cleanWrapTextNodes(node, tag) {
     }
 }
 
-function elementFindTextNodes(node) {
-    var textNodes = [], whitespace = /^\s*$/;
-    for (var i = 0, l = node.childNodes.length; i < l; i++) {
-        if (node.childNodes[i].nodeType == 3) {
-            if (!whitespace.test(node.childNodes[i].nodeValue)) {
-                textNodes.push(node.childNodes[i]);
+function cleanUnnestElement(element, selector) {
+    var found;
+    do {
+        found = false;
+        $(element).find(selector).each(function() {
+            if ($(this).parent().is(selector)) {
+                $(this).unwrap();
+                found = true;
             }
-        }
+        });
+    } while (found);
+
+}
+
+function cleanRemoveAttributes(element, attributes) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Paramter 1 to cleanRemoveAttributes is expected a jQuery element');
+        return;
     }
-    return textNodes;
+    // </strict>
+
+    for (var i = 0; i < attributes.length; i++) {
+        element.find('[' + attributes[i] + ']').removeAttr(attributes[i])
+    }
+}
+
+function cleanRemoveElements(element, elements) {
+    element.find(elements.join(',')).contents().unwrap();
+}
+
+/**
+ * Generic clean function to remove misc elements.
+ *
+ * @param  {jQuery} element
+ */
+function clean(element) {
+    $(element).find('.rangySelectionBoundary').remove();
 }

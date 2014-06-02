@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the unsaved edit warning plugin class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,12 +11,12 @@ var unsavedEditWarningDirty = 0,
     unsavedEditWarningElement = null;
 
 /**
- * @class The unsaved edit warning plugin.
+ * The unsaved edit warning plugin.
+ *
  * @constructor
  * @augments RaptorPlugin
  *
- * @todo name details
- * @param {type} name
+ * @param {String} name
  * @param {Object} overrides Options hash.
  */
 function UnsavedEditWarningPlugin(name, overrides) {
@@ -39,10 +41,8 @@ UnsavedEditWarningPlugin.prototype.enable = function(raptor) {
  */
 UnsavedEditWarningPlugin.prototype.show = function() {
     unsavedEditWarningDirty++;
-    if (unsavedEditWarningDirty > 0) {
-        elementBringToTop(this.getElement(this));
-        this.getElement(this).addClass('raptor-unsaved-edit-warning-visible');
-    }
+    elementBringToTop(this.getElement());
+    this.getElement().addClass(this.options.baseClass + '-visible');
 };
 
 /**
@@ -51,9 +51,8 @@ UnsavedEditWarningPlugin.prototype.show = function() {
  * @param event The mouse event that triggers the function.
  */
 UnsavedEditWarningPlugin.prototype.hide = function(event) {
-    unsavedEditWarningDirty--;
-    if (unsavedEditWarningDirty === 0) {
-        this.getElement(this).removeClass('raptor-unsaved-edit-warning-visible');
+    if (--unsavedEditWarningDirty === 0) {
+        this.getElement().removeClass(this.options.baseClass + '-visible');
     }
 };
 
@@ -64,19 +63,19 @@ UnsavedEditWarningPlugin.prototype.hide = function(event) {
  * @param {type} instance
  * @returns {Element}
  */
-UnsavedEditWarningPlugin.prototype.getElement = function(instance) {
+UnsavedEditWarningPlugin.prototype.getElement = function() {
     if (!unsavedEditWarningElement) {
+        var dirtyClass = 'raptor-plugin-unsaved-edit-warning-dirty';
         unsavedEditWarningElement = $(this.raptor.getTemplate('unsaved-edit-warning.warning', this.options))
             .mouseenter(function() {
-                Raptor.eachInstance(function(editor) {
-                    if (editor.isDirty()) {
-                        editor.getElement().addClass('raptor-unsaved-edit-warning-dirty');
+                Raptor.eachInstance(function(raptor) {
+                    if (raptor.isDirty()) {
+                        raptor.getElement().addClass(dirtyClass);
                     }
                 });
             })
             .mouseleave(function() {
-                $('.raptor-unsaved-edit-warning-dirty').removeClass('raptor-unsaved-edit-warning-dirty');
-            })
+                $('.' + dirtyClass).removeClass(dirtyClass);            })
             .appendTo('body');
     }
     return unsavedEditWarningElement;

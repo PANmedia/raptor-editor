@@ -1,0 +1,8 @@
+/**
+ * Clean block plugin styles.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-ui-clean-block {
+    @include button-icon('broom.png');
+}

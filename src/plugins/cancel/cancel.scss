@@ -3,13 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-cancel .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('cross.png') 0 0;
-}
-
-.raptor-ui-cancel:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-cancel {
+    @include button-icon('cross.png');
 }

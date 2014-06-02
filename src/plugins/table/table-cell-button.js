@@ -1,17 +1,19 @@
 /**
  * @fileOverview Contains the table cell button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The table cell button class.
+ * The table cell button class.
+ *
  * @constructor
  * @augments FilteredPreviewButton
  *
  * @param {Object} options Options hash.
- * @returns {Element}
  */
 function TableCellButton(options) {
     FilteredPreviewButton.call(this, options);
@@ -26,10 +28,9 @@ TableCellButton.prototype = Object.create(FilteredPreviewButton.prototype);
  * @returns {Element|null}
  */
 TableCellButton.prototype.getElement = function(range) {
-    var cell = range.commonAncestorContainer.parentNode;
-    if (cell.tagName === 'TD' ||
-            cell.tagName === 'TH') {
-        return cell;
+    var cell = $(range.commonAncestorContainer.parentNode).closest('td, th');
+    if (cell.length && !cell.find(this.raptor.getElement()).length) {
+        return cell[0];
     }
     return null;
 };

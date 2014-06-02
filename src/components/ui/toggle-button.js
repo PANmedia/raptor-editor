@@ -1,17 +1,19 @@
 /**
  * @fileOverview Contains the core button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The toggle button class.
+ * The toggle button class.
+ *
  * @constructor
  * @augments Button
  *
  * @param {Object} options
- * @returns {ToggleButton}
  */
 function ToggleButton(options) {
     this.disable = false;

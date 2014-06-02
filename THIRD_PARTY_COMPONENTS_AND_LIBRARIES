@@ -1,0 +1,36 @@
+THIRD-PARTY COMPONENTS AND LIBRARIES
+
+The following components/libraries are redistributed with Raptor Editor and are
+subject to their respective licenses and copyright notices.
+
+jQuery (MIT)
+Copyright 2005, 2012 jQuery Foundation, Inc. and other contributors.
+http://jquery.com
+
+jQuery UI (MIT)
+Copyright 2013 jQuery Foundation and other contributors.
+http://jqueryui.com
+
+jQuery Hotkeys (MIT/GPL2)
+Copyright 2010, John Resig.
+https://github.com/jeresig/jquery.hotkeys
+
+Rangy (MIT)
+Copyright 2013, Tim Down.
+http://code.google.com/p/rangy
+
+GoogTable (Apache 2.0)
+Copyright 2008 The Closure Library Authors. All Rights Reserved.
+http://code.google.com/p/closure-library/source/browse/trunk/closure/goog/editor/table.js
+
+ResizeTable JS (New BSD 3)
+http://code.google.com/p/resizetable-js
+
+Diff Match and Patch (Apache 2.0)
+Copyright 2006 Google Inc.
+http://code.google.com/p/google-diff-match-patch/
+
+Images and Icons
+All images and icons redistributed in this package are subject to their
+respective licenses and copyright notices, see IMAGES_AND_ICONS for more
+information.

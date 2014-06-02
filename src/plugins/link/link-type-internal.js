@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the internal link class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -15,8 +17,8 @@
  */
 function LinkTypeInternal(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeInternalLabel');
-};
+    this.label = tr('linkTypeInternalLabel');
+}
 
 /**
  * Gets the content of the internal link.
@@ -26,7 +28,7 @@ function LinkTypeInternal(raptor) {
 LinkTypeInternal.prototype.getContent = function() {
     return this.raptor.getTemplate('link.internal', {
         baseClass: this.raptor.options.baseClass,
-        domain: window.location.protocol + '//' + window.location.host + '/'
+        domain: window.location.protocol + '//' + window.location.host
     });
 };
 

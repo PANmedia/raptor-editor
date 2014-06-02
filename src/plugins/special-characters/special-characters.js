@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the special characters button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -9,16 +11,13 @@ var insertCharacter = false;
 
 /**
  * Creates an instance of the button class to insert special characters.
- *
- * @todo param details?
- * @param {type} param
  */
 Raptor.registerUi(new DialogButton({
     name: 'specialCharacters',
+    dialogOptions: {
+        width: 645
+    },
     options: {
-        dialogOptions: {
-            width: 500
-        },
         setOrder: [
             'symbols',
             'mathematics',
@@ -30,7 +29,7 @@ Raptor.registerUi(new DialogButton({
          */
         characterSets: {
             symbols: {
-                name: 'Symbols',
+                name: tr('specialCharactersSymbols'),
                 characters: [
                     ['<', '&lt;', 'less than'],
                     ['>', '&gt;', 'greater than'],
@@ -79,7 +78,7 @@ Raptor.registerUi(new DialogButton({
                 ]
             },
             mathematics: {
-                name: 'Mathematics',
+                name: tr('specialCharactersMathematics'),
                 characters: [
                     ['&lt;', 'less than'],
                     ['&le;', 'less than or equal to'],
@@ -150,7 +149,7 @@ Raptor.registerUi(new DialogButton({
                 ]
             },
             arrows: {
-                name: 'Arrows',
+                name: tr('specialCharactersArrows'),
                 characters: [
                     ['&darr;', 'down arrow'],
                     ['&dArr;', 'down double arrow'],
@@ -166,7 +165,7 @@ Raptor.registerUi(new DialogButton({
                 ]
             },
             greekAlphabet: {
-                name: 'Greek Alphabet',
+                name: tr('specialCharactersGreekAlphabet'),
                 characters: [
                     ['&alpha;', 'alpha'],
                     ['&beta;', 'beta'],
@@ -269,7 +268,7 @@ Raptor.registerUi(new DialogButton({
 
         var _this = this;
         html.find('button').each(function() {
-            aButton(this);
+            aButton($(this));
         }).click(function() {
             var setKey = $(this).attr('data-setKey');
             var charactersIndex = $(this).attr('data-charactersIndex');

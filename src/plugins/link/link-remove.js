@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the remove link class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -11,7 +13,7 @@
  * @todo param details?
  * @param {type} param
  */
-Raptor.registerUi(new ToggleButton({
+Raptor.registerUi(new PreviewToggleButton({
     name: 'linkRemove',
     disable: true,
 
@@ -21,15 +23,20 @@ Raptor.registerUi(new ToggleButton({
                 tag: 'a'
             });
             selectionExpandToWord();
+            this.raptor.selectionConstrain();
             applier.undoToSelection();
             cleanEmptyElements(this.raptor.getElement(), ['a']);
         }.bind(this));
     },
 
     selectionToggle: function() {
-        var applier = rangy.createApplier({
-            tag: 'a'
-        });
-        return applier.isAppliedToSelection();
+        var element = selectionGetElement();
+        if (!element) {
+            return false;
+        }
+        if (element.closest('a').length) {
+            return true;
+        }
+        return false;
     }
 }));

@@ -1,19 +1,16 @@
 /**
- * @class
+ * @class Raptor
  */
 var Raptor =  {
 
-    /** @type {Boolean} True to enable hotkeys */
+    globalDefaults: {},
+    defaults: {},
+
+    /** @property {boolean} enableHotkeys True to enable hotkeys */
     enableHotkeys: true,
 
-    /** @type {Object} Custom hotkeys */
+    /** @property {Object} hotkeys Custom hotkeys */
     hotkeys: {},
-
-    /**
-     * Events added via Raptor.bind
-     * @property {Object} events
-     */
-    events: {},
 
     /**
      * Plugins added via Raptor.registerPlugin
@@ -32,6 +29,14 @@ var Raptor =  {
      * @property {Object} layouts
      */
     layouts: {},
+
+    /**
+     * Presets added via Raptor.registerPreset
+     * @property {Object} presets
+     */
+    presets: {},
+
+    hoverPanels: {},
 
     /**
      * @property {Raptor[]} instances
@@ -126,13 +131,13 @@ var Raptor =  {
             if (instances[i].isDirty() &&
                     instances[i].isEditing() &&
                     instances[i].options.unloadWarning) {
-                return _('navigateAway');
+                return tr('navigateAway');
             }
         }
     },
 
     /*========================================================================*\
-     * Plugins as UI
+     * Plugins and UI
     \*========================================================================*/
 
     /**
@@ -144,17 +149,17 @@ var Raptor =  {
     registerUi: function(ui) {
         // <strict>
         if (typeof ui !== 'object') {
-            handleError(_('errorUINotObject', {
+            handleError(tr('errorUINotObject', {
                 ui: ui
             }));
             return;
         } else if (typeof ui.name !== 'string') {
-            handleError(_('errorUINoName', {
+            handleError(tr('errorUINoName', {
                 ui: ui
             }));
             return;
         } else if (this.ui[ui.name]) {
-            handleError(_('errorUIOverride', {
+            handleError(tr('errorUIOverride', {
                 name: ui.name
             }));
         }
@@ -168,77 +173,54 @@ var Raptor =  {
      * @param {String} name
      * @param {Object} layout
      */
-    registerLayout: function(name, layout) {
+    registerLayout: function(layout) {
         // <strict>
-        if (this.ui[name]) {
-            handleError(_('Layout "{{name}}" has already been registered, and will be overwritten', {name: name}));
+        if (typeof layout !== 'object') {
+            handleError('Layout "' + layout + '" is invalid (must be an object)');
+            return;
+        } else if (typeof layout.name !== 'string') {
+            handleError('Layout "'+ layout + '" is invalid (must have a name property)');
+            return;
+        } else if (this.layouts[layout.name]) {
+            handleError('Layout "' + layout.name + '" has already been registered, and will be overwritten');
         }
         // </strict>
-        this.layouts[name] = layout;
+
+        this.layouts[layout.name] = layout;
     },
 
     registerPlugin: function(plugin) {
         // <strict>
         if (typeof plugin !== 'object') {
-            handleError(_('errorPluginNotObject', {
-                plugin: plugin
-            }));
+            handleError('Plugin "' + plugin + '" is invalid (must be an object)');
             return;
         } else if (typeof plugin.name !== 'string') {
-            handleError(_('errorPluginNoName', {
-                plugin: plugin
-            }));
+            handleError('Plugin "'+ plugin + '" is invalid (must have a name property)');
             return;
         } else if (this.plugins[plugin.name]) {
-            handleError(_('errorPluginOverride', {
-                name: plugin.name
-            }));
+            handleError('Plugin "' + plugin.name + '" has already been registered, and will be overwritten');
         }
         // </strict>
 
         this.plugins[plugin.name] = plugin;
     },
 
-    /*========================================================================*\
-     * Events
-    \*========================================================================*/
-
-    /**
-     * @param {String} name
-     * @param {function} callback
-     */
-    bind: function(name, callback) {
-        if (!this.events[name]) this.events[name] = [];
-        this.events[name].push(callback);
-    },
-
-    /**
-     * @param {function} callback
-     */
-    unbind: function(callback) {
-        $.each(this.events, function(name) {
-            for (var i = 0; i < this.length; i++) {
-                if (this[i] === callback) {
-                    this.events[name].splice(i,1);
-                }
-            }
-        });
-    },
-
-    /**
-     * @param {String} name
-     */
-    fire: function(name) {
-        // <debug>
-        if (debugLevel > MAX) {
-            debug('Firing global/static event: ' + name);
-        }
-        // </debug>
-        if (!this.events[name]) {
+    registerPreset: function(preset, setDefault) {
+        // <strict>
+        if (typeof preset !== 'object') {
+            handleError('Preset "' + preset + '" is invalid (must be an object)');
             return;
+        } else if (typeof preset.name !== 'string') {
+            handleError('Preset "'+ preset + '" is invalid (must have a name property)');
+            return;
+        } else if (this.presets[preset.name]) {
+            handleError('Preset "' + preset.name + '" has already been registered, and will be overwritten');
         }
-        for (var i = 0, l = this.events[name].length; i < l; i++) {
-            this.events[name][i].call(this);
+        // </strict>
+
+        this.presets[preset.name] = preset;
+        if (setDefault) {
+            this.defaults = preset;
         }
     },
 
@@ -252,19 +234,10 @@ var Raptor =  {
      */
     persist: function(key, value, namespace) {
         key = namespace ? namespace + '.' + key : key;
-        if (localStorage) {
-            var storage;
-            if (localStorage.uiWidgetEditor) {
-                storage = JSON.parse(localStorage.uiWidgetEditor);
-            } else {
-                storage = {};
-            }
-            if (value === undefined) return storage[key];
-            storage[key] = value;
-            localStorage.uiWidgetEditor = JSON.stringify(storage);
+        if (value === undefined) {
+            return persistGet(key);
         }
-
-        return value;
+        return persistSet(key, value);
     }
 
 };

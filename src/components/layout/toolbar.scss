@@ -4,10 +4,33 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 @import 'compass/css3/box-sizing';
+@import 'compass/css3/user-interface';
 
-.raptor-toolbar-wrapper {
-    border: 1px solid #c1c1c1;
+.raptor-layout-toolbar-outer {
+    overflow: visible;
+    position: fixed;
+    font-size: 12px;
+    z-index: $z-toolbar;
+    @include user-select(none);
+    @include background(linear-gradient(darken(#fff, 3%), darken(#fff, 2%)));
+
+    * {
+        @include user-select(none);
+    }
+}
+
+.raptor-layout-toolbar-inner {
+    border: $border-width $border-style $border-color;
     border-top: none;
+}
+
+.raptor-layout-toolbar-toolbar {
+    padding: 6px 0 0 5px;
+    overflow: visible;
+}
+
+.raptor-layout-toolbar-path {
+    padding: $spacing;
 }
 
 .raptor-layout-toolbar-group {

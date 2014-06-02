@@ -1,0 +1,1 @@
+templateRegister("view-source.dialog", "<div class=\"{{baseClass}}-inner-wrapper\"> <textarea></textarea> </div>");

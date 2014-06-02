@@ -1,12 +1,15 @@
 /**
  * @fileOverview Contains the left align button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class The tag menu class.
+ * The tag menu class.
+ *
  * @constructor
  * @augments SelectMenu
  *
@@ -40,11 +43,14 @@ TagMenu.prototype.changeTag = function(tag) {
     }
 
     var selectedElement = selectionGetElement(),
-        limitElement = selectedElement.closest('td, li');
-    if (limitElement.length === 0) {
         limitElement = this.raptor.getElement();
+    if (selectedElement && !selectedElement.is(limitElement)) {
+        var cell = selectedElement.closest('td, li, #' + limitElement.attr('id'));
+        if (cell.length !== 0) {
+            limitElement = cell;
+        }
     }
-
+    
     selectionChangeTags(tag, [
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p', 'div', 'pre', 'address'
@@ -56,7 +62,8 @@ TagMenu.prototype.changeTag = function(tag) {
  *
  * @param event The mouse event to trigger the function.
  */
-TagMenu.prototype.apply = function(event) {
+TagMenu.prototype.menuItemClick = function(event) {
+    SelectMenu.prototype.menuItemClick.apply(this, arguments);
     this.raptor.actionApply(function() {
         this.changeTag($(event.currentTarget).data('value'));
     }.bind(this));
@@ -67,12 +74,10 @@ TagMenu.prototype.apply = function(event) {
  *
  * @param event The mouse event to trigger the preview.
  */
-TagMenu.prototype.preview = function(event) {
-    if (this.preview) {
-        this.raptor.actionPreview(function() {
-            this.changeTag($(event.currentTarget).data('value'));
-        }.bind(this));
-    }
+TagMenu.prototype.menuItemMouseEnter = function(event) {
+    this.raptor.actionPreview(function() {
+        this.changeTag($(event.currentTarget).data('value'));
+    }.bind(this));
 };
 
 /**
@@ -80,10 +85,8 @@ TagMenu.prototype.preview = function(event) {
  *
  * @param event The mouse event to trigger the restoration of the tag menu.
  */
-TagMenu.prototype.previewRestore = function(event) {
-    if (this.preview) {
-        this.raptor.actionPreviewRestore();
-    }
+TagMenu.prototype.menuItemMouseLeave = function(event) {
+    this.raptor.actionPreviewRestore();
 };
 
 /**
@@ -100,7 +103,7 @@ TagMenu.prototype.updateButton = function() {
     if (option.length) {
         aButtonSetLabel(button, option.html());
     } else {
-        aButtonSetLabel(button, _('tagMenuTagNA'));
+        aButtonSetLabel(button, tr('tagMenuTagNA'));
     }
 //    if (this.raptor.getElement()[0] === tag) {
 //        aButtonDisable(button);
@@ -114,10 +117,7 @@ TagMenu.prototype.updateButton = function() {
  * @returns {Element}
  */
 TagMenu.prototype.getMenuItems = function() {
-    return $(this.raptor.getTemplate('tag-menu.menu', this.options))
-        .click(this.apply.bind(this))
-        .mouseenter(this.preview.bind(this))
-        .mouseleave(this.previewRestore.bind(this));
+    return this.raptor.getTemplate('tag-menu.menu', this.options);
 };
 
 Raptor.registerUi(new TagMenu());

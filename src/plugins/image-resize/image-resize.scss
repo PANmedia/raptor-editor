@@ -1,0 +1,78 @@
+/**
+ * Image resize button.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-ui-image-resize {
+    @include button-icon('image-resize.png');
+}
+
+.raptor-resize-image {
+    position: relative;
+    min-width: 300px;
+    .form-text {
+        width: 40%;
+    }
+    label {
+        width: 35%;
+        display: inline-block;
+    }
+    .form-text, label {
+        @include box-sizing(border-box);
+    }
+    div {
+        margin-bottom: 1.25em;
+        z-index: 10;
+        position: relative;
+    }
+    .raptor-ui-image-resize-lock-proportions-container {
+        position: absolute;
+        z-index: 0;
+    }
+}
+
+.raptor-ui-image-resize-lock-proportions-container {
+    right: 16%;
+    top: 19px;
+    height: 54px;
+    width: 40%;
+    border: {
+        color: #ccc;
+        width: 1px 1px 1px 0;
+        style: solid solid solid none;
+    }
+}
+
+.raptor-ui-image-resize-lock-proportions {
+    $lock-size: 26px;
+
+    position: absolute;
+    right: -21px;
+    top: 50%;
+    margin-top: -21px;
+    height: $lock-size;
+    width: $lock-size;
+    border: 8px solid #ddd;
+    @include border-radius($lock-size * 1.5);
+    @include box-shadow(0 0 0 1px #fff inset);
+    @include background(linear-gradient(darken(#f7f7f7, 5%), lighten(#f7f7f7, 5%)));
+
+    .ui-button-text {
+        display: none;
+    }
+
+    .ui-icon {
+        margin-left: -8px;
+        margin-top: -8px;
+        left: 50%;
+        top: 50%;
+        position: absolute;
+        background-repeat: no-repeat;
+    }
+
+    &.ui-state-hover {
+        cursor: pointer;
+        border-width: 8px;
+    }
+}
+

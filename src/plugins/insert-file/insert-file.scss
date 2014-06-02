@@ -1,15 +1,8 @@
 /**
- * Embed plugin
+ * Insert file plugin
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/opacity';
-
-.raptor-ui-insert-file .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('image.png') 0 0;
-}
-
-.raptor-ui-insert-file:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-insert-file {
+    @include button-icon('image.png');
 }

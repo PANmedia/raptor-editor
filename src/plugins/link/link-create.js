@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the create link button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -26,6 +28,8 @@ Raptor.registerUi(new DialogToggleButton({
     applyAction: function() {
         this.raptor.actionApply(function() {
             selectionExpandToWord();
+            selectionExpandTo('a', this.raptor.getElement());
+            selectionTrim();
             var applier = rangy.createApplier({
                 tag: 'a',
                 attributes: linkAttributes
@@ -38,6 +42,7 @@ Raptor.registerUi(new DialogToggleButton({
     },
 
     openDialog: function() {
+        this.getDialog();
         var element = selectionGetElement();
         if (element.is('a')) {
             for (var i = 0, l = linkTypes.length; i < l; i++) {
@@ -47,6 +52,7 @@ Raptor.registerUi(new DialogToggleButton({
                 }
             }
         }
+        DialogToggleButton.prototype.openDialog.call(this);
     },
 
     validateDialog: function() {
@@ -56,10 +62,14 @@ Raptor.registerUi(new DialogToggleButton({
     },
 
     selectionToggle: function() {
-        var applier = rangy.createApplier({
-            tag: 'a'
-        });
-        return applier.isAppliedToSelection();
+        var element = selectionGetElement();
+        if (!element) {
+            return false;
+        }
+        if (element.closest('a').length) {
+            return true;
+        }
+        return false;
     },
 
     getDialogTemplate: function() {

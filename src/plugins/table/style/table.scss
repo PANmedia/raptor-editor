@@ -3,10 +3,6 @@
  *
  * @author David Neilsen <david@panmedia.co.nz>
  */
-
-.raptor-ui-table-create-menu {
-}
-
 .raptor-ui-table-create-menu td {
     width: 14px;
     height: 14px;
@@ -17,66 +13,30 @@
     border: 1px solid #f00;
 }
 
-.raptor-ui-table-create .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table.png') 0 0;
+.raptor-ui-table-create {
+    @include button-icon('table.png');
 }
 
-.raptor-ui-table-create:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-table-insert-row {
+    @include button-icon('table-insert-row.png');
 }
 
-.raptor-ui-table-insert-row .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table-insert-row.png') 0 0;
+.raptor-ui-table-insert-column {
+    @include button-icon('table-insert-column.png');
 }
 
-.raptor-ui-table-insert-row:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-table-delete-row {
+    @include button-icon('table-delete-row.png');
 }
 
-.raptor-ui-table-insert-column .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table-insert-column.png') 0 0;
+.raptor-ui-table-delete-column {
+    @include button-icon('table-delete-column.png');
 }
 
-.raptor-ui-table-insert-column:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-table-merge-cells {
+    @include button-icon('table-join.png');
 }
 
-.raptor-ui-table-delete-row .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table-delete-row.png') 0 0;
-}
-
-.raptor-ui-table-delete-row:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-table-delete-column .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table-delete-column.png') 0 0;
-}
-
-.raptor-ui-table-delete-column:hover .ui-icon {
-    @include opacity(1);
-}
-
-.raptor-ui-table-merge-cells .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table-join.png') 0 0;
-}
-
-.raptor-ui-table-merge-cells:hover .ui-icon {
-    @include opacity(1);
-}
-
-
-.raptor-ui-table-split-cells .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('table-split.png') 0 0;
-}
-
-.raptor-ui-table-split-cells:hover .ui-icon {
-    @include opacity(1);
+.raptor-ui-table-split-cells {
+    @include button-icon('table-split.png');
 }

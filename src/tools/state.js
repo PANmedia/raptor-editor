@@ -1,9 +1,10 @@
 /**
  * @fileOverview Save state helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
-
 
 /**
  * Saves the state of an element.
@@ -17,10 +18,10 @@ function stateSave(element) {
     }
     // </strict>
 
-    var ranges = rangy.getSelection().getAllRanges();
+    var range = rangeGet();
     return {
         element: element.clone(true),
-        ranges: ranges.length ? rangeSerialize(ranges, element.get(0)) : null
+        ranges: range ? rangeSerialize(range, element.get(0)) : null
     };
 }
 
@@ -42,8 +43,18 @@ function stateRestore(element, state) {
     // </strict>
 
     element.replaceWith(state.element);
+    var ranges = null;
+    try {
+        if (state.ranges) {
+            ranges = rangeDeserialize(state.ranges, state.element.get(0));
+        }
+    } catch (exception) {
+        // <debug>
+        handleError(exception);
+        // </debug>
+    }
     return {
         element: state.element,
-        ranges: state.ranges ? rangeDeserialize(state.ranges) : null
+        ranges: ranges
     };
 }

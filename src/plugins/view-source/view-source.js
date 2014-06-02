@@ -1,15 +1,14 @@
 /**
  * @fileOverview Contains the view source dialog code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * Creates an instance of the dialog button to open the view source dialog.
- *
- * @todo param stuffs?
- * @param {type} param
  */
 Raptor.registerUi(new DialogButton({
     name: 'viewSource',
@@ -17,15 +16,34 @@ Raptor.registerUi(new DialogButton({
         width: 600,
         height: 400
     },
+
+    /**
+     * Replace the editing element's content with the HTML from the dialog's textarea
+     *
+     * @param  {Element} dialog
+     */
     applyAction: function(dialog) {
         var html = dialog.find('textarea').val();
         this.raptor.actionApply(function() {
             this.raptor.setHtml(html);
+            selectionSelectStart(this.raptor.getElement().first());
+            this.raptor.checkSelectionChange();
         }.bind(this));
     },
-    openDialog: function(dialog) {
-        dialog.find('textarea').text(this.raptor.getHtml());
+
+    /**
+     * Update the dialog's text area with the current HTML.
+     */
+    openDialog: function() {
+        var textarea = this.getDialog().find('textarea');
+        textarea.val(this.raptor.getHtml());
+        DialogButton.prototype.openDialog.call(this);
+        textarea.select();
     },
+
+    /**
+     * @return {Element}
+     */
     getDialogTemplate: function() {
         return $('<div>').html(this.raptor.getTemplate('view-source.dialog', this.options));
     }

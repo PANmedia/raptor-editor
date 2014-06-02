@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the guides button class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -28,10 +30,13 @@ Raptor.registerUi(new PreviewButton({
     },
 
     init: function() {
-        this.raptor.bind('cancel', function() {
-            this.raptor.getElement().removeClass(this.getClassName());
-        }.bind(this));
-        return Button.prototype.init.call(this);
+        this.raptor.bind('cancel', this.removeClass.bind(this));
+        this.raptor.bind('saved', this.removeClass.bind(this));
+        return PreviewButton.prototype.init.call(this);
+    },
+
+    removeClass: function() {
+        this.raptor.getElement().removeClass(this.getClassName());
     },
 
     getClassName: function() {

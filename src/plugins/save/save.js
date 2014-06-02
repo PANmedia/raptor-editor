@@ -1,21 +1,27 @@
 /**
  * @fileOverview Contains the save class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
  * Creates an instance of the button class to save any changes.
- *
- * @todo param details?
- * @param {type} param
  */
 Raptor.registerUi(new Button({
     name: 'save',
 
     action: function() {
-        this.getPlugin().save();
+        if (this.getPlugin()) {
+            this.getPlugin().save();
+        } else {
+            aNotify({
+                text: tr('saveNotConfigured'),
+                type: 'error'
+            });
+        }
     },
 
     init: function() {

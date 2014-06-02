@@ -1,21 +1,26 @@
 /**
  * @fileOverview Contains the save rest class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
 /**
- * @class Thes save rest class.
+ * The save rest class.
+ *
  * @constructor
  * @augments RaptorPlugin
  *
- * @param {type} name
- * @param {type} overrides Options hash.
- * @returns {SaveRestPlugin}
+ * @param {String} name
+ * @param {Object} overrides Options hash
  */
 function SaveRestPlugin(name, overrides) {
     this.method = 'put';
+    this.options = {
+        retain: false
+    };
     RaptorPlugin.call(this, name || 'saveRest', overrides);
 }
 
@@ -29,10 +34,10 @@ SaveRestPlugin.prototype = Object.create(RaptorPlugin.prototype);
 // <strict>
 SaveRestPlugin.prototype.init = function() {
     if (typeof this.options.url !== 'string' && !$.isFunction(this.options.url)) {
-        handleError('Expected save REST URL option to be a string or a function.');
+        debug('Expected save REST URL option to be a string or a function.');
     }
     if (!$.isFunction(this.options.data)) {
-        handleError('Expected save REST data option to be a function.');
+        debug('Expected save REST data option to be a function.');
     }
 };
 // </strict>
@@ -58,7 +63,6 @@ SaveRestPlugin.prototype.save = function() {
 };
 
 /**
- * @todo this confuses me greatly, could you please do it?
  * @param {type} data
  * @param {type} status
  * @param {type} xhr
@@ -69,49 +73,51 @@ SaveRestPlugin.prototype.done = function(data, status, xhr) {
 };
 
 /**
- * @todo same with this one
  * @param {type} xhr
- * @returns {undefined}
  */
 SaveRestPlugin.prototype.fail = function(xhr) {
     this.errors.push(xhr.responseText);
 };
 
 /**
- * @todo and this one
- * @returns {undefined}
+ * Action always peformed on AJAX request
  */
 SaveRestPlugin.prototype.always = function() {
     this.requests--;
     if (this.requests === 0) {
         if (this.errors.length > 0 && this.messages.length === 0) {
-            this.raptor.showError(_('saveRestFail', {
-                failed: this.errors.length
-            }));
-        } else if (this.errors.length > 0) {
-            this.raptor.showError(_('saveRestPartial', {
-                saved: this.messages.length,
-                failed: this.errors.length
-            }));
-        } else {
-            this.raptor.showConfirm(_('saveRestSaved', {
-                saved: this.messages.length
-            }), {
-                delay: 1000,
-                hide: function() {
-                    this.raptor.unify(function(raptor) {
-                        raptor.disableEditing();
-                        raptor.hideLayout();
-                    });
-                }.bind(this)
+            aNotify({
+                text: tr('saveRestFail', {
+                    failed: this.errors.length
+                }),
+                type: 'error'
             });
+        } else if (this.errors.length > 0) {
+            aNotify({
+                text: tr('saveRestPartial', {
+                    saved: this.messages.length,
+                    failed: this.errors.length
+                }),
+                type: 'error'
+            });
+        } else {
+            aNotify({
+                text: tr('saveRestSaved', {
+                    saved: this.messages.length
+                }),
+                type: 'success'
+            });
+            if (!this.options.retain) {
+                this.raptor.unify(function(raptor) {
+                    raptor.disableEditing();
+                });
+            }
         }
     }
 };
 
 /**
- * @todo and this one
- * @returns {unresolved}
+ * @returns {Object} AJAX promise object
  */
 SaveRestPlugin.prototype.sendRequest = function() {
     var headers = this.raptor.getPlugin('saveRest').getHeaders(),
@@ -127,8 +133,7 @@ SaveRestPlugin.prototype.sendRequest = function() {
 };
 
 /**
- * @todo and this one
- * @returns {SaveRestPlugin.prototype.getHeaders.Anonym$5}
+ * @returns {SaveRestPlugin.prototype.getHeaders}
  */
 SaveRestPlugin.prototype.getHeaders = function() {
     if (this.options.headers) {
@@ -138,11 +143,11 @@ SaveRestPlugin.prototype.getHeaders = function() {
 };
 
 /**
- * @todo and this one
  * @returns {SaveRestPlugin.prototype.getData.data}
  */
 SaveRestPlugin.prototype.getData = function() {
     // Get the data to send to the server
+    this.raptor.clean();
     var content = this.raptor.getHtml(),
         data = this.options.data.call(this, content);
     data._method = this.method;
@@ -150,8 +155,7 @@ SaveRestPlugin.prototype.getData = function() {
 };
 
 /**
- * @todo and this one 
- * @returns {unresolved}
+ * @returns {String} The URL to use for REST calls
  */
 SaveRestPlugin.prototype.getURL = function() {
     if (typeof this.options.url === 'string') {

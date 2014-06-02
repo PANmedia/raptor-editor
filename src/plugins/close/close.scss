@@ -1,0 +1,8 @@
+/**
+ * Close plugin.
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ */
+.raptor-ui-close {
+    @include button-icon('cross.png');
+}

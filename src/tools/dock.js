@@ -1,7 +1,9 @@
 /**
  * @fileOverview Docking to screen and element helper functions.
- * @author David Neilsen - david@panmedia.co.nz
- * @author Michael Robinson - michael@panmedia.co.nz
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen david@panmedia.co.nz
+ * @author Michael Robinson michael@panmedia.co.nz
  */
 
 /**
@@ -14,10 +16,7 @@
 function dockToScreen(element, options) {
     var position,
         spacer = $('<div>')
-            .addClass('spacer')
-            .css({
-                height: element.outerHeight()
-            });
+            .addClass('spacer');
     if (options.position === 'top') {
         position = {
             position: 'fixed',
@@ -87,10 +86,15 @@ function dockToScreen(element, options) {
             spacer.appendTo('body');
         }
     }
+    var styleState = styleSwapState(element, position);
+    spacer.css('height', element.outerHeight());
+    setTimeout(function() {
+        spacer.css('height', element.outerHeight());
+    }, 300);
     return {
         dockedElement: element,
         spacer: spacer,
-        styleState: styleSwapState(element, position)
+        styleState: styleState
     };
 }
 
@@ -115,7 +119,9 @@ function undockFromScreen(dockState) {
  * @returns {Object} An object containing the docked element, what it has been docked to, and their style states.
  */
 function dockToElement(elementToDock, dockTo, options) {
-    var wrapper = dockTo.wrap('<div>').parent(),
+    var wrapper = dockTo
+            .wrap('<div>')
+            .parent(),
         innerStyleState = styleSwapWithWrapper(wrapper, dockTo, {
             'float': 'none',
             display: 'block',
@@ -142,8 +148,10 @@ function dockToElement(elementToDock, dockTo, options) {
         }),
         dockedElementStyleState = styleSwapState(elementToDock, {
             position: 'static'
-    });
-    wrapper.prepend(elementToDock);
+        });
+    wrapper
+        .prepend(elementToDock)
+        .addClass(options.wrapperClass ? options.wrapperClass : '');
     return {
         dockedElement: elementToDock,
         dockedTo: dockTo,

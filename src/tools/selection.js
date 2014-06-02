@@ -1,5 +1,7 @@
 /**
  * @fileOverview Selection manipulation helper functions.
+ * @license http://www.raptor-editor.com/license
+ *
  * @author David Neilsen david@panmedia.co.nz
  * @author Michael Robinson michael@panmedia.co.nz
  */
@@ -121,7 +123,7 @@ function selectionSelectInner(element, selection) {
 function selectionSelectInner(node, selection) {
     // <strict>
     if (!typeIsNode(node)) {
-        handleInvalidArgumentError('Paramter 1 to selectionSelectInner is expected a Node, got:', node);
+        handleInvalidArgumentError('Parameter 1 to selectionSelectInner is expected a Node', node);
         return;
     }
     // </strict>
@@ -132,20 +134,22 @@ function selectionSelectInner(node, selection) {
 }
 
 /**
- * Selects all the contents of the supplied element, including the element itself.
+ * Selects all the contents of the supplied node, including the node itself.
  *
  * @public @static
- * @param {jQuerySelector|jQuery|Element} element
+ * @param {Node} node
  * @param {RangySelection} [selection] A RangySelection, or null to use the current selection.
  */
-function selectionSelectOuter(element, selection) {
-    selection = selection || rangy.getSelection();
-    selection.removeAllRanges();
-    $(element).each(function() {
-        var range = rangy.createRange();
-        range.selectNode(this);
-        selection.addRange(range);
-    }).focus();
+function selectionSelectOuter(node, selection) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to selectionSelectOuter must be a node', node);
+        return;
+    }
+    // </strict>
+    var range = rangy.createRange();
+    range.selectNode(node);
+    rangy.getSelection().setSingleRange(range);
 }
 
 /**
@@ -188,6 +192,26 @@ function selectionSelectStart(element, selection) {
 }
 
 /**
+ * Extend selection to the end of element.
+ *
+ * @param  {Element} element
+ * @param  {RangySelection|null} selection
+ */
+function selectionSelectToEndOfElement(element, selection) {
+    // <strict>
+    if (!typeIsElement(element)) {
+        handleInvalidArgumentError('Parameter 1 to selectionSelectToEndOfElement is expected to be Element', element);
+        return;
+    }
+    // </strict>
+    selection = selection || rangy.getSelection();
+    var range = selectionRange();
+    selection.removeAllRanges();
+    range.setEndAfter(element.get(0));
+    selection.addRange(range);
+}
+
+/**
  * Gets the HTML from a selection. If no selection is supplied then current selection will be used.
  *
  * @param  {RangySelection|null} selection Selection to get html from or null to use current selection.
@@ -205,11 +229,13 @@ function selectionGetHtml(selection) {
  * @param {RangySelection} range The selection to get the element from.
  * @returns {jQuery} The common ancestor container that isn't a text node.
  */
-function selectionGetElement(range) {
-    var commonAncestor;
-
-    range = range || rangy.getSelection().getRangeAt(0);
-
+function selectionGetElement(range, selection) {
+    selection = selection || rangy.getSelection();
+    if (!selectionExists()) {
+        return new jQuery;
+    }
+    var range = selectionRange(),
+        commonAncestor;
     // Check if the common ancestor container is a text node
     if (range.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
         // Use the parent instead
@@ -269,7 +295,7 @@ function selectionGetEndElement() {
 
 /**
  * Checks to see if the selection is at the end of the element.
- * @todo check desc please
+ *
  * @returns {Boolean} True if the node immediately after the selection ends does not exist or is empty,
  *                      false if the whole nodes' text is not selected or it doesn't fit the criteria for the true clause.
  */
@@ -290,7 +316,7 @@ function selectionAtEndOfElement() {
 
 /**
  * Checks to see if the selection is at the start of the element.
- * @todo check desc please
+ *
  * @returns {Boolean} True if the node immediately before the selection starts does not exist or is empty,
  *                      false if the whole nodes' text is not selected or it doesn't fit the criteria for the true clause.
  */
@@ -369,22 +395,29 @@ function selectionWrapTagWithAttribute(tag, attributes, classes) {
 }
 
 /**
- * Returns true if there is at least one range selected and the range is not
- * empty.
+ * Check if there is a current selection.
  *
- * @see rangeIsEmpty
  * @public @static
- * @param {RangySelection} [sel] A RangySelection, or by default, the current selection.
- * @returns {Boolean} Returns true if there is at least one range selected and the range is not empty.
+ * @returns {Boolean} Returns true if there is at least one range selected.
  */
-function selectionExists(sel) {
-    var exists = false;
-    selectionEachRange(function(range) {
-        if (!rangeIsEmpty(range)) {
-            exists = true;
-        }
-    }, sel, this);
-    return exists;
+function selectionExists() {
+    return rangy.getSelection().rangeCount !== 0;
+}
+
+/**
+ * Gets the first range in the current selection. In strict mode if no selection
+ * exists an error occurs.
+ *
+ * @public @static
+ * @returns {RangyRange} Returns true if there is at least one range selected.
+ */
+function selectionRange() {
+    // <strict>
+    if (!selectionExists()) {
+        handleError('Tried to get selection range when there is no selection');
+    }
+    // </strict>
+    return rangy.getSelection().getRangeAt(0);
 }
 
 /**
@@ -396,7 +429,7 @@ function selectionExists(sel) {
 function selectionReplaceSplittingSelectedElement(html, selection) {
     selection = selection || rangy.getSelection();
 
-    var selectionRange = selection.getRangeAt(0);
+    var selectionRange = selectionRange();
     var selectedElement = selectionGetElements()[0];
 
     // Select from start of selected element to start of selection
@@ -434,7 +467,7 @@ function selectionReplaceSplittingSelectedElement(html, selection) {
 function selectionReplaceWithinValidTags(html, validTagNames, selection) {
     selection = selection || rangy.getSelection();
 
-    if (selection.rangeCount === 0) {
+    if (!selectionExists()) {
         return;
     }
 
@@ -593,26 +626,29 @@ function selectionToggleBlockClasses(addClasses, removeClasses, limitElement, bl
  * @param {jQuerySelector|jQuery|Element} element The element to exclude the removal of ranges.
  * @param {RangySelection} [selection] The selection from which to remove the ranges.
  */
-function selectionConstrain(element, selection) {
-    element = $(element)[0];
-    selection = selection || rangy.getSelection();
-
-    if (!selection) {
-        selectionSelectStart(element);
+function selectionConstrain(node, selection) {
+    // <strict>
+    if (!typeIsNode(node)) {
+        handleInvalidArgumentError('Parameter 1 to selectionConstrain must be a node', node);
         return;
     }
-
-    var commonAncestor;
-    $(selection.getAllRanges()).each(function(i, range){
-        if (this.commonAncestorContainer.nodeType === Node.TEXT_NODE) {
-            commonAncestor = $(range.commonAncestorContainer).parent()[0];
-        } else {
-            commonAncestor = range.commonAncestorContainer;
+    // </strict>
+    selection = selection || rangy.getSelection();
+    var ranges = selection.getAllRanges(),
+        newRanges = [];
+    for (var i = 0, l = ranges.length; i < l; i++) {
+        var newRange = ranges[i].cloneRange();
+        if (ranges[i].startContainer !== node &&
+                !nodeIsChildOf(ranges[i].startContainer, node)) {
+            newRange.setStart(node, 0);
         }
-        if (element !== commonAncestor && !$.contains(element, commonAncestor)) {
-            selection.removeRange(range);
+        if (ranges[i].endContainer !== node &&
+                !nodeIsChildOf(ranges[i].endContainer, node)) {
+            newRange.setEnd(node, node.childNodes.length);
         }
-    });
+        newRanges.push(newRange);
+    }
+    selection.setRanges(newRanges);
 }
 
 /**
@@ -631,9 +667,9 @@ function selectionClearFormatting(limitNode, selection) {
 
     limitNode = limitNode || document.body;
     selection = selection || rangy.getSelection();
-    if (selection.rangeCount > 0) {
+    if (selectionExists()) {
         // Create a copy of the selection range to work with
-        var range = selection.getRangeAt(0).cloneRange();
+        var range = selectionRange().cloneRange();
 
         // Get the selected content
         var content = range.extractContents();
@@ -719,7 +755,7 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
         }
     }, null, this);
 
-    // Replace the temporay tag with the correct tag
+    // Replace the temporary tag with the correct tag
     $(id).each(function() {
         $(this).replaceWith($('<' + tag1 + '/>').addClass(class1).html($(this).html()));
     });
@@ -733,16 +769,71 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
 function selectionExpandToWord() {
     var ranges = rangy.getSelection().getAllRanges();
     if (ranges.length === 1) {
-        if (ranges[0].toString() === '') {
+        if (rangeToHtml(ranges[0]) === '') {
             rangy.getSelection().expand('word');
         }
     }
 }
 
 /**
- * Finds the inner elements and the wrapping tags for a selector??
- * @todo check descriptions, not sure what the one for the result is.
- * @param {string} selector A string containing a selector expression to match the current set of elements against.
+ * Expands the user selection to contain the supplied selector, stopping at the specified limit element.
+ *
+ * @param {jQuerySelector} selector The selector to expand the selection to.
+ * @param {jQuerySelector} limit The element to stop at.
+ * @param {boolean} outer If true, then the outer most matched element (by the
+ *   selector) is wrapped. Otherwise the first matched element is wrapped.
+ */
+function selectionExpandTo(selector, limit, outer) {
+    var ranges = rangy.getSelection().getAllRanges();
+    for (var i = 0, l = ranges.length; i < l; i++) {
+        // Start container
+        var element = $(nodeFindParent(ranges[i].startContainer));
+        if (outer || (!element.is(selector) && !element.is(limit))) {
+            element = element.parentsUntil(limit, selector);
+        }
+        if (outer) {
+            element = element.last();
+        } else {
+            element = element.first();
+        }
+        if (element.length === 1 && !element.is(limit)) {
+            ranges[i].setStart(element[0], 0);
+        }
+
+        // End container
+        element = $(nodeFindParent(ranges[i].endContainer));
+        if (outer || (!element.is(selector) && !element.is(limit))) {
+            element = element.parentsUntil(limit, selector);
+        }
+        if (outer) {
+            element = element.last();
+        } else {
+            element = element.first();
+        }
+        if (element.length === 1 && !element.is(limit)) {
+            ranges[i].setEnd(element[0], element[0].childNodes.length);
+        }
+    }
+    rangy.getSelection().setRanges(ranges);
+}
+
+/**
+ * Trims an entire selection as per rangeTrim.
+ *
+ * @see rangeTrim
+ */
+function selectionTrim() {
+    if (selectionExists()) {
+        var range = selectionRange();
+        rangeTrim(range);
+        selectionSet(range);
+    }
+}
+
+/**
+ * Finds the inner elements and the wrapping tags for a selector.
+ *
+ * @param {string} selector A jQuery selector to match the wrapping/inner element against.
  * @param {jQuery} limitElement The element to stop searching at.
  * @returns {jQuery}
  */
@@ -768,7 +859,7 @@ function selectionFindWrappingAndInnerElements(selector, limitElement) {
         do {
             $(startNode).filter(selector).each(filter);
 
-            if (!limitElement.is(startNode)) {
+            if (!limitElement.is(startNode) && result.length === 0) {
                 $(startNode).parentsUntil(limitElement, selector).each(filter);
             }
 
@@ -792,15 +883,22 @@ function selectionFindWrappingAndInnerElements(selector, limitElement) {
  * @param {jQuery} limitElement The element to stop changing the tags at.
  */
 function selectionChangeTags(changeTo, changeFrom, limitElement) {
-    selectionSave();
     var elements = selectionFindWrappingAndInnerElements(changeFrom.join(','), limitElement);
     if (elements.length) {
+        selectionSave();
         elementChangeTag(elements, changeTo);
+        selectionRestore();
     } else {
         var limitNode = limitElement.get(0);
-        limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+        if (limitNode.innerHTML.trim()) {
+            selectionSave();
+            limitNode.innerHTML = '<' + changeTo + '>' + limitNode.innerHTML + '</' + changeTo + '>';
+            selectionRestore();
+        } else {
+            limitNode.innerHTML = '<' + changeTo + '>&nbsp;</' + changeTo + '>';
+            selectionSelectInner(limitNode.childNodes[0]);
+        }
     }
-    selectionRestore();
 }
 
 /**
@@ -819,6 +917,11 @@ function selectionContains(selector, limit) {
                 (children.length === 0 || children.length !== children.filter(selector).length)) {
             result = false;
         }
-    }.bind(this));
+    });
     return result;
+}
+
+function selectionDelete(selection) {
+    selection = selection || rangy.getSelection();
+    selection.deleteFromDocument();
 }

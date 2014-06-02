@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the external link class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -15,8 +17,8 @@
  */
 function LinkTypeExternal(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeExternalLabel');
-};
+    this.label = tr('linkTypeExternalLabel');
+}
 
 /**
  * Gets the content of the external link.

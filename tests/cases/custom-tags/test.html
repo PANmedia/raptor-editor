@@ -2,6 +2,7 @@
 <html>
 <head>
     <script type="text/javascript" src="../../js/case.js"></script>
+    <script type="text/javascript" src="tag.js"></script>
     <style>
         custom {
             color: red;
@@ -42,8 +43,7 @@
             var ranges = tokensToRanges(input);
             rangy.getSelection().setRanges(ranges);
             tagCustomApplyToSelection('custom', 'some-class');
-            // applier.toggleSelection();
-            // applier.applyToRanges(ranges);
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
@@ -73,8 +73,7 @@
             var ranges = tokensToRanges(input);
             rangy.getSelection().setRanges(ranges);
             tagCustomRemoveFromSelection('custom', 'some-class');
-            // applier.toggleSelection();
-            // applier.undoToRanges(ranges);
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 
@@ -102,11 +101,9 @@
     <script type="text/javascript">
         test('.test-3', function(input) {
             var ranges = tokensToRanges(input);
-            // console.log(ranges, input);
-             rangy.getSelection().setRanges(ranges);
-             tagCustomRemoveFromSelection('custom', 'some-class');
-//             applier.toggleSelection();
-             applier.undoToRanges(ranges);
+            rangy.getSelection().setRanges(ranges);
+            tagCustomRemoveFromSelection('custom', 'some-class');
+            rangesToTokens(rangy.getSelection().getAllRanges());
         });
     </script>
 </body>

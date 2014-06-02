@@ -4,30 +4,30 @@
  * @author David Neilsen <david@panmedia.co.nz>
  */
 @import 'compass/css3/box';
-@import 'compass/css3/opacity';
 
-.raptor-ui-dock-to-element .ui-icon {
-    @include opacity(0.85);
-    background: inline-image('application-dock-tab.png') 0 0;
+.raptor-ui-dock-to-element {
+    @include button-icon('application-dock-tab.png');
 }
 
-.raptor-ui-dock-to-element:hover .ui-icon-pin-s {
-    @include opacity(1);
+.raptor-plugin-dock-docked-to-element {
+    @extend %raptor-plugin-dock-path;
 }
 
-.raptor-dock-docked-to-element {
-    @extend %raptor-dock-path;
+.raptor-plugin-dock-inline-wrapper {
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 /**
  * Dialog docked to element
  */
-.raptor-dock-docked-to-element-wrapper {
+.raptor-plugin-dock-docked-to-element-wrapper {
     font-size: inherit;
     color: inherit;
     font-family: inherit;
 }
-.raptor-dock-docked-to-element-wrapper .raptor-wrapper {
+.raptor-plugin-dock-docked-to-element-wrapper .raptor-layout-toolbar-outer {
     /* Removed fixed position from the editor */
     position: relative !important;
     top: auto !important;
@@ -47,25 +47,21 @@
     @include display-box();
     @include box-orient(vertical);
 
-    .raptor-toolbar {
+    .raptor-layout-toolbar-toolbar {
         margin: 0;
         z-index: 2;
 
         @include box-ordinal-group(1);
     }
 
-    .raptor-toolbar .ui-widget-header {
+    .raptor-layout-toolbar-toolbar .ui-widget-header {
         border-top: 0;
         border-left: 0;
         border-right: 0;
     }
-
-    .raptor-messages {
-        margin: 0;
-    }
 }
 
-.raptor-dock-docked-element {
+.raptor-plugin-dock-docked-element {
     /* Override margin so toolbars sit flush next to element */
     margin: 0 !important;
 
@@ -88,4 +84,8 @@
     width: auto;
 
     @include box-ordinal-group(2);
+}
+
+.raptor-plugin-dock-docked-to-element .raptor-layout-toolbar-inner {
+    border-top: $border-width $border-style $border-color;
 }

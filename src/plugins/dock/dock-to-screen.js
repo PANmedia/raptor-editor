@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the dock to screen button code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -14,11 +16,8 @@
 Raptor.registerUi(new Button({
     name: 'dockToScreen',
     action: function() {
-        this.raptor.plugins.dock.toggleDockToScreen();
-        if (this.raptor.plugins.dock.dockState) {
-            aButtonActive(this.button);
-        } else {
-            aButtonInactive(this.button);
-        }
+        this.raptor.unify(function(raptor) {
+            raptor.plugins.dock.toggleDockToScreen();
+        });
     }
 }));

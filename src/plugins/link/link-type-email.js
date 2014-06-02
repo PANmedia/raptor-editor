@@ -1,7 +1,9 @@
 /**
  * @fileOverview Contains the internal link class code.
- * @author  David Neilsen <david@panmedia.co.nz>
- * @author  Michael Robinson <michael@panmedia.co.nz>
+ * @license http://www.raptor-editor.com/license
+ *
+ * @author David Neilsen <david@panmedia.co.nz>
+ * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
 
@@ -15,7 +17,7 @@
  */
 function LinkTypeEmail(raptor) {
     this.raptor = raptor;
-    this.label = _('linkTypeEmailLabel');
+    this.label = tr('linkTypeEmailLabel');
 }
 
 /**
