@@ -1,0 +1,586 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="../../js/case.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../../raptor-themes/mammoth/theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../../raptor-themes/mammoth/theme-icons.css" />
+<script type="text/javascript">
+    if (typeof jQuery === 'undefined') {
+        document.write('<script type="text/javascript" src="../../../raptor-dependencies/jquery.js"><' + '/script>');
+    }
+</script>
+<script type="text/javascript">
+    if (typeof jQuery.ui === 'undefined') {
+        document.write('<script type="text/javascript" src="../../../raptor-dependencies/jquery-ui.js"><' + '/script>');
+    }
+</script>
+<script type="text/javascript" src="../../../raptor-dependencies/jquery-hotkeys.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/rangy/rangy-core.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/rangy/rangy-serializer.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/rangy/rangy-applier.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/rangy/rangy-cssclassapplier.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/rangy/rangy-selectionsaverestore.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/rangy/rangy-textrange.js"></script>
+
+<script type="text/javascript" src="../../../raptor-dependencies/resizetable.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/goog-table.js"></script>
+
+<script type="text/javascript" src="../../../raptor-dependencies/plupload.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/plupload.html4.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/plupload.html5.js"></script>
+<script type="text/javascript" src="../../../raptor-dependencies/jquery.ui.plupload.js"></script>
+
+<script type="text/javascript" src="../../../raptor-dependencies/jquery-pnotify.js"></script>
+<link type="text/css" rel="stylesheet" href="../../../raptor-dependencies/jquery-pnotify.css" />
+
+<script type="text/javascript" src="../../../raptor-dependencies/diff.js"></script>
+
+<script type="text/javascript" src="../../../raptor-dependencies/pixastic.custom.js"></script>
+<script type="text/javascript" src="../../../raptor-common/ajax.js"></script>
+<script type="text/javascript" src="../../../raptor-common/debug.js"></script>
+<script type="text/javascript" src="../../../raptor-common/event.js"></script>
+<script type="text/javascript" src="../../../raptor-common/format.js"></script>
+<script type="text/javascript" src="../../../raptor-common/i18n.js"></script>
+<script type="text/javascript" src="../../../raptor-common/lazy.js"></script>
+<script type="text/javascript" src="../../../raptor-common/node.js"></script>
+<script type="text/javascript" src="../../../raptor-common/plugin.js"></script>
+<script type="text/javascript" src="../../../raptor-common/state.js"></script>
+<script type="text/javascript" src="../../../raptor-common/string.js"></script>
+<script type="text/javascript" src="../../../raptor-common/template.js"></script>
+<script type="text/javascript" src="../../../raptor-common/toolbar.js"></script>
+<script type="text/javascript" src="../../../raptor-common/types.js"></script>
+<script type="text/javascript" src="../../../raptor-common/adapters/jquery-ui.js"></script>
+<script type="text/javascript" src="../../../raptor-common/adapters/pnotify.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ar.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/bg.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ca.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/cs.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/da.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/de.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/el.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/en.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/es.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/et.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/fa.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/fi.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/fr.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/he.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/hi.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ht.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/hu.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/id.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/it.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ja.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ko.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/lt.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/lv.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ms.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/mww.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/nl.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/no.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/pl.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/pt.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ro.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ru.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/sk.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/sl.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/sv.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/th.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/tr.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/uk.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/ur.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/vi.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/zh-CHS.js"></script>
+<script type="text/javascript" src="../../../raptor-locales/zh-CHT.js"></script>
+<!-- Styles -->
+<link rel="stylesheet" type="text/css" href="../../../packages/raptor.css"/>
+<link rel="stylesheet" type="text/css" href="../../../packages/raptor-front-end.css"/>
+
+<!-- Editor -->
+<script type="text/javascript" src="../../../raptor-editor/src/init.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/support.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/action.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/clean.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/dock.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/element.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/fragment.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/node.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/persist.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/range.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/selection.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/string.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/state.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/style.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/table.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/tools/types.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/raptor.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/raptor-widget.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/plugin.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/layout.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/preview-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/preview-toggle-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/toggle-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/dialog-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/dialog-toggle-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/filtered-preview-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/css-class-applier-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/menu-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/select-menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/ui/custom-menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/layout/ui-group.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/layout/toolbar.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/layout/hover-panel.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/components/layout/element-hover-panel.js"></script>
+
+<!-- Main templates -->
+<script type="text/javascript" src="../../../raptor-editor/src/templates.js"></script>
+
+<!-- Preset -->
+<script type="text/javascript" src="../../../raptor-editor/src/presets/base.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/presets/full.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/presets/micro.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/presets/inline.js"></script>
+
+<!-- Plugins -->
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/cancel/cancel.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/class-menu/class-menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/class-menu/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/clean-block/clean-block.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/clear-formatting/clear-formatting.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/click-button-to-edit/click-button-to-edit.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/click-button-to-edit/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/close/close.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/color-menu-basic/color-menu-basic.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/color-menu-basic/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/dock/dock-plugin.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/dock/dock-to-screen.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/dock/dock-to-element.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/embed/embed.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/embed/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/float/float-left.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/float/float-none.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/float/float-right.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/font-family/font-family.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/font-family/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/guides/guides.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/history/history-redo.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/history/history-undo.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/hr/hr-create.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/insert-file/insert-file.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/insert-file/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/image-resize/image-resize.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/image-resize/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/image-swap/image-swap.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/language-menu/language-menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/language-menu/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/link-create.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/link-remove.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/link-type-email.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/link-type-external.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/link-type-document.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/link-type-internal.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/link/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/list/list-ordered.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/list/list-unordered.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/logo/logo.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/normalise-line-breaks/normalise-line-breaks.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/no-break/no-break.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/paste/paste.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/paste/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/placeholder/placeholder.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/save/save.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/save/save-json.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/save/save-rest.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/snippet-menu/snippet-menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/snippet-menu/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/special-characters/special-characters.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/special-characters/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/statistics/statistics.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/statistics/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-cell-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-create.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-delete-column.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-delete-row.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-insert-column.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-insert-row.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-merge-cells.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-split-cells.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/table-support.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/table/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/tag-menu/tag-menu.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/tag-menu/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-align/text-align-button.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-align/left.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-align/right.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-align/center.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-align/justify.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/bold.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/block-quote.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/italic.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/size-decrease.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/size-increase.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/strike.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/sub.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/super.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/text-style/underline.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/tool-tip/tool-tip.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/unsaved-edit-warning/unsaved-edit-warning.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/unsaved-edit-warning/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/view-source/view-source.js"></script>
+<script type="text/javascript" src="../../../raptor-editor/src/plugins/view-source/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-editor/src/expose.js"></script>
+<link type="text/css" rel="stylesheet" href="../../../raptor-file-manager/packages/file-manager.css" />
+<link type="text/css" rel="stylesheet" href="../../../raptor-file-manager/packages/file-manager-s3.css" />
+
+<script type="text/javascript" src="../../../raptor-file-manager/src/file-manager.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/templates.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/raptor.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/plupload.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/file.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/dialog.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/plugins.js"></script>
+<script type="text/javascript" src="../../../raptor-file-manager/src/amazon-s3.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/lorem-ipsum/lorem-ipsum.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/lorem-ipsum/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/edit-page/edit-page.js"></script>
+
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/revisions/revisions-button.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/revisions/revisions-diff-button.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/revisions/revisions-preview-button.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/revisions/revisions-apply-button.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/plugins/revisions/templates.js"></script>
+
+<script type="text/javascript" src="../../../raptor-premium/src/presets/full-premium.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/presets/mammoth.js"></script>
+<script type="text/javascript" src="../../../raptor-premium/src/presets/mammoth-inline.js"></script>
+<link type="text/css" rel="stylesheet" href="../../../raptor-section/packages/section.css" />
+
+<script type="text/javascript" src="../../../raptor-section/src/section.js"></script>
+<script type="text/javascript" src="../../../raptor-section/src/menu.js"></script>
+<script type="text/javascript" src="../../../raptor-section/src/templates.js"></script>
+<script type="text/javascript" src="../../../raptor-section/src/static.js"></script>
+<script type="text/javascript" src="../../../raptor-section/src/jquery.js"></script>
+<script type="text/javascript" src="../../../raptor-section/src/mouse.js"></script>
+</head>
+<body class="simple">
+    <script type="text/javascript">
+        rangy.init();
+    </script>
+    <div class="test-1">
+        <h1>Reverse Subscript Button 1: Word Group Selection</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis <sub class="cms-sub">{dui id erat pellentesque et rhoncus}</sub> nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis {dui id erat pellentesque et rhoncus} nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-1', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-2">
+        <h1>Reverse Subscript Button 2: Single Word Selection</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur <sub class="cms-sub">{adipiscing}</sub> elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur {adipiscing} elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-2', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-3">
+        <h1>Reverse Subscript Button 3: Part Word Selection</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pel<sub class="cms-sub">{lentesqu}</sub>e et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pel{lentesqu}e et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique. Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-3', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+     <div class="test-4">
+        <h1>Reverse Subscript Button 4: Multi-Paragraph Selection</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui <sub class="cms-sub">{id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </sub></p>
+                <p><sub class="cms-sub">
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse}</sub> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui {id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p>
+                <p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse} interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-4', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-5">
+        <h1>Reverse Subscript Button 5: Paragraph Selection</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    <sub class="cms-sub">{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </sub></p>
+                <p><sub class="cms-sub">
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}</sub>
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    {Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.}
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-5', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-6">
+        <h1>Reverse Subscript Button 6: Empty Selection in Word</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. <sub class="cms-sub">Suspe{}ndisse</sub> interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada hendrerit velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. {Suspendisse} interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-6', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+
+    <div class="test-7">
+        <h1>Reverse Subscript Button 7: Empty Selection at the Beginning of a Word</h1>
+        <div class="test-input">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada <sub class="cms-sub">{}hendrerit</sub> velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div class="editable">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
+                    convallis dui id erat pellentesque et rhoncus nunc semper. Suspendisse
+                    malesuada {hendrerit} velit nec tristique.
+                </p><p>
+                    Aliquam gravida mauris at
+                    ligula venenatis rhoncus. Suspendisse interdum, nisi nec consectetur
+                    pulvinar, lorem augue ornare felis, vel lacinia erat nibh in velit.
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        testEditor('.test-7', function(input) {
+            var subButton = getLayoutElement(input).find('.raptor-ui-text-sub');
+            subButton.trigger('click');
+            rangesToTokens(rangy.getSelection().getAllRanges());
+
+            if (subButton.is('.ui-state-highlight')){
+                throw new Error('Button is active');
+            }
+        });
+    </script>
+</body>
+</html
