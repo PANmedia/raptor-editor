@@ -58,5 +58,24 @@
         test('.test-<?= $i ?>', testSelectExpand);
     </script>
 
+    <div class="test-<?= ++$i ?>">
+        <h1>Test <?= $i ?></h1>
+        <div class="test-input">
+            <div>
+                <p>Before{}</p>
+                <p>After</p>
+            </div>
+        </div>
+        <div class="test-expected">
+            <div>
+                <p>{Before}</p>
+                <p>After</p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        test('.test-<?= $i ?>', testSelectExpand);
+    </script>
+
 </body>
 </html>
