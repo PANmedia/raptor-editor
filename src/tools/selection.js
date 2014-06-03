@@ -776,7 +776,6 @@ function selectionExpandToWord() {
     }
     var start = range.startOffset,
         end = range.startOffset;
-        console.log(range.startContainer);
     while (range.startContainer.data[start - 1] &&
             !range.startContainer.data[start - 1].match(/\s/)) {
         start--;
