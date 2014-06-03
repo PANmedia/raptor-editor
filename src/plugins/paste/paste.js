@@ -44,7 +44,7 @@ function PastePlugin(name, overrides) {
         allowedEmptyTags: [
             'hr', 'br'
         ],
-        
+
         panels: [
             'formatted-clean',
             'plain-text',
@@ -65,37 +65,60 @@ PastePlugin.prototype.enable = function() {
     this.raptor.getElement().on('paste.raptor', this.capturePaste.bind(this));
 };
 
-/**
- * Captures the html to be pasted.
- *
- * @returns {Boolean} True if paste capture is successful.
- */
-PastePlugin.prototype.capturePaste = function() {
+PastePlugin.prototype.capturePaste = function(event) {
     if (pasteShiftDown) {
         return;
     }
     if (pasteInProgress) {
         return false;
     }
+
     selectionSave();
 
-    pasteInProgress = true;
+    var element = this.raptor.getNode();
+    var savedContent = element.innerHTML;
+    if (element && element.clipboardData && event.clipboardData.getData) {
+        // Webkit - get data from clipboard, put into editable, cleanup, then cancel event
+        if (/text\/html/.test(event.clipboardData.types)) {
+            element.innerHTML = event.clipboardData.getData('text/html');
+        } else if (/text\/plain/.test(event.clipboardData.types)) {
+            element.innerHTML = event.clipboardData.getData('text/plain');
+        } else {
+            element.innerHTML = '';
+        }
+        this.waitForPasteData(element, savedContent);
+        event.stopPropagation();
+        event.preventDefault();
+        return false;
+    } else {
+        // Everything else - empty editable and allow browser to paste content into it, then cleanup
+        element.innerHTML = '';
+        this.waitForPasteData(element, savedContent);
+        return true;
+    }
+};
 
-    // Make a contentEditable div to capture pasted text
-    $('.raptorPasteBin').remove();
-    $('<div class="raptorPasteBin" contenteditable="true" style="width: 1px; height: 1px; overflow: hidden; position: fixed; top: -1px;" />').appendTo('body');
-    $('.raptorPasteBin').focus();
+PastePlugin.prototype.waitForPasteData = function(element, savedContent) {
+    if (element.childNodes && element.childNodes.length > 0) {
+        this.processPaste(element, savedContent);
+    } else {
+        setTimeout(function() {
+            this.waitForPasteData(element, savedContent)
+        }.bind(this), 20);
+    }
+};
 
-    window.setTimeout(this.showPasteDialog.bind(this), 0);
-
-    return true;
+PastePlugin.prototype.processPaste = function(element, savedContent) {
+    var pastedData = element.innerHTML;
+    element.innerHTML = savedContent;
+    this.showPasteDialog(pastedData);
 };
 
 /**
  * Opens the paste dialog.
  */
-PastePlugin.prototype.showPasteDialog = function() {
-    aDialogOpen(this.getDialog(this));
+PastePlugin.prototype.showPasteDialog = function(pastedData) {
+    aDialogOpen(this.getDialog(this, pastedData));
 };
 
 /**
@@ -110,7 +133,6 @@ PastePlugin.prototype.pasteContent = function(html) {
         html = this.filterAttributes(html);
         html = this.filterChars(html);
         selectionReplace($('<placeholder id="' + uniqueId + '">' + html + '</placeholder>'));
-        $('.raptorPasteBin').remove();
         var placeholder = $('#' + uniqueId);
         selectionSelectInner(placeholder.get(0));
         selectionSave();
@@ -126,7 +148,7 @@ PastePlugin.prototype.pasteContent = function(html) {
  * @param {type} instance The paste instance
  * @returns {Object} The paste dialog.
  */
-PastePlugin.prototype.getDialog = function(instance) {
+PastePlugin.prototype.getDialog = function(instance, pastedData) {
     pasteInstance = instance;
     if (!pasteDialog) {
         pasteDialog = $('<div>').html(this.raptor.getTemplate('paste.dialog', this.options));
@@ -171,7 +193,6 @@ PastePlugin.prototype.getDialog = function(instance) {
                     text: tr('pasteDialogCancelButton'),
                     click: function() {
                         selectionDestroy();
-                        $('.raptorPasteBin').remove();
                         aDialogClose(pasteDialog);
                     },
                     icons: {
@@ -190,7 +211,7 @@ PastePlugin.prototype.getDialog = function(instance) {
                 tabs.children('div').hide().eq($(this).index()).show();
             });
     }
-    this.updateAreas();
+    this.updateAreas(pastedData);
     return pasteDialog;
 };
 
@@ -343,8 +364,8 @@ PastePlugin.prototype.stripSpans = function(content) {
 /**
  * Update text input content.
  */
-PastePlugin.prototype.updateAreas = function() {
-    var markup = $('.raptorPasteBin').html();
+PastePlugin.prototype.updateAreas = function(pastedData) {
+    var markup = pastedData;
     markup = this.filterAttributes(markup);
     markup = this.filterChars(markup);
     markup = this.stripEmpty(markup);
@@ -352,8 +373,8 @@ PastePlugin.prototype.updateAreas = function() {
     markup = this.stripSpans(markup);
     markup = stringStripTags(markup, this.options.allowedTags);
 
-    var plain = $('<div/>').html($('.raptorPasteBin').html()).text();
-    var html = $('.raptorPasteBin').html();
+    var plain = $('<div/>').html(pastedData).text();
+    var html = pastedData;
 
     pasteDialog.find('.' + this.options.baseClass + '-plain').val($('<div/>').html(plain).text());
     pasteDialog.find('.' + this.options.baseClass + '-rich').html(markup);
