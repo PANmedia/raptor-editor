@@ -767,12 +767,28 @@ function selectionInverseWrapWithTagClass(tag1, class1, tag2, class2) {
  * Expands the user selection to encase a whole word.
  */
 function selectionExpandToWord() {
-    var ranges = rangy.getSelection().getAllRanges();
-    if (ranges.length === 1) {
-        if (rangeToHtml(ranges[0]) === '') {
-            rangy.getSelection().expand('word');
-        }
+    var selection = window.getSelection(),
+        range = selection.getRangeAt(0);
+    if (!range ||
+            range.startContainer !== range.endContainer ||
+            range.startOffset !== range.endOffset) {
+        return;
     }
+    var start = range.startOffset,
+        end = range.startOffset;
+        console.log(range.startContainer);
+    while (range.startContainer.data[start - 1] &&
+            !range.startContainer.data[start - 1].match(/\s/)) {
+        start--;
+    }
+    while (range.startContainer.data[end] &&
+            !range.startContainer.data[end].match(/\s/)) {
+        end++;
+    }
+    range.setStart(range.startContainer, start);
+    range.setEnd(range.startContainer, end);
+    selection.removeAllRanges();
+    selection.addRange(range);
 }
 
 /**
