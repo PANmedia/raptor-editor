@@ -41,6 +41,8 @@
 .raptor-plugin-paste-panel-tabs > div > .raptor-plugin-paste-area {
     border: none;
     padding: 2px;
+    min-width: 90%;
+    min-height: 300px;
 }
 
 .raptor-plugin-paste-dialog .ui-dialog-content {
