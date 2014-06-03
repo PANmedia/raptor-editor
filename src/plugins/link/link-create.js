@@ -27,6 +27,20 @@ Raptor.registerUi(new DialogToggleButton({
 
     applyAction: function() {
         this.raptor.actionApply(function() {
+            if (!linkAttributes || linkAttributes.href.trim() === '') {
+                return;
+            }
+
+            // Update
+            var range = window.getSelection().getRangeAt(0);
+            if (range.commonAncestorContainer.tagName === 'A') {
+                for (var linkAttribute in linkAttributes) {
+                    range.commonAncestorContainer.setAttribute(linkAttribute, linkAttributes[linkAttribute]);
+                }
+                return;
+            }
+
+            // Create
             selectionExpandToWord();
             selectionExpandTo('a', this.raptor.getElement());
             selectionTrim();
@@ -34,10 +48,8 @@ Raptor.registerUi(new DialogToggleButton({
                 tag: 'a',
                 attributes: linkAttributes
             });
-            if (linkAttributes !== false && $.trim(linkAttributes.href) !== '') {
-                applier.applyToSelection();
-                cleanEmptyElements(this.raptor.getElement(), ['a']);
-            }
+            applier.applyToSelection();
+            cleanEmptyElements(this.raptor.getElement(), ['a']);
         }.bind(this));
     },
 
