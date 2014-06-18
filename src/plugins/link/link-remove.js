@@ -8,7 +8,7 @@
  */
 
 /**
- * Creates an instance of teh toggle button to remove links.
+ * Creates an instance of the toggle button to remove links.
  *
  * @todo param details?
  * @param {type} param
@@ -19,13 +19,7 @@ Raptor.registerUi(new PreviewToggleButton({
 
     action: function() {
         this.raptor.actionApply(function() {
-            var applier = rangy.createApplier({
-                tag: 'a'
-            });
-            selectionExpandToWord();
-            this.raptor.selectionConstrain();
-            applier.undoToSelection();
-            cleanEmptyElements(this.raptor.getElement(), ['a']);
+            document.execCommand('unlink');
         }.bind(this));
     },
 
