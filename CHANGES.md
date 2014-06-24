@@ -3,6 +3,23 @@ To Do:
 
  - Make `HoverPanel` extend from `ElementHoverPanel`
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
+ - Ensure text box height in dialogs is fixed for all plugins. 
+
+v1.2.6
+---
+
+*Updates:*
+
+ - Added delay to hover preview actions.
+ - Added Amazon S3 file manager backend beta.
+
+*Fixes:*
+
+ - Fixed removing links in some situations.
+ - Fixed some height issues with text box sizes in dialogs.
+ - Fixed paste capture events in IE.
+ - Fixed updating links attributes.
+ - 
 
 v1.2.5
 ---
