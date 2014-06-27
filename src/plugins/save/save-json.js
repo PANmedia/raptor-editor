@@ -60,7 +60,6 @@ SaveJsonPlugin.prototype.save = function(saveSections) {
         }
     }.bind(this));
     var post = {};
-    console.log(data);
     this.size = Object.keys(data).length;
     post[this.options.postName] = JSON.stringify(data);
     $.ajax({
