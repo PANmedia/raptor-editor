@@ -16,7 +16,8 @@
  */
 function SaveJsonPlugin(name, overrides) {
     this.options = {
-        retain: false
+        retain: false,
+        checkDirty: true
     };
     RaptorPlugin.call(this, name || 'saveJson', overrides);
     this.size = null;
@@ -50,7 +51,7 @@ SaveJsonPlugin.prototype.save = function(saveSections) {
     }
     var data = {};
     this.raptor.unify(function(raptor) {
-        if (raptor.isDirty()) {
+        if (this.options.checkDirty === false || raptor.isDirty()) {
             raptor.clean();
             var plugin = raptor.getPlugin('saveJson');
             var id = plugin.options.id.call(plugin);
@@ -59,6 +60,7 @@ SaveJsonPlugin.prototype.save = function(saveSections) {
         }
     }.bind(this));
     var post = {};
+    console.log(data);
     this.size = Object.keys(data).length;
     post[this.options.postName] = JSON.stringify(data);
     $.ajax({

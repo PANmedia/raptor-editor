@@ -37,9 +37,11 @@ Raptor.registerUi(new Button({
         }
         // </strict>
 
-        this.raptor.bind('dirty', this.dirty.bind(this));
-        this.raptor.bind('cleaned', this.clean.bind(this));
-        this.clean();
+        if (this.options.checkDirty !== false) {
+            this.raptor.bind('dirty', this.dirty.bind(this));
+            this.raptor.bind('cleaned', this.clean.bind(this));
+            this.clean();
+        }
         return result;
     },
 

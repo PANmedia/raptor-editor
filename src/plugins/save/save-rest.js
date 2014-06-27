@@ -19,7 +19,8 @@
 function SaveRestPlugin(name, overrides) {
     this.method = 'put';
     this.options = {
-        retain: false
+        retain: false,
+        checkDirty: true;
     };
     RaptorPlugin.call(this, name || 'saveRest', overrides);
 }
@@ -50,7 +51,7 @@ SaveRestPlugin.prototype.save = function() {
     this.errors = [];
     this.messages = [];
     this.raptor.unify(function(raptor) {
-        if (raptor.isDirty()) {
+        if (this.options.checkDirty === false || raptor.isDirty()) {
             this.requests++;
             var xhr = raptor.getPlugin('saveRest').sendRequest();
             xhr.raptor = raptor;
