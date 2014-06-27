@@ -20,7 +20,7 @@ function SaveRestPlugin(name, overrides) {
     this.method = 'put';
     this.options = {
         retain: false,
-        checkDirty: true;
+        checkDirty: true
     };
     RaptorPlugin.call(this, name || 'saveRest', overrides);
 }
