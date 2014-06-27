@@ -4,52 +4,33 @@
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  */
-@import 'compass/css3/box';
-@import 'compass/css3/box-sizing';
-
 .raptor-plugin-paste-panel-tabs {
-    height: auto;
     width: 100%;
-
-    @include display-box();
-    @include box-orient(vertical);
-    @include box-flex(1);
+    height: 100%;
 }
 
 .raptor-plugin-paste .ui-tabs a {
     outline: none;
 }
 
-.raptor-plugin-paste-panel-tabs > div {
-    overflow: auto;
-
-    @include display-box();
-    @include box-flex(1);
-    @include box-orient(vertical);
-    @include box-sizing(border-box);
-
-    border: 1px solid #C2C2C2;
+.raptor-plugin-paste-panel-tabs .raptor-plugin-paste-tab  {
     border-top: none;
+    border: 1px solid #c2c2c2;
+    overflow: scroll;
+    height: 80%;
 }
 
-.raptor-plugin-paste-panel-tabs > div > textarea.raptor-plugin-paste-area {
-    @include box-flex(1);
-    @include display-box();
-}
-
-.raptor-plugin-paste-panel-tabs > div > textarea,
-.raptor-plugin-paste-panel-tabs > div > .raptor-plugin-paste-area {
+.raptor-plugin-paste-panel-tabs .raptor-plugin-paste-area {
+    background-color: #fff;
     border: none;
-    padding: 2px;
-    min-width: 90%;
     min-height: 300px;
+    min-width: 90%;
+    padding: 2px;
 }
 
 .raptor-plugin-paste-dialog .ui-dialog-content {
-    display: -webkit-box !important;
-    display: -moz-box !important;
-    display: box !important;
-    width: 100% !important;
     overflow: hidden;
+    width: 100% !important;
+    height: 100%;
     @include box-sizing(border-box);
 }

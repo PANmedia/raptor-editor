@@ -6,17 +6,17 @@
             <li class="{{baseClass}}-tab-formatted-unclean ui-state-default ui-corner-top" style="display: none"><a>tr('pasteDialogFormattedUnclean')</a></li>
             <li class="{{baseClass}}-tab-source ui-state-default ui-corner-top" style="display: none"><a>tr('pasteDialogSource')</a></li>
         </ul>
-        <div class="{{baseClass}}-content-formatted-clean" style="display: none">
+        <div class="{{baseClass}}-tab {{baseClass}}-content-formatted-clean" style="display: none">
             <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-markup"></div>
         </div>
-        <div class="{{baseClass}}-content-plain-text" style="display: none">
-            <textarea class="{{baseClass}}-area {{baseClass}}-plain"></textarea>
+        <div class="{{baseClass}}-tab {{baseClass}}-content-plain-text" style="display: none">
+            <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-plain"></div>
         </div>
-        <div class="{{baseClass}}-content-formatted-unclean" style="display: none">
+        <div class="{{baseClass}}-tab {{baseClass}}-content-formatted-unclean" style="display: none">
             <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-rich"></div>
         </div>
-        <div class="{{baseClass}}-content-source" style="display: none">
-            <textarea class="{{baseClass}}-area {{baseClass}}-source"></textarea>
+        <div class="{{baseClass}}-tab {{baseClass}}-content-source" style="display: none">
+            <div contenteditable="true" class="{{baseClass}}-area {{baseClass}}-source"></div>
         </div>
     </div>
 </div>

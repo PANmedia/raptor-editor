@@ -99,7 +99,7 @@ PastePlugin.prototype.capturePaste = function(event) {
 };
 
 PastePlugin.prototype.waitForPasteData = function(element, savedContent) {
-    if (element.childNodes && element.childNodes.length > 0) {
+    if (element.innerHTML !== '') {
         this.processPaste(element, savedContent);
     } else {
         setTimeout(function() {
@@ -165,6 +165,8 @@ PastePlugin.prototype.getDialog = function(instance, pastedData) {
             autoOpen: false,
             width: 800,
             height: 500,
+            minWidth: 700,
+            minHeight: 400,
             title: tr('pasteDialogTitle'),
             dialogClass: this.options.baseClass + '-dialog',
             close: function() {
@@ -174,16 +176,9 @@ PastePlugin.prototype.getDialog = function(instance, pastedData) {
                 {
                     text: tr('pasteDialogOKButton'),
                     click: function() {
-                        var html = null,
-                            element = pasteDialog.find('.' + this.options.baseClass + '-area:visible');
-
-                        if (element.hasClass(this.options.baseClass + '-plain') || element.hasClass(this.options.baseClass + '-source')) {
-                            html = element.val();
-                        } else {
-                            html = element.html();
-                        }
+                        var element = pasteDialog.find('.' + this.options.baseClass + '-area:visible');
                         aDialogClose(pasteDialog);
-                        pasteInstance.pasteContent(html);
+                        pasteInstance.pasteContent(element.html());
                     }.bind(this),
                     icons: {
                         primary: 'ui-icon-circle-check'
@@ -376,10 +371,10 @@ PastePlugin.prototype.updateAreas = function(pastedData) {
     var plain = $('<div/>').html(pastedData).text();
     var html = pastedData;
 
-    pasteDialog.find('.' + this.options.baseClass + '-plain').val($('<div/>').html(plain).text());
-    pasteDialog.find('.' + this.options.baseClass + '-rich').html(markup);
-    pasteDialog.find('.' + this.options.baseClass + '-source').html(html);
     pasteDialog.find('.' + this.options.baseClass + '-markup').html(markup);
+    pasteDialog.find('.' + this.options.baseClass + '-plain').html(plain.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br/>$2'));
+    pasteDialog.find('.' + this.options.baseClass + '-rich').html(markup);
+    pasteDialog.find('.' + this.options.baseClass + '-source').text(html);
 };
 
 $(document).on('keyup.raptor keydown.raptor', function(event) {
