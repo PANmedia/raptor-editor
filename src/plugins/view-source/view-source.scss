@@ -4,7 +4,6 @@
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author David Neilsen <david@panmedia.co.nz>
  */
-@import 'compass/css3/box';
 @import 'compass/css3/box-sizing';
 
 .raptor-ui-view-source {
@@ -15,16 +14,9 @@
     overflow: visible;
 }
 
+.raptor-ui-view-source-dialog textarea,
 .raptor-ui-view-source-inner-wrapper {
     width: 100%;
     height: 100%;
-    @include display-box();
-    @include box-orient(vertical);
+    min-height: 200px;
 }
-
-.raptor-ui-view-source-dialog textarea {
-    width: 100%;
-    height: 100%;
-    @include box-flex(1);
-}
-

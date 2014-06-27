@@ -14,7 +14,9 @@ Raptor.registerUi(new DialogButton({
     name: 'viewSource',
     dialogOptions: {
         width: 600,
-        height: 400
+        height: 400,
+        minWidth: 400,
+        minHeight: 400
     },
 
     /**
