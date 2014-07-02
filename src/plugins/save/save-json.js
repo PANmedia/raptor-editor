@@ -56,12 +56,29 @@ SaveJsonPlugin.prototype.save = function(saveSections) {
             var plugin = raptor.getPlugin('saveJson');
             var id = plugin.options.id.call(plugin);
             var html = raptor.getHtml();
-            data[id] = html;
+            if (plugin.options.data) {
+                // <strict>
+                if (!$.isFunction(this.options.data)) {
+                    handleError('Save JSON data option is expected to be a function.');
+                }
+                // </strict>
+                data[id] = plugin.options.data.call(this, html);
+            } else {
+                data[id] = html;
+            }
         }
     }.bind(this));
     var post = {};
     this.size = Object.keys(data).length;
     post[this.options.postName] = JSON.stringify(data);
+    if (this.options.post) {
+        // <strict>
+        if (!$.isFunction(this.options.post)) {
+            handleError('Save JSON post option is expected to be a function.');
+        }
+        // </strict>
+        post = this.options.post.call(this, post);
+    }
     $.ajax({
             type: this.options.type || 'post',
             dataType: this.options.dataType || 'json',
@@ -81,15 +98,20 @@ SaveJsonPlugin.prototype.save = function(saveSections) {
  */
 SaveJsonPlugin.prototype.done = function(data, status, xhr) {
     this.raptor.unify(function(raptor) {
-        if (raptor.isDirty()) {
+        if (!raptor.getPlugin('saveJson').options.checkDirty || raptor.isDirty()) {
             raptor.saved([data, status, xhr]);
         }
     });
     var message = tr('saveJsonSaved', {
         saved: this.size
     });
-    if ($.isFunction(this.options.formatResponse)) {
-        message = this.options.formatResponse(data);
+    if (this.options.formatResponse) {
+        // <strict>
+        if (!$.isFunction(this.options.formatResponse)) {
+            handleError('Save JSON formatResponse option is expected to be a function.');
+        }
+        // </strict>
+        message = this.options.formatResponse.call(this, data, status, xhr) || message;
     }
     aNotify({
         text: message,
@@ -107,11 +129,21 @@ SaveJsonPlugin.prototype.done = function(data, status, xhr) {
  *
  * @param {Object} xhr
  */
-SaveJsonPlugin.prototype.fail = function(xhr) {
+SaveJsonPlugin.prototype.fail = function(xhr, status, error) {
+    this.raptor.fire('save-failed', [xhr.responseJSON || xhr.responseText, status, xhr]);
+    var message = tr('saveJsonFail', {
+        failed: this.size
+    });
+    if (this.options.formatResponse) {
+        // <strict>
+        if (!$.isFunction(this.options.formatResponse)) {
+            handleError('Save JSON formatResponse option is expected to be a function.');
+        }
+        // </strict>
+        message = this.options.formatResponse.call(this, xhr.responseJSON || xhr.responseText, status, xhr) || message;
+    }
     aNotify({
-        text: tr('saveJsonFail', {
-            failed: this.size
-        }),
+        text: message,
         type: 'error'
     });
 };
