@@ -106,7 +106,7 @@ var RaptorWidget = {
 
         // Bind default events
         for (var name in this.options.bind) {
-            this.bind(name, this.options.bind[name]);
+            this.bind(stringFromCamelCase(name), this.options.bind[name]);
         }
 
         // Undo stack, redo pointer
@@ -1068,13 +1068,12 @@ var RaptorWidget = {
      * @param {Object} [context]
      */
     bind: function(name, callback, context) {
-        if (typeof callback === 'undefined' ||
-            !$.isFunction(callback)) {
-            // <strict>
+        // <strict>
+        if (!$.isFunction(callback)) {
             handleError('Must bind a valid callback, ' + name + ' was a ' + typeof callback);
-            // </strict>
             return;
         }
+        // </strict>
         var names = name.split(/,\s*/);
         for (var i = 0, l = names.length; i < l; i++) {
             if (!this.events[names[i]]) {
