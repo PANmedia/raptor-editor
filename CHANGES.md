@@ -3,7 +3,16 @@ To Do:
 
  - Make `HoverPanel` extend from `ElementHoverPanel`
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
- - Ensure text box height in dialogs is fixed for all plugins. 
+ - Ensure text box height in dialogs is fixed for all plugins.
+
+v1.2.7
+---
+
+*Updates:*
+
+ - Allow tables in cleaned pasted content.
+ - Allow more data customisation in the JSON save plugin.
+ - Add `checkDirty` option to save plugins to allow saving even if Raptor thinks the content is up to date.
 
 v1.2.6
 ---
@@ -19,7 +28,6 @@ v1.2.6
  - Fixed some height issues with text box sizes in dialogs.
  - Fixed paste capture events in IE.
  - Fixed updating links attributes.
- - 
 
 v1.2.5
 ---
