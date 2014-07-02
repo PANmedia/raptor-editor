@@ -34,15 +34,16 @@ function PastePlugin(name, overrides) {
          */
         allowedTags: [
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'blockquote',
-            'p', 'a', 'span', 'hr', 'br', 'strong', 'em'
+            'p', 'a', 'span', 'hr', 'br', 'strong', 'em',
+            'table', 'tr', 'td', 'th', 'tbody', 'thead', 'tfoot'
         ],
 
         allowedAttributes: [
-            'href', 'title'
+            'href', 'title', 'colspan', 'rowspan'
         ],
 
         allowedEmptyTags: [
-            'hr', 'br'
+            'hr', 'br', 'td', 'th'
         ],
 
         panels: [
