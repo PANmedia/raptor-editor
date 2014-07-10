@@ -8,7 +8,7 @@
  */
 
 /**
- * @class the preview button class.
+ * @class The preview button class.
  *
  * @constructor
  * @augments Button
@@ -16,24 +16,16 @@
  * @param {Object} options
  */
 function PreviewButton(options) {
-    this.preview = true;
     this.previewing = false;
-    this.previewTimeout = 500;
     this.previewTimer = null;
+    this.options = {
+        preview: true,
+        previewTimeout: 500
+    };
     Button.call(this, options);
 }
 
 PreviewButton.prototype = Object.create(Button.prototype);
-
-/**
- * Initialize the toggle preview button.
- *
- * @returns {Element}
- */
-PreviewButton.prototype.init = function() {
-    this.preview = typeof this.options.preview === 'undefined' ? true : false;
-    return Button.prototype.init.apply(this, arguments);
-};
 
 /**
  * Prepare and return the preview button Element to be used in the Raptor UI.
@@ -47,16 +39,6 @@ PreviewButton.prototype.getButton = function() {
             .mouseleave(this.mouseLeave.bind(this));
     }
     return this.button;
-};
-
-/**
- * Sets the mouse enter function to enable the preview.
- */
-PreviewButton.prototype.mouseEnter = function() {
-    if (this.canPreview()) {
-        this.endPreview();
-        this.previewTimer = setTimeout(this.applyPreview.bind(this), this.previewTimeout)
-    }
 };
 
 PreviewButton.prototype.applyPreview = function() {
@@ -75,7 +57,21 @@ PreviewButton.prototype.endPreview = function() {
 };
 
 /**
- * Sets the mouse leave function to disable the preview.
+ * Mouse enter event that enables the preview.
+ */
+PreviewButton.prototype.mouseEnter = function() {
+    if (this.canPreview()) {
+        this.endPreview();
+        if (this.options.previewTimeout !== false) {
+            this.previewTimer = setTimeout(this.applyPreview.bind(this), this.options.previewTimeout)
+        } else {
+            this.applyPreview();
+        }
+    }
+};
+
+/**
+ * Mouse leave event that reverts preview (if active).
  */
 PreviewButton.prototype.mouseLeave = function() {
     this.endPreview();
@@ -83,9 +79,7 @@ PreviewButton.prototype.mouseLeave = function() {
 };
 
 /**
- * Sets the click function to disable the preview and apply the style.
- *
- * @returns {Element}
+ * Click event that reverts preview (if active), and the fires the inherited button click event.
  */
 PreviewButton.prototype.click = function() {
     this.endPreview();
@@ -93,19 +87,18 @@ PreviewButton.prototype.click = function() {
 };
 
 /**
- * Checks if the Element is able to generate a preview.
+ * Checks if previewing is enabled.
  *
- * @todo check as i guessed this.
- * @returns {Boolean} True if preview available.
+ * @returns {Boolean}
  */
 PreviewButton.prototype.canPreview = function() {
-    return this.preview;
+    return this.options.preview;
 };
+
 /**
- * Checks if the Element is in it's preview state.
+ * Checks if previewing is currently active.
  *
- * @todo check as i guessed this.
- * @returns {Boolean} True if in previewing state.
+ * @returns {Boolean}
  */
 PreviewButton.prototype.isPreviewing = function() {
     return this.previewing;

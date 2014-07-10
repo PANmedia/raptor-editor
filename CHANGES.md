@@ -5,6 +5,21 @@ To Do:
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
  - Ensure text box height in dialogs is fixed for all plugins.
 
+v1.3.0
+---
+
+*API Changes:*
+
+ - Changed option inheritance to to inherit from `component.options` -> `raptor.options` -> `config.options` in that order. It was `raptor.options` -> `component.options` -> `config.options`. This allows setting a single option to effect all plugins. 
+
+*Example:*
+
+```
+$('.editable').raptor({
+    previewTimeout: 1000
+});
+```
+
 v1.2.7
 ---
 

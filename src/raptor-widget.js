@@ -726,9 +726,9 @@ var RaptorWidget = {
     prepareComponent: function(component, componentOptions, prefix) {
         var instance = $.extend({}, component);
 
-        var options = $.extend({}, this.options, {
+        var options = $.extend({}, instance.options, this.options, {
             baseClass: this.options.baseClass + '-' + prefix + '-' + stringFromCamelCase(component.name)
-        }, instance.options, componentOptions);
+        }, componentOptions);
 
         instance.raptor = this;
         instance.options = options;
