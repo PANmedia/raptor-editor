@@ -100,6 +100,7 @@
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/language-menu/templates.js"></script>
 
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-create.js"></script>
+<script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-open.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-remove.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-type-email.js"></script>
 <script type="text/javascript" src="<?= RAPTOR_EDITOR_URI; ?>src/plugins/link/link-type-external.js"></script>

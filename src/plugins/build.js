@@ -328,6 +328,7 @@ builder.addModule({
         __dirname + '/link/chain-unchain.png',
         __dirname + '/link/chain.png',
         __dirname + '/link/link-create.js',
+        __dirname + '/link/link-open.js',
         __dirname + '/link/link-remove.js',
         __dirname + '/link/link-type-document.js',
         __dirname + '/link/link-type-email.js',
