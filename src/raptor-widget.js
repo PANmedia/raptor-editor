@@ -408,7 +408,7 @@ var RaptorWidget = {
     actionPreview: function(action) {
         this.actionPreviewRestore();
         try {
-            var ranges = this.fire('selectionCustomise');
+            var ranges = this.fire('selection-customise');
             if (ranges.length > 0) {
                 this.previewState = actionPreview(this.previewState, this.target, function() {
                     for (var i = 0, l = ranges.length; i < l; i++) {
@@ -441,7 +441,7 @@ var RaptorWidget = {
         this.actionPreviewRestore();
         var state = this.stateSave();
         try {
-            var ranges = this.fire('selectionCustomise');
+            var ranges = this.fire('selection-customise');
             if (ranges.length > 0) {
                 actionApply(function() {
                     for (var i = 0, l = ranges.length; i < l; i++) {
