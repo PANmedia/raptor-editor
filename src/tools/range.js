@@ -85,10 +85,10 @@ function rangeExpandTo(range, elements) {
 }
 
 /**
- * Replaces the content of range with the given html.
+ * Replaces the content of range with the given html or node.
  *
  * @param  {RangyRange} range The range to replace.
- * @param  {jQuery|String} html The html to use when replacing range.
+ * @param  {Node|String} html The html or node to replace the range content with.
  * @return {Node[]} Array of new nodes inserted.
  */
 function rangeReplace(range, html) {
@@ -97,24 +97,29 @@ function rangeReplace(range, html) {
         handleInvalidArgumentError('Parameter 1 to rangeReplace is expected to be a range', range);
         return;
     }
-    if (!typeIsElement(html) && !typeIsString(html)) {
-        handleInvalidArgumentError('Parameter 2 to rangeReplace is expected to be a string or jQuery element', html);
+    if (!typeIsNode(html) && !typeIsString(html)) {
+        handleInvalidArgumentError('Parameter 2 to rangeReplace is expected to be a string or a node', html);
         return;
     }
     // </strict>
 
-    var result = [],
-        nodes = $('<div/>').append(html)[0].childNodes;
+    var newNodes = [];
     range.deleteContents();
-    if (nodes.length === undefined || nodes.length === 1) {
-        range.insertNode(nodes[0].cloneNode(true));
+    if (html.nodeType) {
+        // Node
+        newNodes.push(html.cloneNode(true));
+        range.insertNode(newNodes[0]);
     } else {
-        $.each(nodes, function(i, node) {
-            result.unshift(node.cloneNode(true));
-            range.insertNodeAtEnd(result[0]);
-        });
+        // HTML string
+        var wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+        for (var i = 0; i < wrapper.childNodes.length; i++) {
+            var clone = wrapper.childNodes[i].cloneNode(true);
+            range.insertNodeAtEnd(clone);
+            newNodes.push(clone);
+        }
     }
-    return result;
+    return newNodes;
 }
 
 /**

@@ -129,16 +129,18 @@ PastePlugin.prototype.showPasteDialog = function(pastedData) {
  */
 PastePlugin.prototype.pasteContent = function(html) {
     this.raptor.actionApply(function() {
+        // @todo fire an event to allow plugins to clean up, i.e. table plugin adding a cms-table class
         var uniqueId = elementUniqueId();
         selectionRestore();
         html = this.filterAttributes(html);
         html = this.filterChars(html);
-        selectionReplace($('<placeholder id="' + uniqueId + '">' + html + '</placeholder>'));
-        var placeholder = $('#' + uniqueId);
-        selectionSelectInner(placeholder.get(0));
-        selectionSave();
-        placeholder.contents().unwrap();
-        selectionRestore();
+        var newNodes = selectionReplace(html);
+        if (newNodes.length > 0) {
+            range = rangy.createRange();
+            range.setStartBefore(newNodes[0]);
+            range.setEndAfter(newNodes[newNodes.length - 1]);
+            selectionSet(range);
+        }
     }.bind(this));
 };
 
