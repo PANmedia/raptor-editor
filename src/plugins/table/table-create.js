@@ -30,10 +30,12 @@ TableMenu.prototype = Object.create(Menu.prototype);
  */
 TableMenu.prototype.createTable = function(event) {
     this.raptor.actionApply(function() {
-        selectionReplace(elementOuterHtml($(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
+        var table = tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
-        }))));
-    });
+        });
+        table.className = this.options.cssPrefix + 'table';
+        selectionReplace(table);
+    }.bind(this));
 };
 
 /**
@@ -56,10 +58,12 @@ TableMenu.prototype.highlight = function(event) {
 
     // Preview create
     this.raptor.actionPreview(function() {
-        selectionReplace(elementOuterHtml($(tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
+        var table = tableCreate(event.target.cellIndex + 1, event.target.parentNode.rowIndex + 1, {
             placeHolder: '&nbsp;'
-        }))));
-    });
+        });
+        table.className = this.options.cssPrefix + 'table';
+        selectionReplace(table);
+    }.bind(this));
 };
 
 /**
