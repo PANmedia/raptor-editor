@@ -141,6 +141,7 @@ PastePlugin.prototype.pasteContent = function(html) {
             range.setEndAfter(newNodes[newNodes.length - 1]);
             selectionSet(range);
         }
+        this.raptor.fire('insert-nodes', [newNodes]);
     }.bind(this));
 };
 
