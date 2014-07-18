@@ -30,7 +30,8 @@ TableSupport.prototype = Object.create(RaptorPlugin.prototype);
  * Initialize the table support class.
  */
 TableSupport.prototype.init = function() {
-    this.raptor.bind('selectionCustomise', this.selectionCustomise.bind(this));
+    this.raptor.bind('selection-customise', this.selectionCustomise.bind(this));
+    this.raptor.bind('insert-nodes', this.insertNodes.bind(this));
     this.raptor.registerHotkey('tab', this.tabToNextCell.bind(this));
     this.raptor.registerHotkey('shift+tab', this.tabToPrevCell.bind(this));
     this.raptor.getElement()
@@ -41,7 +42,7 @@ TableSupport.prototype.init = function() {
 
 /**
  * @todo i think this has something to do with the cell selection but i'm not sure
- * @returns {Array}
+ * @returns {Range[]}
  */
 TableSupport.prototype.selectionCustomise = function() {
     var ranges = [],
@@ -52,6 +53,14 @@ TableSupport.prototype.selectionCustomise = function() {
         ranges.push(range);
     });
     return ranges;
+};
+
+TableSupport.prototype.insertNodes = function(nodes) {
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].tagName === 'TABLE') {
+            nodes[i].classList.add(this.options.cssPrefix + 'table');
+        }
+    }
 };
 
 /**

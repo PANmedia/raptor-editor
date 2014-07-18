@@ -80,19 +80,19 @@ function selectionSet(mixed) {
 
 /**
  * Replaces the given selection (or the current selection if selection is not
- * supplied) with the given html.
- * @todo type for result
+ * supplied) with the given html or node.
+ *
  * @public @static
- * @param  {jQuery|String} html The html to use when replacing.
+ * @param  {Node|String} html The html or node to replace the selection with.
  * @param  {RangySelection|null} selection The selection to replace, or null to replace the current selection.
- * @returns {type} The replaced selection.
+ * @return {Node[]} Array of new nodes inserted.
  */
 function selectionReplace(html, selection) {
-    var result = [];
+    var newNodes = [];
     selectionEachRange(function(range) {
-        result = result.concat(rangeReplace(range, html));
+        newNodes = newNodes.concat(rangeReplace(range, html));
     }, selection, this);
-    return result;
+    return newNodes;
 }
 
 /**
@@ -366,7 +366,7 @@ function selectionToggleWrapper(tag, options) {
                 .addClass(options.classes)
                 .attr(options.attributes || {})
                 .append(fragmentToHtml(range.cloneContents()));
-            rangeReplace(range, element);
+            rangeReplace(range, element[0]);
         } else {
             applier.toggleRange(range);
         }

@@ -5,12 +5,24 @@ To Do:
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
  - Ensure text box height in dialogs is fixed for all plugins.
 
+v1.4.0
+---
+
+*Updates:*
+ - Added front end class to tables.
+ - Added `insert-nodes` event, used by paste plugin after pasting and allow plugins to cleanup or normalise content.
+ - Added ability to open link while editing by holding `ctrl` then clicking the link.
+
+*API Changes:*
+ - Rename `selectionCustomise` event to `selection-customise`. Bind option should support both.
+ - Update selectionReplace to only accept a node or a string.
+
 v1.3.0
 ---
 
 *API Changes:*
 
- - Changed option inheritance to to inherit from `component.options` -> `raptor.options` -> `config.options` in that order. It was `raptor.options` -> `component.options` -> `config.options`. This allows setting a single option to effect all plugins. 
+ - Changed option inheritance to to inherit from `component.options` -> `raptor.options` -> `config.options` in that order. It was `raptor.options` -> `component.options` -> `config.options`. This allows setting a single option to effect all plugins.
 
 *Example:*
 
