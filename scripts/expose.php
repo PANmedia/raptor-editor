@@ -2,42 +2,29 @@
 require_once __DIR__ . '/functions.php';
 
 $result = [];
-foreach (glob_recursive(__DIR__ . '/../src/tools/*.js') as $file) {
-    $contents = file_get_contents($file);
-    $matches = null;
-    preg_match_all('/^function (.+?)\(/m', $contents, $matches);
-    foreach ($matches[1] as $function) {
-        $result[] = "    $function: $function";
+
+$scan = function($path) use(&$result) {
+    echo 'Scanning: ' . $path . PHP_EOL;
+    foreach (glob_recursive($path) as $file) {
+        echo 'Found: ' . $file . PHP_EOL;
+        $contents = file_get_contents($file);
+        $matches = null;
+        preg_match_all('/^function (.+?)\(/m', $contents, $matches);
+        foreach ($matches[1] as $function) {
+            $result[] = "    $function: $function";
+        }
     }
-}
+};
 
-foreach (glob_recursive(__DIR__ . '/../src/adapters/*.js') as $file) {
-    $contents = file_get_contents($file);
-    $matches = null;
-    preg_match_all('/^function (.+?)\(/m', $contents, $matches);
-    foreach ($matches[1] as $function) {
-        $result[] = "    $function: $function";
-    }
-}
+$scan(__DIR__ . '/../src/tools/*.js');
+$scan(__DIR__ . '/../src/adapters/*.js');
+$scan(__DIR__ . '/../src/components/*.js');
+$scan(__DIR__ . '/../src/tools/*.js');
+$scan(__DIR__ . '/../../raptor-common/*.js');
 
-foreach (glob_recursive(__DIR__ . '/../src/components/*.js') as $file) {
-    $contents = file_get_contents($file);
-    $matches = null;
-    preg_match_all('/^function (.+?)\(/m', $contents, $matches);
-    foreach ($matches[1] as $function) {
-        $result[] = "    $function: $function";
-    }
-}
+$result = array_unique($result);
 
-$file = __DIR__ . '/../src/i18n.js';
-$contents = file_get_contents($file);
-$matches = null;
-preg_match_all('/^function (.+?)\(/m', $contents, $matches);
-foreach ($matches[1] as $function) {
-    $result[] = "    $function: $function";
-}
-
-sort($result);
+natsort($result);
 
 $result = implode(',' . PHP_EOL, $result);
 echo "
