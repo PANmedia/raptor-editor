@@ -4,9 +4,9 @@ require_once __DIR__ . '/functions.php';
 $result = [];
 
 $scan = function($path) use(&$result) {
-    echo 'Scanning: ' . $path . PHP_EOL;
+    // echo 'Scanning: ' . $path . PHP_EOL;
     foreach (glob_recursive($path) as $file) {
-        echo 'Found: ' . $file . PHP_EOL;
+        // echo 'Found: ' . $file . PHP_EOL;
         $contents = file_get_contents($file);
         $matches = null;
         preg_match_all('/^function (.+?)\(/m', $contents, $matches);
@@ -27,11 +27,8 @@ $result = array_unique($result);
 natsort($result);
 
 $result = implode(PHP_EOL, $result);
-echo "
-// <expose>
-$.extend(Raptor, {
+echo "// <expose>
 $result
-});
 window.Raptor = Raptor;
 // </expose>
 ";

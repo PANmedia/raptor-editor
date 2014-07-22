@@ -1,5 +1,4 @@
 // <expose>
-$.extend(Raptor, {
 if (typeof Raptor.Button === 'undefined' && typeof Button !== 'undefined') Raptor.Button = Button;
 if (typeof Raptor.CSSClassApplierButton === 'undefined' && typeof CSSClassApplierButton !== 'undefined') Raptor.CSSClassApplierButton = CSSClassApplierButton;
 if (typeof Raptor.DialogButton === 'undefined' && typeof DialogButton !== 'undefined') Raptor.DialogButton = DialogButton;
@@ -225,6 +224,5 @@ if (typeof Raptor.typeIsString === 'undefined' && typeof typeIsString !== 'undef
 if (typeof Raptor.typeIsTextNode === 'undefined' && typeof typeIsTextNode !== 'undefined') Raptor.typeIsTextNode = typeIsTextNode;
 if (typeof Raptor.undockFromElement === 'undefined' && typeof undockFromElement !== 'undefined') Raptor.undockFromElement = undockFromElement;
 if (typeof Raptor.undockFromScreen === 'undefined' && typeof undockFromScreen !== 'undefined') Raptor.undockFromScreen = undockFromScreen;
-});
 window.Raptor = Raptor;
 // </expose>
