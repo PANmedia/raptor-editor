@@ -11,7 +11,7 @@ $scan = function($path) use(&$result) {
         $matches = null;
         preg_match_all('/^function (.+?)\(/m', $contents, $matches);
         foreach ($matches[1] as $function) {
-            $result[] = "    $function: $function";
+	        $result[] = "if (typeof Raptor.$function === 'undefined' && typeof $function !== 'undefined') Raptor.$function = $function;";
         }
     }
 };
@@ -26,7 +26,7 @@ $result = array_unique($result);
 
 natsort($result);
 
-$result = implode(',' . PHP_EOL, $result);
+$result = implode(PHP_EOL, $result);
 echo "
 // <expose>
 $.extend(Raptor, {

@@ -1,212 +1,230 @@
 // <expose>
 $.extend(Raptor, {
-    Button: Button,
-    CSSClassApplierButton: CSSClassApplierButton,
-    DialogButton: DialogButton,
-    DialogToggleButton: DialogToggleButton,
-    ElementHoverPanelLayout: ElementHoverPanelLayout,
-    FilteredPreviewButton: FilteredPreviewButton,
-    HoverPanelLayout: HoverPanelLayout,
-    Menu: Menu,
-    MenuButton: MenuButton,
-    Plugin: Plugin,
-    PreviewButton: PreviewButton,
-    PreviewToggleButton: PreviewToggleButton,
-    RaptorLayout: RaptorLayout,
-    RaptorPlugin: RaptorPlugin,
-    SelectMenu: SelectMenu,
-    ToggleButton: ToggleButton,
-    ToolbarLayout: ToolbarLayout,
-    UiGroup: UiGroup,
-    aButton: aButton,
-    aButtonActive: aButtonActive,
-    aButtonDisable: aButtonDisable,
-    aButtonEnable: aButtonEnable,
-    aButtonInactive: aButtonInactive,
-    aButtonIsEnabled: aButtonIsEnabled,
-    aButtonSetIcon: aButtonSetIcon,
-    aButtonSetLabel: aButtonSetLabel,
-    aDialog: aDialog,
-    aDialogClose: aDialogClose,
-    aDialogOpen: aDialogOpen,
-    aDialogRemove: aDialogRemove,
-    aMenu: aMenu,
-    aNotify: aNotify,
-    aTabs: aTabs,
-    abortLoop: abortLoop,
-    actionApply: actionApply,
-    actionPreview: actionPreview,
-    actionPreviewRestore: actionPreviewRestore,
-    actionRedo: actionRedo,
-    actionUndo: actionUndo,
-    clean: clean,
-    cleanEmptyAttributes: cleanEmptyAttributes,
-    cleanEmptyElements: cleanEmptyElements,
-    cleanRemoveAttributes: cleanRemoveAttributes,
-    cleanRemoveComments: cleanRemoveComments,
-    cleanRemoveElements: cleanRemoveElements,
-    cleanReplaceElements: cleanReplaceElements,
-    cleanUnnestElement: cleanUnnestElement,
-    cleanUnwrapElements: cleanUnwrapElements,
-    cleanWrapTextNodes: cleanWrapTextNodes,
-    debug: debug,
-    dockToElement: dockToElement,
-    dockToScreen: dockToScreen,
-    elementBringToTop: elementBringToTop,
-    elementChangeTag: elementChangeTag,
-    elementClosestBlock: elementClosestBlock,
-    elementContainsBlockElement: elementContainsBlockElement,
-    elementDefaultDisplay: elementDefaultDisplay,
-    elementDetachedManip: elementDetachedManip,
-    elementFirstInvalidElementOfValidParent: elementFirstInvalidElementOfValidParent,
-    elementGetAttributes: elementGetAttributes,
-    elementGetStyles: elementGetStyles,
-    elementIsBlock: elementIsBlock,
-    elementIsEmpty: elementIsEmpty,
-    elementIsValid: elementIsValid,
-    elementOuterHtml: elementOuterHtml,
-    elementOuterText: elementOuterText,
-    elementPositionOver: elementPositionOver,
-    elementPositionUnder: elementPositionUnder,
-    elementRemoveAttributes: elementRemoveAttributes,
-    elementSwapStyles: elementSwapStyles,
-    elementToggleStyle: elementToggleStyle,
-    elementUniqueId: elementUniqueId,
-    elementVisibleRect: elementVisibleRect,
-    elementWrapInner: elementWrapInner,
-    eventEventable: eventEventable,
-    eventMouseEnter: eventMouseEnter,
-    eventMouseLeave: eventMouseLeave,
-    extendLocale: extendLocale,
-    formatBytes: formatBytes,
-    fragmentInsertBefore: fragmentInsertBefore,
-    fragmentToHtml: fragmentToHtml,
-    getLocalizedString: getLocalizedString,
-    handleError: handleError,
-    handleInvalidArgumentError: handleInvalidArgumentError,
-    info: info,
-    nodeClassSwitch: nodeClassSwitch,
-    nodeClosestByClassName: nodeClosestByClassName,
-    nodeFindParent: nodeFindParent,
-    nodeFindTextNodes: nodeFindTextNodes,
-    nodeFindUnnested: nodeFindUnnested,
-    nodeFreezeHeight: nodeFreezeHeight,
-    nodeFromHtml: nodeFromHtml,
-    nodeIsChildOf: nodeIsChildOf,
-    nodeLastChild: nodeLastChild,
-    nodeMatches: nodeMatches,
-    nodeOffsetTop: nodeOffsetTop,
-    nodeUnfreezeHeight: nodeUnfreezeHeight,
-    nodeUniqueId: nodeUniqueId,
-    persistGet: persistGet,
-    persistSet: persistSet,
-    pluginPluggable: pluginPluggable,
-    pluginPrepare: pluginPrepare,
-    rangeContainsNode: rangeContainsNode,
-    rangeContainsNodeText: rangeContainsNodeText,
-    rangeDeserialize: rangeDeserialize,
-    rangeEmptyTag: rangeEmptyTag,
-    rangeExpandTo: rangeExpandTo,
-    rangeExpandToParent: rangeExpandToParent,
-    rangeGet: rangeGet,
-    rangeGetCommonAncestor: rangeGetCommonAncestor,
-    rangeGetEndElement: rangeGetEndElement,
-    rangeGetStartElement: rangeGetStartElement,
-    rangeIsContainedBy: rangeIsContainedBy,
-    rangeIsEmpty: rangeIsEmpty,
-    rangeReplace: rangeReplace,
-    rangeReplaceSplitInvalidTags: rangeReplaceSplitInvalidTags,
-    rangeReplaceWithinValidTags: rangeReplaceWithinValidTags,
-    rangeSelectElement: rangeSelectElement,
-    rangeSelectElementContent: rangeSelectElementContent,
-    rangeSerialize: rangeSerialize,
-    rangeToHtml: rangeToHtml,
-    rangeTrim: rangeTrim,
-    registerLocale: registerLocale,
-    selectionAtEndOfElement: selectionAtEndOfElement,
-    selectionAtStartOfElement: selectionAtStartOfElement,
-    selectionChangeTags: selectionChangeTags,
-    selectionClearFormatting: selectionClearFormatting,
-    selectionConstrain: selectionConstrain,
-    selectionContains: selectionContains,
-    selectionDelete: selectionDelete,
-    selectionDestroy: selectionDestroy,
-    selectionEachBlock: selectionEachBlock,
-    selectionEachRange: selectionEachRange,
-    selectionExists: selectionExists,
-    selectionExpandTo: selectionExpandTo,
-    selectionExpandToWord: selectionExpandToWord,
-    selectionFindWrappingAndInnerElements: selectionFindWrappingAndInnerElements,
-    selectionGetElement: selectionGetElement,
-    selectionGetElements: selectionGetElements,
-    selectionGetEndElement: selectionGetEndElement,
-    selectionGetHtml: selectionGetHtml,
-    selectionGetStartElement: selectionGetStartElement,
-    selectionInverseWrapWithTagClass: selectionInverseWrapWithTagClass,
-    selectionIsEmpty: selectionIsEmpty,
-    selectionRange: selectionRange,
-    selectionReplace: selectionReplace,
-    selectionReplaceSplittingSelectedElement: selectionReplaceSplittingSelectedElement,
-    selectionReplaceWithinValidTags: selectionReplaceWithinValidTags,
-    selectionRestore: selectionRestore,
-    selectionSave: selectionSave,
-    selectionSaved: selectionSaved,
-    selectionSelectEdge: selectionSelectEdge,
-    selectionSelectEnd: selectionSelectEnd,
-    selectionSelectInner: selectionSelectInner,
-    selectionSelectOuter: selectionSelectOuter,
-    selectionSelectStart: selectionSelectStart,
-    selectionSelectToEndOfElement: selectionSelectToEndOfElement,
-    selectionSet: selectionSet,
-    selectionToggleBlockClasses: selectionToggleBlockClasses,
-    selectionToggleBlockStyle: selectionToggleBlockStyle,
-    selectionToggleWrapper: selectionToggleWrapper,
-    selectionTrim: selectionTrim,
-    selectionWrapTagWithAttribute: selectionWrapTagWithAttribute,
-    setLocale: setLocale,
-    stateCheckDirty: stateCheckDirty,
-    stateRestore: stateRestore,
-    stateSave: stateSave,
-    stateSetDirty: stateSetDirty,
-    stringFromCamelCase: stringFromCamelCase,
-    stringHash: stringHash,
-    stringHtmlStringIsEmpty: stringHtmlStringIsEmpty,
-    stringStripTags: stringStripTags,
-    stringToCamelCase: stringToCamelCase,
-    stringUcFirst: stringUcFirst,
-    styleRestoreState: styleRestoreState,
-    styleSwapState: styleSwapState,
-    styleSwapWithWrapper: styleSwapWithWrapper,
-    tableCanMergeCells: tableCanMergeCells,
-    tableCanSplitCells: tableCanSplitCells,
-    tableCellsInRange: tableCellsInRange,
-    tableCreate: tableCreate,
-    tableDeleteColumn: tableDeleteColumn,
-    tableDeleteRow: tableDeleteRow,
-    tableGetCellByIndex: tableGetCellByIndex,
-    tableGetCellIndex: tableGetCellIndex,
-    tableInsertColumn: tableInsertColumn,
-    tableInsertRow: tableInsertRow,
-    tableIsEmpty: tableIsEmpty,
-    tableMergeCells: tableMergeCells,
-    tableSplitCells: tableSplitCells,
-    templateConvertTokens: templateConvertTokens,
-    templateGet: templateGet,
-    templateGetVariables: templateGetVariables,
-    templateRegister: templateRegister,
-    toolbarLayout: toolbarLayout,
-    tr: tr,
-    typeIsArray: typeIsArray,
-    typeIsElement: typeIsElement,
-    typeIsJQueryCompatible: typeIsJQueryCompatible,
-    typeIsNode: typeIsNode,
-    typeIsNumber: typeIsNumber,
-    typeIsRange: typeIsRange,
-    typeIsSelection: typeIsSelection,
-    typeIsString: typeIsString,
-    typeIsTextNode: typeIsTextNode,
-    undockFromElement: undockFromElement,
-    undockFromScreen: undockFromScreen
+if (typeof Raptor.Button === 'undefined' && typeof Button !== 'undefined') Raptor.Button = Button;
+if (typeof Raptor.CSSClassApplierButton === 'undefined' && typeof CSSClassApplierButton !== 'undefined') Raptor.CSSClassApplierButton = CSSClassApplierButton;
+if (typeof Raptor.DialogButton === 'undefined' && typeof DialogButton !== 'undefined') Raptor.DialogButton = DialogButton;
+if (typeof Raptor.DialogToggleButton === 'undefined' && typeof DialogToggleButton !== 'undefined') Raptor.DialogToggleButton = DialogToggleButton;
+if (typeof Raptor.ElementHoverPanelLayout === 'undefined' && typeof ElementHoverPanelLayout !== 'undefined') Raptor.ElementHoverPanelLayout = ElementHoverPanelLayout;
+if (typeof Raptor.FilteredPreviewButton === 'undefined' && typeof FilteredPreviewButton !== 'undefined') Raptor.FilteredPreviewButton = FilteredPreviewButton;
+if (typeof Raptor.HoverPanelLayout === 'undefined' && typeof HoverPanelLayout !== 'undefined') Raptor.HoverPanelLayout = HoverPanelLayout;
+if (typeof Raptor.Menu === 'undefined' && typeof Menu !== 'undefined') Raptor.Menu = Menu;
+if (typeof Raptor.MenuButton === 'undefined' && typeof MenuButton !== 'undefined') Raptor.MenuButton = MenuButton;
+if (typeof Raptor.Plugin === 'undefined' && typeof Plugin !== 'undefined') Raptor.Plugin = Plugin;
+if (typeof Raptor.PreviewButton === 'undefined' && typeof PreviewButton !== 'undefined') Raptor.PreviewButton = PreviewButton;
+if (typeof Raptor.PreviewToggleButton === 'undefined' && typeof PreviewToggleButton !== 'undefined') Raptor.PreviewToggleButton = PreviewToggleButton;
+if (typeof Raptor.RaptorLayout === 'undefined' && typeof RaptorLayout !== 'undefined') Raptor.RaptorLayout = RaptorLayout;
+if (typeof Raptor.RaptorPlugin === 'undefined' && typeof RaptorPlugin !== 'undefined') Raptor.RaptorPlugin = RaptorPlugin;
+if (typeof Raptor.SelectMenu === 'undefined' && typeof SelectMenu !== 'undefined') Raptor.SelectMenu = SelectMenu;
+if (typeof Raptor.ToggleButton === 'undefined' && typeof ToggleButton !== 'undefined') Raptor.ToggleButton = ToggleButton;
+if (typeof Raptor.ToolbarLayout === 'undefined' && typeof ToolbarLayout !== 'undefined') Raptor.ToolbarLayout = ToolbarLayout;
+if (typeof Raptor.UiGroup === 'undefined' && typeof UiGroup !== 'undefined') Raptor.UiGroup = UiGroup;
+if (typeof Raptor.aButton === 'undefined' && typeof aButton !== 'undefined') Raptor.aButton = aButton;
+if (typeof Raptor.aButtonActive === 'undefined' && typeof aButtonActive !== 'undefined') Raptor.aButtonActive = aButtonActive;
+if (typeof Raptor.aButtonDisable === 'undefined' && typeof aButtonDisable !== 'undefined') Raptor.aButtonDisable = aButtonDisable;
+if (typeof Raptor.aButtonEnable === 'undefined' && typeof aButtonEnable !== 'undefined') Raptor.aButtonEnable = aButtonEnable;
+if (typeof Raptor.aButtonInactive === 'undefined' && typeof aButtonInactive !== 'undefined') Raptor.aButtonInactive = aButtonInactive;
+if (typeof Raptor.aButtonIsEnabled === 'undefined' && typeof aButtonIsEnabled !== 'undefined') Raptor.aButtonIsEnabled = aButtonIsEnabled;
+if (typeof Raptor.aButtonSetIcon === 'undefined' && typeof aButtonSetIcon !== 'undefined') Raptor.aButtonSetIcon = aButtonSetIcon;
+if (typeof Raptor.aButtonSetLabel === 'undefined' && typeof aButtonSetLabel !== 'undefined') Raptor.aButtonSetLabel = aButtonSetLabel;
+if (typeof Raptor.aDialog === 'undefined' && typeof aDialog !== 'undefined') Raptor.aDialog = aDialog;
+if (typeof Raptor.aDialogClose === 'undefined' && typeof aDialogClose !== 'undefined') Raptor.aDialogClose = aDialogClose;
+if (typeof Raptor.aDialogOpen === 'undefined' && typeof aDialogOpen !== 'undefined') Raptor.aDialogOpen = aDialogOpen;
+if (typeof Raptor.aDialogRemove === 'undefined' && typeof aDialogRemove !== 'undefined') Raptor.aDialogRemove = aDialogRemove;
+if (typeof Raptor.aMenu === 'undefined' && typeof aMenu !== 'undefined') Raptor.aMenu = aMenu;
+if (typeof Raptor.aNotify === 'undefined' && typeof aNotify !== 'undefined') Raptor.aNotify = aNotify;
+if (typeof Raptor.aTabs === 'undefined' && typeof aTabs !== 'undefined') Raptor.aTabs = aTabs;
+if (typeof Raptor.abortLoop === 'undefined' && typeof abortLoop !== 'undefined') Raptor.abortLoop = abortLoop;
+if (typeof Raptor.actionApply === 'undefined' && typeof actionApply !== 'undefined') Raptor.actionApply = actionApply;
+if (typeof Raptor.actionPreview === 'undefined' && typeof actionPreview !== 'undefined') Raptor.actionPreview = actionPreview;
+if (typeof Raptor.actionPreviewRestore === 'undefined' && typeof actionPreviewRestore !== 'undefined') Raptor.actionPreviewRestore = actionPreviewRestore;
+if (typeof Raptor.actionRedo === 'undefined' && typeof actionRedo !== 'undefined') Raptor.actionRedo = actionRedo;
+if (typeof Raptor.actionUndo === 'undefined' && typeof actionUndo !== 'undefined') Raptor.actionUndo = actionUndo;
+if (typeof Raptor.clean === 'undefined' && typeof clean !== 'undefined') Raptor.clean = clean;
+if (typeof Raptor.cleanEmptyAttributes === 'undefined' && typeof cleanEmptyAttributes !== 'undefined') Raptor.cleanEmptyAttributes = cleanEmptyAttributes;
+if (typeof Raptor.cleanEmptyElements === 'undefined' && typeof cleanEmptyElements !== 'undefined') Raptor.cleanEmptyElements = cleanEmptyElements;
+if (typeof Raptor.cleanRemoveAttributes === 'undefined' && typeof cleanRemoveAttributes !== 'undefined') Raptor.cleanRemoveAttributes = cleanRemoveAttributes;
+if (typeof Raptor.cleanRemoveComments === 'undefined' && typeof cleanRemoveComments !== 'undefined') Raptor.cleanRemoveComments = cleanRemoveComments;
+if (typeof Raptor.cleanRemoveElements === 'undefined' && typeof cleanRemoveElements !== 'undefined') Raptor.cleanRemoveElements = cleanRemoveElements;
+if (typeof Raptor.cleanReplaceElements === 'undefined' && typeof cleanReplaceElements !== 'undefined') Raptor.cleanReplaceElements = cleanReplaceElements;
+if (typeof Raptor.cleanUnnestElement === 'undefined' && typeof cleanUnnestElement !== 'undefined') Raptor.cleanUnnestElement = cleanUnnestElement;
+if (typeof Raptor.cleanUnwrapElements === 'undefined' && typeof cleanUnwrapElements !== 'undefined') Raptor.cleanUnwrapElements = cleanUnwrapElements;
+if (typeof Raptor.cleanWrapTextNodes === 'undefined' && typeof cleanWrapTextNodes !== 'undefined') Raptor.cleanWrapTextNodes = cleanWrapTextNodes;
+if (typeof Raptor.debug === 'undefined' && typeof debug !== 'undefined') Raptor.debug = debug;
+if (typeof Raptor.dockToElement === 'undefined' && typeof dockToElement !== 'undefined') Raptor.dockToElement = dockToElement;
+if (typeof Raptor.dockToScreen === 'undefined' && typeof dockToScreen !== 'undefined') Raptor.dockToScreen = dockToScreen;
+if (typeof Raptor.elementBringToTop === 'undefined' && typeof elementBringToTop !== 'undefined') Raptor.elementBringToTop = elementBringToTop;
+if (typeof Raptor.elementChangeTag === 'undefined' && typeof elementChangeTag !== 'undefined') Raptor.elementChangeTag = elementChangeTag;
+if (typeof Raptor.elementClosestBlock === 'undefined' && typeof elementClosestBlock !== 'undefined') Raptor.elementClosestBlock = elementClosestBlock;
+if (typeof Raptor.elementContainsBlockElement === 'undefined' && typeof elementContainsBlockElement !== 'undefined') Raptor.elementContainsBlockElement = elementContainsBlockElement;
+if (typeof Raptor.elementDefaultDisplay === 'undefined' && typeof elementDefaultDisplay !== 'undefined') Raptor.elementDefaultDisplay = elementDefaultDisplay;
+if (typeof Raptor.elementDetachedManip === 'undefined' && typeof elementDetachedManip !== 'undefined') Raptor.elementDetachedManip = elementDetachedManip;
+if (typeof Raptor.elementFirstInvalidElementOfValidParent === 'undefined' && typeof elementFirstInvalidElementOfValidParent !== 'undefined') Raptor.elementFirstInvalidElementOfValidParent = elementFirstInvalidElementOfValidParent;
+if (typeof Raptor.elementGetAttributes === 'undefined' && typeof elementGetAttributes !== 'undefined') Raptor.elementGetAttributes = elementGetAttributes;
+if (typeof Raptor.elementGetStyles === 'undefined' && typeof elementGetStyles !== 'undefined') Raptor.elementGetStyles = elementGetStyles;
+if (typeof Raptor.elementIsBlock === 'undefined' && typeof elementIsBlock !== 'undefined') Raptor.elementIsBlock = elementIsBlock;
+if (typeof Raptor.elementIsEmpty === 'undefined' && typeof elementIsEmpty !== 'undefined') Raptor.elementIsEmpty = elementIsEmpty;
+if (typeof Raptor.elementIsValid === 'undefined' && typeof elementIsValid !== 'undefined') Raptor.elementIsValid = elementIsValid;
+if (typeof Raptor.elementOuterHtml === 'undefined' && typeof elementOuterHtml !== 'undefined') Raptor.elementOuterHtml = elementOuterHtml;
+if (typeof Raptor.elementOuterText === 'undefined' && typeof elementOuterText !== 'undefined') Raptor.elementOuterText = elementOuterText;
+if (typeof Raptor.elementPositionOver === 'undefined' && typeof elementPositionOver !== 'undefined') Raptor.elementPositionOver = elementPositionOver;
+if (typeof Raptor.elementPositionUnder === 'undefined' && typeof elementPositionUnder !== 'undefined') Raptor.elementPositionUnder = elementPositionUnder;
+if (typeof Raptor.elementRemoveAttributes === 'undefined' && typeof elementRemoveAttributes !== 'undefined') Raptor.elementRemoveAttributes = elementRemoveAttributes;
+if (typeof Raptor.elementSwapStyles === 'undefined' && typeof elementSwapStyles !== 'undefined') Raptor.elementSwapStyles = elementSwapStyles;
+if (typeof Raptor.elementToggleStyle === 'undefined' && typeof elementToggleStyle !== 'undefined') Raptor.elementToggleStyle = elementToggleStyle;
+if (typeof Raptor.elementUniqueId === 'undefined' && typeof elementUniqueId !== 'undefined') Raptor.elementUniqueId = elementUniqueId;
+if (typeof Raptor.elementVisibleRect === 'undefined' && typeof elementVisibleRect !== 'undefined') Raptor.elementVisibleRect = elementVisibleRect;
+if (typeof Raptor.elementWrapInner === 'undefined' && typeof elementWrapInner !== 'undefined') Raptor.elementWrapInner = elementWrapInner;
+if (typeof Raptor.eventEventable === 'undefined' && typeof eventEventable !== 'undefined') Raptor.eventEventable = eventEventable;
+if (typeof Raptor.eventMouseEnter === 'undefined' && typeof eventMouseEnter !== 'undefined') Raptor.eventMouseEnter = eventMouseEnter;
+if (typeof Raptor.eventMouseLeave === 'undefined' && typeof eventMouseLeave !== 'undefined') Raptor.eventMouseLeave = eventMouseLeave;
+if (typeof Raptor.extendLocale === 'undefined' && typeof extendLocale !== 'undefined') Raptor.extendLocale = extendLocale;
+if (typeof Raptor.formatBytes === 'undefined' && typeof formatBytes !== 'undefined') Raptor.formatBytes = formatBytes;
+if (typeof Raptor.fragmentInsertBefore === 'undefined' && typeof fragmentInsertBefore !== 'undefined') Raptor.fragmentInsertBefore = fragmentInsertBefore;
+if (typeof Raptor.fragmentToHtml === 'undefined' && typeof fragmentToHtml !== 'undefined') Raptor.fragmentToHtml = fragmentToHtml;
+if (typeof Raptor.getLocalizedString === 'undefined' && typeof getLocalizedString !== 'undefined') Raptor.getLocalizedString = getLocalizedString;
+if (typeof Raptor.handleError === 'undefined' && typeof handleError !== 'undefined') Raptor.handleError = handleError;
+if (typeof Raptor.handleInvalidArgumentError === 'undefined' && typeof handleInvalidArgumentError !== 'undefined') Raptor.handleInvalidArgumentError = handleInvalidArgumentError;
+if (typeof Raptor.info === 'undefined' && typeof info !== 'undefined') Raptor.info = info;
+if (typeof Raptor.lazyLoad === 'undefined' && typeof lazyLoad !== 'undefined') Raptor.lazyLoad = lazyLoad;
+if (typeof Raptor.listBreakAtSelection === 'undefined' && typeof listBreakAtSelection !== 'undefined') Raptor.listBreakAtSelection = listBreakAtSelection;
+if (typeof Raptor.listBreakByReplacingSelection === 'undefined' && typeof listBreakByReplacingSelection !== 'undefined') Raptor.listBreakByReplacingSelection = listBreakByReplacingSelection;
+if (typeof Raptor.listConvertItemsForList === 'undefined' && typeof listConvertItemsForList !== 'undefined') Raptor.listConvertItemsForList = listConvertItemsForList;
+if (typeof Raptor.listConvertListItem === 'undefined' && typeof listConvertListItem !== 'undefined') Raptor.listConvertListItem = listConvertListItem;
+if (typeof Raptor.listConvertListType === 'undefined' && typeof listConvertListType !== 'undefined') Raptor.listConvertListType = listConvertListType;
+if (typeof Raptor.listEnforceValidChildren === 'undefined' && typeof listEnforceValidChildren !== 'undefined') Raptor.listEnforceValidChildren = listEnforceValidChildren;
+if (typeof Raptor.listRemoveEmpty === 'undefined' && typeof listRemoveEmpty !== 'undefined') Raptor.listRemoveEmpty = listRemoveEmpty;
+if (typeof Raptor.listRemoveEmptyItems === 'undefined' && typeof listRemoveEmptyItems !== 'undefined') Raptor.listRemoveEmptyItems = listRemoveEmptyItems;
+if (typeof Raptor.listShouldConvertType === 'undefined' && typeof listShouldConvertType !== 'undefined') Raptor.listShouldConvertType = listShouldConvertType;
+if (typeof Raptor.listShouldUnwrap === 'undefined' && typeof listShouldUnwrap !== 'undefined') Raptor.listShouldUnwrap = listShouldUnwrap;
+if (typeof Raptor.listShouldWrap === 'undefined' && typeof listShouldWrap !== 'undefined') Raptor.listShouldWrap = listShouldWrap;
+if (typeof Raptor.listTidyModified === 'undefined' && typeof listTidyModified !== 'undefined') Raptor.listTidyModified = listTidyModified;
+if (typeof Raptor.listToggle === 'undefined' && typeof listToggle !== 'undefined') Raptor.listToggle = listToggle;
+if (typeof Raptor.listUnwrap === 'undefined' && typeof listUnwrap !== 'undefined') Raptor.listUnwrap = listUnwrap;
+if (typeof Raptor.listUnwrapSelectedListItems === 'undefined' && typeof listUnwrapSelectedListItems !== 'undefined') Raptor.listUnwrapSelectedListItems = listUnwrapSelectedListItems;
+if (typeof Raptor.listUnwrapSelection === 'undefined' && typeof listUnwrapSelection !== 'undefined') Raptor.listUnwrapSelection = listUnwrapSelection;
+if (typeof Raptor.listWrapSelection === 'undefined' && typeof listWrapSelection !== 'undefined') Raptor.listWrapSelection = listWrapSelection;
+if (typeof Raptor.nodeClassSwitch === 'undefined' && typeof nodeClassSwitch !== 'undefined') Raptor.nodeClassSwitch = nodeClassSwitch;
+if (typeof Raptor.nodeClosestByClassName === 'undefined' && typeof nodeClosestByClassName !== 'undefined') Raptor.nodeClosestByClassName = nodeClosestByClassName;
+if (typeof Raptor.nodeFindParent === 'undefined' && typeof nodeFindParent !== 'undefined') Raptor.nodeFindParent = nodeFindParent;
+if (typeof Raptor.nodeFindTextNodes === 'undefined' && typeof nodeFindTextNodes !== 'undefined') Raptor.nodeFindTextNodes = nodeFindTextNodes;
+if (typeof Raptor.nodeFindUnnested === 'undefined' && typeof nodeFindUnnested !== 'undefined') Raptor.nodeFindUnnested = nodeFindUnnested;
+if (typeof Raptor.nodeFreezeHeight === 'undefined' && typeof nodeFreezeHeight !== 'undefined') Raptor.nodeFreezeHeight = nodeFreezeHeight;
+if (typeof Raptor.nodeFromHtml === 'undefined' && typeof nodeFromHtml !== 'undefined') Raptor.nodeFromHtml = nodeFromHtml;
+if (typeof Raptor.nodeIsChildOf === 'undefined' && typeof nodeIsChildOf !== 'undefined') Raptor.nodeIsChildOf = nodeIsChildOf;
+if (typeof Raptor.nodeLastChild === 'undefined' && typeof nodeLastChild !== 'undefined') Raptor.nodeLastChild = nodeLastChild;
+if (typeof Raptor.nodeMatches === 'undefined' && typeof nodeMatches !== 'undefined') Raptor.nodeMatches = nodeMatches;
+if (typeof Raptor.nodeOffsetTop === 'undefined' && typeof nodeOffsetTop !== 'undefined') Raptor.nodeOffsetTop = nodeOffsetTop;
+if (typeof Raptor.nodeUnfreezeHeight === 'undefined' && typeof nodeUnfreezeHeight !== 'undefined') Raptor.nodeUnfreezeHeight = nodeUnfreezeHeight;
+if (typeof Raptor.nodeUniqueId === 'undefined' && typeof nodeUniqueId !== 'undefined') Raptor.nodeUniqueId = nodeUniqueId;
+if (typeof Raptor.persistGet === 'undefined' && typeof persistGet !== 'undefined') Raptor.persistGet = persistGet;
+if (typeof Raptor.persistSet === 'undefined' && typeof persistSet !== 'undefined') Raptor.persistSet = persistSet;
+if (typeof Raptor.pluginPluggable === 'undefined' && typeof pluginPluggable !== 'undefined') Raptor.pluginPluggable = pluginPluggable;
+if (typeof Raptor.pluginPrepare === 'undefined' && typeof pluginPrepare !== 'undefined') Raptor.pluginPrepare = pluginPrepare;
+if (typeof Raptor.rangeContainsNode === 'undefined' && typeof rangeContainsNode !== 'undefined') Raptor.rangeContainsNode = rangeContainsNode;
+if (typeof Raptor.rangeContainsNodeText === 'undefined' && typeof rangeContainsNodeText !== 'undefined') Raptor.rangeContainsNodeText = rangeContainsNodeText;
+if (typeof Raptor.rangeDeserialize === 'undefined' && typeof rangeDeserialize !== 'undefined') Raptor.rangeDeserialize = rangeDeserialize;
+if (typeof Raptor.rangeEmptyTag === 'undefined' && typeof rangeEmptyTag !== 'undefined') Raptor.rangeEmptyTag = rangeEmptyTag;
+if (typeof Raptor.rangeExpandTo === 'undefined' && typeof rangeExpandTo !== 'undefined') Raptor.rangeExpandTo = rangeExpandTo;
+if (typeof Raptor.rangeExpandToParent === 'undefined' && typeof rangeExpandToParent !== 'undefined') Raptor.rangeExpandToParent = rangeExpandToParent;
+if (typeof Raptor.rangeGet === 'undefined' && typeof rangeGet !== 'undefined') Raptor.rangeGet = rangeGet;
+if (typeof Raptor.rangeGetCommonAncestor === 'undefined' && typeof rangeGetCommonAncestor !== 'undefined') Raptor.rangeGetCommonAncestor = rangeGetCommonAncestor;
+if (typeof Raptor.rangeGetEndElement === 'undefined' && typeof rangeGetEndElement !== 'undefined') Raptor.rangeGetEndElement = rangeGetEndElement;
+if (typeof Raptor.rangeGetStartElement === 'undefined' && typeof rangeGetStartElement !== 'undefined') Raptor.rangeGetStartElement = rangeGetStartElement;
+if (typeof Raptor.rangeIsContainedBy === 'undefined' && typeof rangeIsContainedBy !== 'undefined') Raptor.rangeIsContainedBy = rangeIsContainedBy;
+if (typeof Raptor.rangeIsEmpty === 'undefined' && typeof rangeIsEmpty !== 'undefined') Raptor.rangeIsEmpty = rangeIsEmpty;
+if (typeof Raptor.rangeReplace === 'undefined' && typeof rangeReplace !== 'undefined') Raptor.rangeReplace = rangeReplace;
+if (typeof Raptor.rangeReplaceSplitInvalidTags === 'undefined' && typeof rangeReplaceSplitInvalidTags !== 'undefined') Raptor.rangeReplaceSplitInvalidTags = rangeReplaceSplitInvalidTags;
+if (typeof Raptor.rangeReplaceWithinValidTags === 'undefined' && typeof rangeReplaceWithinValidTags !== 'undefined') Raptor.rangeReplaceWithinValidTags = rangeReplaceWithinValidTags;
+if (typeof Raptor.rangeSelectElement === 'undefined' && typeof rangeSelectElement !== 'undefined') Raptor.rangeSelectElement = rangeSelectElement;
+if (typeof Raptor.rangeSelectElementContent === 'undefined' && typeof rangeSelectElementContent !== 'undefined') Raptor.rangeSelectElementContent = rangeSelectElementContent;
+if (typeof Raptor.rangeSerialize === 'undefined' && typeof rangeSerialize !== 'undefined') Raptor.rangeSerialize = rangeSerialize;
+if (typeof Raptor.rangeToHtml === 'undefined' && typeof rangeToHtml !== 'undefined') Raptor.rangeToHtml = rangeToHtml;
+if (typeof Raptor.rangeTrim === 'undefined' && typeof rangeTrim !== 'undefined') Raptor.rangeTrim = rangeTrim;
+if (typeof Raptor.registerLocale === 'undefined' && typeof registerLocale !== 'undefined') Raptor.registerLocale = registerLocale;
+if (typeof Raptor.selectionAtEndOfElement === 'undefined' && typeof selectionAtEndOfElement !== 'undefined') Raptor.selectionAtEndOfElement = selectionAtEndOfElement;
+if (typeof Raptor.selectionAtStartOfElement === 'undefined' && typeof selectionAtStartOfElement !== 'undefined') Raptor.selectionAtStartOfElement = selectionAtStartOfElement;
+if (typeof Raptor.selectionChangeTags === 'undefined' && typeof selectionChangeTags !== 'undefined') Raptor.selectionChangeTags = selectionChangeTags;
+if (typeof Raptor.selectionClearFormatting === 'undefined' && typeof selectionClearFormatting !== 'undefined') Raptor.selectionClearFormatting = selectionClearFormatting;
+if (typeof Raptor.selectionConstrain === 'undefined' && typeof selectionConstrain !== 'undefined') Raptor.selectionConstrain = selectionConstrain;
+if (typeof Raptor.selectionContains === 'undefined' && typeof selectionContains !== 'undefined') Raptor.selectionContains = selectionContains;
+if (typeof Raptor.selectionDelete === 'undefined' && typeof selectionDelete !== 'undefined') Raptor.selectionDelete = selectionDelete;
+if (typeof Raptor.selectionDestroy === 'undefined' && typeof selectionDestroy !== 'undefined') Raptor.selectionDestroy = selectionDestroy;
+if (typeof Raptor.selectionEachBlock === 'undefined' && typeof selectionEachBlock !== 'undefined') Raptor.selectionEachBlock = selectionEachBlock;
+if (typeof Raptor.selectionEachRange === 'undefined' && typeof selectionEachRange !== 'undefined') Raptor.selectionEachRange = selectionEachRange;
+if (typeof Raptor.selectionExists === 'undefined' && typeof selectionExists !== 'undefined') Raptor.selectionExists = selectionExists;
+if (typeof Raptor.selectionExpandTo === 'undefined' && typeof selectionExpandTo !== 'undefined') Raptor.selectionExpandTo = selectionExpandTo;
+if (typeof Raptor.selectionExpandToWord === 'undefined' && typeof selectionExpandToWord !== 'undefined') Raptor.selectionExpandToWord = selectionExpandToWord;
+if (typeof Raptor.selectionFindWrappingAndInnerElements === 'undefined' && typeof selectionFindWrappingAndInnerElements !== 'undefined') Raptor.selectionFindWrappingAndInnerElements = selectionFindWrappingAndInnerElements;
+if (typeof Raptor.selectionGetElement === 'undefined' && typeof selectionGetElement !== 'undefined') Raptor.selectionGetElement = selectionGetElement;
+if (typeof Raptor.selectionGetElements === 'undefined' && typeof selectionGetElements !== 'undefined') Raptor.selectionGetElements = selectionGetElements;
+if (typeof Raptor.selectionGetEndElement === 'undefined' && typeof selectionGetEndElement !== 'undefined') Raptor.selectionGetEndElement = selectionGetEndElement;
+if (typeof Raptor.selectionGetHtml === 'undefined' && typeof selectionGetHtml !== 'undefined') Raptor.selectionGetHtml = selectionGetHtml;
+if (typeof Raptor.selectionGetStartElement === 'undefined' && typeof selectionGetStartElement !== 'undefined') Raptor.selectionGetStartElement = selectionGetStartElement;
+if (typeof Raptor.selectionInverseWrapWithTagClass === 'undefined' && typeof selectionInverseWrapWithTagClass !== 'undefined') Raptor.selectionInverseWrapWithTagClass = selectionInverseWrapWithTagClass;
+if (typeof Raptor.selectionIsEmpty === 'undefined' && typeof selectionIsEmpty !== 'undefined') Raptor.selectionIsEmpty = selectionIsEmpty;
+if (typeof Raptor.selectionRange === 'undefined' && typeof selectionRange !== 'undefined') Raptor.selectionRange = selectionRange;
+if (typeof Raptor.selectionReplace === 'undefined' && typeof selectionReplace !== 'undefined') Raptor.selectionReplace = selectionReplace;
+if (typeof Raptor.selectionReplaceSplittingSelectedElement === 'undefined' && typeof selectionReplaceSplittingSelectedElement !== 'undefined') Raptor.selectionReplaceSplittingSelectedElement = selectionReplaceSplittingSelectedElement;
+if (typeof Raptor.selectionReplaceWithinValidTags === 'undefined' && typeof selectionReplaceWithinValidTags !== 'undefined') Raptor.selectionReplaceWithinValidTags = selectionReplaceWithinValidTags;
+if (typeof Raptor.selectionRestore === 'undefined' && typeof selectionRestore !== 'undefined') Raptor.selectionRestore = selectionRestore;
+if (typeof Raptor.selectionSave === 'undefined' && typeof selectionSave !== 'undefined') Raptor.selectionSave = selectionSave;
+if (typeof Raptor.selectionSaved === 'undefined' && typeof selectionSaved !== 'undefined') Raptor.selectionSaved = selectionSaved;
+if (typeof Raptor.selectionSelectEdge === 'undefined' && typeof selectionSelectEdge !== 'undefined') Raptor.selectionSelectEdge = selectionSelectEdge;
+if (typeof Raptor.selectionSelectEnd === 'undefined' && typeof selectionSelectEnd !== 'undefined') Raptor.selectionSelectEnd = selectionSelectEnd;
+if (typeof Raptor.selectionSelectInner === 'undefined' && typeof selectionSelectInner !== 'undefined') Raptor.selectionSelectInner = selectionSelectInner;
+if (typeof Raptor.selectionSelectOuter === 'undefined' && typeof selectionSelectOuter !== 'undefined') Raptor.selectionSelectOuter = selectionSelectOuter;
+if (typeof Raptor.selectionSelectStart === 'undefined' && typeof selectionSelectStart !== 'undefined') Raptor.selectionSelectStart = selectionSelectStart;
+if (typeof Raptor.selectionSelectToEndOfElement === 'undefined' && typeof selectionSelectToEndOfElement !== 'undefined') Raptor.selectionSelectToEndOfElement = selectionSelectToEndOfElement;
+if (typeof Raptor.selectionSet === 'undefined' && typeof selectionSet !== 'undefined') Raptor.selectionSet = selectionSet;
+if (typeof Raptor.selectionToggleBlockClasses === 'undefined' && typeof selectionToggleBlockClasses !== 'undefined') Raptor.selectionToggleBlockClasses = selectionToggleBlockClasses;
+if (typeof Raptor.selectionToggleBlockStyle === 'undefined' && typeof selectionToggleBlockStyle !== 'undefined') Raptor.selectionToggleBlockStyle = selectionToggleBlockStyle;
+if (typeof Raptor.selectionToggleWrapper === 'undefined' && typeof selectionToggleWrapper !== 'undefined') Raptor.selectionToggleWrapper = selectionToggleWrapper;
+if (typeof Raptor.selectionTrim === 'undefined' && typeof selectionTrim !== 'undefined') Raptor.selectionTrim = selectionTrim;
+if (typeof Raptor.selectionWrapTagWithAttribute === 'undefined' && typeof selectionWrapTagWithAttribute !== 'undefined') Raptor.selectionWrapTagWithAttribute = selectionWrapTagWithAttribute;
+if (typeof Raptor.setLocale === 'undefined' && typeof setLocale !== 'undefined') Raptor.setLocale = setLocale;
+if (typeof Raptor.stateCheckDirty === 'undefined' && typeof stateCheckDirty !== 'undefined') Raptor.stateCheckDirty = stateCheckDirty;
+if (typeof Raptor.stateRestore === 'undefined' && typeof stateRestore !== 'undefined') Raptor.stateRestore = stateRestore;
+if (typeof Raptor.stateSave === 'undefined' && typeof stateSave !== 'undefined') Raptor.stateSave = stateSave;
+if (typeof Raptor.stateSetDirty === 'undefined' && typeof stateSetDirty !== 'undefined') Raptor.stateSetDirty = stateSetDirty;
+if (typeof Raptor.stringFromCamelCase === 'undefined' && typeof stringFromCamelCase !== 'undefined') Raptor.stringFromCamelCase = stringFromCamelCase;
+if (typeof Raptor.stringHash === 'undefined' && typeof stringHash !== 'undefined') Raptor.stringHash = stringHash;
+if (typeof Raptor.stringHtmlStringIsEmpty === 'undefined' && typeof stringHtmlStringIsEmpty !== 'undefined') Raptor.stringHtmlStringIsEmpty = stringHtmlStringIsEmpty;
+if (typeof Raptor.stringStripTags === 'undefined' && typeof stringStripTags !== 'undefined') Raptor.stringStripTags = stringStripTags;
+if (typeof Raptor.stringToCamelCase === 'undefined' && typeof stringToCamelCase !== 'undefined') Raptor.stringToCamelCase = stringToCamelCase;
+if (typeof Raptor.stringUcFirst === 'undefined' && typeof stringUcFirst !== 'undefined') Raptor.stringUcFirst = stringUcFirst;
+if (typeof Raptor.styleRestoreState === 'undefined' && typeof styleRestoreState !== 'undefined') Raptor.styleRestoreState = styleRestoreState;
+if (typeof Raptor.styleSwapState === 'undefined' && typeof styleSwapState !== 'undefined') Raptor.styleSwapState = styleSwapState;
+if (typeof Raptor.styleSwapWithWrapper === 'undefined' && typeof styleSwapWithWrapper !== 'undefined') Raptor.styleSwapWithWrapper = styleSwapWithWrapper;
+if (typeof Raptor.tableCanMergeCells === 'undefined' && typeof tableCanMergeCells !== 'undefined') Raptor.tableCanMergeCells = tableCanMergeCells;
+if (typeof Raptor.tableCanSplitCells === 'undefined' && typeof tableCanSplitCells !== 'undefined') Raptor.tableCanSplitCells = tableCanSplitCells;
+if (typeof Raptor.tableCellsInRange === 'undefined' && typeof tableCellsInRange !== 'undefined') Raptor.tableCellsInRange = tableCellsInRange;
+if (typeof Raptor.tableCreate === 'undefined' && typeof tableCreate !== 'undefined') Raptor.tableCreate = tableCreate;
+if (typeof Raptor.tableDeleteColumn === 'undefined' && typeof tableDeleteColumn !== 'undefined') Raptor.tableDeleteColumn = tableDeleteColumn;
+if (typeof Raptor.tableDeleteRow === 'undefined' && typeof tableDeleteRow !== 'undefined') Raptor.tableDeleteRow = tableDeleteRow;
+if (typeof Raptor.tableGetCellByIndex === 'undefined' && typeof tableGetCellByIndex !== 'undefined') Raptor.tableGetCellByIndex = tableGetCellByIndex;
+if (typeof Raptor.tableGetCellIndex === 'undefined' && typeof tableGetCellIndex !== 'undefined') Raptor.tableGetCellIndex = tableGetCellIndex;
+if (typeof Raptor.tableInsertColumn === 'undefined' && typeof tableInsertColumn !== 'undefined') Raptor.tableInsertColumn = tableInsertColumn;
+if (typeof Raptor.tableInsertRow === 'undefined' && typeof tableInsertRow !== 'undefined') Raptor.tableInsertRow = tableInsertRow;
+if (typeof Raptor.tableIsEmpty === 'undefined' && typeof tableIsEmpty !== 'undefined') Raptor.tableIsEmpty = tableIsEmpty;
+if (typeof Raptor.tableMergeCells === 'undefined' && typeof tableMergeCells !== 'undefined') Raptor.tableMergeCells = tableMergeCells;
+if (typeof Raptor.tableSplitCells === 'undefined' && typeof tableSplitCells !== 'undefined') Raptor.tableSplitCells = tableSplitCells;
+if (typeof Raptor.templateConvertTokens === 'undefined' && typeof templateConvertTokens !== 'undefined') Raptor.templateConvertTokens = templateConvertTokens;
+if (typeof Raptor.templateGet === 'undefined' && typeof templateGet !== 'undefined') Raptor.templateGet = templateGet;
+if (typeof Raptor.templateGetVariables === 'undefined' && typeof templateGetVariables !== 'undefined') Raptor.templateGetVariables = templateGetVariables;
+if (typeof Raptor.templateRegister === 'undefined' && typeof templateRegister !== 'undefined') Raptor.templateRegister = templateRegister;
+if (typeof Raptor.toolbarLayout === 'undefined' && typeof toolbarLayout !== 'undefined') Raptor.toolbarLayout = toolbarLayout;
+if (typeof Raptor.tr === 'undefined' && typeof tr !== 'undefined') Raptor.tr = tr;
+if (typeof Raptor.typeIsArray === 'undefined' && typeof typeIsArray !== 'undefined') Raptor.typeIsArray = typeIsArray;
+if (typeof Raptor.typeIsElement === 'undefined' && typeof typeIsElement !== 'undefined') Raptor.typeIsElement = typeIsElement;
+if (typeof Raptor.typeIsJQueryCompatible === 'undefined' && typeof typeIsJQueryCompatible !== 'undefined') Raptor.typeIsJQueryCompatible = typeIsJQueryCompatible;
+if (typeof Raptor.typeIsNode === 'undefined' && typeof typeIsNode !== 'undefined') Raptor.typeIsNode = typeIsNode;
+if (typeof Raptor.typeIsNumber === 'undefined' && typeof typeIsNumber !== 'undefined') Raptor.typeIsNumber = typeIsNumber;
+if (typeof Raptor.typeIsRange === 'undefined' && typeof typeIsRange !== 'undefined') Raptor.typeIsRange = typeIsRange;
+if (typeof Raptor.typeIsSelection === 'undefined' && typeof typeIsSelection !== 'undefined') Raptor.typeIsSelection = typeIsSelection;
+if (typeof Raptor.typeIsString === 'undefined' && typeof typeIsString !== 'undefined') Raptor.typeIsString = typeIsString;
+if (typeof Raptor.typeIsTextNode === 'undefined' && typeof typeIsTextNode !== 'undefined') Raptor.typeIsTextNode = typeIsTextNode;
+if (typeof Raptor.undockFromElement === 'undefined' && typeof undockFromElement !== 'undefined') Raptor.undockFromElement = undockFromElement;
+if (typeof Raptor.undockFromScreen === 'undefined' && typeof undockFromScreen !== 'undefined') Raptor.undockFromScreen = undockFromScreen;
 });
 window.Raptor = Raptor;
 // </expose>
