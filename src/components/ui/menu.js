@@ -90,7 +90,7 @@ Menu.prototype.show = function() {
  *
  * @param {Event} event The click event.
  */
-document.documentElement.addEventListener('click', function(event) {
+$('html').click(function(event) {
     if (!$(event.target).hasClass('raptor-menu-button') &&
             $(event.target).closest('.raptor-menu-button').length === 0) {
         $('.raptor-menu').hide();
