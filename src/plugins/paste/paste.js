@@ -381,7 +381,7 @@ PastePlugin.prototype.updateAreas = function(pastedData) {
     pasteDialog.find('.' + this.options.baseClass + '-source').text(html);
 };
 
-$(document).on('keyup.raptor keydown.raptor', function(event) {
+nodeAddEventListener(document.documentElement, 'keyup keydown', function(event) {
     pasteShiftDown = event.shiftKey;
 });
 

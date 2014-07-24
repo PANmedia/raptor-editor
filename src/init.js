@@ -1,13 +1,11 @@
-var $ = jQuery;
-
-$(function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Initialise rangy
     if (!rangy.initialized) {
         rangy.init();
     }
 
     // Add helper method to rangy
-    if (!$.isFunction(rangy.rangePrototype.insertNodeAtEnd)) {
+    if (typeof rangy.rangePrototype.insertNodeAtEnd !== 'function') {
         rangy.rangePrototype.insertNodeAtEnd = function(node) {
             var range = this.cloneRange();
             range.collapse(false);
@@ -16,10 +14,4 @@ $(function() {
             this.setEndAfter(node);
         };
     }
-});
-
-// Select menu close event (triggered when clicked off)
-$('html').click(function(event) {
-    $('.ui-editor-selectmenu-visible')
-        .removeClass('ui-editor-selectmenu-visible');
 });

@@ -134,56 +134,7 @@ if (typeof Node === 'undefined') {
 
 // <strict>
 
-// Ensure jQuery has been included
-if (typeof jQuery === 'undefined') handleError('jQuery is required');
-
-// Ensure jQuery UI has been included
-else if (!jQuery.ui) handleError('jQuery UI is required');
-
-// Ensure dialog has been included
-else if (!jQuery.ui.dialog) handleError('jQuery UI Dialog is required.');
-
-// Ensure dialog has been included
-else if (!jQuery.ui.position) handleError('jQuery UI Position is required.');
-
 // Ensure rangy has been included
 if (typeof rangy === 'undefined') handleError('Rangy is required. This library should have been included with the file you downloaded. If not, acquire it here: http://code.google.com/p/rangy/"');
 
-
-function versionCompare(v1, v2) {
-    var v1parts = v1.split('.');
-    var v2parts = v2.split('.');
-
-    for (var i = 0; i < v1parts.length; ++i) {
-        if (v2parts.length == i) {
-            return v1;
-        }
-        var v1int = parseInt(v1parts[i]);
-        var v2int = parseInt(v2parts[i]);
-
-        if (v1int == v2int) {
-            continue;
-        }
-        else if (v1int > v2int) {
-            return v1;
-        }
-        else {
-            return v2;
-        }
-    }
-
-    if (v1parts.length != v2parts.length) {
-        return v2;
-    }
-
-    return null;
-}
-var jQueryVersion = versionCompare('1.9.0', jQuery.fn.jquery);
-if (jQueryVersion === '1.9.0') {
-    handleError('jQuery version should be at least 1.9.0');
-}
-var jQueryUIVersion = versionCompare('1.10.0', jQuery.ui.version);
-if (jQueryUIVersion === '1.10.0') {
-    handleError('jQuery UI version should be at least 1.9.0');
-}
 // </strict>

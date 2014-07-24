@@ -15,147 +15,141 @@
  */
 var disabledReloading = false;
 
-/**
- * @class
- */
-var RaptorWidget = {
-
-    /**
-     * @constructs RaptorWidget
-     */
-    _init: function() {
-        // Prevent double initialisation
-        if (this.element.attr('data-raptor-initialised')) {
-            // <debug>
-            if (debugLevel >= MID) {
-                debug('Raptor already initialised, attempted to reinitialise on: ', this.element);
-            }
-            // </debug>
-            return;
+var RaptorEditor = function(options) {
+    // Prevent double initialisation
+    if (this.element.attr('data-raptor-initialised')) {
+        // <debug>
+        if (debugLevel >= MID) {
+            debug('Raptor already initialised, attempted to reinitialise on: ', this.element);
         }
-        this.element.attr('data-raptor-initialised', true);
+        // </debug>
+        return;
+    }
+    this.element.attr('data-raptor-initialised', true);
 
-        // Add the editor instance to the global list of instances
-        if ($.inArray(this, Raptor.instances) === -1) {
-            Raptor.instances.push(this);
+    // Add the editor instance to the global list of instances
+    if ($.inArray(this, Raptor.instances) === -1) {
+        Raptor.instances.push(this);
+    }
+
+    var currentInstance = this;
+
+    // <strict>
+    // Check for nested editors
+    Raptor.eachInstance(function(instance) {
+        if (currentInstance != instance &&
+                currentInstance.element.closest(instance.element).length) {
+            handleError('Nesting editors is unsupported', currentInstance.element, instance.element);
         }
+    });
+    // </strict>
 
-        var currentInstance = this;
+    // Set the initial locale
+    var locale = this.persist('locale') || this.options.initialLocale;
+    if (locale) {
+        currentLocale = locale;
+    }
 
-        // <strict>
-        // Check for nested editors
-        Raptor.eachInstance(function(instance) {
-            if (currentInstance != instance &&
-                    currentInstance.element.closest(instance.element).length) {
-                handleError('Nesting editors is unsupported', currentInstance.element, instance.element);
-            }
+    var options = this.options;
+    if (this.options.preset) {
+        this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
+    } else {
+        this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.defaults, this.options);
+    }
+    if (options.layouts && options.layouts.toolbar && options.layouts.toolbar.uiOrder) {
+        this.options.layouts.toolbar.uiOrder = options.layouts.toolbar.uiOrder;
+    }
+
+    // Give the element a unique ID
+    if (!this.element.attr('id')) {
+        this.element.attr('id', elementUniqueId());
+    }
+
+    // Initialise properties
+    this.ready = false;
+    this.events = {};
+    this.plugins = {};
+    this.layouts = {};
+    this.templates = $.extend({}, Raptor.templates);
+    this.target = this.element;
+    this.layout = null;
+    this.previewState = null;
+    this.pausedState = null;
+    this.pausedScrollX = null;
+    this.pausedScrollY = null;
+
+    // True if editing is enabled
+    this.enabled = false;
+
+    // True if editing is enabled at least once
+    this.initialised = false;
+
+    // List of UI objects bound to the editor
+    this.uiObjects = {};
+
+    // List of hotkeys bound to the editor
+    this.hotkeys = {};
+    this.hotkeysSuspended = false;
+
+    // If hotkeys are enabled, register any custom hotkeys provided by the user
+    if (this.options.enableHotkeys) {
+        this.registerHotkey(this.hotkeys);
+    }
+
+    // Bind default events
+    for (var name in this.options.bind) {
+        this.bind(stringFromCamelCase(name), this.options.bind[name]);
+    }
+
+    // Undo stack, redo pointer
+    this.history = [];
+    this.present = 0;
+    this.historyEnabled = true;
+
+    // Check for browser support
+    if (!isSupported()) {
+        // @todo If element isn't a textarea, replace it with one
+        return;
+    }
+
+    // Store the original HTML
+    this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
+    this.historyPush(this.getOriginalHtml());
+
+    // Replace textareas/inputs with a div
+    if (this.element.is(':input')) {
+        this.replaceOriginal();
+    }
+
+    // Load plugins
+    this.loadPlugins();
+
+    // Stores if the current state of the content is clean
+    this.dirty = false;
+
+    // Stores the previous state of the content
+    this.previousContent = null;
+
+    // Stores the previous selection
+    this.previousSelection = null;
+
+    this.getElement().addClass('raptor-editable-block');
+
+    this.loadLayouts();
+
+    // Fire the ready event
+    this.ready = true;
+    this.fire('ready');
+
+    // Automatically enable the editor if autoEnable is true
+    if (this.options.autoEnable) {
+        $(function() {
+            currentInstance.enableEditing();
         });
-        // </strict>
+    }
+};
 
-        // Set the initial locale
-        var locale = this.persist('locale') || this.options.initialLocale;
-        if (locale) {
-            currentLocale = locale;
-        }
-
-        var options = this.options;
-        if (this.options.preset) {
-            this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.presets[this.options.preset], this.options);
-        } else {
-            this.options = $.extend(true, {}, Raptor.globalDefaults, Raptor.defaults, this.options);
-        }
-        if (options.layouts && options.layouts.toolbar && options.layouts.toolbar.uiOrder) {
-            this.options.layouts.toolbar.uiOrder = options.layouts.toolbar.uiOrder;
-        }
-
-        // Give the element a unique ID
-        if (!this.element.attr('id')) {
-            this.element.attr('id', elementUniqueId());
-        }
-
-        // Initialise properties
-        this.ready = false;
-        this.events = {};
-        this.plugins = {};
-        this.layouts = {};
-        this.templates = $.extend({}, Raptor.templates);
-        this.target = this.element;
-        this.layout = null;
-        this.previewState = null;
-        this.pausedState = null;
-        this.pausedScrollX = null;
-        this.pausedScrollY = null;
-
-        // True if editing is enabled
-        this.enabled = false;
-
-        // True if editing is enabled at least once
-        this.initialised = false;
-
-        // List of UI objects bound to the editor
-        this.uiObjects = {};
-
-        // List of hotkeys bound to the editor
-        this.hotkeys = {};
-        this.hotkeysSuspended = false;
-
-        // If hotkeys are enabled, register any custom hotkeys provided by the user
-        if (this.options.enableHotkeys) {
-            this.registerHotkey(this.hotkeys);
-        }
-
-        // Bind default events
-        for (var name in this.options.bind) {
-            this.bind(stringFromCamelCase(name), this.options.bind[name]);
-        }
-
-        // Undo stack, redo pointer
-        this.history = [];
-        this.present = 0;
-        this.historyEnabled = true;
-
-        // Check for browser support
-        if (!isSupported()) {
-            // @todo If element isn't a textarea, replace it with one
-            return;
-        }
-
-        // Store the original HTML
-        this.setOriginalHtml(this.element.is(':input') ? this.element.val() : this.element.html());
-        this.historyPush(this.getOriginalHtml());
-
-        // Replace textareas/inputs with a div
-        if (this.element.is(':input')) {
-            this.replaceOriginal();
-        }
-
-        // Load plugins
-        this.loadPlugins();
-
-        // Stores if the current state of the content is clean
-        this.dirty = false;
-
-        // Stores the previous state of the content
-        this.previousContent = null;
-
-        // Stores the previous selection
-        this.previousSelection = null;
-
-        this.getElement().addClass('raptor-editable-block');
-
-        this.loadLayouts();
-
-        // Fire the ready event
-        this.ready = true;
-        this.fire('ready');
-
-        // Automatically enable the editor if autoEnable is true
-        if (this.options.autoEnable) {
-            $(function() {
-                currentInstance.enableEditing();
-            });
-        }
-    },
+var RaptorWidget = {
 
     /*========================================================================*\
      * Core functions
@@ -1131,6 +1125,3 @@ var RaptorWidget = {
         return result;
     }
 };
-
-$.widget('ui.raptor', RaptorWidget);
-$.fn.raptor.Raptor = Raptor;
