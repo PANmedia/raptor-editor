@@ -13,16 +13,21 @@
  * @constructor
  * @param {Raptor} raptor
  */
-function LinkTypeDocument(raptor) {
-    this.raptor = raptor;
+function LinkTypeDocument(linkCreate) {
+    this.linkCreate = linkCreate;
     this.label = tr('linkTypeDocumentLabel');
 }
 
 LinkTypeDocument.prototype = Object.create(LinkTypeExternal.prototype);
 
+LinkTypeDocument.prototype.resetInputs = function(panel) {
+    panel.find('[name=location]').val('http://');
+    panel.find('[name=blank]').prop('checked', false);
+};
+
 /**
  * @return {String} The document link panel content.
  */
 LinkTypeDocument.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.document', this.raptor.options);
+    return this.linkCreate.raptor.getTemplate('link.document', this.linkCreate.raptor.options);
 };

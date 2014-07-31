@@ -15,8 +15,8 @@
  * @param {type} raptor
  * @returns {LinkTypeEmail}
  */
-function LinkTypeEmail(raptor) {
-    this.raptor = raptor;
+function LinkTypeEmail(linkCreate) {
+    this.linkCreate = linkCreate;
     this.label = tr('linkTypeEmailLabel');
 }
 
@@ -26,14 +26,13 @@ function LinkTypeEmail(raptor) {
  * @returns {Element}
  */
 LinkTypeEmail.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.email', this.raptor.options);
+    return this.linkCreate.raptor.getTemplate('link.email', this.linkCreate.raptor.options);
 };
 
 /**
  * Gets the attributes of the email link.
  *
- * @todo panel and return details
- * @param {type} panel
+ * @param {Element} panel
  * @returns {LinkTypeEmail.prototype.getAttributes.Anonym$0|Boolean}
  */
 LinkTypeEmail.prototype.getAttributes = function(panel) {
@@ -50,12 +49,16 @@ LinkTypeEmail.prototype.getAttributes = function(panel) {
     };
 };
 
+LinkTypeEmail.prototype.resetInputs = function(panel) {
+    panel.find('[name=email]').val('');
+    panel.find('[name=subject]').val('');
+};
+
 /**
  * Updates the users inputs.
  *
- * @todo type and des for panel and des for return.
  * @param {String} link The email link.
- * @param {type} panel
+ * @param {Element} panel
  * @returns {Boolean}
  */
 LinkTypeEmail.prototype.updateInputs = function(link, panel) {

@@ -15,8 +15,8 @@
  * @param {Object} raptor
  * @returns {Element}
  */
-function LinkTypeInternal(raptor) {
-    this.raptor = raptor;
+function LinkTypeInternal(linkCreate) {
+    this.linkCreate = linkCreate;
     this.label = tr('linkTypeInternalLabel');
 }
 
@@ -26,8 +26,8 @@ function LinkTypeInternal(raptor) {
  * @returns {Element}
  */
 LinkTypeInternal.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.internal', {
-        baseClass: this.raptor.options.baseClass,
+    return this.linkCreate.raptor.getTemplate('link.internal', {
+        baseClass: this.linkCreate.raptor.options.baseClass,
         domain: window.location.protocol + '//' + window.location.host
     });
 };
@@ -36,7 +36,7 @@ LinkTypeInternal.prototype.getContent = function() {
  * Gets the attributes of the internal link.
  *
  * @todo type and des for panel and return
- * @param {type} panel
+ * @param {Element} panel
  * @returns {LinkTypeInternal.prototype.getAttributes.result}
  */
 LinkTypeInternal.prototype.getAttributes = function(panel) {
@@ -53,12 +53,17 @@ LinkTypeInternal.prototype.getAttributes = function(panel) {
     return result;
 };
 
+LinkTypeInternal.prototype.resetInputs = function(panel) {
+    panel.find('[name=location]').val('');
+    panel.find('[name=blank]').prop('checked', false);
+};
+
 /**
  * Updates the users inputs.
  *
  * @todo type and des for panel and des for return.
  * @param {String} link The internal lnk.
- * @param {type} panel
+ * @param {Element} panel
  * @returns {Boolean}
  */
 LinkTypeInternal.prototype.updateInputs = function(link, panel) {

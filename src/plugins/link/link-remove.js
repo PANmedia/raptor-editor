@@ -1,17 +1,12 @@
 /**
- * @fileOverview Contains the remove link class code.
+ * Link remove plugin.
+ *
+ * @plugin PreviewToggleButton linkRemove
  * @license http://www.raptor-editor.com/license
  *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
- */
-
-/**
- * Creates an instance of the toggle button to remove links.
- *
- * @todo param details?
- * @param {type} param
  */
 Raptor.registerUi(new PreviewToggleButton({
     name: 'linkRemove',

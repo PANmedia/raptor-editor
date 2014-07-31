@@ -15,8 +15,8 @@
  * @param {Object} raptor
  * @returns {Element}
  */
-function LinkTypeExternal(raptor) {
-    this.raptor = raptor;
+function LinkTypeExternal(linkCreate) {
+    this.linkCreate = linkCreate;
     this.label = tr('linkTypeExternalLabel');
 }
 
@@ -26,14 +26,13 @@ function LinkTypeExternal(raptor) {
  * @returns {Element}
  */
 LinkTypeExternal.prototype.getContent = function() {
-    return this.raptor.getTemplate('link.external', this.raptor.options);
+    return this.linkCreate.raptor.getTemplate('link.external', this.linkCreate.raptor.options);
 };
 
 /**
  * Gets the attributes of the external link.
  *
- * @todo type and des for panel
- * @param {type} panel
+ * @param {Element} panel
  * @returns {LinkTypeExternal.prototype.getAttributes.result|Boolean}
  */
 LinkTypeExternal.prototype.getAttributes = function(panel) {
@@ -54,12 +53,16 @@ LinkTypeExternal.prototype.getAttributes = function(panel) {
     return result;
 };
 
+LinkTypeExternal.prototype.resetInputs = function(panel) {
+    panel.find('[name=location]').val('http://');
+    panel.find('[name=blank]').prop('checked', true);
+};
+
 /**
  * Updates the users inputs.
  *
- * @todo type and desc for panel and return.
  * @param {String} link The external link.
- * @param {type} panel
+ * @param {Element} panel
  * @returns {Boolean}
  */
 LinkTypeExternal.prototype.updateInputs = function(link, panel) {

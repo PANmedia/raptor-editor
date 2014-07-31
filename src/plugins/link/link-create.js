@@ -1,25 +1,29 @@
 /**
- * @fileOverview Contains the create link button code.
+ * Create link plugin.
+ *
+ * @plugin DialogToggleButton linkCreate
  * @license http://www.raptor-editor.com/license
  *
  * @author David Neilsen <david@panmedia.co.nz>
  * @author Michael Robinson <michael@panmedia.co.nz>
  * @author Melissa Richards <melissa@panmedia.co.nz>
  */
-
 var linkMenu,
     linkTypes,
     linkContent,
     linkAttributes;
 
-/**
- * Creates an instance of the dialog toggle button to create links.
- *
- * @todo param stuff?
- * @param {type} param
- */
 Raptor.registerUi(new DialogToggleButton({
     name: 'linkCreate',
+
+    options: {
+        /**
+         * Reset the UI when opening the dialog for a second time.
+         * If set to false the previous user input is retained.
+         * @option bool resetUi
+         */
+        resetUi: false
+    },
 
     dialogOptions: {
         width: 850
@@ -53,18 +57,23 @@ Raptor.registerUi(new DialogToggleButton({
         }.bind(this));
     },
 
-    openDialog: function() {
-        this.getDialog();
+    getDialog: function() {
+        var dialog = DialogToggleButton.prototype.getDialog.call(this);
         var element = selectionGetElement();
-        if (element.is('a')) {
-            for (var i = 0, l = linkTypes.length; i < l; i++) {
+        for (var i = 0, l = linkTypes.length; i < l; i++) {
+            if (element.is('a')) {
                 var result = linkTypes[i].updateInputs(element, linkContent.children('div:eq(' + i + ')'));
                 if (result) {
                     linkMenu.find(':radio:eq(' + i + ')').trigger('click');
                 }
+            } else if (this.options.resetUi) {
+                linkTypes[i].resetInputs(linkContent.children('div:eq(' + i + ')'));
             }
         }
-        DialogToggleButton.prototype.openDialog.call(this);
+        if (!element.is('a') && this.options.resetUi) {
+            linkMenu.find(':radio:eq(0)').trigger('click');
+        }
+        return dialog;
     },
 
     validateDialog: function() {
@@ -90,10 +99,10 @@ Raptor.registerUi(new DialogToggleButton({
         linkMenu = template.find('[data-menu]');
         linkContent = template.find('[data-content]');
         linkTypes = [
-            new LinkTypeInternal(this.raptor),
-            new LinkTypeExternal(this.raptor),
-            new LinkTypeDocument(this.raptor),
-            new LinkTypeEmail(this.raptor)
+            new LinkTypeInternal(this),
+            new LinkTypeExternal(this),
+            new LinkTypeDocument(this),
+            new LinkTypeEmail(this)
         ];
 
         for (var i = 0, l = linkTypes.length; i < l; i++) {
