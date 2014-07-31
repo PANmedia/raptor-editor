@@ -5,6 +5,14 @@ To Do:
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
  - Ensure text box height in dialogs is fixed for all plugins.
 
+v1.4.1
+---
+
+*Updates:*
+ - Added `resetUi` option to the `linkCreate` plugin.
+ - Added a `raptor-ui` class to all UI elements and hide them on print media.
+ - Make external links open in target `_blank` by default.
+
 v1.4.0
 ---
 
