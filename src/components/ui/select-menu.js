@@ -47,7 +47,7 @@ SelectMenu.prototype.menuItemMouseLeave = function(event) {
 SelectMenu.prototype.getMenu = function() {
     if (!this.menu) {
         this.menu = $('<ul>')
-            .addClass(this.options.baseClass + '-menu ' + this.raptor.options.baseClass + '-menu')
+            .addClass('raptor-ui ' + this.options.baseClass + '-menu ' + this.raptor.options.baseClass + '-menu')
             .html(this.getMenuItems())
             .css('position', 'fixed')
             .hide()

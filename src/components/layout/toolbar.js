@@ -182,6 +182,7 @@ ToolbarLayout.prototype.getElement = function() {
             .addClass(this.options.baseClass + '-path')
             .addClass('ui-widget-header');
         var wrapper = this.wrapper = $('<div/>')
+            .addClass('raptor-ui')
             .addClass(this.options.baseClass + '-outer ' + this.raptor.options.baseClass + '-layout')
             .css('display', 'none')
             .append(path)

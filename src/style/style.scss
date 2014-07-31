@@ -32,3 +32,9 @@
 .raptor-editing-inline *:not(.cms-color) {
     color: inherit;
 }
+
+@media print {
+    .raptor-ui {
+        display: none;
+    }
+}
