@@ -1,5 +1,7 @@
 /**
- * @fileOverview Contains the left align button code.
+ * Tag menu plugin.
+ *
+ * @plugin SelectMenu tagMenu
  * @license http://www.raptor-editor.com/license
  *
  * @author David Neilsen <david@panmedia.co.nz>
@@ -16,6 +18,24 @@
  * @param {Object} options Options hash.
  */
 function TagMenu(options) {
+    this.options = {
+        /**
+         * List of tags and their translated name.
+         * @option {Object.<string, string>} tags
+         */
+        tags: {
+            na: tr('tagMenuTagNA'),
+            p: tr('tagMenuTagP'),
+            h1: tr('tagMenuTagH1'),
+            h2: tr('tagMenuTagH2'),
+            h3: tr('tagMenuTagH3'),
+            h4: tr('tagMenuTagH4'),
+            div: tr('tagMenuTagDiv'),
+            pre: tr('tagMenuTagPre'),
+            address: tr('tagMenuTagAddress')
+        }
+    };
+
     SelectMenu.call(this, {
         name: 'tagMenu'
     });
@@ -50,7 +70,7 @@ TagMenu.prototype.changeTag = function(tag) {
             limitElement = cell;
         }
     }
-    
+
     selectionChangeTags(tag, [
         'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'p', 'div', 'pre', 'address'
@@ -114,10 +134,17 @@ TagMenu.prototype.updateButton = function() {
 
 /**
  * Prepares and returns the menu items for use in the raptor UI.
- * @returns {Element}
+ * @returns {String}
  */
 TagMenu.prototype.getMenuItems = function() {
-    return this.raptor.getTemplate('tag-menu.menu', this.options);
+    var result = '';
+    for (var tag in this.options.tags) {
+        result += this.raptor.getTemplate('tag-menu.item', {
+            tag: tag,
+            name: this.options.tags[tag]
+        });
+    }
+    return result;
 };
 
 Raptor.registerUi(new TagMenu());

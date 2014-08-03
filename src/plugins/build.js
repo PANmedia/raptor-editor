@@ -549,7 +549,7 @@ builder.addModule({
         __dirname + '/tag-menu/edit.png',
         __dirname + '/tag-menu/tag-menu.js',
         __dirname + '/tag-menu/tag-menu.scss',
-        __dirname + '/tag-menu/templates/menu.html'
+        __dirname + '/tag-menu/templates/item.html'
     ]
 });
 

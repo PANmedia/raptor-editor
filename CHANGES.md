@@ -12,6 +12,7 @@ v1.4.1
  - Added `resetUi` option to the `linkCreate` plugin.
  - Added a `raptor-ui` class to all UI elements and hide them on print media.
  - Make external links open in target `_blank` by default.
+ - Move tag menu tags to options.
 
 v1.4.0
 ---
