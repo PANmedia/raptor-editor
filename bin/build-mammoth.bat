@@ -1,1 +1,0 @@
-call phing -Dfiles.manifest=build/mammoth.manifest -Dfilename=raptor.mammoth

@@ -13,6 +13,7 @@ v1.4.1
  - Added a `raptor-ui` class to all UI elements and hide them on print media.
  - Make external links open in target `_blank` by default.
  - Move tag menu tags to options.
+ - Cleaned up old build files.
 
 v1.4.0
 ---

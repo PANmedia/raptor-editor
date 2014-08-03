@@ -1,1 +1,0 @@
-call phing -Dfiles.manifest=build/full.manifest -Dfilename=raptor.0deps 0deps
