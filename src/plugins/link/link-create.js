@@ -1,7 +1,7 @@
 /**
  * Create link plugin.
  *
- * @plugin DialogToggleButton linkCreate
+ * @plugin {DialogToggleButton} linkCreate
  * @license http://www.raptor-editor.com/license
  *
  * @author David Neilsen <david@panmedia.co.nz>
@@ -20,7 +20,7 @@ Raptor.registerUi(new DialogToggleButton({
         /**
          * Reset the UI when opening the dialog for a second time.
          * If set to false the previous user input is retained.
-         * @option bool resetUi
+         * @option {boolean} resetUi
          */
         resetUi: false
     },
