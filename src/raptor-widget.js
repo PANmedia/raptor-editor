@@ -106,7 +106,7 @@ var RaptorWidget = {
 
         // Bind default events
         for (var name in this.options.bind) {
-            this.bind(stringFromCamelCase(name), this.options.bind[name]);
+            this.bind(name, this.options.bind[name]);
         }
 
         // Undo stack, redo pointer
@@ -1076,6 +1076,7 @@ var RaptorWidget = {
         // </strict>
         var names = name.split(/,\s*/);
         for (var i = 0, l = names.length; i < l; i++) {
+        	name = names[i].toLowerCase().replace(/[^a-z]/, '');
             if (!this.events[names[i]]) {
                 this.events[names[i]] = [];
             }
@@ -1092,6 +1093,7 @@ var RaptorWidget = {
      * @param {Object} [context]
      */
     unbind: function(name, callback, context) {
+    	name = name.toLowerCase().replace(/[^a-z]/, '');
         for (var i = 0, l = this.events[name].length; i < l; i++) {
             if (this.events[name][i] &&
                 this.events[name][i].callback === callback &&
@@ -1107,6 +1109,7 @@ var RaptorWidget = {
      * @param {boolean} [sub]
      */
     fire: function(name, args) {
+    	name = name.toLowerCase().replace(/[^a-z]/, '');
         var result = [];
 
         // <debug>
