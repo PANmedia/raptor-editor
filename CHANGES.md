@@ -5,6 +5,16 @@ To Do:
  - Make `ElementHoverPanel` accept multiple configurations for difference elements.
  - Ensure text box height in dialogs is fixed for all plugins.
 
+v1.5.0 (WIP)
+---
+
+*API Changes:*
+ - File manager will no longer refresh during initialisation. When using standalone you must call `rfm.refresh()`.
+
+*Updates:*
+ - Event names are now normalised by lowercasing, and removing all non alphabetic characters from them. This allows for
+ - Added `callback` option to the `save` plugin instead of requiring a full save plugin implementation.
+
 v1.4.1
 ---
 
@@ -25,7 +35,7 @@ v1.4.0
 
 *API Changes:*
  - Rename `selectionCustomise` event to `selection-customise`. Bind option should support both.
- - Update selectionReplace to only accept a node or a string.
+ - Update `selectionReplace` to only accept a node or a string.
 
 v1.3.0
 ---
