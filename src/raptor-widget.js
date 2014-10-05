@@ -1077,10 +1077,15 @@ var RaptorWidget = {
         var names = name.split(/,\s*/);
         for (var i = 0, l = names.length; i < l; i++) {
         	name = names[i].toLowerCase().replace(/[^a-z]/, '');
-            if (!this.events[names[i]]) {
-                this.events[names[i]] = [];
+            // <debug>
+            if (debugLevel > MIN) {
+                debug('Binding event: ' + name);
             }
-            this.events[names[i]].push({
+            // </debug>
+            if (!this.events[name]) {
+                this.events[name] = [];
+            }
+            this.events[name].push({
                 context: context,
                 callback: callback
             });
@@ -1094,6 +1099,11 @@ var RaptorWidget = {
      */
     unbind: function(name, callback, context) {
     	name = name.toLowerCase().replace(/[^a-z]/, '');
+        // <debug>
+        if (debugLevel > MIN) {
+            debug('Unbinding event: ' + name);
+        }
+        // </debug>
         for (var i = 0, l = this.events[name].length; i < l; i++) {
             if (this.events[name][i] &&
                 this.events[name][i].callback === callback &&
