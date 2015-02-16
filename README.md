@@ -5,6 +5,11 @@ Raptor Editor is a user-focused extensible WYSIWYG website content editor - chec
 
 **It is designed to be user and developer friendly**
 
+Development Status
+---
+
+The Raptor Editor team is currently undergoing some changes. With more and more client work coming our way, our development team are stretched and we're having to redirect our priorities. We're still here, we're still supporting our licencees and we're expanding the team to match our growth. In the mean time, we just might be a bit slower to fix bugs and introduce new features!
+
 Usage
 ---
 
