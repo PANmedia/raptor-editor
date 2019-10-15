@@ -5,6 +5,6 @@
     "version": "1.1.4",
     "dependencies": {
         "uglify-js": "2.3.6",
-        "clean-css": "1.0.10"
+        "clean-css": "4.2.1"
     }
 }
