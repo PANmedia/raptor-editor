@@ -98,7 +98,7 @@ DialogButton.prototype.cancelButtonClick = DialogButton.prototype.closeDialog;
  * Prepare and return the dialog's OK button's initialisation object.
  *
  * @param {String} name
- * @returns {Object} The initiialisation object for this dialog's OK button.
+ * @returns {Object} The initialisation object for this dialog's OK button.
  */
 DialogButton.prototype.getOkButton = function(name) {
     return {
@@ -114,7 +114,7 @@ DialogButton.prototype.getOkButton = function(name) {
  * Prepare and return the dialog's cancel button's initialisation object.
  *
  * @param {String} name
- * @returns {Object} The initiialisation object for this dialog's cancel button.
+ * @returns {Object} The initialisation object for this dialog's cancel button.
  */
 DialogButton.prototype.getCancelButton = function(name) {
     return {
